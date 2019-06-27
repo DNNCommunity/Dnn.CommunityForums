@@ -1,0 +1,104 @@
+<h3>Active Forums for DNN</h3>
+
+<a href="http://activeforums.org">http://activeforums.org</a>
+
+<div class="License">
+<p class="Owner"><b>About DotNetNuke Active Forums</b></p>
+Active Forums is an award winning, DotNetNuke module that allows you to easily build a complete on-line community. By leveraging the DotNetNuke framework, Active Forums allows you to quickly setup a feature-rich discussion forum for your website. Whether you are a hobbyist who just needs a single forum or building an on-line community for your enterprise, Active Forums is your solution.
+
+    <hr />
+	</div>
+
+
+<h3>Release Notes</h3>
+<b>Version 06.03.04</b>
+<ul>
+	<li>#432 Attempted fix for losing INSTALLDATE</li>
+<ul>
+
+<h3>Release Notes</h3>
+<b>Version 06.03.03</b>
+<ul>
+	<li>Changed deprecated APIs.</li>
+	<li>#405 Sometimes settings got lost when saved</li>
+	<li>#405 Not all settings was being saved</li>
+	<li>#408 Height and width of image in polls being set with CSS</li>
+	<li>#307 Bug in attachments in the Moderator queue</li>
+	<li>#62 Anonymous users issue</li>
+	<li>#103 Autolinks generates incorrect HTML when same hyperlink occurs twice</li>
+	<li>#102 Not correctly handling single quotes. Semantic web</li>
+	<li>#417 JS error in DNN9.2</li>
+<ul>
+Thanks to Monty for #102 and #103 and VincentParrett for #417<br /> <br/>
+
+
+<b>Version 06.03.00</b>
+
+<ul>
+  <li>DNN Minimum Version: Changed to 8.0.0 or later</li>
+  <li>Build process changed to allow stand-alone compilation</p>
+</ul>
+
+<b>Version 06.02.08</b>
+
+<ul>
+ <li>Pull #313 - Corrections to sql to include {databaseOwner} and {objectQualifier}</li>
+</ul>
+
+<b>Version 06.02.07</b>
+
+<ul>
+ <li>Pull #310 - Added name of person reporting a post</li>
+ <li>Pull #310 - Fix sorting problem after removing a forum</li>
+ <li>Pull #310 - Fix for missing settings for what editor to use</li>
+ <li>Pull #310 - Missing {databaseOwner} and {objectQualifier} in various places</li>
+ <li>Pull #310 - Quick fix for splitting process where split reply took on wrong author</li>
+</ul>
+
+<b>Version 06.02.06</b>
+
+<ul>
+ <li>Pull #301 - additional corrections to responsive layout</li>
+ <li>Pull #308 - change to text_editor.js to help with IE compatability</li>
+ <li>Fix for module requiring repair install at upgrade to refresh dll - sorry this isn't very well documented</li>
+ <li>Fix for split feature not working properly - sorry this isn't very well documented</li>
+</ul>
+
+<b>Version 06.02.05</b>
+
+<ul>
+ <li>Pull #296 - added last reply column back to tablet and mobile view</li>
+</ul>
+
+<b>Version 06.02.04</b>
+
+<ul>
+ <li>Attempt repair of module branding icon</li>
+ <li>Pull #280 quick jump-to drop down breaks responsive with long forum names - fixed</li>
+</ul>
+
+<b>Version 06.02.03</b>
+
+<ul>
+ <li>Pull #277 More corrections for skins</li>
+</ul>
+
+<b>Version 06.02.02</b>
+
+<ul>
+ <li>Pull #274 Fixed content width, tooltips, and other UI related items</li>
+</ul>
+
+<b>Version 06.02.01</b>
+
+<ul>
+ <li>Pull #271 fixed move-icon inside a topic to match the new icons</li>
+</ul>
+
+<b>Version 06.02.00</b>
+
+<ul>
+ <li>Pull #268 finished UI changes introduced in version 6 - implemented fontawesome and tweaked responsive layout all around</li>
+ <li>Pull #247 fixed where filters couldn't be deleted, worked on SocialGroupID and configured move to work on locked post</li>
+ <li>Added module icon for branding
+</ul>
