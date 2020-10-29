@@ -32,10 +32,10 @@ using System.Security;
 // Review the values of the assembly attributes
 [assembly: AllowPartiallyTrustedCallers()]
 [assembly: AssemblyTitle("Active Forums")]
-[assembly: AssemblyDescription("Discussion Forum Module for DotNetNuke")]
-[assembly: AssemblyCompany("activeforums.org")]
+[assembly: AssemblyDescription("Discussion Forum Module for DNN")]
+[assembly: AssemblyCompany("dnncommunity.org")]
 [assembly: AssemblyProduct("Active Forums")]
-[assembly: AssemblyCopyright("Copyright © 2004-2019 activeforums.org")]
+[assembly: AssemblyCopyright("Copyright © DNN Community")]
 [assembly: AssemblyTrademark("")]
 
 
@@ -52,9 +52,9 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("06.03.04")]
+[assembly: AssemblyVersion("06.04.00")]
 
-[assembly: AssemblyFileVersion("06.03.04")]
+[assembly: AssemblyFileVersion("06.04.00")]
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js", "text/javascript")]
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js", "text/javascript")]
 

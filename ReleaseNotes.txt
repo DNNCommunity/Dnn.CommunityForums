@@ -1,0 +1,16 @@
+﻿<style>
+	div.uv-install-wrapper h3, div.uv-install-wrapper h4, div.uv-install-wrapper p, div.uv-install-wrapper hr, div.uv-install-wrapper ul { margin-bottom: 0.5em; }
+	div.uv-install-wrapper ul { padding-left: 2em; }
+</style>
+<div class="uv-install-wrapper">
+	<h3>ActiveForums Module for DNN</h3>
+	<hr/>
+	<div class="dnnClear">
+		<h3>06.04.00</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>One</li>
+			<li>Two</li>
+		</ul>
+	</div>
+</div>
