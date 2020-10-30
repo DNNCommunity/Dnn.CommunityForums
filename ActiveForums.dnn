@@ -360,17 +360,6 @@
             </moduleDefinitions>
           </desktopModule>
         </component>
-        <component type="File">
-          <files>
-            <basePath>DesktopModules\ActiveForumsWhatsNew</basePath>
-            <file>
-              <name>WhatsNew.ascx</name>
-            </file>
-            <file>
-              <name>WhatsNewOptions.ascx</name>
-            </file>
-          </files>
-        </component>
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules\ActiveForumsWhatsNew</basePath>
