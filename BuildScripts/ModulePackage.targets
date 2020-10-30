@@ -31,7 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <InstallInclude Include="**\*.ascx" />
+      <InstallInclude Include="**\*.ascx" Exclude="**\WhatsNew.ascx;**\WhatsNewOptions.ascx;" />
       <InstallInclude Include="**\*.ashx" />
       <InstallInclude Include="**\*.asmx" />
       <InstallInclude Include="**\*.css" />
@@ -40,47 +40,18 @@
       <InstallInclude Include="**\*.resx" />
       <InstallInclude Include="**\*.aspx" />
       <InstallInclude Include="**\*.js" />
-      <InstallInclude Include="**\*.config" />
-      <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;**\WhatsNew.ascx;**\WhatsNewOptions.ascx;**\WhatsNewResources.zip;" />
+      <InstallInclude Include="**\*.config" Exclude="**\.vs\**;**\packages\**;" />
+      <InstallInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;**\packages\**;" />
       <InstallInclude Include="**\images\*.*" />
       <InstallInclude Include="**\ranks\*.*" />
       <InstallInclude Include="**\emoticons\*.*" />
-        
-    </ItemGroup>
-
-    <ItemGroup>
-      <SourceInclude Include="**\*.ascx" />
-      <SourceInclude Include="**\*.asmx" />
-      <SourceInclude Include="**\*.ashx" />
-      <SourceInclude Include="**\*.css" />
-      <SourceInclude Include="**\*.xsl" />
-      <SourceInclude Include="**\*.html" />
-      <SourceInclude Include="**\*.htm" />
-      <SourceInclude Include="**\*.resx" />
-      <SourceInclude Include="**\*.config" />
-      <SourceInclude Include="**\*.xml" Exclude="**\obj\**;**\_ReSharper*\**;**\bin\**;" />
-      <SourceInclude Include="**\*.aspx" />
-      <SourceInclude Include="**\*.js" />
-      <SourceInclude Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\Documentation\License.txt;**\Documentation\ReleaseNotes.txt;**\WhatsNew.ascx;**\WhatsNewOptions.ascx;**\WhatsNewResources.zip;" />
-      <SourceInclude Include="**\images\*.*" />
-      <SourceInclude Include="**\emoticons\*.*" />
-      <SourceInclude Include="**\*.cs" />
-      <SourceInclude Include="**\*.csproj" />
-      <SourceInclude Include="**\*.targets" />
-      <SourceInclude Include="**\*.sln" />
-	  <SourceInclude Include="**\Tests\*.*" />
-	  <SourceInclude Include="**\Tests\**\*.*" Exclude="**\Tests\bin\**;**\.svn\**;**\Tests\obj\**;**\*.mdf;**\*.ldf;" />
     </ItemGroup>
     
     <CreateItem Include="$(DNNFileName).dnn">
       <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
     </CreateItem>
 
-    <CreateItem Include="**\License.txt">
-      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
-    </CreateItem>
-
-    <CreateItem Include="**\ReleaseNotes.txt">
+    <CreateItem Include="**\*.txt" Exclude="**\obj\**;**\_ReSharper*\**;**\packages\**;**\config\**;**\Documentation\**;">
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 
@@ -92,9 +63,16 @@
       <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
     </CreateItem>
 
-    <CreateItem Include="**\WhatsNewResources.zip">
-      <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
-    </CreateItem>
+    <ItemGroup>
+      <SymbolsInclude Include="$(DNNFileName)_Symbols.dnn" />
+      <SymbolsInclude Include="License.txt" />
+      <SymbolsInclude Include="ReleaseNotes.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <SymbolsBinInclude Include="$(MSBuildDnnBinPath)\$(AssemblyName)*.pdb" />
+      <SymbolsBinInclude Include="$(MSBuildDnnBinPath)\$(AssemblyName)*.xml" />
+    </ItemGroup>
 
 
     <CreateItem Include="**\*.sqldataprovider" Exclude="**\Tests\TestDatabase\*.SqlDataProvider" >
@@ -105,7 +83,18 @@
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(WhatsNewFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+
+    <!-- create the WHATSNEWRESOURCES.ZIP file -->
+    <Copy SourceFiles="@(WhatsNewFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageWhatsNew" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\PackageWhatsNew\**\*.*">
+      <Output TaskParameter="Include" ItemName="WhatsNewResourcesContent" />
+    </CreateItem>
+
+    <Zip Files="@(WhatsNewResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageWhatsNew" ZipFileName="WhatsNewResources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\WhatsNewResources.$(Extension)" DestinationFolder="package/" />
+
+    <RemoveDir Directories ="$(MSBuildProjectDirectory)\PackageWhatsNew" />
     
     
     <!-- create the INSTALL RESOURCES.ZIP file -->
@@ -121,46 +110,46 @@
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="OutputContent" />
     </CreateItem>
+
     <!-- Create the Install package -->    
     <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
     <!-- Copy the Install package to the Packages folder -->
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="packages/" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="_Install/" />
     
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\ResourcesZip" />
 
-    
-    <Copy SourceFiles="$(MSBuildDnnBinPath)\$(AssemblyName).dll" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
-    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-
-    <!-- create the SOURCE RESOURCES.ZIP file -->
-    <Copy SourceFiles="@(SourceInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
+    <!-- Symbols Package -->
+    <Copy SourceFiles="@(SymbolsInclude)" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="@(SymbolsBinInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\bin"/>
 
     <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
-      <Output TaskParameter="Include" ItemName="SourceContent" />
+      <Output TaskParameter="Include" ItemName="SymbolsContent" />
     </CreateItem>
 
-    <Zip Files="@(SourceContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="package/" />
+    <Zip Files="@(SymbolsContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="Package\" />
 
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
-      <Output TaskParameter="Include" ItemName="OutputSource" />
+      <Output TaskParameter="Include" ItemName="SymbolsSource" />
     </CreateItem>
 
-    <Zip Files="@(OutputSource)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Source.$(Extension)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Source.$(Extension)" DestinationFolder="packages/" />
-
-    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
-    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Source.$(Extension)" />
+    <Zip Files="@(SymbolsSource)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Symbols.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Symbols.$(Extension)" DestinationFolder="_Install/" />
 
     <Delete Files="$(MSBuildProjectDirectory)\Resources.Zip" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip" />
 
+    <!-- Clean Up -->
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Symbols.$(Extension)" />
+    <Delete Files="$(MSBuildProjectDirectory)\WhatsNewResources.Zip" />
+    <Delete Files="$(MSBuildProjectDirectory)\Resources.Zip" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(AssemblyName).xml" />
 
-    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" />
-
-    <RemoveDir Directories ="$(MSBuildProjectDirectory)\ResourcesZip" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip" />
     
   </Target>
 </Project>

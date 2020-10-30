@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <ProductVersion>8.0.30703</ProductVersion>
@@ -37,6 +37,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\bin\</OutputPath>
@@ -140,13 +142,18 @@
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Linq" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Net.Http.Formatting">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\System.Net.Http.Formatting.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Threading.Thread" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -193,6 +200,7 @@
     <Import Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="06.04.00.txt" />
     <Content Include="ActiveForums.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -212,6 +220,11 @@
     </Content>
     <Content Include="config\templates\AddThis.txt" />
     <Content Include="config\templates\AdminWatchEmail_text.txt" />
+    <None Include="ActiveForums_Symbols.dnn">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="app.config" />
     <None Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
     </None>
@@ -273,7 +286,6 @@
     <Content Include="App_LocalResources\ForumSettings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\ForumEditor.ascx.resx" />
     <EmbeddedResource Include="CustomControls\Resources\ActiveGrid.js" />
     <EmbeddedResource Include="CustomControls\Resources\asc.gif" />
     <EmbeddedResource Include="CustomControls\Resources\calendar.gif" />
@@ -335,7 +347,6 @@
     <Content Include="scripts\json2009.min.js" />
     <Content Include="scripts\modal.js" />
     <Content Include="scripts\other_editor.js" />
-    <Content Include="scripts\telerik_editor.js" />
     <Content Include="scripts\resx.js" />
     <Content Include="scripts\text_editor.js" />
     <Content Include="ForumSettings.ascx">
@@ -584,7 +595,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="controls\af_usersonline.ascx" />
-    <Content Include="controls\af_post.ascx" />
+    <Content Include="controls\af_post.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ControlPanel.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1377,7 +1390,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MSBee\MSBuildExtras.FX1_1.CSharp.targets" Condition=" '$(BuildingInsideVisualStudio)' == '' AND '$(TargetFX1_1)'=='true'" />
   <!--<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />-->
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>ActiveForums</DNNFileName>
