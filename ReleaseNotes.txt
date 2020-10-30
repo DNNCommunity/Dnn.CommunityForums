@@ -9,8 +9,13 @@
 		<h3>06.04.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>One</li>
-			<li>Two</li>
+			<li>Raised .NET build version to 4.7.2.</li>
+			<li>Raised minimum DNN version to 9.4.0</li>
+			<li>Removed Telerik references</li>
+			<li>Resolved all build issues</li>
+			<li>Stopping creation of source code package</li>
+			<li>Added symbols package for troubleshooting on any environment</li>
+			<li>Other minor project/solution cleanup tasks for developers</li>
 		</ul>
 	</div>
 </div>

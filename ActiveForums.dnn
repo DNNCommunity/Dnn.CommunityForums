@@ -300,6 +300,7 @@
             </uninstall>
           </config>
         </component>
+        <component type="Cleanup" version="06.04.00" fileName="06.04.00.txt" />
       </components>
     </package>
     <package name="Active Forums What's New" type="Module" version="06.04.00">
