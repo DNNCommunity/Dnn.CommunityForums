@@ -173,11 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var prov = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
 
-                        if (prov.DefaultProvider.ToLowerInvariant().Contains("telerik") | prov.DefaultProvider.ToLowerInvariant().Contains("radeditor"))
-                        {
-                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/telerik_editor.js"));
-                        }
-                        else if (prov.DefaultProvider.Contains("CKHtmlEditorProvider"))
+                        if (prov.DefaultProvider.Contains("CKHtmlEditorProvider"))
                         {
                             Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/ck_editor.js"));
                         }
