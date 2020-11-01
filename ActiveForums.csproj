@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="14.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <ProductVersion>8.0.30703</ProductVersion>
@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DotNetNuke.Modules.ActiveForums</RootNamespace>
     <OldToolsVersion>4.0</OldToolsVersion>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -37,6 +37,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>..\..\bin\</OutputPath>
@@ -104,33 +106,26 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetNuke, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\DotNetNuke.Core.8.0.0.809\lib\net40\DotNetNuke.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="DotNetNuke, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Core.9.4.0\lib\net45\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web, Version=8.0.0.809, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\DotNetNuke.Web.8.0.0.809\lib\net40\DotNetNuke.Web.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="DotNetNuke.Web, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.Web.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Web.Client, Version=7.4.2.216, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\DotNetNuke.Web.Client.7.4.2.216\lib\net40\DotNetNuke.Web.Client.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetNuke.Web.Client, Version=9.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\DotNetNuke.Web.Client.9.4.0\lib\net45\DotNetNuke.Web.Client.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.WebUtility, Version=4.2.1.783, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\DotNetNuke.Web.8.0.0.809\lib\net40\DotNetNuke.WebUtility.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>packages\DotNetNuke.Web.9.4.0\lib\net45\DotNetNuke.WebUtility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\DotNetNuke.Core.8.0.0.809\lib\net40\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\microsoft-web-helpers.2.1.20710.2\lib\net40\Microsoft.Web.Helpers.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -147,17 +142,18 @@
       <Name>System.Drawing</Name>
     </Reference>
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\References\DNN 7.0.0\System.Net.Http.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Linq" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.Net.Http.Formatting">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\System.Net.Http.Formatting.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.InteropServices" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Threading.Thread" />
     <Reference Include="System.Web">
       <Name>System.Web</Name>
     </Reference>
@@ -165,31 +161,26 @@
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.Helpers.dll</HintPath>
-      <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Http">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\System.Web.Http.dll</HintPath>
+      <HintPath>ReferencedAssemblies\System.Web.Http.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.Razor.2.0.20505.0\lib\net40\System.Web.Razor.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.RegularExpressions" />
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.2.0.20505.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
@@ -197,11 +188,9 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WebMatrix.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.Data.2.0.20505.0\lib\net40\WebMatrix.Data.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="WebMatrix.WebData, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.AspNet.WebPages.WebData.2.0.20505.0\lib\net40\WebMatrix.WebData.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +200,7 @@
     <Import Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="06.04.00.txt" />
     <Content Include="ActiveForums.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -230,6 +220,10 @@
     </Content>
     <Content Include="config\templates\AddThis.txt" />
     <Content Include="config\templates\AdminWatchEmail_text.txt" />
+    <None Include="ActiveForums_Symbols.dnn">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="app.config" />
     <None Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
@@ -292,7 +286,6 @@
     <Content Include="App_LocalResources\ForumSettings.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_LocalResources\ForumEditor.ascx.resx" />
     <EmbeddedResource Include="CustomControls\Resources\ActiveGrid.js" />
     <EmbeddedResource Include="CustomControls\Resources\asc.gif" />
     <EmbeddedResource Include="CustomControls\Resources\calendar.gif" />
@@ -329,6 +322,8 @@
     <Content Include="images\testrun16.png" />
     <Content Include="images\roles_add.png" />
     <Content Include="images\save16.png" />
+    <Content Include="ReleaseNotes.txt" />
+    <Content Include="License.txt" />
     <Content Include="module.css" />
     <EmbeddedResource Include="scripts\afadmin.properties.js" />
     <Content Include="ReferencedAssemblies\System.Net.Http.Formatting.dll" />
@@ -352,7 +347,6 @@
     <Content Include="scripts\json2009.min.js" />
     <Content Include="scripts\modal.js" />
     <Content Include="scripts\other_editor.js" />
-    <Content Include="scripts\telerik_editor.js" />
     <Content Include="scripts\resx.js" />
     <Content Include="scripts\text_editor.js" />
     <Content Include="ForumSettings.ascx">
@@ -601,7 +595,9 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="controls\af_usersonline.ascx" />
-    <Content Include="controls\af_post.ascx" />
+    <Content Include="controls\af_post.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="ControlPanel.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1394,7 +1390,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MSBee\MSBuildExtras.FX1_1.CSharp.targets" Condition=" '$(BuildingInsideVisualStudio)' == '' AND '$(TargetFX1_1)'=='true'" />
   <!--<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />-->
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <PropertyGroup>
     <Extension>zip</Extension>
     <DNNFileName>ActiveForums</DNNFileName>

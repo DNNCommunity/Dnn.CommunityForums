@@ -1,0 +1,21 @@
+﻿<style>
+	div.uv-install-wrapper h3, div.uv-install-wrapper h4, div.uv-install-wrapper p, div.uv-install-wrapper hr, div.uv-install-wrapper ul { margin-bottom: 0.5em; }
+	div.uv-install-wrapper ul { padding-left: 2em; }
+</style>
+<div class="uv-install-wrapper">
+	<h3>ActiveForums Module for DNN</h3>
+	<hr/>
+	<div class="dnnClear">
+		<h3>06.04.00</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>Raised .NET build version to 4.7.2.</li>
+			<li>Raised minimum DNN version to 9.4.0</li>
+			<li>Removed Telerik references</li>
+			<li>Resolved all build issues</li>
+			<li>Stopping creation of source code package</li>
+			<li>Added symbols package for troubleshooting on any environment</li>
+			<li>Other minor project/solution cleanup tasks for developers</li>
+		</ul>
+	</div>
+</div>
