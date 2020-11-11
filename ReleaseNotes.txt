@@ -13,8 +13,6 @@
 			<li>Raised minimum DNN version to 9.4.0</li>
 			<li>Removed Telerik references (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/8">Issue 8</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
 			<li>Resolves issue with friendly URLs no longer working (<a href="https://github.com/ActiveForums/ActiveForums/issues/342">Issue 342</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenly</a>!)</li>
-			<li>Fixed like icons being repeated (<a href="https://github.com/ActiveForums/ActiveForums/issues/449">Issue 449</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Fixed link parsing issue (<a href="https://github.com/ActiveForums/ActiveForums/issues/437">Issue 437</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>Resolved all build issues</li>
 			<li>Stopping creation of source code package</li>
 			<li>Added symbols package for troubleshooting on any environment</li>
