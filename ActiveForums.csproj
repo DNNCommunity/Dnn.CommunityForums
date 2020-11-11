@@ -41,8 +41,8 @@
     </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.ActiveForums.xml</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Modules.ActiveForums.xml</DocumentationFile>
     <DefineConstants>TRACE;DEBUG;</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
@@ -54,54 +54,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\bin\</OutputPath>
-    <DocumentationFile>DotNetNuke.Modules.ActiveForums.xml</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>bin\DotNetNuke.Modules.ActiveForums.xml</DocumentationFile>
     <DefineConstants>TRACE;</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
     <WarningLevel>1</WarningLevel>
     <DebugType>none</DebugType>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Enterprise|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <OutputPath>bin\Enterprise\</OutputPath>
-    <DefineConstants>TRACE;SKU_ENTERPRISE</DefineConstants>
-    <WarningLevel>1</WarningLevel>
-    <DebugType>None</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Optimize>true</Optimize>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Standard|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <OutputPath>bin\Standard\</OutputPath>
-    <DefineConstants>SKU_STANDARD</DefineConstants>
-    <WarningLevel>1</WarningLevel>
-    <DebugType>None</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'LITE|AnyCPU' ">
-    <OutputPath>bin\LITE\</OutputPath>
-    <DefineConstants>TRACE;SKU_LITE</DefineConstants>
-    <WarningLevel>1</WarningLevel>
-    <DebugType>None</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Optimize>true</Optimize>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Express|AnyCPU' ">
-    <OutputPath>bin\Express\</OutputPath>
-    <DefineConstants>SKU_EXPRESS</DefineConstants>
-    <WarningLevel>1</WarningLevel>
-    <DebugType>None</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
@@ -352,6 +311,7 @@
     <Content Include="ForumSettings.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <None Include="Module.build" />
     <None Include="packages.config" />
     <None Include="sql\04.01.17.SqlDataProvider" />
     <None Include="sql\04.01.18.SqlDataProvider" />
@@ -1384,20 +1344,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MSBee\MSBuildExtras.FX1_1.CSharp.targets" Condition=" '$(BuildingInsideVisualStudio)' == '' AND '$(TargetFX1_1)'=='true'" />
   <!--<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />-->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <PropertyGroup>
-    <Extension>zip</Extension>
-    <DNNFileName>ActiveForums</DNNFileName>
-    <PackageName>ActiveForums</PackageName>
-    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\Build\BuildScripts\</MSBuildCommunityTasksPath>
-  </PropertyGroup>
-  <Import Project="BuildScripts\ModulePackage.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="PackageModule">
-  </Target>
+  <Import Project="Module.Build" />
 </Project>
