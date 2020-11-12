@@ -157,3 +157,4 @@ $RECYCLE.BIN/
 $tf/
 sql/Копия 05.02.02.SqlDataProvider
 .vs/
+themes/.gitignore
