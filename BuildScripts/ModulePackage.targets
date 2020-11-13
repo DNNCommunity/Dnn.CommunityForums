@@ -25,17 +25,17 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   <Target Name="PackageModule" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <XmlRead Prefix="n"
                     Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
-                    XPath="dotnetnuke/packages/package/@version"
+                    XPath="dotnetnuke/packages/package[1]/@version"
                     XmlFileName="$(DNNFileName).dnn">
       <Output TaskParameter="Value" PropertyName="Version" />
     </XmlRead>
 
     <ItemGroup>
-      <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**" />
+      <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;WhatsNew.ascx;WhatsNewOptions.ascx" />
       <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.css" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.html" Exclude="packages\**;node_modules\**;clientApp\**" />
-      <InstallInclude Include="**\*.htm" Exclude="packages\**;node_modules\**;clientApp\**" />
+      <InstallInclude Include="**\*.htm" Exclude="packages\**;node_modules\**;clientApp\**;UpgradeLog*.htm" />
       <InstallInclude Include="**\*.resx" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.aspx" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.js" Exclude="packages\**;node_modules\**;clientApp\**" />
@@ -81,6 +81,14 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
 
+    <CreateItem Include="**\WhatsNew.ascx">
+      <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
+    </CreateItem>
+
+    <CreateItem Include="**\WhatsNewOptions.ascx">
+      <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
+    </CreateItem>
+
     <ItemGroup>
       <BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
       <!--BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\*.dll" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
@@ -97,6 +105,18 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
+
+    <!-- create the INSTALL WHATSNEWRESOURCES.ZIP file -->
+    <Copy SourceFiles="@(WhatsNewFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageWhatsNew" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\PackageWhatsNew\**\*.*">
+      <Output TaskParameter="Include" ItemName="WhatsNewResourcesContent" />
+    </CreateItem>
+
+    <Zip Files="@(WhatsNewResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageWhatsNew" ZipFileName="WhatsNewResources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\WhatsNewResources.$(Extension)" DestinationFolder="Package\" />
+    
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\PackageWhatsNew" />
 
     <!-- create the INSTALL RESOURCES.ZIP file -->
     <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
@@ -145,6 +165,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip" />
 
     <Delete Files="$(MSBuildProjectDirectory)\Resources.Zip" />
+    <Delete Files="$(MSBuildProjectDirectory)\WhatsNewResources.Zip" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Symbols.$(Extension)" />
   </Target>
