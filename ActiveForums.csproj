@@ -173,7 +173,6 @@
     <Content Include="active\am-ui.css" />
     <Content Include="active\amlib.js" />
     <Content Include="active\close.gif" />
-    <Content Include="BuildScripts\MSBuild.Community.Tasks.dll" />
     <Content Include="Classic.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
