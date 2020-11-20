@@ -33,14 +33,13 @@ namespace DotNetNuke.Modules.ActiveForums
         private void UpdateTabModuleSettingCaseSensitive(string key, string newValue)
         {
             var oldValue = Settings.GetString(key);
-            if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
+            if (oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
             {
 				// changed but case-insensitive identical: empty the setting first
                 UpdateTabModuleSettingCaseSensitive(key, "");
             }
-            _objModules.UpdateTabModuleSetting(TabModuleId, key, newValue);
+            UpdateTabModuleSettingCaseSensitive(key, newValue);
         }
-
 		/// <summary>
 		/// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
 		/// </summary>
@@ -49,12 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums
         private void UpdateModuleSettingCaseSensitive(string key, string newValue)
         {
             var oldValue = Settings.GetString(key);
-            if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
+            if (oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
             {
 				// changed but case-insensitive identical: empty the setting first
-                _objModules.UpdateModuleSetting(ModuleId, key, "");
+                _objModules.UpdateModuleSetting(TabModuleId, key, "");
             }
-            _objModules.UpdateModuleSetting(ModuleId, key, newValue);
+            _objModules.UpdateModuleSetting(TabModuleId, key, newValue);
         }
 
 		public string Mode
