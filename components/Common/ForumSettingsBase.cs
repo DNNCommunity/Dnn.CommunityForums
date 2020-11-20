@@ -64,7 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.Mode] = value;
 				UpdateTabModuleSettingCaseSensitive(SettingKeys.Mode, value);
 			}
 		}
@@ -77,7 +76,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.Theme] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
 			}
 		}
@@ -90,7 +88,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.TimeFormatString] = value;
                 UpdateModuleSettingCaseSensitive(SettingKeys.TimeFormatString, value);
             }
         }
@@ -103,7 +100,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.DateFormatString] = value;
                 UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
             }
         }
@@ -116,7 +112,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ForumTemplateId] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
 			}
 		}
@@ -129,7 +124,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PageSize] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
 			}
 		}
@@ -142,7 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.FloodInterval] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
 			}
 		}
@@ -155,7 +148,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EditInterval] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
 			}
 		}
@@ -168,7 +160,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EnableAutoLink] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
 			}
 		}
@@ -181,7 +172,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.DeleteBehavior] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
 			}
 		}
@@ -194,7 +184,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AddThisAccount] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.AddThisAccount, value);
 			}
 		}
@@ -207,7 +196,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ProfileVisibility] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
 			}
 		}
@@ -220,7 +208,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.PMType] = value;
                 UpdateModuleSettingCaseSensitive(SettingKeys.PMType, value.ToString());
             }
         }
@@ -233,7 +220,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.PMTabId] = value;
                 UpdateModuleSettingCaseSensitive(SettingKeys.PMTabId, value.ToString());
             }
         }
@@ -246,7 +232,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AllowSignatures] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
 			}
 		}
@@ -259,7 +244,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.UserNameDisplay] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
 			}
 		}
@@ -272,7 +256,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EnableURLRewriter] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
 			}
 		}
@@ -285,7 +268,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLBase] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
 			}
 		}
@@ -298,7 +280,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLTags] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
 			}
 		}
@@ -311,7 +292,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLCategories] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
 			}
 		}
@@ -324,7 +304,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLOther] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
 			}
 		}
@@ -337,7 +316,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.FullText] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
 			}
 		}
@@ -350,7 +328,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.MailQueue] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
 			}
 		}
@@ -363,7 +340,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EnablePoints] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
 			}
 		}
@@ -376,7 +352,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.TopicPointValue] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
 			}
 		}
@@ -389,7 +364,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ReplyPointValue] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
 			}
 		}
@@ -402,7 +376,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AnswerPointValue] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
 			}
 		}
@@ -415,7 +388,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.MarkAnswerPointValue] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
 			}
 		}
@@ -428,7 +400,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ModPointValue] = value;
 				UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
 			}
 		}
@@ -441,7 +412,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings["ForumGroupTemplate"] = value;
 				//Use Tab Module Setting
 				UpdateTabModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
 			}
@@ -455,7 +425,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings["ForumConfig"] = value;
 				UpdateTabModuleSettingCaseSensitive("ForumConfig", value);
 			}
 		}
@@ -468,7 +437,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AvatarHeight] = value.ToString();
 				UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
 			}
 		}
@@ -481,7 +449,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AvatarWidth] = value.ToString();
 				UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
 			}
 		}
@@ -494,7 +461,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.UsersOnlineEnabled] = value;
                 UpdateModuleSettingCaseSensitive(SettingKeys.UsersOnlineEnabled, value.ToString());
             }
         }
@@ -507,7 +473,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.UseSkinBreadCrumb] = value;
                 UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
             }
         }
