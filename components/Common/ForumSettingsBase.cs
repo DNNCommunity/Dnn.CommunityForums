@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-				return Settings.GetInt(SettingKeys.PageSize, 20);
+				return Settings.GetInt(SettingKeys.PageSize, 25);
 			}
 			set
 			{

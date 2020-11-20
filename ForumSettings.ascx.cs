@@ -130,9 +130,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					BindForumGroups();
 					BindForumSecurity();
 
-                    Utilities.SelectListItemByValue(drpPageSize, 20);
+                    Utilities.SelectListItemByValue(drpPageSize, PageSize);
                     Utilities.SelectListItemByValue(drpFloodInterval, FloodInterval);
-                    Utilities.SelectListItemByValue(drpEditInterval, 0);
+                    Utilities.SelectListItemByValue(drpEditInterval, EditInterval);
 
 
                     Utilities.SelectListItemByValue(drpMode, Mode);
