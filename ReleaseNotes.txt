@@ -6,6 +6,14 @@
 	<h3>ActiveForums Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+		<h3>06.04.01</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>Fixed: Cannot save Flood Interval &amp; Page Size settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/27">Issue 27</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
+			<li>Fixed: Attachments in replies can't be opened (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/29">Issue 29</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
+			<li>Fixed: Cannot save 24 Hour time setting (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/31">Issue 31</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
+			<li>Fixed: First-time set-up would not complete (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/34">Issue 34</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
+		</ul>
 		<h3>06.04.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
