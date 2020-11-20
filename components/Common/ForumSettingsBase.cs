@@ -25,6 +25,37 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		private readonly ModuleController _objModules = new ModuleController();
 
+		/// <summary>
+		/// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="newValue"></param>
+        private void UpdateTabModuleSettingCaseSensitive(string key, string newValue)
+        {
+            var oldValue = Settings.GetString(key);
+            if (oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
+            {
+				// changed but case-insensitive identical: empty the setting first
+                UpdateTabModuleSettingCaseSensitive(key, "");
+            }
+            UpdateTabModuleSettingCaseSensitive(key, newValue);
+        }
+		/// <summary>
+		/// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="newValue"></param>
+        private void UpdateModuleSettingCaseSensitive(string key, string newValue)
+        {
+            var oldValue = Settings.GetString(key);
+            if (oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
+            {
+				// changed but case-insensitive identical: empty the setting first
+                _objModules.UpdateModuleSetting(TabModuleId, key, "");
+            }
+            _objModules.UpdateModuleSetting(TabModuleId, key, newValue);
+        }
+
 		public string Mode
 		{
 			get
@@ -33,8 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.Mode] = value;
-				_objModules.UpdateTabModuleSetting(TabModuleId, SettingKeys.Mode, value);
+				UpdateTabModuleSettingCaseSensitive(SettingKeys.Mode, value);
 			}
 		}
 
@@ -46,8 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.Theme] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.Theme, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
 			}
 		}
 
@@ -59,8 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.TimeFormatString] = value;
-                _objModules.UpdateModuleSetting(ModuleId, SettingKeys.TimeFormatString, value);
+                UpdateModuleSettingCaseSensitive(SettingKeys.TimeFormatString, value);
             }
         }
 
@@ -72,8 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.DateFormatString] = value;
-                _objModules.UpdateModuleSetting(ModuleId, SettingKeys.DateFormatString, value);
+                UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
             }
         }
 
@@ -85,8 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ForumTemplateId] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.ForumTemplateId, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
 			}
 		}
 
@@ -98,8 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PageSize] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.PageSize, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
 			}
 		}
 
@@ -111,8 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.FloodInterval] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.FloodInterval, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
 			}
 		}
 
@@ -124,8 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EditInterval] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.EditInterval, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
 			}
 		}
 
@@ -137,8 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EnableAutoLink] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.EnableAutoLink, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
 			}
 		}
 
@@ -150,8 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.DeleteBehavior] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.DeleteBehavior, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
 			}
 		}
 
@@ -163,8 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AddThisAccount] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.AddThisAccount, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.AddThisAccount, value);
 			}
 		}
 
@@ -176,8 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ProfileVisibility] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.ProfileVisibility, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
 			}
 		}
 
@@ -189,8 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.PMType] = value;
-                _objModules.UpdateModuleSetting(ModuleId, SettingKeys.PMType, value.ToString());
+                UpdateModuleSettingCaseSensitive(SettingKeys.PMType, value.ToString());
             }
         }
 
@@ -202,8 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.PMTabId] = value;
-                _objModules.UpdateModuleSetting(ModuleId, SettingKeys.PMTabId, value.ToString());
+                UpdateModuleSettingCaseSensitive(SettingKeys.PMTabId, value.ToString());
             }
         }
 
@@ -215,8 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AllowSignatures] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.AllowSignatures, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
 			}
 		}
 
@@ -228,8 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.UserNameDisplay] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.UserNameDisplay, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
 			}
 		}
 
@@ -241,8 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EnableURLRewriter] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.EnableURLRewriter, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
 			}
 		}
 
@@ -254,8 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLBase] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.PrefixURLBase, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
 			}
 		}
 
@@ -267,8 +280,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLTags] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.PrefixURLTags, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
 			}
 		}
 
@@ -280,8 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLCategories] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.PrefixURLCategories, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
 			}
 		}
 
@@ -293,8 +304,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.PrefixURLOther] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.PrefixURLOther, value);
+				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
 			}
 		}
 
@@ -306,8 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.FullText] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.FullText, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
 			}
 		}
 
@@ -319,8 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.MailQueue] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.MailQueue, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
 			}
 		}
 
@@ -332,8 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.EnablePoints] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.EnablePoints, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
 			}
 		}
 
@@ -345,8 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.TopicPointValue] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.TopicPointValue, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
 			}
 		}
 
@@ -358,8 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ReplyPointValue] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.ReplyPointValue, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
 			}
 		}
 
@@ -371,8 +376,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AnswerPointValue] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.AnswerPointValue, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
 			}
 		}
 
@@ -384,8 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.MarkAnswerPointValue] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.MarkAnswerPointValue, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
 			}
 		}
 
@@ -397,8 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.ModPointValue] = value;
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.ModPointValue, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
 			}
 		}
 
@@ -410,9 +412,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings["ForumGroupTemplate"] = value;
 				//Use Tab Module Setting
-				_objModules.UpdateTabModuleSetting(TabModuleId, "ForumGroupTemplate", value.ToString());
+				UpdateTabModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
 			}
 		}
 
@@ -424,8 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings["ForumConfig"] = value;
-				_objModules.UpdateTabModuleSetting(TabModuleId, "ForumConfig", value);
+				UpdateTabModuleSettingCaseSensitive("ForumConfig", value);
 			}
 		}
 
@@ -437,8 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AvatarHeight] = value.ToString();
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.AvatarHeight, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
 			}
 		}
 
@@ -450,8 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				Settings[SettingKeys.AvatarWidth] = value.ToString();
-				_objModules.UpdateModuleSetting(ModuleId, SettingKeys.AvatarWidth, value.ToString());
+				UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
 			}
 		}
 
@@ -463,8 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.UsersOnlineEnabled] = value;
-                _objModules.UpdateModuleSetting(ModuleId, SettingKeys.UsersOnlineEnabled, value.ToString());
+                UpdateModuleSettingCaseSensitive(SettingKeys.UsersOnlineEnabled, value.ToString());
             }
         }
 
@@ -476,8 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                Settings[SettingKeys.UseSkinBreadCrumb] = value;
-                _objModules.UpdateModuleSetting(ModuleId, SettingKeys.UseSkinBreadCrumb, value.ToString());
+                UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
             }
         }
 	}
