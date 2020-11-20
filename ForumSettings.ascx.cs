@@ -62,16 +62,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			drpPageSize.Style.Add("float", "none");
 
+            drpFloodInterval.Style.Add("float", "none");
 
+            drpEditInterval.Style.Add("float", "none");
 
-			drpFloodInterval.Style.Add("float", "none");
-
-
-			drpEditInterval.Style.Add("float", "none");
-
-
-
-			if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
+            if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
 			{
 				rdEnableURLRewriter.SelectedIndex = 1;
 				rdEnableURLRewriter.Enabled = false;
@@ -108,8 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ltrFullTextMessage.Visible = false;
                     break;
             }
-
-		}
+        }
 
 	    #region Base Method Implementations
 
@@ -137,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					BindForumSecurity();
 
                     Utilities.SelectListItemByValue(drpPageSize, 20);
-                    Utilities.SelectListItemByValue(drpFloodInterval, 0);
+                    Utilities.SelectListItemByValue(drpFloodInterval, FloodInterval);
                     Utilities.SelectListItemByValue(drpEditInterval, 0);
 
 
