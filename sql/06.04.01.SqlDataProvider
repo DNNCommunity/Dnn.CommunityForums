@@ -20,3 +20,4 @@ BEGIN
 		WHERE (@AttachmentID > 0 AND AttachID = @AttachmentID)
 			OR (@FileID > 0 AND @FileID = FileID)
 END
+GO
