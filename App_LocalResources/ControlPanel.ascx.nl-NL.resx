@@ -202,7 +202,7 @@
     <value>Stijl</value>
   </data>
   <data name="[RESX:EditorToolBar].Text" xml:space="preserve">
-    <value>Werktuigbalk</value>
+    <value>Werkbalk</value>
   </data>
   <data name="[RESX:EditorType].Text" xml:space="preserve">
     <value>Editor</value>
@@ -262,7 +262,7 @@
     <value>Unieke bestandsnamen aanmaken</value>
   </data>
   <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve">
-    <value>Toestaan Foto's Gebruiker</value>
+    <value>Foto's Gebruiker Toestaan </value>
   </data>
   <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
     <value>Avatar Dimensies</value>
@@ -292,7 +292,7 @@
     <value>Abonnementen</value>
   </data>
   <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
-    <value>Statistiek Instellingen</value>
+    <value>Instellingen Statistieken</value>
   </data>
   <data name="[RESX:ForumTemplate].Text" xml:space="preserve">
     <value>Sjabloon</value>
@@ -301,7 +301,7 @@
     <value>Thema</value>
   </data>
   <data name="[RESX:MainSettings].Text" xml:space="preserve">
-    <value>Hoofd Instellingen</value>
+    <value>HoofdInstellingen</value>
   </data>
   <data name="[RESX:MemberListMode].Text" xml:space="preserve">
     <value>Leden Lijst Modus</value>
@@ -334,7 +334,7 @@
     <value>Gebruikers Online</value>
   </data>
   <data name="[RESX:AllowUserBios].Text" xml:space="preserve">
-    <value>Toestaan Biografie Gebruiker</value>
+    <value>Biografie Gebruiker Toestaan</value>
   </data>
   <data name="[RESX:About].Text" xml:space="preserve">
     <value>Over</value>
@@ -358,7 +358,7 @@
     <value>Achternaam</value>
   </data>
   <data name="[RESX:ManageForums].Text" xml:space="preserve">
-    <value>Onderhoud Forums</value>
+    <value>Forums Onderhoud</value>
   </data>
   <data name="[RESX:MemberListModeDisabledAll].Text" xml:space="preserve">
     <value>Uitgeschakeld - Alle Gebruikers</value>
@@ -445,7 +445,7 @@
     <value>Deze box aanvinken om gemakkelijk een forum aan of uit te zetten.</value>
   </data>
   <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve">
-    <value>Geef het e-mailadres op welke zal gebruikt worden als het Van adres bij het verzenden van notificaties. </value>
+    <value>Geef het e-mailadres op dat gebruikt zal worden als het verzendadres bij het verzenden van notificaties. </value>
   </data>
   <data name="[RESX:Tips:ForumDesc].Text" xml:space="preserve">
     <value>Geef een korte beschrijving op voor dit forum.</value>
@@ -1422,7 +1422,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Input Validatie</value>
   </data>
   <data name="[RESX:VanityName].Text">
-    <value>Vanity Naan</value>
+    <value>Vanity Naam</value>
   </data>
   <data name="[RESX:ViewRoles].Text">
     <value>Lezen Rol</value>
