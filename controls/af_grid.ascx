@@ -5,19 +5,19 @@
     <h1 class="af-search-title"><asp:Label ID="lblHeader" runat="server" /></h1>
     <button type="submit" runat="server" ID="btnMarkRead" class="af-markread" Visible="false" onclick="if(!af_confirmMarkAllRead()) return false;" />
     <asp:DropDownList ID="drpTimeFrame" runat="server" AutoPostBack="true" Visible="false" >
-		<asp:ListItem Value=15 resourcekey="ActiveTopics.15min">Last 15 Minutes</asp:ListItem>
-		<asp:ListItem Value=30 resourcekey="ActiveTopics.30min">Last 30 Minutes</asp:ListItem>
-		<asp:ListItem Value=45 resourcekey="ActiveTopics.45min">Last 45 Minutes</asp:ListItem>
-		<asp:ListItem Value=60 resourcekey="ActiveTopics.60min">Last Hour</asp:ListItem>
-		<asp:ListItem Value=120 resourcekey="ActiveTopics.120min">Last 2 Hours</asp:ListItem>
-		<asp:ListItem Value="360" resourcekey="ActiveTopics.360min">Last 6 Hours</asp:ListItem>
-		<asp:ListItem Value="720" resourcekey="ActiveTopics.720min">Last 12 Hours</asp:ListItem>
-		<asp:ListItem Value="1440" resourcekey="ActiveTopics.1440min">Last Day</asp:ListItem>
-		<asp:ListItem Value="2880" resourcekey="ActiveTopics.2880min">Last 2 Days</asp:ListItem>
-		<asp:ListItem Value="10080" resourcekey="ActiveTopics.10080min">Last Week</asp:ListItem>
-		<asp:ListItem Value="20160" resourcekey="ActiveTopics.20160min">Last 2 Weeks</asp:ListItem>
-		<asp:ListItem Value="40320" resourcekey="ActiveTopics.40320min">Last Month</asp:ListItem>
-		<asp:ListItem Value="80640" resourcekey="ActiveTopics.80640min">Last 2 Months</asp:ListItem>
+		<asp:ListItem Value="15"></asp:ListItem>
+		<asp:ListItem Value="30"></asp:ListItem>
+		<asp:ListItem Value="45"></asp:ListItem>
+		<asp:ListItem Value="60"></asp:ListItem>
+		<asp:ListItem Value="120"></asp:ListItem>
+		<asp:ListItem Value="360"></asp:ListItem>
+		<asp:ListItem Value="720"></asp:ListItem>
+		<asp:ListItem Value="1440"></asp:ListItem>
+		<asp:ListItem Value="2880"></asp:ListItem>
+		<asp:ListItem Value="10080"></asp:ListItem>
+		<asp:ListItem Value="20160"></asp:ListItem>
+		<asp:ListItem Value="40320"></asp:ListItem>
+		<asp:ListItem Value="80640"></asp:ListItem>
 	</asp:DropDownList>  
 </div>
 <div class="af-search-bar">

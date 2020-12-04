@@ -1591,4 +1591,43 @@ From,
   <data name="[RESX:SplitHeader].Text" xml:space="preserve">
     <value>Split mode:</value>
   </data>
+  <data name="ActiveTopics-15min.Text" xml:space="preserve">
+        <value>Last 15 minutes</value>
+    </data>
+  <data name="ActiveTopics-30min.Text" xml:space="preserve">
+        <value>Last 30 minutes</value>
+    </data>
+  <data name="ActiveTopics-45min.Text" xml:space="preserve">
+        <value>Last 45 minutes</value>
+    </data>
+  <data name="ActiveTopics-60min.Text" xml:space="preserve">
+        <value>Last hour</value>
+    </data>
+  <data name="ActiveTopics-120min.Text" xml:space="preserve">
+        <value>Last 2 hours</value>
+    </data>
+  <data name="ActiveTopics-360min.Text" xml:space="preserve">
+        <value>Last 6 hours</value>
+    </data>
+  <data name="ActiveTopics-720min.Text" xml:space="preserve">
+        <value>Last 12 hours</value>
+    </data>
+  <data name="ActiveTopics-1440min.Text" xml:space="preserve">
+        <value>Last day</value>
+    </data>
+  <data name="ActiveTopics-2880min.Text" xml:space="preserve">
+        <value>Last 2 days</value>
+    </data>
+  <data name="ActiveTopics-10080min.Text" xml:space="preserve">
+        <value>Last week</value>
+    </data>
+  <data name="ActiveTopics-20160min.Text" xml:space="preserve">
+        <value>Last 2 weeks</value>
+  </data>
+  <data name="ActiveTopics-40320min.Text" xml:space="preserve">
+        <value>Last month</value>
+  </data>
+  <data name="ActiveTopics-80640min.Text" xml:space="preserve">
+        <value>Last 2 months</value>
+  </data>
 </root>

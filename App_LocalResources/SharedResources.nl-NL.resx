@@ -1615,4 +1615,43 @@ Van,
 	<data name="[RESX:SplitHeader].Text" xml:space="preserve">
 		<value>Split-modus:</value>
 	</data>
+    <data name="ActiveTopics-15min.Text" xml:space="preserve">
+        <value>Laatste 15 minuten</value>
+    </data>
+    <data name="ActiveTopics-30min.Text" xml:space="preserve">
+        <value>Laatste 30 minuten</value>
+    </data>
+    <data name="ActiveTopics-45min.Text" xml:space="preserve">
+        <value>Laatste 45 minuten</value>
+    </data>
+    <data name="ActiveTopics-60min.Text" xml:space="preserve">
+        <value>Laatste uur</value>
+    </data>
+    <data name="ActiveTopics-120min.Text" xml:space="preserve">
+        <value>Laatste 2 uur</value>
+    </data>
+    <data name="ActiveTopics-360min.Text" xml:space="preserve">
+        <value>Laatste 6 uur</value>
+    </data>
+    <data name="ActiveTopics-720min.Text" xml:space="preserve">
+        <value>Laatste 12 uur</value>
+    </data>
+    <data name="ActiveTopics-1440min.Text" xml:space="preserve">
+        <value>Laatste dag</value>
+    </data>
+    <data name="ActiveTopics-2880min.Text" xml:space="preserve">
+        <value>Laatste 2 dagen</value>
+    </data>
+    <data name="ActiveTopics-10080min.Text" xml:space="preserve">
+        <value>Laatste week</value>
+    </data>
+    <data name="ActiveTopics-20160min.Text" xml:space="preserve">
+        <value>Laatste 2 weken</value>
+    </data>
+    <data name="ActiveTopics-40320min.Text" xml:space="preserve">
+        <value>Laatste maand</value>
+    </data>
+    <data name="ActiveTopics-80640min.Text" xml:space="preserve">
+        <value>Laatste 2 maanden</value>
+    </data>
 </root>
