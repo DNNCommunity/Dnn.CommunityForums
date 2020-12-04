@@ -1490,7 +1490,7 @@ Van,
 		<value>Beeld</value>
 	</data>
 	<data name="AlertBody.Text" xml:space="preserve">
-		<value>&lt;b&gt; Reden: &lt;/b&gt; [Reden] &lt;br /&gt; &lt;b&gt; Opmerkingen: &lt;/b&gt; [Opmerking] &lt;hr noshade /&gt; [Post] &lt;br /&gt; &lt;br /&gt; &lt;a href = "[ URL] "target =" _ blank "&gt; [URL] &lt;/a&gt; &lt;br /&gt; &lt;br /&gt;</value>
+		<value>&lt;div&gt;&lt;b&gt; Reden: &lt;/b&gt; [Reason] &lt;br /&gt; &lt;b&gt; Opmerkingen: &lt;/b&gt; [Comment] &lt;hr noshade /&gt; [Post] &lt;br /&gt; &lt;br /&gt; &lt;a href = "[URL] "target =" _ blank "&gt; [URL] &lt;/a&gt; &lt;br /&gt; &lt;br /&gt;&lt;/div&gt;</value>
 	</data>
 	<data name="AlertSubject.Text" xml:space="preserve">
 		<value>Een bericht van [DisplayName] is gemarkeerd voor beoordeling door [FlaggedBy]</value>
