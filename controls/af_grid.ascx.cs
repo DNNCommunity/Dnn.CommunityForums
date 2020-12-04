@@ -45,6 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
+            foreach (ListItem timeFrameItem in drpTimeFrame.Items)
+            {
+                timeFrameItem.Text = GetSharedResource($"ActiveTopics-{timeFrameItem.Value}min.Text");
+            }
+
             _currentTheme = MainSettings.Theme;
 
             drpTimeFrame.SelectedIndexChanged += DrpTimeFrameSelectedIndexChanged;
@@ -322,7 +327,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return theme;
         }
 
-        // Todo: Localize today and yesterday
         public string GetPostTime()
         {
             if (_currentRow == null)
@@ -369,7 +373,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
-        // Todo: Localize today and yesterday
         public string GetLastPostTime()
         {
             if (_currentRow == null)
@@ -381,9 +384,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var datePart = date.ToString(MainSettings.DateFormatString);
 
             if (currentDate.Date == date.Date)
-                datePart = "Today";
+                datePart = GetSharedResource("Today");
             else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = "Yesterday";
+                datePart = GetSharedResource("Yesterday");
 
             return datePart + " @ " + date.ToString(MainSettings.TimeFormatString);
         }
