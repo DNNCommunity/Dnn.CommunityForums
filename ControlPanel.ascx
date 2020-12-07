@@ -150,14 +150,14 @@
 
 	<div class="amnavbar">
 		<div class="amcpmdtoolbar">
-			<am:imagebutton id="btnHome" runat="server" Height="50" Width="55" PostBack="False" ClientSideScript="LoadView('home');" ImageLocation="TOP" text="[RESX:Dashboard]" ImageUrl="~/DesktopModules/ActiveForums/images/home32.png" />
-			<am:imagebutton id="btnForums" runat="server" Height="50" Width="50" PostBack="False" ClientSideScript="LoadView('manageforums');" ImageLocation="TOP" text="[RESX:Forums]" ImageUrl="~/DesktopModules/ActiveForums/images/forums32.png" />
-			<am:imagebutton id="btnTemplates" runat="server" Height="50" Width="50" PostBack="False" ClientSideScript="LoadView('templates');" ImageLocation="TOP" text="[RESX:Templates]" ImageUrl="~/DesktopModules/ActiveForums/images/templates32.png" />
-			<am:imagebutton id="btnFilters" runat="server" Height="50" Width="50" PostBack="False" ClientSideScript="LoadView('filters');" ImageLocation="TOP" text="[RESX:Filters]" ImageUrl="~/DesktopModules/ActiveForums/images/filters32.png" />
-			<am:imagebutton id="btnRanks" runat="server" Height="50" Width="50" PostBack="False" ClientSideScript="LoadView('ranks');" ImageLocation="TOP" text="[RESX:Ranks]" ImageUrl="~/DesktopModules/ActiveForums/images/ranks32.png" />
-			<am:imagebutton id="btnTags" runat="server" Height="50" Width="50" PostBack="False" ClientSideScript="LoadView('tags');" ImageLocation="TOP" text="[RESX:Tags]" ImageUrl="~/DesktopModules/ActiveForums/images/tags32.png" />
-			<am:imagebutton id="btnCategories" runat="server" Height="50" Width="50" PostBack="False" ClientSideScript="LoadView('categories');" ImageLocation="TOP" text="[RESX:Categories]" ImageUrl="~/DesktopModules/ActiveForums/images/categories32.png" />
-			<am:imagebutton id="btnReturn" runat="server" Height="50" Width="50" PostBack="False" ImageLocation="TOP" text="[RESX:Exit]" ImageUrl="~/DesktopModules/ActiveForums/images/return32.png" />
+			<am:imagebutton id="btnHome" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('home');" ImageLocation="TOP" text="[RESX:Dashboard]" ImageUrl="~/DesktopModules/ActiveForums/images/home32.png" />
+			<am:imagebutton id="btnForums" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('manageforums');" ImageLocation="TOP" text="[RESX:Forums]" ImageUrl="~/DesktopModules/ActiveForums/images/forums32.png" />
+			<am:imagebutton id="btnTemplates" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('templates');" ImageLocation="TOP" text="[RESX:Templates]" ImageUrl="~/DesktopModules/ActiveForums/images/templates32.png" />
+			<am:imagebutton id="btnFilters" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('filters');" ImageLocation="TOP" text="[RESX:Filters]" ImageUrl="~/DesktopModules/ActiveForums/images/filters32.png" />
+			<am:imagebutton id="btnRanks" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('ranks');" ImageLocation="TOP" text="[RESX:Ranks]" ImageUrl="~/DesktopModules/ActiveForums/images/ranks32.png" />
+			<am:imagebutton id="btnTags" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('tags');" ImageLocation="TOP" text="[RESX:Tags]" ImageUrl="~/DesktopModules/ActiveForums/images/tags32.png" />
+			<am:imagebutton id="btnCategories" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('categories');" ImageLocation="TOP" text="[RESX:Categories]" ImageUrl="~/DesktopModules/ActiveForums/images/categories32.png" />
+			<am:imagebutton id="btnReturn" runat="server" Height="50" Width="70" PostBack="False" ImageLocation="TOP" text="[RESX:Exit]" ImageUrl="~/DesktopModules/ActiveForums/images/return32.png" />
 		</div>
 	</div>
 	<am:CallBack id="cbShell" runat="server" Debug="false" CssClass="amcpshell" OnCallbackComplete="af_shellComplete">

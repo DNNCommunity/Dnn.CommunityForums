@@ -7,160 +7,155 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
 
-	public partial class ControlPanel
-	{
 
-		///<summary>
-		///btnHome control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnHome;
+    public partial class ControlPanel
+    {
 
-		///<summary>
-		///btnForums control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnForums;
+        /// <summary>
+        /// btnHome control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnHome;
 
-		///<summary>
-		///btnTemplates control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnTemplates;
+        /// <summary>
+        /// btnForums control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnForums;
 
-		///<summary>
-		///btnFilters control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnFilters;
+        /// <summary>
+        /// btnTemplates control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnTemplates;
 
-		///<summary>
-		///btnRanks control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnRanks;
+        /// <summary>
+        /// btnFilters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnFilters;
 
-		///<summary>
-		///btnTags control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnTags;
+        /// <summary>
+        /// btnRanks control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnRanks;
 
-		///<summary>
-		///btnCategories control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnCategories;
+        /// <summary>
+        /// btnTags control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnTags;
 
-		///<summary>
-		///btnReturn control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnReturn;
+        /// <summary>
+        /// btnCategories control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnCategories;
 
-		///<summary>
-		///cbShell control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbShell;
+        /// <summary>
+        /// btnReturn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnReturn;
 
-		///<summary>
-		///plhControlPanel control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.PlaceHolder plhControlPanel;
+        /// <summary>
+        /// cbShell control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbShell;
 
-		///<summary>
-		///lblProd control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.Label lblProd;
+        /// <summary>
+        /// plhControlPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder plhControlPanel;
 
-		///<summary>
-		///lblCopy control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.Label lblCopy;
+        /// <summary>
+        /// lblProd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblProd;
 
-		///<summary>
-		///cbModal control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbModal;
+        /// <summary>
+        /// lblCopy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCopy;
 
-		///<summary>
-		///plhModal control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.PlaceHolder plhModal;
+        /// <summary>
+        /// cbModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbModal;
 
-		///<summary>
-		///amScriptLoader control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ScriptLoader amScriptLoader;
+        /// <summary>
+        /// plhModal control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder plhModal;
 
-		///<summary>
-		///btnDummy control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDummy;
-	}
+        /// <summary>
+        /// amScriptLoader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ScriptLoader amScriptLoader;
+
+        /// <summary>
+        /// btnDummy control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDummy;
+    }
 }
