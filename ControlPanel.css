@@ -112,7 +112,7 @@ border-bottom-left-radius: 4px;}
 
 .afsecobject_over{width:125px;font-size:11px;font-family:Tahoma;padding:2px;overflow:hidden;white-space:nowrap;background-color: #FFFF99;}
 .afhoverremove{z-index:1000;height:16px;width:12px;}
-tr.afgroupback td{background-image:url(images/groupback.png);height:22px;}
+tr.afgroupback td{background-image:url(images/groupback.png);height:24px;}
 tr.afgroupback td.afgroupback_left{background-image:url(images/groupback_left.png);}
 tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.png);}
 .afgroupback td{font-weight:bold;}
@@ -125,7 +125,7 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afgridrowover{background-color: #87cefa;}
 .afsecobjects{width:165px;overflow:hidden;}
 .afsecobjecttxt{height:18px;overflow:hidden;width:165px;float:left;}
-.afsecobject{width:165px;font-size:11px;font-family:Tahoma;padding:0;overflow:hidden;white-space:nowrap;height:18px;}
+.afsecobject{width:165px;font-size:11px;font-family:Tahoma;padding:0;overflow:hidden;white-space:nowrap;height:24px;}
 .afsecobjecthd{font-weight:bold;font-size:11px;font-family:Tahoma;padding:2px;width:75px;white-space:nowrap; background-color:#dcdcdc;}
 .afsecactions{overflow:hidden;white-space:nowrap;padding-bottom:30px; width:100%; max-width:100%; overflow: auto !important;}
 .afsecactiongrp{width:50px;}
