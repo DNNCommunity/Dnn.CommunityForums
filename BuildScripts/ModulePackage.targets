@@ -65,15 +65,15 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
     </CreateItem>
 
+    <CreateItem Include="*.txt" Exclude="**\License.txt;**\ReleaseNotes.txt">
+      <Output TaskParameter="Include" ItemName="CleanUpTxtFiles" />
+    </CreateItem>
+
     <CreateItem Include="**\License.txt">
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 
     <CreateItem Include="**\ReleaseNotes.txt">
-      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
-    </CreateItem>
-
-    <CreateItem Include="**\$(Version).txt">
       <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
     </CreateItem>
 
@@ -103,6 +103,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     <Copy SourceFiles="@(BinInstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
     <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(CleanUpTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
 
