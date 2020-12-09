@@ -14,7 +14,8 @@
 			<li>Localized time frame dropdown list (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/43">Issue 43</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
 			<li>Fixed post notification e-mail formatting issue (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/45">Issue 45</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>Updated control panel width for wider resolutions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/49">Issue 49</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li></li>
+			<li>Resolved packaging issue with including text clean up files.</li>
+			<li>Resolved an EVS warning with a SQL data provider file.</li>
 		</ul>
 	</div>
 </div>
