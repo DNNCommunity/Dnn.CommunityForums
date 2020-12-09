@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="PractiseWise.AuthenticationTokensManager_Symbols" type="Library" version="06.04.01">
+    <package name="PractiseWise.AuthenticationTokensManager_Symbols" type="Library" version="06.05.00">
       <friendlyName>Active Forums Symbols</friendlyName>
       <description>Active Forums - Forum module for DotNetNuke</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>True</azureCompatible>
       <dependencies>
-        <dependency type="managedPackage" version="6.4.1">Active Forums</dependency>
+        <dependency type="managedPackage" version="6.5.0">Active Forums</dependency>
       </dependencies>
       <components>
         <component type="ResourceFile">
