@@ -6,28 +6,15 @@
 	<h3>ActiveForums Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
-		<h3>06.04.01</h3>
+		<h3>06.05.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>Fixed: Cannot save Flood Interval &amp; Page Size settings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/27">Issue 27</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-			<li>Fixed: Attachments in replies can't be opened (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/29">Issue 29</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
-			<li>Fixed: Cannot save 24 Hour time setting (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/31">Issue 31</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
-			<li>Fixed: First-time set-up would not complete (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/34">Issue 34</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-		</ul>
-		<h3>06.04.00</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
-			<li>Raised .NET build version to 4.7.2.</li>
-			<li>Raised minimum DNN version to 9.4.0</li>
-			<li>Removed Telerik references (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/8">Issue 8</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-			<li>Resolves issue with friendly URLs no longer working (<a href="https://github.com/ActiveForums/ActiveForums/issues/342">Issue 342</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenly</a>!)</li>
-			<li>Fixed like icons being repeated (<a href="https://github.com/ActiveForums/ActiveForums/issues/449">Issue 449</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Fixed link parsing issue (<a href="https://github.com/ActiveForums/ActiveForums/issues/437">Issue 437</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Added Dutch translations (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/26">PR 26</a>, thanks <a href="https://github.com/schotman" target="_blank">@schotman</a>!)</li>
-			<li>Resolved all build issues</li>
-			<li>Stopping creation of source code package</li>
-			<li>Added symbols package for troubleshooting on any environment</li>
-			<li>Other minor project/solution cleanup tasks for developers</li>
+			<li>Fixed image width display issue with post preview (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/40">Issue 40</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Fixed Dutch translations in the language pack (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/41">Issue 41</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Localized time frame dropdown list (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/43">Issue 43</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
+			<li>Fixed post notification e-mail formatting issue (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/45">Issue 45</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Updated control panel width for wider resolutions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/49">Issue 49</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li></li>
 		</ul>
 	</div>
 </div>
