@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var prov = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
 
-                        if (prov.DefaultProvider.Contains("CKHtmlEditorProvider"))
+                        if (prov.DefaultProvider.Contains("CKHtmlEditorProvider") || prov.DefaultProvider.Contains("DNNConnect.CKE"))
                         {
                             Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/ck_editor.js"));
                         }
