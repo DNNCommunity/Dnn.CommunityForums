@@ -3,9 +3,22 @@
 	div.uv-install-wrapper ul { padding-left: 2em; }
 </style>
 <div class="uv-install-wrapper">
-	<h3>ActiveForums Module for DNN</h3>
+	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+		<h3>06.05.01</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>Added a canonical tag to the page header to improve SEO (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/43">Issue 43</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
+			<li>Prevent search engines from following user profile links to improve SEO (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/69">Issue 69</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
+			<li>Fixed display issue with the Preview button (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/60">Issue 60</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Resovled a build issue that ignored handler (ASHX) files.</li>
+			<li>Updated the description &amp; branding in the DNN manifest.</li>
+			<li>Updated the copyright year in class files.</li>
+		</ul>
+
+		<p><strong>IMPORTANT NOTE:</strong>&nbsp; DO NOT add your own canonical tag to the page settings where this module is added.&nbsp; Remove it, if necessary, to prevent new SEO issues from impacting your website.</p>
+
 		<h3>06.05.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
