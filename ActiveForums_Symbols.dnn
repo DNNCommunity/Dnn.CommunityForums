@@ -1,8 +1,8 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="PractiseWise.AuthenticationTokensManager_Symbols" type="Library" version="06.05.00">
+    <package name="Active Forums_Symbols" type="Library" version="06.05.00">
       <friendlyName>Active Forums Symbols</friendlyName>
-      <description>Active Forums - Forum module for DotNetNuke</description>
+      <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
       <owner>
         <name>DNN Community</name>
