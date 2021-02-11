@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2020
+// Copyright (c) 2013-2021
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,13 +18,29 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Web.UI;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
+using DotNetNuke.Modules.ActiveForums.Constants;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class ActiveForums : ForumBase, IActionable
     {
+        private string currentURL = string.Empty;
+        protected string CurrentUrl
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(currentURL))
+                {
+                    currentURL = string.Concat(Request.IsSecureConnection ? SEOConstants.HTTPS : SEOConstants.HTTP,
+                        Request.Url.Host, Request.RawUrl);
+                }
+                return currentURL;
+            }
+        }
+
         #region DNN Actions
 
         public ModuleActionCollection ModuleActions
@@ -75,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ctl.ModuleConfiguration = ModuleConfiguration;
             plhAF.Controls.Add(ctl);
 
+            this.Page.Header.Controls.Add(new LiteralControl(string.Format(SEOConstants.FORMAT_CANONICAL_TAG, CurrentUrl)));
         }
 
         #endregion
