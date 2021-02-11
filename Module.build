@@ -17,7 +17,7 @@
       <Manifest Include="*.dnn;*.dnn5;*.dnn6" Exclude="*_Symbols.dnn" />
       <TextFiles Include="*.txt" Exclude="releasenotes.txt;license.txt" />
       <SourceFiles Include="*.css;*.htm;*.html" />
-      <Views Include="*.ascx;" />
+      <Views Include="*.ascx;*.ashx;" />
       <ResourceFiles Include="App_LocalResources/*.resx" />
       <Images Include="Images/**/*.*" />
       <JsFiles Include="js/**/*.*" />
@@ -35,8 +35,6 @@
     <ItemGroup>
       <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
       <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.pdb" />
-      <!--BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\*.dll" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" />
-      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\*.pdb" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
     </ItemGroup>
     <Copy SourceFiles="@(BinSourceInclude)" DestinationFolder="$(WebsitePath)\bin" />
   </Target>

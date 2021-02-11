@@ -33,6 +33,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <ItemGroup>
       <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;WhatsNew.ascx;WhatsNewOptions.ascx" />
       <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**" />
+      <InstallInclude Include="**\*.ashx" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.css" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.html" Exclude="packages\**;node_modules\**;clientApp\**" />
       <InstallInclude Include="**\*.htm" Exclude="packages\**;node_modules\**;clientApp\**;UpgradeLog*.htm" />
