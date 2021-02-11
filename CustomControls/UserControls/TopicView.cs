@@ -32,12 +32,15 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
     public class TopicView : ForumBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));
+
         #region Private Members
 
         private string _metaTemplate = "[META][TITLE][TOPICSUBJECT] - [PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
@@ -165,7 +168,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _metaKeywords = value;
             }
         }
-
         #endregion
 
         #region Event Handlers
@@ -220,7 +222,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
 
-
                 AppRelativeVirtualPath = "~/";
 
                 _myTheme = MainSettings.Theme;
@@ -259,6 +260,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
+                Logger.Error(ex.Message, ex);
+                if (ex.InnerException != null)
+                {
+                    Logger.Error(ex.InnerException.Message, ex.InnerException);
+                }
                 RenderMessage("[RESX:Error:LoadingTopic]", ex.Message, ex);
             }
         }

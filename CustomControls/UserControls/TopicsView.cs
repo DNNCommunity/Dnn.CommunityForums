@@ -17,18 +17,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
 using System.ComponentModel;
-using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Xml;
+using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -36,6 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicsView runat=server></{0}:TopicsView>")]
     public class TopicsView : ForumBase
     {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));
+
         #region Private Members
         private string _metaTemplate = "[META][TITLE][PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
         private string _metaTitle = string.Empty;
@@ -136,12 +137,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
         #endregion
+
         #region Controls
         protected af_quickjump ctlForumJump = new af_quickjump();
+
         //Protected WithEvents cbActions As New DotNetNuke.Modules.ActiveForums.Controls.Callback
         //protected Modal ctlModal = new Modal();
         protected ForumView ctlForumSubs = new ForumView();
-
         #endregion
 
         protected override void OnInit(EventArgs e)
@@ -375,7 +377,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         catch (Exception ex)
                         {
-
+                            Logger.Error(ex.Message, ex);
+                            if (ex.InnerException != null)
+                            {
+                                Logger.Error(ex.InnerException.Message, ex.InnerException);
+                            }
                         }
                     }
                     else
@@ -400,13 +406,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.Controls.Add(this.ParseControl(TopicsTemplate));
                     LinkControls(this.Controls);
                 }
-
-
-
-
             }
             catch (Exception exc)
             {
+                Logger.Error(exc.Message, exc);
+                if (exc.InnerException != null)
+                {
+                    Logger.Error(exc.InnerException.Message, exc.InnerException);
+                }
                 RenderMessage("[RESX:Error:LoadingTopics]", exc.Message, exc);
             }
         }
