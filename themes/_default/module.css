@@ -734,7 +734,6 @@ td.af-forumdetail a:link,td.af-forumdetail a:visited,td.af-subforumdetail a:link
 .afpreview {
 	border: solid 1px #666;
 	width: 90%;
-	position: absolute;
 	display: none;
 	background-color: #FFF;
 }
@@ -751,6 +750,10 @@ td.af-forumdetail a:link,td.af-forumdetail a:visited,td.af-subforumdetail a:link
 	font-size: 11px;
 }
 
+.afpreviewbar img{
+	
+	cursor: pointer;
+}		  
 .afpreviewtext {
 	width: 100%;
 	padding: 2px;
