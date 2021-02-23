@@ -460,12 +460,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string CleanString(int portalId, string text, bool allowHTML, EditorTypes editorType, bool useFilter, bool allowScript, int moduleId, string themePath, bool processEmoticons)
         {
-            var sClean = HttpContext.Current.Server.HtmlDecode(text);
+
+            var sClean = text;
+
+            // If HTML is not allowed or if this comes from the TextBox editor (quick reply), the HTML needs to be encoded.
             if (sClean != string.Empty)
             {
-                if (!allowHTML)
-                    sClean = HTMLEncode(sClean);
-
+                
                 sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
 
                 var regExp = new Regex(@"(<a [^>]*>)(?'url'(\S*?))(</a>)", RegexOptions.IgnoreCase);
@@ -497,7 +498,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
-            var strMessage = HTMLDecode(text);
+             
+            var strMessage = HTMLEncode(text);
 
             if (strMessage != string.Empty)
             {
@@ -550,7 +552,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
-            var strMessage = HTMLDecode(text);
+
+            var strMessage = text;
 
             if ((strMessage.ToUpper().IndexOf("<CODE", StringComparison.Ordinal)) >= 0)
             {
