@@ -130,7 +130,7 @@ function showLoading(button){
 	var pt = document.getElementById("divPreviewText");
 	var afPos = getPreviewPosition(out.parentNode);
 	pt.innerHTML = '';
-	out.style.height = '300px';
+	out.style.height = '302px';
 	out.style.width = out.parentNode.offsetWidth + 'px';
 	pt.style.overflow = 'auto';
 	pt.style.height = '280px';
