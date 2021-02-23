@@ -963,7 +963,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         editor.ChooseRender = false;
                         editor.Mode = "RICH";
                         editor.Width = editorWidth;
-                        editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML will not be saved correctly.
+                        editor.HtmlEncode = false; // Turn Encoding off or passed already Encoded HTML.
                         editor.Height = editorHeight;
                         plhEditor.Controls.Add(editor);
                         _clientId = editor.ClientID;
