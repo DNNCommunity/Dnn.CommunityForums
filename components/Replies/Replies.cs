@@ -204,6 +204,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public int Reply_Save(int PortalId, ReplyInfo ri)
 		{
+			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
+			UserProfileController.Profiles_ClearCache(ri.Content.AuthorId);
+
 			return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 		}
 		public ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
