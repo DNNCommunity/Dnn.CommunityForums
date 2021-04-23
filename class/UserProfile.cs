@@ -271,7 +271,13 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
             DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
 			// KR - clear cache when updated
-			DataCache.CacheClearPrefix(string.Format("AF-prof-{0}", ui.UserID));
+			Profiles_ClearCache(ui.UserID);
+		}
+
+		public static void Profiles_ClearCache(int UserID)
+        {
+			DataCache.CacheClearPrefix(string.Format("AF-prof-{0}", UserID));
+
 		}
 
 	}
