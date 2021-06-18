@@ -135,7 +135,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     var sGroupPrefixUrl = dr["GroupPrefixURL"].ToString();
 
                     var ts = DataCache.MainSettings(topicModuleId);
-                    var timeOffset = (int)UserInfo.Profile.PreferredTimeZone.GetUtcOffset(postDate).TotalMinutes;
+
+                    // The Module Stores the PostDate in the Current Time Zone format of the Server, not in UTC.
+                    // So we need to calculate the difference between the Site UTC Offset  and the Server UTC Offset and Users UTC Offset and the Server offset and add that to the displayed time.
+
+                    var dtNow = DateTime.Now;
+                    var timeOffsetServer = (int)TimeZoneInfo.Local.GetUtcOffset(dtNow).TotalMinutes;
+                    var timeOffsetSite = (int)PortalSettings.TimeZone.GetUtcOffset(dtNow).TotalMinutes;
+                    var timeOffsetUser = (int)UserInfo.Profile.PreferredTimeZone.GetUtcOffset(postDate).TotalMinutes;
+
+                    var timeOffset = (timeOffsetSite - timeOffsetServer) + (timeOffsetUser- timeOffsetServer);
 
                     // Use a stringBuilder for better performance;
                     var sbTemplate = new StringBuilder(Settings.Format ?? string.Empty);
