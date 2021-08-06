@@ -6,6 +6,20 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+		<h3>06.06.00</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>Site crashes on replies that contain code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/76">Issue 76</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Use getAttribute('class') instead of className to support webpages with SVG elements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/78">Pull Request 78</a>, thanks <a href="https://github.com/jmbockhorst" target="_blank">@jmbockhorst</a>!)</li>
+			<li>&quot;Active Forums What's New&quot; shows incorrect time for posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/83">Issue 83</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Forum decodes HTML entered as Encoded HTML (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/73">Issue 73</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Post preview looks weird and alignment is not optimal (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/64">Issue 64</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>Improved the build process to better match the way other module commonly build outside of the website, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
+			<li>Updated the default setup wizard to mention &quot;Community Forums&quot; instead of Active Forums, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
+		</ul>
+
+		<p><strong>IMPORTANT NOTE:</strong>&nbsp; DO NOT add your own canonical tag to the page settings where this module is added.&nbsp; Remove it, if necessary, to prevent new SEO issues from impacting your website.</p>
+
 		<h3>06.05.01</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
