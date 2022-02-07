@@ -72,44 +72,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			HttpResponse Response = app.Response;
 			string requestedPath = app.Request.Url.AbsoluteUri;
 			HttpContext Context = ((HttpApplication)s).Context;
-			if (Request.Url.LocalPath.ToLowerInvariant().Contains("dependencyhandler.axd") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("scriptresource.axd") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("webresource.axd") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("viewer.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("cb.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("filesupload.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".gif") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".jpg") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".css") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".png") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".swf") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".htm")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".html")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".ashx")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".cur")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".ico")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".txt") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".pdf") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".xml")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/portals/")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("evexport.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("signupjs.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("evsexport.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("fbcomm.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".aspx")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".js") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("install.aspx") 
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("captcha.aspx") 
-				|| Request.RawUrl.ToLowerInvariant().Contains("viewer.aspx") 
-				|| Request.RawUrl.ToLowerInvariant().Contains("blank.html") 
-				|| Request.RawUrl.ToLowerInvariant().Contains("default.htm")
-				|| Request.RawUrl.ToLowerInvariant().Contains("autosuggest.aspx"))
-			{
-				return;
-			}
+			int PortalId = -1;
+			DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
 			string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
+			objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 			if (Request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
 			{
 				string sEx = ".jpg,.gif,.png,.swf,.js,.css,.html,.htm,desktopmodules,portals,.ashx,.ico,.txt,.doc,.docx,.pdf,.xml,.xls,.xlsx,.ppt,.pptx,.csv,.zip,.asmx,.aspx";
@@ -122,16 +88,13 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 				}
 			}
-			int PortalId = -1;
-			DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
-			objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
-			if (objPortalAliasInfo == null)
+			if (Request.Url.LocalPath.ToLower().Contains("scriptresource.axd") || Request.Url.LocalPath.ToLower().Contains("webresource.axd") || Request.Url.LocalPath.ToLower().Contains("viewer.aspx") || Request.Url.LocalPath.ToLower().Contains("cb.aspx") || Request.Url.LocalPath.ToLower().Contains("filesupload.aspx") || Request.Url.LocalPath.ToLower().Contains(".gif") || Request.Url.LocalPath.ToLower().Contains(".jpg") || Request.Url.LocalPath.ToLower().Contains(".css") || Request.Url.LocalPath.ToLower().Contains(".png") || Request.Url.LocalPath.ToLower().Contains(".swf") || Request.Url.LocalPath.ToLower().Contains(".htm") || Request.Url.LocalPath.ToLower().Contains(".html") || Request.Url.LocalPath.ToLower().Contains(".ashx") || Request.Url.LocalPath.ToLower().Contains(".cur") || Request.Url.LocalPath.ToLower().Contains(".ico") || Request.Url.LocalPath.ToLower().Contains(".txt") || Request.Url.LocalPath.ToLower().Contains(".pdf") || Request.Url.LocalPath.ToLower().Contains(".xml") || Request.Url.LocalPath.ToLower().Contains("/portals/") || Request.Url.LocalPath.ToLower().Contains("/desktopmodules/") || Request.Url.LocalPath.ToLower().Contains("evexport.aspx") || Request.Url.LocalPath.ToLower().Contains("signupjs.aspx") || Request.Url.LocalPath.ToLower().Contains("evsexport.aspx") || Request.Url.LocalPath.ToLower().Contains("fbcomm.aspx") || Request.Url.LocalPath.ToLower().Contains(".aspx") || Request.Url.LocalPath.ToLower().Contains(".js"))
 			{
-				objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
-				if (objPortalAliasInfo == null)
-				{
-					return;
-				}
+				return;
+			}
+			if (Request.Url.LocalPath.ToLower().Contains("install.aspx") || Request.Url.LocalPath.ToLower().Contains("installwizard.aspx") || Request.Url.LocalPath.ToLower().Contains("captcha.aspx") || Request.RawUrl.Contains("viewer.aspx") || Request.RawUrl.Contains("blank.html") || Request.RawUrl.Contains("default.htm") || Request.RawUrl.Contains("autosuggest.aspx"))
+			{
+				return;
 			}
 			PortalId = objPortalAliasInfo.PortalID;
 			string searchURL = sUrl;
