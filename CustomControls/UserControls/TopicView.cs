@@ -1667,17 +1667,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager1.PageMode = PagerNav.Mode.Links;
 
                 if (MainSettings.URLRewriteEnabled && !string.IsNullOrWhiteSpace(_topicURL))
-                {
-                    if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                    {
-                        pager1.BaseURL = "/" + MainSettings.PrefixURLBase;
-                    }
-                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
-                    {
-                        pager1.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
-                    }
-                    pager1.BaseURL += _topicURL;
-                }
+                    pager1.BaseURL = _topicURL;
+
                 pager1.Params = @params.ToArray();
             }
 
@@ -1695,17 +1686,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager2.PageMode = PagerNav.Mode.Links;
 
                 if (MainSettings.URLRewriteEnabled && !string.IsNullOrWhiteSpace(_topicURL))
-                {
-                    if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                    {
-                        pager2.BaseURL = "/" + MainSettings.PrefixURLBase;
-                    }
-                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
-                    {
-                        pager2.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
-                    }
-                    pager2.BaseURL += _topicURL;
-                }
+                    pager2.BaseURL = _topicURL;
+
                 pager2.Params = @params.ToArray();
             }
 
