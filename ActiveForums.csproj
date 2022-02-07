@@ -1359,4 +1359,9 @@
   <!--<Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />-->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <Import Project="Module.Build" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).dll e:\guru\web\bin\
+copy $(TargetDir)$(TargetName).pdb e:\guru\web\bin\
+copy $(TargetDir)$(TargetName).xml e:\guru\web\bin\</PostBuildEvent>
+  </PropertyGroup>
 </Project>
