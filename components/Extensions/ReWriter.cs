@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			if (objPortalAliasInfo == null)
 			{
-					return;
+				return;
 			}
 			PortalId = objPortalAliasInfo.PortalID;
 
