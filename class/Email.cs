@@ -222,7 +222,23 @@ namespace DotNetNuke.Modules.ActiveForums
 		public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
 		{
             //USE DNN API for this to ensure proper delivery & adherence to portal settings
-		    Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
+            //Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
+            //Use more elaborate DNN API that allows passing of the SMTP information; behind the scenes, the DNN API DotNetNuke.Host.SMTP property accessors determine portal vs. host SMTP values 
+			Services.Mail.Mail.SendMail(mailFrom: fromEmail,
+                               mailTo: toEmail,
+                               cc: string.Empty,
+                               bcc: string.Empty,
+                               priority: DotNetNuke.Services.Mail.MailPriority.Normal,
+                               subject: subject,
+                               bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
+                               bodyEncoding: System.Text.Encoding.Default,
+                               body: bodyHTML,
+                               attachment: string.Empty,
+                               smtpServer: Host.SMTPServer,
+                               smtpAuthentication: Host.SMTPAuthentication,
+                               smtpUsername: Host.SMTPUsername,
+                               smtpPassword: Host.SMTPPassword,
+                               smtpEnableSSL: Host.EnableSMTPSSL);
 		}
 
 		public void Send()
