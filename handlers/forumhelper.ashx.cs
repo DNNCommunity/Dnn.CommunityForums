@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					if (Permissions.HasPerm(f.Security.ModMove, ForumUser.UserRoles))
 					{
 						tc.Topics_Move(PortalId, ModuleId, targetForumId, topicId);
-						DataCache.ClearAllCache(ModuleId, TabId);
+						DataCache.CacheClearPrefix(string.Format("AF-FV-{0}-{1}", PortalId, ModuleId));
 						return BuildOutput(string.Empty, OutputCodes.Success, true);
 					}
 				}
