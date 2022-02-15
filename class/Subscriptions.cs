@@ -204,11 +204,13 @@ namespace DotNetNuke.Modules.ActiveForums
 			string SubscriberFirstName = string.Empty;
 			string SubscriberLastName = string.Empty;
 			string SubscriberEmail = string.Empty;
-
+			int portalId = -1;
 			int i = 0;
 			int GroupCount = 0;
 			while (dr.Read())
 			{
+				portalId = Convert.ToInt32(dr["PortalId"].ToString());
+
 				SubscriberDisplayName = dr["SubscriberDisplayName"].ToString();
 				SubscriberUserName = dr["SubscriberUserName"].ToString();
 				SubscriberFirstName = dr["SubscriberFirstName"].ToString();
@@ -262,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 						GroupCount = 0;
 						tmpEmail = newEmail;
-						Queue.Controller.Add(FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
+						Queue.Controller.Add(portalId,FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
 						i = 0;
 					}
 				}
@@ -355,7 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					sFormat = sValue;
 					sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.Now.ToString(sFormat));
 				}
-				Queue.Controller.Add(FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
+				Queue.Controller.Add(portalId,FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
 			}
 
 
