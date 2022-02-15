@@ -24,7 +24,10 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading;
 using System.Web;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 
@@ -32,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class Email
 	{
+		public int PortalId;
 		public string Subject;
 		public string From;
 		public string BodyText;
@@ -72,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			             };
 
 		    subs.Add(si);
-
+			oEmail.PortalId = portalId;
 			oEmail.UseQueue = mainSettings.MailQueue;
 			oEmail.Recipients = subs;
 			oEmail.Subject = subject;
@@ -138,16 +142,15 @@ namespace DotNetNuke.Modules.ActiveForums
 		    var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
 			var oEmail = new Email
-			                 {
-			                     Recipients = subs,
-			                     Subject = subject,
-			                     From = sFrom,
-			                     BodyText = bodyText,
-			                     BodyHTML = bodyHTML,
-                                 UseQueue = mainSettings.MailQueue
-			                 };
-
-
+			{					
+				PortalId = portalId,
+				Recipients = subs,
+				Subject = subject,
+				From = sFrom,
+				BodyText = bodyText,
+				BodyHTML = bodyHTML,
+				UseQueue = mainSettings.MailQueue
+			};
 			new Thread(oEmail.Send).Start();
 		}
 
@@ -219,12 +222,31 @@ namespace DotNetNuke.Modules.ActiveForums
         /* 
          * Note: This is the method that actual sends the email.  The mail queue  
          */
-		public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
+		public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
 		{
-            //USE DNN API for this to ensure proper delivery & adherence to portal settings
-		    Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
+			//USE DNN API for this to ensure proper delivery & adherence to portal settings
+			//Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
+		
+			//Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
+			//updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values 
+			Services.Mail.Mail.SendMail(mailFrom: fromEmail,
+										mailSender: (SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail),
+										mailTo: toEmail,
+										cc: string.Empty,
+										bcc: string.Empty,
+										replyTo: string.Empty,
+										priority: DotNetNuke.Services.Mail.MailPriority.Normal,
+										subject: subject,
+										bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
+										bodyEncoding: System.Text.Encoding.Default,
+										body: bodyHTML,
+										attachments: new List<System.Net.Mail.Attachment>(),
+										smtpServer: SMTPServer(portalId),
+										smtpAuthentication: SMTPAuthentication(portalId),
+										smtpUsername: SMTPUsername(portalId),
+										smtpPassword: SMTPPassword(portalId),
+										smtpEnableSSL: EnableSMTPSSL(portalId));
 		}
-
 		public void Send()
 		{
 			try
@@ -241,9 +263,9 @@ namespace DotNetNuke.Modules.ActiveForums
 					intRecipients += 1;
 
                     if(UseQueue)
-					    Queue.Controller.Add(From, si.Email, Subject, BodyHTML, BodyText, string.Empty, string.Empty);
+					    Queue.Controller.Add(PortalId, From, si.Email, Subject, BodyHTML, BodyText, string.Empty, string.Empty);
                     else
-                        SendNotification(From, si.Email, Subject, BodyText, BodyHTML);  
+                        SendNotification(PortalId, From, si.Email, Subject, BodyText, BodyHTML);  
 
 					intMessages += 1;
 				}
@@ -253,8 +275,83 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				Services.Exceptions.Exceptions.LogException(ex);
 			}
-
 		}
-
-	}
+		#region "code modeled on DotNetNuke.Services.Mail/DotNetNuke.Entities.Host APIs to support portal-specific SMTP configuration"
+		internal static string SMTPServer(int portalId)
+		{
+			return GetSmtpSetting(portalId, "SMTPServer");
+		}
+		internal static string SMTPAuthentication(int portalId)
+		{
+			return GetSmtpSetting(portalId, "SMTPAuthentication");
+		}
+		internal static bool EnableSMTPSSL(int portalId)
+		{
+			if (SMTPPortalEnabled(portalId))
+			{
+				return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", portalId, false);
+			}
+			else
+			{
+				return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
+			}
+		}
+		internal static string SMTPUsername(int portalId)
+		{
+			return GetSmtpSetting(portalId, "SMTPUsername");
+		}
+		internal static string SMTPPassword(int portalId)
+		{
+			if (SMTPPortalEnabled(portalId))
+			{
+				return PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey());
+			}
+			else
+			{
+				string decryptedText;
+				try
+				{
+					decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
+				}
+				catch (Exception)
+				{
+					//fixes case where smtppassword failed to encrypt due to failing upgrade
+					var current = HostController.Instance.GetString("SMTPPassword");
+					if (!string.IsNullOrEmpty(current))
+					{
+						HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
+						decryptedText = current;
+					}
+					else
+					{
+						decryptedText = string.Empty;
+					}
+				}
+				return decryptedText;
+			}
+		}
+		internal static bool SMTPPortalEnabled(int portalId)
+		{
+			if (portalId != null && portalId != -1)
+			{
+				return PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString).Equals("P", StringComparison.OrdinalIgnoreCase);
+			}
+			else 
+			{ 
+				return false; 
+			}
+		}
+		internal static string GetSmtpSetting(int portalId, string settingName)
+		{
+			if (SMTPPortalEnabled(portalId))
+			{
+				return PortalController.GetPortalSetting(settingName, portalId, Null.NullString);
+			}
+            else
+            {
+				return HostController.Instance.GetString(settingName);
+			}
+		}
+        #endregion
+    }
 }
