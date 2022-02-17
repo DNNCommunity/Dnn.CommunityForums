@@ -185,9 +185,11 @@ function saveSettings(gs){
 		var ed1 = document.getElementById("<%=drpEditorTypes.ClientID%>");
         if (ed1.selectedIndex >= 0) {
             var EditorType = ed1.options[ed1.selectedIndex].value;
+        } else if (AllowHtml==true) {
+            var EditorType = 2;/* default to HTML editor */
         } else {
-            var EditorType = 0;
-        };
+			var EditorType = 0;
+		};
 		var EditorHeight = document.getElementById("<%=txtEditorHeight.ClientID%>").value;
 		var EditorWidth = document.getElementById("<%=txtEditorWidth.ClientID%>").value;
 		var ed6 = document.getElementById("<%=drpPermittedRoles.ClientID%>");
@@ -199,8 +201,10 @@ function saveSettings(gs){
 	    var edm = document.getElementById("<%=drpEditorMobile.ClientID%>");
         if (edm.selectedIndex >= 0) {
             var EditorMobile = edm.options[edm.selectedIndex].value;
-        } else {
-            var EditorMobile = 0;
+        } else if (AllowHtml == true) {
+            var EditorMobile = 2;/* default to HTML editor */
+         } else {
+			var EditorMobile = 0;
         };
 		
 		var IsModerated = document.getElementById("<%=rdModOn.ClientID%>").checked;
@@ -258,18 +262,13 @@ function saveSettings(gs){
 
 
 	<%=cbEditorAction.ClientID%>.Callback(settingsAction, forumid, TopicsTemplateId, TopicTemplateId, EmailAddress, UseFilter, AllowPostIcon, AllowEmoticons, AllowScripts,
-        IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, EditorMobile, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
-        MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, TopicFormId, ReplyFormId,
-        AutoSubscribeRoles, ProfileTemplateId, IsModerated, DefaultTrustLevel, AutoTrustLevel, ModApproveTemplateId, ModRejectTemplateId, ModMoveTemplateId, ModDeleteTemplateId,
-        ModNotifyTemplateId, AutoSubscribeEnabled);
+		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, EditorMobile, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
+		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, TopicFormId, ReplyFormId,
+		AutoSubscribeRoles, ProfileTemplateId, IsModerated, DefaultTrustLevel, AutoTrustLevel, ModApproveTemplateId, ModRejectTemplateId, ModMoveTemplateId, ModDeleteTemplateId,
+		ModNotifyTemplateId, AutoSubscribeEnabled);
 
 
 };
-
-
-
-
-
 function toggleEditor(obj){
 	closeAllProp();
 	var editor = document.getElementById("<%=cfgHTML.ClientID%>");
@@ -281,10 +280,10 @@ function toggleEditor(obj){
 		winDiv.style.display = 'none';
 	};
 };
-function toggleEditorFields(){
+<%--function toggleEditorFields(){
 	var ed1 = document.getElementById("<%=drpEditorTypes.ClientID%>");
 	if (ed1.selectedIndex >= 0){ed1 = ed1.options[ed1.selectedIndex].value;}else{ed1 = 0;};
-};
+};--%>
 function toggleMod(obj){
 	closeAllProp();
 	var mod = document.getElementById("<%=cfgMod.ClientID%>");
@@ -1086,9 +1085,9 @@ function afadmin_getProperties() {
 							<img id="Img8" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AllowHTML]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:AllowHTML]:</td>
 						<td align="center">
-							<asp:RadioButton ID="rdHTMLOn" GroupName="HTML" runat="server" /></td>
+							<asp:RadioButton ID="rdHTMLOn" GroupName="HTML" runat="server" Checked="true" /></td>
 						<td align="center">
-							<asp:RadioButton ID="rdHTMLOff" GroupName="HTML" runat="server" Checked="true" /></td>
+							<asp:RadioButton ID="rdHTMLOff" GroupName="HTML" runat="server" /></td>
 						<td width="100%">
 							<div id="cfgHTML" runat="server" class="amcfgbtn" style="display: none;"></div>
 						</td>
@@ -1258,9 +1257,9 @@ function afadmin_getProperties() {
 				<td></td>
 				<td class="amcpbold" style="white-space: nowrap">[RESX:EditorType]:</td>
 				<td>
-					<asp:DropDownList ID="drpEditorTypes" runat="server" CssClass="amcptxtbx">
+					<asp:DropDownList ID="drpEditorTypes" runat="server" CssClass="amcptxtbx" >
 						<asp:ListItem Value="0">TextBox</asp:ListItem>
-						<asp:ListItem Value="2">Default DNN Editor</asp:ListItem>
+						<asp:ListItem Selected="True" Value="2">Default DNN Editor</asp:ListItem>
 					</asp:DropDownList>
 				</td>
 				<td></td>
@@ -1285,7 +1284,7 @@ function afadmin_getProperties() {
 				<td>
 					<asp:DropDownList ID="drpEditorMobile" runat="server" CssClass="amcptxtbx">
 						<asp:ListItem Value="0">TextBox</asp:ListItem>
-						<asp:ListItem Value="2">Default DNN Editor</asp:ListItem>
+						<asp:ListItem Value="2" Selected="True">Default DNN Editor</asp:ListItem>
 					</asp:DropDownList>
 				</td>
 				<td></td>
