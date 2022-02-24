@@ -23,12 +23,13 @@ SET NOCOUNT ON
 		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Permissions] AS p ON p.PermissionsId = F.PermissionsId 
 		WHERE (@AttachmentID > 0 AND AttachID = @AttachmentID)
 			OR (@FileID > 0 AND @FileID = FileID)
-
+END
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]
 GO
+
 
 CREATE PROCEDURE  {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers](@PortalId int, @ForumId int, @TopicId int, @SubType int)
 AS
@@ -47,10 +48,10 @@ INSERT INTO @subs
 FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
 			{databaseOwner}{objectQualifier}activeforums_Forums as F on s.ForumId = f.ForumId INNER JOIN
                      {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-                      {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
+                      {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId  INNER JOIN
                       {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
 					  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';')  AS r ON ur.RoleId = r.ID 
-WHERE     (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0 AND s.Mode = @SubType AND u.IsSuperUser = 0) 
+WHERE     (P.Authorised = 1 AND s.Mode = @SubType AND u.IsSuperUser = 0) 
 			AND 
 				(
 						(UR.EffectiveDate IS NULL AND UR.ExpiryDate >= GETDATE()) 
@@ -66,10 +67,9 @@ INSERT INTO @subs
 	(userid, username, firstname, lastname, email, displayname)
 	(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName
 FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
-             {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-             {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId
+             {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID  
 WHERE s.Mode = @SubType AND u.IsSuperUser = 1
-	AND (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0 AND (S.ForumId = @ForumId AND S.TopicId = 0) OR (S.TopicId = @TopicId))
+	AND ((S.ForumId = @ForumId AND S.TopicId = 0) OR (S.TopicId = @TopicId))
 	
 )
 
@@ -82,7 +82,7 @@ FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INN
                       {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
                         {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
 					  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';')  AS r ON ur.RoleId = r.ID 
-WHERE     (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0) AND (u.IsSuperUser = 0) AND s.Mode = @SubType
+WHERE     (P.Authorised = 1) AND (u.IsSuperUser = 0) AND s.Mode = @SubType
 		AND 
 				(
 						(UR.EffectiveDate IS NULL AND UR.ExpiryDate >= GETDATE()) 
@@ -104,9 +104,9 @@ IF (SELECT ReplyCount FROM {databaseOwner}{objectQualifier}activeforums_Topics W
 	SET @IsNewTopic = 1
 
 If (@TopicsOnly = 1 AND @IsNewTopic = 0) OR (@TopicsOnly = 0)
-BEGIN
+	BEGIN
 	IF @AutoSubscribe = 1 AND @AutoSubscribeRoles <> ''
-END
+		BEGIN
 		INSERT INTO @subs 
 		(userid, username, firstname, lastname, email, displayname)
 		(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName
@@ -114,15 +114,15 @@ END
 						  {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
 						  {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
 						  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@AutoSubscribeRoles,';')  AS r ON ur.RoleId = r.ID 
-		WHERE     (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0) 
+		WHERE     (P.Authorised = 1) 
 		
 		AND (
-(
+				(
 					(UR.EffectiveDate IS NULL AND UR.ExpiryDate >= GETDATE()) 
 				 OR (UR.EffectiveDate IS NULL AND UR.ExpiryDate IS NULL)
 				 OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate IS NULL)
 				 OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate >= GETDATE())
-)
+				)
 		
 			))
 		END
