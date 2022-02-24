@@ -154,7 +154,6 @@ mark,
 .afgrid tr {
 width: 100%;
 position: relative;
-display: inline-table;
 }
 
 td.afgrouprow.afgrouprow-f {
