@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public abstract IDataReader Queue_List();
         public abstract void Queue_Delete(int EmailId);
-        public abstract void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+        public abstract void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
 
 
         #endregion
