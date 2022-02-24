@@ -1,44 +1,34 @@
-﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Get]') AND type in (N'P', N'PC'))
+﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Get]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Get];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Get]
+@AttachmentID int,
+@FileID int,
+@WithSecurity bit = 0
+AS
+BEGIN
+SET NOCOUNT ON
+	If @WithSecurity = 0
+		SELECT AttachID, ContentId, IsNull(UserID,-1) as UserID, [Filename], FileData, ContentType, FileSize, FileID, AllowDownload
+		FROM {databaseOwner}[{objectQualifier}activeforums_Attachments]
+		WHERE (@AttachmentId > 0 AND AttachID = @AttachmentID)
+			OR (@FileID > 0 AND @FileID = FileID)
+	ELSE
+		SELECT A.AttachID, A.ContentId, ISNULL(A.UserID, - 1) AS UserID, A.Filename, A.FileData, A.ContentType, A.FileSize, A.FileID, A.AllowDownload, p.CanRead
+		FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] A
+		inner join {databaseOwner}[{objectQualifier}vw_activeforums_TopicView] as tv on tv.ContentId = A.ContentId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] FT ON FT.TopicId = tv.TopicId 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] AS F ON F.ForumId	 = FT.ForumId		
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Permissions] AS p ON p.PermissionsId = F.PermissionsId 
+		WHERE (@AttachmentID > 0 AND AttachID = @AttachmentID)
+			OR (@FileID > 0 AND @FileID = FileID)
+
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]
 GO
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-CREATE PROCEDURE  {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers](@PortalId int, @ForumId int, @TopicId int, @SubType int)
-AS
-DECLARE @CanSubscribe nvarchar(255)
-SET @CanSubscribe = (
-					SELECT SUBSTRING(p.CanSubscribe,1,CHARINDEX('|',p.CanSubscribe)-1) as CanSubscribe FROM
-					{databaseOwner}{objectQualifier}activeforums_Forums as f INNER JOIN 
-					{databaseOwner}{objectQualifier}activeforums_Permissions as p on p.PermissionsId = f.PermissionsId
-					WHERE f.ForumId = @ForumId
-					)
-DECLARE @subs TABLE (userid int, username nvarchar(255), firstname nvarchar(255), lastname nvarchar(255), email nvarchar(255), displayname nvarchar(255))
-
-INSERT INTO @subs 
-	(userid, username, firstname, lastname, email, displayname)
-	(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName
-FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
-			{databaseOwner}{objectQualifier}activeforums_Forums as F on s.ForumId = f.ForumId INNER JOIN
-                     {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-                      {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
-                      {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
-					  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';')  AS r ON ur.RoleId = r.ID 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 
 CREATE PROCEDURE  {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers](@PortalId int, @ForumId int, @TopicId int, @SubType int)
 AS
@@ -142,33 +132,11 @@ SELECT DISTINCT * FROM @subs
 
 GO
 
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Get]
-@AttachmentID int,
-@FileID int,
-@WithSecurity bit = 0
-AS
-BEGIN
-SET NOCOUNT ON
-	If @WithSecurity = 0
-		SELECT AttachID, ContentId, IsNull(UserID,-1) as UserID, [Filename], FileData, ContentType, FileSize, FileID, AllowDownload
-		FROM {databaseOwner}[{objectQualifier}activeforums_Attachments]
-		WHERE (@AttachmentId > 0 AND AttachID = @AttachmentID)
-			OR (@FileID > 0 AND @FileID = FileID)
-	ELSE
-		SELECT A.AttachID, A.ContentId, ISNULL(A.UserID, - 1) AS UserID, A.Filename, A.FileData, A.ContentType, A.FileSize, A.FileID, A.AllowDownload, p.CanRead
-		FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] A
-		inner join {databaseOwner}[{objectQualifier}vw_activeforums_TopicView] as tv on tv.ContentId = A.ContentId
-		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] FT ON FT.TopicId = tv.TopicId 
-		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] AS F ON F.ForumId	 = FT.ForumId		
-		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Permissions] AS p ON p.PermissionsId = F.PermissionsId 
-		WHERE (@AttachmentID > 0 AND AttachID = @AttachmentID)
-			OR (@FileID > 0 AND @FileID = FileID)
-
-GO
 
 ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Queue ADD
 	PortalId int NOT NULL DEFAULT -1
 GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_List') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_List
 GO
