@@ -97,8 +97,8 @@ namespace DotNetNuke.Modules.ActiveForums
             rdAttachOff.Attributes.Add("value", "0");
             cfgAttach.InnerHtml = propImage;
 
-            rdHTMLOn.Attributes.Add("onclick", "toggleEditor(this);");
-            rdHTMLOff.Attributes.Add("onclick", "toggleEditor(this);");
+            rdHTMLOn.Attributes.Add("onclick", "toggleEditor(this);document.getElementById('" + drpEditorTypes.ClientID + "').value = '2';document.getElementById('" + drpEditorMobile.ClientID + "').value ='2';");
+            rdHTMLOff.Attributes.Add("onclick", "toggleEditor(this); document.getElementById('" + drpEditorTypes.ClientID + "').value = '0'; document.getElementById('" + drpEditorMobile.ClientID + "').value = '0'; ");
             rdHTMLOn.Attributes.Add("value", "1");
             rdHTMLOff.Attributes.Add("value", "0");
             cfgHTML.Attributes.Add("style", "display:none;");
@@ -126,8 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums
             else
                 lblMaintWarn.Text = string.Format(GetSharedResource("[RESX:MaintenanceWarning]"), GetSharedResource("[RESX:MaintenanceWarning:Remove]"), GetSharedResource("[RESX:MaintenanceWarning:Remove:Desc]"));
 
-            drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
-            
+            //drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
+
             if (cbEditorAction.IsCallback) 
                 return;
             
@@ -475,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Utilities.SelectListItemByValue(drpModNotifyTemplateId, fi.ModNotifyTemplateId);
             Utilities.SelectListItemByValue(drpDefaultTrust, (int)fi.DefaultTrustValue);
             Utilities.SelectListItemByValue(drpEditorTypes, (int)fi.EditorType);
-            Utilities.SelectListItemByValue(drpEditorMobile, fi.EditorMobile);
+            Utilities.SelectListItemByValue(drpEditorMobile, (int)fi.EditorMobile);
             Utilities.SelectListItemByValue(drpPermittedRoles, (int)fi.EditorPermittedUsers);
 
             txtAutoTrustLevel.Text = fi.AutoTrustLevel.ToString();
@@ -517,6 +517,18 @@ namespace DotNetNuke.Modules.ActiveForums
             txtMaxAttachHeight.Text = fi.MaxAttachHeight.ToString();
             ckAttachInsertAllowed.Checked = fi.AttachInsertAllowed;
             ckConvertingToJpegAllowed.Checked = fi.ConvertingToJpegAllowed;
+
+            // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
+            if (rdHTMLOff.Checked && fi.AllowHTML)
+            {
+                Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
+                Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
+            }
+            if (rdHTMLOn.Checked && !fi.AllowHTML)
+            {
+                Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.TEXTBOX);
+                Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.TEXTBOX);
+            }
 
             rdHTMLOn.Checked = fi.AllowHTML;
             rdHTMLOff.Checked = !fi.AllowHTML;
@@ -638,7 +650,18 @@ namespace DotNetNuke.Modules.ActiveForums
             txtMaxAttachHeight.Text = gi.MaxAttachHeight.ToString();
             ckAttachInsertAllowed.Checked = gi.AttachInsertAllowed;
             ckConvertingToJpegAllowed.Checked = gi.ConvertingToJpegAllowed;
-
+            
+            // if switching from HTML off to HTML on, switch editor to HTML editor, or vice versa
+            if (rdHTMLOff.Checked && gi.AllowHTML)
+            {
+                Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
+                Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
+            }
+            if (rdHTMLOn.Checked && !gi.AllowHTML)
+            {
+                Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.TEXTBOX);
+                Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.TEXTBOX);
+            }
             rdHTMLOn.Checked = gi.AllowHTML;
             rdHTMLOff.Checked = !gi.AllowHTML;
 
