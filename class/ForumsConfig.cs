@@ -222,7 +222,17 @@ namespace DotNetNuke.Modules.ActiveForums
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowHTML, sAllowHTML);
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, "0");
+						if (sAllowHTML.ToLowerInvariant() == "true")
+						{
+							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+						}
+                        else
+						{
+							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.TEXTBOX).ToString());
+							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.TEXTBOX).ToString());
+						}
+
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorHeight, "350");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorWidth, "99%");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");

@@ -247,10 +247,16 @@ namespace DotNetNuke.Modules.ActiveForums
 			get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.EditorStyle], 1); }
 		}
 
-        public int EditorMobile
+        public EditorTypes EditorMobile
         {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.EditorMobile], 0); }
-        }
+            get
+			{
+				EditorTypes parseValue;
+				return Enum.TryParse(Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorMobile], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
+						   ? parseValue
+						   : EditorTypes.HTMLEDITORPROVIDER;
+			}
+		}
 
 		public string EditorToolBar
 		{
@@ -262,9 +268,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			get
 			{
 				EditorTypes parseValue;
-				return Enum.TryParse(Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorType], "0"), true, out parseValue)
+				return Enum.TryParse(Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorType], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
 						   ? parseValue
-						   : EditorTypes.TEXTBOX;
+						   : EditorTypes.HTMLEDITORPROVIDER;
 			}
 		}
 

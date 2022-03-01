@@ -202,9 +202,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			get
 			{
 				EditorTypes parseValue;
-				var val = Enum.TryParse(Utilities.SafeConvertString(GroupSettings[ForumSettingKeys.EditorType], "0"), true, out parseValue)
+				var val = Enum.TryParse(Utilities.SafeConvertString(GroupSettings[ForumSettingKeys.EditorType], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
 						   ? parseValue
-						   : EditorTypes.TEXTBOX;
+						   : EditorTypes.HTMLEDITORPROVIDER;
 
 				return val;
 				
@@ -221,9 +221,9 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 EditorTypes parseValue;
-                var val = Enum.TryParse(Utilities.SafeConvertString(GroupSettings[ForumSettingKeys.EditorMobile], "0"), true, out parseValue)
+                var val = Enum.TryParse(Utilities.SafeConvertString(GroupSettings[ForumSettingKeys.EditorMobile], EditorTypes.HTMLEDITORPROVIDER.ToString()), true, out parseValue)
                            ? parseValue
-                           : EditorTypes.TEXTBOX;
+                           : EditorTypes.HTMLEDITORPROVIDER;
 
                 return val;
 
