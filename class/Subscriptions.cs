@@ -49,9 +49,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	    public string Email { get; set; }
 
-	    public string DisplayName { get; set; }
+		public string DisplayName { get; set; }
+		public TimeSpan TimeZoneOffSet{ get; set; }
 
-	    #endregion
+		#endregion
 	}
 
 #endregion

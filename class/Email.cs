@@ -121,7 +121,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		                             DisplayName = ui.DisplayName,
 		                             Email = ui.Email,
 		                             FirstName = ui.FirstName,
-		                             LastName = ui.LastName
+		                             LastName = ui.LastName,
+									 TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUserId(portalId, ui.UserID)
 		                         };
 		            if (! (subs.Contains(si)))
 		            {
@@ -133,25 +134,29 @@ namespace DotNetNuke.Modules.ActiveForums
 		    if (subs.Count <= 0)
 				return;
 
-		    var sTemplate = string.Empty;
-			var tc = new TemplateController();
-			var ti = tc.Template_Get(templateId, portalId, moduleID);
-			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, Utilities.GetTimeZoneOffsetForUser(null));
-			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, Utilities.GetTimeZoneOffsetForUser(null));
-			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, Utilities.GetTimeZoneOffsetForUser(null));
-		    var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
+			var timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
+			foreach (var timeZoneOffset in timeZoneOffsets)
+            {
+				var sTemplate = string.Empty;
+				var tc = new TemplateController();
+				var ti = tc.Template_Get(templateId, portalId, moduleID);
+				var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, timeZoneOffset);
+				var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, timeZoneOffset);
+				var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, timeZoneOffset);
+				var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
-			var oEmail = new Email
-			{					
-				PortalId = portalId,
-				Recipients = subs,
-				Subject = subject,
-				From = sFrom,
-				BodyText = bodyText,
-				BodyHTML = bodyHTML,
-				UseQueue = mainSettings.MailQueue
-			};
-			new Thread(oEmail.Send).Start();
+				var oEmail = new Email
+				{
+					PortalId = portalId,
+					Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset).ToList(),
+					Subject = subject,
+					From = sFrom,
+					BodyText = bodyText,
+					BodyHTML = bodyHTML,
+					UseQueue = mainSettings.MailQueue
+				};
+				new Thread(oEmail.Send).Start();
+			}
 		}
 
 		public static void SendAdminWatchEmail(int postID, int userID)
