@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
             lblCopy.Visible = true;
             //TODO: this should be resources instead of harcoded text?
             lblProd.Text = string.Concat("DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
-            lblCopy.Text = string.Concat("&copy; ", DateTime.Now.Year, " DNN Community");
+            lblCopy.Text = string.Concat("&copy; ", DateTime.UtcNow.Year, " DNN Community");
 
             try
             {

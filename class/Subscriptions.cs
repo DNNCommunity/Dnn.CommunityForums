@@ -152,9 +152,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			TemplateInfo ti;
 			ti = TemplateId > 0 ? tc.Template_Get(TemplateId) : tc.Template_Get("SubscribedEmail", PortalId, ModuleId);
 			TemplateUtils.lstSubscriptionInfo = subs;
-			Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Convert.ToInt32(_portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Convert.ToInt32(_portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Convert.ToInt32(_portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
+			Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
+			BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
+			BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
 			string sFrom;
 			sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : _portalSettings.Email;
 			var oEmail = new Email
@@ -251,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
 						sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
 						sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
-						sMessageBody = sMessageBody.Replace("[DATE]", DateTime.Now.ToString());
+						sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 						if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
 						{
 							string sFormat;
@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
 							int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
 							string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
 							sFormat = sValue;
-							sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.Now.ToString(sFormat));
+							sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.UtcNow.ToString(sFormat));
 						}
 
 						GroupCount = 0;
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
 				sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
 				sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
-				sMessageBody = sMessageBody.Replace("[DATE]", DateTime.Now.ToString());
+				sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 				if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
 				{
 					string sFormat;
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
 					string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
 					sFormat = sValue;
-					sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.Now.ToString(sFormat));
+					sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.UtcNow.ToString(sFormat));
 				}
 				Queue.Controller.Add(portalId,FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
 			}
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 
 
-				Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.Now.AddDays(-1)));
+				Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
 				ScheduleHistoryItem.Succeeded = true;
 				ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
 				ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
@@ -413,9 +413,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		private static int GetElapsedTimeTillNextStart()
 		{
-			DateTime NextRun = DateTime.Now.AddDays(7);
+			DateTime NextRun = DateTime.UtcNow.AddDays(7);
 			var nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 22, 0, 0);
-			int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.Now.Ticks) / TimeSpan.TicksPerDay);
+			int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
 			return elapseMinutes;
 		}
 
@@ -446,7 +446,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		//    Private Shared Function GetElapsedTimeTillNextStart() As Integer
 		//        Dim NextRun As DateTime = Now.AddDays(1)
 		//        Dim nextStart As New DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 18, 0, 0)
-		//        Dim elapseMinutes As Integer = CInt((nextStart.Ticks - DateTime.Now.Ticks) \ TimeSpan.TicksPerDay)
+		//        Dim elapseMinutes As Integer = CInt((nextStart.Ticks - DateTime.UtcNow.Ticks) \ TimeSpan.TicksPerDay)
 		//        Return elapseMinutes
 		//    End Function
 

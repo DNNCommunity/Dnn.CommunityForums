@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			get { return MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
 		}
 
-        public int TimeZoneOffset
+        public int timeZoneOffset
         {
             get { return MainSettings.GetInt(SettingKeys.TimeZoneOffset); }
         }

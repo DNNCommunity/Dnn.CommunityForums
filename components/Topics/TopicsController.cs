@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			ti.Content.Summary = string.Empty;
 
 			ti.Content.IPAddress = IPAddress;
-			DateTime dt = DateTime.Now;
+			DateTime dt = DateTime.UtcNow;
 			ti.Content.DateCreated = dt;
 			ti.Content.DateUpdated = dt;
 			ti.IsAnnounce = false;
@@ -82,11 +82,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     string[] slistreplies = listreplies.Split("|".ToCharArray(), 2);
                     string str = "";
                     if (slistreplies.Length > 1) str = slistreplies[1];
-                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
+                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.UtcNow, Convert.ToInt32(slistreplies[0]));
                 }
                 else
                 {
-                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.Now, 0);
+                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.UtcNow, 0);
                 }
             }
         }

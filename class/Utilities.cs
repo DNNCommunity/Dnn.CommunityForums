@@ -31,7 +31,10 @@ using System.Reflection;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -44,9 +47,9 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, int timeZoneOffset)
+        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, TimeSpan timeZoneOffset)
         {
-            var newDate = DateTime.Parse(GetDate(displayDate, instanceId, timeZoneOffset));
+            var newDate = DateTime.Parse(GetFormattedDateString(displayDate, instanceId, timeZoneOffset));
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
@@ -251,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime NullDate()
         {
             var nfi = new CultureInfo("en-US", false).DateTimeFormat;
-            return DateTime.Parse("1/1/1900", nfi);
+            return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
         }
 
         public static string GetHost()
@@ -1011,18 +1014,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        public static string GetDate(DateTime displayDate, int mid, int offset)
+        public static string GetFormattedDateString(DateTime displayDate, int mid, TimeSpan offset)
         {
             string dateStr;
 
             try
             {
-                var mUserOffSet = 0;
                 var mainSettings = DataCache.MainSettings(mid);
-                var mServerOffSet = mainSettings.TimeZoneOffset;
-                var newDate = displayDate.AddMinutes(-mServerOffSet);
-
-                newDate = newDate.AddMinutes(offset);
+                var newDate = displayDate.AddMinutes(offset.Minutes);
 
                 var dateFormat = mainSettings.DateFormatString;
                 var timeFormat = mainSettings.TimeFormatString;
@@ -1044,13 +1043,34 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
+        public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
         {
-            var mainSettings = DataCache.MainSettings(mid);
-            var mServerOffSet = mainSettings.TimeZoneOffset;
-            var newDate = displayDate.AddMinutes(-mServerOffSet);
+            /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
 
-            return newDate.AddMinutes(offset);
+            try
+            {
+                if (userInfo != null && userInfo.UserID > 0 && userInfo.Profile.PreferredTimeZone != null)
+                {
+                    return userInfo.Profile.PreferredTimeZone.BaseUtcOffset;
+                }
+                else
+                {
+                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().TimeZone.BaseUtcOffset;
+                }
+            }
+            catch
+            {
+                return new TimeSpan();
+            }
+
+        }
+        public static TimeSpan GetTimeZoneOffsetForUserId(int PortalId,int UserId)
+        {
+            return GetTimeZoneOffsetForUser( new Entities.Users.UserController().GetUser(PortalId,UserId));
+        }
+        public static DateTime GetUserDate(DateTime displayDate, int mid, TimeSpan offset)
+        {
+            return displayDate.AddMinutes(offset.Minutes);
         }
 
 

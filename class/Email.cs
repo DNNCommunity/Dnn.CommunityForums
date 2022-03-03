@@ -52,9 +52,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
 			var ti = tc.Template_Get(templateId, portalId, moduleId);
-			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Convert.ToInt32(portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Convert.ToInt32(portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Convert.ToInt32(portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
+			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
+			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
+			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
 			bodyText = bodyText.Replace("[REASON]", comments);
 			bodyHTML = bodyHTML.Replace("[REASON]", comments);
 		    var fc = new ForumController();
@@ -136,9 +136,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
 			var ti = tc.Template_Get(templateId, portalId, moduleID);
-			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, Convert.ToInt32(portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, Convert.ToInt32(portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, Convert.ToInt32(portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
+			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, Utilities.GetTimeZoneOffsetForUser(null));
+			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, Utilities.GetTimeZoneOffsetForUser(null));
+			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, Utilities.GetTimeZoneOffsetForUser(null));
 		    var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
 			var oEmail = new Email

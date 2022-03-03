@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sURL = "http://" + Common.Globals.GetDomainName(Request) + "/";
                     }
-                    DataCache.CacheStore(ModuleId + "HostURL", sURL, DateTime.Now.AddMinutes(30));
+                    DataCache.CacheStore(ModuleId + "HostURL", sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
                 return Convert.ToString(obj);
@@ -100,23 +100,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 return objSettings;
             }
         }
-        public DateTime CacheUpdatedTime
-        {
-            get
-            {
-                object obj = DataCache.CacheRetrieve(ModuleId + "CacheUpdate");
-                if (obj != null)
-                {
-                    return Convert.ToDateTime(obj);
-                }
-                return DateTime.Now;
-            }
-            set
-            {
-                DataCache.CacheStore(ModuleId + "CacheUpdate", value);
-                _CacheUpdatedTime = value;
-            }
-        }
+        //public DateTime CacheUpdatedTime
+        //{
+        //    get
+        //    {
+        //        object obj = DataCache.CacheRetrieve(ModuleId + "CacheUpdate");
+        //        if (obj != null)
+        //        {
+        //            return Convert.ToDateTime(obj);
+        //        }
+        //        return DateTime.UtcNow;
+        //    }
+        //    set
+        //    {
+        //        DataCache.CacheStore(ModuleId + "CacheUpdate", value);
+        //        _CacheUpdatedTime = value;
+        //    }
+        //}
         protected override void OnInit(EventArgs e)
         {
  	         base.OnInit(e);

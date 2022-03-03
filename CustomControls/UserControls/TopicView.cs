@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _lastPostAuthor.LastName = _drForum["LastPostLastName"].ToString();
             _lastPostAuthor.Username = _drForum["LastPostUserName"].ToString();
             _topicURL = _drForum["URL"].ToString();
-            _topicDateCreated = Utilities.GetDate(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), ForumModuleId, TimeZoneOffset);
+            _topicDateCreated = Utilities.GetFormattedDateString(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), ForumModuleId, TimeZoneOffset);
             _topicData = _drForum["TopicData"].ToString();
             _isSubscribedTopic = UserId > 0 && Utilities.SafeConvertInt(_drForum["IsSubscribedTopic"]) > 0;
 
@@ -1349,7 +1349,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Edit Action
-            if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.Now) < _editInterval)))
+            if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
             {
                 var sAction = "re";
                 if (replyId == 0)
@@ -1444,7 +1444,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sbOutput.Replace("[EDITDATE]", Utilities.GetDate(dateUpdated, ModuleId, TimeZoneOffset));
+                sbOutput.Replace("[EDITDATE]", Utilities.GetFormattedDateString(dateUpdated, ModuleId, TimeZoneOffset));
             }
 
             // Mod Edit Date
@@ -1453,7 +1453,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (dateCreated == dateUpdated || dateUpdated == DateTime.MinValue || dateUpdated == Utilities.NullDate())
                     sbOutput.Replace("[MODEDITDATE]", string.Empty);
                 else
-                    sbOutput.Replace("[MODEDITDATE]", Utilities.GetDate(dateUpdated, ModuleId, TimeZoneOffset));
+                    sbOutput.Replace("[MODEDITDATE]", Utilities.GetFormattedDateString(dateUpdated, ModuleId, TimeZoneOffset));
             }
             else
             {

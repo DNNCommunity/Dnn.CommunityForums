@@ -54,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _checked;
         private bool _pinned;
         private bool _subscribed;
-        private DateTime _announceStart = DateTime.MinValue;
-        private DateTime _announceEnd = DateTime.MinValue;
+        private DateTime _announceStart = DateTime.MinValue.ToUniversalTime();
+        private DateTime _announceEnd = DateTime.MinValue.ToUniversalTime();
         private string _categories = string.Empty;
         private string _pollQuestion;
         private string _pollType;
@@ -300,40 +300,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (calStartDate.SelectedDate == "" && _announceStart == new DateTime())
+                if (calStartDate.SelectedDate == "" && _announceStart == new DateTime().ToUniversalTime())
                 {
                     return Utilities.NullDate();
                 }
                 if (!(string.IsNullOrEmpty(calStartDate.SelectedDate)))
                 {
-                    return Convert.ToDateTime(calStartDate.SelectedDate);
+                    return Convert.ToDateTime(calStartDate.SelectedDate).ToUniversalTime();
                 }
                 return _announceStart;
             }
             set
             {
                 _announceStart = value;
-                calStartDate.SelectedDate = value.ToString();
+                calStartDate.SelectedDate = value.ToUniversalTime().ToString();
             }
         }
         public DateTime AnnounceEnd
         {
             get
             {
-                if (calEndDate.SelectedDate == "" && _announceEnd == new DateTime())
+                if (calEndDate.SelectedDate == "" && _announceEnd == new DateTime().ToUniversalTime())
                 {
                     return Utilities.NullDate();
                 }
                 if (!(string.IsNullOrEmpty(calEndDate.SelectedDate)))
                 {
-                    return Convert.ToDateTime(calEndDate.SelectedDate);
+                    return Convert.ToDateTime(calEndDate.SelectedDate).ToUniversalTime();
                 }
                 return _announceEnd;
             }
             set
             {
                 _announceEnd = value;
-                calEndDate.SelectedDate = Convert.ToString(value);
+                calEndDate.SelectedDate =  Convert.ToDateTime(value).ToUniversalTime().ToString();
             }
         }
         public string EditorClientId
@@ -915,11 +915,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(AnnounceStart == Utilities.NullDate()))
             {
-                calStartDate.SelectedDate = AnnounceStart.ToString();
+                calStartDate.SelectedDate = UserInfo.LocalTime(AnnounceStart).ToString();
             }
             if (!(AnnounceEnd == Utilities.NullDate()))
             {
-                calEndDate.SelectedDate = AnnounceEnd.ToString();
+                calEndDate.SelectedDate = AnnounceEnd.ToLocalTime().ToString();
             }
 
             plhEditor = new PlaceHolder();
@@ -1103,11 +1103,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
-                calEndDate.SelectedDate = _announceEnd.ToString();
+                calEndDate.SelectedDate = UserInfo.LocalTime(_announceEnd).ToString();
             }
             if (AnnounceStart > Utilities.NullDate())
             {
-                calStartDate.SelectedDate = _announceStart.ToString();
+                calStartDate.SelectedDate = UserInfo.LocalTime(_announceStart).ToString();
             }
             btnPost.ImageLocation = PostButton.ImageLocation;
             btnPost.ImageUrl = PostButton.ImageUrl;

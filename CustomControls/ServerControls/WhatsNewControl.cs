@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTempTemplate = sTempTemplate.Replace("[AUTHORLASTNAME]", lastName);
                     sTempTemplate = sTempTemplate.Replace("[AUTHORID]", authorId);
                     sTempTemplate = sTempTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sTempTemplate = sTempTemplate.Replace("[DATE]", Utilities.GetDate(Convert.ToDateTime(postDate), Convert.ToInt32(topicModuleId), timeOffset));
+                    sTempTemplate = sTempTemplate.Replace("[DATE]", Utilities.GetFormattedDateString(Convert.ToDateTime(postDate), Convert.ToInt32(topicModuleId), Utilities.GetTimeZoneOffsetForUser(null)));
                     sTempTemplate = sTempTemplate.Replace("[BODY]", body);
                     sTempTemplate = sTempTemplate.Replace("[BODYHTML]", bodyHTML);
                     sTempTemplate = sTempTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHTML));

@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append(WriteElement("/channel", 1));
                         sb.Replace("[LASTBUILDDATE]", LastBuildDate.ToString("r"));
                         sb.Append("</rss>");
-                        //Cache.Insert("RSS" & ModuleId & ForumID, sb.ToString, Nothing, DateTime.Now.AddMinutes(dblCacheTimeOut), TimeSpan.Zero)
+                        //Cache.Insert("RSS" & ModuleId & ForumID, sb.ToString, Nothing, DateTime.UtcNow.AddMinutes(dblCacheTimeOut), TimeSpan.Zero)
                         return sb.ToString();
                     }
                 }

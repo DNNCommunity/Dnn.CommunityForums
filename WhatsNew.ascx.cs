@@ -138,13 +138,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // The Module Stores the PostDate in the Current Time Zone format of the Server, not in UTC.
                     // So we need to calculate the difference between the Site UTC Offset  and the Server UTC Offset and Users UTC Offset and the Server offset and add that to the displayed time.
+                    //AF now stores in UTC; 
+                    //var dtNow = DateTime.UtcNow;
+                    //var timeOffsetServer = (int)TimeZoneInfo.Local.GetUtcOffset(dtNow).TotalMinutes;
+                    //var timeOffsetSite = (int)PortalSettings.TimeZone.GetUtcOffset(dtNow).TotalMinutes;
+                    //var timeOffsetUser = (int)UserInfo.Profile.PreferredTimeZone.GetUtcOffset(postDate).TotalMinutes;
 
-                    var dtNow = DateTime.Now;
-                    var timeOffsetServer = (int)TimeZoneInfo.Local.GetUtcOffset(dtNow).TotalMinutes;
-                    var timeOffsetSite = (int)PortalSettings.TimeZone.GetUtcOffset(dtNow).TotalMinutes;
-                    var timeOffsetUser = (int)UserInfo.Profile.PreferredTimeZone.GetUtcOffset(postDate).TotalMinutes;
-
-                    var timeOffset = (timeOffsetSite - timeOffsetServer) + (timeOffsetUser- timeOffsetServer);
+                    //var timeOffset = (timeOffsetSite - timeOffsetServer) + (timeOffsetUser- timeOffsetServer);
 
                     // Use a stringBuilder for better performance;
                     var sbTemplate = new StringBuilder(Settings.Format ?? string.Empty);
@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sbTemplate = sbTemplate.Replace("[AUTHORLASTNAME]", lastName);
                     sbTemplate = sbTemplate.Replace("[AUTHORID]", authorId.ToString());
                     sbTemplate = sbTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetDate(postDate, topicModuleId, timeOffset));
+                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetFormattedDateString(postDate, topicModuleId, Utilities.GetTimeZoneOffsetForUser(null)));
                     sbTemplate = sbTemplate.Replace("[TOPICID]", topicId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
