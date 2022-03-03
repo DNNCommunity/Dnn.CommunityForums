@@ -391,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Protected Methods
-        protected string GetDate(DateTime DisplayDate)
+        protected string GetFormattedDateString(DateTime DisplayDate)
         {
             return Utilities.GetFormattedDateString(DisplayDate, ModuleId, TimeZoneOffset);
         }
@@ -401,21 +401,21 @@ namespace DotNetNuke.Modules.ActiveForums
             return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset);
         }
 
-        protected string GetServerDateTime(DateTime DisplayDate)
-        {
-            //Dim newDate As Date 
-            string dateString;
-            try
-            {
-                dateString = DisplayDate.ToString(MainSettings.DateFormatString + " " + MainSettings.TimeFormatString);
-                return dateString;
-            }
-            catch (Exception ex)
-            {
-                dateString = DisplayDate.ToString();
-                return dateString;
-            }
-        }
+        //protected string GetServerDateTime(DateTime DisplayDate)
+        //{
+        //    //Dim newDate As Date 
+        //    string dateString;
+        //    try
+        //    {
+        //        dateString = DisplayDate.ToString(MainSettings.DateFormatString + " " + MainSettings.TimeFormatString);
+        //        return dateString;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        dateString = DisplayDate.ToString();
+        //        return dateString;
+        //    }
+        //}
         #endregion
 
         #region Public Methods

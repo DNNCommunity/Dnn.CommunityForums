@@ -608,14 +608,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
                             ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), GetServerDateTime(ti.Content.DateCreated));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), GetFormattedDateString(ti.Content.DateCreated));
                         }
                         else
                         {
                             var rc = new ReplyController();
                             var ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, postId);
                             ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), GetServerDateTime(ri.Content.DateCreated));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), GetFormattedDateString(ri.Content.DateCreated));
                         }
 
                         if (ci != null)

@@ -329,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sb.Append("<div class=\"afmodrow\">");
                     sb.Append("<table width=\"99%\">");
-                    sb.Append("<tr><td style=\"white-space:nowrap;\">" + GetDate(Convert.ToDateTime(dr["DateCreated"])) + "</td>");
+                    sb.Append("<tr><td style=\"white-space:nowrap;\">" + GetFormattedDateString(Convert.ToDateTime(dr["DateCreated"])) + "</td>");
                     sb.Append("<td align=\"right\">");
                     if (bModApprove)
                     {
