@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 //ORIGINAL LINE: Imports System.Web.HttpContext
 
 using System.Web;
@@ -96,7 +97,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					             FirstName = dr["FirstName"].ToString(),
 					             LastName = dr["LastName"].ToString(),
 					             UserId = Convert.ToInt32(dr["UserId"]),
-					             Username = dr["Username"].ToString()
+					             Username = dr["Username"].ToString(),
+								 TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUserId(PortalId, Convert.ToInt32(dr["UserId"])
 					         };
 
 				    if (! (sl.Contains(si)))
@@ -145,32 +147,37 @@ namespace DotNetNuke.Modules.ActiveForums
 				return;
 			}
 
-			string Subject;
-			string BodyText;
-			string BodyHTML;
-			string sTemplate = string.Empty;
-			var tc = new TemplateController();
-			TemplateInfo ti;
-			ti = TemplateId > 0 ? tc.Template_Get(TemplateId) : tc.Template_Get("SubscribedEmail", PortalId, ModuleId);
-			TemplateUtils.lstSubscriptionInfo = subs;
-			Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
-			BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
-			BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
-			string sFrom;
-			sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : _portalSettings.Email;
-			var oEmail = new Email
-			                 {
-			                     Recipients = subs,
-			                     Subject = Subject,
-			                     From = sFrom,
-			                     BodyText = BodyText,
-			                     BodyHTML = BodyHTML,
-			                     UseQueue = MainSettings.MailQueue
-			                 };
+			var timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
+			foreach (var timeZoneOffset in timeZoneOffsets)
+			{
+				string Subject;
+				string BodyText;
+				string BodyHTML;
+				string sTemplate = string.Empty;
+				var tc = new TemplateController();
+				TemplateInfo ti;
+				ti = TemplateId > 0 ? tc.Template_Get(TemplateId) : tc.Template_Get("SubscribedEmail", PortalId, ModuleId);
+				TemplateUtils.lstSubscriptionInfo = subs;
+				Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, timeZoneOffset);
+				BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, timeZoneOffset);
+				BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, timeZoneOffset);
+				string sFrom;
+				sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : _portalSettings.Email;
+				var oEmail = new Email
+				{
+					Recipients = subs,
+					Subject = Subject,
+					From = sFrom,
+					BodyText = BodyText,
+					BodyHTML = BodyHTML,
+					UseQueue = MainSettings.MailQueue
+				};
 
 
-		    var objThread = new System.Threading.Thread(oEmail.Send);
-			objThread.Start();
+				var objThread = new System.Threading.Thread(oEmail.Send);
+				objThread.Start();
+			}
+			
 		}
 
 		public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
