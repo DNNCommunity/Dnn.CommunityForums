@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _rowCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]) + 1;
             _nextTopic = Utilities.SafeConvertInt(_drForum["NextTopic"]);
             _prevTopic = Utilities.SafeConvertInt(_drForum["PrevTopic"]);
-            _lastPostDate = GetDate(Utilities.SafeConvertDateTime(_drForum["LastPostDate"]));
+            _lastPostDate = GetFormattedDateString(Utilities.SafeConvertDateTime(_drForum["LastPostDate"]));
             _lastPostAuthor.AuthorId = Utilities.SafeConvertInt(_drForum["LastPostAuthorId"]);
             _lastPostAuthor.DisplayName = _drForum["LastPostDisplayName"].ToString();
             _lastPostAuthor.FirstName = _drForum["LastPostFirstName"].ToString();
@@ -1325,8 +1325,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[REPLYID]", replyId.ToString());
             sbOutput.Replace("[TOPICID]", topicId.ToString());
-            sbOutput.Replace("[POSTDATE]", GetDate(dateCreated));
-            sbOutput.Replace("[DATECREATED]", GetDate(dateCreated));
+            sbOutput.Replace("[POSTDATE]", GetFormattedDateString(dateCreated));
+            sbOutput.Replace("[DATECREATED]", GetFormattedDateString(dateCreated));
 
 
 
