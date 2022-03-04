@@ -18,14 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+    #region "obsolete code that was never ported to new forums"
+/*
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class DailyDigest
+    public class DailyDigest
 //#if SKU_ENTERPRISE
 		 : DotNetNuke.Services.Scheduling.SchedulerClient
 {
@@ -68,4 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 	}
+    #endregion
 }
+/*

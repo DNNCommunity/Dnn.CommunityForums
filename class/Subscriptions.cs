@@ -144,6 +144,8 @@ namespace DotNetNuke.Modules.ActiveForums
 				Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
 			}	
 		}
+        #region "Old obsolete code associated with daily/weekly digests"
+		/*
         public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
 		{
 		 	string sysTemplateName = "DailyDigest";
@@ -336,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 	
 	}
-	
+	*/
 	/*
 	public class WeeklyDigest : Services.Scheduling.SchedulerClient
 	{

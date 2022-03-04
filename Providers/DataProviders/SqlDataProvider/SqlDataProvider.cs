@@ -490,10 +490,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_IsSubscribed", PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
         }
+        /* digests never updated for newer versions and not supported
         public override IDataReader Subscriptions_GetDigest(string SubscriptionType, DateTime StartDate)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_DigestGet", SubscriptionType, StartDate));
         }
+        */
         public override IDataReader Subscriptions_GetSubscribers(int PortalId, int ForumId, int TopicId, int Mode)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_Subscribers", PortalId, ForumId, TopicId, Mode));
