@@ -93,73 +93,76 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user)
-		{
-			var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-			var mainSettings = DataCache.MainSettings(moduleID);
-			var fc = new ForumController();
-			var fi = fc.Forums_Get(forumId, -1, false, true);
-			if (fi == null)
-				return;
+        {
+            var fc = new ForumController();
+            var fi = fc.Forums_Get(forumId, -1, false, true);
+            if (fi == null)
+                return;
 
-			var subs = new List<SubscriptionInfo>();
-			var rc = new Security.Roles.RoleController();
+            var subs = new List<SubscriptionInfo>();
+            var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
-			var uc = new Entities.Users.UserController();
-		    var modApprove = fi.Security.ModApprove;
-			var modRoles = modApprove.Split('|')[0].Split(';');
-		    foreach (var r in modRoles)
-		    {
-		        if (string.IsNullOrEmpty(r)) continue;
-		        var rid = Convert.ToInt32(r);
-		        var rName = rc.GetRole(rid, portalId).RoleName;
-		        foreach (UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
-		        {
-		            var ui = uc.GetUser(portalId, usr.UserID);
-		            var si = new SubscriptionInfo
-		                         {
-		                             UserId = ui.UserID,
-		                             DisplayName = ui.DisplayName,
-		                             Email = ui.Email,
-		                             FirstName = ui.FirstName,
-		                             LastName = ui.LastName,
-									 TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUserId(portalId, ui.UserID)
-		                         };
-		            if (! (subs.Contains(si)))
-		            {
-		                subs.Add(si);
-		            }
-		        }
-		    }
-
-		    if (subs.Count <= 0)
-				return;
-
-			var timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
-			foreach (var timeZoneOffset in timeZoneOffsets)
+            var uc = new Entities.Users.UserController();
+            var modApprove = fi.Security.ModApprove;
+            var modRoles = modApprove.Split('|')[0].Split(';');
+            foreach (var r in modRoles)
             {
-				var sTemplate = string.Empty;
-				var tc = new TemplateController();
-				var ti = tc.Template_Get(templateId, portalId, moduleID);
-				var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, timeZoneOffset);
-				var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, timeZoneOffset);
-				var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, forumId, topicId, replyId, comments, user, -1, timeZoneOffset);
-				var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
-
-				var oEmail = new Email
-				{
-					PortalId = portalId,
-					Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset).ToList(),
-					Subject = subject,
-					From = sFrom,
-					BodyText = bodyText,
-					BodyHTML = bodyHTML,
-					UseQueue = mainSettings.MailQueue
-				};
-				new Thread(oEmail.Send).Start();
+                if (string.IsNullOrEmpty(r)) continue;
+                var rid = Convert.ToInt32(r);
+                var rName = rc.GetRole(rid, portalId).RoleName;
+                foreach (UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
+                {
+                    var ui = uc.GetUser(portalId, usr.UserID);
+                    var si = new SubscriptionInfo
+                    {
+                        UserId = ui.UserID,
+                        DisplayName = ui.DisplayName,
+                        Email = ui.Email,
+                        FirstName = ui.FirstName,
+                        LastName = ui.LastName,
+                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUserId(portalId, ui.UserID)
+                    };
+                    if (!(subs.Contains(si)))
+                    {
+                        subs.Add(si);
+                    }
+                }
+            }
+            if (subs.Count > 0)
+            {
+				SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs);
 			}
-		}
+        }
+        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
+        {
+			PortalSettings portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			SettingsInfo mainSettings = DataCache.MainSettings(moduleID);
 
-		public static void SendAdminWatchEmail(int postID, int userID)
+			TemplateController tc = new TemplateController();
+            TemplateUtils.lstSubscriptionInfo = subs;
+            TemplateInfo ti = tc.Template_Get(templateId, portalId, moduleID);
+            IEnumerable<TimeSpan> timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
+            foreach (var timeZoneOffset in timeZoneOffsets)
+            {
+                string sTemplate = string.Empty;
+				string subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, string.Empty, userId, timeZoneOffset);
+				string bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId, timeZoneOffset);
+                string bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId,timeZoneOffset);
+                string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
+                Email oEmail = new Email
+                {
+                    PortalId = portalId,
+                    Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset).ToList(),
+                    Subject = subject,
+                    From = sFrom,
+                    BodyText = bodyText,
+                    BodyHTML = bodyHTML,
+                    UseQueue = mainSettings.MailQueue
+                };
+                new System.Threading.Thread(oEmail.Send).Start();
+            }
+        }
+        public static void SendAdminWatchEmail(int postID, int userID)
 		{
 			//TODO: Come back to fix and mod list
 			// Try

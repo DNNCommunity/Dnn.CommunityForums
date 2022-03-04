@@ -136,53 +136,17 @@ namespace DotNetNuke.Modules.ActiveForums
 			SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
 		}
 		public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, Forum fi, int TopicId, int ReplyId, int AuthorId)
-		{
-
-			var _portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-			SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+		{	
 			var sc = new SubscriptionController();
 			List<SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
-			if (subs.Count <= 0)
+			if (subs.Count > 0)
 			{
-				return;
-			}
-
-			var timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
-			foreach (var timeZoneOffset in timeZoneOffsets)
-			{
-				string Subject;
-				string BodyText;
-				string BodyHTML;
-				string sTemplate = string.Empty;
-				var tc = new TemplateController();
-				TemplateInfo ti;
-				ti = TemplateId > 0 ? tc.Template_Get(TemplateId) : tc.Template_Get("SubscribedEmail", PortalId, ModuleId);
-				TemplateUtils.lstSubscriptionInfo = subs;
-				Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, timeZoneOffset);
-				BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, timeZoneOffset);
-				BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, timeZoneOffset);
-				string sFrom;
-				sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : _portalSettings.Email;
-				var oEmail = new Email
-				{
-					Recipients = subs,
-					Subject = Subject,
-					From = sFrom,
-					BodyText = BodyText,
-					BodyHTML = BodyHTML,
-					UseQueue = MainSettings.MailQueue
-				};
-
-
-				var objThread = new System.Threading.Thread(oEmail.Send);
-				objThread.Start();
-			}
-			
+				Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
+			}	
 		}
-
-		public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
+        public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
 		{
-			string sysTemplateName = "DailyDigest";
+		 	string sysTemplateName = "DailyDigest";
 			if (SubscriptionType == SubscriptionTypes.WeeklyDigest)
 			{
 				sysTemplateName = "WeeklyDigest";
@@ -370,7 +334,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 		}
+	
 	}
+	
+	/*
 	public class WeeklyDigest : Services.Scheduling.SchedulerClient
 	{
 		public WeeklyDigest(Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
@@ -460,7 +427,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 	}
-
-	// End Class
+	*/
+    #endregion
+    // End Class
 }
 
