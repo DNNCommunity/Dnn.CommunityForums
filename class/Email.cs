@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Email = ui.Email,
                         FirstName = ui.FirstName,
                         LastName = ui.LastName,
-                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUserId(portalId, ui.UserID)
+                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID)
                     };
                     if (!(subs.Contains(si)))
                     {
@@ -140,8 +140,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			TemplateController tc = new TemplateController();
             TemplateUtils.lstSubscriptionInfo = subs;
-            TemplateInfo ti = tc.Template_Get(templateId, portalId, moduleID);
-            IEnumerable<TimeSpan> timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
+			TemplateInfo ti = templateId > 0 ? tc.Template_Get(templateId) : tc.Template_Get("SubscribedEmail", portalId, moduleID);
+			IEnumerable<TimeSpan> timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
             foreach (var timeZoneOffset in timeZoneOffsets)
             {
                 string sTemplate = string.Empty;
@@ -237,8 +237,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		
 			//Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
 			//updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values 
+			
 			Services.Mail.Mail.SendMail(mailFrom: fromEmail,
-										mailSender: (SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).PortalName : Host.HostTitle),
+										mailSender: (SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail),
 										mailTo: toEmail,
 										cc: string.Empty,
 										bcc: string.Empty,
@@ -253,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
 										smtpAuthentication: SMTPAuthentication(portalId),
 										smtpUsername: SMTPUsername(portalId),
 										smtpPassword: SMTPPassword(portalId),
-										smtpEnableSSL: EnableSMTPSSL(portalId));
+										smtpEnableSSL: EnableSMTPSSL(portalId)); ;
 		}
 		public void Send()
 		{

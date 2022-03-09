@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 		}
 
-        public TimeSpan TimeZoneOffset { get; set; } = new TimeSpan();
+        public int UserId { get; set; } = -1;
         public string Render()
 		{
 			System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					switch (row[i].GetType().ToString())
 					{
 						case "System.DateTime":
-							value = Utilities.GetFormattedDateString(Convert.ToDateTime(row[i].ToString()), ModuleId, TimeZoneOffset);
+							value = Utilities.GetUserFormattedDate(Convert.ToDateTime(row[i].ToString()), PortalId, UserId);
 							break;
 					}
 					tmp = tmp.Replace(k, value);

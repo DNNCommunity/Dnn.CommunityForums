@@ -47,47 +47,47 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, TimeSpan timeZoneOffset)
-        {
-            var newDate = DateTime.Parse(GetFormattedDateString(displayDate, instanceId, timeZoneOffset));
-            var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
-            var delta = ts.TotalSeconds;
-            if (delta <= 1)
-                return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
+        //public static string HumanFriendlyDate(DateTime displayDate, int instanceId, TimeSpan timeZoneOffset)
+        //{
+        //    var newDate = DateTime.Parse(GetFormattedDateString(displayDate, instanceId, timeZoneOffset));
+        //    var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
+        //    var delta = ts.TotalSeconds;
+        //    if (delta <= 1)
+        //        return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
 
-            if (delta < 60)
-                return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
+        //    if (delta < 60)
+        //        return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
 
-            if (delta < 120)
-                return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
+        //    if (delta < 120)
+        //        return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
 
-            if (delta < (45 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
+        //    if (delta < (45 * 60))
+        //        return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
 
-            if (delta < (90 * 60))
-                return GetSharedResource("[RESX:TimeSpan:HourAgo]");
+        //    if (delta < (90 * 60))
+        //        return GetSharedResource("[RESX:TimeSpan:HourAgo]");
 
-            if (delta < (24 * 60 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
+        //    if (delta < (24 * 60 * 60))
+        //        return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
 
-            if (delta < (48 * 60 * 60))
-                return GetSharedResource("[RESX:TimeSpan:DayAgo]");
+        //    if (delta < (48 * 60 * 60))
+        //        return GetSharedResource("[RESX:TimeSpan:DayAgo]");
 
-            if (delta < (72 * 60 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
+        //    if (delta < (72 * 60 * 60))
+        //        return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
 
-            if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
-                return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
+        //    if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
+        //        return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
 
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
+        //    if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
+        //        return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
 
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
-                return GetSharedResource("[RESX:TimeSpan:YearAgo]");
+        //    if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
+        //        return GetSharedResource("[RESX:TimeSpan:YearAgo]");
 
-            return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
+        //    return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
 
-        }
+        //}
 
         internal static string ParseTokenConfig(string template, string group, ControlsConfig config)
         {
@@ -1014,61 +1014,79 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        public static string GetFormattedDateString(DateTime displayDate, int mid, TimeSpan offset)
+        public static string GetUserFormattedDate(DateTime date, int portalId, int userId)
         {
-            string dateStr;
+            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
 
             try
             {
-                var mainSettings = DataCache.MainSettings(mid);
-                var newDate = displayDate.AddMinutes(offset.Minutes);
-
-                var dateFormat = mainSettings.DateFormatString;
-                var timeFormat = mainSettings.TimeFormatString;
-                var formatString = dateFormat + " " + timeFormat;
-                try
-                {
-                    dateStr = newDate.ToString(formatString);
-                }
-                catch
-                {
-                    dateStr = displayDate.ToString();
-                }
-                return dateStr;
+                return date.Add(userTimeZoneInfo.BaseUtcOffset).ToString("g", userCultureInfo);
             }
             catch (Exception ex)
             {
-                dateStr = displayDate.ToString();
-                return dateStr;
+                return date.ToString("g", CultureInfo.CurrentCulture);
             }
         }
-
-        public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
+        public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo) 
+        {
+            return GetUserFormattedDate(date, portalInfo.PortalID, userInfo.UserID);
+        }
+        public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
+        {
+            return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
+        }
+        public static CultureInfo GetCultureInfoForUser(UserInfo userInfo)
+        {
+            try
+            {
+                if (userInfo != null && userInfo.UserID > 0 && userInfo.Profile.PreferredLocale != null)
+                {
+                    return CultureInfo.GetCultureInfo(userInfo.Profile.PreferredLocale);
+                }
+                else
+                {
+                    return CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().CultureCode);
+                }
+            }
+            catch
+            {
+                return CultureInfo.CurrentCulture;
+            }
+        }
+        public static TimeZoneInfo GetTimeZoneInfoForUser(int portalId, int userId)
+        {
+            return GetTimeZoneInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
+        }
+        public static TimeZoneInfo GetTimeZoneInfoForUser(UserInfo userInfo)
         {
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
 
             try
             {
-                if (userInfo != null && userInfo.UserID > 0 && userInfo.Profile.PreferredTimeZone != null)
+                if (userInfo != null && userInfo.Profile != null && userInfo.Profile.PreferredTimeZone != null)
                 {
-                    return userInfo.Profile.PreferredTimeZone.BaseUtcOffset;
+                    return userInfo.Profile.PreferredTimeZone;
                 }
                 else
                 {
-                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().TimeZone.BaseUtcOffset;
+                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().TimeZone;
                 }
             }
             catch
             {
-                return new TimeSpan();
+                return TimeZoneInfo.Utc;
             }
-
         }
-        public static TimeSpan GetTimeZoneOffsetForUserId(int PortalId,int UserId)
+        public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
+        {
+            return GetTimeZoneInfoForUser(userInfo).BaseUtcOffset;
+        }
+        public static TimeSpan GetTimeZoneOffsetForUser(int PortalId,int UserId)
         {
             return GetTimeZoneOffsetForUser( new Entities.Users.UserController().GetUser(PortalId,UserId));
         }
-        public static DateTime GetUserDate(DateTime displayDate, int mid, TimeSpan offset)
+        public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
             return displayDate.AddMinutes(offset.Minutes);
         }
