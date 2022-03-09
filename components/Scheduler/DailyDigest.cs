@@ -17,7 +17,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
     #region "obsolete code that was never ported to new forums"
 /*
 using System;
@@ -69,6 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 	}
-    #endregion
+   
 }
-/*
+*/
+#endregion
