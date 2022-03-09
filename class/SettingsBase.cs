@@ -391,15 +391,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Protected Methods
-        protected string GetFormattedDateString(DateTime DisplayDate)
-        {
-            return Utilities.GetFormattedDateString(DisplayDate, ModuleId, TimeZoneOffset);
-        }
-
-        protected DateTime GetUserDate(DateTime displayDate)
-        {
-            return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset);
-        }
+        //protected DateTime GetUserDate(DateTime displayDate)
+        //{
+        //    return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset);
+        //}
 
         //protected string GetServerDateTime(DateTime DisplayDate)
         //{

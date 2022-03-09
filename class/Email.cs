@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Email = ui.Email,
                         FirstName = ui.FirstName,
                         LastName = ui.LastName,
-                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUserId(portalId, ui.UserID)
+                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID)
                     };
                     if (!(subs.Contains(si)))
                     {

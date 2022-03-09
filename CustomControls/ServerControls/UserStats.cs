@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 						}
 					}
 				}
-				output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUserId(portalId,UserId));
+				output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,UserId));
 				output = Utilities.LocalizeControl(output);
 				writer.Write(output);
 			}
