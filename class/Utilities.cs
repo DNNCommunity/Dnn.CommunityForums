@@ -1018,10 +1018,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
             TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-
+            return GetUserFormattedDate(date, userCultureInfo, userTimeZoneInfo.BaseUtcOffset);
+        }
+        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
             try
             {
-                return date.Add(userTimeZoneInfo.BaseUtcOffset).ToString("g", userCultureInfo);
+                return date.Add(timeZoneOffset).ToString("g", userCultureInfo);
             }
             catch (Exception ex)
             {
