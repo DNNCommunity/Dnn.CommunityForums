@@ -29,6 +29,7 @@ using System.Configuration;
 using Microsoft.ApplicationBlocks.Data;
 using System.Data;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -81,34 +82,34 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Email
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, 0, timeZoneOffset);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, 0, userCulture, timeZoneOffset);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, timeZoneOffset);
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, userCulture, timeZoneOffset);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null, -1, timeZoneOffset);
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null, -1, userCulture, timeZoneOffset);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, timeZoneOffset);
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, userCulture, timeZoneOffset);
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
             var uc = new Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, timeZoneOffset);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, userCulture, timeZoneOffset);
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
         {
             var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             var ms = DataCache.MainSettings(moduleID);
@@ -242,8 +243,8 @@ namespace DotNetNuke.Modules.ActiveForums
             result.Replace("[FIRSTNAME]", sFirstName);
             result.Replace("[LASTNAME]", sLastName);
             result.Replace("[FULLNAME]", sFirstName + " " + sLastName);
-            result.Replace("[GROUPNAME]", fi.GroupName);
-            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDate(dateCreated, portalID, userId)); 
+            result.Replace("[GROUPNAME]", fi.GroupName); 
+            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDate(dateCreated,userCultureInfo,timeZoneOffset));
             result.Replace("[COMMENTS]", comments);
             result.Replace("[PORTALNAME]", portalSettings.PortalName);
             result.Replace("[MODLINK]", "<a href=\"" + modLink + "\">" + modLink + "</a>");

@@ -47,47 +47,47 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        //public static string HumanFriendlyDate(DateTime displayDate, int instanceId, TimeSpan timeZoneOffset)
-        //{
-        //    var newDate = DateTime.Parse(GetFormattedDateString(displayDate, instanceId, timeZoneOffset));
-        //    var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
-        //    var delta = ts.TotalSeconds;
-        //    if (delta <= 1)
-        //        return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
+        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, TimeSpan timeZoneOffset)
+        {
+            var newDate = DateTime.Parse(GetFormattedDateString(displayDate, instanceId, timeZoneOffset));
+            var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
+            var delta = ts.TotalSeconds;
+            if (delta <= 1)
+                return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
 
-        //    if (delta < 60)
-        //        return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
+            if (delta < 60)
+                return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
 
-        //    if (delta < 120)
-        //        return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
+            if (delta < 120)
+                return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
 
-        //    if (delta < (45 * 60))
-        //        return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
+            if (delta < (45 * 60))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
 
-        //    if (delta < (90 * 60))
-        //        return GetSharedResource("[RESX:TimeSpan:HourAgo]");
+            if (delta < (90 * 60))
+                return GetSharedResource("[RESX:TimeSpan:HourAgo]");
 
-        //    if (delta < (24 * 60 * 60))
-        //        return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
+            if (delta < (24 * 60 * 60))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
 
-        //    if (delta < (48 * 60 * 60))
-        //        return GetSharedResource("[RESX:TimeSpan:DayAgo]");
+            if (delta < (48 * 60 * 60))
+                return GetSharedResource("[RESX:TimeSpan:DayAgo]");
 
-        //    if (delta < (72 * 60 * 60))
-        //        return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
+            if (delta < (72 * 60 * 60))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
 
-        //    if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
-        //        return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
+            if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
+                return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
 
-        //    if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
-        //        return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
+            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
 
-        //    if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
-        //        return GetSharedResource("[RESX:TimeSpan:YearAgo]");
+            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
+                return GetSharedResource("[RESX:TimeSpan:YearAgo]");
 
-        //    return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
+            return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
 
-        //}
+        }
 
         internal static string ParseTokenConfig(string template, string group, ControlsConfig config)
         {
@@ -1013,15 +1013,57 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sContents;
         }
+        public static string GetDate(DateTime displayDate, int mid, int offset)
+        {
+            string dateStr;
 
+            try
+            {
+                var mUserOffSet = 0;
+                var mainSettings = DataCache.MainSettings(mid);
+                var mServerOffSet = mainSettings.timeZoneOffset;
+                var newDate = displayDate.AddMinutes(-mServerOffSet);
+
+                newDate = newDate.AddMinutes(offset);
+
+                var dateFormat = mainSettings.DateFormatString;
+                var timeFormat = mainSettings.TimeFormatString;
+                var formatString = dateFormat + " " + timeFormat;
+                try
+                {
+                    dateStr = newDate.ToString(formatString);
+                }
+                catch
+                {
+                    dateStr = displayDate.ToString();
+                }
+                return dateStr;
+            }
+            catch (Exception ex)
+            {
+                dateStr = displayDate.ToString();
+                return dateStr;
+            }
+        }
+        public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
+        {
+            var mainSettings = DataCache.MainSettings(mid);
+            var mServerOffSet = mainSettings.timeZoneOffset;
+            var newDate = displayDate.AddMinutes(-mServerOffSet);
+
+            return newDate.AddMinutes(offset);
+        }
         public static string GetUserFormattedDate(DateTime date, int portalId, int userId)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
             TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-
+            return GetUserFormattedDate(date, userCultureInfo, userTimeZoneInfo.BaseUtcOffset);
+        }
+        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
             try
             {
-                return date.Add(userTimeZoneInfo.BaseUtcOffset).ToString("g", userCultureInfo);
+                return date.Add(timeZoneOffset).ToString("g", userCultureInfo);
             }
             catch (Exception ex)
             {

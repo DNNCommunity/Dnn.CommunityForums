@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading;
@@ -52,9 +53,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
 			var ti = tc.Template_Get(templateId, portalId, moduleId);
-			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
-			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
-			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetTimeZoneOffsetForUser(null));
+			var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
+			var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
+			var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
 			bodyText = bodyText.Replace("[REASON]", comments);
 			bodyHTML = bodyHTML.Replace("[REASON]", comments);
 		    var fc = new ForumController();
@@ -120,8 +121,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         Email = ui.Email,
                         FirstName = ui.FirstName,
                         LastName = ui.LastName,
-                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID)
-                    };
+						TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID),
+						UserCulture = Utilities.GetCultureInfoForUser(portalId, ui.UserID)
+					};
                     if (!(subs.Contains(si)))
                     {
                         subs.Add(si);
@@ -133,35 +135,39 @@ namespace DotNetNuke.Modules.ActiveForums
 				SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs);
 			}
         }
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
-        {
+		public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
+		{
 			PortalSettings portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			SettingsInfo mainSettings = DataCache.MainSettings(moduleID);
 
 			TemplateController tc = new TemplateController();
-            TemplateUtils.lstSubscriptionInfo = subs;
+			TemplateUtils.lstSubscriptionInfo = subs;
 			TemplateInfo ti = templateId > 0 ? tc.Template_Get(templateId) : tc.Template_Get("SubscribedEmail", portalId, moduleID);
-			IEnumerable<TimeSpan> timeZoneOffsets = subs.Select(s => s.TimeZoneOffSet).Distinct();
-            foreach (var timeZoneOffset in timeZoneOffsets)
-            {
-                string sTemplate = string.Empty;
-				string subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, string.Empty, userId, timeZoneOffset);
-				string bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId, timeZoneOffset);
-                string bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId,timeZoneOffset);
-                string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
-                Email oEmail = new Email
-                {
-                    PortalId = portalId,
-                    Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset).ToList(),
-                    Subject = subject,
-                    From = sFrom,
-                    BodyText = bodyText,
-                    BodyHTML = bodyHTML,
-                    UseQueue = mainSettings.MailQueue
-                };
-                new System.Threading.Thread(oEmail.Send).Start();
-            }
-        }
+			IEnumerable<CultureInfo> userCultures = subs.Select(s => s.UserCulture).Distinct();
+			foreach (CultureInfo userCulture in userCultures)
+			{
+				IEnumerable<TimeSpan> timeZoneOffsets = subs.Where(s=>s.UserCulture == userCulture).Select(s => s.TimeZoneOffSet).Distinct();
+				foreach (TimeSpan timeZoneOffset in timeZoneOffsets)
+				{
+					string sTemplate = string.Empty;
+					string subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, string.Empty, userId, userCulture, timeZoneOffset);
+					string bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId, userCulture, timeZoneOffset);
+					string bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId, userCulture, timeZoneOffset);
+					string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
+					Email oEmail = new Email
+					{
+						PortalId = portalId,
+						Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture).ToList(),
+						Subject = subject,
+						From = sFrom,
+						BodyText = bodyText,
+						BodyHTML = bodyHTML,
+						UseQueue = mainSettings.MailQueue
+					};
+					new System.Threading.Thread(oEmail.Send).Start();
+				}
+			}
+		}		
         public static void SendAdminWatchEmail(int postID, int userID)
 		{
 			//TODO: Come back to fix and mod list
@@ -227,34 +233,38 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		}
 
-        /* 
+		/* 
          * Note: This is the method that actual sends the email.  The mail queue  
          */
+		public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
+		{
+			SendNotification(-1, fromEmail, toEmail, subject, bodyText, bodyHTML);
+		}
 		public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
 		{
 			//USE DNN API for this to ensure proper delivery & adherence to portal settings
 			//Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
-		
+
 			//Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
 			//updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values 
-			
+
 			Services.Mail.Mail.SendMail(mailFrom: fromEmail,
-										mailSender: (SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail),
-										mailTo: toEmail,
-										cc: string.Empty,
-										bcc: string.Empty,
-										replyTo: string.Empty,
-										priority: DotNetNuke.Services.Mail.MailPriority.Normal,
-										subject: subject,
-										bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
-										bodyEncoding: System.Text.Encoding.Default,
-										body: bodyHTML,
-										attachments: new List<System.Net.Mail.Attachment>(),
-										smtpServer: SMTPServer(portalId),
-										smtpAuthentication: SMTPAuthentication(portalId),
-										smtpUsername: SMTPUsername(portalId),
-										smtpPassword: SMTPPassword(portalId),
-										smtpEnableSSL: EnableSMTPSSL(portalId)); ;
+									mailSender: (SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail),
+									mailTo: toEmail,
+									cc: string.Empty,
+									bcc: string.Empty,
+									replyTo: string.Empty,
+									priority: DotNetNuke.Services.Mail.MailPriority.Normal,
+									subject: subject,
+									bodyFormat: DotNetNuke.Services.Mail.MailFormat.Html,
+									bodyEncoding: System.Text.Encoding.Default,
+									body: bodyHTML,
+									attachments: new List<System.Net.Mail.Attachment>(),
+									smtpServer: SMTPServer(portalId),
+									smtpAuthentication: SMTPAuthentication(portalId),
+									smtpUsername: SMTPUsername(portalId),
+									smtpPassword: SMTPPassword(portalId),
+									smtpEnableSSL: EnableSMTPSSL(portalId)); 
 		}
 		public void Send()
 		{

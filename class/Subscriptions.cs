@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 //ORIGINAL LINE: Imports System.Web.HttpContext
 
@@ -51,7 +52,8 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public string Email { get; set; }
 
 		public string DisplayName { get; set; }
-		public TimeSpan TimeZoneOffSet{ get; set; }
+		public TimeSpan TimeZoneOffSet { get; set; }
+		public CultureInfo UserCulture { get; set; }
 
 		#endregion
 	}
@@ -92,14 +94,15 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					si = new SubscriptionInfo
 					         {
-					             DisplayName = dr["DisplayName"].ToString(),
-					             Email = dr["Email"].ToString(),
-					             FirstName = dr["FirstName"].ToString(),
-					             LastName = dr["LastName"].ToString(),
-					             UserId = Convert.ToInt32(dr["UserId"]),
-					             Username = dr["Username"].ToString(),
-								 TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"]))
-					         };
+								DisplayName = dr["DisplayName"].ToString(),
+								Email = dr["Email"].ToString(),
+								FirstName = dr["FirstName"].ToString(),
+								LastName = dr["LastName"].ToString(),
+								UserId = Convert.ToInt32(dr["UserId"]),
+								Username = dr["Username"].ToString(),
+								TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"])),
+								UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"]))
+					};
 
 				    if (! (sl.Contains(si)))
 					{

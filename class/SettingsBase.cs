@@ -391,26 +391,26 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Protected Methods
-        //protected DateTime GetUserDate(DateTime displayDate)
-        //{
-        //    return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset);
-        //}
+        protected DateTime GetUserDate(DateTime displayDate)
+        {
+            return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset.Minutes);
+        }
 
-        //protected string GetServerDateTime(DateTime DisplayDate)
-        //{
-        //    //Dim newDate As Date 
-        //    string dateString;
-        //    try
-        //    {
-        //        dateString = DisplayDate.ToString(MainSettings.DateFormatString + " " + MainSettings.TimeFormatString);
-        //        return dateString;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        dateString = DisplayDate.ToString();
-        //        return dateString;
-        //    }
-        //}
+        protected string GetServerDateTime(DateTime DisplayDate)
+        {
+            //Dim newDate As Date 
+            string dateString;
+            try
+            {
+                dateString = DisplayDate.ToString(MainSettings.DateFormatString + " " + MainSettings.TimeFormatString);
+                return dateString;
+            }
+            catch (Exception ex)
+            {
+                dateString = DisplayDate.ToString();
+                return dateString;
+            }
+        }
         #endregion
 
         #region Public Methods
