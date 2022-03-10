@@ -46,8 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool UseQueue = false;
 
 		public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
-		{
-
+		{	
 			var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			var mainSettings = DataCache.MainSettings(moduleId);
 		    var sTemplate = string.Empty;
