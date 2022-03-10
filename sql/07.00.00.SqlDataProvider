@@ -1,6 +1,18 @@
-﻿ALTER TABLE {databaseOwner}{objectQualifier}activeforums_Queue ADD
-	PortalId int NOT NULL DEFAULT -1
+﻿/* start - portal-specific smtp - issue #96 */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'PortalId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Queue] 
+		ADD PortalId int NULL
+END
 GO
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}DF_activeforums_Queue_PortalId') AND type = 'D')
+    ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Queue] DROP CONSTRAINT [{objectQualifier}DF_activeforums_Queue_PortalId];
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Queue] ADD CONSTRAINT [DF_{objectQualifier}activeforums_Queue_PortalId] DEFAULT (-1) FOR [PortalId];
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Queue] ALTER COLUMN [PortalId] int NOT NULL
+GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_List') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_List
 GO
@@ -12,6 +24,7 @@ FROM         {databaseOwner}{objectQualifier}activeforums_Queue WITH (nolock)
 ORDER BY DateCreated
 END
 GO
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_Add') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_Add
 GO
@@ -31,3 +44,5 @@ INSERT INTO {databaseOwner}{objectQualifier}activeforums_Queue
                       (PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC, DateCreated)
 VALUES     (@PortalId ,@EmailFrom,@EmailTo,@EmailSubject,@EmailBody,@EmailBodyPlainText,@EmailCC,@EmailBCC, GETDATE())
 GO
+
+/* end - portal-specific smtp - issue #96 */
