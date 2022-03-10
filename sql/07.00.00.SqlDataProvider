@@ -1,4 +1,5 @@
-﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Get]') AND type in (N'P', N'PC'))
+﻿/* begin - issue #59 - typo in activeforums_Attachments_Get */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Get]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Get];
 GO
 
@@ -25,6 +26,10 @@ SET NOCOUNT ON
 			OR (@FileID > 0 AND @FileID = FileID)
 END
 GO
+/* end - issue #59 - typo in activeforums_Attachments_Get */
+
+/* begin - issue #122 - Forum notifications sent to (soft-)deleted subscribers */
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]
 GO
@@ -127,9 +132,11 @@ If (@TopicsOnly = 1 AND @IsNewTopic = 0) OR (@TopicsOnly = 0)
 		END
 	END
 SELECT DISTINCT * FROM @subs
-
-
 GO
+
+/* end - issue #122 - Forum notifications sent to (soft-)deleted subscribers */
+
+/* begin - issue #96 - Email Sending Error: Portal Specific SMTP setting ignored */ 
 
 IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'PortalId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]'))    
 BEGIN
@@ -177,7 +184,11 @@ INSERT INTO {databaseOwner}{objectQualifier}activeforums_Queue
 VALUES     (@PortalId ,@EmailFrom,@EmailTo,@EmailSubject,@EmailBody,@EmailBodyPlainText,@EmailCC,@EmailBCC, GETDATE())
 GO
 
-/* start - updates to support storing datetime in UTC */
+/* end - issue #96 - Email Sending Error: Portal Specific SMTP setting ignored */ 
+
+/* begin - issue #86 - Save DateTimes as UTC instead of server time */
+
+/* schema updates to support storing datetime in UTC */
 
 /*DF_activeforums_AuditLog_DateAdded*/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}DF_activeforums_AuditLog_DateAdded') AND type = 'D')
@@ -2659,3 +2670,5 @@ IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}
 GO 
 
 /* end -  existing data conversion to UTC *
+
+/* end - issue #86 - Save DateTimes as UTC instead of server time */
