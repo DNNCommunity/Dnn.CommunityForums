@@ -25,6 +25,10 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 {
 	public class Controller
 	{
+		public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+		{
+			Add(-1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+		}
 		public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
 		{
 			try
@@ -35,7 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			{
 				Services.Exceptions.Exceptions.LogException(ex);
 			}
-
 		}
 	}
 
