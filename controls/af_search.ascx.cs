@@ -457,246 +457,246 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-        ////////#region Public Methods
+        #region Public Methods
 
-        ////////public string GetSearchUrl()
-        ////////{
-        ////////    var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
-        ////////    @params.AddRange(Parameters);
+        public string GetSearchUrl()
+        {
+            var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
+            @params.AddRange(Parameters);
 
-        ////////    if (SocialGroupId > 0)
-        ////////        @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (SocialGroupId > 0)
+                @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////    return NavigateUrl(TabId, string.Empty, @params.ToArray());
-        ////////}
+            return NavigateUrl(TabId, string.Empty, @params.ToArray());
+        }
 
-        ////////public string GetForumUrl()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        public string GetForumUrl()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var forumId = _currentRow["ForumID"].ToString();
+            var forumId = _currentRow["ForumID"].ToString();
 
-        ////////    var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topics };
+            var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topics };
             
 
-        ////////    if (SocialGroupId > 0)
-        ////////        @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (SocialGroupId > 0)
+                @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////    return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
-        ////////}
+            return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
+        }
 
-        ////////public string GetThreadUrl()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        public string GetThreadUrl()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var forumId = _currentRow["ForumID"].ToString();
-        ////////    var topicId = _currentRow["TopicId"].ToString();
+            var forumId = _currentRow["ForumID"].ToString();
+            var topicId = _currentRow["TopicId"].ToString();
 
-        ////////    var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId };
+            var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId };
             
 
-        ////////    if (SocialGroupId > 0)
-        ////////        @params = new List<string> { ParamKeys.TopicId + "=" + topicId };
-        ////////        @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (SocialGroupId > 0)
+                @params = new List<string> { ParamKeys.TopicId + "=" + topicId };
+                @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////    return NavigateUrl(TabId, string.Empty, @params.ToArray());
-        ////////}
+            return NavigateUrl(TabId, string.Empty, @params.ToArray());
+        }
 
-        ////////// Jumps to post for post view, or last reply for topics view
-        ////////public string GetPostUrl() 
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        // Jumps to post for post view, or last reply for topics view
+        public string GetPostUrl() 
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var forumId = _currentRow["ForumID"].ToString();
-        ////////    var topicId = _currentRow["TopicId"].ToString();
-        ////////    var contentId = _currentRow["ContentId"].ToString();
+            var forumId = _currentRow["ForumID"].ToString();
+            var topicId = _currentRow["TopicId"].ToString();
+            var contentId = _currentRow["ContentId"].ToString();
 
-        ////////    var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + contentId };
+            var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + contentId };
            
 
-        ////////    if (SocialGroupId > 0)
-        ////////        @params.Add("GroupId=" + SocialGroupId.ToString());
+            if (SocialGroupId > 0)
+                @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////    return NavigateUrl(TabId, string.Empty, @params.ToArray());
-        ////////}
+            return NavigateUrl(TabId, string.Empty, @params.ToArray());
+        }
 
-        ////////// Todo: Localize today and yesterday
-        ////////public string GetPostTime()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        // Todo: Localize today and yesterday
+        public string GetPostTime()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
-        ////////    var currentDate = GetUserDate(DateTime.UtcNow);
+            var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
+            var currentDate = GetUserDate(DateTime.UtcNow);
 
-        ////////    var datePart = date.ToString(MainSettings.DateFormatString);
+            var datePart = date.ToString(MainSettings.DateFormatString);
 
-        ////////    if (currentDate.Date == date.Date)
-        ////////        datePart = GetSharedResource("Today");
-        ////////    else if (currentDate.AddDays(-1).Date == date.Date)
-        ////////        datePart = GetSharedResource("Yesterday");
+            if (currentDate.Date == date.Date)
+                datePart = GetSharedResource("Today");
+            else if (currentDate.AddDays(-1).Date == date.Date)
+                datePart = GetSharedResource("Yesterday");
 
-        ////////    return string.Format(GetSharedResource("SearchPostTime"), datePart, date.ToString(MainSettings.TimeFormatString));
-        ////////}
+            return string.Format(GetSharedResource("SearchPostTime"), datePart, date.ToString(MainSettings.TimeFormatString));
+        }
 
-        ////////public string GetAuthor()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        public string GetAuthor()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var userId = Convert.ToInt32(_currentRow["AuthorId"]);
-        ////////    var userName = _currentRow["AuthorUserName"].ToString();
-        ////////    var firstName = _currentRow["AuthorFirstName"].ToString();
-        ////////    var lastName = _currentRow["AuthorLastName"].ToString();
-        ////////    var displayName = _currentRow["AuthorDisplayName"].ToString();
+            var userId = Convert.ToInt32(_currentRow["AuthorId"]);
+            var userName = _currentRow["AuthorUserName"].ToString();
+            var firstName = _currentRow["AuthorFirstName"].ToString();
+            var lastName = _currentRow["AuthorLastName"].ToString();
+            var displayName = _currentRow["AuthorDisplayName"].ToString();
 
-        ////////    return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        ////////}
+            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+        }
 
-        ////////public string GetLastPostAuthor()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        public string GetLastPostAuthor()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var userId = Convert.ToInt32(_currentRow["LastReplyAuthorId"]);
-        ////////    var userName = _currentRow["LastReplyUserName"].ToString();
-        ////////    var firstName = _currentRow["LastReplyFirstName"].ToString();
-        ////////    var lastName = _currentRow["LastReplyLastName"].ToString();
-        ////////    var displayName = _currentRow["LastReplyDisplayName"].ToString();
+            var userId = Convert.ToInt32(_currentRow["LastReplyAuthorId"]);
+            var userName = _currentRow["LastReplyUserName"].ToString();
+            var firstName = _currentRow["LastReplyFirstName"].ToString();
+            var lastName = _currentRow["LastReplyLastName"].ToString();
+            var displayName = _currentRow["LastReplyDisplayName"].ToString();
 
-        ////////    return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
-        ////////}
+            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+        }
 
-        ////////// Todo: Localize today and yesterday
-        ////////public string GetLastPostTime()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        // Todo: Localize today and yesterday
+        public string GetLastPostTime()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
-        ////////    var currentDate = GetUserDate(DateTime.UtcNow);
+            var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
+            var currentDate = GetUserDate(DateTime.UtcNow);
 
-        ////////    var datePart = date.ToString(MainSettings.DateFormatString);
+            var datePart = date.ToString(MainSettings.DateFormatString);
 
-        ////////    if (currentDate.Date == date.Date)
-        ////////        datePart = GetSharedResource("Today");
-        ////////    else if (currentDate.AddDays(-1).Date == date.Date)
-        ////////        datePart = GetSharedResource("Yesterday");
+            if (currentDate.Date == date.Date)
+                datePart = GetSharedResource("Today");
+            else if (currentDate.AddDays(-1).Date == date.Date)
+                datePart = GetSharedResource("Yesterday");
 
-        ////////    return datePart + " @ " + date.ToString(MainSettings.TimeFormatString);
-        ////////}
+            return datePart + " @ " + date.ToString(MainSettings.TimeFormatString);
+        }
 
-        ////////public string GetPostSnippet()
-        ////////{
-        ////////    var post = _currentRow["Body"].ToString();
-        ////////    post = Utilities.StripHTMLTag(post);
-        ////////    post = post.Replace(System.Environment.NewLine, " ");
+        public string GetPostSnippet()
+        {
+            var post = _currentRow["Body"].ToString();
+            post = Utilities.StripHTMLTag(post);
+            post = post.Replace(System.Environment.NewLine, " ");
 
-        ////////    if (post.Length > 255)
-        ////////        post = post.Substring(0, 255).Trim() + "...";
+            if (post.Length > 255)
+                post = post.Substring(0, 255).Trim() + "...";
 
-        ////////    return post;
-        ////////}
+            return post;
+        }
 
-        ////////public string GetIcon()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        public string GetIcon()
+        {
+            if (_currentRow == null)
+                return null;
 
-        ////////    var theme = MainSettings.Theme;
+            var theme = MainSettings.Theme;
 
-        ////////    // If we have a post icon, use it
-        ////////    var icon = _currentRow["TopicIcon"].ToString();
-        ////////    if (!string.IsNullOrWhiteSpace(icon))
-        ////////        return "~/DesktopModules/ActiveForums/themes/" + theme + "/emoticons/" + icon;
+            // If we have a post icon, use it
+            var icon = _currentRow["TopicIcon"].ToString();
+            if (!string.IsNullOrWhiteSpace(icon))
+                return "~/DesktopModules/ActiveForums/themes/" + theme + "/emoticons/" + icon;
 
-        ////////    // Otherwise, chose the icons based on the post stats
+            // Otherwise, chose the icons based on the post stats
 
-        ////////    var pinned = Convert.ToBoolean(_currentRow["IsPinned"]);
-        ////////    var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
+            var pinned = Convert.ToBoolean(_currentRow["IsPinned"]);
+            var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
 
-        ////////    if(pinned && locked)
-        ////////        return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_pinlocked.png";
+            if(pinned && locked)
+                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_pinlocked.png";
 
-        ////////    if(pinned)
-        ////////        return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_pin.png";
+            if(pinned)
+                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_pin.png";
 
-        ////////    if(locked)
-        ////////        return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_lock.png";
+            if(locked)
+                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_lock.png";
 
-        ////////    // Unread has to be calculated based on a few fields
-        ////////    var topicId = Convert.ToInt32(_currentRow["TopicId"]);
-        ////////    var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
-        ////////    var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
-        ////////    var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
-        ////////    var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
-        ////////    var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
+            // Unread has to be calculated based on a few fields
+            var topicId = Convert.ToInt32(_currentRow["TopicId"]);
+            var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
+            var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
+            var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
+            var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
+            var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
 
-        ////////    if(unread)
-        ////////        return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic.png";
+            if(unread)
+                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic.png";
 
-        ////////    return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_new.png";
-        ////////}
+            return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_new.png";
+        }
 
-        ////////public string GetMiniPager()
-        ////////{
-        ////////    if (_currentRow == null)
-        ////////        return null;
+        public string GetMiniPager()
+        {
+            if (_currentRow == null)
+                return null;
          
-        ////////    var replyCount = Convert.ToInt32(_currentRow["ReplyCount"]);
-        ////////    var pageCount = Convert.ToInt32(Math.Ceiling((double)(replyCount + 1) / _pageSize));
-        ////////    var forumId = _currentRow["ForumId"].ToString();
-        ////////    var topicId = _currentRow["TopicId"].ToString();
+            var replyCount = Convert.ToInt32(_currentRow["ReplyCount"]);
+            var pageCount = Convert.ToInt32(Math.Ceiling((double)(replyCount + 1) / _pageSize));
+            var forumId = _currentRow["ForumId"].ToString();
+            var topicId = _currentRow["TopicId"].ToString();
 
-        ////////    // No pager if there is only one page.
-        ////////    if (pageCount <= 1)
-        ////////        return null;
+            // No pager if there is only one page.
+            if (pageCount <= 1)
+                return null;
 
-        ////////     List<string> @params;
+             List<string> @params;
 
-        ////////    var result = string.Empty;
+            var result = string.Empty;
 
-        ////////    if(pageCount <= 5)
-        ////////    {
-        ////////        for (var i = 1; i <= pageCount; i++)
-        ////////        {
-        ////////            @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
+            if(pageCount <= 5)
+            {
+                for (var i = 1; i <= pageCount; i++)
+                {
+                    @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
 
-        ////////            if (SocialGroupId > 0)
-        ////////                @params.Add("GroupId=" + SocialGroupId.ToString());
+                    if (SocialGroupId > 0)
+                        @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////            result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";
-        ////////        }
+                    result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";
+                }
 
-        ////////        return result;
-        ////////    }
+                return result;
+            }
             
-        ////////    // 1 2 3 ... N
+            // 1 2 3 ... N
 
-        ////////    for(var i = 1; i <= 3; i++)
-        ////////    {
-        ////////        @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-        ////////        if (SocialGroupId > 0)
-        ////////            @params.Add("GroupId=" + SocialGroupId.ToString());
+            for(var i = 1; i <= 3; i++)
+            {
+                @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
+                if (SocialGroupId > 0)
+                    @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////        result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";  
-        ////////    }
+                result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";  
+            }
 
-        ////////    result += "<span>...</span>";
+            result += "<span>...</span>";
 
-        ////////    @params = new List<string>  { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
-        ////////    if (SocialGroupId > 0)
-        ////////        @params.Add("GroupId=" + SocialGroupId.ToString());
+            @params = new List<string>  { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
+            if (SocialGroupId > 0)
+                @params.Add("GroupId=" + SocialGroupId.ToString());
 
-        ////////    result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + pageCount + "</a>";  
+            result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + pageCount + "</a>";  
 
-        ////////    return result;
-        ////////}
+            return result;
+        }
 
-        ////////#endregion
+        #endregion
 
         public class Keyword
         {
