@@ -2353,6 +2353,11 @@ GO
 IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_tmp_utc_conversion'))
 	DROP VIEW {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion]
 GO 
+
+/* 
+   credit for this concept goes to Chris Barlow https://stackoverflow.com/a/25695034 
+   updated his view logic to include additional years, EU timezones, map timezone names to DNN stored timezone names, added minutes 
+*/
 CREATE VIEW {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] AS  (
 select yr, zone, standard, std_minutes, daylight, dst_minutes, rulename, strule, edrule, yrstart, yrend,
     dateadd(day, (stdowref + stweekadd), stmonthref) dstlow,
@@ -2379,14 +2384,14 @@ from (
     UNION select '2022' yr UNION select '2023' yr UNION select '2024' yr UNION select '2025' yr UNION select '2026' yr
 ) yrs
 cross join (
-    SELECT 'Eastern Standard Time' zone, '+05:00' standard, +300 std_minutes, '+04:00' daylight, +240 dst_minutes, 'US' rulename
-    UNION SELECT 'Central Standard Time' zone, '+06:00' standard, +360 std_minutes, '+05:00' daylight, +300 dst_minutes, 'US' rulename
-    UNION SELECT 'Mountain Standard Time' zone, '+07:00' standard, +420 std_minutes, '+06:00' daylight, +360 dst_minutes, 'US' rulename
-    UNION SELECT 'Pacific Standard Time' zone, '+08:00' standard, +480 std_minutes, '+07:00' daylight, +420 dst_minutes, 'US' rulename
-    UNION SELECT 'Central Europe Standard Time' zone, '-01:00' standard, -60 std_minutes, '-02:00' daylight, -120 dst_minutes, 'EU' rulename
-    UNION SELECT 'Central European Standard Time' zone, '-01:00' standard, -60 std_minutes, '-02:00' daylight, -120 dst_minutes, 'EU' rulename
-    UNION SELECT 'W. Europe Standard Time' zone, '-01:00' standard, -60 std_minutes, '-02:00' daylight, -120 dst_minutes, 'EU' rulename
-    UNION SELECT 'E. Europe Standard Time' zone, '-02:00' standard, -120 std_minutes, '-03:00' daylight, -180 dst_minutes, 'EU' rulename
+    SELECT 'Eastern Standard Time' zone, '-05:00' standard, -300 std_minutes, '-04:00' daylight, -240 dst_minutes, 'US' rulename
+    UNION SELECT 'Central Standard Time' zone, '-06:00' standard, -360 std_minutes, '-05:00' daylight, -300 dst_minutes, 'US' rulename
+    UNION SELECT 'Mountain Standard Time' zone, '-07:00' standard, -420 std_minutes, '-06:00' daylight, -360 dst_minutes, 'US' rulename
+    UNION SELECT 'Pacific Standard Time' zone, '-08:00' standard, -480 std_minutes, '-07:00' daylight, -420 dst_minutes, 'US' rulename
+    UNION SELECT 'Central Europe Standard Time' zone, '+01:00' standard, +60 std_minutes, '+02:00' daylight, +120 dst_minutes, 'EU' rulename
+    UNION SELECT 'Central European Standard Time' zone, '+01:00' standard, +60 std_minutes, '+02:00' daylight, +120 dst_minutes, 'EU' rulename
+    UNION SELECT 'W. Europe Standard Time' zone, '+01:00' standard, +60 std_minutes, '+02:00' daylight, +120 dst_minutes, 'EU' rulename
+    UNION SELECT 'E. Europe Standard Time' zone, '+02:00' standard, +120 std_minutes, '+03:00' daylight, +180 dst_minutes, 'EU' rulename
 ) z
 join (
     SELECT 'US' rulename, '2' strule, '-03-01' stdtpart, '1' edrule, '-11-01' eddtpart, 2007 firstyr, 2099 lastyr, '02:00:00' cngtime
@@ -2537,112 +2542,112 @@ BEGIN
 		BEGIN
 
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND [DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND [DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded])
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded])
 			FROM {databaseOwner}[{objectQualifier}activeforums_AuditLog] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend 
 
 			UPDATE t SET 
-			[DateCreated] = DATEADD(MINUTE,CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateCreated] = DATEADD(MINUTE,-1 * CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Content] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateCreated] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND t.[DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 	
  			UPDATE t SET 
-			[DateCreated] = DATEADD(MINUTE,CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated]),
-			[LastPostDate] = DATEADD(MINUTE,CASE WHEN [LastPostDate] BETWEEN DST_3.dstlow AND DST_3.dsthigh THEN DST_3.dst_minutes ELSE DST_3.std_minutes END,[LastPostDate])
+			[DateCreated] = DATEADD(MINUTE,-1 * CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated]),
+			[LastPostDate] = DATEADD(MINUTE,-1 * CASE WHEN [LastPostDate] BETWEEN DST_3.dstlow AND DST_3.dsthigh THEN DST_3.dst_minutes ELSE DST_3.std_minutes END,[LastPostDate])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Forums] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateCreated] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND t.[DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_3 ON DST_3.zone=@PortalTimeZoneName AND t.[LastPostDate] BETWEEN DST_3.yrstart AND DST_3.yrend
 	
 			UPDATE t SET 
-			[LastAccessDate] = DATEADD(MINUTE,CASE WHEN [LastAccessDate] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[LastAccessDate])
+			[LastAccessDate] = DATEADD(MINUTE,-1 * CASE WHEN [LastAccessDate] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[LastAccessDate])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[LastAccessDate] BETWEEN DST_1.yrstart AND DST_1.yrend 
 	
 			UPDATE t SET 
-			[LastPostDate] = DATEADD(MINUTE,CASE WHEN [LastPostDate] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[LastPostDate])
+			[LastPostDate] = DATEADD(MINUTE,-1 * CASE WHEN [LastPostDate] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[LastPostDate])
 			FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[LastPostDate] BETWEEN DST_1.yrstart AND DST_1.yrend 
 	
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Poll] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND [DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND [DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 	
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Poll_Options] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND [DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND [DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 	
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Poll_Results] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND [DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND [DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 	 
  			UPDATE t SET 
-			[DateCreated] = DATEADD(MINUTE,CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated])
+			[DateCreated] = DATEADD(MINUTE,-1 * CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated])
  			FROM {databaseOwner}[{objectQualifier}activeforums_Queue] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateCreated] BETWEEN DST_1.yrstart AND DST_1.yrend
 	 
  			UPDATE t SET 
-			[created] = DATEADD(MINUTE,CASE WHEN [created] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[created])
+			[created] = DATEADD(MINUTE,-1 * CASE WHEN [created] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[created])
  			FROM {databaseOwner}[{objectQualifier}activeforums_SearchCache] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[created] BETWEEN DST_1.yrstart AND DST_1.yrend
 	 
 			UPDATE t SET 
-			[DateCreated] = DATEADD(MINUTE,CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateCreated] = DATEADD(MINUTE,-1 * CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Templates] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateCreated] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND t.[DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 	 
 			UPDATE t SET 
-			[AnnounceStart] = DATEADD(MINUTE,CASE WHEN [AnnounceStart] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[AnnounceStart]),
-			[AnnounceEnd] = DATEADD(MINUTE,CASE WHEN [AnnounceEnd] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[AnnounceEnd])
+			[AnnounceStart] = DATEADD(MINUTE,-1 * CASE WHEN [AnnounceStart] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[AnnounceStart]),
+			[AnnounceEnd] = DATEADD(MINUTE,-1 * CASE WHEN [AnnounceEnd] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[AnnounceEnd])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Topics] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[AnnounceStart] BETWEEN DST_1.yrstart AND DST_1.yrend AND CAST([AnnounceStart] AS DATE) <> CAST('1900-01-01' AS DATE)
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND t.[AnnounceEnd] BETWEEN DST_2.yrstart AND DST_2.yrend AND CAST([AnnounceEnd] AS DATE) <> CAST('1900-01-01' AS DATE)
 	 
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated])
 			FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND [DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND [DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
 	  
 			/* -- NO UPDATE NEEDED--ALREADY USING GETUTCDATE 
 			UPDATE t SET 
-			[DateCreated] = DATEADD(MINUTE,CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated])
+			[DateCreated] = DATEADD(MINUTE,-1 * CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated])
  			FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Related] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateCreated] BETWEEN DST_1.yrstart AND DST_1.yrend 
 			*/ 
 	  
 			UPDATE t SET 
-			[DateAdded] = DATEADD(MINUTE,CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]) 
+			[DateAdded] = DATEADD(MINUTE,-1 * CASE WHEN [DateAdded] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateAdded]) 
 			FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND [DateAdded] BETWEEN DST_1.yrstart AND DST_1.yrend 
 	  
 			UPDATE t SET 
-			[DateCreated] = DATEADD(MINUTE,CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
-			[DateUpdated] = DATEADD(MINUTE,CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated]),
-			[DateLastActivity] = DATEADD(MINUTE,CASE WHEN [DateLastActivity] BETWEEN DST_3.dstlow AND DST_3.dsthigh THEN DST_3.dst_minutes ELSE DST_3.std_minutes END,[DateLastActivity]),
-			[DateLastPost] = DATEADD(MINUTE,CASE WHEN [DateLastPost] BETWEEN DST_4.dstlow AND DST_4.dsthigh THEN DST_4.dst_minutes ELSE DST_4.std_minutes END,[DateLastPost])
+			[DateCreated] = DATEADD(MINUTE,-1 * CASE WHEN [DateCreated] BETWEEN DST_1.dstlow AND DST_1.dsthigh THEN DST_1.dst_minutes ELSE DST_1.std_minutes END,[DateCreated]),
+			[DateUpdated] = DATEADD(MINUTE,-1 * CASE WHEN [DateUpdated] BETWEEN DST_2.dstlow AND DST_2.dsthigh THEN DST_2.dst_minutes ELSE DST_2.std_minutes END,[DateUpdated]),
+			[DateLastActivity] = DATEADD(MINUTE,-1 * CASE WHEN [DateLastActivity] BETWEEN DST_3.dstlow AND DST_3.dsthigh THEN DST_3.dst_minutes ELSE DST_3.std_minutes END,[DateLastActivity]),
+			[DateLastPost] = DATEADD(MINUTE,-1 * CASE WHEN [DateLastPost] BETWEEN DST_4.dstlow AND DST_4.dsthigh THEN DST_4.dst_minutes ELSE DST_4.std_minutes END,[DateLastPost])
 			FROM {databaseOwner}[{objectQualifier}activeforums_UserProfiles] t
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_1 ON DST_1.zone=@PortalTimeZoneName AND t.[DateCreated] BETWEEN DST_1.yrstart AND DST_1.yrend
 			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion] DST_2 ON DST_2.zone=@PortalTimeZoneName AND t.[DateUpdated] BETWEEN DST_2.yrstart AND DST_2.yrend
