@@ -393,7 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Protected Methods
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset.Minutes);
+            return Utilities.GetUserDate(displayDate, ModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
         }
 
         protected string GetServerDateTime(DateTime DisplayDate)
