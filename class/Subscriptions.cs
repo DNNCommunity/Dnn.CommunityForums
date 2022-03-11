@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				return false;
 			}
-			return true;
+		    return true;
 		}
 		public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
 		{
@@ -139,13 +139,13 @@ namespace DotNetNuke.Modules.ActiveForums
 			SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
 		}
 		public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, Forum fi, int TopicId, int ReplyId, int AuthorId)
-		{
+		{	
 			var sc = new SubscriptionController();
 			List<SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
 			if (subs.Count > 0)
 			{
 				Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
-			}
+			}	
 		}
         public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
 		{
@@ -353,86 +353,85 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 
 
-					Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
-					ScheduleHistoryItem.Succeeded = true;
-					ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
-					ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
+				Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
+				ScheduleHistoryItem.Succeeded = true;
+				ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
+				ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
 
-				}
-				catch (Exception ex)
-				{
-					ScheduleHistoryItem.Succeeded = false;
-					ScheduleHistoryItem.AddLogNote("Weekly Digest Failed:" + ex);
-					Errored(ref ex);
-					Services.Exceptions.Exceptions.LogException(ex);
-				}
 			}
-			private static DateTime GetStartOfWeek(DateTime StartDate)
+			catch (Exception ex)
 			{
-				switch (StartDate.DayOfWeek)
-				{
-					case DayOfWeek.Monday:
-						return StartDate.AddDays(0);
-					case DayOfWeek.Tuesday:
-						return StartDate.AddDays(-1);
-					case DayOfWeek.Wednesday:
-						return StartDate.AddDays(-2);
-					case DayOfWeek.Thursday:
-						return StartDate.AddDays(-3);
-					case DayOfWeek.Friday:
-						return StartDate.AddDays(-4);
-					case DayOfWeek.Saturday:
-						return StartDate.AddDays(-5);
-					case DayOfWeek.Sunday:
-						return StartDate.AddDays(-6);
-				}
-
-				return DateTime.MinValue;
+				ScheduleHistoryItem.Succeeded = false;
+				ScheduleHistoryItem.AddLogNote("Weekly Digest Failed:" + ex);
+				Errored(ref ex);
+				Services.Exceptions.Exceptions.LogException(ex);
 			}
-			private static int GetElapsedTimeTillNextStart()
+		}
+		private static DateTime GetStartOfWeek(DateTime StartDate)
+		{
+			switch (StartDate.DayOfWeek)
 			{
-				DateTime NextRun = DateTime.UtcNow.AddDays(7);
-				var nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 22, 0, 0);
-				int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
-				return elapseMinutes;
+				case DayOfWeek.Monday:
+					return StartDate.AddDays(0);
+				case DayOfWeek.Tuesday:
+					return StartDate.AddDays(-1);
+				case DayOfWeek.Wednesday:
+					return StartDate.AddDays(-2);
+				case DayOfWeek.Thursday:
+					return StartDate.AddDays(-3);
+				case DayOfWeek.Friday:
+					return StartDate.AddDays(-4);
+				case DayOfWeek.Saturday:
+					return StartDate.AddDays(-5);
+				case DayOfWeek.Sunday:
+					return StartDate.AddDays(-6);
 			}
 
+			return DateTime.MinValue;
+		}
+		private static int GetElapsedTimeTillNextStart()
+		{
+			DateTime NextRun = DateTime.UtcNow.AddDays(7);
+			var nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 22, 0, 0);
+			int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
+			return elapseMinutes;
+		}
 
-			//Public Class DailyDigest
-			//    Inherits DotNetNuke.Services.Scheduling.SchedulerClient
-			//    Public Sub New(ByVal objScheduleHistoryItem As DotNetNuke.Services.Scheduling.ScheduleHistoryItem)
-			//        MyBase.New()
-			//        Me.ScheduleHistoryItem = objScheduleHistoryItem
-			//    End Sub
-			//    Public Overrides Sub DoWork()
-			//        Try
+
+		//Public Class DailyDigest
+		//    Inherits DotNetNuke.Services.Scheduling.SchedulerClient
+		//    Public Sub New(ByVal objScheduleHistoryItem As DotNetNuke.Services.Scheduling.ScheduleHistoryItem)
+		//        MyBase.New()
+		//        Me.ScheduleHistoryItem = objScheduleHistoryItem
+		//    End Sub
+		//    Public Overrides Sub DoWork()
+		//        Try
 
 
-			//            Subscriptions.SendSubscriptions(SubscriptionTypes.DailyDigest, Now())
-			//            ScheduleHistoryItem.Succeeded = True
-			//            ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart()
-			//            ScheduleHistoryItem.AddLogNote("Daily Digest Complete")
+		//            Subscriptions.SendSubscriptions(SubscriptionTypes.DailyDigest, Now())
+		//            ScheduleHistoryItem.Succeeded = True
+		//            ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart()
+		//            ScheduleHistoryItem.AddLogNote("Daily Digest Complete")
 
-			//        Catch ex As Exception
-			//            ScheduleHistoryItem.Succeeded = False
-			//            ScheduleHistoryItem.AddLogNote("Daily Digest Failed: " + ex.ToString)
-			//            Errored(ex)
-			//            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-			//        End Try
-			//    End Sub
+		//        Catch ex As Exception
+		//            ScheduleHistoryItem.Succeeded = False
+		//            ScheduleHistoryItem.AddLogNote("Daily Digest Failed: " + ex.ToString)
+		//            Errored(ex)
+		//            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+		//        End Try
+		//    End Sub
 
-			//    Private Shared Function GetElapsedTimeTillNextStart() As Integer
-			//        Dim NextRun As DateTime = Now.AddDays(1)
-			//        Dim nextStart As New DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 18, 0, 0)
-			//        Dim elapseMinutes As Integer = CInt((nextStart.Ticks - DateTime.UtcNow.Ticks) \ TimeSpan.TicksPerDay)
-			//        Return elapseMinutes
-			//    End Function
+		//    Private Shared Function GetElapsedTimeTillNextStart() As Integer
+		//        Dim NextRun As DateTime = Now.AddDays(1)
+		//        Dim nextStart As New DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 18, 0, 0)
+		//        Dim elapseMinutes As Integer = CInt((nextStart.Ticks - DateTime.UtcNow.Ticks) \ TimeSpan.TicksPerDay)
+		//        Return elapseMinutes
+		//    End Function
 
 
 	}
 	*/
     #endregion
     // End Class
-	//
 }
 
