@@ -133,11 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract void Settings_Save(int ModuleId, string GroupKey, string SettingName, string SettingValue);
         #endregion
         #region Subscriptions
-        #region "digests never ported to new versions"
-        /*
         public abstract IDataReader Subscriptions_GetDigest(string SubscriptionType, DateTime StartDate);
-         */
-        #endregion
         public abstract IDataReader Subscriptions_GetSubscribers(int PortalId, int ForumId, int TopicId, int Mode);
         public abstract int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId);
         public abstract int Subscriptions_IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId);

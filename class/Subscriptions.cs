@@ -147,8 +147,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
 			}
 		}
-		#region "Old obsolete code associated with daily/weekly digests"
-		/*
         public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
 		{
 		 	string sysTemplateName = "DailyDigest";
@@ -341,18 +339,18 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 	
 	}
-	*/
-		/*
-		public class WeeklyDigest : Services.Scheduling.SchedulerClient
+	
+	/*
+	public class WeeklyDigest : Services.Scheduling.SchedulerClient
+	{
+		public WeeklyDigest(Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
 		{
-			public WeeklyDigest(Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
+			ScheduleHistoryItem = objScheduleHistoryItem;
+		}
+		public override void DoWork()
+		{
+			try
 			{
-				ScheduleHistoryItem = objScheduleHistoryItem;
-			}
-			public override void DoWork()
-			{
-				try
-				{
 
 
 					Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
@@ -430,11 +428,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			//        Return elapseMinutes
 			//    End Function
 
-		}
-		*/
-		
-	#endregion
+
 	}
+	*/
+    #endregion
     // End Class
 	//
 }
