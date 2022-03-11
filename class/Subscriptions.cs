@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	
 	}
 	
-	/*
+	
 	public class WeeklyDigest : Services.Scheduling.SchedulerClient
 	{
 		public WeeklyDigest(Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
@@ -430,8 +430,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 	}
-	*/
-    #endregion
+	
     // End Class
 }
 

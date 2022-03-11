@@ -47,9 +47,9 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, TimeSpan timeZoneOffset)
+        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, int timeZoneOffset)
         {
-            var newDate = DateTime.Parse(GetFormattedDateString(displayDate, instanceId, timeZoneOffset));
+            var newDate = DateTime.Parse(GetDate(displayDate, instanceId, timeZoneOffset));
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
@@ -1021,7 +1021,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var mUserOffSet = 0;
                 var mainSettings = DataCache.MainSettings(mid);
-                var mServerOffSet = mainSettings.timeZoneOffset;
+                var mServerOffSet = mainSettings.TimeZoneOffset;
                 var newDate = displayDate.AddMinutes(-mServerOffSet);
 
                 newDate = newDate.AddMinutes(offset);
@@ -1048,7 +1048,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
         {
             var mainSettings = DataCache.MainSettings(mid);
-            var mServerOffSet = mainSettings.timeZoneOffset;
+            var mServerOffSet = mainSettings.TimeZoneOffset;
             var newDate = displayDate.AddMinutes(-mServerOffSet);
 
             return newDate.AddMinutes(offset);

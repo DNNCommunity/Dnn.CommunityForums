@@ -54,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _checked;
         private bool _pinned;
         private bool _subscribed;
-        private DateTime _announceStart = DateTime.MinValue.ToUniversalTime();
-        private DateTime _announceEnd = DateTime.MinValue.ToUniversalTime();
+        private DateTime _announceStart = DateTime.MinValue;
+        private DateTime _announceEnd = DateTime.MinValue;
         private string _categories = string.Empty;
         private string _pollQuestion;
         private string _pollType;
@@ -915,11 +915,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(AnnounceStart == Utilities.NullDate()))
             {
-                calStartDate.SelectedDate = UserInfo.LocalTime(AnnounceStart).ToString();
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDate(AnnounceStart, PortalId, UserId);
             }
             if (!(AnnounceEnd == Utilities.NullDate()))
             {
-                calEndDate.SelectedDate = AnnounceEnd.ToLocalTime().ToString();
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDate(AnnounceEnd, PortalId, UserId);  
             }
 
             plhEditor = new PlaceHolder();
@@ -1103,11 +1103,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
-                calEndDate.SelectedDate = UserInfo.LocalTime(_announceEnd).ToString();
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDate(_announceEnd, PortalId, UserId);
             }
             if (AnnounceStart > Utilities.NullDate())
             {
-                calStartDate.SelectedDate = UserInfo.LocalTime(_announceStart).ToString();
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDate(_announceStart, PortalId, UserId); 
             }
             btnPost.ImageLocation = PostButton.ImageLocation;
             btnPost.ImageUrl = PostButton.ImageUrl;
