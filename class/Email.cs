@@ -219,17 +219,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		}
 
-        /* 
+		/* 
          * Note: This is the method that actual sends the email.  The mail queue  
          */
+		public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
+		{
+			SendNotification(-1, fromEmail, toEmail, subject, bodyText, bodyHTML);
+		}
 		public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
 		{
-			//USE DNN API for this to ensure proper delivery & adherence to portal settings
-			//Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
-		
-			//Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
-			//updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values 
-			Services.Mail.Mail.SendMail(mailFrom: fromEmail,
+				//USE DNN API for this to ensure proper delivery & adherence to portal settings
+				//Services.Mail.Mail.SendEmail(fromEmail, fromEmail, toEmail, subject, bodyHTML);
+
+				//Since this code is triggered from the DNN scheduler, the default/simple API (now commented out above) uses Host rather than Portal-specific SMTP configuration
+				//updated here to retrieve portal-specific SMTP configuration and use more elaborate DNN API that allows passing of the SMTP information rather than rely on DNN API DotNetNuke.Host.SMTP property accessors to determine portal vs. host SMTP values 
+				Services.Mail.Mail.SendMail(mailFrom: fromEmail,
 										mailSender: (SMTPPortalEnabled(portalId) ? PortalController.Instance.GetPortal(portalId).Email : Host.HostEmail),
 										mailTo: toEmail,
 										cc: string.Empty,
