@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums
             result.Replace("[LASTNAME]", sLastName);
             result.Replace("[FULLNAME]", sFirstName + " " + sLastName);
             result.Replace("[GROUPNAME]", fi.GroupName); 
-            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDate(dateCreated,userCultureInfo,timeZoneOffset));
+            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated,userCultureInfo,timeZoneOffset));
             result.Replace("[COMMENTS]", comments);
             result.Replace("[PORTALNAME]", portalSettings.PortalName);
             result.Replace("[MODLINK]", "<a href=\"" + modLink + "\">" + modLink + "</a>");
@@ -607,63 +607,40 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[MODUSERSETTINGS]", string.Empty);
 
                 // Date Created
-                // AF supported [AF:PROFILE:DATECREATED] and [AF:PROFILE:DATECREATED:d] where "d" was format;
-                //////var sDateCreated = string.Empty;
-                //////var sDateCreatedReplacement = "[AF:PROFILE:DATECREATED]";
-                //////if (up.UserId > 0 && up.Profile != null && up.Profile.DateCreated != null)
-                //////{
-                //////    if (pt.Contains("[AF:PROFILE:DATECREATED:"))
-                //////    {
-                //////        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + (sDateCreatedReplacement.Length), 1);
-                //////        sDateCreated = up.Profile.DateCreated.ToString(sFormat);
-                //////        sDateCreatedReplacement = "[AF:PROFILE:DATECREATED:" + sFormat + "]";
-                //////    }
-                //////    else
-                //////        sDateCreated = Utilities.GetUserFormattedDate(up.Profile.DateCreated, portalId, currentUserId);
-                //////}
-                //////result.Replace(sDateCreatedReplacement, sDateCreated);
-                // in new UTC-supported version, replace both with userformatted date
-                var sDateCreated = Utilities.GetUserFormattedDate(up.Profile.DateCreated, portalId, currentUserId);
+                var sDateCreated = string.Empty;
                 var sDateCreatedReplacement = "[AF:PROFILE:DATECREATED]";
                 if (up.UserId > 0 && up.Profile != null && up.Profile.DateCreated != null)
                 {
                     if (pt.Contains("[AF:PROFILE:DATECREATED:"))
                     {
                         var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + (sDateCreatedReplacement.Length), 1);
+                        sDateCreated = Utilities.GetUserFormattedDateTime(up.Profile.DateCreated, portalId, currentUserId, sFormat);
                         sDateCreatedReplacement = "[AF:PROFILE:DATECREATED:" + sFormat + "]";
-                    }                        
+                    }
+                    else
+                    {
+                        sDateCreated = Utilities.GetUserFormattedDateTime(up.Profile.DateCreated, portalId, currentUserId);
+                    }
                 }
                 result.Replace(sDateCreatedReplacement, sDateCreated);
 
                 // Last Activity
-                // AF supported [AF:PROFILE:DATELASTACTIVITY] and [AF:PROFILE:DATELASTACTIVITY:d] where "d" was format;
-                //////var sDateLastActivity = string.Empty;
-                //////var sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY]";
-
-                //////if (up.Profile.DateLastActivity != null && up.UserId > 0)
-                //////{
-                //////    if (pt.Contains("[AF:PROFILE:DATELASTACTIVITY:"))
-                //////    {
-                //////        string sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
-                //////        sDateLastActivity = up.Profile.DateLastActivity.ToString(sFormat);
-                //////        sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY:" + sFormat + "]";
-                //////    }
-                //////    else
-                //////        sDateLastActivity = Utilities.GetUserFormattedDate(up.Profile.DateLastActivity, portalId, currentUserId);
-                //////}
-                //////result.Replace(sDateLastActivityReplacement, sDateLastActivity);
-                // in new UTC-supported version, replace both with userformatted date
-                var sDateLastActivity = (up.Profile.DateCreated == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDate(up.Profile.DateLastActivity, portalId, currentUserId));
+                var sDateLastActivity = string.Empty;
                 var sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY]";
-                if (up.UserId > 0 && up.Profile != null && up.Profile.DateLastActivity != null)
+                if (up.Profile.DateLastActivity != null && up.UserId > 0)
                 {
                     if (pt.Contains("[AF:PROFILE:DATELASTACTIVITY:"))
                     {
-                        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
+                        string sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
+                        sDateLastActivity = Utilities.GetUserFormattedDateTime(up.Profile.DateLastActivity, portalId, currentUserId, sFormat); 
                         sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY:" + sFormat + "]";
                     }
+                    else
+                    {
+                        sDateLastActivity = Utilities.GetUserFormattedDateTime(up.Profile.DateLastActivity, portalId, currentUserId);
+                    }
                 }
-                result.Replace(sDateLastActivityReplacement, sDateLastActivity); 
+                result.Replace(sDateLastActivityReplacement, sDateLastActivity);
 
                 // Post Count
                 result.Replace("[AF:PROFILE:POSTCOUNT]", (up.PostCount == 0) ? string.Empty : up.PostCount.ToString());
@@ -672,7 +649,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:USERNAME]", Utilities.HTMLEncode(up.UserName).Replace("&amp;#", "&#"));
                 result.Replace("[AF:PROFILE:FIRSTNAME]", Utilities.HTMLEncode(up.FirstName).Replace("&amp;#", "&#"));
                 result.Replace("[AF:PROFILE:LASTNAME]", Utilities.HTMLEncode(up.LastName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:DATELASTPOST]", (up.Profile.DateLastPost == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDate(up.Profile.DateLastPost, portalId, currentUserId)); 
+                result.Replace("[AF:PROFILE:DATELASTPOST]", (up.Profile.DateLastPost == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDateTime(up.Profile.DateLastPost, portalId, currentUserId)); 
                 result.Replace("[AF:PROFILE:TOPICCOUNT]", up.Profile.TopicCount.ToString());
                 result.Replace("[AF:PROFILE:REPLYCOUNT]", up.Profile.ReplyCount.ToString());
                 result.Replace("[AF:PROFILE:ANSWERCOUNT]", up.Profile.AnswerCount.ToString());
@@ -876,7 +853,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTopic = sTopic.Replace("[ACTIONS:DELETE]", string.Empty);
                 sTopic = sTopic.Replace("[ACTIONS:QUOTE]", string.Empty);
                 sTopic = sTopic.Replace("[ACTIONS:REPLY]", string.Empty);
-                sTopic = sTopic.Replace("[POSTDATE]", Utilities.GetUserFormattedDate(postDate, portalId, userId));
+                sTopic = sTopic.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(postDate, portalId, userId));
                 sTopic = sTopic.Replace("[POSTINFO]", GetPostInfo(portalId, moduleId, userId, up.UserName, up, imagePath, false, HttpContext.Current.Request.UserHostAddress, true, currentUserType, currentUserId, false, timeZoneOffset));
                 sTemplate = ParsePreview(portalId, sTopic, body, moduleId);
                 sTemplate = "<table class=\"afgrid\" width=\"100%\" cellspacing=\"0\" cellpadding=\"4\" border=\"1\">" + sTemplate;

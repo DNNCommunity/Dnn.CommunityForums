@@ -1053,26 +1053,44 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return newDate.AddMinutes(offset);
         }
-        public static string GetUserFormattedDate(DateTime date, int portalId, int userId)
+        public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
+        {
+            return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
             TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDate(date, userCultureInfo, userTimeZoneInfo.BaseUtcOffset);
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.BaseUtcOffset, format);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
+        {
+            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.BaseUtcOffset);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, timeZoneOffset, "g");
         }
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
         {
+            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset, "d");
+        }
+        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
+        {
+            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset,format);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
+        {
             try
             {
-                return date.Add(timeZoneOffset).ToString("g", userCultureInfo);
+                return dateTime.Add(timeZoneOffset).ToString(format, userCultureInfo);
             }
             catch (Exception ex)
             {
-                return date.ToString("g", CultureInfo.CurrentCulture);
+                return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
-        }
-        public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo) 
-        {
-            return GetUserFormattedDate(date, portalInfo.PortalID, userInfo.UserID);
         }
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {

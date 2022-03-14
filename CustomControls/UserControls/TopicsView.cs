@@ -979,7 +979,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         displayName = AuthorDisplayName;
                     }
                     sTopicsTemplate = sTopicsTemplate.Replace("[STARTEDBY]", displayName);
-                    sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDate(DateCreated,PortalId,UserId));
+                    sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated,PortalId,UserId));
                     sTopicsTemplate = sTopicsTemplate.Replace("[REPLIES]", ReplyCount.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[VIEWS]", ViewCount.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[ROWCSS]", GetRowCSS(UserLastTopicRead, UserLastReplyRead, TopicId, LastReplyId, rowcount));
@@ -1018,7 +1018,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (LastReplyId == 0)
                         {
-                            sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, Utilities.GetUserFormattedDate(LastReplyDate,PortalId, UserId), "[LASTPOST]", "[/LASTPOST]");
+                            sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, Utilities.GetUserFormattedDateTime(LastReplyDate,PortalId, UserId), "[LASTPOST]", "[/LASTPOST]");
                         }
                         else
                         {
@@ -1045,7 +1045,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", LastReplyAuthorName);
                             }
 
-                            sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDate(LastReplyDate, PortalId, UserId));
+                            sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(LastReplyDate, PortalId, UserId));
                             sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, sLastReplyTemp, "[LASTPOST]", "[/LASTPOST]");
                         }
                     }

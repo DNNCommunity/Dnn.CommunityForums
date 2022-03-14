@@ -378,14 +378,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _rowCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]) + 1;
             _nextTopic = Utilities.SafeConvertInt(_drForum["NextTopic"]);
             _prevTopic = Utilities.SafeConvertInt(_drForum["PrevTopic"]);
-            _lastPostDate = Utilities.GetUserFormattedDate(Utilities.SafeConvertDateTime(_drForum["LastPostDate"]),PortalId,UserId);
+            _lastPostDate = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["LastPostDate"]),PortalId,UserId);
             _lastPostAuthor.AuthorId = Utilities.SafeConvertInt(_drForum["LastPostAuthorId"]);
             _lastPostAuthor.DisplayName = _drForum["LastPostDisplayName"].ToString();
             _lastPostAuthor.FirstName = _drForum["LastPostFirstName"].ToString();
             _lastPostAuthor.LastName = _drForum["LastPostLastName"].ToString();
             _lastPostAuthor.Username = _drForum["LastPostUserName"].ToString();
             _topicURL = _drForum["URL"].ToString();
-            _topicDateCreated = Utilities.GetUserFormattedDate(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
+            _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
             _isSubscribedTopic = UserId > 0 && Utilities.SafeConvertInt(_drForum["IsSubscribedTopic"]) > 0;
 
@@ -1325,8 +1325,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[REPLYID]", replyId.ToString());
             sbOutput.Replace("[TOPICID]", topicId.ToString());
-            sbOutput.Replace("[POSTDATE]", Utilities.GetUserFormattedDate(dateCreated, PortalId, UserId));
-            sbOutput.Replace("[DATECREATED]", Utilities.GetUserFormattedDate(dateCreated, PortalId, UserId));
+            sbOutput.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, PortalId, UserId));
+            sbOutput.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(dateCreated, PortalId, UserId));
 
 
 
@@ -1444,7 +1444,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sbOutput.Replace("[EDITDATE]", Utilities.GetUserFormattedDate(dateUpdated, PortalId, UserId));
+                sbOutput.Replace("[EDITDATE]", Utilities.GetUserFormattedDateTime(dateUpdated, PortalId, UserId));
             }
 
             // Mod Edit Date
@@ -1453,7 +1453,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (dateCreated == dateUpdated || dateUpdated == DateTime.MinValue || dateUpdated == Utilities.NullDate())
                     sbOutput.Replace("[MODEDITDATE]", string.Empty);
                 else
-                    sbOutput.Replace("[MODEDITDATE]", Utilities.GetUserFormattedDate(dateUpdated, PortalId, UserId));
+                    sbOutput.Replace("[MODEDITDATE]", Utilities.GetUserFormattedDateTime(dateUpdated, PortalId, UserId));
             }
             else
             {

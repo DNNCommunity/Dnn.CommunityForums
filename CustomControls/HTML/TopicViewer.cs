@@ -257,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					switch (row[i].GetType().ToString())
 					{
 						case "System.DateTime":
-							value = Utilities.GetUserFormattedDate(Convert.ToDateTime(row[i].ToString()), PortalId, UserId);
+							value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId, UserId);
 							break;
 					}
 					tmp = tmp.Replace(k, value);

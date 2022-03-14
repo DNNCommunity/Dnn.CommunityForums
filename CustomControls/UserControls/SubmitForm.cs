@@ -915,11 +915,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(AnnounceStart == Utilities.NullDate()))
             {
-                calStartDate.SelectedDate = Utilities.GetUserFormattedDate(AnnounceStart, PortalId, UserId);
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceStart, PortalId, UserId);
             }
             if (!(AnnounceEnd == Utilities.NullDate()))
             {
-                calEndDate.SelectedDate = Utilities.GetUserFormattedDate(AnnounceEnd, PortalId, UserId);  
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceEnd, PortalId, UserId);  
             }
 
             plhEditor = new PlaceHolder();
@@ -1103,11 +1103,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
-                calEndDate.SelectedDate = Utilities.GetUserFormattedDate(_announceEnd, PortalId, UserId);
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceEnd, PortalId, UserId);
             }
             if (AnnounceStart > Utilities.NullDate())
             {
-                calStartDate.SelectedDate = Utilities.GetUserFormattedDate(_announceStart, PortalId, UserId); 
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceStart, PortalId, UserId); 
             }
             btnPost.ImageLocation = PostButton.ImageLocation;
             btnPost.ImageUrl = PostButton.ImageUrl;

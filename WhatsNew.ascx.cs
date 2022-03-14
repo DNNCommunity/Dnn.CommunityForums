@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sbTemplate = sbTemplate.Replace("[AUTHORLASTNAME]", lastName);
                     sbTemplate = sbTemplate.Replace("[AUTHORID]", authorId.ToString());
                     sbTemplate = sbTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetUserFormattedDate(postDate, PortalId, UserId));
+                    sbTemplate = sbTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(postDate, PortalId, UserId));
                     sbTemplate = sbTemplate.Replace("[TOPICID]", topicId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
