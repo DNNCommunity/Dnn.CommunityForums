@@ -607,6 +607,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[MODUSERSETTINGS]", string.Empty);
 
                 // Date Created
+                // AF supported [AF:PROFILE:DATECREATED] and [AF:PROFILE:DATECREATED:d] where "d" was format;
                 //////var sDateCreated = string.Empty;
                 //////var sDateCreatedReplacement = "[AF:PROFILE:DATECREATED]";
                 //////if (up.UserId > 0 && up.Profile != null && up.Profile.DateCreated != null)
@@ -621,9 +622,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 //////        sDateCreated = Utilities.GetUserFormattedDate(up.Profile.DateCreated, portalId, currentUserId);
                 //////}
                 //////result.Replace(sDateCreatedReplacement, sDateCreated);
-                result.Replace("[AF:PROFILE:DATECREATED]", (up.Profile.DateCreated == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDate(up.Profile.DateCreated, portalId, currentUserId));
+                // in new UTC-supported version, replace both with userformatted date
+                var sDateCreated = Utilities.GetUserFormattedDate(up.Profile.DateCreated, portalId, currentUserId);
+                var sDateCreatedReplacement = "[AF:PROFILE:DATECREATED]";
+                if (up.UserId > 0 && up.Profile != null && up.Profile.DateCreated != null)
+                {
+                    if (pt.Contains("[AF:PROFILE:DATECREATED:"))
+                    {
+                        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + (sDateCreatedReplacement.Length), 1);
+                        sDateCreatedReplacement = "[AF:PROFILE:DATECREATED:" + sFormat + "]";
+                    }                        
+                }
+                result.Replace(sDateCreatedReplacement, sDateCreated);
 
                 // Last Activity
+                // AF supported [AF:PROFILE:DATELASTACTIVITY] and [AF:PROFILE:DATELASTACTIVITY:d] where "d" was format;
                 //////var sDateLastActivity = string.Empty;
                 //////var sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY]";
 
@@ -639,8 +652,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 //////        sDateLastActivity = Utilities.GetUserFormattedDate(up.Profile.DateLastActivity, portalId, currentUserId);
                 //////}
                 //////result.Replace(sDateLastActivityReplacement, sDateLastActivity);
-                result.Replace("[AF:PROFILE:DATELASTACTIVITY]", (up.Profile.DateCreated == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDate(up.Profile.DateLastActivity, portalId, currentUserId));
-
+                // in new UTC-supported version, replace both with userformatted date
+                var sDateLastActivity = (up.Profile.DateCreated == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDate(up.Profile.DateLastActivity, portalId, currentUserId));
+                var sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY]";
+                if (up.UserId > 0 && up.Profile != null && up.Profile.DateLastActivity != null)
+                {
+                    if (pt.Contains("[AF:PROFILE:DATELASTACTIVITY:"))
+                    {
+                        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
+                        sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY:" + sFormat + "]";
+                    }
+                }
+                result.Replace(sDateLastActivityReplacement, sDateLastActivity); 
 
                 // Post Count
                 result.Replace("[AF:PROFILE:POSTCOUNT]", (up.PostCount == 0) ? string.Empty : up.PostCount.ToString());
