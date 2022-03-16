@@ -500,6 +500,74 @@ BEGIN
 END
 GO
 
+
+
+/*activeforums_DashBoard_Stats*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_DashBoard_Stats]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_DashBoard_Stats]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_DashBoard_Stats]
+@PortalId int,
+@ModuleId int
+AS
+BEGIN
+SELECT     TOP 5 T.TopicId, C.Subject, C.DateCreated, U.Username, U.FirstName, U.LastName, U.DisplayName, C.AuthorName, C.Summary
+FROM         {databaseOwner}{objectQualifier}activeforums_Topics  AS T WITH (NOLOCK) INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Content  AS C WITH (NOLOCK) ON T.ContentId = C.ContentId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_ForumTopics AS FT WITH (NOLOCK) ON T.TopicId = FT.TopicId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Forums  AS F WITH (NOLOCK) ON FT.ForumId = F.ForumId LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}Users AS U ON C.AuthorId = U.UserID
+WHERE     (T.IsApproved = 1) AND (T.IsDeleted = 0) AND (F.ModuleId = @ModuleId)
+ORDER BY C.DateCreated DESC
+END
+BEGIN
+SELECT  TOP 5   U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName, UP.CreatedDate, UP.PortalId
+FROM         {databaseOwner}{objectQualifier}Users AS U WITH (NOLOCK) INNER JOIN
+                      {databaseOwner}{objectQualifier}UserPortals AS UP WITH (NOLOCK) ON U.UserID = UP.UserId
+WHERE     (UP.Authorised = 1) AND (UP.PortalId = @PortalId)
+ORDER BY UP.CreatedDate DESC
+END
+BEGIN
+
+SELECT   TOP 5  ForumId, ModuleId, ForumName, TotalTopics, TotalReplies
+FROM         {databaseOwner}{objectQualifier}activeforums_Forums WITH (NOLOCK)
+WHERE     (Active = 1) AND (ModuleId = @ModuleId)
+ORDER BY (TotalTopics + TotalReplies) DESC
+END
+BEGIN
+SELECT     TOP 10 UP.ProfileId, UP.UserId, UP.ModuleId, UP.PortalId, UP.TopicCount, UP.ReplyCount, UP.ViewCount, UP.AnswerCount, UP.RewardPoints, U.Username, 
+                      U.FirstName, U.LastName, U.DisplayName
+FROM         {databaseOwner}{objectQualifier}activeforums_UserProfiles AS UP WITH (NOLOCK) INNER JOIN
+             {databaseOwner}{objectQualifier}Users  AS U WITH (NOLOCK) ON UP.UserId = U.UserID
+WHERE     (UP.PortalId = @PortalId)
+ORDER BY ((UP.TopicCount * 10) + (UP.ReplyCount * 5) + UP.ViewCount) DESC
+END
+BEGIN
+DECLARE @TotalForums int
+DECLARE @TotalTopics int
+DECLARE @TotalReplies int
+DECLARE @TotalUsers int
+DECLARE @TotalActiveUsers int
+SELECT @TotalForums = Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId and Active = 1
+SELECT @TotalTopics = SUM(TotalTopics), @TotalReplies = SUM(TotalReplies) FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId AND Active = 1
+SELECT @TotalUsers = Count(*) FROM {databaseOwner}{objectQualifier}Users AS U  WITH (NOLOCK) INNER JOIN
+                      {databaseOwner}{objectQualifier}UserPortals AS UP WITH (NOLOCK) ON U.UserID = UP.UserId
+WHERE     (UP.Authorised = 1) AND (UP.PortalId = @PortalId)
+SELECT @TotalActiveUsers = Count(*) FROM {databaseOwner}{objectQualifier}activeforums_UserProfiles WITH (NOLOCK) WHERE PortalId = @PortalId AND DATEDIFF(dd,GETUTCDATE(),DateLastActivity) < 30
+SELECT @TotalForums as TotalForums, @TotalTopics as TotalTopics, @TotalReplies as TotalReplies, @TotalUsers as TotalMembers, @TotalActiveUsers as TotalActiveMembers
+
+END
+
+GO
 /*activeforums_Forum_Save*/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_Save]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forum_Save]
