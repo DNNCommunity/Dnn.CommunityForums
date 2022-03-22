@@ -470,8 +470,8 @@ FROM         {databaseOwner}{objectQualifier}activeforums_Content AS TC INNER JO
 					  {databaseOwner}{objectQualifier}activeforums_ForumTopics AS F ON T.TopicId = F.TopicId INNER JOIN
 					  {databaseOwner}{objectQualifier}activeforums_Forums AS FF ON F.ForumId = FF.ForumId LEFT OUTER JOIN
 					  {databaseOwner}{objectQualifier}Users AS U ON TC.AuthorId = U.UserID
-WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) AND (T.IsAnnounce = 0) OR
-					  (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) AND (T.IsAnnounce = 1) AND (T.AnnounceStart <= GETUTCDATE())
+WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) AND ((T.IsAnnounce = 0) OR ((T.IsAnnounce = 1) AND (T.AnnounceStart <= GETUTCDATE())))
+
 GO
 
 /*activeforums_Attachments_Save*/
