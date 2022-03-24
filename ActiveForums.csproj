@@ -639,6 +639,7 @@
     <None Include="sql\06.01.03.SqlDataProvider" />
     <None Include="sql\06.03.03.SqlDataProvider" />
     <None Include="sql\06.04.01.SqlDataProvider" />
+    <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -728,6 +729,8 @@
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
+    <Compile Include="components\Topics\TopicInfo.cs" />
+    <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
@@ -821,7 +824,6 @@
     <Compile Include="components\Social\ActiveSocial.cs" />
     <Compile Include="components\Tokens\Token.cs" />
     <Compile Include="components\Tokens\TokensController.cs" />
-    <Compile Include="components\Topics\Topics.cs" />
     <Compile Include="components\Users\User.cs" />
     <Compile Include="components\Users\UserController.cs" />
     <Compile Include="controls\admin_properties.ascx.designer.cs">

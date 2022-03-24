@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 {
 	public class Common : DataConfig
 	{
-#region Security
+		#region Security
 
 		public void SavePermissionSet(int PermissionSetId, string PermissionSet)
 		{
@@ -84,6 +84,37 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 			return sForums;
 		}
+		public string WhichRolesCanViewForum(int ForumId, string UserRoles)
+		{
+			string cacheKey = string.Format("AF-CanView-{0}", ForumId.ToString());
+			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId WHERE f.ForumId = " + ForumId.ToString();
+			string sRoles = string.Empty;
+			DataTable dt = null;
+
+			object data = DataCache.CacheRetrieve(cacheKey);
+
+			if (data != null)
+			{
+				dt = (DataTable)data;
+			}
+			else
+			{
+				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
+				DataCache.CacheStore(cacheKey, dt);
+			}
+			if (dt.Rows != null && dt.Rows.Count > 0)
+			{
+				string canView = dt.Rows[0]["CanView"].ToString();
+				foreach (string role in UserRoles.Split(";".ToCharArray()))
+				{
+					if (Permissions.HasPerm(canView, string.Concat(role, ";||")))
+					{
+						sRoles += role + ":";
+					}
+				}
+			}
+			return sRoles;
+		}
 		public bool SecurityUpgraded()
 		{
 			string sSQL = "SELECT Count(PermissionsId) FROM " + dbPrefix + "Permissions ";
@@ -99,9 +130,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 		}
 
-#endregion
+		#endregion
 
-    #region Views
+		#region Views
 
 		public DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
 		{
@@ -123,33 +154,33 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_TagsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds, tagId);
 		}
 
-        public DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
-        {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
-        }
+		public DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
+		{
+			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+		}
 
 
-    #endregion
+		#endregion
 
-#region TagCloud
+		#region TagCloud
 		public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
 		}
-#endregion
-#region Tags
+		#endregion
+		#region Tags
 		public int Tag_GetIdByName(int PortalId, int ModuleId, string TagName, bool IsCategory)
 		{
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
 		}
-#endregion
-#region TopMembers
+		#endregion
+		#region TopMembers
 		public IDataReader TopMembers_Get(int PortalId, int Rows)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopMembers", PortalId, Rows);
 		}
-#endregion
-#region CustomURLS
+		#endregion
+		#region CustomURLS
 		public Dictionary<string, string> GetPrefixes(int PortalId)
 		{
 			Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -164,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 					string archived = dr["Archived"].ToString();
 					string forumgroupId = dr["ForumGroupId"].ToString();
 					string groupPrefix = dr["GroupPrefixURL"].ToString();
-					if (! (string.IsNullOrEmpty(groupPrefix)))
+					if (!(string.IsNullOrEmpty(groupPrefix)))
 					{
 						prefix = groupPrefix + "/" + prefix;
 					}
@@ -204,11 +235,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
 				ForumGroupController fgc = new ForumGroupController();
 				ForumGroupInfo fg = fgc.GetForumGroup(ModuleId, ForumGroupId);
-				if (! (string.IsNullOrEmpty(fg.PrefixURL)))
+				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
 				{
 					VanityName = fg.PrefixURL + "/" + VanityName;
 				}
-				if (! (string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
+				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
 				{
 					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
 				}
@@ -233,14 +264,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 			}
 
-            return false;
+			return false;
 		}
 		public bool CheckGroupURL(int PortalId, int ModuleId, string VanityName, int ForumGroupId)
 		{
 			try
 			{
 				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
-				if (! (string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
+				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
 				{
 					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
 				}
@@ -265,9 +296,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 			}
 
-            return false;
+			return false;
 		}
 
-#endregion
+		#endregion
 	}
 }

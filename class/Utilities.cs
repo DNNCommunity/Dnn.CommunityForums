@@ -291,9 +291,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
         {
-            
+
             string[] parameters = new string[additionalParameters.Count];
-            for (int i = 0; i < additionalParameters.Count; i++ )
+            for (int i = 0; i < additionalParameters.Count; i++)
             {
                 parameters[i] = additionalParameters[i];
             }
@@ -388,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         private static string ReplaceLink(Match match, string currentSite, string text)
-        { 
+        {
             const int maxLengthAutoLinkLabel = 47;
             const string outSite = "<a href=\"{0}\" target=\"_blank\" rel=\"nofollow\">{1}</a>";
             const string inSite = "<a href=\"{0}\">{1}</a>";
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var xStart = 0;
             if ((match.Index - 10) > 0)
                 xStart = match.Index - 10;
-            
+
             if (text.Substring(xStart, 10).ToLowerInvariant().Contains("href"))
                 return url;
 
@@ -411,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (text.Substring(xStart, 10).ToLowerInvariant().Contains("="))
                 return url;
-        
+
             var urlText = match.Value;
             if (urlText.Length > maxLengthAutoLinkLabel)
                 urlText = match.Value.Substring(0, maxLengthAutoLinkLabel - 22) + "..." + match.Value.Substring(match.Value.Length - 20);
@@ -466,7 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // If HTML is not allowed or if this comes from the TextBox editor (quick reply), the HTML needs to be encoded.
             if (sClean != string.Empty)
             {
-                
+
                 sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
 
                 var regExp = new Regex(@"(<a [^>]*>)(?'url'(\S*?))(</a>)", RegexOptions.IgnoreCase);
@@ -498,7 +498,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
-             
+
             var strMessage = HTMLEncode(text);
 
             if (strMessage != string.Empty)
@@ -925,7 +925,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var sConfig = GetFile(HttpContext.Current.Server.MapPath("~/web.config"));
+                /* handle situations where this code is called without an HttpContext */
+                var sConfig = GetFile((HttpContext.Current != null) ? HttpContext.Current.Server.MapPath("~/web.config") : System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
                 return sConfig.Contains("DotNetNuke.Modules.ActiveForums.ForumsReWriter");
             }
             catch (Exception ex)
