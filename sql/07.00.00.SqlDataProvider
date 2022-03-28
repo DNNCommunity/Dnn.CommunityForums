@@ -477,7 +477,7 @@ WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1)
 /* and the way this is written, this wouldn't filter anyway */
 /* WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) */
 /* AND (T.IsAnnounce = 0) OR (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) AND (T.IsAnnounce = 1) AND (T.AnnounceStart <= GETUTCDATE()) */ 
-
+  
 GO
 
 /*activeforums_Attachments_Save*/
