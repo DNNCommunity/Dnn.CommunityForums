@@ -2748,7 +2748,7 @@ IF EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}
 	DROP VIEW {databaseOwner}[{objectQualifier}activeforums_tmp_utc_conversion]
 GO 
 
-/* end -  existing data conversion to UTC *
+/* end -  existing data conversion to UTC */
 
 /* end - issue #86 - Save DateTimes as UTC instead of server time */
 
