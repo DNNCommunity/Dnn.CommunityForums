@@ -530,7 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
 
             var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
-            var currentDate = GetUserDate(DateTime.Now);
+            var currentDate = GetUserDate(DateTime.UtcNow);
 
             var datePart = date.ToString(MainSettings.DateFormatString);
 
@@ -577,7 +577,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
 
             var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
-            var currentDate = GetUserDate(DateTime.Now);
+            var currentDate = GetUserDate(DateTime.UtcNow);
 
             var datePart = date.ToString(MainSettings.DateFormatString);
 

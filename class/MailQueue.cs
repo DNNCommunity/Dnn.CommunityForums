@@ -25,11 +25,11 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 {
 	public class Controller
 	{
-		public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+		public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
 		{
 			try
 			{
-				DataProvider.Instance().Queue_Add(emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+				DataProvider.Instance().Queue_Add(portalId, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
 			}
 			catch (Exception ex)
 			{
@@ -74,11 +74,12 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 					intQueueCount += 1;
 					var objEmail = new Message
 					                   {
-					                       Subject = dr["EmailSubject"].ToString(),
-					                       SendFrom = dr["EmailFrom"].ToString(),
-					                       SendTo = dr["EmailTo"].ToString(),
-					                       Body = dr["EmailBody"].ToString(),
-					                       BodyText = dr["EmailBodyPlainText"].ToString(),
+										PortalId = Convert.ToInt32(dr["PortalId"]),
+										Subject = dr["EmailSubject"].ToString(),
+										SendFrom = dr["EmailFrom"].ToString(),
+										SendTo = dr["EmailTo"].ToString(),
+										Body = dr["EmailBody"].ToString(),
+										BodyText = dr["EmailBodyPlainText"].ToString(),
 					                   };
 
 				    var canDelete = objEmail.SendMail();
@@ -115,6 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 
 	public class Message
 	{
+		public int PortalId;
 		public string Subject;
 		public string SendFrom;
 		public string SendTo;
@@ -129,13 +131,14 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 				var si = new SubscriptionInfo { Email = SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
 			    subs.Add(si);
 				var oEmail = new Email
-				                 {
-				                     UseQueue = false,
-				                     Recipients = subs,
-				                     Subject = Subject,
-				                     From = SendFrom,
-				                     BodyText = BodyText,
-				                     BodyHTML = Body,
+				{
+					PortalId = PortalId,
+					UseQueue = false,
+					Recipients = subs,
+					Subject = Subject,
+					From = SendFrom,
+					BodyText = BodyText,
+					BodyHTML = Body,
 				                 };
 			    try
 				{

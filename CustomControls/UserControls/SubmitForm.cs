@@ -297,43 +297,43 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
         public DateTime AnnounceStart
-        {
+        {/* for announce, only set/get date without time */
             get
             {
-                if (calStartDate.SelectedDate == "" && _announceStart == new DateTime())
+                if (calStartDate.SelectedDate == "" && _announceStart ==  DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
                 if (!(string.IsNullOrEmpty(calStartDate.SelectedDate)))
                 {
-                    return Convert.ToDateTime(calStartDate.SelectedDate);
+                    return Convert.ToDateTime(calStartDate.SelectedDate).Date;
                 }
                 return _announceStart;
             }
             set
             {
                 _announceStart = value;
-                calStartDate.SelectedDate = value.ToString();
+                calStartDate.SelectedDate = value.Date.ToString();
             }
         }
         public DateTime AnnounceEnd
-        {
+        {/* for announce, only want date without time */
             get
             {
-                if (calEndDate.SelectedDate == "" && _announceEnd == new DateTime())
+                if (calEndDate.SelectedDate == "" && _announceEnd == DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
                 if (!(string.IsNullOrEmpty(calEndDate.SelectedDate)))
                 {
-                    return Convert.ToDateTime(calEndDate.SelectedDate);
+                    return Convert.ToDateTime(calEndDate.SelectedDate).Date;
                 }
                 return _announceEnd;
             }
             set
             {
                 _announceEnd = value;
-                calEndDate.SelectedDate = Convert.ToString(value);
+                calEndDate.SelectedDate =  Convert.ToDateTime(value).Date.ToString();
             }
         }
         public string EditorClientId
@@ -915,11 +915,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(AnnounceStart == Utilities.NullDate()))
             {
-                calStartDate.SelectedDate = AnnounceStart.ToString();
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceStart, PortalId, UserId);
             }
             if (!(AnnounceEnd == Utilities.NullDate()))
             {
-                calEndDate.SelectedDate = AnnounceEnd.ToString();
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceEnd, PortalId, UserId);  
             }
 
             plhEditor = new PlaceHolder();
@@ -1103,11 +1103,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
-                calEndDate.SelectedDate = _announceEnd.ToString();
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceEnd, PortalId, UserId);
             }
             if (AnnounceStart > Utilities.NullDate())
             {
-                calStartDate.SelectedDate = _announceStart.ToString();
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceStart, PortalId, UserId); 
             }
             btnPost.ImageLocation = PostButton.ImageLocation;
             btnPost.ImageUrl = PostButton.ImageUrl;

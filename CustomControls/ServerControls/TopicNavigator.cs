@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//tb.HeaderTemplate = HeaderTemplate.Text
 			//tb.FooterTemplate = FooterTemplate.Text
 			tb.TopicId = TopicId;
-			tb.TimeZoneOffset = TimeZoneOffset;
+			tb.UserId = UserId;
 			writer.Write(tb.Render());
 		}
 

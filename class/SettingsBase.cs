@@ -380,51 +380,20 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
-        public int TimeZoneOffset
+        public TimeSpan TimeZoneOffset
         {
-            /* the code that uses this expects minutes to be returned
-             * this method now compares the user's timezone to the portaltimezone and returns the offset for that difference.
-             * it appears the AF module doesn't store dates as UTC, so you can't offset from UTC             * 
-             */
+            /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
             get
             {
-                int timeOffset = 0;
-                if (UserId > 0)
-                {
-                    try
-                    {
-                        if (UserInfo.Profile.PreferredTimeZone != null)
-                        {
-                            /* get the portal timezone offset so we can calculate differences for users */
-                            int portalTimeZone = Convert.ToInt32(PortalController.GetCurrentPortalSettings().TimeZone.BaseUtcOffset.TotalMinutes);
-                            int userTimeZone = Convert.ToInt32(UserInfo.Profile.PreferredTimeZone.BaseUtcOffset.TotalMinutes);
-                            if (userTimeZone != portalTimeZone)
-                            {
-                                timeOffset = Math.Abs(portalTimeZone - userTimeZone);
-                                if (portalTimeZone > userTimeZone)
-                                    timeOffset = -timeOffset; 
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        timeOffset = 0;
-                    }
-                }
-                return timeOffset;
+                return Utilities.GetTimeZoneOffsetForUser(UserInfo);      
             }
         }
 
         #endregion
         #region Protected Methods
-        protected string GetDate(DateTime DisplayDate)
-        {
-            return Utilities.GetDate(DisplayDate, ModuleId, TimeZoneOffset);
-        }
-
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return Utilities.GetUserDate(displayDate, ModuleId, TimeZoneOffset);
+            return Utilities.GetUserDate(displayDate, ModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
         }
 
         protected string GetServerDateTime(DateTime DisplayDate)

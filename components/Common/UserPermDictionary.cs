@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					dict.Add(key, v);
 				}
-				DataCache.CacheStore("afuserroles", dict, DateTime.Now.AddMinutes(3));
+				DataCache.CacheStore("afuserroles", dict, DateTime.UtcNow.AddMinutes(3));
 				return true;
 			}
 			catch (Exception ex)

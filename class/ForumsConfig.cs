@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					System.Globalization.DateTimeFormatInfo nfi = new System.Globalization.CultureInfo("en-US", true).DateTimeFormat;
 
 
-					objModules.UpdateModuleSetting(ModuleId, SettingKeys.InstallDate, DateTime.Now.ToString(new System.Globalization.CultureInfo("en-US")));
+					objModules.UpdateModuleSetting(ModuleId, SettingKeys.InstallDate, DateTime.UtcNow.ToString(new System.Globalization.CultureInfo("en-US")));
 				}
 				catch (Exception ex)
 				{

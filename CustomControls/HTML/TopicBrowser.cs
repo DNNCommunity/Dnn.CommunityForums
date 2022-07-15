@@ -281,19 +281,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		}
 		private SettingsInfo _mainSettings = null;
 		private bool _canEdit = false;
-		private int _TimeZoneOffset = 0;
-		public int TimeZoneOffset
-		{
-			get
-			{
-				return _TimeZoneOffset;
-			}
-			set
-			{
-				_TimeZoneOffset = value;
-			}
-		}
-		public string Render()
+
+        public int UserId { get; set; } = -1;
+        public string Render()
 		{
 			ForumController fc = new ForumController();
 			string fs = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
@@ -395,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					switch (row[i].GetType().ToString())
 					{
 						case "System.DateTime":
-							value = Utilities.GetDate(Convert.ToDateTime(row[i].ToString()), ModuleId, TimeZoneOffset);
+							value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId,UserId);
 							break;
 					}
 					tmp = tmp.Replace(k, value);
