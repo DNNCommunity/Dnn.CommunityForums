@@ -72,32 +72,66 @@ namespace DotNetNuke.Modules.ActiveForums
 			HttpResponse Response = app.Response;
 			string requestedPath = app.Request.Url.AbsoluteUri;
 			HttpContext Context = ((HttpApplication)s).Context;
-			int PortalId = -1;
-			DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
-			string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
-			objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
-			if (Request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
-			{
-				string sEx = ".jpg,.gif,.png,.swf,.js,.css,.html,.htm,desktopmodules,portals,.ashx,.ico,.txt,.doc,.docx,.pdf,.xml,.xls,.xlsx,.ppt,.pptx,.csv,.zip,.asmx,.aspx";
-				foreach (string sn in sEx.Split(','))
-				{
-					if (sUrl.Contains(sn))
-					{
-						// IO.File.AppendAllText(sPath, Request.RawUrl & "165<br />")
-						return;
-					}
-				}
-			}
-			if (Request.Url.LocalPath.ToLower().Contains("scriptresource.axd") || Request.Url.LocalPath.ToLower().Contains("webresource.axd") || Request.Url.LocalPath.ToLower().Contains("viewer.aspx") || Request.Url.LocalPath.ToLower().Contains("cb.aspx") || Request.Url.LocalPath.ToLower().Contains("filesupload.aspx") || Request.Url.LocalPath.ToLower().Contains(".gif") || Request.Url.LocalPath.ToLower().Contains(".jpg") || Request.Url.LocalPath.ToLower().Contains(".css") || Request.Url.LocalPath.ToLower().Contains(".png") || Request.Url.LocalPath.ToLower().Contains(".swf") || Request.Url.LocalPath.ToLower().Contains(".htm") || Request.Url.LocalPath.ToLower().Contains(".html") || Request.Url.LocalPath.ToLower().Contains(".ashx") || Request.Url.LocalPath.ToLower().Contains(".cur") || Request.Url.LocalPath.ToLower().Contains(".ico") || Request.Url.LocalPath.ToLower().Contains(".txt") || Request.Url.LocalPath.ToLower().Contains(".pdf") || Request.Url.LocalPath.ToLower().Contains(".xml") || Request.Url.LocalPath.ToLower().Contains("/portals/") || Request.Url.LocalPath.ToLower().Contains("/desktopmodules/") || Request.Url.LocalPath.ToLower().Contains("evexport.aspx") || Request.Url.LocalPath.ToLower().Contains("signupjs.aspx") || Request.Url.LocalPath.ToLower().Contains("evsexport.aspx") || Request.Url.LocalPath.ToLower().Contains("fbcomm.aspx") || Request.Url.LocalPath.ToLower().Contains(".aspx") || Request.Url.LocalPath.ToLower().Contains(".js"))
+
+			if (Request.Url.LocalPath.ToLowerInvariant().Contains(".axd")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".js")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".aspx")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".gif")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".jpg")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".css")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".png")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".swf")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".htm")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".html")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".ashx")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".cur")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".ico")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".txt")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".pdf")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".xml")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".csv")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".xls")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".xlsx")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".doc")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".docx")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".ppt")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".pptx")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".zip")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".zipx")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/api/")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/portals/")
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/"))
 			{
 				return;
 			}
-			if (Request.Url.LocalPath.ToLower().Contains("install.aspx") || Request.Url.LocalPath.ToLower().Contains("installwizard.aspx") || Request.Url.LocalPath.ToLower().Contains("captcha.aspx") || Request.RawUrl.Contains("viewer.aspx") || Request.RawUrl.Contains("blank.html") || Request.RawUrl.Contains("default.htm") || Request.RawUrl.Contains("autosuggest.aspx"))
+			int PortalId = -1;
+			DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
+			objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
+			if (objPortalAliasInfo == null && ! (HttpContext.Current.Request.Url.IsDefaultPort) )
+			{
+				objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
+			}
+			if (objPortalAliasInfo == null)
 			{
 				return;
 			}
 			PortalId = objPortalAliasInfo.PortalID;
-			string searchURL = sUrl;
+
+			string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
+            // TODO: this is all probably now handled by moving the exclusion logic earlier and may be redundant?
+            if (Request.RawUrl.ToLowerInvariant().Contains("404.aspx"))
+            {
+                string sEx = ".jpg,.gif,.png,.swf,.js,.css,.html,.htm,desktopmodules,portals,.ashx,.ico,.txt,.doc,.docx,.pdf,.xml,.xls,.xlsx,.ppt,.pptx,.csv,.zip,.asmx,.aspx";
+                foreach (string sn in sEx.Split(','))
+                {
+                    if (sUrl.Contains(sn))
+                    {
+                        // IO.File.AppendAllText(sPath, Request.RawUrl & "165<br />")
+                        return;
+                    }
+                }
+            }
+            string searchURL = sUrl;
 			searchURL = searchURL.Replace(objPortalAliasInfo.HTTPAlias, string.Empty);
 			if (searchURL.Length < 2)
 			{
@@ -364,12 +398,12 @@ namespace DotNetNuke.Modules.ActiveForums
 				if ((_topicId > 0) || (_forumId > 0) || (_forumgroupId > 0))
 				{
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId +
-		                        (_forumgroupId > 0 ? "&afg=" + _forumgroupId : string.Empty) +
-                		        (_forumId > 0 ? "&aff=" + _forumId : string.Empty) +
-                	        	(_topicId > 0 ? "&aft=" + _topicId : string.Empty) +
-		                        sPage + qs +
-                	        	((_forumgroupId > 0 || _forumId > 0) ? catQS : string.Empty));
-		                }	
+								(_forumgroupId > 0 ? "&afg=" + _forumgroupId : string.Empty) +
+								(_forumId > 0 ? "&aff=" + _forumId : string.Empty) +
+								(_topicId > 0 ? "&aft=" + _topicId : string.Empty) +
+								sPage + qs +
+								((_forumgroupId > 0 || _forumId > 0) ? catQS : string.Empty));
+				}
 				else if (_urlType == 2 && _otherId > 0)
 				{
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&act=" + _otherId + sPage + qs);
@@ -395,10 +429,10 @@ namespace DotNetNuke.Modules.ActiveForums
 						case 4:
 							v = "activetopics";
 							break;
-                        case 5:
-                            v = "afprofile";
-                            break;
-                        
+						case 5:
+							v = "afprofile";
+							break;
+
 					}
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=" + v + sPage + qs);
 				}
