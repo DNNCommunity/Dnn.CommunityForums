@@ -159,7 +159,7 @@ BEGIN
 				 t.mcpt	
 			FROM @tmpResults AS T INNER JOIN 
 				{databaseOwner}{objectQualifier}activeforums_Content AS C ON T.cid = C.ContentId
-			WHERE (@TimeSpan = 0 OR DATEDIFF(hh,c.DateCreated,GetDate()) <= @TimeSpan) AND
+			WHERE (@TimeSpan = 0 OR DATEDIFF(hh,c.DateCreated,GETUTCDATE()) <= @TimeSpan) AND
 				(@AuthorId = 0 OR C.AuthorId = @AuthorId) AND
 				(@TagCount = 0 OR  T.tid IN (
 					SELECT TopicId FROM {databaseOwner}{objectQualifier}activeforums_Tags INNER JOIN
@@ -189,7 +189,7 @@ BEGIN
 				{databaseOwner}{objectQualifier}activeforums_Content AS C ON T.cid = C.ContentId  LEFT OUTER JOIN -- Left outer joins to get last reply date
 				{databaseOwner}{objectQualifier}activeforums_Replies as R on FT.LastReplyId = r.ReplyId LEFT OUTER JOIN
 				{databaseOwner}{objectQualifier}activeforums_Content as RC on R.ContentId = rc.ContentId 
-			WHERE (@TimeSpan = 0 OR DATEDIFF(hh,CASE WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END,GetDate()) <= @TimeSpan) AND
+			WHERE (@TimeSpan = 0 OR DATEDIFF(hh,CASE WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END,GETUTCDATE()) <= @TimeSpan) AND
 			(@AuthorId = 0 OR c.AuthorId = @AuthorId) AND
 			(@TagCount = 0 OR  T.tid IN (
 				SELECT TopicId FROM {databaseOwner}{objectQualifier}activeforums_Tags INNER JOIN
