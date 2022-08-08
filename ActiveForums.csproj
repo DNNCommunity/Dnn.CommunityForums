@@ -822,7 +822,6 @@
     <Compile Include="components\Social\ActiveSocial.cs" />
     <Compile Include="components\Tokens\Token.cs" />
     <Compile Include="components\Tokens\TokensController.cs" />
-    <Compile Include="components\Topics\Topics.cs" />
     <Compile Include="components\Users\User.cs" />
     <Compile Include="components\Users\UserController.cs" />
     <Compile Include="controls\admin_properties.ascx.designer.cs">
