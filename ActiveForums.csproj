@@ -729,6 +729,8 @@
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
+    <Compile Include="components\Topics\TopicInfo.cs" />
+    <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
