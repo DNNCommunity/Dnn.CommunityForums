@@ -330,7 +330,7 @@
             </script>
              <script type="Install">
                <path>sql</path>
-               <name>06.07.00.SqlDataProvider</name>
+               <name>07.00.00.SqlDataProvider</name>
                <version>07.00.00</version>
              </script>
             <script type="UnInstall">
