@@ -814,3 +814,10 @@ GO
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Likes]') AND type in (N'U'))
 	DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Likes]
 GO
+
+
+/* begin 07.00.00 */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate
+GO
+/* end 07.00.00 */

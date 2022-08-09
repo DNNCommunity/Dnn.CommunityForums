@@ -1,4 +1,4 @@
-﻿/* begin - issue #59 - typo in activeforums_Attachments_Get */
+﻿/* begin - issue #59 - typo in activeforums_Attachments_Get */ 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments_Get]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Attachments_Get];
 GO
@@ -276,24 +276,7 @@ GO
 
 /*DF_activeforums_SearchCache_created*/
 
-/* NOTE: special handling for this one since the original default constraint was created without a name, so SQL invents a name. 
-
-Ideally what we want is something like this (which doesn't work):
-
-ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_SearchCache] ALTER COLUMN [created] DROP DEFAULT
-GO
-ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_SearchCache]
-    ADD  CONSTRAINT [DF_activeforums_SearchCache_created] DEFAULT (GETUTCDATE()) FOR [created];
-GO
-
-Might be able to craft something together with this type of logic:
-select * from sys.default_constraints where object_id = 
-(select default_object_id from sys.columns where name = 'created' and object_id = 
-(select object_id from sys.objects where object_id = OBJECT_ID(N'[activeforums_SearchCache') AND type in (N'U')))
-
-But ultimately, since this table only holds transient data, and doesn't need to be preserved, the easiest solution is to just drop and recreate the table :)
-
-*/
+/* NOTE: special handling for this one since the original default constraint was created without a name, so SQL invents a name. As a workaround, drop table and recreate with named constraint */
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_SearchCache') AND type in (N'U'))
     DROP TABLE {databaseOwner}[{objectQualifier}activeforums_SearchCache]
@@ -470,14 +453,14 @@ FROM         {databaseOwner}{objectQualifier}activeforums_Content AS TC INNER JO
 					  {databaseOwner}{objectQualifier}activeforums_ForumTopics AS F ON T.TopicId = F.TopicId INNER JOIN
 					  {databaseOwner}{objectQualifier}activeforums_Forums AS FF ON F.ForumId = FF.ForumId LEFT OUTER JOIN
 					  {databaseOwner}{objectQualifier}Users AS U ON TC.AuthorId = U.UserID
-					  
+
 WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) 
 
 /* don't filter based on announce -- that is a UI feature to display topics, not a filter for determining if a topic is approved, etc. */
 /* and the way this is written, this wouldn't filter anyway */
 /* WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) */
 /* AND (T.IsAnnounce = 0) OR (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) AND (T.IsAnnounce = 1) AND (T.AnnounceStart <= GETUTCDATE()) */ 
-  
+
 GO
 
 /*activeforums_Attachments_Save*/
@@ -1082,16 +1065,13 @@ IF @ResultType = 0
 	ORDER BY rn
 
 	DROP TABLE #tmpResults
-GO
+GO 
 
-
-/*activeforums_Search_FullText*/
+/*activeforums_Search_FullText : note this uses ALTER not CREATE since fulltext is optional and this only updates if existing */
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_FullText]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_FullText]
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_FullText]
+EXEC('
+ALTER PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_FullText]
 
 	@PortalId int,
 	@ModuleId int,
@@ -1121,19 +1101,19 @@ DECLARE @Word nvarchar(200)
 DECLARE @WordTable table (Word nvarchar(200) NOT NULL)
 DECLARE @WordCount int = 0
 
-IF @SearchString IS NOT NULL AND @SearchString <> ''
+IF @SearchString IS NOT NULL AND @SearchString <> ''''
 BEGIN
 	IF(@MatchType = 2)
 		INSERT INTO @WordTable VALUES(@SearchString) 
 	ELSE
 		INSERT INTO @WordTable
 		SELECT string
-		FROM {databaseOwner}{objectQualifier}activeforums_Functions_SplitText(@SearchString, ',')
+		FROM {databaseOwner}{objectQualifier}activeforums_Functions_SplitText(@SearchString, '','')
 	
 	SET @WordCount = (SELECT COUNT(*) from @WordTable)
 END
 
--- If we dont' have any words, no point in doing the search
+-- If we do not have any words, no point in doing the search
 IF @WordCount = 0
 BEGIN
 	DECLARE @emptyResults TABLE (rn int, tid int, cid int, mcpt decimal(15,4))
@@ -1148,33 +1128,33 @@ DECLARE @Tag nvarchar(400)
 DECLARE @TagTable table (Tag nvarchar(400) NOT NULL)
 DECLARE @TagCount int = 0
 
-IF @Tags IS NOT NULL AND @Tags <> ''
+IF @Tags IS NOT NULL AND @Tags <> ''''
 BEGIN
 	INSERT INTO @TagTable
 	SELECT string
-	FROM {databaseOwner}{objectQualifier}activeforums_Functions_SplitText(@Tags, ',')
+	FROM {databaseOwner}{objectQualifier}activeforums_Functions_SplitText(@Tags, '','')
 	
 	SET @TagCount = (SELECT COUNT(*) from @TagTable)
 END
 
 -- Build our contains statement
 
-DECLARE @Contains nvarchar(4000) = ''
-DECLARE @Delimiter nvarchar(5) = ' OR ';
+DECLARE @Contains nvarchar(4000) = ''''
+DECLARE @Delimiter nvarchar(5) = '' OR '';
 DECLARE @CurrentWord nvarchar(200) = NULL
 
 IF @MatchType = 1
-	SET @Delimiter = ' AND '
+	SET @Delimiter = '' AND ''
 
 DECLARE WordCursor CURSOR FOR SELECT Word FROM @WordTable
 OPEN WordCursor
 	FETCH NEXT FROM WordCursor INTO @CurrentWord
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
-		IF @Contains <> ''
+		IF @Contains <> ''''
 			SET @Contains = @Contains + @Delimiter
 		
-		SET @Contains = @Contains + '"' + @CurrentWord + '"'	
+		SET @Contains = @Contains + ''"'' + @CurrentWord + ''"''	
 			
 		FETCH NEXT FROM WordCursor INTO @CurrentWord
 	END
@@ -1184,7 +1164,7 @@ DEALLOCATE WordCursor
 DECLARE @ForumsTable table (Id INT not null)
 
 insert INTO @ForumsTable SELECT id 
-FROM {databaseOwner}{objectQualifier}activeforums_Functions_Split(@Forums,':')
+FROM {databaseOwner}{objectQualifier}activeforums_Functions_Split(@Forums,'':'')
 
 
 
@@ -1280,7 +1260,7 @@ BEGIN
 
 	RETURN	
 END
-
+')
 GO
 
 /*activeforums_Search_Standard*/
@@ -2751,3 +2731,76 @@ GO
 /* end -  existing data conversion to UTC */
 
 /* end - issue #86 - Save DateTimes as UTC instead of server time */
+
+/* begin - issue #94 - upgrade search */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate(@ModuleId int, @beginDateUtc datetime)
+AS
+SELECT FT.ForumId, X.TopicId, X.ReplyId, X.ContentId, X.DateCreated, X.DateUpdated, X.Summary, X.Subject, X.AuthorId, X.Body , X.IsDeleted, X.IsApproved,
+RTRIM(IsNull({databaseOwner}{objectQualifier}activeforums_Topics_GetTags(X.TopicId),'')) AS Tags
+FROM 
+(
+SELECT 
+T.TopicId, -1 AS ReplyId, C.ContentId, C.DateCreated, C.DateUpdated, C.Summary, C.Subject, C.AuthorId, Convert(nvarchar(max),C.Body) as Body, T.IsDeleted, T.IsApproved
+FROM {databaseOwner}{objectQualifier}activeforums_Topics T
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = T.ContentId 
+WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE() 
+UNION
+SELECT
+R.TopicId, R.ReplyId, C.ContentId, C.DateCreated, C.DateUpdated, C.Summary, C.Subject, C.AuthorId, Convert(nvarchar(max),C.Body) as Body , R.IsDeleted, R.IsApproved
+FROM {databaseOwner}{objectQualifier}activeforums_Replies R
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = R.ContentId 
+WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE() 
+) X
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = X.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics FT ON FT.TopicId = T.TopicId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums F ON F.ForumId = FT.ForumId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.GroupKey = F.ForumSettingsKey AND S.SettingName = 'INDEXCONTENT'
+WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId 
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Delete]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Delete]
+@ForumId int,
+@TopicId int,
+@DelBehavior int,
+@UpdateStats bit = 1
+AS
+DECLARE @ContentId int
+SELECT @ContentId = ContentId FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId
+BEGIN
+IF @DelBehavior = 1
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Content SET IsDeleted = 1, DateUpdated = GETUTCDATE() WHERE ContentId = @ContentId OR ContentId IN (Select ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId) 
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics SET IsDeleted = 1 WHERE TopicId = @TopicId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Replies SET IsDeleted = 1 WHERE TopicId = @TopicId
+	END
+ELSE
+	BEGIN
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE ForumId = @ForumId AND TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId = @ContentId 
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId IN (Select ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId)		
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tags WHERE TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Ratings WHERE TopicId = @TopicId
+	END
+END
+exec {databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates @ForumId
+
+
+-- reset thread order
+EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+GO
+
+
+/* end - issue #94 - upgrade search */
