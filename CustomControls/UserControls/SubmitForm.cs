@@ -297,43 +297,43 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
         public DateTime AnnounceStart
-        {
+        {/* for announce, only set/get date without time */
             get
             {
-                if (calStartDate.SelectedDate == "" && _announceStart == new DateTime())
+                if (calStartDate.SelectedDate == "" && _announceStart ==  DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
                 if (!(string.IsNullOrEmpty(calStartDate.SelectedDate)))
                 {
-                    return Convert.ToDateTime(calStartDate.SelectedDate);
+                    return Convert.ToDateTime(calStartDate.SelectedDate).Date;
                 }
                 return _announceStart;
             }
             set
             {
                 _announceStart = value;
-                calStartDate.SelectedDate = value.ToString();
+                calStartDate.SelectedDate = value.Date.ToString();
             }
         }
         public DateTime AnnounceEnd
-        {
+        {/* for announce, only want date without time */
             get
             {
-                if (calEndDate.SelectedDate == "" && _announceEnd == new DateTime())
+                if (calEndDate.SelectedDate == "" && _announceEnd == DateTime.MinValue)
                 {
                     return Utilities.NullDate();
                 }
                 if (!(string.IsNullOrEmpty(calEndDate.SelectedDate)))
                 {
-                    return Convert.ToDateTime(calEndDate.SelectedDate);
+                    return Convert.ToDateTime(calEndDate.SelectedDate).Date;
                 }
                 return _announceEnd;
             }
             set
             {
                 _announceEnd = value;
-                calEndDate.SelectedDate = Convert.ToString(value);
+                calEndDate.SelectedDate =  Convert.ToDateTime(value).Date.ToString();
             }
         }
         public string EditorClientId
@@ -566,14 +566,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (EditorMode != EditorModes.NewTopic || EditorMode != EditorModes.EditTopic)
             {
-                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\" onclick=\"aftoggleSection('TopicReview');\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTopicReview\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('TopicReview');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTopicReview\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
                 _topicReviewTemplate = TemplateUtils.GetTemplateSection(template, "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTopicReview\" runat=\"server\" />", "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = template.Replace("[/AF:UI:SECTION:TOPICREVIEW]", "</td></tr></table>");
             }
             if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\" onclick=\"aftoggleSection('Tags');\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTags\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Tags');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTags\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:TAGS]", "<fieldset class=\"affieldset\"><legend>[RESX:Tags]</legend><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 var tc = new TokensController();
                 string sTagOut = tc.TokenGet("editor", "[AF:CONTROL:TAGS]");
@@ -708,7 +708,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" onclick=\"aftoggleSection('Categories');\"><img id=\"imgSectionCategories\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Categories');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionCategories\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:CATEGORIES]", "<fieldset class=\"affieldset\"><legend>[RESX:Categories]</legend><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 string sCatOut;
                 var cc = new CategoriesList(PortalId, ModuleId, ForumInfo.ForumID, ForumInfo.ForumGroupId);
@@ -724,7 +724,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
             {
                 template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_polledit.ascx\" tagprefix=\"af\" tagname=\"polledit\" %>" + template;
-                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\" onclick=\"aftoggleSection('Poll');\"><img id=\"imgSectionPoll\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Poll');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\"><img id=\"imgSectionPoll\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[/AF:UI:SECTION:POLL]", "</td></tr></table>");
                 template = template.Replace("[AF:UI:FIELDSET:POLL]", "<fieldset class=\"affieldset\"><legend>[RESX:Polls]</legend><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POLL]", "<af:polledit id=\"afpolledit\" runat=\"server\" />");
@@ -764,7 +764,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\" onclick=\"aftoggleSection('Options');\"><img id=\"imgSectionOptions\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
+                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Options');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\"><img id=\"imgSectionOptions\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
                     template = template.Replace("[/AF:UI:SECTION:OPTIONS]", "</td></tr></table>");
                 }
 
@@ -821,7 +821,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_attach.ascx\" tagprefix=\"af\" tagname=\"attach\" %>" + template;
                     template = template.Replace("[AF:UI:FIELDSET:ATTACH]", "<fieldset class=\"affieldset\"><legend>[RESX:Attachments]</legend><div class=\"affieldsetnote\">[RESX:Attacments:Note]</div>");
-                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" onclick=\"aftoggleSection('Attach');\"><img id=\"imgSectionAttach\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\"/></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
+                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Attach');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionAttach\" src=\"" + ImagePath + "/images/arrows_left.png\" border=\"0\" class=\"afarrow\"/></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
                     template = template.Replace("[AF:CONTROL:UPLOAD]", "<af:attach id=\"ctlAttach\" runat=\"server\" />");
                     template = template.Replace("[/AF:UI:FIELDSET:ATTACH]", "</fieldset>");
                     template = template.Replace("[/AF:UI:SECTION:ATTACH]", "</td></tr></table>");
@@ -915,11 +915,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(AnnounceStart == Utilities.NullDate()))
             {
-                calStartDate.SelectedDate = AnnounceStart.ToString();
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceStart, PortalId, UserId);
             }
             if (!(AnnounceEnd == Utilities.NullDate()))
             {
-                calEndDate.SelectedDate = AnnounceEnd.ToString();
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(AnnounceEnd, PortalId, UserId);  
             }
 
             plhEditor = new PlaceHolder();
@@ -1103,11 +1103,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
-                calEndDate.SelectedDate = _announceEnd.ToString();
+                calEndDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceEnd, PortalId, UserId);
             }
             if (AnnounceStart > Utilities.NullDate())
             {
-                calStartDate.SelectedDate = _announceStart.ToString();
+                calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(_announceStart, PortalId, UserId); 
             }
             btnPost.ImageLocation = PostButton.ImageLocation;
             btnPost.ImageUrl = PostButton.ImageUrl;

@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			int replyId = -1;
 			ReplyInfo ri = new ReplyInfo();
-			DateTime dt = DateTime.Now;
+			DateTime dt = DateTime.UtcNow;
 			ri.Content.DateUpdated = dt;
 			ri.Content.DateCreated = dt;
 			ri.Content.AuthorId = UserId;

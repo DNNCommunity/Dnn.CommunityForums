@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (ForumUser != null)
                 {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, ForumUser.Profile.DateLastPost, DateTime.Now) < iFloodInterval)
+                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, ForumUser.Profile.DateLastPost, DateTime.UtcNow) < iFloodInterval)
                     {
                         var im = new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>" };
                         plhMessage.Controls.Add(im);
@@ -332,9 +332,9 @@ namespace DotNetNuke.Modules.ActiveForums
                                                                                     UserId = -1,
                                                                                     UserName = "guest",
                                                                                     Profile = {TopicCount = 0, ReplyCount = 0},
-                                                                                    DateCreated = DateTime.Now
+                                                                                    DateCreated = DateTime.UtcNow
                                                                                 };
-                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, ForumTabId, ForumInfo, UserId, message, ImagePath, up, DateTime.Now, CurrentUserType, UserId, TimeZoneOffset);
+                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, ForumTabId, ForumInfo, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
                     hidPreviewText.Value = message;
                     break;
             }
@@ -358,7 +358,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Response.Redirect(NavigateUrl(ForumTabId));
             }
-            else if (!_canModEdit && (ti.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.Now) > MainSettings.EditInterval))
+            else if (!_canModEdit && (ti.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval))
             {
                 var im = new InfoMessage
                                         {
@@ -456,7 +456,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else if ((ri.Content.AuthorId != UserId && _canModEdit == false) | (ri.Content.AuthorId == UserId && _canEdit == false) | (_canEdit == false && _canModEdit))
                 Response.Redirect(NavigateUrl(ForumTabId));
 
-            else if (!_canModEdit && (ri.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.Now) > MainSettings.EditInterval))
+            else if (!_canModEdit && (ri.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval))
             {
                 var im = new Controls.InfoMessage
                              {
@@ -608,14 +608,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
                             ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), GetServerDateTime(ti.Content.DateCreated));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated,PortalId, UserId));
                         }
                         else
                         {
                             var rc = new ReplyController();
                             var ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, postId);
                             ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), GetServerDateTime(ri.Content.DateCreated));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated,PortalId,UserId));
                         }
 
                         if (ci != null)
@@ -712,13 +712,13 @@ namespace DotNetNuke.Modules.ActiveForums
             if (TopicId > 0)
             {
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
-                ti.Content.DateUpdated = DateTime.Now;
+                ti.Content.DateUpdated = DateTime.UtcNow;
                 authorId = ti.Author.AuthorId;
             }
             else
             {
                 ti = new TopicInfo();
-                var dt = DateTime.Now;
+                var dt = DateTime.UtcNow;
                 ti.Content.DateCreated = dt;
                 ti.Content.DateUpdated = dt;
             }
@@ -1055,12 +1055,12 @@ namespace DotNetNuke.Modules.ActiveForums
             if (PostId > 0)
             {
                 ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
-                ri.Content.DateUpdated = DateTime.Now;
+                ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ri = new ReplyInfo();
-                var dt = DateTime.Now;
+                var dt = DateTime.UtcNow;
                 ri.Content.DateCreated = dt;
                 ri.Content.DateUpdated = dt;
             }

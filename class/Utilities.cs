@@ -31,7 +31,10 @@ using System.Reflection;
 using System.Web.UI.WebControls;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -251,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static DateTime NullDate()
         {
             var nfi = new CultureInfo("en-US", false).DateTimeFormat;
-            return DateTime.Parse("1/1/1900", nfi);
+            return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
         }
 
         public static string GetHost()
@@ -1011,7 +1014,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sContents;
         }
-
         public static string GetDate(DateTime displayDate, int mid, int offset)
         {
             string dateStr;
@@ -1044,7 +1046,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateStr;
             }
         }
-
         public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
         {
             var mainSettings = DataCache.MainSettings(mid);
@@ -1052,6 +1053,103 @@ namespace DotNetNuke.Modules.ActiveForums
             var newDate = displayDate.AddMinutes(-mServerOffSet);
 
             return newDate.AddMinutes(offset);
+        }
+        public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
+        {
+            return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
+        {
+            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.BaseUtcOffset, format);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
+        {
+            CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
+            TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.BaseUtcOffset);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, timeZoneOffset, "g");
+        }
+        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        {
+            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset, "d");
+        }
+        public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
+        {
+            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset,format);
+        }
+        public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
+        {
+            try
+            {
+                return dateTime.Add(timeZoneOffset).ToString(format, userCultureInfo);
+            }
+            catch (Exception ex)
+            {
+                return dateTime.ToString(format, CultureInfo.CurrentCulture);
+            }
+        }
+        public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
+        {
+            return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
+        }
+        public static CultureInfo GetCultureInfoForUser(UserInfo userInfo)
+        {
+            try
+            {
+                if (userInfo != null && userInfo.UserID > 0 && userInfo.Profile.PreferredLocale != null)
+                {
+                    return CultureInfo.GetCultureInfo(userInfo.Profile.PreferredLocale);
+                }
+                else
+                {
+                    return CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().CultureCode);
+                }
+            }
+            catch
+            {
+                return CultureInfo.CurrentCulture;
+            }
+        }
+        public static TimeZoneInfo GetTimeZoneInfoForUser(int portalId, int userId)
+        {
+            return GetTimeZoneInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
+        }
+        public static TimeZoneInfo GetTimeZoneInfoForUser(UserInfo userInfo)
+        {
+            /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
+
+            try
+            {
+                if (userInfo != null && userInfo.Profile != null && userInfo.Profile.PreferredTimeZone != null)
+                {
+                    return userInfo.Profile.PreferredTimeZone;
+                }
+                else
+                {
+                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().TimeZone;
+                }
+            }
+            catch
+            {
+                return TimeZoneInfo.Utc;
+            }
+        }
+        public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
+        {
+            return GetTimeZoneInfoForUser(userInfo).BaseUtcOffset;
+        }
+        public static TimeSpan GetTimeZoneOffsetForUser(int PortalId,int UserId)
+        {
+            return GetTimeZoneOffsetForUser( new Entities.Users.UserController().GetUser(PortalId,UserId));
+        }
+        public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
+        {
+            return displayDate.AddMinutes(offset.TotalMinutes);
         }
 
 

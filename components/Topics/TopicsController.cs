@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			ti.Content.Summary = string.Empty;
 
 			ti.Content.IPAddress = IPAddress;
+
 			DateTime dt = DateTime.Now;
 			ti.Content.DateCreated = dt;
 			ti.Content.DateUpdated = dt;
@@ -74,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return topicId;
 		}
+
 		public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew)
 		{
 			Regex rgx = new Regex(@"^\d+(\|\d+)*$");
@@ -92,6 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
+
 		public int TopicSave(int PortalId, TopicInfo ti)
 		{
 			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
@@ -122,6 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			while (dr.Read())
 			{
 				ti = new TopicInfo();
+
 				if (!(dr["AnnounceEnd"] == DBNull.Value))
 				{
 					ti.AnnounceEnd = Convert.ToDateTime(dr["AnnounceEnd"]);
@@ -180,6 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			//    'Dim tmpDr As IDataReader = dr
 			//    ti.Security = CType(DotNetNuke.Common.Utilities.CBO.FillObject(dr, GetType(PermissionInfo)), PermissionInfo)
 			//End If
+
 			if (!dr.IsClosed)
 			{
 				dr.Close();
@@ -189,6 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public void Topics_Delete(int PortalId, int ModuleId, int ForumId, int TopicId, int DelBehavior)
 		{
+
 			DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
 			var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
 			DataCache.CacheClearPrefix(cachekey);
@@ -222,7 +228,6 @@ namespace DotNetNuke.Modules.ActiveForums
 					fileManager.DeleteFile(file);
 			}
 
-
 		}
 		public void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId)
 		{
@@ -236,6 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					oldForumId = db.Forum_GetByTopicId(TopicId);
 					ForumController fc = new ForumController();
 					Forum fi = fc.Forums_Get(oldForumId, -1, false);
+
 					if (!(string.IsNullOrEmpty(fi.PrefixURL)))
 					{
 						Data.Common dbC = new Data.Common();
@@ -253,6 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			DataProvider.Instance().Topics_Move(PortalId, ModuleId, ForumId, TopicId);
 		}
+
 		#region "Obsolete ISearchable replaced by DotNetNuke.Entities.Modules.ModuleSearchBase.GetModifiedSearchDocuments "
 		/*
 		public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(DotNetNuke.Entities.Modules.ModuleInfo ModInfo)

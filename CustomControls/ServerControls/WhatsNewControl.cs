@@ -144,22 +144,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            int timeOffset = Convert.ToInt32(PortalSettings.TimeZone.BaseUtcOffset.TotalMinutes);
-            if (UserId > 0)
-            {
-                var uc = new Entities.Users.UserController();
-                
-                var dnnUser = uc.GetUser(PortalId, UserId);
-                string propValue = UserInfo.Profile.GetPropertyValue(Entities.Users.UserProfile.USERPROFILE_TimeZone);
-                if (!string.IsNullOrEmpty(propValue))
-                {
-                    timeOffset = int.Parse(propValue);
-                }
-
-                if (timeOffset == 0)
-                    timeOffset = Convert.ToInt32(PortalSettings.TimeZone.BaseUtcOffset.TotalMinutes);
-            }
-
             var sHeaderTemplate = "<div style=\"padding:10px;padding-top:5px;\">";
             var sFooterTemplate = "</div>";
 
@@ -249,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTempTemplate = sTempTemplate.Replace("[AUTHORLASTNAME]", lastName);
                     sTempTemplate = sTempTemplate.Replace("[AUTHORID]", authorId);
                     sTempTemplate = sTempTemplate.Replace("[AUTHORDISPLAYNAME]", displayName);
-                    sTempTemplate = sTempTemplate.Replace("[DATE]", Utilities.GetDate(Convert.ToDateTime(postDate), Convert.ToInt32(topicModuleId), timeOffset));
+                    sTempTemplate = sTempTemplate.Replace("[DATE]", Utilities.GetUserFormattedDateTime(Convert.ToDateTime(postDate), PortalId, UserId));
                     sTempTemplate = sTempTemplate.Replace("[BODY]", body);
                     sTempTemplate = sTempTemplate.Replace("[BODYHTML]", bodyHTML);
                     sTempTemplate = sTempTemplate.Replace("[BODYTEXT]", Utilities.StripHTMLTag(bodyHTML));
