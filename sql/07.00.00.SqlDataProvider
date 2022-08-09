@@ -454,6 +454,13 @@ FROM         {databaseOwner}{objectQualifier}activeforums_Content AS TC INNER JO
 					  {databaseOwner}{objectQualifier}activeforums_Forums AS FF ON F.ForumId = FF.ForumId LEFT OUTER JOIN
 					  {databaseOwner}{objectQualifier}Users AS U ON TC.AuthorId = U.UserID
 
+WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) 
+
+/* don't filter based on announce -- that is a UI feature to display topics, not a filter for determining if a topic is approved, etc. */
+/* and the way this is written, this wouldn't filter anyway */
+/* WHERE     (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) */
+/* AND (T.IsAnnounce = 0) OR (T.IsDeleted = 0) AND (TC.IsDeleted = 0) AND (FF.Active = 1) AND (T.IsAnnounce = 1) AND (T.AnnounceStart <= GETUTCDATE()) */ 
+
 GO
 
 /*activeforums_Attachments_Save*/
@@ -2724,3 +2731,76 @@ GO
 /* end -  existing data conversion to UTC */
 
 /* end - issue #86 - Save DateTimes as UTC instead of server time */
+
+/* begin - issue #94 - upgrade search */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate(@ModuleId int, @beginDateUtc datetime)
+AS
+SELECT FT.ForumId, X.TopicId, X.ReplyId, X.ContentId, X.DateCreated, X.DateUpdated, X.Summary, X.Subject, X.AuthorId, X.Body , X.IsDeleted, X.IsApproved,
+RTRIM(IsNull({databaseOwner}{objectQualifier}activeforums_Topics_GetTags(X.TopicId),'')) AS Tags
+FROM 
+(
+SELECT 
+T.TopicId, -1 AS ReplyId, C.ContentId, C.DateCreated, C.DateUpdated, C.Summary, C.Subject, C.AuthorId, Convert(nvarchar(max),C.Body) as Body, T.IsDeleted, T.IsApproved
+FROM {databaseOwner}{objectQualifier}activeforums_Topics T
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = T.ContentId 
+WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE() 
+UNION
+SELECT
+R.TopicId, R.ReplyId, C.ContentId, C.DateCreated, C.DateUpdated, C.Summary, C.Subject, C.AuthorId, Convert(nvarchar(max),C.Body) as Body , R.IsDeleted, R.IsApproved
+FROM {databaseOwner}{objectQualifier}activeforums_Replies R
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = R.ContentId 
+WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE() 
+) X
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = X.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics FT ON FT.TopicId = T.TopicId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums F ON F.ForumId = FT.ForumId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.GroupKey = F.ForumSettingsKey AND S.SettingName = 'INDEXCONTENT'
+WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId 
+GO
+
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Delete]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Delete]
+@ForumId int,
+@TopicId int,
+@DelBehavior int,
+@UpdateStats bit = 1
+AS
+DECLARE @ContentId int
+SELECT @ContentId = ContentId FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId
+BEGIN
+IF @DelBehavior = 1
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Content SET IsDeleted = 1, DateUpdated = GETUTCDATE() WHERE ContentId = @ContentId OR ContentId IN (Select ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId) 
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics SET IsDeleted = 1 WHERE TopicId = @TopicId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Replies SET IsDeleted = 1 WHERE TopicId = @TopicId
+	END
+ELSE
+	BEGIN
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE ForumId = @ForumId AND TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId = @ContentId 
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId IN (Select ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId)		
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tags WHERE TopicId = @TopicId
+		DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Ratings WHERE TopicId = @TopicId
+	END
+END
+exec {databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates @ForumId
+
+
+-- reset thread order
+EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+GO
+
+
+/* end - issue #94 - upgrade search */
