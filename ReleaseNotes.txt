@@ -6,43 +6,23 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
-		<h3>06.06.00</h3>
+		<h3>07.00.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>Site crashes on replies that contain code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/76">Issue 76</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Use getAttribute('class') instead of className to support webpages with SVG elements (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pull/78">Pull Request 78</a>, thanks <a href="https://github.com/jmbockhorst" target="_blank">@jmbockhorst</a>!)</li>
-			<li>&quot;Active Forums What's New&quot; shows incorrect time for posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/83">Issue 83</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Forum decodes HTML entered as Encoded HTML (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/73">Issue 73</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Post preview looks weird and alignment is not optimal (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/64">Issue 64</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Improved the build process to better match the way other module commonly build outside of the website, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-			<li>Updated the default setup wizard to mention &quot;Community Forums&quot; instead of Active Forums, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-		</ul>
-
-		<p><strong>IMPORTANT NOTE:</strong>&nbsp; DO NOT add your own canonical tag to the page settings where this module is added.&nbsp; Remove it, if necessary, to prevent new SEO issues from impacting your website.</p>
-
-		<h3>06.05.01</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
-			<li>Added a canonical tag to the page header to improve SEO (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/43">Issue 43</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-			<li>Prevent search engines from following user profile links to improve SEO (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/69">Issue 69</a>, thanks <a href="https://github.com/hismightiness" target="_blank">@hismightiness</a>!)</li>
-			<li>Fixed display issue with the Preview button (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/60">Issue 60</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Resovled a build issue that ignored handler (ASHX) files.</li>
-			<li>Updated the description &amp; branding in the DNN manifest.</li>
-			<li>Updated the copyright year in class files.</li>
-		</ul>
-
-		<p><strong>IMPORTANT NOTE:</strong>&nbsp; DO NOT add your own canonical tag to the page settings where this module is added.&nbsp; Remove it, if necessary, to prevent new SEO issues from impacting your website.</p>
-
-		<h3>06.05.00</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
-			<li>Fixed image width display issue with post preview (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/40">Issue 40</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Fixed Dutch translations in the language pack (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/41">Issue 41</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Localized time frame dropdown list (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/43">Issue 43</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
-			<li>Fixed post notification e-mail formatting issue (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/45">Issue 45</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Updated control panel width for wider resolutions (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/49">Issue 49</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>Resolved packaging issue with including text clean up files.</li>
-			<li>Resolved an EVS warning with a SQL data provider file.</li>
+			<li>NEW: Integrate Core DNN Search (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/94">Issue 94</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Expanded the Target Area for Expanding Sections When Editing a Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/125">Issue 125</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Portal Specific SMTP Setting Ignored (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/96">Issue 96</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Forum notifications Sent to (Soft-)Deleted Subscribers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/122">Issue 122</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Portal Alias with Port Not Working with Forum URL Provider (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/115">Issue 115</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Forum Index Link Not Working on iOS Sometimes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/134">Issue 134</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>FIXED: Forum Overview Thread Count Not Updated When Moving a Thread to Another Forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/65">Issue 65</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Default DNN Editor Not Used by Default for HTML (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/108">Issue 108</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Enable Full Text Search Radio Button Does Not Work (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/111">Issue 111</a>, thanks <a href="https://github.com/skamphuis" target="_blank">@skamphuis</a>!)</li>
+			<li>FIXED: Corrected Invalid HTML in Default FormView Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/103">Issue 103</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>FIXED: Corrected Invalid HTML in Default FormView Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/98">Issue 98</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>FIXED: User Online Contains HTML Errors (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/100">Issue 100</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>TASK: Separate the Business Controller Class into its Own Proper Class (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/56">Issue 56</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Resolved Minor Build Issues (no issue), thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
 		</ul>
 	</div>
 </div>
