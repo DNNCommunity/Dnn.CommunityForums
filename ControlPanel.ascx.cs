@@ -89,14 +89,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
-            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/jquery-ui.min.css");
+            ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/themes/", MainSettings.Theme, "/jquery-ui.min.css"));
 
 
             lblProd.Visible = true;
             lblCopy.Visible = true;
             //TODO: this should be resources instead of harcoded text?
-            lblProd.Text = "Active Forums " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            lblCopy.Text = "©" + DateTime.Now.Year + " DotNetNuke Corporation";
+            lblProd.Text = string.Concat("DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            lblCopy.Text = string.Concat("&copy; ", DateTime.UtcNow.Year, " DNN Community");
 
             try
             {
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (Request.QueryString["cptry"] == null)
                 {
-                    string sURL = EditUrl("", "", "EDIT", "cptry=1");
+                    string sURL = EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
                     Response.Redirect(sURL);
                 }
                 else
@@ -120,17 +120,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-
             ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/json2009.min.js", 101);
             ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/jquery.history.js", 102);
             ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/afadmin.js", 103);
             ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/jquery.listreorder.js", 104);
             ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/active/amlib.js", 105);
-
-
-
-
-
 
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
@@ -182,7 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (Request.QueryString["cptry"] == null)
                 {
-                    string sURL = EditUrl("", "", "EDIT", "cptry=1");
+                    string sURL = EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
                     Response.Redirect(sURL);
                 }
                 else
@@ -224,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 CurrentView = view;
 
                 Params = options;
-                ctlPath = "~/DesktopModules/ActiveForums/controls/admin_" + view + ".ascx";
+                ctlPath = string.Concat("~/DesktopModules/ActiveForums/controls/admin_", view, ".ascx");
                 var ctl = (ActiveAdminBase)(LoadControl(ctlPath));
                 ctl.ID = view;
                 ctl.ModuleConfiguration = ModuleConfiguration;
@@ -245,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (Request.QueryString["cptry"] == null)
                 {
-                    string sURL = EditUrl("", "", "EDIT", "cptry=1");
+                    string sURL = EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
                     Response.Redirect(sURL);
                 }
                 else
@@ -261,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums
             plhModal.Controls.Clear();
             string ctlPath;
 
-            ctlPath = "~/DesktopModules/activeforums/controls/" + ctrl + ".ascx";
+            ctlPath = string.Concat("~/DesktopModules/activeforums/controls/", ctrl, ".ascx");
             var ctl = (ActiveAdminBase)(LoadControl(ctlPath));
             ctl.ID = ctrl;
             ctl.ModuleConfiguration = ModuleConfiguration;

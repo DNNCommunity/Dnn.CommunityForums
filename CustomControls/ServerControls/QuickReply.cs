@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 UserProfileInfo upi = upc.Profiles_Get(SiteId, InstanceId, this.UserId);
                 if (upi != null)
                 {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.Now) < iFloodInterval)
+                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < iFloodInterval)
                     {
                         Controls.InfoMessage im = new Controls.InfoMessage();
                         im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>";
@@ -251,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
             //End If
             sBody = Utilities.CleanString(SiteId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, InstanceId, ThemePath, forumInfo.AllowEmoticons);
-            DateTime createDate = DateTime.Now;
+            DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
             ri.Content.AuthorId = UserId;

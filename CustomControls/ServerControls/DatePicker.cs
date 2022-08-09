@@ -448,11 +448,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DateTime tmpDate;
                 try
                 {
-                    tmpDate = this.SelectedDate == "" ? DateTime.Now : Convert.ToDateTime(SelectedDate);
+                    tmpDate = this.SelectedDate == "" ? DateTime.UtcNow : Convert.ToDateTime(SelectedDate);
                 }
                 catch (Exception ex)
                 {
-                    tmpDate = DateTime.Now;
+                    tmpDate = DateTime.UtcNow;
                 }
 
 

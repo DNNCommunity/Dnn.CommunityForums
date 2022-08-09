@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			tb.FooterTemplate = FooterTemplate.Text;
 			tb.ImagePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme);
 			tb.TopicId = TopicId;
-			tb.TimeZoneOffset = TimeZoneOffset;
+			tb.UserId = UserId;
 			writer.Write(tb.Render());
 		}
 

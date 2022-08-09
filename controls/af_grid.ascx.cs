@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         /*
                         if (UserLastAccess != Utilities.NullDate())
                         {
-                            timeFrame = Convert.ToInt32(SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, UserLastAccess, DateTime.Now));
+                            timeFrame = Convert.ToInt32(SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, UserLastAccess, DateTime.UtcNow));
                             drpTimeFrame.Items.Insert(0, new ListItem(GetDate(UserLastAccess), "~" + timeFrame.ToString()));
                         }
                          */
@@ -333,7 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
 
             var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
-            var currentDate = GetUserDate(DateTime.Now);
+            var currentDate = GetUserDate(DateTime.UtcNow);
 
             var datePart = date.ToString(MainSettings.DateFormatString);
 
@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
 
             var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
-            var currentDate = GetUserDate(DateTime.Now);
+            var currentDate = GetUserDate(DateTime.UtcNow);
 
             var datePart = date.ToString(MainSettings.DateFormatString);
 

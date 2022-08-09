@@ -23,6 +23,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.Linq;
 //ORIGINAL LINE: Imports System.Web.HttpContext
 
 using System.Web;
@@ -49,9 +51,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	    public string Email { get; set; }
 
-	    public string DisplayName { get; set; }
+		public string DisplayName { get; set; }
+		public TimeSpan TimeZoneOffSet { get; set; }
+		public CultureInfo UserCulture { get; set; }
 
-	    #endregion
+		#endregion
 	}
 
 #endregion
@@ -90,13 +94,15 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					si = new SubscriptionInfo
 					         {
-					             DisplayName = dr["DisplayName"].ToString(),
-					             Email = dr["Email"].ToString(),
-					             FirstName = dr["FirstName"].ToString(),
-					             LastName = dr["LastName"].ToString(),
-					             UserId = Convert.ToInt32(dr["UserId"]),
-					             Username = dr["Username"].ToString()
-					         };
+								DisplayName = dr["DisplayName"].ToString(),
+								Email = dr["Email"].ToString(),
+								FirstName = dr["FirstName"].ToString(),
+								LastName = dr["LastName"].ToString(),
+								UserId = Convert.ToInt32(dr["UserId"]),
+								Username = dr["Username"].ToString(),
+								TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"])),
+								UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"]))
+					};
 
 				    if (! (sl.Contains(si)))
 					{
@@ -133,48 +139,17 @@ namespace DotNetNuke.Modules.ActiveForums
 			SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
 		}
 		public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, Forum fi, int TopicId, int ReplyId, int AuthorId)
-		{
-
-			var _portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-			SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+		{	
 			var sc = new SubscriptionController();
 			List<SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
-			if (subs.Count <= 0)
+			if (subs.Count > 0)
 			{
-				return;
-			}
-
-			string Subject;
-			string BodyText;
-			string BodyHTML;
-			string sTemplate = string.Empty;
-			var tc = new TemplateController();
-			TemplateInfo ti;
-			ti = TemplateId > 0 ? tc.Template_Get(TemplateId) : tc.Template_Get("SubscribedEmail", PortalId, ModuleId);
-			TemplateUtils.lstSubscriptionInfo = subs;
-			Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Convert.ToInt32(_portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Convert.ToInt32(_portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, string.Empty, AuthorId, Convert.ToInt32(_portalSettings.TimeZone.BaseUtcOffset.TotalMinutes));
-			string sFrom;
-			sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : _portalSettings.Email;
-			var oEmail = new Email
-			                 {
-			                     Recipients = subs,
-			                     Subject = Subject,
-			                     From = sFrom,
-			                     BodyText = BodyText,
-			                     BodyHTML = BodyHTML,
-			                     UseQueue = MainSettings.MailQueue
-			                 };
-
-
-		    var objThread = new System.Threading.Thread(oEmail.Send);
-			objThread.Start();
+				Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
+			}	
 		}
-
-		public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
+        public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
 		{
-			string sysTemplateName = "DailyDigest";
+		 	string sysTemplateName = "DailyDigest";
 			if (SubscriptionType == SubscriptionTypes.WeeklyDigest)
 			{
 				sysTemplateName = "WeeklyDigest";
@@ -251,7 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
 						sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
 						sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
-						sMessageBody = sMessageBody.Replace("[DATE]", DateTime.Now.ToString());
+						sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 						if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
 						{
 							string sFormat;
@@ -259,7 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums
 							int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
 							string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
 							sFormat = sValue;
-							sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.Now.ToString(sFormat));
+							sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.UtcNow.ToString(sFormat));
 						}
 
 						GroupCount = 0;
@@ -347,7 +322,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				sMessageBody = sMessageBody.Replace("[SUBSCRIBERFIRSTNAME]", SubscriberFirstName);
 				sMessageBody = sMessageBody.Replace("[SUBSCRIBERLASTNAME]", SubscriberLastName);
 				sMessageBody = sMessageBody.Replace("[SUBSCRIBEREMAIL]", SubscriberEmail);
-				sMessageBody = sMessageBody.Replace("[DATE]", DateTime.Now.ToString());
+				sMessageBody = sMessageBody.Replace("[DATE]", DateTime.UtcNow.ToString());
 				if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
 				{
 					string sFormat;
@@ -355,14 +330,17 @@ namespace DotNetNuke.Modules.ActiveForums
 					int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
 					string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
 					sFormat = sValue;
-					sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.Now.ToString(sFormat));
+					sMessageBody = sMessageBody.Replace("[DATE:" + sFormat + "]", DateTime.UtcNow.ToString(sFormat));
 				}
 				Queue.Controller.Add(portalId,FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
 			}
 
 
 		}
+	
 	}
+	
+	
 	public class WeeklyDigest : Services.Scheduling.SchedulerClient
 	{
 		public WeeklyDigest(Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
@@ -375,7 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 
 
-				Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.Now.AddDays(-1)));
+				Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
 				ScheduleHistoryItem.Succeeded = true;
 				ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
 				ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
@@ -413,9 +391,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		private static int GetElapsedTimeTillNextStart()
 		{
-			DateTime NextRun = DateTime.Now.AddDays(7);
+			DateTime NextRun = DateTime.UtcNow.AddDays(7);
 			var nextStart = new DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 22, 0, 0);
-			int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.Now.Ticks) / TimeSpan.TicksPerDay);
+			int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
 			return elapseMinutes;
 		}
 
@@ -446,13 +424,13 @@ namespace DotNetNuke.Modules.ActiveForums
 		//    Private Shared Function GetElapsedTimeTillNextStart() As Integer
 		//        Dim NextRun As DateTime = Now.AddDays(1)
 		//        Dim nextStart As New DateTime(NextRun.Year, NextRun.Month, NextRun.Day, 18, 0, 0)
-		//        Dim elapseMinutes As Integer = CInt((nextStart.Ticks - DateTime.Now.Ticks) \ TimeSpan.TicksPerDay)
+		//        Dim elapseMinutes As Integer = CInt((nextStart.Ticks - DateTime.UtcNow.Ticks) \ TimeSpan.TicksPerDay)
 		//        Return elapseMinutes
 		//    End Function
 
 
 	}
-
-	// End Class
+	
+    // End Class
 }
 

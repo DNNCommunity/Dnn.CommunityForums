@@ -207,19 +207,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				_AltItemCSS = value;
 			}
 		}
-		private int _TimeZoneOffset = 0;
-		public int TimeZoneOffset
-		{
-			get
-			{
-				return _TimeZoneOffset;
-			}
-			set
-			{
-				_TimeZoneOffset = value;
-			}
-		}
-		public string Render()
+
+        public int UserId { get; set; } = -1;
+        public string Render()
 		{
 			System.Text.StringBuilder sb = new System.Text.StringBuilder();
 			Data.Topics db = new Data.Topics();
@@ -267,7 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					switch (row[i].GetType().ToString())
 					{
 						case "System.DateTime":
-							value = Utilities.GetDate(Convert.ToDateTime(row[i].ToString()), ModuleId, TimeZoneOffset);
+							value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId, UserId);
 							break;
 					}
 					tmp = tmp.Replace(k, value);

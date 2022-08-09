@@ -532,14 +532,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (HttpContext.Current.Request.Cookies["amcit"] != null)
                         {
                             HttpContext.Current.Response.Cookies["amcit"].Value = "";
-                            HttpContext.Current.Response.Cookies["amcit"].Expires = DateTime.Now.AddYears(-1);
+                            HttpContext.Current.Response.Cookies["amcit"].Expires = DateTime.UtcNow.AddYears(-1);
                             HttpContext.Current.Response.Cookies["amcit"].Domain = "";
                             HttpContext.Current.Response.Cookies["amcit"].HttpOnly = true;
                         }
                         myCookie.HttpOnly = true;
                         //myCookie.Path = "/"
                         //myCookie.Domain = HttpContext.Current.Request.Url.Host
-                        myCookie.Expires = DateTime.Now.AddHours(2);
+                        myCookie.Expires = DateTime.UtcNow.AddHours(2);
                         myCookie.Value = ticket;
                         HttpContext.Current.Response.Cookies.Add(myCookie);
                         Page.ClientScript.RegisterHiddenField("amcbid", ticket);
