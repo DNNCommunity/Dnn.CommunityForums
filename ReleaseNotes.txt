@@ -10,9 +10,12 @@
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
 			<li>NEW: Integrate Core DNN Search (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/94">Issue 94</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Save DateTimes as UTC Instead of Server Time (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/86">Issue 86</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Expanded the Target Area for Expanding Sections When Editing a Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/125">Issue 125</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>FIXED: Portal Specific SMTP Setting Ignored (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/96">Issue 96</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>FIXED: Forum notifications Sent to (Soft-)Deleted Subscribers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/122">Issue 122</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Forums Crash When Clicking to View Image in Post (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/59">Issue 59</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: SQL Error Viewing Forum Post Attachments (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/106">Issue 106</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>FIXED: Portal Alias with Port Not Working with Forum URL Provider (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/115">Issue 115</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>FIXED: Forum Index Link Not Working on iOS Sometimes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/134">Issue 134</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>FIXED: Forum Overview Thread Count Not Updated When Moving a Thread to Another Forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/65">Issue 65</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
