@@ -24,6 +24,7 @@
 			<li>FIXED: Corrected Invalid HTML in Default FormView Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/103">Issue 103</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>FIXED: Corrected Invalid HTML in Default FormView Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/98">Issue 98</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>FIXED: User Online Contains HTML Errors (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/100">Issue 100</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>FIXED: Getting Started Wizard is Skipped on Sites without a Profile Page (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/142">Issue 142</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Separate the Business Controller Class into its Own Proper Class (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/56">Issue 56</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Resolved Minor Build Issues (no issue), thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
 		</ul>
