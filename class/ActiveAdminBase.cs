@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sURL = "http://" + Common.Globals.GetDomainName(Request) + "/";
                     }
-                    DataCache.CacheStore(ModuleId + "HostURL", sURL, DateTime.Now.AddMinutes(30));
+                    DataCache.CacheStore(ModuleId + "HostURL", sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
                 return Convert.ToString(obj);
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return Convert.ToDateTime(obj);
                 }
-                return DateTime.Now;
+                return DateTime.UtcNow;
             }
             set
             {

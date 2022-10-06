@@ -114,9 +114,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract int Search_GetFullTextStatus();
 
         public abstract IDataReader Search_DotNetNuke(int moduleId);
+        public abstract IDataReader Search_DotNetNuke(int moduleId, DateTime beginDateUtc);
 
         #endregion
-        
+
         #region Security
         public abstract void Security_Delete(int SecuredId, int ObjectId, int SecureAction, int SecureType, int ObjectType);
         public abstract IDataReader Security_Get(int SecuredId, int ObjectId, int SecureType);
@@ -182,6 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract IDataReader Queue_List();
         public abstract void Queue_Delete(int EmailId);
         public abstract void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+        public abstract void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
 
 
         #endregion

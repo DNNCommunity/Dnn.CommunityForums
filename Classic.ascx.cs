@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (ForumUser != null)
                         {
-                            DateTime dtLastAccess = DateTime.Now;
+                            DateTime dtLastAccess = DateTime.UtcNow;
                             if (!(ForumUser.Profile.DateLastActivity == Utilities.NullDate()))
                             {
                                 dtLastAccess = ForumUser.Profile.DateLastActivity;

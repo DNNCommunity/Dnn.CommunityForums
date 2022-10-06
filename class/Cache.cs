@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public static bool CacheStore(string cacheKey, object cacheObj)
 		{
-			return CacheStore(cacheKey, cacheObj, DateTime.Now.AddMinutes(10));
+			return CacheStore(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(10));
 		}
 		public static bool CacheStore(string cacheKey, object cacheObj, DateTime Expiration)
 		{
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 					dr.Close();
 					CacheStore(CacheKey + "st", ht);
-					//Current.Cache.Insert(ModuleId & SettingsKey & "Settings", ht, Nothing, DateTime.Now.AddMinutes(10), Web.Caching.Cache.NoSlidingExpiration)
+					//Current.Cache.Insert(ModuleId & SettingsKey & "Settings", ht, Nothing, DateTime.UtcNow.AddMinutes(10), Web.Caching.Cache.NoSlidingExpiration)
 				}
 				else
 				{

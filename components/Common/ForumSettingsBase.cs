@@ -318,7 +318,11 @@ namespace DotNetNuke.Modules.ActiveForums
 			set
 			{
 				UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
-			}
+                if (Settings.ContainsKey(SettingKeys.FullText))
+                    Settings[SettingKeys.FullText] = value.ToString();
+                else
+                    Settings.Add(SettingKeys.FullText, value.ToString());
+            }
 		}
 
 		public bool MailQueue

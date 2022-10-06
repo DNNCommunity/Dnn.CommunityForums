@@ -378,14 +378,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _rowCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]) + 1;
             _nextTopic = Utilities.SafeConvertInt(_drForum["NextTopic"]);
             _prevTopic = Utilities.SafeConvertInt(_drForum["PrevTopic"]);
-            _lastPostDate = GetDate(Utilities.SafeConvertDateTime(_drForum["LastPostDate"]));
+            _lastPostDate = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["LastPostDate"]),PortalId,UserId);
             _lastPostAuthor.AuthorId = Utilities.SafeConvertInt(_drForum["LastPostAuthorId"]);
             _lastPostAuthor.DisplayName = _drForum["LastPostDisplayName"].ToString();
             _lastPostAuthor.FirstName = _drForum["LastPostFirstName"].ToString();
             _lastPostAuthor.LastName = _drForum["LastPostLastName"].ToString();
             _lastPostAuthor.Username = _drForum["LastPostUserName"].ToString();
             _topicURL = _drForum["URL"].ToString();
-            _topicDateCreated = Utilities.GetDate(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), ForumModuleId, TimeZoneOffset);
+            _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
             _isSubscribedTopic = UserId > 0 && Utilities.SafeConvertInt(_drForum["IsSubscribedTopic"]) > 0;
 
@@ -1325,8 +1325,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[REPLYID]", replyId.ToString());
             sbOutput.Replace("[TOPICID]", topicId.ToString());
-            sbOutput.Replace("[POSTDATE]", GetDate(dateCreated));
-            sbOutput.Replace("[DATECREATED]", GetDate(dateCreated));
+            sbOutput.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, PortalId, UserId));
+            sbOutput.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(dateCreated, PortalId, UserId));
 
 
 
@@ -1349,7 +1349,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Edit Action
-            if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.Now) < _editInterval)))
+            if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
             {
                 var sAction = "re";
                 if (replyId == 0)
@@ -1444,7 +1444,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sbOutput.Replace("[EDITDATE]", Utilities.GetDate(dateUpdated, ModuleId, TimeZoneOffset));
+                sbOutput.Replace("[EDITDATE]", Utilities.GetUserFormattedDateTime(dateUpdated, PortalId, UserId));
             }
 
             // Mod Edit Date
@@ -1453,7 +1453,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (dateCreated == dateUpdated || dateUpdated == DateTime.MinValue || dateUpdated == Utilities.NullDate())
                     sbOutput.Replace("[MODEDITDATE]", string.Empty);
                 else
-                    sbOutput.Replace("[MODEDITDATE]", Utilities.GetDate(dateUpdated, ModuleId, TimeZoneOffset));
+                    sbOutput.Replace("[MODEDITDATE]", Utilities.GetUserFormattedDateTime(dateUpdated, PortalId, UserId));
             }
             else
             {
@@ -1665,9 +1665,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager1.View = Views.Topic;
                 pager1.TopicId = TopicId;
                 pager1.PageMode = PagerNav.Mode.Links;
-
                 if (MainSettings.URLRewriteEnabled && !string.IsNullOrWhiteSpace(_topicURL))
-                    pager1.BaseURL = _topicURL;
+                {
+                    if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
+                    {
+                        pager1.BaseURL = "/" + MainSettings.PrefixURLBase;
+                    }
+                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
+                    {
+                        pager1.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
+                    }
+                    pager1.BaseURL += _topicURL;
+                }
 
                 pager1.Params = @params.ToArray();
             }
@@ -1684,9 +1693,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager2.View = Views.Topic;
                 pager2.TopicId = TopicId;
                 pager2.PageMode = PagerNav.Mode.Links;
-
                 if (MainSettings.URLRewriteEnabled && !string.IsNullOrWhiteSpace(_topicURL))
-                    pager2.BaseURL = _topicURL;
+                {
+                    if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
+                    {
+                        pager2.BaseURL = "/" + MainSettings.PrefixURLBase;
+                    }
+                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
+                    {
+                        pager2.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
+                    }
+                    pager2.BaseURL += _topicURL;
+                }
 
                 pager2.Params = @params.ToArray();
             }

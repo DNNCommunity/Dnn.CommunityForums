@@ -632,7 +632,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         //Template = TemplateUtils.ParseUserDetails(PortalId, .LastPostUserID, Template, "FG")
                     }
                     DateTime dtLastPostDate = fi.LastPostDateTime;
-                    Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetDate(dtLastPostDate, ModuleId, TimeZoneOffset));
+                    Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate,PortalId, CurrentUserId));
                     string Subject = fi.LastPostSubject;
                     if (Subject == "")
                     {

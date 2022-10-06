@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                 }
 
-                if (linkProfile)
+                if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1 )
                     outputTemplate = "<a href='" + Common.Globals.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }) + "' class='" + profileLinkClass + "' rel='nofollow'>{0}</a>";
             }
 

@@ -154,7 +154,6 @@ mark,
 .afgrid tr {
 width: 100%;
 position: relative;
-display: inline-table;
 }
 
 td.afgrouprow.afgrouprow-f {
@@ -377,7 +376,7 @@ color: #333;
 word-break: break-word;}
 td.af-title{width:100%;padding-left:25px;}
 td.af-groupname{padding-left:10px;width:100%;}
-td.af-groupcollapse{text-align:right;padding-right:10px;}
+td.af-groupcollapse{text-align:right; padding-right:10px; position:relative;}
 td.af-right{text-align:right;}
 td.af-posticon{
     width:30px;

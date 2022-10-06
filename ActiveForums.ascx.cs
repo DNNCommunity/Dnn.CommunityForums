@@ -19,6 +19,7 @@
 //
 using System;
 using System.Web.UI;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Modules.ActiveForums.Constants;
@@ -68,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (Request.QueryString["afgt"] == "afprofile" || PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
+            if (Request.QueryString["afgt"] == "afprofile" || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
             {
                 int userId;
 

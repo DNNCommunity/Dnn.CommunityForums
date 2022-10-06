@@ -21,118 +21,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Linq;
 using System.Web;
 using System.Xml;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
+using DotNetNuke.Services.Search.Entities;
 using System.Text.RegularExpressions;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-#region TopicInfo Class
-	public class TopicInfo
-	{
-		public TopicInfo()
-		{
-			Content = new Content();
-			Security = new PermissionInfo();
-			Author = new Author();
-		}
-
-        #region Private Members
-        #endregion
-        #region Public Properties
-        public int TopicId { get; set; }
-        public int ContentId { get; set; }
-        public int ViewCount { get; set; }
-        public int ReplyCount { get; set; }
-        public bool IsLocked { get; set; }
-        public bool IsPinned { get; set; }
-        public string TopicIcon { get; set; }
-        public int StatusId { get; set; }
-        public bool IsApproved { get; set; }
-        public bool IsDeleted { get; set; }
-        public bool IsAnnounce { get; set; }
-        public bool IsArchived { get; set; }
-        public TopicTypes TopicType { get; set; }
-        public DateTime AnnounceStart { get; set; }
-        public DateTime AnnounceEnd { get; set; }
-        public Content Content { get; set; }
-        public PermissionInfo Security { get; set; }
-        public Author Author { get; set; }
-        public string Tags { get; set; }
-        public int Priority { get; set; } = 0;
-        public string Categories { get; set; } = string.Empty;
-        public string TopicUrl { get; set; } = string.Empty;
-        public string ForumURL { get; set; } = string.Empty;
-        public string TopicData { get; set; } = string.Empty;
-
-        public string URL
-		{
-			get
-			{
-				if (! (string.IsNullOrEmpty(TopicUrl)) && ! (string.IsNullOrEmpty(ForumURL)))
-				{
-					if (TopicUrl.StartsWith("/") & ForumURL.EndsWith("/"))
-					{
-						ForumURL = ForumURL.Substring(0, ForumURL.Length - 1);
-						if (! (ForumURL.StartsWith("/")))
-						{
-							ForumURL = "/" + ForumURL;
-						}
-					}
-					return ForumURL + TopicUrl;
-				}
-				else
-				{
-					return string.Empty;
-				}
-			}
-		}
-		public List<PropertiesInfo> TopicProperties
-		{
-			get
-			{
-				if (TopicData == string.Empty)
-				{
-					return null;
-				}
-				else
-				{
-					List<PropertiesInfo> pl = new List<PropertiesInfo>();
-					XmlDocument xDoc = new XmlDocument();
-					xDoc.LoadXml(TopicData);
-					if (xDoc != null)
-					{
-						System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-						System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//properties/property");
-						if (xNodeList.Count > 0)
-						{
-							int i = 0;
-							for (i = 0; i < xNodeList.Count; i++)
-							{
-								string pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-								string pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
-								int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
-								PropertiesInfo p = new PropertiesInfo();
-								p.Name = pName;
-								p.DefaultValue = pValue;
-								p.PropertyId = pId;
-								pl.Add(p);
-							}
-						}
-					}
-					return pl;
-				}
-			}
-		}
-
-#endregion
-	}
-#endregion
-#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ISearchable
+	#region Topics Controller
+	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase
 	{
 		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
@@ -147,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			ti.Content.Summary = string.Empty;
 
 			ti.Content.IPAddress = IPAddress;
+
 			DateTime dt = DateTime.Now;
 			ti.Content.DateCreated = dt;
 			ti.Content.DateUpdated = dt;
@@ -173,24 +75,26 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return topicId;
 		}
-        public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew)
-        {
-            Regex rgx = new Regex(@"^\d+(\|\d+)*$");
-            if (OldTopicId > 0 && NewTopicId > 0 && rgx.IsMatch(listreplies))
-            {
-                if (isNew)
-                {
-                    string[] slistreplies = listreplies.Split("|".ToCharArray(), 2);
-                    string str = "";
-                    if (slistreplies.Length > 1) str = slistreplies[1];
-                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
-                }
-                else
-                {
-                    DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.Now, 0);
-                }
-            }
-        }
+
+		public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew)
+		{
+			Regex rgx = new Regex(@"^\d+(\|\d+)*$");
+			if (OldTopicId > 0 && NewTopicId > 0 && rgx.IsMatch(listreplies))
+			{
+				if (isNew)
+				{
+					string[] slistreplies = listreplies.Split("|".ToCharArray(), 2);
+					string str = "";
+					if (slistreplies.Length > 1) str = slistreplies[1];
+					DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, str, DateTime.Now, Convert.ToInt32(slistreplies[0]));
+				}
+				else
+				{
+					DataProvider.Instance().Replies_Split(OldTopicId, NewTopicId, listreplies, DateTime.Now, 0);
+				}
+			}
+		}
+
 		public int TopicSave(int PortalId, TopicInfo ti)
 		{
 			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
@@ -221,12 +125,13 @@ namespace DotNetNuke.Modules.ActiveForums
 			while (dr.Read())
 			{
 				ti = new TopicInfo();
-				if (! (dr["AnnounceEnd"] == DBNull.Value))
+
+				if (!(dr["AnnounceEnd"] == DBNull.Value))
 				{
 					ti.AnnounceEnd = Convert.ToDateTime(dr["AnnounceEnd"]);
 				}
 
-				if (! (dr["AnnounceStart"] == DBNull.Value))
+				if (!(dr["AnnounceStart"] == DBNull.Value))
 				{
 					ti.AnnounceStart = Convert.ToDateTime(dr["AnnounceStart"]);
 				}
@@ -263,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				ti.Categories = dr["Categories"].ToString();
 				ti.ForumURL = dr["ForumURL"].ToString();
 				ti.TopicUrl = dr["TopicURL"].ToString();
-					//.URL = dr("URL").ToString
+				//.URL = dr("URL").ToString
 				try
 				{
 					ti.TopicData = dr["TopicData"].ToString();
@@ -279,7 +184,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			//    'Dim tmpDr As IDataReader = dr
 			//    ti.Security = CType(DotNetNuke.Common.Utilities.CBO.FillObject(dr, GetType(PermissionInfo)), PermissionInfo)
 			//End If
-			if (! dr.IsClosed)
+
+			if (!dr.IsClosed)
 			{
 				dr.Close();
 			}
@@ -288,7 +194,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public void Topics_Delete(int PortalId, int ModuleId, int ForumId, int TopicId, int DelBehavior)
 		{
-            DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
+
+			DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
 			var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
 			DataCache.CacheClearPrefix(cachekey);
 			try
@@ -301,26 +208,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			}
 
-            if (DelBehavior != 0)
-                return;
+			if (DelBehavior != 0)
+				return;
 
-            // If it's a hard delete, delete associated attachments
-            var attachmentController = new Data.AttachController();
-            var fileManager = FileManager.Instance;
-            var folderManager = FolderManager.Instance;
-            var attachmentFolder = folderManager.GetFolder(PortalId, "activeforums_Attach");
+			// If it's a hard delete, delete associated attachments
+			var attachmentController = new Data.AttachController();
+			var fileManager = FileManager.Instance;
+			var folderManager = FolderManager.Instance;
+			var attachmentFolder = folderManager.GetFolder(PortalId, "activeforums_Attach");
 
-            foreach (var attachment in attachmentController.ListForPost(TopicId, null))
-            {
-                attachmentController.Delete(attachment.AttachmentId);
+			foreach (var attachment in attachmentController.ListForPost(TopicId, null))
+			{
+				attachmentController.Delete(attachment.AttachmentId);
 
-                var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
+				var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
 
-                // Only delete the file if it exists in the attachment folder
-                if (file != null && file.FolderId == attachmentFolder.FolderID)
-                    fileManager.DeleteFile(file);
-            }
-
+				// Only delete the file if it exists in the attachment folder
+				if (file != null && file.FolderId == attachmentFolder.FolderID)
+					fileManager.DeleteFile(file);
+			}
 
 		}
 		public void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId)
@@ -335,11 +241,12 @@ namespace DotNetNuke.Modules.ActiveForums
 					oldForumId = db.Forum_GetByTopicId(TopicId);
 					ForumController fc = new ForumController();
 					Forum fi = fc.Forums_Get(oldForumId, -1, false);
-					if (! (string.IsNullOrEmpty(fi.PrefixURL)))
+
+					if (!(string.IsNullOrEmpty(fi.PrefixURL)))
 					{
 						Data.Common dbC = new Data.Common();
 						string sURL = dbC.GetUrl(ModuleId, fi.ForumGroupId, oldForumId, TopicId, -1, -1);
-						if (! (string.IsNullOrEmpty(sURL)))
+						if (!(string.IsNullOrEmpty(sURL)))
 						{
 							dbC.ArchiveURL(PortalId, fi.ForumGroupId, ForumId, TopicId, sURL);
 						}
@@ -352,6 +259,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			DataProvider.Instance().Topics_Move(PortalId, ModuleId, ForumId, TopicId);
 		}
+
+		#region "Obsolete ISearchable replaced by DotNetNuke.Entities.Modules.ModuleSearchBase.GetModifiedSearchDocuments "
+		/*
 		public DotNetNuke.Services.Search.SearchItemInfoCollection GetSearchItems(DotNetNuke.Entities.Modules.ModuleInfo ModInfo)
 		{
 			DotNetNuke.Services.Search.SearchItemInfoCollection SearchItemCollection = new DotNetNuke.Services.Search.SearchItemInfoCollection();
@@ -411,6 +321,9 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
+		*/
+		#endregion "Obsolete ISearchable replaced by DotNetNuke.Entities.Modules.ModuleSearchBase.GetModifiedSearchDocuments "
+
 		public TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
 		{
 			SettingsInfo ms = DataCache.MainSettings(ModuleId);
@@ -447,11 +360,163 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return topic;
 		}
+
+		#region ModuleSearchBase
+
+		public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
+		{
+			/*
+			 * NOTE: In search results, the "source" display name comes from Module's display name, e.g. "Active Forums".
+			 * If you want to override this, 
+			 *     add an entry to ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].text 
+			 *     
+			 * e.g.,
+			 *   <data name="Module_Active Forums.Text" xml:space="preserve">
+             *       <value>Community Forums</value>
+             *  </data>
+			 * 
+			 * A possible future enhancement might be to write this entry or to perhaps change the module definition ...
+			 * 
+			 */
+			var ms = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(moduleInfo.ModuleID) };
+			/* if not using soft deletes, remove and rebuild entire index; 
+			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
+			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
+			*/
+			if (ms.DeleteBehavior != 1)
+			{
+				DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
+				beginDateUtc = DateTime.MinValue;
+			}
+
+			/* since this code runs without HttpContext, get https:// by looking at page settings */
+			bool isHttps = new Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
+			bool isRewriteLoaded = Utilities.IsRewriteLoaded();
+			string primaryPortalAlias = new Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+
+			ForumController fc = new ForumController();
+			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
+			Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
+
+			DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+			List<string> roles = new List<string>();
+			foreach (DotNetNuke.Security.Roles.RoleInfo r in rc.GetPortalRoles(moduleInfo.PortalID))
+			{
+				roles.Add(r.RoleName);
+			}
+			string roleIds = Permissions.GetRoleIds(roles.ToArray(), moduleInfo.PortalID);
+
+			string queryString = string.Empty;
+			System.Text.StringBuilder qsb = new System.Text.StringBuilder();
+
+			List<SearchDocument> searchDocuments = new List<SearchDocument>();
+			IDataReader dr = null;
+			try
+			{
+				dr = DataProvider.Instance().Search_DotNetNuke(moduleInfo.ModuleID, beginDateUtc);
+				while (dr.Read())
+				{
+					string subject = dr["Subject"].ToString();
+					string description = string.Empty;
+					string body = dr["Body"].ToString();
+					List<string> tags = dr["Tags"].ToString().Split(",".ToCharArray()).ToList();
+					DateTime dateupdated = Convert.ToDateTime(dr["DateUpdated"]);
+					int authorid = Convert.ToInt32(dr["AuthorId"]);
+					bool isDeleted = Convert.ToBoolean(dr["isDeleted"]);
+					bool isApproved = Convert.ToBoolean(dr["isApproved"]);
+					int contentid = Convert.ToInt32(dr["ContentId"]);
+					int forumid = Convert.ToInt32(dr["ForumId"]);
+					int topicid = Convert.ToInt32(dr["TopicId"]);
+					int replyId = Convert.ToInt32(dr["ReplyId"]);
+					int jumpid = (replyId > 0) ? replyId : topicid;
+					body = Common.Utilities.HtmlUtils.Clean(body, false);
+					if (!(string.IsNullOrEmpty(body)))
+					{
+						description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
+					};
+
+					// NOTE: indexer is called from scheduler and has no httpcontext 
+					// so any code that relies on HttpContext cannot be used...
+
+					string forumPrefixUrl = string.Empty;
+					if (!ForumUrlPrefixes.TryGetValue(forumid, out forumPrefixUrl))
+					{
+						forumPrefixUrl = fc.Forums_Get(forumid, -1, false, true).PrefixURL;
+						ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
+					}
+					string link;
+					if (!string.IsNullOrEmpty(forumPrefixUrl) && isRewriteLoaded)
+					{
+						link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
+					}
+					else
+					{
+						if (replyId == 0)
+						{
+							link = ms.UseShortUrls ? Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.TopicId + "=" + topicid })
+								: Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid });
+						}
+						else
+						{
+							link = ms.UseShortUrls ? Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId })
+								: Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId });
+						}
+					}
+					if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")) && !link.StartsWith("/"))
+					{
+						link = (isHttps ? "https://" : "http://") + primaryPortalAlias + "/" + link;
+					}
+					queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
+					string permittedRolesCanView = string.Empty;
+					if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
+					{
+						var canView = new Data.Common().WhichRolesCanViewForum(forumid, roleIds);
+						permittedRolesCanView = Permissions.GetRoleNames(string.Join(";", canView.Split(":".ToCharArray())), moduleInfo.PortalID);
+						AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
+					}
+					var searchDoc = new SearchDocument
+					{
+						UniqueKey = moduleInfo.ModuleID.ToString() + "-" + contentid.ToString(),
+						AuthorUserId = authorid,
+						PortalId = moduleInfo.PortalID,
+						Title = subject,
+						Description = description,
+						Body = body,
+						Url = link,
+						QueryString = queryString,
+						ModifiedTimeUtc = dateupdated,
+						Tags = (tags.Count > 0 ? tags : null),
+						Permissions = permittedRolesCanView,
+						IsActive = (isApproved && !isDeleted)
+					};
+					searchDocuments.Add(searchDoc);
+				};
+				dr.Close();
+				return searchDocuments;
+			}
+			catch (Exception ex)
+			{
+				return null;
+			}
+			finally
+			{
+				if (dr != null)
+				{
+					if (!dr.IsClosed)
+					{
+						dr.Close();
+					}
+				}
+			}
+
+		}
+		#endregion
+
 		//Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
 		//    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
 		//End Function
 	}
 
-#endregion
+	#endregion
 }
 

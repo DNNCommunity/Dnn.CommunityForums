@@ -148,6 +148,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Utilities.SelectListItemByValue(rdEnableURLRewriter, FriendlyURLs);
 
                     Utilities.SelectListItemByValue(rdFullTextSearch, FullTextSearch && FullTextStatus == 1); // 1 = Enabled Status
+				
+                    //rdFullTextSearch.SelectedIndex = FullTextSearch 
+                    //    ? rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("True"))
+                    //    : rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("False"));
 
                     Utilities.SelectListItemByValue(rdMailQueue, MailQueue);
                     Utilities.SelectListItemByValue(rdPoints, EnablePoints);
