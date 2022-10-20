@@ -121,6 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         auth = ti.Author;
                                     }
                                     tc.Topics_Delete(PortalId, ModuleId, tmpForumId, tmpTopicId, delAction);
+                                    
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {

@@ -171,6 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = reply.Content.AuthorId;
 
                 rc.Reply_Delete(PortalSettings.PortalId, _forumId, _topicId, _replyId, ms.DeleteBehavior);
+                rc.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
             else
             {
@@ -182,8 +183,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = topic.Content.AuthorId;
 
                 tc.Topics_Delete(PortalSettings.PortalId, _moduleId, _forumId, _topicId, ms.DeleteBehavior);
+                tc.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
-
+           
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)
             {
                 var uc = new Entities.Users.UserController();
