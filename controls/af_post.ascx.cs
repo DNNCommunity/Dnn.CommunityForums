@@ -904,6 +904,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                 ti.TopicType = TopicTypes.Poll;
                 tc.TopicSave(PortalId, ti);
+                tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             }
 
             try
@@ -1092,6 +1093,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.StatusId = ctlForm.StatusId;
             ri.TopicId = TopicId;
             var tmpReplyId = rc.Reply_Save(PortalId, ri);
+            rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             //tc.ForumTopicSave(ForumID, TopicId, ReplyId)
