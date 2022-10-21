@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
 		{
             DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
-			var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
+            var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
 			JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
 
 		    if (DelBehavior != 0) 
@@ -200,14 +200,15 @@ namespace DotNetNuke.Modules.ActiveForums
 			ri.StatusId = -1;
 			ri.TopicId = TopicId;
 			replyId = Reply_Save(PortalId, ri);
-			return replyId;
+            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            return replyId;
 		}
 		public int Reply_Save(int PortalId, ReplyInfo ri)
 		{
 			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
 			UserProfileController.Profiles_ClearCache(ri.Content.AuthorId);
 
-			return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
+            return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 		}
 		public ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
 		{
@@ -291,9 +292,15 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return reply;
 		}
-#endregion
-	}
-#endregion
+        public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
+        {
+            // signal to platform that module has updated content in order to be included in incremental search crawls
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+        }
+
+        #endregion
+    }
+    #endregion
 
 }
 

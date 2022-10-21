@@ -29,6 +29,8 @@ using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Search.Entities;
 using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using System.Data.SqlTypes;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -64,7 +66,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			ti.TopicType = TopicTypes.Topic;
 			ti.ViewCount = 0;
 			topicId = TopicSave(PortalId, ti);
-			if (topicId > 0)
+
+			UpdateModuleLastContentModifiedOnDate(ModuleId);
+
+            if (topicId > 0)
 			{
 				Topics_SaveToForum(ForumId, topicId, PortalId, ModuleId);
 				if (UserId > 0)
@@ -99,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
 			UserProfileController.Profiles_ClearCache(ti.Content.AuthorId);
-
+            
 			return Convert.ToInt32(DataProvider.Instance().Topics_Save(PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
 
 		}
@@ -110,8 +115,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId, int LastReplyId)
 		{
-			int id = Convert.ToInt32(DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId));
-
+            UpdateModuleLastContentModifiedOnDate (ModuleId); 
+			int id = Convert.ToInt32(DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId)); 
+            
 			return id;
 		}
 		public TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId)
@@ -194,8 +200,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public void Topics_Delete(int PortalId, int ModuleId, int ForumId, int TopicId, int DelBehavior)
 		{
+            UpdateModuleLastContentModifiedOnDate(ModuleId);
 
-			DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
+            DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
 			var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
 			DataCache.CacheClearPrefix(cachekey);
 			try
@@ -257,8 +264,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
 				}
 			}
-			DataProvider.Instance().Topics_Move(PortalId, ModuleId, ForumId, TopicId);
-		}
+            DataProvider.Instance().Topics_Move(PortalId, ModuleId, ForumId, TopicId);
+            UpdateModuleLastContentModifiedOnDate(ModuleId);
+        }
 
 		#region "Obsolete ISearchable replaced by DotNetNuke.Entities.Modules.ModuleSearchBase.GetModifiedSearchDocuments "
 		/*
@@ -339,8 +347,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			topic.IsApproved = true;
 			tc.TopicSave(PortalId, topic);
 			tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId);
-
-			if (fi.ModApproveTemplateId > 0 & topic.Author.AuthorId > 0)
+            
+            if (fi.ModApproveTemplateId > 0 & topic.Author.AuthorId > 0)
 			{
 				Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, 0, string.Empty, topic.Author);
 			}
@@ -360,10 +368,15 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return topic;
 		}
+        public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
+        {
+			// signal to platform that module has updated content in order to be included in incremental search crawls
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+        }
 
-		#region ModuleSearchBase
+        #region ModuleSearchBase
 
-		public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
+        public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
 		{
 			/*
 			 * NOTE: In search results, the "source" display name comes from Module's display name, e.g. "Active Forums".
@@ -386,8 +399,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			if (ms.DeleteBehavior != 1)
 			{
 				DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
-				beginDateUtc = DateTime.MinValue;
-			}
+				beginDateUtc = SqlDateTime.MinValue.Value.AddDays(1);
+            }
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
 			bool isHttps = new Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
@@ -408,7 +421,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			string queryString = string.Empty;
 			System.Text.StringBuilder qsb = new System.Text.StringBuilder();
-
 			List<SearchDocument> searchDocuments = new List<SearchDocument>();
 			IDataReader dr = null;
 			try
@@ -416,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				dr = DataProvider.Instance().Search_DotNetNuke(moduleInfo.ModuleID, beginDateUtc);
 				while (dr.Read())
 				{
-					string subject = dr["Subject"].ToString();
+                    string subject = dr["Subject"].ToString();
 					string description = string.Empty;
 					string body = dr["Body"].ToString();
 					List<string> tags = dr["Tags"].ToString().Split(",".ToCharArray()).ToList();
@@ -444,29 +456,39 @@ namespace DotNetNuke.Modules.ActiveForums
 						forumPrefixUrl = fc.Forums_Get(forumid, -1, false, true).PrefixURL;
 						ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
 					}
-					string link;
+					string link = string.Empty;
 					if (!string.IsNullOrEmpty(forumPrefixUrl) && isRewriteLoaded)
 					{
 						link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
 					}
 					else
 					{
-						if (replyId == 0)
+						//NOTE: indexer is called from scheduler and has no httpcontext, so must load and pass portalSettings
+						PortalSettings portalSettings = new PortalSettings(moduleInfo.PortalID);
+						PortalSettingsController psc = new Entities.Portals.PortalSettingsController();
+						psc.LoadPortalSettings(portalSettings);
+						string[] additionalParameters;
+						try
+                        {
+                            if (replyId == 0)
+							{
+								additionalParameters = ms.UseShortUrls ? new[] { ParamKeys.TopicId + "=" + topicid } : new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid };
+							}
+							else
+							{
+                                additionalParameters = ms.UseShortUrls ? new[] { ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId } : new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId };
+                            }
+							link = Common.Globals.NavigateURL(settings:portalSettings, tabID: moduleInfo.TabID, controlKey: string.Empty, additionalParameters: additionalParameters);
+                        }
+						catch 
 						{
-							link = ms.UseShortUrls ? Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.TopicId + "=" + topicid })
-								: Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid });
-						}
-						else
-						{
-							link = ms.UseShortUrls ? Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId })
-								: Common.Globals.NavigateURL(moduleInfo.TabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId });
 						}
 					}
 					if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")) && !link.StartsWith("/"))
 					{
 						link = (isHttps ? "https://" : "http://") + primaryPortalAlias + "/" + link;
 					}
-					queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
+					queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
 					string permittedRolesCanView = string.Empty;
 					if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
 					{
