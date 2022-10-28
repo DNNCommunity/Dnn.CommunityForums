@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DotNetNuke.Modules.ActiveForums.DAL2
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Replies")]
     [PrimaryKey("ReplyId")]
-    class Reply
+    public partial class ReplyInfo
     {
         public int ReplyId { get; set; }
         public int TopicId { get; set; }
