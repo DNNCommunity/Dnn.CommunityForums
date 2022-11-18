@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (ShowResults)
                     {
                         Literal lit = new Literal();
-                        lit.Text = Polls.PollResults(TopicId, ImagePath);
+                        lit.Text = Polls.PollResults(TopicId);
                         this.Controls.Add(lit);
                     }
                     else

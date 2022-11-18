@@ -28,7 +28,11 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public string PollResults(int TopicId, string ImagePath)
 		{
-			int BarWidth = 275;
+			return PollResults(TopicId: TopicId);
+		}
+        public string PollResults(int TopicId)
+            {
+                int BarWidth = 275;
 			var sb = new StringBuilder();
 			sb.Append("<table width=\"80%\" align=\"center\" cellpadding=\"4\" cellspacing=\"0\" class=\"afpollresults\">");
 			IDataReader dr;
@@ -53,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				sb.Append(Convert.ToString(dr["OptionName"]) + "</b> (" + Convert.ToString(dr["ResultCount"]) + ")");
 				sb.Append("</td></tr><tr><td class=\"afnormal\">");
 				sb.Append("<span class=\"afpollbar\">");
-				sb.Append($"<img src=\"{ImagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32((BarWidth * dblPercent))}px !important;\" />");
+				sb.Append($"<img src=\"~/DesktopModules/ActiveForums/images/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32((BarWidth * dblPercent))}px !important;\" />");
 
                 sb.Append("</span>&nbsp;" + Convert.ToInt32(dblPercent * 100).ToString() + "%");
 				sb.Append("</td></tr>");

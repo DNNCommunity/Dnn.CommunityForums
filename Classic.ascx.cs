@@ -318,12 +318,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //Register css
             ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/themes.css");
-            ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/theme.css"); 
-            if (Request.QueryString["asg"] != null)
-            {
-                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "module.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/theme.css");
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "custom/theme.css")))
+            { 
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "custom/theme.css"); 
             }
-
+            
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
             {

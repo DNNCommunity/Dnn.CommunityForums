@@ -1205,7 +1205,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var spacerTemplate = "<img src=\"" + Globals.ModulePath + "images/spacer.gif\" alt=\"--\" width=\"$2\" height=\"$1\" />";
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
-
             return Regex.Replace(template, expression, spacerTemplate, RegexOptions.IgnoreCase);
         }
 

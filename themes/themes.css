@@ -5,6 +5,13 @@
 	and can be freely edited by site administrators.
 
 	It can be overridden by declaring CSS in the theme.css located in a theme-specific folder.
+	
+    Module's CSS Load order: 
+    1) ~/DesktopModules/ActiveForums/module.css
+    2) ~/Portals/_default/activeforums_themes/themes.css
+    3) ~/Portals/_default/activeforums_themes/<currenttheme>/theme.css
+    4) ~/Portals/_default/activeforums_themes/<currenttheme>/custom/theme.css 
+
 */
 
 .afnormal {
