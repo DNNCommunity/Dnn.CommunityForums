@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         defaultTemplateId = DefaultForumViewTemplateId;
                     }
-                    sOutput = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/"));
+                    sOutput = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl(MainSettings.ThemeLocation + "/"));
                 }
                 catch (Exception ex)
                 {

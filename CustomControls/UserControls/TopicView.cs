@@ -225,8 +225,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 AppRelativeVirtualPath = "~/";
 
                 _myTheme = MainSettings.Theme;
-                _myThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + _myTheme);
-                //_allowAvatars = !UserPrefHideAvatars;
+                _myThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+               //_allowAvatars = !UserPrefHideAvatars;
                 _enablePoints = MainSettings.EnablePoints;
                 _editInterval = MainSettings.EditInterval;
 
@@ -1505,7 +1505,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (_topicType == 1)
                 {
                     var polls = new Polls();
-                    sbOutput.Replace("[POLLRESULTS]", polls.PollResults(topicId, ImagePath));
+                    sbOutput.Replace("[POLLRESULTS]", polls.PollResults(topicId));
                 }
                 else
                 {

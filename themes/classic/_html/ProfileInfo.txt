@@ -1,0 +1,15 @@
+<div class="afavatarprofile">
+[AF:PROFILE:DISPLAYNAME][AF:PROFILE:USERSTATUS]
+[AF:PROFILE:AVATAR]
+</div>
+<div class="aftopprofile">
+[AF:PROFILE:USERCAPTION]
+[AF:PROFILE:RANKNAME]
+[AF:PROFILE:PMLINK]
+[AF:BUTTON:EDITUSER]
+</div>
+<div class="afbottomprofile">
+Posts:[AF:PROFILE:POSTCOUNT]
+[MODIPADDRESS]
+[AF:PROFILE:RANKDISPLAY]
+</div>

@@ -137,7 +137,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     Utilities.SelectListItemByValue(drpMode, Mode);
                     Utilities.SelectListItemByValue(drpThemes, Theme);
-                    Utilities.SelectListItemByValue(drpTemplates, TemplateId);
+					Utilities.SelectListItemByValue(drpTemplateStorage, TemplateStorage);
+					Utilities.SelectListItemByValue(drpTemplates, TemplateId);
 
 					Utilities.SelectListItemByValue(rdAutoLinks, AutoLink);
                     Utilities.SelectListItemByValue(drpDeleteBehavior, DeleteBehavior);
@@ -198,7 +199,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				Theme = drpThemes.SelectedValue;
 				Mode = drpMode.SelectedValue;
-				TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
+				TemplateStorage = (drpTemplateStorage.SelectedIndex == ((int)TemplateStores.FILESYSTEM) ? TemplateStores.FILESYSTEM : TemplateStores.DATABASE);
+                TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
 				PageSize = Utilities.SafeConvertInt(drpPageSize.SelectedValue, 10);
                 FloodInterval = Utilities.SafeConvertInt(drpFloodInterval.SelectedValue,0);
                 EditInterval = Utilities.SafeConvertInt(drpEditInterval.SelectedValue,0);
@@ -303,7 +305,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		
         private void BindThemes()
 		{
-			var di = new System.IO.DirectoryInfo(Server.MapPath("~/DesktopModules/ActiveForums/themes"));
+			var di = new System.IO.DirectoryInfo(Server.MapPath("~/Portals/_default/activeforums_Themes"));
 			drpThemes.DataSource = di.GetDirectories();
 			drpThemes.DataBind();
 		}

@@ -155,13 +155,39 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public string Theme
-		{
-			get
-			{
-			    var result = MainSettings.GetString(SettingKeys.Theme);
-			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
-			}
-		}
+        {
+            get
+            {
+                var result = MainSettings.GetString(SettingKeys.Theme);
+                return string.IsNullOrWhiteSpace(result) ? "community" : result;
+            }
+        }
+        public TemplateStores TemplateStorage
+        {
+            get
+            {
+                TemplateStores parsedValue;
+                return Enum.TryParse(MainSettings.GetString(SettingKeys.TemplateStorage), true, out parsedValue)
+                           ? parsedValue
+                           : TemplateStores.DATABASE;
+            }
+        }
+       public string ThemeLocation
+        {
+            get
+            {
+                var result = MainSettings.GetString(SettingKeys.ThemeLocation);
+                return string.IsNullOrWhiteSpace(result) ? "~/Portals/_default/activeforums_Themes/community" : result;
+            }
+        }
+        public string TemplateLocation
+        {
+            get
+            {
+                var result = MainSettings.GetString(SettingKeys.TemplateLocation);
+                return string.IsNullOrWhiteSpace(result) ? "~/Portals/_default/activeforums_Templates" : result;
+            }
+        }
 
         public bool FullText
         {

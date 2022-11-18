@@ -261,8 +261,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl("~/DesktopModules/ActiveForums/");
-                cc.ThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/");
-                cc.TemplatePath = cc.ThemePath + "templates/";
+                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation + "/");
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplateLocation + "/");
                 cc.SiteId = PortalId;
                 cc.PageId = TabId;
                 cc.InstanceId = ModuleId;
@@ -319,8 +319,8 @@ namespace DotNetNuke.Modules.ActiveForums
             //Register theme
             if (InheritModuleCSS == false)
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/module.css");
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/jquery-ui.min.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "/module.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/controlpanel/jquery-ui.min.css");
                 if (Request.QueryString["asg"] != null)
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/module.css");
@@ -356,7 +356,14 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder sb = new StringBuilder();
             string handlerURL = VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/handlers/forumhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
             sb.AppendFormat("var afHandlerURL = '{0}';", handlerURL);
-            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme) + "';");
+            if (MainSettings.TemplateStorage == TemplateStores.FILESYSTEM)
+            {
+                sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemeLocation + "/" + MainSettings.Theme) + "/images/';");
+            }
+            else
+            {   // backward compatibility
+                sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme) + "';");
+            }
             string sLoadImg = "";
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner.gif") + "';";

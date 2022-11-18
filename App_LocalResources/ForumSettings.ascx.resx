@@ -477,4 +477,19 @@
   <data name="FullTextNotInstalled.Text" xml:space="preserve">
     <value>Full text search is not installed on the SQL Server.</value>
   </data>
+  <data name="Database.Text" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="FileSystem.Text" xml:space="preserve">
+    <value>Folders</value>
+  </data>
+  <data name="TemplateStorage.Help" xml:space="preserve">
+    <value>Select whether templates will be stored in the database or in a portal folder.</value>
+  </data>
+	<data name="TemplateStorage.Text" xml:space="preserve">
+    <value>Template Storage Location</value>
+  </data>
+	<data name="ThemeStorage.Text" xml:space="preserve">
+    <value>Theme Storage Location</value>
+  </data>
 </root>

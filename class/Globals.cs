@@ -23,12 +23,17 @@ namespace DotNetNuke.Modules.ActiveForums
     #region Enumerations
 
     public enum AttachStores
-	{
-		FILESYSTEM,
-		DATABASE
-	}
+    {
+        FILESYSTEM,
+        DATABASE
+    }
+    public enum TemplateStores
+    {
+        FILESYSTEM,
+        DATABASE
+    }
 
-	public enum CurrentUserTypes
+    public enum CurrentUserTypes
 	{
 		Anon,
 		Auth,
@@ -175,8 +180,11 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string MemberListMode = "MEMBERLISTMODE";
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
-		public const string Theme = "THEME";
-		public const string MailQueue = "MAILQUEUE";
+        public const string Theme = "THEME";
+        public const string ThemeLocation = "THEMELOCATION";
+        public const string TemplateLocation = "TEMPLATELOCATION";
+        public const string TemplateStorage = "TEMPLATESTORE";
+        public const string MailQueue = "MAILQUEUE";
 		public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
 		public const string FloodInterval = "FLOODINTERVAL";

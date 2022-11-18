@@ -34,6 +34,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -114,11 +115,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             _userIsTrusted = Utilities.IsTrusted((int)_fi.DefaultTrustValue, _ui.TrustLevel, _canTrust, _fi.AutoTrustLevel, _ui.PostCount);
-            Spinner = Page.ResolveUrl("~/DesktopModules/activeforums/themes/" + MainSettings.Theme + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
 
             var myTheme = MainSettings.Theme;
-            _themePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
+            _themePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+            Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
+
             ctlForm.ID = "ctlForm";
             ctlForm.PostButton.ImageUrl = _themePath + "/images/save32.png";
             ctlForm.PostButton.ImageLocation = "TOP";

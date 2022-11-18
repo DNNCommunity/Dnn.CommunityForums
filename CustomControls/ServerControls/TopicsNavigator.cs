@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			tb.Template = ItemTemplate.Text;
 			tb.HeaderTemplate = HeaderTemplate.Text;
 			tb.FooterTemplate = FooterTemplate.Text;
-			tb.ImagePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme);
+            tb.ImagePath = Page.ResolveUrl(MainSettings.ThemeLocation);             
 			tb.TopicId = TopicId;
 			tb.UserId = UserId;
 			writer.Write(tb.Render());

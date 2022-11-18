@@ -1,3 +1,4 @@
 DesktopModules/ActiveForums/themes/_default/jqueryui.css
 DesktopModules/ActiveForums/themes/_default/jqueryui.min.css
+DesktopModules/ActiveForums/themes/_default/images/ui*
 

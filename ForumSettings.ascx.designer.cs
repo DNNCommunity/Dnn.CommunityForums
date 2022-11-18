@@ -69,6 +69,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected global::System.Web.UI.WebControls.DropDownList drpThemes;
 
         /// <summary>
+        /// lblTemplateStorage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl lblTemplateStorage;
+
+        /// <summary>
+        /// drpTemplateStorage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drpTemplateStorage;
+
+        /// <summary>
         /// lblTemplate control.
         /// </summary>
         /// <remarks>

@@ -31,6 +31,13 @@
 			</asp:DropDownList>
 	   </div>
 		<div class="dnnFormItem">
+			<dnn:Label ID="lblTemplateStorage" resourcekey="TemplateStorage" runat="server" Suffix=":" /> 
+			<asp:DropDownList ID="drpTemplateStorage" runat="server">
+				<asp:ListItem Value="FileSystem" resourcekey="FileSystem"></asp:ListItem>
+				<asp:ListItem Value="Database" resourcekey="Database"></asp:ListItem>
+			</asp:DropDownList>
+		</div>
+		<div class="dnnFormItem">
 			<dnn:Label ID="lblTemplate" resourcekey="ForumTemplate" runat="server" Suffix=":" /> 
 			<asp:DropDownList ID="drpTemplates" runat="server" />
 

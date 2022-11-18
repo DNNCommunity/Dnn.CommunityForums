@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Xml;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
@@ -76,10 +77,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/");
+                return Page.ResolveUrl(MainSettings.ThemeLocation + "/");
             }
         }
-
         public string ForumIds
         {
             get
