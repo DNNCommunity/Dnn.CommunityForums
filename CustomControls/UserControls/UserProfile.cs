@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = DataCache.GetTemplate("ForumTracking.txt");
+                ctlForums.DisplayTemplate = TemplateCache.GetTemplate("ForumTracking.txt");
                 ctlForums.CurrentUserId = UID;
                 ctlForums.ForumIds = up.UserForums;
                 plhTracker.Controls.Add(ctlForums);
