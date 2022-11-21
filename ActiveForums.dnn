@@ -43,7 +43,7 @@
                   </moduleControl>
                   <moduleControl>
                     <controlKey>Edit</controlKey>
-                    <controlSrc>DesktopModules/ActiveForums/ControlPanel.ascx</controlSrc>
+                    <controlSrc>DesktopModules/ActiveForums/controlpanel/ControlPanel.ascx</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Manage Forums</controlTitle>
                     <controlType>Edit</controlType>
