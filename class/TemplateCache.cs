@@ -27,6 +27,56 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     internal class TemplateCache
 {
+    #region Cache Storage
+    private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
+    {
+        string myFile;
+        string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
+        string strPath;
+        strPath = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\";
+        if (!(System.IO.Directory.Exists(strPath)))
+        {
+            try
+            {
+                System.IO.Directory.CreateDirectory(strPath);
+            }
+            catch (Exception ex)
+            {
+                //   DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+                return;
+            }
+
+        }
+        try
+        {
+            myFile = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\" + FileName;
+            if (System.IO.File.Exists(myFile))
+            {
+                try
+                {
+                    System.IO.File.Delete(myFile);
+                }
+                catch (Exception ex)
+                {
+                    Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+            try
+            {
+                System.IO.File.AppendAllText(myFile, Template);
+            }
+            catch (Exception ex)
+            {
+                // DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+            }
+        }
+        catch (Exception ex)
+        {
+            //DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+        }
+    }
+    #endregion
+
     #region Cache Retrieval
     public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
     {
@@ -87,7 +137,51 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         return sTemplate;
     }
-   
+    private static string GetTemplateFromDisk(int ModuleId, string TemplateType, int TemplateId)
+    {
+        string sTemplate;
+        string myFile;
+        string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
+        System.IO.StreamReader objStreamReader;
+        //if (_disableCache)
+        //{
+        //    sTemplate = GetTemplate(TemplateId, TemplateType);
+        //}
+        //else
+        //{
+            try
+            {
+                myFile = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\" + FileName;
+                if (System.IO.File.Exists(myFile))
+                {
+                    try
+                    {
+                        objStreamReader = System.IO.File.OpenText(myFile);
+
+                        sTemplate = objStreamReader.ReadToEnd();
+                        objStreamReader.Close();
+                    }
+                    catch (Exception exc)
+                    {
+                        sTemplate = GetTemplate(TemplateId, TemplateType);
+                    }
+                }
+                else
+                {
+                    sTemplate = GetTemplate(TemplateId, TemplateType);
+                    CacheTemplateToDisk(ModuleId, TemplateId, TemplateType, sTemplate);
+                }
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+                sTemplate = "ERROR: Loading template failed";
+            }
+       // }
+
+
+        return sTemplate;
+    }
     private static string GetTemplate(int TemplateId, string TemplateType)
     {
         string sOut = string.Empty;
