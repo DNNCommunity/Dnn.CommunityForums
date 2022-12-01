@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Member Variables
 
         private int? _forumId;
-        private string _forumIds = string.Empty;
         private int? _forumGroupId;
         private int _parentForumId = -1;
         private int? _postId;
@@ -40,11 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _replyId;
         private int? _quoteId;
         private bool? _jumpToLastPost;
-        private string _defaultView = Views.ForumView;
-        private int _defaultForumViewTemplateId = -1;
-        private int _defaultTopicsViewTemplateId = -1;
-        private int _defaultTopicViewTemplateId = -1;
-        private string _templatePath = string.Empty;
         private string _templateFile = string.Empty;
         private Forum _foruminfo;
         private XmlDocument _forumData;
@@ -77,85 +71,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(MainSettings.ThemeLocation + "/");
+                return Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
             }
         }
-        public string ForumIds
-        {
-            get
-            {
-                return _forumIds;
-            }
-            set
-            {
-                _forumIds = value;
-            }
-        }
-
-        public int DefaultForumViewTemplateId
-        {
-            get
-            {
-                return _defaultForumViewTemplateId;
-            }
-            set
-            {
-                _defaultForumViewTemplateId = value;
-            }
-        }
-
-        public string TemplatePath
-        {
-            get
-            {
-                return _templatePath;
-            }
-            set
-            {
-                _templatePath = value;
-            }
-        }
-
+        public string ForumIds { get; set; } = string.Empty;
+        public int DefaultForumViewTemplateId { get; set; } = -1;
+        public string TemplatePath { get; set; } = string.Empty;
         public bool UseTemplatePath { get; set; }
-
-        public int DefaultTopicsViewTemplateId
-        {
-            get
-            {
-                return _defaultTopicsViewTemplateId;
-            }
-            set
-            {
-                _defaultTopicsViewTemplateId = value;
-            }
-        }
-
-        public int DefaultTopicViewTemplateId
-        {
-            get
-            {
-                return _defaultTopicViewTemplateId;
-            }
-            set
-            {
-                _defaultTopicViewTemplateId = value;
-            }
-        }
-
-        public string DefaultView
-        {
-            get
-            {
-
-                return _defaultView;
-            }
-            set
-            {
-
-                _defaultView = value;
-            }
-        }
-
+        public int DefaultTopicsViewTemplateId { get; set; } = -1;
+        public int DefaultTopicViewTemplateId { get; set; } = -1;
+        public string DefaultView { get; set; } = Views.ForumView;
         public bool InheritModuleCSS { get; set; }
 
         public bool JumpToLastPost

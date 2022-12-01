@@ -35,8 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private int _LoadGroupForumID = 0;
         private int _LoadPostID = 0;
         private string _imagePath = string.Empty;
-        private string _Params = string.Empty;
-        private int _forumTabId = -1;
         #endregion
 
         #region Public Properties
@@ -81,28 +79,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 _forumModuleId = value;
             }
         }
-        public int ForumTabId
-        {
-            get
-            {
-                return _forumTabId;
-            }
-            set
-            {
-                _forumTabId = value;
-            }
-        }
-        public string Params
-        {
-            get
-            {
-                return _Params;
-            }
-            set
-            {
-                _Params = value;
-            }
-        }
+        public bool ShowToolbar { get; set; } = true;
+        public int ForumTabId { get; set; } = -1;
+        public string Params { get; set; } = string.Empty;
         public bool UseAjax
         {
             get
@@ -140,18 +119,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     tempPageId = 1;
                 }
                 return tempPageId;
-            }
-        }
-        private bool _ShowToolbar = true;
-        public bool ShowToolbar
-        {
-            get
-            {
-                return _ShowToolbar;
-            }
-            set
-            {
-                _ShowToolbar = value;
             }
         }
         #endregion
@@ -362,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(MainSettings.ThemeLocation);
+                return Page.ResolveUrl(MainSettings.ThemesLocation + "/"+ MainSettings.Theme + "/images");
             }
         }
         public string GetViewType

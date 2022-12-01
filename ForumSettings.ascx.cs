@@ -30,8 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
 	public partial class ForumSettings : ForumSettingsBase
 	{
-
-	    private int? _fullTextStatus;
+		private int? _fullTextStatus;
         
 	    private int FullTextStatus
 	    {
@@ -137,7 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     Utilities.SelectListItemByValue(drpMode, Mode);
                     Utilities.SelectListItemByValue(drpThemes, Theme);
-					Utilities.SelectListItemByValue(drpTemplateStorage, TemplateStorage);
 					Utilities.SelectListItemByValue(drpTemplates, TemplateId);
 
 					Utilities.SelectListItemByValue(rdAutoLinks, AutoLink);
@@ -199,7 +197,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				Theme = drpThemes.SelectedValue;
 				Mode = drpMode.SelectedValue;
-				TemplateStorage = (drpTemplateStorage.SelectedIndex == ((int)TemplateStores.FILESYSTEM) ? TemplateStores.FILESYSTEM : TemplateStores.DATABASE);
                 TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
 				PageSize = Utilities.SafeConvertInt(drpPageSize.SelectedValue, 10);
                 FloodInterval = Utilities.SafeConvertInt(drpFloodInterval.SelectedValue,0);
@@ -305,7 +302,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		
         private void BindThemes()
 		{
-			var di = new System.IO.DirectoryInfo(Server.MapPath("~/Portals/_default/activeforums_Themes"));
+			SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+			var di = new System.IO.DirectoryInfo(Server.MapPath(MainSettings.ThemesLocation)); 
 			drpThemes.DataSource = di.GetDirectories();
 			drpThemes.DataBind();
 		}

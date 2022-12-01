@@ -73,50 +73,13 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-                return Settings.GetString(SettingKeys.Theme, "_default");
+                return Settings.GetString(SettingKeys.Theme, "community");
 			}
 			set
 			{
 				UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
 			}
 		}
-        public TemplateStores TemplateStorage
-        {
-            get
-            {
-                TemplateStores parsedValue;
-                return System.Enum.TryParse(Settings.GetString(SettingKeys.TemplateStorage), true, out parsedValue)
-                           ? parsedValue
-                           : TemplateStores.DATABASE;
-            }
-			set
-			{ 
-				UpdateTabModuleSettingCaseSensitive(SettingKeys.TemplateStorage, value.ToString()); 
-            }
-        }
-        public string ThemeLocation
-        {
-            get
-            {
-                return Settings.GetString(SettingKeys.ThemeLocation, "~/Portals/_default/activeforums_Themes/community");
-            }
-            set
-            {
-                UpdateModuleSettingCaseSensitive(SettingKeys.ThemeLocation, value);
-            }
-        }
-        public string TemplateLocation
-        {
-            get
-            {
-                return Settings.GetString(SettingKeys.TemplateLocation, "~/Portals/_default/activeforums_Templates");
-            }
-            set
-            {
-                UpdateModuleSettingCaseSensitive(SettingKeys.ThemeLocation, value);
-            }
-        }
-
         public string TimeFormatString
         {
             get

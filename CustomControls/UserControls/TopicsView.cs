@@ -173,8 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Response.Redirect(NavigateUrl(TabId));
                 }
                 this.AppRelativeVirtualPath = "~/";
-                MyTheme = MainSettings.Theme;
-                MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
+                MyThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/");
                 int defaultTemplateId = ForumInfo.TopicsTemplateId;
                 if (DefaultTopicsViewTemplateId >= 0)
                 {
@@ -992,7 +991,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     else
                     {
                         string sRatingImage = null;
-                        //sRatingImage = "<img src=""" & MyThemePath & "/yellow_star_0" & drTopic("TopicRating").ToString & ".gif"" alt=""" & drTopic("TopicRating").ToString & """ />"
+                        //sRatingImage = "<img src=""" & MyThemePath & "/images/yellow_star_0" & drTopic("TopicRating").ToString & ".gif"" alt=""" & drTopic("TopicRating").ToString & """ />"
                         //sRatingImage = "<span class=\"af-rater rate" + drTopic["TopicRating"].ToString() + "\">&nbsp;</span>";
 
                         sRatingImage = "<span class=\"fa-rater fa-rate" + drTopic["TopicRating"].ToString() + "\"><i class=\"fa fa-star1\"></i><i class=\"fa fa-star2\"></i><i class=\"fa fa-star3\"></i><i class=\"fa fa-star4\"></i><i class=\"fa fa-star5\"></i></span>";

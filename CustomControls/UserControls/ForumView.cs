@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         defaultTemplateId = DefaultForumViewTemplateId;
                     }
-                    sOutput = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl(MainSettings.ThemeLocation + "/"));
+                    sOutput = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/"));
                 }
                 catch (Exception ex)
                 {
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var lit = new LiteralControl();
                             object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                            sToolbar = Utilities.GetFileContent(SettingKeys.DefaultTemplatePath + "ToolBar.txt");
                             DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                             lit.Text = sToolbar.ToString();
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else if (DisplayTemplate == string.Empty)
                 {
-                    DisplayTemplate = Utilities.GetFileContent(Server.MapPath(ThemePath) + "templates/ForumView.ascx");
+                    DisplayTemplate = Utilities.GetFileContent(Server.MapPath(TemplatePath) + "/ForumView.ascx");
                     DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
                 }
 
@@ -280,7 +280,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", dr["GroupName"].ToString());
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", dr["ForumGroupId"].ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(" + GroupId.ToString() + ");\" src=\"" + ThemePath + GetImage(GroupId) + "\" alt=\"[RESX:ToggleGroup]\" />");
+                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(" + GroupId.ToString() + ");\" src=\"" + ThemePath + "images/" + GetImage(GroupId) + "\" alt=\"[RESX:ToggleGroup]\" />");
 
                                     //any replacements on the group
                                     string sNewGroup = "<div id=\"group" + GroupId + "\" " + GetDisplay(GroupId) + " class=\"afgroup\">" + sGroup + "</div>";
@@ -541,7 +541,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", "<img src=\"" + ThemePath + "email_disabled.png\" border=\"0\" alt=\"[RESX:ForumSubscribe:Disabled]\" />");
+                    Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", "<img src=\"" + ThemePath + "images/email_disabled.png\" border=\"0\" alt=\"[RESX:ForumSubscribe:Disabled]\" />");
                 }
             }
 
@@ -682,11 +682,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (Convert.ToBoolean(Request.Cookies[GroupID + "Show"].Value))
                 {
-                    return "images/arrows_down.png";
+                    return "arrows_down.png";
                 }
-                return "images/arrows_left.png";
+                return "arrows_left.png";
             }
-            return "images/arrows_down.png";
+            return "arrows_down.png";
         }
 
         private string GetDisplay(int GroupID)

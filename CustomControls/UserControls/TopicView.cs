@@ -224,8 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 AppRelativeVirtualPath = "~/";
 
-                _myTheme = MainSettings.Theme;
-                _myThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+                _myThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/");
                //_allowAvatars = !UserPrefHideAvatars;
                 _enablePoints = MainSettings.EnablePoints;
                 _editInterval = MainSettings.EditInterval;

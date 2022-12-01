@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 tgQR.Visible = bolShow;
                 if (!HttpContext.Current.Request.Browser.IsMobileDevice)
                 {
-                    ambtnSubmit.ImageUrl = ThemePath + "save32.png";
+                    ambtnSubmit.ImageUrl = ThemePath + "images/save32.png";
                     ambtnSubmit.ImageLocation = "TOP";
                     btnSubmit.Visible = false;
                     ambtnSubmit.Visible = true;
@@ -146,9 +146,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         ambtnSubmit.PostBack = true;
                         ambtnSubmit.ClientSideScript = "";
                         reqUserName.Enabled = true;
-                        reqUserName.Text = "<img src=\"" + ThemePath + "warning.png\" />";
-                        reqBody.Text = "<img src=\"" + ThemePath + "warning.png\" />";
-                        reqSecurityCode.Text = "<img src=\"" + ThemePath + "warning.png\" />";
+                        reqUserName.Text = "<img src=\"" + ThemePath + "images/warning.png\" />";
+                        reqBody.Text = "<img src=\"" + ThemePath + "images/warning.png\" />";
+                        reqSecurityCode.Text = "<img src=\"" + ThemePath + "images/warning.png\" />";
                         ambtnSubmit.Click += ambtnSubmit_Click;
                     }
                     else
@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     case "tgQR":
                         tgQR = (Toggle)ctrl;
-                        tgQR.ImagePath = ThemePath;
+                        tgQR.ImagePath = ThemePath + "images/";
                         break;
                     case "tgdQR":
                         tgdQR = (ToggleDisplay)ctrl;

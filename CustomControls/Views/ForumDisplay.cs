@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string groupName = xNode.Attributes["name"].Value;
                     sGroup = sGroup.Replace("[GROUPNAME]", groupName);
                     bool isVisible = ToggleBehavior != 1;
-                    sGroup = sGroup.Replace("[GROUPCOLLAPSE]", "<af:toggle IsVisible=\"" + isVisible + "\"  id=\"tgGroup" + groupId + "\" key=\"" + groupId + "\" cssclass=\"afarrow\" CssClassOn=\"aficon afarrowdown\" CssClassOff=\"aficon afarrowleft\" runat=\"server\" ImagePath=\"" + ThemePath + "\" />");
+                    sGroup = sGroup.Replace("[GROUPCOLLAPSE]", "<af:toggle IsVisible=\"" + isVisible + "\"  id=\"tgGroup" + groupId + "\" key=\"" + groupId + "\" cssclass=\"afarrow\" CssClassOn=\"aficon afarrowdown\" CssClassOff=\"aficon afarrowleft\" runat=\"server\" ImagePath=\"" + ThemePath  +"images/" + "\" />");
                     var xNodeList = ForumData.SelectNodes("//forums/forum[@active='true' and @groupid='" + groupId + "' and @parentforumid='0']");
                     var forums = new StringBuilder();
                     int i = 0;

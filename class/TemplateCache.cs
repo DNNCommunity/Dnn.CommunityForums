@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
+                    myFile = HttpContext.Current.Server.MapPath(SettingKeys.DefaultTemplatePath + "/" + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
+                    string myFile = HttpContext.Current.Server.MapPath(SettingKeys.DefaultTemplatePath + "/" + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateFileName);
+                myFile = HttpContext.Current.Server.MapPath(SettingKeys.DefaultTemplatePath + "/" + TemplateFileName);
                 if (System.IO.File.Exists(myFile))
                 {
                     System.IO.StreamReader objStreamReader = null;

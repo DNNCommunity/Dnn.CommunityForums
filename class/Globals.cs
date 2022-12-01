@@ -27,13 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
         FILESYSTEM,
         DATABASE
     }
-    public enum TemplateStores
-    {
-        FILESYSTEM,
-        DATABASE
-    }
-
-    public enum CurrentUserTypes
+     public enum CurrentUserTypes
 	{
 		Anon,
 		Auth,
@@ -181,9 +175,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
         public const string Theme = "THEME";
-        public const string ThemeLocation = "THEMELOCATION";
-        public const string TemplateLocation = "TEMPLATELOCATION";
-        public const string TemplateStorage = "TEMPLATESTORE";
+        public const string ThemesLocation = "THEMESLOCATION";
+        public const string TemplatesLocation = "TEMPLATESLOCATION";
         public const string MailQueue = "MAILQUEUE";
 		public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
@@ -219,7 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
 		public const string SharedResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
 		public const string CacheDependencyFile = "~/DesktopModules/ActiveForums/cache/cachedep.resources";
-		public const string TemplatePath = "~/DesktopModules/ActiveForums/config/templates/";
+		public const string DefaultTemplatePath = "~/DesktopModules/ActiveForums/config/templates/";
 
 	}
 

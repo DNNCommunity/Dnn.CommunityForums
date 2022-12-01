@@ -162,29 +162,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.IsNullOrWhiteSpace(result) ? "community" : result;
             }
         }
-        public TemplateStores TemplateStorage
+        public string ThemesLocation
         {
             get
             {
-                TemplateStores parsedValue;
-                return Enum.TryParse(MainSettings.GetString(SettingKeys.TemplateStorage), true, out parsedValue)
-                           ? parsedValue
-                           : TemplateStores.DATABASE;
+                var result = MainSettings.GetString(SettingKeys.ThemesLocation);
+                return string.IsNullOrWhiteSpace(result) ? "~/Portals/_default/activeforums_Themes" : result;
             }
         }
-       public string ThemeLocation
+        public string TemplatesLocation
         {
             get
             {
-                var result = MainSettings.GetString(SettingKeys.ThemeLocation);
-                return string.IsNullOrWhiteSpace(result) ? "~/Portals/_default/activeforums_Themes/community" : result;
-            }
-        }
-        public string TemplateLocation
-        {
-            get
-            {
-                var result = MainSettings.GetString(SettingKeys.TemplateLocation);
+                var result = MainSettings.GetString(SettingKeys.TemplatesLocation);
                 return string.IsNullOrWhiteSpace(result) ? "~/Portals/_default/activeforums_Templates" : result;
             }
         }
