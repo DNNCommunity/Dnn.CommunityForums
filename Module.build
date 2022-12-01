@@ -24,6 +24,10 @@
       <Styles Include="Styles/**/*.*" />
       <DataProvider Include="Providers/DataProviders/SqlDataProvider/*.SqlDataProvider" />
       <Resources Include="@(Manifest);@(TextFiles);@(SourceFiles);@(Views);@(ResourceFiles);@(Images);@(JsFiles);@(Styles);@(DataProvider)" />
+      <ThemeCss Include="themes/community/module.css" />
+      <ThemeImages Include="themes/community/images/*" />
+      <ThemeEmoticons Include="themes/community/emoticons/*" />
+      <TemplateFiles Include="config/templates/*.*" />      
       <ControlPanelCss Include="controlpanel/*.css" />
       <ControlPanelImages Include="controlpanel/images/*" />
     </ItemGroup>
@@ -43,6 +47,15 @@
   <Target Name="CopyControlPanel"> 
       <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
       <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
+      </Target>
+ 
+  <Target Name="CopyThemes"> 
+      <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
+      <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" />
+      <Copy SourceFiles="@(ThemeEmoticons)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\emoticons" />
+      </Target>
+  <Target Name="CopyTemplates">
+    <Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Templates" />
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Copy SourceFiles="@(Manifest)" DestinationFolder="$(FullModulePath)" />
@@ -54,8 +67,11 @@
     <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(FullModulePath)\Scripts\%(RecursiveDir)" />
     <Copy SourceFiles="@(Styles)" DestinationFolder="$(FullModulePath)\Styles\%(RecursiveDir)" />
     <Copy SourceFiles="@(DataProvider)" DestinationFolder="$(FullModulePath)\Providers\DataProviders\SqlDataProvider" />
-    <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
-    <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
-   
+  <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
+  <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" />
+  <Copy SourceFiles="@(ThemeEmoticons)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\emoticons" />
+      <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
+      <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
+    <Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Templates" />
   </Target>
 </Project>
