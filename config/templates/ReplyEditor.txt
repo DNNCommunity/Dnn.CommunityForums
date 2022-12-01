@@ -3,15 +3,15 @@
 <div class="afeditor">
 	<table cellpadding="10" cellspacing="0" width="100%">
 		<tr>
-			<td style="border-bottom:solid 1px #cdcdcd;text-align:left;"><span class="aftitle">[RESX:ReplyToTopic]</span></td>
-			<td style="border-bottom:solid 1px #cdcdcd;text-align:right;"><span style="font-weight:bold;">[RESX:Topic]:</span> [AF:LINK:TOPICNAME]</td>
+			<td style="border-bottom:solid 1px #cdcdcd;text-align:left;"><span class="aftitle">[TRESX:ReplyToTopic]</span></td>
+			<td style="border-bottom:solid 1px #cdcdcd;text-align:right;"><span style="font-weight:bold;">[TRESX:Topic]:</span> [AF:LINK:TOPICNAME]</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">			
 				<table cellpadding="0" cellspacing="4" border="0" width="99%">
 					[AF:UI:MESSAGEREPLY]
 					<tr>
-						<td style="text-align:left;">[RESX:ReplyToMessage]:</td>
+						<td style="text-align:left;">[TRESX:ReplyToMessage]:</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -20,7 +20,7 @@
 					[/AF:UI:MESSAGEREPLY]
 					[AF:UI:ANON]
 					<tr>
-						<td style="text-align:left;">[RESX:Username]:[AF:REQ:USERNAME]</td>
+						<td style="text-align:left;">[TRESX:Username]:[AF:REQ:USERNAME]</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -28,7 +28,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td style="text-align:left;">[RESX:SecurityCode]:[AF:REQ:SECURITYCODE]</td>
+						<td style="text-align:left;">[TRESX:SecurityCode]:[AF:REQ:SECURITYCODE]</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -37,7 +37,7 @@
 					</tr>
 					[/AF:UI:ANON]
 					<tr>
-						<td style="text-align:left;">[RESX:Subject]:</td>
+						<td style="text-align:left;">[TRESX:Subject]:</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -45,7 +45,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td style="text-align:left;">[RESX:Message]:</td>
+						<td style="text-align:left;">[TRESX:Message]:</td>
 						<td></td>
 					</tr>
 					<tr>
