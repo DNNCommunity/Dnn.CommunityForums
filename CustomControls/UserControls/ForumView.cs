@@ -34,46 +34,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
     {
-        private DataTable dtForums;
         private string ForumURL = string.Empty;
         private string ForumPageTitle = string.Empty;
-        private string _DisplayTemplate = "";
-        private int _currentUserId = -1;
         public bool SubsOnly { get; set; }
-
-        public string DisplayTemplate
-        {
-            get
-            {
-                return _DisplayTemplate;
-            }
-            set
-            {
-                _DisplayTemplate = value;
-            }
-        }
-        public DataTable ForumTable
-        {
-            get
-            {
-                return dtForums;
-            }
-            set
-            {
-                dtForums = value;
-            }
-        }
-        public int CurrentUserId
-        {
-            get
-            {
-                return _currentUserId;
-            }
-            set
-            {
-                _currentUserId = value;
-            }
-        }
+        public string DisplayTemplate { get; set; } = string.Empty;
+        public DataTable ForumTable { get; set; }
+        public int CurrentUserId { get; set; } = -1;
         protected af_quickjump ctlForumJump = new af_quickjump();
         #region Event Handlers
 
@@ -228,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (ForumTable == null)
                     {
                         var ds = new DataSet();
-                        dtForums = new DataTable();
+                        ForumTable = new DataTable();
                         var fc = new ForumController();
                         ForumTable = fc.GetForumView(PortalId, ModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); // KR - added cache retreival
                         //ds = DataProvider.Instance.UI_ForumView(PortalId, ModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds)
@@ -918,5 +884,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         #endregion
     }
-
 }

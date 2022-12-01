@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="07.00.03">
+    <package name="Active Forums" type="Module" version="07.01.00">
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -73,7 +73,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.02,07.00.03</upgradeVersionsList>
+              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.02,07.00.03,07.01.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -84,7 +84,7 @@
             <assembly>
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
-              <version>07.00.03</version>
+              <version>07.01.00</version>
             </assembly>
           </assemblies>
         </component>
@@ -336,13 +336,24 @@
 			   </script>
 			<script type="Install">
 				<path>sql</path>
+				<name>07.00.00.SqlDataProvider</name>
+				<version>07.00.00</version>
+			</script>
+            <script type="UnInstall">
+			<script type="Install">
+				<path>sql</path>
 				<name>07.00.02.SqlDataProvider</name>
 				<version>07.00.02</version>
 			</script>
-            <script type="UnInstall">
+			<script type="Install">
+				<path>sql</path>
+				<name>07.01.00.SqlDataProvider</name>
+				<version>07.01.00</version>
+			</script>
+			   <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>07.00.03</version>
+              <version>07.01.00</version>
             </script>
           </scripts>
         </component>
@@ -375,10 +386,11 @@
         </component>
 		  <component type="Cleanup" version="06.04.00" fileName="06.04.00.txt" />
 		  <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
+		  <component type="Cleanup" version="07.01.00" fileName="07.01.00.txt" />
       </components>
     </package>
 	
-    <package name="Active Forums What's New" type="Module" version="07.00.03">
+    <package name="Active Forums What's New" type="Module" version="07.01.00">
       <friendlyName>Active Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
