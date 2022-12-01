@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    myFile = HttpContext.Current.Server.MapPath(SettingKeys.DefaultTemplatePath + "/" + TemplateType + ".txt");
+                    string myFile = HttpContext.Current.Server.MapPath(SettingKeys.DefaultTemplatePath + "/" + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;

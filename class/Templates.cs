@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			try
 			{
                 SettingsInfo MainSettings = DataCache.MainSettings(info.ModuleId);
-                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath (MainSettings.TemplatesLocation + TemplateInfo.FileName), TemplateInfo.Template);
+                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath (MainSettings.TemplatesLocation + "/" + TemplateInfo.FileName), TemplateInfo.Template);
             }
             catch (Exception exc)
             {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
             TemplateInfo templateInfo = Template_Get(TemplateId); 
 			SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
 
-            string templateFile = HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + templateInfo.FileName);
+            string templateFile = HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + templateInfo.FileName);
             try
             {
                 if (System.IO.File.Exists(templateFile))
@@ -132,7 +132,8 @@ namespace DotNetNuke.Modules.ActiveForums
 				ti = tiWithinLoop;
 				if (TemplateName.ToUpperInvariant() == tiWithinLoop.Title.ToUpperInvariant())
 				{
-                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + ti.FileName));
+                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + ti.FileName));
+                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                     tiWithinLoop.TemplateHTML = GetHTML(tiWithinLoop.Template);
 					tiWithinLoop.TemplateText = GetText(tiWithinLoop.Template);
 					return tiWithinLoop;
@@ -161,11 +162,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     ti.Title = Convert.ToString(dr["Title"]);
                     ti.FileName = Convert.ToString(dr["FileName"]);
                     ti.Subject = Convert.ToString(dr["Subject"]);
-					ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + ti.FileName));
+					ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + ti.FileName));
 					if (string.IsNullOrEmpty(ti.Template))
 					{
                         ti.Template = Convert.ToString(dr["Template"]);
                     }
+                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                     ti.TemplateHTML = GetHTML(ti.Template);
 					ti.TemplateText = GetText(ti.Template);
                     ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
@@ -208,11 +210,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         FileName = Convert.ToString(dr["FileName"]),
                         TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
                     };
-                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + ti.FileName));
+                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + ti.FileName));
                     if (string.IsNullOrEmpty(ti.Template))
                     {
                         ti.Template = Convert.ToString(dr["Template"]);
                     }
+
+                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                     ti.TemplateHTML = GetHTML(ti.Template);
                     ti.TemplateText = GetText(ti.Template);
                     tl.Add(ti);

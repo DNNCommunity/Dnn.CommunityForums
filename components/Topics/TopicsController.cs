@@ -533,17 +533,36 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		}
         #endregion
+
         #region "IUpgradeable"
         public string UpgradeModule(string Version)
         {
-            switch (Version)
+			switch (Version)
             {
+                case "07.01.00":
+					Upgrade_070100_MoveTemplates();
+					Upgrade_070100_MoveThemes();
+                    break;
                 default:
                     break;
             }
-            return Version;
+			return Version;
+        }
+		internal void Upgrade_070100_MoveTemplates()
+        {
+			TemplateController tc = new TemplateController();
+            foreach (TemplateInfo template in tc.Template_List(-1, -1))
+			{
+				tc.Template_Save(template);
+			}	
+        }
+        internal void Upgrade_070100_MoveThemes()
+        {
+            SettingsInfo MainSettings = DataCache.MainSettings(-1);
+			System.IO.Directory.Move(HttpContext.Current.Server.MapPath("~/desktopmodules/activeforums/themes"), MainSettings.TemplatesLocation);
         }
         #endregion
+
     }
 
     #endregion

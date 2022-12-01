@@ -1,5 +1,7 @@
 ﻿/* issue 93 - move templates to file-based */
 
+SET NOCOUNT ON
+
 /* remove unused cache setting */
 DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TEMPLATECACHE'
 /* remove unused cache setting */
