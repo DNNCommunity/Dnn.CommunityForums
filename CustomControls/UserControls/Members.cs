@@ -99,13 +99,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
             string sTemplate = string.Empty;
-            if (System.IO.File.Exists(Server.MapPath(ImagePath + "/_memberlist.txt")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.TemplatesLocation + "/_memberlist.txt")))
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath(ImagePath + "/_memberlist.txt"));
+                sTemplate = Utilities.GetFileContent(Server.MapPath(MainSettings.TemplatesLocation + "/_memberlist.txt"));
             }
             else
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath("~/DesktopModules/ActiveForums/config/templates/_memberlist.txt"));
+                sTemplate = Utilities.GetFileContent(Server.MapPath(SettingKeys.DefaultTemplatePath + "/_memberlist.txt"));
             }
 
 

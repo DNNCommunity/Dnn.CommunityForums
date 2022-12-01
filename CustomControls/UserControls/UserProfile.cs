@@ -128,13 +128,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			base.OnLoad(e);
 
             string sTemplate = string.Empty;
-            if (System.IO.File.Exists(Server.MapPath(ImagePath + "/_userprofile.txt")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.TemplatesLocation +  "/_userprofile.txt")))
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath(ImagePath + "/_userprofile.txt"));
+                sTemplate = Utilities.GetFileContent(Server.MapPath(MainSettings.TemplatesLocation + "/_userprofile.txt"));
             }
             else
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath("~/DesktopModules/ActiveForums/config/templates/_userprofile.txt"));
+                sTemplate = Utilities.GetFileContent(Server.MapPath(SettingKeys.DefaultTemplatePath + "/ _userprofile.txt"));
             }
             sTemplate = Utilities.ParseSpacer(sTemplate);
 

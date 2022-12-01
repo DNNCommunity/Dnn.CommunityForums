@@ -680,7 +680,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string @out;
             try
             {
-                var myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/Filters.txt");
+                var myFile = HttpContext.Current.Server.MapPath(SettingKeys.DefaultTemplatePath + "/Filters.txt");
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;
