@@ -47,7 +47,7 @@ function amaf_deleteTag(row){
 		</tr>
 	</table>
 	<div style="height:400px;overflow:auto;">
-	<am:ActiveGrid ID="agTags" runat="server" DefaultColumn="TagName" PageSize="20000" ImagePath="~/DesktopModules/activeforums/images/">
+	<am:ActiveGrid ID="agTags" runat="server" DefaultColumn="TagName" PageSize="20000" ImagePath="<%=ImagePath%>">
 		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
 					<tr><td ColumnName="TagId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="TagName" style="height:16px;"><div class="amheadingcelltext">[RESX:TagName]</div></td><td class="amcptblhdr" ColumnName="Clicks" style="width:50px;height:16px;"><div class="amheadingcelltext">[RESX:TagClicks]</div></td><td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;"><div class="amheadingcelltext">[RESX:TagItems]</div></td><td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;"><div class="amheadingcelltext">&nbsp;</div></td></tr>
 		</HeaderTemplate>
