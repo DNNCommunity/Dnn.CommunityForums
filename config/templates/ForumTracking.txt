@@ -20,8 +20,6 @@
 							[AF:CONTROL:TOGGLESUBSCRIBE]
 							[RSSLINK]
 							[AF:CONTROL:ADDFAVORITE]
-							[AF:CONTROL:ADDTHIS:0]
-							
 						</td>
 					</tr>
 					[SUBFORUMS]
@@ -33,7 +31,6 @@
 								[AF:CONTROL:TOGGLESUBSCRIBE]
 								[RSSLINK]
 								[AF:CONTROL:ADDFAVORITE]
-								[AF:CONTROL:ADDTHIS:0]	
 							</td>
 						</tr>
 					[/SUBFORUMS]
