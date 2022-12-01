@@ -24,7 +24,7 @@
       <Styles Include="Styles/**/*.*" />
       <DataProvider Include="Providers/DataProviders/SqlDataProvider/*.SqlDataProvider" />
       <Resources Include="@(Manifest);@(TextFiles);@(SourceFiles);@(Views);@(ResourceFiles);@(Images);@(JsFiles);@(Styles);@(DataProvider)" />
-      <ThemeCss Include="themes/community/module.css" />
+      <ThemeCss Include="themes/community/*.css*" />
       <ThemeImages Include="themes/community/images/*" />
       <ThemeEmoticons Include="themes/community/emoticons/*" />
       <TemplateFiles Include="config/templates/*.*" />      
