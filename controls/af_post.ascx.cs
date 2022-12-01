@@ -117,8 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             _userIsTrusted = Utilities.IsTrusted((int)_fi.DefaultTrustValue, _ui.TrustLevel, _canTrust, _fi.AutoTrustLevel, _ui.PostCount);
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
 
-            var myTheme = MainSettings.Theme;
-            _themePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+            _themePath = Page.ResolveUrl(MainSettings.ThemesLocation+ "/" + MainSettings.Theme);
             Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
 
             ctlForm.ID = "ctlForm";
