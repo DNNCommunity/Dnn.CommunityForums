@@ -247,12 +247,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return ht;
 		}
-		//preserve public APIs moved to templateCache
-		public static string GetCachedTemplate(int TemplateStore, int ModuleId, string TemplateType, int TemplateId)
-		{
-			return TemplateCache.GetCachedTemplate(TemplateStore, ModuleId, TemplateType, TemplateId);
-
-        }
-
     }
 }
