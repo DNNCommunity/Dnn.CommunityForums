@@ -117,8 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums
             Spinner = Page.ResolveUrl("~/DesktopModules/activeforums/themes/" + MainSettings.Theme + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
 
-            var myTheme = MainSettings.Theme;
-            _themePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
+            _themePath = Page.ResolveUrl(MainSettings.ThemesLocation+ "/" + MainSettings.Theme);
+            Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
+
             ctlForm.ID = "ctlForm";
             ctlForm.PostButton.ImageUrl = _themePath + "/images/save32.png";
             ctlForm.PostButton.ImageLocation = "TOP";
