@@ -23,7 +23,8 @@
             <foldername>ActiveForums</foldername>
             <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature type="Searchable" />
+				<supportedFeature type="Searchable" />
+				<supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
