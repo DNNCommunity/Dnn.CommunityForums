@@ -535,13 +535,16 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region "IUpgradeable"
+         #region "IUpgradeable"
         public string UpgradeModule(string Version)
         {
 			switch (Version)
             {
                 case "07.01.00":
 					Upgrade_070100_MoveTemplates();
-					Upgrade_070100_MoveThemes();
+                    Upgrade_070100_MoveEmoticons();
+                    Upgrade_070100_MoveThemes();
+                    Upgrade_070100_RenameThemeCssFiles();
                     break;
                 default:
                     break;
@@ -556,15 +559,29 @@ namespace DotNetNuke.Modules.ActiveForums
 				tc.Template_Save(template);
 			}	
         }
+        internal void Upgrade_070100_MoveEmoticons()
+        {
+            SettingsInfo MainSettings = DataCache.MainSettings(-1);
+            System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes/_default/emoticons"), Globals.ModulePath + "emoticons");
+        }
         internal void Upgrade_070100_MoveThemes()
         {
             SettingsInfo MainSettings = DataCache.MainSettings(-1);
-			System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes"), MainSettings.TemplatesLocation);
+            System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes"), MainSettings.ThemesLocation);
+        }
+        internal void Upgrade_070100_RenameThemeCssFiles()
+        {
+            SettingsInfo MainSettings = DataCache.MainSettings(-1);
+			foreach (var folder in System.IO.Directory.EnumerateDirectories(MainSettings.ThemesLocation))
+			{
+                foreach (var file in System.IO.Directory.EnumerateFiles(MainSettings.ThemesLocation + "/"+ folder,"module.css"))
+                {
+					System.IO.File.Move(MainSettings.ThemesLocation + "/" + folder + "/" + file, "theme.css");
+                }
+            }
         }
         #endregion
-
     }
-
     #endregion
 }
 
