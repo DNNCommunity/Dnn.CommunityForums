@@ -82,10 +82,15 @@ namespace DotNetNuke.Modules.ActiveForums
 		//'<param name="info">TemplateInfo object</param>
 		public int Template_Save(TemplateInfo info)
 		{
-			int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(info.TemplateId, info.PortalId, info.ModuleId, (int)info.TemplateType, info.IsSystem, info.Title, info.Subject, info.Template));
-			TemplateInfo TemplateInfo = Template_Get(TemplateId);
-			try
-			{
+            // save updated template to database; will return TemplateId which is critical if new template
+            int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(info.TemplateId, info.PortalId, info.ModuleId, (int)info.TemplateType, info.IsSystem, info.Title, info.Subject, info.Template));
+            // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
+            TemplateInfo TemplateInfo = Template_Get(TemplateId);
+            // override the template text with what is being saved
+            TemplateInfo.Template = info.Template;
+            // now save to the template file
+            try
+            {
                 SettingsInfo MainSettings = DataCache.MainSettings(info.ModuleId);
                 System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath (MainSettings.TemplatesLocation + "/" + TemplateInfo.FileName), TemplateInfo.Template);
             }
