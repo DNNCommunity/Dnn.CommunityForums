@@ -597,6 +597,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return strReturn;
         }
 
+        [Obsolete("Deprecated in DNN Community Forums 8.0. Please use FilterWords(int portalId, int moduleId,  string strMessage, bool processEmoticons, bool removeHTML = false). Scheduled removal in v9.0.0.")]
         public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
         {
             return FilterWords(portalId: portalId, moduleId: moduleId, strMessage:strMessage, processEmoticons:processEmoticons, removeHTML:removeHTML);

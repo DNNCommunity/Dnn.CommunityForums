@@ -170,8 +170,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                     ti.TemplateHTML = GetHTML(ti.Template);
 					ti.TemplateText = GetText(ti.Template);
-                    ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
-                    ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
+					ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
+					ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
 
                 }
 				catch (Exception ex)
@@ -200,8 +200,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     var ti = new TemplateInfo
                     {
                         TemplateId = Convert.ToInt32(dr["TemplateId"]),
-                        DateCreated = dr.IsDBNull(8) ? Utilities.NullDate() : Convert.ToDateTime(dr["DateCreated"]),
-                        DateUpdated = dr.IsDBNull(9) ? Utilities.NullDate() : Convert.ToDateTime(dr["DateUpdated"]),
+                        DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]),
+                        DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]),
                         IsSystem = Convert.ToBoolean(dr["IsSystem"]),
                         ModuleId = Convert.ToInt32(dr["ModuleID"]),
                         PortalId = Convert.ToInt32(dr["PortalId"]),

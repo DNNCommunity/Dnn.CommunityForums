@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
+            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/controlpanel/ControlPanel.css");
             ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/controlpanel/jquery-ui.min.css"));
             
 
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sb = new StringBuilder();
             sb.AppendLine("var asScriptPath = '" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/scripts/") + "';");
             sb.AppendFormat("var afAdminHandlerURL = '{0}';", adminHandler);
-            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemesLocation + "/" + MainSettings.Theme) + "';"); 
+            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemesLocation + "/" + MainSettings.Theme) + "/images';"); 
             string sLoadImg;
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner.gif") + "';";
