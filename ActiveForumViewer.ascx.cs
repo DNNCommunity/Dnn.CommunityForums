@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlForumLoader.ForumModuleId = tmpModuleId;
                     ctlForumLoader.ForumTabId = TabId;
                     ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
-                    ctlForumLoader.InheritModuleCSS = false;
                     if (!(Convert.ToString(Settings["AFTopicsTemplate"]) == null))
                     {
                         ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(Settings["AFTopicsTemplate"]);
@@ -68,10 +67,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(Settings["AFTopicTemplate"]);
                     }
-                    //Dim objModule As ForumBase = CType(LoadControl("~/desktopmodules/ActiveForums/ActiveForums.ascx"), ForumBase)
+                    //Dim objModule As ForumBase = CType(LoadControl(Globals.ModulePath + "ActiveForums.ascx"), ForumBase)
                     //If Not objModule Is Nothing Then
                     //    objModule.ModuleConfiguration = Me.ModuleConfiguration
-                    //    objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/ActiveForums.ascx")
+                    //    objModule.ID = Path.GetFileNameWithoutExtension(Globals.ModulePath + "ActiveForums.ascx")
                     //    objModule.AFModID = CType(Settings["AFForumModuleID"], Integer)
                     //    objModule.LoadGroupForumID = CType(Settings["AFForumGroupID"], Integer)
                     //    objModule.LoadView = CType(Settings["AFViewType"], String)
@@ -80,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";
                     oLink.Attributes["type"] = "text/css";
-                    oLink.Attributes["href"] = Page.ResolveUrl("~/DesktopModules/ActiveForums/module.css");
+                    oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "module.css");
                     System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
                     if (oCSS != null)
                     {

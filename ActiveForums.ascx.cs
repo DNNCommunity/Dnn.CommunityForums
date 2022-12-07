@@ -78,9 +78,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Users can only view thier own settings unless they are admin.
                 if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
                 {
-                    var userPrefsCtl = (SettingsBase)(LoadControl("~/desktopmodules/activeforums/controls/profile_mypreferences.ascx"));
+                    var userPrefsCtl = (SettingsBase)(LoadControl(Globals.ModulePath + "controls/profile_mypreferences.ascx"));
                     userPrefsCtl.ModuleConfiguration = ModuleConfiguration;
-                    userPrefsCtl.LocalResourceFile = "~/desktopmodules/activeforums/app_localresources/sharedresources.resx";
+                    userPrefsCtl.LocalResourceFile = Globals.ModulePath + "app_localresources/sharedresources.resx";
                     plhAF.Controls.Add(userPrefsCtl);
                 }
 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // Otherwise, just load the normal forum control
-            var ctl = (ForumBase)(LoadControl("~/desktopmodules/activeforums/classic.ascx"));
+            var ctl = (ForumBase)(LoadControl(Globals.ModulePath + "classic.ascx"));
             ctl.ModuleConfiguration = ModuleConfiguration;
             plhAF.Controls.Add(ctl);
 

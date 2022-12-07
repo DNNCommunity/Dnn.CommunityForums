@@ -85,11 +85,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 btnDelete.Visible = false;
             }
 
-            imgOn = Page.ResolveUrl("~/DesktopModules/ActiveForums/images/admin_check.png");
-            imgOff = Page.ResolveUrl("~/DesktopModules/ActiveForums/images/admin_stop.png");
+            imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
+            imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
             reqForumName.Text = "<img src=\"" + Page.ResolveUrl(RequiredImage) + "\" />";
             reqGroups.Text = "<img src=\"" + Page.ResolveUrl(RequiredImage) + "\" />";
-            var propImage = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/properties16.png") + "\" alt=\"[RESX:ConfigureProperties]\" />";
+            var propImage = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/properties16.png") + "\" alt=\"[RESX:ConfigureProperties]\" />";
 
             rdAttachOn.Attributes.Add("onclick", "toggleAttach(this);");
             rdAttachOn.Attributes.Add("value", "1");
@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var newForum = fc.GetForum(PortalId, ModuleId, forumId, true);
             
-            ctlSecurityGrid = LoadControl("~/DesktopModules/activeforums/controls/admin_securitygrid.ascx") as Controls.admin_securitygrid;
+            ctlSecurityGrid = LoadControl(Globals.ModulePath + "controls/admin_securitygrid.ascx") as Controls.admin_securitygrid;
             if(ctlSecurityGrid != null)
             {
                 ctlSecurityGrid.Perms = newForum.Security;
@@ -576,7 +576,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var newGroup = gc.GetForumGroup(ModuleId, groupId);
 
-            ctlSecurityGrid = LoadControl("~/DesktopModules/activeforums/controls/admin_securitygrid.ascx") as Controls.admin_securitygrid;
+            ctlSecurityGrid = LoadControl(Globals.ModulePath + "controls/admin_securitygrid.ascx") as Controls.admin_securitygrid;
             if(ctlSecurityGrid != null)
             {
                 ctlSecurityGrid.Perms = newGroup.Security;
@@ -709,7 +709,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var arr = rc.GetPortalRoles(PortalId);
                 foreach (RoleInfo ri in from RoleInfo ri in arr let sRoles = roles.Split(';') from role in sRoles.Where(role => role == ri.RoleID.ToString()) select ri)
                 {
-                    sb.Append("<tr><td class=\"amcpnormal\">" + ri.RoleName + "</td><td><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/delete16.png") + "\" onclick=\"removeRole(this," + ri.RoleID + ");\" /></td></tr>");
+                    sb.Append("<tr><td class=\"amcpnormal\">" + ri.RoleName + "</td><td><img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" onclick=\"removeRole(this," + ri.RoleID + ");\" /></td></tr>");
                 }
             }
             sb.Append("</table>");

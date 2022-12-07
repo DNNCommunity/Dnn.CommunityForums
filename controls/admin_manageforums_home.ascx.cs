@@ -41,9 +41,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-			arrowUp = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/arrow_up.png") + "\" alt=\"" + GetSharedResource("[RESX:MoveUp]") + "\" />";
-			arrowDown = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/arrow_down.png") + "\" alt=\"" + GetSharedResource("[RESX:MoveDown]") + "\" />";
-			edit = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/forum_edit.png") + "\" alt=\"" + GetSharedResource("[RESX:Edit]") + "\" />";
+			arrowUp = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/arrow_up.png") + "\" alt=\"" + GetSharedResource("[RESX:MoveUp]") + "\" />";
+			arrowDown = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/arrow_down.png") + "\" alt=\"" + GetSharedResource("[RESX:MoveDown]") + "\" />";
+			edit = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/forum_edit.png") + "\" alt=\"" + GetSharedResource("[RESX:Edit]") + "\" />";
 			if (! cbGrid.IsCallback)
 			{
 				BindForums();
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		private string RenderSpacer(int Height, int Width)
 		{
-			return "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spacer.gif") + "\" height=\"" + Height + "\" width=\"" + Width + "\" alt=\"-\" />";
+			return "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + Height + "\" width=\"" + Width + "\" alt=\"-\" />";
 		}
 		private int GetGroupCount(DataTable dt)
 		{

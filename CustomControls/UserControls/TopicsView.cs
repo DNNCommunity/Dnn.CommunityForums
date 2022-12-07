@@ -1423,7 +1423,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string ctlPath = string.Empty;
             Session["modal_View"] = ctrl;
             Session["modal_options"] = @params;
-            ctlPath = "~/DesktopModules/activeforums/controls/af_" + ctrl + ".ascx";
+            ctlPath = Globals.ModulePath + "controls/af_" + ctrl + ".ascx";
             ForumBase ctl = (ForumBase)(LoadControl(ctlPath));
             ctl.ID = ctrl;
             ctl.ModuleConfiguration = this.ModuleConfiguration;

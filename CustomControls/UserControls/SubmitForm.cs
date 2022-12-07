@@ -809,7 +809,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //If obj Is Nothing Then
                 //    DataCache.CacheStore(ForumModuleId & "Emoticons" & EditorType.ToString) = objUtils.LoadEmoticons(EditorType, ForumModuleId, ImagePath)
                 //End If
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ModuleId, ImagePath) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ModuleId, Globals.ModulePath + "emoticons/") + "</fieldset>");
             }
             else
             {

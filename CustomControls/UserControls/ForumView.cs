@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     if (plh != null)
                                     {
                                         ForumBase ctlWhosOnline;
-                                        ctlWhosOnline = (ForumBase)(LoadControl("~/Desktopmodules/ActiveForums/controls/af_usersonline.ascx"));
+                                        ctlWhosOnline = (ForumBase)(LoadControl(Globals.ModulePath + "controls/af_usersonline.ascx"));
                                         ctlWhosOnline.ModuleConfiguration = ModuleConfiguration;
                                         plh.Controls.Add(ctlWhosOnline);
                                     }

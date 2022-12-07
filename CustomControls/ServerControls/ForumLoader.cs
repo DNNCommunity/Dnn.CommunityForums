@@ -65,11 +65,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
 
                     //Dim mi As DotNetNuke.Entities.Modules.ModuleInfo = mc.GetModule(ForumModuleId, ForumTabId)
-                    ForumBase objModule = (ForumBase)(LoadControl("~/desktopmodules/ActiveForums/classic.ascx"));
+                    ForumBase objModule = (ForumBase)(LoadControl(Globals.ModulePath + "classic.ascx"));
                     if (objModule != null)
                     {
                         objModule.ModuleConfiguration = modInfo;
-                        objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/classic.ascx");
+                        objModule.ID = Path.GetFileNameWithoutExtension(Globals.ModulePath + "classic.ascx");
                         objModule.ForumModuleId = ForumModuleId; //CType(Settings["AFForumModuleID"], Integer)
                         objModule.ForumInfo = fi;
                         objModule.ForumId = ForumId;
@@ -80,8 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.TemplatePath = TemplatePath;
                         objModule.UseTemplatePath = UseTemplatePath;
                         objModule.ParentForumId = ParentForumId;
-                        objModule.ForumIds = ForumIds;
-                        objModule.InheritModuleCSS = InheritModuleCSS;
+                        objModule.ForumIds = ForumIds; 
                         //objModule.LoadGroupForumID = CType(Settings["AFForumGroupID"], Integer)
                         objModule.DefaultView = DefaultView; //CType(Settings["AFViewType"], String)
                         this.Controls.Add(objModule);

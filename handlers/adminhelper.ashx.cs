@@ -386,7 +386,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			{
 				view = Params["view"].ToString().ToLowerInvariant();
 			}
-			string sPath = HttpContext.Current.Server.MapPath("~/desktopmodules/activeforums/");
+			string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath);
 			string sFile = string.Empty;
 			switch (view)
 			{

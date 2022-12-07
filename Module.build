@@ -25,8 +25,7 @@
       <DataProvider Include="Providers/DataProviders/SqlDataProvider/*.SqlDataProvider" />
       <Resources Include="@(Manifest);@(TextFiles);@(SourceFiles);@(Views);@(ResourceFiles);@(Images);@(JsFiles);@(Styles);@(DataProvider)" />
       <ThemeCss Include="themes/community/*.css*" />
-      <ThemeImages Include="themes/community/images/*" />
-      <ThemeEmoticons Include="themes/community/emoticons/*" />
+      <ThemeImages Include="themes/community/images/*" /> 
       <TemplateFiles Include="config/templates/*.*" />      
       <ControlPanelCss Include="controlpanel/*.css" />
       <ControlPanelImages Include="controlpanel/images/*" />
@@ -51,8 +50,7 @@
  
   <Target Name="CopyThemes"> 
       <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
-      <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" />
-      <Copy SourceFiles="@(ThemeEmoticons)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\emoticons" />
+      <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" /> 
       </Target>
   <Target Name="CopyTemplates">
     <Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Templates" />
@@ -68,8 +66,7 @@
     <Copy SourceFiles="@(Styles)" DestinationFolder="$(FullModulePath)\Styles\%(RecursiveDir)" />
     <Copy SourceFiles="@(DataProvider)" DestinationFolder="$(FullModulePath)\Providers\DataProviders\SqlDataProvider" />
   <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
-  <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" />
-  <Copy SourceFiles="@(ThemeEmoticons)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\emoticons" />
+  <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" /> 
       <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
       <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
     <Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Templates" />

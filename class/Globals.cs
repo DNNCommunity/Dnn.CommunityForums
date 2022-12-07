@@ -209,10 +209,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-		public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
-		public const string SharedResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
-		public const string CacheDependencyFile = "~/DesktopModules/ActiveForums/cache/cachedep.resources";
-		public const string DefaultTemplatePath = "~/DesktopModules/ActiveForums/config/templates/";
+		public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
+		public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
+		public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
+		public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
 
 	}
 

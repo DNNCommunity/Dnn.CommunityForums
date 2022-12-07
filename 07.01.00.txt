@@ -1,6 +1,10 @@
+DesktopModules/ActiveForums/06.04.00.txt
+DesktopModules/ActiveForums/themes/_default/spacer.gif
 DesktopModules/ActiveForums/themes/_default/jqueryui.css
 DesktopModules/ActiveForums/themes/_default/jqueryui.min.css
 DesktopModules/ActiveForums/themes/_default/images/ui*
 DesktopModules/ActiveForums/config/templates/ForumsView-4.3.txt
 DesktopModules/ActiveForums/config/templates/TopicView-4.3.txt
 DesktopModules/ActiveForums/config/templates/TopicsView-4.3.txt
+DesktopModules/ActiveForums/ControlPanel.ascx
+DesktopModules/ActiveForums/ControlPanel.css

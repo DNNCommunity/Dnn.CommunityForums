@@ -559,7 +559,7 @@ namespace DotNetNuke.Modules.ActiveForums
         internal void Upgrade_070100_MoveThemes()
         {
             SettingsInfo MainSettings = DataCache.MainSettings(-1);
-			System.IO.Directory.Move(HttpContext.Current.Server.MapPath("~/desktopmodules/activeforums/themes"), MainSettings.TemplatesLocation);
+			System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes"), MainSettings.TemplatesLocation);
         }
         #endregion
 

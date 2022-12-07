@@ -170,6 +170,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.IsNullOrWhiteSpace(result) ? "~/Portals/_default/activeforums_Themes" : result;
             }
         }
+        public string ThemeLocation
+        {
+            get
+            {
+                return ThemesLocation + "/" + Theme;
+            }
+        }
         public string TemplatesLocation
         {
             get

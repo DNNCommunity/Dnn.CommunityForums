@@ -40,8 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public abstract partial class Utilities
     {
-        internal const string AppPath = "~/DesktopModules/ActiveForums/";
-        internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
+         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
 
 
         /// <summary>
@@ -470,7 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (sClean != string.Empty)
             {
 
-                sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, themePath, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, themePath, processEmoticons);
+                sClean = editorType == EditorTypes.TEXTBOX ? CleanTextBox(portalId, sClean, allowHTML, useFilter, moduleId, processEmoticons) : CleanEditor(portalId, sClean, useFilter, moduleId, processEmoticons);
 
                 var regExp = new Regex(@"(<a [^>]*>)(?'url'(\S*?))(</a>)", RegexOptions.IgnoreCase);
                 var matches = regExp.Matches(sClean);
@@ -498,8 +497,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sClean;
         }
-
-        private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
+        private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, bool processEmoticons)
         {
 
             var strMessage = HTMLEncode(text);
@@ -522,7 +520,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = FilterWords(portalId, moduleId, strMessage, processEmoticons);
 
                     strMessage = HTMLEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
@@ -542,7 +540,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = HTMLEncode(strMessage);
 
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = FilterWords(portalId, moduleId, strMessage, processEmoticons);
 
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
                 }
@@ -553,7 +551,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return strMessage;
         }
 
-        private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, string themePath, bool processEmoticons)
+        private static string CleanEditor(int portalId, string text, bool useFilter, int moduleId, bool processEmoticons)
         {
 
             var strMessage = text;
@@ -565,7 +563,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var sCode = strMessage.Substring(intStart, intEnd - intStart);
                 strMessage = strMessage.Replace(sCode, "[CODEHOLDER]");
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = FilterWords(portalId, moduleId, strMessage, processEmoticons);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -575,7 +573,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = FilterWords(portalId, moduleId, strMessage, processEmoticons);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -600,6 +598,10 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
+        {
+            return FilterWords(portalId: portalId, moduleId: moduleId, strMessage:strMessage, processEmoticons:processEmoticons, removeHTML:removeHTML);
+        }
+        public static string FilterWords(int portalId, int moduleId,  string strMessage, bool processEmoticons, bool removeHTML = false)
         {
             if (removeHTML)
             {
@@ -629,7 +631,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (processEmoticons)
                         {
                             if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                                sReplace = "<img src='" + themePath + sReplace + "' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />";
+                                sReplace = "<img src='" + Globals.ModulePath + "emoticons/" + sReplace + "' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />";
 
                             strMessage = strMessage.Replace(sFind, sReplace);
                         }
@@ -1200,13 +1202,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseSpacer(string template)
         {
-            var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
-
-            if (HttpContext.Current.Request.IsSecureConnection)
-                strHost = strHost.Replace("http://", "https://");
-
-            var spacerTemplate = string.Format("<img src=\"{0}DesktopModules/ActiveForums/images/spacer.gif\" alt=\"--\" width=\"$2\" height=\"$1\" />", strHost);
-
+            var spacerTemplate = "<img src=\"" + Globals.ModulePath + "images/spacer.gif\" alt=\"--\" width=\"$2\" height=\"$1\" />";
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
             return Regex.Replace(template, expression, spacerTemplate, RegexOptions.IgnoreCase);
@@ -1287,7 +1283,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetSharedResource(string key, string resourceFile)
         {
-            return Services.Localization.Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/" + resourceFile + ".resx");
+            return Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/" + resourceFile + ".resx");
         }
 
         public static string GetSharedResource(string key, bool isAdmin = false)
@@ -1295,11 +1291,11 @@ namespace DotNetNuke.Modules.ActiveForums
             string sValue;
             if (isAdmin)
             {
-                sValue = Services.Localization.Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/ControlPanel.ascx.resx");
+                sValue = Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx");
                 return sValue == string.Empty ? key : sValue;
             }
 
-            sValue = Services.Localization.Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx");
+            sValue = Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/SharedResources.resx");
             return sValue == string.Empty ? key : sValue;
         }
 

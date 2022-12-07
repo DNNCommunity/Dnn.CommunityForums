@@ -81,8 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public int DefaultTopicsViewTemplateId { get; set; } = -1;
         public int DefaultTopicViewTemplateId { get; set; } = -1;
         public string DefaultView { get; set; } = Views.ForumView;
-        public bool InheritModuleCSS { get; set; }
-
         public bool JumpToLastPost
         {
             get
@@ -470,7 +468,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected string GetSharedResource(string key)
         {
-            return Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx");
+            return Localization.GetString(key, Globals.ModulePath + "App_LocalResources/SharedResources.resx");
         }
 
         internal bool IsHtmlPermitted(HTMLPermittedUsers permittedMode, bool userIsTrusted, bool userIsModerator)

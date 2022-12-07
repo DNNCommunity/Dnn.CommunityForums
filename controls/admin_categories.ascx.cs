@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			//e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
 			//e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
-			e.Item[6] = "<img src=\"" + Page.ResolveUrl("~/desktopmodules/activeforums/images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
+			e.Item[6] = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
 		}
 		private ForumCollection GetSubForums(ForumCollection forums, int forumId)
 		{

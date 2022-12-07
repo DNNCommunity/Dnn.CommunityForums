@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         objStreamReader.Close();
                         sTemplate = Utilities.ParseSpacer(sTemplate);
                         DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                        //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath("~/DesktopModules/ActiveForums/config/Templates/" & TemplateType & ".txt")))
+                        //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath(Globals.ModulePath + "config/Templates/" & TemplateType & ".txt")))
                     }
                 }
                 catch (Exception ex)

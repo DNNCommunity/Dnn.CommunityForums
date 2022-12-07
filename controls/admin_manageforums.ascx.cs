@@ -48,8 +48,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            imgOn = Page.ResolveUrl("~/DesktopModules/ActiveForums/images/admin_check.png");
-            imgOff = Page.ResolveUrl("~/DesktopModules/ActiveForums/images/admin_stop.png");
+            imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
+            imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
 
             litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
 
@@ -91,12 +91,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 string ctlId = string.Empty;
                 if (view == "admin_manageforums_home")
                 {
-                    ctlPath = "~/DesktopModules/ActiveForums/controls/admin_manageforums_home.ascx";
+                    ctlPath = Globals.ModulePath + "controls/admin_manageforums_home.ascx";
                     ctlId = "admin_manageforums_home";
                 }
                 else
                 {
-                    ctlPath = "~/DesktopModules/ActiveForums/controls/admin_manageforums_forumeditor.ascx";
+                    ctlPath = Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx";
                     ctlId = "admin_manageforums_forumeditor";
                 }
 

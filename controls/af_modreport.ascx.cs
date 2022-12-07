@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (Request.IsAuthenticated)
                 {
 
-                    string strReasons = GetSharedResource("[RESX:ReasonOptions]"); //.GetString("ReasonOptions", "~/DesktopModules/ActiveForums/App_LocalResources/af_modalert")
+                    string strReasons = GetSharedResource("[RESX:ReasonOptions]"); //.GetString("ReasonOptions", Globals.ModulePath + "App_LocalResources/af_modalert")
                     int i = 0;
                     foreach (string strReason in strReasons.Split(new char[] { ';' }))
                     {
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
-            this.LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/af_modalert.ascx.resx";
+            this.LocalResourceFile = Globals.ModulePath + "App_LocalResources/af_modalert.ascx.resx";
             InitializeComponent();
 
             btnSend.Click += new System.EventHandler(btnSend_Click);
