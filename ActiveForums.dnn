@@ -102,7 +102,7 @@
 		
         <component type="Script">
            <scripts>
-            <basePath>DesktopModules\ActiveForums\sql</basePath>
+            <basePath>DesktopModules\ActiveForums</basePath>
             <script type="Install">
              <path>sql</path>
               <name>04.00.00.SqlDataProvider</name>
