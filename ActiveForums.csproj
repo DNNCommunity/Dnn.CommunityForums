@@ -166,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="07.00.03.txt" />
     <Content Include="ActiveForums.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -639,6 +640,7 @@
     <None Include="sql\06.01.03.SqlDataProvider" />
     <None Include="sql\06.03.03.SqlDataProvider" />
     <None Include="sql\06.04.01.SqlDataProvider" />
+    <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />

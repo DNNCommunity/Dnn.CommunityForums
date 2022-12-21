@@ -1,0 +1,7 @@
+﻿/* issue 167 - remove ADDTHIS  */
+
+/* remove unused ADDTHISACCOUNT setting */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'ADDTHISACCOUNT'
+/* remove unused ADDTHISACCOUNT setting */
+
+/* issue 167 - remove ADDTHIS  */
