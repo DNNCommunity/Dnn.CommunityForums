@@ -535,7 +535,6 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region "IUpgradeable"
-         #region "IUpgradeable"
         public string UpgradeModule(string Version)
         {
 			switch (Version)
