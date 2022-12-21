@@ -35,8 +35,8 @@ using System.Data.SqlTypes;
 namespace DotNetNuke.Modules.ActiveForums
 {
 	#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase
-	{
+	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    {
 		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int topicId = -1;
@@ -532,13 +532,20 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 
 		}
-		#endregion
+        #endregion
+        #region "IUpgradeable"
+        public string UpgradeModule(string Version)
+        {
+            switch (Version)
+            {
+                default:
+                    break;
+            }
+            return Version;
+        }
+        #endregion
+    }
 
-		//Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
-		//    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
-		//End Function
-	}
-
-	#endregion
+    #endregion
 }
 
