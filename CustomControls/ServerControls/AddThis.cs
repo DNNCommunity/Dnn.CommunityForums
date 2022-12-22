@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		protected override void Render(HtmlTextWriter writer)
 		{
 			string sURL = HttpContext.Current.Request.RawUrl;
-			string tmp = DataCache.GetTemplate("AddThis.txt");
+			string tmp = TemplateCache.GetTemplate("AddThis.txt");
 			if (! (string.IsNullOrEmpty(AddThisId)))
 			{
 				tmp = tmp.Replace("[USERNAME]", AddThisId.Replace("'", "\\'"));

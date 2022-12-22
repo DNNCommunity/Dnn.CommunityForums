@@ -730,6 +730,7 @@
     <Compile Include="class\LikesController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
+    <Compile Include="class\TemplateCache.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
     <Compile Include="components\Topics\TopicInfo.cs" />
     <Compile Include="components\Topics\TopicsController.cs" />

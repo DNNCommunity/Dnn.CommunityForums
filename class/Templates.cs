@@ -52,37 +52,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	    #endregion
 #region Public Properties
-
 	    public int TemplateId { get; set; }
-
 	    public int PortalId { get; set; }
-
 	    public int ModuleId { get; set; }
-
 	    public Templates.TemplateTypes TemplateType { get; set; }
-
 	    public bool IsSystem { get; set; }
-
 	    public string Subject { get; set; }
-
 	    public string Title { get; set; }
-
 	    public string Template { get; set; }
-
 	    public string TemplateHTML { get; set; }
-
 	    public string TemplateText { get; set; }
-
 	    public DateTime DateCreated { get; set; }
-
 	    public DateTime DateUpdated { get; set; }
-
-	    #endregion
-
-	}
+        public string TemplateFileName { get; set; }
 #endregion
-#region Template Controller
-	public class TemplateController
+
+    }
+    #endregion
+    #region Template Controller
+    public class TemplateController
 	{
 #region Public Methods
 		//'<summary>
