@@ -533,12 +533,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		}
 		#endregion
-
-		//Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
-		//    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
-		//End Function
+		#region "IUpgradeable"
+		public string UpgradeModule(string Version)
+		{
+		    switch (Version)
+		    {
+			default:
+			    break;
+		    }
+		    return Version;
+		}
+		#endregion
 	}
-
 	#endregion
 }
 
