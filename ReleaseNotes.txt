@@ -6,10 +6,20 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
-		<h3>07.01.00</h3>
+		<h3>08.00.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>NEW: Templates now stored in files rather than database (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/93">Issue 93</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Templates now retrieved from .txt files rather than database (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/93">Issue 93</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Templates are now stored in Host (~/Portals/_default/activeforums_templates/) ; existing templates moved during module upgrade (TODO: create documentation) </li>
+			<li>NEW: Themes are now stored in Host (~/Portals/_default/activeforums_themes/) ; existing themes moved during module upgrade (TODO: create documentation) </li>
+			<li>NEW: Templates are not cached when caching is turned off; this is for theme/template designers. (TODO: create documentation) </li>
+			<li>TASK: Removed AddThis Integration </li>
+		</ul>
+
+		<h3>07.00.03</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>FIXED: SqlProvider files are getting installed to /sql/sql/ rather than /sql/ (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/181">Issue 181</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
 		<h3>07.00.02</h3>
@@ -46,5 +56,98 @@
 			<li>TASK: Separate the Business Controller Class into its Own Proper Class (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/56">Issue 56</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Resolved Minor Build Issues (no issue), thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
 		</ul>
+
+
+		<b>Version 06.03.04</b>
+<ul>
+	<li>#432 Attempted fix for losing INSTALLDATE</li>
+<ul>
+
+<h3>Release Notes</h3>
+<b>Version 06.03.03</b>
+<ul>
+	<li>Changed deprecated APIs.</li>
+	<li>#405 Sometimes settings got lost when saved</li>
+	<li>#405 Not all settings was being saved</li>
+	<li>#408 Height and width of image in polls being set with CSS</li>
+	<li>#307 Bug in attachments in the Moderator queue</li>
+	<li>#62 Anonymous users issue</li>
+	<li>#103 Autolinks generates incorrect HTML when same hyperlink occurs twice</li>
+	<li>#102 Not correctly handling single quotes. Semantic web</li>
+	<li>#417 JS error in DNN9.2</li>
+<ul>
+Thanks to Monty for #102 and #103 and VincentParrett for #417<br /> <br/>
+
+
+<h3>Version 06.03.00</h3>
+
+<ul>
+  <li>DNN Minimum Version: Changed to 8.0.0 or later</li>
+  <li>Build process changed to allow stand-alone compilation</p>
+</ul>
+
+<h3>Version 06.02.08</h3>
+
+<ul>
+ <li>Pull #313 - Corrections to sql to include {databaseOwner} and {objectQualifier}</li>
+</ul>
+
+<h3>Version 06.02.07</h3>
+
+<ul>
+ <li>Pull #310 - Added name of person reporting a post</li>
+ <li>Pull #310 - Fix sorting problem after removing a forum</li>
+ <li>Pull #310 - Fix for missing settings for what editor to use</li>
+ <li>Pull #310 - Missing {databaseOwner} and {objectQualifier} in various places</li>
+ <li>Pull #310 - Quick fix for splitting process where split reply took on wrong author</li>
+</ul>
+
+<h3>Version 06.02.06</h3>
+
+<ul>
+ <li>Pull #301 - additional corrections to responsive layout</li>
+ <li>Pull #308 - change to text_editor.js to help with IE compatability</li>
+ <li>Fix for module requiring repair install at upgrade to refresh dll - sorry this isn't very well documented</li>
+ <li>Fix for split feature not working properly - sorry this isn't very well documented</li>
+</ul>
+
+<h3>Version 06.02.05</h3>
+
+<ul>
+ <li>Pull #296 - added last reply column back to tablet and mobile view</li>
+</ul>
+
+<h3>Version 06.02.04</h3>
+
+<ul>
+ <li>Attempt repair of module branding icon</li>
+ <li>Pull #280 quick jump-to drop down breaks responsive with long forum names - fixed</li>
+</ul>
+
+<h3>Version 06.02.03</h3>
+
+<ul>
+ <li>Pull #277 More corrections for skins</li>
+</ul>
+
+<h3>Version 06.02.02</h3>
+
+<ul>
+ <li>Pull #274 Fixed content width, tooltips, and other UI related items</li>
+</ul>
+
+<h3>Version 06.02.01</h3>
+
+<ul>
+ <li>Pull #271 fixed move-icon inside a topic to match the new icons</li>
+</ul>
+
+<h3>Version 06.02.00</h3>
+
+<ul>
+ <li>Pull #268 finished UI changes introduced in version 6 - implemented fontawesome and tweaked responsive layout all around</li>
+ <li>Pull #247 fixed where filters couldn't be deleted, worked on SocialGroupID and configured move to work on locked post</li>
+ <li>Added module icon for branding
+</ul>
 	</div>
 </div>

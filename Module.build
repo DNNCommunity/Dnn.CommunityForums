@@ -24,6 +24,7 @@
       <Styles Include="Styles/**/*.*" />
       <DataProvider Include="Providers/DataProviders/SqlDataProvider/*.SqlDataProvider" />
       <Resources Include="@(Manifest);@(TextFiles);@(SourceFiles);@(Views);@(ResourceFiles);@(Images);@(JsFiles);@(Styles);@(DataProvider)" />
+      <ThemesCss Include="themes/themes.css*" />
       <ThemeCss Include="themes/community/*.css*" />
       <ThemeImages Include="themes/community/images/*" /> 
       <TemplateFiles Include="config/templates/*.*" />      
@@ -49,6 +50,7 @@
       </Target>
  
   <Target Name="CopyThemes"> 
+      <Copy SourceFiles="@(ThemesCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes" />
       <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
       <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" /> 
       </Target>
@@ -65,10 +67,10 @@
     <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(FullModulePath)\Scripts\%(RecursiveDir)" />
     <Copy SourceFiles="@(Styles)" DestinationFolder="$(FullModulePath)\Styles\%(RecursiveDir)" />
     <Copy SourceFiles="@(DataProvider)" DestinationFolder="$(FullModulePath)\Providers\DataProviders\SqlDataProvider" />
-  <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
-  <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" /> 
-      <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
-      <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
+    <Copy SourceFiles="@(ThemeCss)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community" />
+    <Copy SourceFiles="@(ThemeImages)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Themes\community\images" /> 
+    <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
+    <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
     <Copy SourceFiles="@(TemplateFiles)" DestinationFolder="$(WebsitePath)\Portals\_default\$(ModulePath)_Templates" />
   </Target>
 </Project>

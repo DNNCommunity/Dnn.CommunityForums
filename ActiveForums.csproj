@@ -751,7 +751,7 @@
     <Content Include="WhatsNewOptions.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ControlPanel.css" />
+    <Content Include="controlpanel\ControlPanel.css" />
     <Content Include="controls\admin_categories.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -795,7 +795,7 @@
     <Content Include="controls\af_post.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="ControlPanel.ascx">
+    <Content Include="controlpanel\ControlPanel.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="controls\admin_manageforums.ascx">
@@ -1376,10 +1376,10 @@
     <Compile Include="class\Globals.cs" />
     <Compile Include="class\MailQueue.cs" />
     <Compile Include="class\UserProfile.cs" />
-    <Compile Include="ControlPanel.ascx.designer.cs">
+    <Compile Include="controlpanel\ControlPanel.ascx.designer.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ControlPanel.ascx.cs">
+    <Compile Include="controlpanel\ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

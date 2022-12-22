@@ -539,18 +539,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 			switch (Version)
             {
-                case "07.01.00":
-					Upgrade_070100_MoveTemplates();
-                    Upgrade_070100_MoveEmoticons();
-                    Upgrade_070100_MoveThemes();
-                    Upgrade_070100_RenameThemeCssFiles();
+                case "08.00.00":
+					Upgrade_080000_MoveTemplates();
+                    Upgrade_080000_MoveEmoticons();
+                    Upgrade_080000_MoveThemes();
+                    Upgrade_080000_RenameThemeCssFiles();
                     break;
                 default:
                     break;
             }
 			return Version;
         }
-		internal void Upgrade_070100_MoveTemplates()
+		internal void Upgrade_080000_MoveTemplates()
         {
 			TemplateController tc = new TemplateController();
             foreach (TemplateInfo template in tc.Template_List(-1, -1))
@@ -558,17 +558,17 @@ namespace DotNetNuke.Modules.ActiveForums
 				tc.Template_Save(template);
 			}	
         }
-        internal void Upgrade_070100_MoveEmoticons()
+        internal void Upgrade_080000_MoveEmoticons()
         {
             SettingsInfo MainSettings = DataCache.MainSettings(-1);
             System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes/_default/emoticons"), Globals.ModulePath + "emoticons");
         }
-        internal void Upgrade_070100_MoveThemes()
+        internal void Upgrade_080000_MoveThemes()
         {
             SettingsInfo MainSettings = DataCache.MainSettings(-1);
             System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes"), MainSettings.ThemesLocation);
         }
-        internal void Upgrade_070100_RenameThemeCssFiles()
+        internal void Upgrade_080000_RenameThemeCssFiles()
         {
             SettingsInfo MainSettings = DataCache.MainSettings(-1);
 			foreach (var folder in System.IO.Directory.EnumerateDirectories(MainSettings.ThemesLocation))
