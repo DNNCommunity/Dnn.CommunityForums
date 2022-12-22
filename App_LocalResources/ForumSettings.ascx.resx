@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddThisUsername.Help" xml:space="preserve">
-    <value>Easily add social bookmarking capabilities to your site. Visit &lt;a href="http://www.addthis.com" target="_blank"&gt;www.addthis.com&lt;/a&gt; to create an account then enter the account name in the textbox.</value>
-  </data>
-  <data name="AddThisUsername.Text" xml:space="preserve">
-    <value>AddThis Username</value>
-  </data>
   <data name="AdvancedOptions.Text" xml:space="preserve">
     <value>Advanced Options</value>
   </data>

@@ -595,8 +595,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request));
-                sOutput = TemplateUtils.ParseSpecial(sOutput, SpecialTokenTypes.AddThis, strHost + Request.RawUrl, ForumName, bRead, MainSettings.AddThisAccount);
+                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
+                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
+                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
             sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\"  EnableViewState=\"False\" runat=\"server\" />");
