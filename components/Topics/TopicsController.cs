@@ -35,7 +35,7 @@ using System.Data.SqlTypes;
 namespace DotNetNuke.Modules.ActiveForums
 {
 	#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase
+	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
 	{
 		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
