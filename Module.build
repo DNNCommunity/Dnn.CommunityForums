@@ -24,6 +24,8 @@
       <Styles Include="Styles/**/*.*" />
       <DataProvider Include="Providers/DataProviders/SqlDataProvider/*.SqlDataProvider" />
       <Resources Include="@(Manifest);@(TextFiles);@(SourceFiles);@(Views);@(ResourceFiles);@(Images);@(JsFiles);@(Styles);@(DataProvider)" />
+      <ControlPanelCss Include="controlpanel/*.css" />
+      <ControlPanelImages Include="controlpanel/images/*" />
     </ItemGroup>
   </Target>
   <ItemGroup>
@@ -38,6 +40,10 @@
     </ItemGroup>
     <Copy SourceFiles="@(BinSourceInclude)" DestinationFolder="$(WebsitePath)\bin" />
   </Target>
+  <Target Name="CopyControlPanel"> 
+      <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
+      <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
+  </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Copy SourceFiles="@(Manifest)" DestinationFolder="$(FullModulePath)" />
     <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(FullModulePath)" />
@@ -48,5 +54,8 @@
     <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(FullModulePath)\Scripts\%(RecursiveDir)" />
     <Copy SourceFiles="@(Styles)" DestinationFolder="$(FullModulePath)\Styles\%(RecursiveDir)" />
     <Copy SourceFiles="@(DataProvider)" DestinationFolder="$(FullModulePath)\Providers\DataProviders\SqlDataProvider" />
+    <Copy SourceFiles="@(ControlPanelCss)" DestinationFolder="$(FullModulePath)\controlpanel" />
+    <Copy SourceFiles="@(ControlPanelImages)" DestinationFolder="$(FullModulePath)\controlpanel\images" /> 
+   
   </Target>
 </Project>

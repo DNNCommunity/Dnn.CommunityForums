@@ -114,26 +114,26 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public TemplateInfo Template_Get(int TemplateId, int PortalId, int ModuleId)
 		{
-			var info = new TemplateInfo();
+			var ti = new TemplateInfo();
 			IDataReader dr = DataProvider.Instance().Templates_Get(TemplateId, PortalId, ModuleId);
 			while (dr.Read())
 			{
 				try
 				{
-					info.TemplateId = Convert.ToInt32(dr["TemplateId"]);
-					info.PortalId = Convert.ToInt32(dr["PortalId"]);
-					info.ModuleId = Convert.ToInt32(dr["ModuleId"]);
-					info.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(dr["TemplateType"]));
-					info.IsSystem = Convert.ToBoolean(dr["IsSystem"]);
-					info.Title = Convert.ToString(dr["Title"]);
-					info.Subject = Convert.ToString(dr["Subject"]);
-					info.Template = Convert.ToString(dr["Template"]);
-					info.TemplateHTML = GetHTML(Convert.ToString(dr["Template"]));
-					info.TemplateText = GetText(Convert.ToString(dr["Template"]));
-					info.DateCreated = dr.IsDBNull(8) ? Utilities.NullDate() : Convert.ToDateTime(dr["DateCreated"]);
-					info.DateUpdated = dr.IsDBNull(9) ? Utilities.NullDate() : Convert.ToDateTime(dr["DateUpdated"]);
+					ti.TemplateId = Convert.ToInt32(dr["TemplateId"]);
+					ti.PortalId = Convert.ToInt32(dr["PortalId"]);
+					ti.ModuleId = Convert.ToInt32(dr["ModuleId"]);
+					ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(dr["TemplateType"]));
+					ti.IsSystem = Convert.ToBoolean(dr["IsSystem"]);
+					ti.Title = Convert.ToString(dr["Title"]);
+					ti.Subject = Convert.ToString(dr["Subject"]);
+					ti.Template = Convert.ToString(dr["Template"]);
+					ti.TemplateHTML = GetHTML(Convert.ToString(dr["Template"]));
+					ti.TemplateText = GetText(Convert.ToString(dr["Template"]));
+                    ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
+                    ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
 
-				}
+                }
 				catch (Exception ex)
 				{
 					return null;
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 			}
-			return info;
+			return ti;
 		}
 #endregion
 #region Private Methods
@@ -203,14 +203,14 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					var ti = new TemplateInfo
 					             {
-					                 DateCreated = dr.IsDBNull(8) ? Utilities.NullDate() : Convert.ToDateTime(dr["DateCreated"]),
-					                 DateUpdated = dr.IsDBNull(9) ? Utilities.NullDate() : Convert.ToDateTime(dr["DateUpdated"]),
-					                 IsSystem = Convert.ToBoolean(dr["IsSystem"]),
-					                 ModuleId = Convert.ToInt32(dr["ModuleID"]),
-					                 PortalId = Convert.ToInt32(dr["PortalId"]),
-					                 Subject = Convert.ToString(dr["Subject"]),
-					                 Template = Convert.ToString(dr["Template"])
-					             };
+                        DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]),
+                        DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]),
+                        IsSystem = Convert.ToBoolean(dr["IsSystem"]),
+                        ModuleId = Convert.ToInt32(dr["ModuleID"]),
+                        PortalId = Convert.ToInt32(dr["PortalId"]),
+                        Subject = Convert.ToString(dr["Subject"]),
+                        Template = Convert.ToString(dr["Template"])
+                    };
 				    ti.TemplateHTML = GetHTML(ti.Template);
 					ti.TemplateId = Convert.ToInt32(dr["TemplateId"]);
 					ti.TemplateText = GetText(ti.Template);
