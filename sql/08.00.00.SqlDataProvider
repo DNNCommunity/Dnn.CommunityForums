@@ -111,7 +111,7 @@ AS
 If @TemplateType = 0 OR @TemplateType = -1
 	BEGIN
 		BEGIN 
-			SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE  ModuleId = @ModuleId
+			SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE (ModuleId = @ModuleId OR @ModuleId = -1)
 		END
 		BEGIN
 			SELECT TemplateId, PortalId, ModuleId, TemplateType, IsSystem,Title,FileName,Subject,Template,DateCreated,DateUpdated,RowRank
@@ -119,17 +119,17 @@ If @TemplateType = 0 OR @TemplateType = -1
 				(
 					SELECT TemplateId, PortalId, ModuleId, TemplateType, IsSystem,Title,FileName,Subject,Template,DateCreated,DateUpdated,
 					ROW_NUMBER() OVER (ORDER BY TemplateType, Title) as RowRank FROM {databaseOwner}{objectQualifier}activeforums_Templates 
-					WHERE ModuleId = @ModuleId
+					WHERE (ModuleId = @ModuleId OR @ModuleId = -1)
 				) as T WHERE RowRank > @RowIndex AND RowRank <= (@RowIndex + @MaxRows)
 		END
 	END
 ELSE
 	BEGIN
 		BEGIN 
-			SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE  ModuleId = @ModuleId AND TemplateType = @TemplateType
+			SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE (ModuleId = @ModuleId OR @ModuleId = -1) AND TemplateType = @TemplateType
 		END
 		BEGIN
-			SELECT * FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE ModuleId = @ModuleId AND TemplateType = @TemplateType
+			SELECT * FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE (ModuleId = @ModuleId OR @ModuleId = -1) AND TemplateType = @TemplateType
 			ORDER BY Title
 		END
 	END

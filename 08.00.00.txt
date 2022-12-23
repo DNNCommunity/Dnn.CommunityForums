@@ -9,5 +9,5 @@ DesktopModules/ActiveForums/config/templates/TopicView-4.3.txt
 DesktopModules/ActiveForums/config/templates/TopicsView-4.3.txt
 DesktopModules/ActiveForums/ControlPanel.ascx
 DesktopModules/ActiveForums/ControlPanel.css
-Documentation/License.txt
-Documentation/ReleaseNotes.txt
+Documentation\License.txt
+Documentation\ReleaseNotes.txt

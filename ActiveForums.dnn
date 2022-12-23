@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="07.01.00">
+    <package name="Active Forums" type="Module" version="08.00.00">
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -89,17 +89,18 @@
           </assemblies>
         </component>
 
-        <component type="File">
-          <files>
-            <basePath>DesktopModules\ActiveForums\Documentation</basePath>
-            <file>
-              <name>License.txt</name>
-            </file>
-            <file>
-              <name>ReleaseNotes.txt</name>
-            </file>
-          </files>
-        </component>
+		  <component type="File">
+			  <files>
+				  <basePath>DesktopModules\ActiveForums</basePath>
+				  <file>
+					  <name>License.txt</name>
+				  </file>
+				  <file>
+					  <name>ReleaseNotes.txt</name>
+				  </file>
+			  </files>
+		  </component>
+		 
 		
         <component type="Script">
            <scripts>
@@ -394,13 +395,13 @@
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
-      <owner>
-        <name>DotNetNuke Active Forums Module</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>activeforums.codeplex.com</url>
-        <email>support@dnnsoftware.com</email>
-      </owner>
-      <license src="License.txt" />
+		<owner>
+			<name>DNN Community</name>
+			<organization>DNN Community</organization>
+			<url>dnncommunity.org</url>
+			<email>community@dnncommunity.org</email>
+		</owner>
+		<license src="License.txt" />
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>

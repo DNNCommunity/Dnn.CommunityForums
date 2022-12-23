@@ -473,6 +473,7 @@
     <Content Include="themes\classic\jquery-ui.css" />
     <Content Include="themes\classic\jquery-ui.min.css" />
     <Content Include="themes\classic\module.css" />
+    <Content Include="themes\classic\theme.css" />
     <Content Include="themes\classic\templates\_Master.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -658,7 +659,6 @@
     <Content Include="emoticons\wink.gif" />
     <Content Include="emoticons\wow.gif" />
     <Content Include="themes\themes.css" />
-    <Content Include="themes\community\templates\_Master.ascx" />
     <Content Include="themes\_default\emoticons\angry.gif" />
     <Content Include="themes\_default\emoticons\arrow.gif" />
     <Content Include="themes\_default\emoticons\atomic.gif" />
@@ -968,9 +968,9 @@
     <None Include="sql\06.03.03.SqlDataProvider" />
     <None Include="sql\06.04.01.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
-    <None Include="sql\07.01.00.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />

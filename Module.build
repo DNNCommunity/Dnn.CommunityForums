@@ -35,7 +35,7 @@
   <ItemGroup>
 	<SymbolsInclude Include="$(DNNFileName)_Symbols.dnn" />
     <SymbolsInclude Include="License.txt" />
-    <SymbolsInclude Include="ReleaseNotes.txt" />
+    <SymbolsInclude Include="\ReleaseNotes.txt" />
   </ItemGroup>
   <Target Name="CopyBin">
     <ItemGroup>

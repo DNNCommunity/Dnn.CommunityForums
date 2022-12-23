@@ -281,8 +281,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 string sOut = null;
                 //TODO: this should be resources instead of harcoded text?
-               sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
-                sOut +=  string.Concat("<!-- DNN Community Forums", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
+                sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
+                sOut += string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;
