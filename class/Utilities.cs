@@ -632,7 +632,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (processEmoticons)
                         {
                             if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                                sReplace = "<img src='" + Globals.ModulePath + "emoticons/" + sReplace + "' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />";
+                                sReplace = "<img src='" + Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/desktopmodules/activeforums/emoticons/" + sReplace + "' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />";
 
                             strMessage = strMessage.Replace(sFind, sReplace);
                         }
@@ -1612,6 +1612,46 @@ namespace DotNetNuke.Modules.ActiveForums
             if (selectedItem != null)
                 selectedItem.Selected = true;
         }
-    }
+        public static void CopyDirectory(string source, string destination, bool recursive, bool overwrite)
+        {
+            //https://learn.microsoft.com/en-us/dotnet/standard/io/how-to-copy-directories
 
+            try
+            {
+                var dir = new DirectoryInfo(source);
+                if (dir.Exists)
+                {
+                    // Cache directories before we start copying
+                    DirectoryInfo[] dirs = dir.GetDirectories();
+
+                    // Create the destination directory
+                    if (!Directory.Exists(destination))
+                    {
+                        Directory.CreateDirectory(destination);
+                    }
+
+                    // Get the files in the source directory and copy to the destination directory
+                    foreach (FileInfo file in dir.EnumerateFiles())
+                    {
+                        string targetFilePath = Path.Combine(destination, file.Name);
+                        file.CopyTo(targetFilePath, overwrite: overwrite);
+                    }
+
+                    // If recursive and copying subdirectories, recursively call this method
+                    if (recursive)
+                    {
+                        foreach (DirectoryInfo subDir in dirs)
+                        {
+                            string newDestinationDir = Path.Combine(destination, subDir.Name);
+                            CopyDirectory(subDir.FullName, newDestinationDir, true, overwrite);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+    }
 }

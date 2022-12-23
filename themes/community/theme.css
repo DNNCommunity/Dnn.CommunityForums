@@ -1,9 +1,16 @@
 /* 
 	CSS that is applied to specific to the theme.
 	This file is delivered for the "community" theme during installation of DNN Community Forums, 
-	will not be overwritten during upgrades, and can be freely edited by site administrators.
-     
-    Module's CSS Load order: 
+	may be overwritten during upgrades, 
+	and should not be updated by site administrators.
+
+	It can be overridden by declaring CSS in the the /custom/theme.css located in a theme-specific folder: 
+     ~/Portals/_default/activeforums_themes/community/custom/theme.css 
+
+    In addition, site administrators and designers are encouraged to develop and maintain additional themes 
+    by copying  ~/Portals/_default/activeforums_themes/community/* to another theme folder, such as ~/Portals/_default/activeforums_themes/mytheme/
+	
+    Community Forums's CSS Load order: 
     1) ~/DesktopModules/ActiveForums/module.css
     2) ~/Portals/_default/activeforums_themes/themes.css
     3) ~/Portals/_default/activeforums_themes/<currenttheme>/theme.css
@@ -829,3 +836,71 @@
 .activeForums .af-quickreply .amtbwrapper {
   padding-top: 1em;
 }
+
+
+/* smaller mobile experience */
+@media screen and (max-device-width: 480px) {
+    .activeForums {
+        margin-bottom: 2em;
+        font-size: x-small;
+    }
+
+        .activeForums .af-topic-item .af-topic .af-topic-content-top, .activeForums .af-topic-item .af-topic .body {
+            border-bottom: solid 2px;
+        }
+
+        .activeForums .af-topic-info .af-avatar {
+            height: 120px !important;
+            width: 120px !important;
+            padding-top: .5em;
+        }
+
+        .activeForums .af-topic-content-top {
+            border-top: solid .25px;
+        }
+
+    .afcontainer h1, .aftopic h1 {
+        font-size: 14px !important;
+    }
+
+    .activeForums * {
+        line-height: 1em;
+    }
+
+    .aftoolbarpanel {
+        font-size: x-small;
+    }
+
+    .activeForums .af-topic-item .af-topic > div {
+        padding-top: 0em;
+        padding-bottom: 0em;
+    }
+
+    .activeForums .af-topic-item .af-topic .af-topic-content-top, .activeForums .af-topic-item .af-topic .body {
+        border-bottom: solid .5px;
+    }
+
+    .activeForums .af-topic-content-top {
+        border-top: solid 1px;
+    }
+
+    .afcontainer h1, .aftopic h1 {
+        font-size: 14px !important;
+    }
+
+    .aftopprofile {
+        display: none;
+    }
+
+    .afbottomprofile {
+        display: none;
+    }
+
+    .hidden-xs {
+        display: none;
+    }
+
+    .af-postdate {
+        text-align: right;
+    }
+} 

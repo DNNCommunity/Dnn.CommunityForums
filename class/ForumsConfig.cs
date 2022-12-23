@@ -18,7 +18,9 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.UI.WebControls;
 using System;
+using System.Net.Http;
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -40,7 +42,13 @@ namespace DotNetNuke.Modules.ActiveForums
 				LoadRanks(PortalId, ModuleId);
 				//Add Default Forums
 				LoadDefaultForums(PortalId, ModuleId);
-				return true;
+
+				//Install_Or_Upgrade_MoveTemplates();
+                Install_Or_Upgrade_MoveEmoticons();
+                Install_Or_Upgrade_MoveThemes();
+                Install_Or_Upgrade_RenameThemeCssFiles();
+
+                return true;
 			}
 			catch (Exception ex)
 			{
@@ -311,6 +319,67 @@ namespace DotNetNuke.Modules.ActiveForums
 		    }
 		}
 
-	}
+        internal void Install_Or_Upgrade_MoveTemplates()
+		{
+			SettingsInfo MainSettings = DataCache.MainSettings(-1);
+			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation)))
+			{
+				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation));
+			}
+			TemplateController tc = new TemplateController();
+            foreach (TemplateInfo template in tc.Template_List(-1, -1))
+            {
+                tc.Template_Save(template);
+            }
+        }
+        internal void Install_Or_Upgrade_MoveEmoticons()
+        {
+            var sourceFolder = HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes/_default/emoticons");
+			var targetFolder = HttpContext.Current.Server.MapPath(Globals.ModulePath + "emoticons");
+			if (System.IO.Directory.Exists(sourceFolder))
+			{
+                if (!System.IO.Directory.Exists(targetFolder)) System.IO.Directory.CreateDirectory(targetFolder);
+				foreach (var file in new System.IO.DirectoryInfo(sourceFolder).GetFiles())
+				{
+					System.IO.File.Copy(file.FullName, targetFolder);
+				}
+				System.IO.Directory.Delete(sourceFolder);
+			}
+        }
+        internal void Install_Or_Upgrade_MoveThemes()
+        {
+            try
+            {
+                SettingsInfo MainSettings = DataCache.MainSettings(-1);
+                var sourceFolder = HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes");
+                var targetFolder = HttpContext.Current.Server.MapPath(MainSettings.ThemesLocation);
+                if (System.IO.Directory.Exists(sourceFolder))
+                {
+                    Utilities.CopyDirectory(sourceFolder, targetFolder, true, true);
+                    System.IO.Directory.Delete(sourceFolder, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+	    }
+        internal void Install_Or_Upgrade_RenameThemeCssFiles()
+        {
+			try
+			{
+                SettingsInfo MainSettings = DataCache.MainSettings(-1);
+                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesLocation), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+                {
+                    System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+                    System.IO.File.Delete(fullFilePathName);
+                }
+            } 
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+    }
 }
 

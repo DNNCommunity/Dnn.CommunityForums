@@ -31,10 +31,10 @@ using System.Security;
 
 // Review the values of the assembly attributes
 [assembly: AllowPartiallyTrustedCallers()]
-[assembly: AssemblyTitle("Active Forums")]
+[assembly: AssemblyTitle("DNN Community Forums")]
 [assembly: AssemblyDescription("Discussion Forum Module for DNN")]
-[assembly: AssemblyCompany("dnncommunity.org")]
-[assembly: AssemblyProduct("Active Forums")]
+[assembly: AssemblyCompany("DNN Community (dnncommunity.org)")]
+[assembly: AssemblyProduct("DNN Community Forums")]
 [assembly: AssemblyCopyright("Copyright © DNN Community")]
 [assembly: AssemblyTrademark("")]
 

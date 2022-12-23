@@ -35,6 +35,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using System.Web;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -495,6 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\TopicEditor.txt";
                 template = File.ReadAllText(myFile);
+                template = template.Replace("[TRESX:", "[RESX:");
             }
             else
             {

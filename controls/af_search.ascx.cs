@@ -610,7 +610,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // If we have a post icon, use it
             var icon = _currentRow["TopicIcon"].ToString();
             if (!string.IsNullOrWhiteSpace(icon))
-                return MainSettings.ThemeLocation + "/emoticons/" + icon;
+                return Globals.ModulePath + "/emoticons/" + icon;
 
             // Otherwise, chose the icons based on the post stats
 

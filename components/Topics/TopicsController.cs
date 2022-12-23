@@ -540,45 +540,18 @@ namespace DotNetNuke.Modules.ActiveForums
 			switch (Version)
             {
                 case "08.00.00":
-					Upgrade_080000_MoveTemplates();
-                    Upgrade_080000_MoveEmoticons();
-                    Upgrade_080000_MoveThemes();
-                    Upgrade_080000_RenameThemeCssFiles();
+					var fc = new ForumsConfig();
+					fc.Install_Or_Upgrade_MoveTemplates();
+                    fc.Install_Or_Upgrade_MoveEmoticons();
+                    fc.Install_Or_Upgrade_MoveThemes();
+                    fc.Install_Or_Upgrade_RenameThemeCssFiles();
                     break;
                 default:
                     break;
             }
 			return Version;
         }
-		internal void Upgrade_080000_MoveTemplates()
-        {
-			TemplateController tc = new TemplateController();
-            foreach (TemplateInfo template in tc.Template_List(-1, -1))
-			{
-				tc.Template_Save(template);
-			}	
-        }
-        internal void Upgrade_080000_MoveEmoticons()
-        {
-            SettingsInfo MainSettings = DataCache.MainSettings(-1);
-            System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes/_default/emoticons"), Globals.ModulePath + "emoticons");
-        }
-        internal void Upgrade_080000_MoveThemes()
-        {
-            SettingsInfo MainSettings = DataCache.MainSettings(-1);
-            System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ModulePath + "themes"), MainSettings.ThemesLocation);
-        }
-        internal void Upgrade_080000_RenameThemeCssFiles()
-        {
-            SettingsInfo MainSettings = DataCache.MainSettings(-1);
-			foreach (var folder in System.IO.Directory.EnumerateDirectories(MainSettings.ThemesLocation))
-			{
-                foreach (var file in System.IO.Directory.EnumerateFiles(MainSettings.ThemesLocation + "/"+ folder,"module.css"))
-                {
-					System.IO.File.Move(MainSettings.ThemesLocation + "/" + folder + "/" + file, "theme.css");
-                }
-            }
-        }
+		
         #endregion
     }
     #endregion

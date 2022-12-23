@@ -150,7 +150,7 @@
 
     <div id="divPreviewWindow" class="afpreview">
         <div class="afpreviewbar">
-            <img src="<%=ImagePath%>/images/delete_new.gif" align="right" onclick="closePreview();" /><%=PreviewText%></div>
+            <img src="<%=ImagePath%>/delete_new.gif" align="right" onclick="closePreview();" /><%=PreviewText%></div>
         <div id="divPreviewText" class="afpreviewtext"></div>
     </div>
     <am:Callback ID="cbPreview" runat="server" OnCallbackComplete="cbPreview_render">
