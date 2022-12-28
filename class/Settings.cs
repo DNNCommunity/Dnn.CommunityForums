@@ -230,17 +230,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableAutoLink, true); }
         }
-
-        public string ActiveSocialTopicsKey
-        {
-            get { return Utilities.SafeConvertString(MainSettings.ContainsKey(SettingKeys.ActiveSocialTopicKey), string.Empty); }
-        }
-
-        public string ActiveSocialReplyKey
-        {
-            get { return MainSettings.GetString(SettingKeys.ActiveSocialRepliesKey, string.Empty); }
-        }
-
         public bool URLRewriteEnabled
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableURLRewriter); }

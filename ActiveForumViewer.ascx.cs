@@ -17,10 +17,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-//INSTANT C# TODO TASK: C# compiler constants cannot be set to explicit values:
-
-
-//#if SKU_ENTERPRISE
 
 using System;
 using System.Web.UI.WebControls;
@@ -105,4 +101,3 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
     }
 }
-//#endif

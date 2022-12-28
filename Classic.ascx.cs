@@ -320,10 +320,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/module.css");
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/jquery-ui.min.css");
-                if (Request.QueryString["asg"] != null)
-                {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/module.css");
-                }
             }
 
             string lang = "en-US";
@@ -406,18 +402,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ShowToolbar = false;
             }
-            if (Request.QueryString["dnnprintmode"] == null & Request.QueryString["asg"] == null)
+            if (Request.QueryString["dnnprintmode"] == null)
             {
-                bool show = true;
-                if (currView == "grid" && Request.Params["asg"] != null)
-                {
-                    show = false;
-                }
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {
                     ShowToolbar = bool.Parse(HttpContext.Current.Items["ShowToolbar"].ToString());
                 }
-                if (show && ShowToolbar == true)
+                if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
                     object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);

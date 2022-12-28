@@ -288,14 +288,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Forum fi;
                     int tmpGroupCount = 0;
                     int asForumGroupId;
-                    var social = new Social();
-                    asForumGroupId = social.GetMasterForumGroup(PortalId, TabId);
                     int groupForumsCount = 0;
                     foreach (DataRow dr in rsForums.Rows)
                     {
-
-                        //If CBool(dr("CanView")) Or (Not CBool(dr("GroupHidden"))) Then ' And Not CBool(dr("CanView"))) Or UserInfo.IsSuperUser Then
-                        if (!(asForumGroupId == Convert.ToInt32(dr["ForumGroupId"]) && Convert.ToBoolean(dr["GroupHidden"])))
+                        if (!Convert.ToBoolean(dr["GroupHidden"]))
                         {
                             if (tmpGroup != dr["GroupName"].ToString())
                             {
