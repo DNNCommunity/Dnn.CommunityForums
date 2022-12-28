@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
 
                     //Dim mi As DotNetNuke.Entities.Modules.ModuleInfo = mc.GetModule(ForumModuleId, ForumTabId)
-                    ForumBase objModule = (ForumBase)(LoadControl(Globals.ModulePath + "classic.ascx"));
+                    ForumBase objModule = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "classic.ascx")));
                     if (objModule != null)
                     {
                         objModule.ModuleConfiguration = modInfo;

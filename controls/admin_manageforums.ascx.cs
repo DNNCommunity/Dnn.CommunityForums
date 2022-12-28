@@ -91,12 +91,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 string ctlId = string.Empty;
                 if (view == "admin_manageforums_home")
                 {
-                    ctlPath = Globals.ModulePath + "controls/admin_manageforums_home.ascx";
+                    ctlPath = Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_home.ascx");
                     ctlId = "admin_manageforums_home";
                 }
                 else
                 {
-                    ctlPath = Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx";
+                    ctlPath = Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx");
                     ctlId = "admin_manageforums_forumeditor";
                 }
 

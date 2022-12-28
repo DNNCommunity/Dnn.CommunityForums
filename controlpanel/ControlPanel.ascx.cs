@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 CurrentView = view;
 
                 Params = options;
-                ctlPath = string.Concat("~/DesktopModules/ActiveForums/controls/admin_", view, ".ascx");
+                ctlPath = Page.ResolveUrl(string.Concat("~/DesktopModules/ActiveForums/controls/admin_", view, ".ascx"));
                 var ctl = (ActiveAdminBase)(LoadControl(ctlPath));
                 ctl.ID = view;
                 ctl.ModuleConfiguration = ModuleConfiguration;

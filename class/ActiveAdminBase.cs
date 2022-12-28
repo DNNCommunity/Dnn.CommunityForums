@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
  	         base.OnInit(e);
 
-            LocalResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
+            LocalResourceFile = Page.ResolveUrl(Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx");
         }
 
         internal string ScriptEscape(string escape)

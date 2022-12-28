@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (view.ToUpperInvariant() == "ADVANCED")
                 {
-                    ctl = (ForumBase)(LoadControl(Globals.ModulePath + "advanced.ascx"));
+                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "advanced.ascx")));
                 }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {

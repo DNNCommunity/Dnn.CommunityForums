@@ -42,6 +42,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trGroups;
 
         /// <summary>
+        /// Img13 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage Img13;
+
+        /// <summary>
         /// drpGroups control.
         /// </summary>
         /// <remarks>

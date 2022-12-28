@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var newForum = fc.GetForum(PortalId, ModuleId, forumId, true);
             
-            ctlSecurityGrid = LoadControl(Globals.ModulePath + "controls/admin_securitygrid.ascx") as Controls.admin_securitygrid;
+            ctlSecurityGrid = LoadControl(Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if(ctlSecurityGrid != null)
             {
                 ctlSecurityGrid.Perms = newForum.Security;
@@ -576,7 +576,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var newGroup = gc.GetForumGroup(ModuleId, groupId);
 
-            ctlSecurityGrid = LoadControl(Globals.ModulePath + "controls/admin_securitygrid.ascx") as Controls.admin_securitygrid;
+            ctlSecurityGrid = LoadControl(Page.ResolveUrl(Globals.ModulePath + "~/DesktopModules/activeforums/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if(ctlSecurityGrid != null)
             {
                 ctlSecurityGrid.Perms = newGroup.Security;
