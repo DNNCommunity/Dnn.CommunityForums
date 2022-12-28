@@ -9,9 +9,10 @@
 		<h3>08.00.00</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>NEW: Templates now retrieved from .txt files rather than database (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/93">Issue 93</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>NEW: Templates are now stored in Host (~/Portals/_default/activeforums_templates/) ; existing templates moved during module upgrade (TODO: create documentation) </li>
-			<li>NEW: Themes are now stored in Host (~/Portals/_default/activeforums_themes/) ; existing themes moved during module upgrade (TODO: create documentation) </li>
+			<li>NEW: Templates now retrieved from .txt files rather than database (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/93">Issue 93</a></li>
+			<li>NEW: Templates are now stored in Host (~/Portals/_default/activeforums_templates/) ; existing templates moved during module upgrade  </li>
+			<li>NEW: Themes are now stored in Host (~/Portals/_default/activeforums_themes/) ; existing themes moved during module upgrade  </li>
+			<li>NEW: Theme from DNNCommunity.org is now the default theme in a new installation </li>
 			<li>NEW: Templates are not cached when caching is turned off; this is for theme/template designers. (TODO: create documentation) </li>
 			<li>...more...</li>
 		</ul>

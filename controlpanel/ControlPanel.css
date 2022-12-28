@@ -46,13 +46,13 @@ border-bottom-left-radius: 4px;}
 .amcpnotify span{font-weight:bold;margin-left:18px;position:relative;top:12px;font-size:16px;}
 
 .amcpsuccess{border-color:#669966;background-color:#ccffcc;}
-.amcpsuccess i{background-image:url(images/check32.png);}
+.amcpsuccess i{background-image:url(../images/check32.png);}
 
 .amcperror{border-color:#cc0000;background-color:#ffcccc;}
-.amcperror i{background-image:url(images/error32.png);}
+.amcperror i{background-image:url(../images/error32.png);}
 
 .amcpwarn{border-color:#ffcc00;background-color:#ffffcc;}
-.amcpwarn i{background-image:url(images/warn32.png);}
+.amcpwarn i{background-image:url(../images/warn32.png);}
 
 .amcplnkbtn{text-align:left;font-family:Tahoma;font-size:11px;font-weight:bold; color:#666666;cursor:hand;cursor:pointer;display:inline;padding-right:15px;}
 .amcpcontainer{display:block;border: solid 1px #aaaaaa;min-width: 650px;background-color: #f5f5f5;margin-left:auto;margin-right:auto;}
@@ -78,7 +78,7 @@ border-bottom-left-radius: 4px;}
 .amcptxtbxnum{color:#000;font-family:Tahoma;font-size:11px;border:solid 1px #aaa;width:99%; background-color:#fff; padding:1px;text-align:center;}
 .amtab{border:solid 1px #898c95;display:inline;background-color:#fff;height:18px;padding-top:1px;padding-left:1px;padding-right:1px;position:relative;top:1;z-index:100;cursor:pointer;}
 .amtabbottom{border:solid 1px #898c95;display:inline;background-color:#fff;height:18px;padding-bottom:1px;padding-left:1px;padding-right:1px;position:relative;top:-3px;z-index:100;cursor:pointer;}
-.amtabtext{display:inline;background-image:url(images/amtab_back_norm.gif); height:16px;padding-left:5px;padding-right:5px;font-size:12px;}
+.amtabtext{display:inline;background-image:url(../images/amtab_back_norm.gif); height:16px;padding-left:5px;padding-right:5px;font-size:12px;}
 .amtabsel{border-bottom:solid 1px #fff;position:relative;top:1;z-index:150;border-top:solid 1px #898c95;border-right:solid 1px #898c95;border-left:solid 1px #898c95;display:inline;background-color:#fff;height:21px;padding-top:1px;padding-left:2px;padding-right:2px;}
 .amtabselbottom{position:relative;top:-1px;z-index:150;border-bottom:solid 1px #898c95;border-right:solid 1px #898c95;border-left:solid 1px #898c95;display:inline;background-color:#fff;height:21px;padding-bottom:1px;padding-left:2px;padding-right:2px;}
 .amtabseltext{display:inline;height:16px;padding-left:5px;padding-right:5px;font-size:12px;}
@@ -87,7 +87,7 @@ border-bottom-left-radius: 4px;}
 .amroles{background-color:#f5f5f5;border:solid 1px #999;margin:2px}
 .amcpimgbtn{padding:2px;}
 .agrowedit, .afrowedit{cursor:pointer;font-weight:bold;text-decoration:underline;}
-.amsmallbtn,.amsmallbtn_over{width:50px;min-height:20px;padding-right:2px;padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:5px;font-size: 11px;font-family: Tahoma;color: #666;height: 22px;border:solid 1px #666;background-image: url(images/buttonback.png);cursor:pointer;position: static;text-decoration:none;display:block;clear:right;}
+.amsmallbtn,.amsmallbtn_over{width:50px;min-height:20px;padding-right:2px;padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:5px;font-size: 11px;font-family: Tahoma;color: #666;height: 22px;border:solid 1px #666;background-image: url(../images/buttonback.png);cursor:pointer;position: static;text-decoration:none;display:block;clear:right;}
 
 
 /* quick fix for secuirty width */
@@ -112,14 +112,14 @@ border-bottom-left-radius: 4px;}
 
 .afsecobject_over{width:125px;font-size:11px;font-family:Tahoma;padding:2px;overflow:hidden;white-space:nowrap;background-color: #FFFF99;}
 .afhoverremove{z-index:1000;height:16px;width:12px;}
-tr.afgroupback td{background-image:url(images/groupback.png);height:24px;}
-tr.afgroupback td.afgroupback_left{background-image:url(images/groupback_left.png);}
-tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.png);}
+tr.afgroupback td{background-image:url(../images/groupback.png);height:24px;}
+tr.afgroupback td.afgroupback_left{background-image:url(../images/groupback_left.png);}
+tr.afgroupback td.afgroupback_right{background-image:url(../images/groupback_right.png);}
 .afgroupback td{font-weight:bold;}
 .afforumback td{border-bottom:dashed 1px #999}
 
 .af16icon{padding:0px;cursor:pointer;height:18px;width:18px;}
-.af16icon_over{padding:0px;cursor:pointer;height:18px;width:18px;background-image:url(images/af16icon_over.png);}
+.af16icon_over{padding:0px;cursor:pointer;height:18px;width:18px;background-image:url(../images/af16icon_over.png);}
 .afsecgrid{border:solid 1px #333;}
 .afgridrow{background-color:#fff;}
 .afgridrowover{background-color: #87cefa;}
@@ -218,7 +218,7 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 }
 .dashOuterHeader{padding:4px;font-family:Tahoma;font-size:12px;border-right: #dcdcdc 1px solid;
 	border-top: #dcdcdc 1px solid;
-	border-left: #dcdcdc 1px solid;background-image:url(images/dashHeaderBg.gif);}
+	border-left: #dcdcdc 1px solid;background-image:url(../images/dashHeaderBg.gif);}
 .dashInner
 {
 	border-right: #b3b3b3 1px solid;
@@ -243,11 +243,11 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 	padding-right:5px;
 	text-align:center;
 }
-.ampageritem{width:20px;color:#666;font-family:tahoma,arial;font-size:11px; cursor:pointer; text-align:center;background-image: url(images/pgBack.gif);}
-.ampageritem2{border-right:solid 1px #666;color:#666;font-family:tahoma,arial;font-size:11px; cursor:pointer; text-align:center !important;background-image: url(images/pgBack.gif);}
-.ampagernumber{width:20px;border-right:solid 1px #666;color:#666;font-family:tahoma,arial;font-size:11px; cursor:pointer; text-align:center !important;background-image: url(images/pgBack.gif);}
-.ampagernumber_current{width:20px;color: #fff;font-family: tahoma,arial;font-size: 11px;text-align:center !important;background-image: url(images/pgBack_sel.gif)}
-.ampagerinfo {color: #666;font-family: tahoma,arial;font-size: 11px;text-align:center; white-space:nowrap;background-image: url(images/pgBack.gif);}
+.ampageritem{width:20px;color:#666;font-family:tahoma,arial;font-size:11px; cursor:pointer; text-align:center;background-image: url(../images/pgBack.gif);}
+.ampageritem2{border-right:solid 1px #666;color:#666;font-family:tahoma,arial;font-size:11px; cursor:pointer; text-align:center !important;background-image: url(../images/pgBack.gif);}
+.ampagernumber{width:20px;border-right:solid 1px #666;color:#666;font-family:tahoma,arial;font-size:11px; cursor:pointer; text-align:center !important;background-image: url(../images/pgBack.gif);}
+.ampagernumber_current{width:20px;color: #fff;font-family: tahoma,arial;font-size: 11px;text-align:center !important;background-image: url(../images/pgBack_sel.gif)}
+.ampagerinfo {color: #666;font-family: tahoma,arial;font-size: 11px;text-align:center; white-space:nowrap;background-image: url(../images/pgBack.gif);}
 .amheadingcelltext
 {
   font-family: verdana; 
@@ -326,13 +326,13 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afsuccess{color:Green;}
 .aferror{color:Red;}
 
-a.btnadd,a.btnadd:link,a.btnadd:visited{font-weight:bold !important;background-color:#ffffcc;background-image:url(images/add-circle.png);color:#808080 !important; border:1px solid #cdcdcd; background-repeat:no-repeat; background-position:4px center;padding:4px;padding-left:22px;}
+a.btnadd,a.btnadd:link,a.btnadd:visited{font-weight:bold !important;background-color:#ffffcc;background-image:url(../images/add-circle.png);color:#808080 !important; border:1px solid #cdcdcd; background-repeat:no-repeat; background-position:4px center;padding:4px;padding-left:22px;}
 a.btnadd:hover{text-decoration:none;border-color:#666;color:#000 !important;}
 .afroundall{border-radius:4px;-moz-border-radius: 4px; -webkit-border-radius: 4px;}
 ul#proplist{margin-left:0px;}
 #proplist li{list-style-type:none;}
-#proplist .aflistflat li{list-style-type:none; background-image:url(images/checkbox_unchecked.png); background-repeat:no-repeat; background-position:-1px left; padding-left:16px;}
-#proplist .aflistflat li.checked{background-image:url(images/checkbox.png);}
+#proplist .aflistflat li{list-style-type:none; background-image:url(../images/checkbox_unchecked.png); background-repeat:no-repeat; background-position:-1px left; padding-left:16px;}
+#proplist .aflistflat li.checked{background-image:url(../images/checkbox.png);}
 #proplist li select{float:right;width:150px;}
 #proplist li.candrag{margin:0px;padding:0px;border: 2px none #f90;margin-left:-20px;margin-bottom:4px;}
 #proplist .candrag a{cursor:pointer;}
@@ -360,7 +360,7 @@ ul.ampropeditor li input[type="text"],ul.ampropeditor li select{width:225px;}
 .amcpoptionrow{padding-bottom:5px;margin-bottom:2px;}
 .amcpsuboption .amcpoptionrow{margin-left:10px;}
 .amcpoptionrow label{float:left;margin-top:4px;}
-.amcptooltip{display:block;width:16px;height:16px; background-image:url(images/tooltip.png); cursor:pointer;}
+.amcptooltip{display:block;width:16px;height:16px; background-image:url(../images/tooltip.png); cursor:pointer;}
 .amcppropblock{float:left;margin-left:15px;}
 .amcppropwrap{display:none;background-color:#fff;border:1px solid #cdcdcd;border-radius:4px;-moz-border-radius: 4px; -webkit-border-radius: 4px;padding:10px;}
 
@@ -373,7 +373,7 @@ td.amcpinput select{width:99%;}
 .amcplabel{padding-left:10px;padding-right:5px;font-family:Arial, Verdana, Serif !important;font-size:11px !important;white-space:nowrap;text-align:right !important;}
 
 
-.dragHandle {display: block;visibility:hidden;float: left;width: 16px;height: 28px;cursor: move;margin-left:4px;margin-right:4px;background-image:url(images/sort_16.png);background-repeat:no-repeat;background-position:center center;}
+.dragHandle {display: block;visibility:hidden;float: left;width: 16px;height: 28px;cursor: move;margin-left:4px;margin-right:4px;background-image:url(../images/sort_16.png);background-repeat:no-repeat;background-position:center center;}
 #proplist li:HOVER .dragHandle{visibility:visible;}
 .myItemHover {background: #f5f5f5;}
 .myDragTarget {background: #FFFFCC;opacity: 0.7;border: 2px dashed #f90;padding: 0px;margin:0px;}
@@ -390,8 +390,8 @@ ul.amcpformlist li div.amcpradiorow input[type="checkbox"]{font-size:14px;margin
 
 .afmodalform .NormalTextBox{font-size:14px;}
 .afmodalform .valwrap{padding-right:20px;}
-.afmodalform .valid{background-image:url(images/ok_16.png); background-repeat:no-repeat;background-position:center right;}
-.afmodalform .invalid{padding-right:20px;background-image:url(images/warning16.png); background-repeat:no-repeat;background-position:center right;}
+.afmodalform .valid{background-image:url(../images/ok_16.png); background-repeat:no-repeat;background-position:center right;}
+.afmodalform .invalid{padding-right:20px;background-image:url(../images/warning16.png); background-repeat:no-repeat;background-position:center right;}
 .afmodalform .SubHead{font-size:14px;}
 .afmodalform{border:8px solid #cdcdcd;border-radius:8px;-moz-border-radius: 8px; -webkit-border-radius: 8px;z-index:2000}
 .amcp-mod-inner{background-color:#f5f5f5;border:1px solid #999;}

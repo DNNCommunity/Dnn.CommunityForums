@@ -8,9 +8,9 @@
 	
     Community Forums's CSS Load order: 
     1) ~/DesktopModules/ActiveForums/module.css
-    2) ~/Portals/community/activeforums_themes/themes.css
-    3) ~/Portals/community/activeforums_themes/<currenttheme>/theme.css
-    4) ~/Portals/community/activeforums_themes/<currenttheme>/custom/theme.css 
+    2) ~/Portals/_default/activeforums_themes/themes.css
+    3) ~/Portals/_default/activeforums_themes/<currenttheme>/theme.css
+    4) ~/Portals/_default/activeforums_themes/<currenttheme>/custom/theme.css 
 
 */
 
