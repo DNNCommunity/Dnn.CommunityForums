@@ -86,26 +86,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }
-
-#if !SKU_LITE
-            if (System.IO.File.Exists(rootPath + "bin\\active.modules.social.dll"))
-			{
-				Modules.ActiveForums.Social social = new Modules.ActiveForums.Social();
-				using (IDataReader dr = social.ActiveSocialListGroups(PortalId))
-				{
-					while (dr.Read())
-					{
-						sb.Append("<optgroup label=\"" + dr["GroupName"].ToString() + "\">");
-						sb.Append("<option value=\"" + dr["GroupId"].ToString() + ":0\">Group Admin</option>");
-						sb.Append("<option value=\"" + dr["GroupId"].ToString() + ":1\">Group Member</option>");
-						sb.Append("</optgroup>");
-
-					}
-					dr.Close();
-				}
-			}
-#endif
-
 			return sb.ToString();
 		}
 	}

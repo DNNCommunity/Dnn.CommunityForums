@@ -25,9 +25,7 @@ using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class DailyDigest
-//#if SKU_ENTERPRISE
-		 : DotNetNuke.Services.Scheduling.SchedulerClient
+	public class DailyDigest : DotNetNuke.Services.Scheduling.SchedulerClient
 {
 		public DailyDigest(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
 		{
@@ -61,11 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
 			return elapseMinutes;
 		}
-
-//#else
-//    {
-//#endif
-
+		 
 
 	}
 }

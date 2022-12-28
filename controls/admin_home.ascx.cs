@@ -49,12 +49,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 BindTopMembers(ds.Tables[3]);
                 BindQuickStats(ds.Tables[4]);
             }
-#if !SKU_LITE
             LoadQuickLinks();
-#endif
         }
 
-#if !SKU_LITE
         private void LoadQuickLinks()
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -66,8 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</tr></table></td></tr></table>");
             litQuickLinks.Text = sb.ToString();
         }
-#endif
-
         private void BindRecentTopics(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);

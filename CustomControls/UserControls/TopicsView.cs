@@ -567,13 +567,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
 
                 Url = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + PortalId + "&forumid=" + ForumId + "&tabid=" + TabId + "&moduleid=" + ForumModuleId;
-                if (Request.QueryString["asg"] != null)
-                {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString["asg"]))
-                    {
-                        Url += "&asg=" + Request.QueryString["asg"];
-                    }
-                }
                 if (SocialGroupId > 0)
                 {
                     Url += "&GroupId=" + SocialGroupId;

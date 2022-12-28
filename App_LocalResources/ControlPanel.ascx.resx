@@ -1222,18 +1222,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:TopicPriority].Text" xml:space="preserve">
     <value>Allow Topic Priority</value>
   </data>
-  <data name="[RESX:ActiveSocialIntegration].Text" xml:space="preserve">
-    <value>Active Social Integration</value>
-  </data>
-  <data name="[RESX:RepliesAccessKey].Text" xml:space="preserve">
-    <value>Access Key for Replies</value>
-  </data>
-  <data name="[RESX:TopicsAccessKey].Text" xml:space="preserve">
-    <value>Access Key for Topics</value>
-  </data>
-  <data name="[RESX:ActiveSocialTip].Text" xml:space="preserve">
-    <value>Enter the keys you created in the Active Social Control panel under the Access Control section of the Journal.</value>
-  </data>
   <data name="[RESX:Community].Text" xml:space="preserve">
     <value>Community</value>
   </data>
@@ -1392,9 +1380,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:PleaseWait].Text" xml:space="preserve">
     <value>Loading...  Please wait.</value>
-  </data>
-  <data name="[RESX:Tips:ActiveSocial].Text" xml:space="preserve">
-    <value>Active Forums will send updates to the Active Social Journal.</value>
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
     <value>Caution: Installing or Uninstalling the Active Forums URL Handler will require a change to your web.config.  \n\nAre you sure you want to make this change right now?</value>
