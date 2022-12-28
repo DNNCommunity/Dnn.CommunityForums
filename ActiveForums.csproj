@@ -970,6 +970,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.04.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
