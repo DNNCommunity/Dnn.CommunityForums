@@ -346,7 +346,7 @@ function addRole(){
 		cellLeft.appendChild(textNode)
 		var cellRight = row.insertCell(1);
 		var img = document.createElement('img');
-		img.src = '<%=Page.ResolveUrl( DotNetNuke.Modules.ActiveForums.Globals.ModulePath + "images/delete16.png")%>';
+        img.src = '<%=Page.ResolveUrl("~/desktopmodules/activeforums/images/delete16.png")%>';
 		img.onclick = function() {removeRole(this,drp.options[drp.selectedIndex].value)};
 		cellRight.appendChild(img);        
 		var hidRoles = document.getElementById('<%=hidRoles.ClientID%>');
@@ -831,7 +831,7 @@ function afadmin_getProperties() {
 				<table width="100%">
 					<tr id="trGroups" runat="server">
 						<td>
-							<img id="Img13" src=Globals.ModulePath + "images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ForumGroup]');" onmouseout="amHideTip(this);" /></td>
+							<img id="Img13" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:ForumGroup]');" onmouseout="amHideTip(this);" /></td>
 						<td class="amcpbold" style="white-space: nowrap">[RESX:ForumGroup]:</td>
 						<td width="100%">
 							<asp:DropDownList ID="drpGroups" runat="server" CssClass="amcptxtbx" /></td>
