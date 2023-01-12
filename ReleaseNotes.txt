@@ -10,6 +10,9 @@
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
 			<li>TASK: Remove AddThis integration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/167">Issue 167</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Removed hard-coded Active Forums 4.3 Template Files, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Improved Null date checking logic, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Removed hidden &amp; hard-coded legacy copyright from the HTML source, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
 		<h3>07.00.01</h3>
