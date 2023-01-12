@@ -1068,12 +1068,6 @@
   <data name="[RESX:TrustedUsers].Text" xml:space="preserve">
     <value>Trusted Users</value>
   </data>
-  <data name="[RESX:AddThisIntegration].Text" xml:space="preserve">
-    <value>AddThis Integration</value>
-  </data>
-  <data name="[RESX:AddThis:Intro].Text" xml:space="preserve">
-    <value>Easily add social bookmarking capabilities to your site. Visit www.addthis.com to create an account then enter the account name in the textbox.</value>
-  </data>
   <data name="[RESX:AddRole].Text" xml:space="preserve">
     <value>Add Role</value>
   </data>
@@ -1305,9 +1299,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:YesNo].Text" xml:space="preserve">
     <value>Yes/No</value>
-  </data>
-  <data name="[RESX:AddThisUsername].Text" xml:space="preserve">
-    <value>AddThis Account Name</value>
   </data>
   <data name="[RESX:AutoLink].Text" xml:space="preserve">
     <value>Automatic Hyperlinks</value>

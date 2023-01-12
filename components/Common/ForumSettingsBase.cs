@@ -177,18 +177,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		public string AddThis
-		{
-			get
-			{
-				return Settings.GetString(SettingKeys.AddThisAccount, string.Empty);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.AddThisAccount, value);
-			}
-		}
-
 		public int ProfileVisibility
 		{
 			get
