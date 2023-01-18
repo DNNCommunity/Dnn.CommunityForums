@@ -974,9 +974,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", GetTopic(ModuleId, TabId, ForumId, TopicId, Subject, sBodyTitle, UserId, AuthorId, ReplyCount, -1, sTopicURL) + sPollImage);
 
                     var displayName = UserProfiles.GetDisplayName(ModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, AuthorId, AuthorUserName, AuthorFirstName, AuthorLastName, AuthorDisplayName).ToString().Replace("&amp;#", "&#");
-                    if (displayName == "Anonymous")
+                    if (Utilities.StripHTMLTag(displayName) == "Anonymous")
                     {
-                        displayName = AuthorDisplayName;
+                        displayName = displayName.Replace("Anonymous", AuthorName);
                     }
                     sTopicsTemplate = sTopicsTemplate.Replace("[STARTEDBY]", displayName);
                     sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated,PortalId,UserId));
