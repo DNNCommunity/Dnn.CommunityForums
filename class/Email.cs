@@ -114,15 +114,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);
-                    var si = new SubscriptionInfo
-                    {
-                        UserId = ui.UserID,
-                        DisplayName = ui.DisplayName,
-                        Email = ui.Email,
-                        FirstName = ui.FirstName,
-                        LastName = ui.LastName,
+					var si = new SubscriptionInfo
+					{
+						UserId = ui.UserID,
+						DisplayName = ui.DisplayName,
+						Email = ui.Email,
+						FirstName = ui.FirstName,
+						LastName = ui.LastName,
 						TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID),
-						UserCulture = Utilities.GetCultureInfoForUser(portalId, ui.UserID)
+						UserCulture = Utilities.GetCultureInfoForUser(portalId, ui.UserID),
+						TopicSubscriber = false
 					};
                     if (!(subs.Contains(si)))
                     {
@@ -150,23 +151,39 @@ namespace DotNetNuke.Modules.ActiveForums
 				foreach (TimeSpan timeZoneOffset in timeZoneOffsets)
 				{
 					string sTemplate = string.Empty;
-					string subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, string.Empty, userId, userCulture, timeZoneOffset);
-					string bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId, userCulture, timeZoneOffset);
-					string bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleID, tabID, fi.ForumID, topicId, replyId, comments, userId, userCulture, timeZoneOffset);
 					string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
-					Email oEmail = new Email
+                    /* subject/text/body, etc. can now be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers */
+                    Email oEmail = new Email /* subject can be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers */
+                    {
+                        PortalId = portalId,
+                        Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && s.TopicSubscriber).ToList(),
+                        Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true),
+                        BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true),
+                        BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true),
+                        From = sFrom,
+                        UseQueue = mainSettings.MailQueue
+                    };
+					if (oEmail.Recipients.Count > 0)
 					{
-						PortalId = portalId,
-						Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture).ToList(),
-						Subject = subject,
-						From = sFrom,
-						BodyText = bodyText,
-						BodyHTML = bodyHTML,
-						UseQueue = mainSettings.MailQueue
-					};
-					new System.Threading.Thread(oEmail.Send).Start();
-				}
-			}
+						new System.Threading.Thread(oEmail.Send).Start();
+					}
+                    oEmail = new Email /* subject can be different based on topic subscriber vs forum subscriber so process first for topic subscribers and then for forum subscribers */
+                    {
+                        PortalId = portalId,
+                        Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && !s.TopicSubscriber).ToList(),
+                        Subject = TemplateUtils.ParseEmailTemplate(ti.Subject, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: string.Empty, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false),
+                        BodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false),
+                        BodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false),
+                        From = sFrom,
+                        UseQueue = mainSettings.MailQueue
+                    };
+                    if (oEmail.Recipients.Count > 0)
+                    {
+                        new System.Threading.Thread(oEmail.Send).Start();
+                    }
+
+                }
+            }
 		}		
         public static void SendAdminWatchEmail(int postID, int userID)
 		{
@@ -285,7 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     else
                         SendNotification(PortalId, From, si.Email, Subject, BodyText, BodyHTML);  
 
-					intMessages += 1;
+					//intMessages += 1;
 				}
 
 			}
