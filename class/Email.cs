@@ -286,23 +286,16 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				var intRecipients = 0;
-				var intMessages = 0;
-				var strDistributionList = string.Empty;
 				Subject = Subject.Replace("&#91;", "[");
 				Subject = Subject.Replace("&#93;", "]");
 
 
 				foreach (var si in Recipients.Where(si => si.Email != string.Empty))
 				{
-					intRecipients += 1;
-
-                    if(UseQueue)
+					if(UseQueue)
 					    Queue.Controller.Add(PortalId, From, si.Email, Subject, BodyHTML, BodyText, string.Empty, string.Empty);
                     else
-                        SendNotification(PortalId, From, si.Email, Subject, BodyText, BodyHTML);  
-
-					//intMessages += 1;
+                        SendNotification(PortalId, From, si.Email, Subject, BodyText, BodyHTML); 
 				}
 
 			}
