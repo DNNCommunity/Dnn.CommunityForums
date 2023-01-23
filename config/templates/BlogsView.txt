@@ -1,6 +1,6 @@
 [AF:SORT:TOPICCREATED]
 <%@ Register TagPrefix="am" Namespace="DotNetNuke.Modules.ActiveForums.Controls" Assembly="DotNetNuke.Modules.ActiveForums" %>
-<div style="padding:5px;float:right;clear:all;text-align:right;"><span class="afactionicon">[RSSLINK]</span><span class="afactionicon">[AF:CONTROL:ADDTHIS:0]</span><span class="afactionicon">[AF:CONTROL:EMAIL]</span>
+<div style="padding:5px;float:right;clear:all;text-align:right;"><span class="afactionicon">[RSSLINK]</span><span class="afactionicon">[AF:CONTROL:EMAIL]</span>
 </div>
 <div class="afcrumb"><i class="fa fa-comments-o fa-grey"></i>  [FORUMMAINLINK]  <i class="fa fa-long-arrow-right fa-grey"></i>  [FORUMGROUPLINK]</div>
 <div class="aftitlelg">[FORUMLINK]</div>
