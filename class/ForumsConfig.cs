@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowRSS, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowAttach, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachCount, "3");

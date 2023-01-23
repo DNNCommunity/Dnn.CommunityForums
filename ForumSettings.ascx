@@ -91,8 +91,8 @@
 		<div class="dnnFormItem">
 			<dnn:label ID="lblDeleteBehavior" runat="server" resourcekey="DeleteBehavior" Suffix=":" />
 			 <asp:DropDownList ID="drpDeleteBehavior" runat="server">
-				<asp:ListItem Value="0" resourcekey="Remove" Selected="True"></asp:ListItem>
-				<asp:ListItem Value="1" resourcekey="Recycle"></asp:ListItem>
+				<asp:ListItem Value="0" resourcekey="Remove"></asp:ListItem>
+				<asp:ListItem Value="1" resourcekey="Recycle" Selected="True"></asp:ListItem>
 			</asp:DropDownList>
 		</div>
 		
