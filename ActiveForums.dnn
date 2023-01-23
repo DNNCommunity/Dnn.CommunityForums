@@ -328,16 +328,16 @@
               <name>06.04.01.SqlDataProvider</name>
               <version>06.04.01</version>
             </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.00.SqlDataProvider</name>
-				   <version>07.00.00</version>
-			   </script>
-			<script type="Install">
-				<path>sql</path>
-				<name>07.00.02.SqlDataProvider</name>
-				<version>07.00.02</version>
-			</script>
+             <script type="Install">
+               <path>sql</path>
+               <name>07.00.00.SqlDataProvider</name>
+               <version>07.00.00</version>
+             </script>
+			      <script type="Install">
+				      <path>sql</path>
+				      <name>07.00.02.SqlDataProvider</name>
+				      <version>07.00.02</version>
+			      </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
@@ -446,10 +446,7 @@
       </components>
     </package>
 
-
-
-
-	  <package name="Active Forums Viewer" type="Module" version="07.00.01">
+    <package name="Active Forums Viewer" type="Module" version="07.00.03">
 		  <friendlyName>Active Forums Viewer</friendlyName>
 		  <foldername>ActiveForumsViewer</foldername>
 		  <description>Community Forums: Display any forum topic view on any page within your site.</description>
@@ -516,7 +513,6 @@
 			  </component>
 		  </components>
 	  </package>
-	  
 	  
   </packages>
 </dotnetnuke>
