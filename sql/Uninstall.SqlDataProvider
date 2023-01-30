@@ -821,3 +821,13 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate
 GO
 /* end 07.00.00 */
+
+
+/* begin 07.00.08 */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt1')
+DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt2')
+DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+/* end 07.00.08 */
