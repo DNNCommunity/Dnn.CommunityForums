@@ -202,20 +202,12 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         ControlUtils ctlUtils = new ControlUtils();
                                         string sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId); // Utilities.NavigateUrl(ForumTabId, "", ParamKeys.ViewType & "=" & Views.Topic & "&" & ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId)
-                                        if (sUrl.Contains("~/") || Request.QueryString["asg"] != null)
+                                        if (sUrl.Contains("~/"))
                                         {
                                             sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
                                         }
                                         Social amas = new Social();
-                                        if (Request.QueryString["asg"] == null & !(string.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey)) && fi.ActiveSocialEnabled)
-                                        {
-                                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.ActiveSocialSecurityOption, fi.Security.Read, SocialGroupId);
-                                        }
-                                        else
-                                        {
-                                            amas.AddForumItemToJournal(PortalId, ForumModuleId, ti.Author.AuthorId, "forumtopic", sUrl, sSubject, sBody);
-                                        }
-
+                                        amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
                                     }
                                     catch (Exception ex)
                                     {
@@ -248,19 +240,12 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         ControlUtils ctlUtils = new ControlUtils();
                                         string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
-                                        if (fullURL.Contains("~/") || Request.QueryString["asg"] != null)
+                                        if (fullURL.Contains("~/"))
                                         {
                                             fullURL = Utilities.NavigateUrl(ForumTabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                                         }
                                         Social amas = new Social();
-                                        if (Request.QueryString["asg"] == null & !(string.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey)) && fi.ActiveSocialEnabled && !fi.ActiveSocialTopicsOnly)
-                                        {
-                                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, sBody, fi.ActiveSocialSecurityOption, fi.Security.Read, fi.SocialGroupId);
-                                        }
-                                        else
-                                        {
-                                            amas.AddForumItemToJournal(PortalId, ForumModuleId, ri.Author.AuthorId, "forumreply", fullURL, sSubject, sBody);
-                                        }
+                                        amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, sBody, fi.Security.Read, fi.SocialGroupId);
                                     }
                                     catch (Exception ex)
                                     {

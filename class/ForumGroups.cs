@@ -94,23 +94,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.AllowRSS]); }
 		}
-
-		// TODO: Eliminate this
-		public bool ActiveSocialEnabled
-		{
-			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.ActiveSocialEnabled]); }
-		}
-
-		public bool ActiveSocialTopicsOnly
-		{
-			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.ActiveSocialTopicsOnly]); }
-		}
-
-		public int ActiveSocialSecurityOption
-		{
-			get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.ActiveSocialSecurityOption], 1); }
-		}
-
 		public bool AllowScript
 		{
 			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.AllowScript]); }

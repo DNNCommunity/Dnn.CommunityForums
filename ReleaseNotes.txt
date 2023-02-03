@@ -6,6 +6,13 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+
+		<h3>07.00.04</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>TASK: Remove obsolete Active Social integration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/173">Issue 173</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+    </ul>
+
 		<h3>07.00.03</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>

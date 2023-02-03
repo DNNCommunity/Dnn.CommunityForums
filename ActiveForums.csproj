@@ -216,7 +216,9 @@
     <Content Include="config\templates\ModAlert_html.txt" />
     <Content Include="config\templates\ToolBar.txt" />
     <Content Include="config\templates\_UserProfile.txt" />
-    <Content Include="controls\admin_properties.ascx" />
+    <Content Include="controls\admin_properties.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="controls\admin_securitygrid.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -638,6 +640,7 @@
     <None Include="sql\06.01.06.SqlDataProvider" />
     <None Include="sql\06.01.03.SqlDataProvider" />
     <None Include="sql\06.03.03.SqlDataProvider" />
+    <None Include="sql\07.00.04.SqlDataProvider" />
     <None Include="sql\06.04.01.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />

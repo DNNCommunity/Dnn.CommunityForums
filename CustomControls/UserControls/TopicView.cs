@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var sURL = string.Empty;
 
-            if (MainSettings.URLRewriteEnabled && Request.QueryString["asg"] == null && !string.IsNullOrEmpty(_topicURL))
+            if (MainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(_topicURL))
             {
                 var db = new Data.Common();
                 sURL = db.GetUrl(ModuleId, ForumGroupId, ForumId, TopicId, UserId, contentJumpId);
