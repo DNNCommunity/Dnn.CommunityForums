@@ -447,7 +447,7 @@
       </components>
     </package>
 
-    <package name="Active Forums Viewer" type="Module" version="07.00.03">
+    <package name="Active Forums Viewer" type="Module" version="07.00.04">
 		  <friendlyName>Active Forums Viewer</friendlyName>
 		  <foldername>ActiveForumsViewer</foldername>
 		  <description>Community Forums: Display any forum topic view on any page within your site.</description>
