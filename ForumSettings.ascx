@@ -91,15 +91,11 @@
 		<div class="dnnFormItem">
 			<dnn:label ID="lblDeleteBehavior" runat="server" resourcekey="DeleteBehavior" Suffix=":" />
 			 <asp:DropDownList ID="drpDeleteBehavior" runat="server">
-				<asp:ListItem Value="0" resourcekey="Remove" Selected="True"></asp:ListItem>
-				<asp:ListItem Value="1" resourcekey="Recycle"></asp:ListItem>
+				<asp:ListItem Value="0" resourcekey="Remove"></asp:ListItem>
+				<asp:ListItem Value="1" resourcekey="Recycle" Selected="True"></asp:ListItem>
 			</asp:DropDownList>
 		</div>
-		<div class="dnnFormItem">
-			<dnn:label ID="lblAddThis" runat="server" resourcekey="AddThisUsername" Suffix=":" />
-			<asp:TextBox ID="txtAddThis" runat="server" Width="100" />
-		</div>
-
+		
 	</fieldset>
 	<h2 id="H2" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("CommunityOptions")%></a></h2>
 	<fieldset>

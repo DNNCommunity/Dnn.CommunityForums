@@ -210,12 +210,6 @@ namespace DotNetNuke.Modules.ActiveForums
                            : ProfileVisibilities.Disabled;
             }
         }
-
-        public string AddThisAccount
-        {
-            get { return MainSettings.GetString(SettingKeys.AddThisAccount, string.Empty); }
-        }
-
         public bool UseShortUrls
         {
             get { return MainSettings.GetBoolean(SettingKeys.UseShortUrls); }

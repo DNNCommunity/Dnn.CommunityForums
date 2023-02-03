@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	public enum SpecialTokenTypes
 	{
-		AddThis //http://www.addthis.com
+		
 	}
 
 	public enum TrustTypes
@@ -197,7 +197,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string InstallDate = "INSTALLDATE";
 		public const string IsInstalled = "INSTALLED";
 		public const string ProfileVisibility = "PROFILEVISIBILITY";
-		public const string AddThisAccount = "ADDTHISACCOUNT";
 		public const string UseShortUrls = "SHORTURLS";
 		public const string RequireCaptcha = "REQCAPTCHA";
 		public const string UseSkinBreadCrumb = "USESKINBC";
