@@ -31,11 +31,12 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using System.Data.SqlTypes;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase
+	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
 	{
 		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
@@ -532,13 +533,25 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 
 		}
-		#endregion
+        #endregion
 
-		//Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
-		//    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
-		//End Function
-	}
+        //Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
+        //    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
+        //End Function
+        #region "IUpgradeable"
+        public string UpgradeModule(string Version)
+        {
+			switch (Version)
+            {
+                default:
+                    break;
+            }
+			return Version;
+        }
+        #endregion
 
-	#endregion
+    }
+
+    #endregion
 }
 
