@@ -7,142 +7,146 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
 
-	public partial class admin_templates_edit
-	{
 
-		///<summary>
-		///reqTitle control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlImage reqTitle;
+    public partial class admin_templates_edit
+    {
 
-		///<summary>
-		///reqSubject control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlImage reqSubject;
+        /// <summary>
+        /// reqTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage reqTitle;
 
-		///<summary>
-		///Img1 control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlImage Img1;
+        /// <summary>
+        /// reqSubject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage reqSubject;
 
-		///<summary>
-		///txtTitle control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtTitle;
+        /// <summary>
+        /// Img1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage Img1;
 
-		///<summary>
-		///txtSubject control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtSubject;
+        /// <summary>
+        /// txtTitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtTitle;
 
-		///<summary>
-		///drpTemplateType control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.DropDownList drpTemplateType;
+        /// <summary>
+        /// txtSubject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSubject;
 
-		///<summary>
-		///txtEditor control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtEditor;
+        /// <summary>
+        /// drpTemplateType control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drpTemplateType;
 
-		///<summary>
-		///txtPlainText control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.TextBox txtPlainText;
+        /// <summary>
+        /// txtFileName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label txtFileName;
 
-		///<summary>
-		///hidTemplateId control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.WebControls.HiddenField hidTemplateId;
+        /// <summary>
+        /// txtEditor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEditor;
 
-		///<summary>
-		///cbAction control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbAction;
+        /// <summary>
+        /// txtPlainText control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPlainText;
 
-		///<summary>
-		///cbActionMessage control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbActionMessage;
+        /// <summary>
+        /// hidTemplateId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hidTemplateId;
 
-		///<summary>
-		///btnSave control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnSave;
+        /// <summary>
+        /// cbAction control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbAction;
 
-		///<summary>
-		///btnDelete control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDelete;
+        /// <summary>
+        /// cbActionMessage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cbActionMessage;
 
-		///<summary>
-		///btnClose control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnClose;
-	}
+        /// <summary>
+        /// btnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnSave;
+
+        /// <summary>
+        /// btnDelete control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDelete;
+
+        /// <summary>
+        /// btnClose control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnClose;
+    }
 }

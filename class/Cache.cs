@@ -336,8 +336,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
 			sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
-			return sTemplate;
+            return sTemplate;
 		}
 		private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
 		{

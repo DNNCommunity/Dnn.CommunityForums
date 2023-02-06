@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -76,10 +77,11 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public DateTime DateCreated { get; set; }
 
 	    public DateTime DateUpdated { get; set; }
+        public string FileName { get; set; }
 
-	    #endregion
+        #endregion
 
-	}
+    }
 #endregion
 #region Template Controller
 	public class TemplateController
@@ -90,8 +92,25 @@ namespace DotNetNuke.Modules.ActiveForums
 		//'<param name="info">TemplateInfo object</param>
 		public int Template_Save(TemplateInfo info)
 		{
-            return Convert.ToInt32(DataProvider.Instance().Templates_Save(info.TemplateId, info.PortalId, info.ModuleId, (int)info.TemplateType, info.IsSystem, info.Title, info.Subject, info.Template));
-		}
+            // save updated template to database; will return TemplateId which is critical if new template
+            int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(info.TemplateId, info.PortalId, info.ModuleId, (int)info.TemplateType, info.IsSystem, info.Title, info.Subject, info.Template));
+            // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
+            TemplateInfo TemplateInfo = Template_Get(TemplateId);
+            // override the template text with what is being saved
+            TemplateInfo.Template = info.Template;
+            // now save to the template file
+            try
+            {
+                SettingsInfo MainSettings = DataCache.MainSettings(info.ModuleId);
+                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + TemplateInfo.FileName), TemplateInfo.Template);
+            }
+            catch (Exception exc)
+            {
+
+            }
+
+            return TemplateId;
+        }
 		public List<TemplateInfo> Template_List(int PortalId, int ModuleId)
 		{
 			return GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
@@ -103,17 +122,35 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public void Template_Delete(int TemplateId, int PortalId, int ModuleId)
 		{
-			DataProvider.Instance().Templates_Delete(TemplateId, PortalId, ModuleId);
-		}
-		public TemplateInfo Template_Get(string TemplateName, int PortalId, int ModuleId)
+
+            TemplateInfo templateInfo = Template_Get(TemplateId);
+            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+
+            string templateFile = HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + templateInfo.FileName);
+            try
+            {
+                if (System.IO.File.Exists(templateFile))
+                {
+                    System.IO.File.Delete(templateFile);
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            DataProvider.Instance().Templates_Delete(TemplateId, PortalId, ModuleId);
+        }
+        public TemplateInfo Template_Get(string TemplateName, int PortalId, int ModuleId)
 		{
-			TemplateInfo ti = null;
+            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+            TemplateInfo ti = null;
 			foreach (TemplateInfo tiWithinLoop in Template_List(PortalId, ModuleId))
 			{
 				ti = tiWithinLoop;
 				if (TemplateName.ToUpperInvariant() == tiWithinLoop.Title.ToUpperInvariant())
-				{
-					tiWithinLoop.TemplateHTML = GetHTML(tiWithinLoop.Template);
+                {
+                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + ti.FileName));
+                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
+                    tiWithinLoop.TemplateHTML = GetHTML(tiWithinLoop.Template);
 					tiWithinLoop.TemplateText = GetText(tiWithinLoop.Template);
 					return tiWithinLoop;
 				}
@@ -126,7 +163,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public TemplateInfo Template_Get(int TemplateId, int PortalId, int ModuleId)
 		{
-			var ti = new TemplateInfo();
+            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+            var ti = new TemplateInfo();
 			IDataReader dr = DataProvider.Instance().Templates_Get(TemplateId, PortalId, ModuleId);
 			while (dr.Read())
 			{
@@ -138,10 +176,16 @@ namespace DotNetNuke.Modules.ActiveForums
 					ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(dr["TemplateType"]));
 					ti.IsSystem = Convert.ToBoolean(dr["IsSystem"]);
 					ti.Title = Convert.ToString(dr["Title"]);
-					ti.Subject = Convert.ToString(dr["Subject"]);
-					ti.Template = Convert.ToString(dr["Template"]);
-					ti.TemplateHTML = GetHTML(Convert.ToString(dr["Template"]));
-					ti.TemplateText = GetText(Convert.ToString(dr["Template"]));
+                    ti.FileName = Convert.ToString(dr["FileName"]);
+                    ti.Subject = Convert.ToString(dr["Subject"]);
+                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + ti.FileName));
+                    if (string.IsNullOrEmpty(ti.Template))
+                    {
+                        ti.Template = Convert.ToString(dr["Template"]);
+                    }
+                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
+                    ti.TemplateHTML = GetHTML(ti.Template);
+                    ti.TemplateText = GetText(ti.Template);
                     ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
                     ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
 
@@ -205,8 +249,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
 		{
-			try
-			{
+            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+            try
+            {
 				var tl = new List<TemplateInfo>();
 			    IDataReader dr = TemplateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(PortalId, ModuleId, -1) : DataProvider.Instance().Templates_List(PortalId, ModuleId, (int)TemplateType);
 				dr.Read();
@@ -214,20 +259,26 @@ namespace DotNetNuke.Modules.ActiveForums
 			    while (dr.Read())
 				{
 					var ti = new TemplateInfo
-					             {
+					{
+                        TemplateId = Convert.ToInt32(dr["TemplateId"]),
                         DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]),
                         DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]),
                         IsSystem = Convert.ToBoolean(dr["IsSystem"]),
                         ModuleId = Convert.ToInt32(dr["ModuleID"]),
                         PortalId = Convert.ToInt32(dr["PortalId"]),
                         Subject = Convert.ToString(dr["Subject"]),
-                        Template = Convert.ToString(dr["Template"])
+                        Title = Convert.ToString(dr["Title"]),
+                        FileName = Convert.ToString(dr["FileName"]),
+                        TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
                     };
-				    ti.TemplateHTML = GetHTML(ti.Template);
-					ti.TemplateId = Convert.ToInt32(dr["TemplateId"]);
+                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "/" + ti.FileName));
+                    if (string.IsNullOrEmpty(ti.Template))
+                    {
+                        ti.Template = Convert.ToString(dr["Template"]);
+                    }
+                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
+                    ti.TemplateHTML = GetHTML(ti.Template);
 					ti.TemplateText = GetText(ti.Template);
-					ti.TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]);
-					ti.Title = Convert.ToString(dr["Title"]);
 					tl.Add(ti);
 				}
 				dr.Close();
@@ -238,7 +289,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				return null;
 			}
 		}
-#endregion
-	}
-#endregion
+        #endregion
+    }
+    #endregion
 }

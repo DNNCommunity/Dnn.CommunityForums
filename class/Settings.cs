@@ -162,7 +162,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
 		}
-
+        public string TemplatesLocation
+        {
+            get
+            {return Globals.ModulePath +  "/config/templates"; 
+            }
+        }
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }
