@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var sURL = string.Empty;
 
-            if (MainSettings.URLRewriteEnabled && Request.QueryString["asg"] == null && !string.IsNullOrEmpty(_topicURL))
+            if (MainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(_topicURL))
             {
                 var db = new Data.Common();
                 sURL = db.GetUrl(ModuleId, ForumGroupId, ForumId, TopicId, UserId, contentJumpId);
@@ -803,12 +803,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             // Do a few things before we switch to a string builder
 
-            // Add This
+            // Add This -- obsolete so just remove
             if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(Request));
-                sOutput = TemplateUtils.ParseSpecial(sOutput, SpecialTokenTypes.AddThis, strHost + Request.RawUrl, _topicSubject, _bRead, MainSettings.AddThisAccount);
+                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
+                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
+                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
+
 
             // Banners
             if (sOutput.Contains("[BANNER"))

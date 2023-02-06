@@ -835,7 +835,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var mainSettings = DataCache.MainSettings(moduleId);
 
-            return TemplateCache.GetCachedTemplate( moduleId, "TopicView", topicTemplateId);
+            return DataCache.GetCachedTemplate(mainSettings.TemplateCache, moduleId, "TopicView", topicTemplateId);
         }
         public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, Forum forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, int timeZoneOffset)
         {
@@ -910,59 +910,5 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return template;
         }
-
-        internal static string ParseSpecial(string template, SpecialTokenTypes tokenType, string url, string title, bool canRead, string options = "")
-        {
-            switch (tokenType)
-            {
-                case SpecialTokenTypes.AddThis:
-                    return ParseAddThis(template, url, title, canRead, options);
-            }
-
-            return template;
-        }
-
-        private static string ParseAddThis(string template, string url, string title, bool canRead, string options)
-        {
-            if (options == string.Empty)
-                template = template.Replace("[AF:CONTROL:ADDTHIS:0]", string.Empty);
-
-            const string pattern = "(\\[AF:CONTROL:ADDTHIS:(.*?)\\])";
-
-            var sFind = string.Empty;
-            var sUserName = string.Empty;
-
-            foreach (Match match in Regex.Matches(template, pattern))
-            {
-                sFind = match.Groups[0].Value;
-                sUserName = match.Groups[2].Value;
-            }
-
-            if (sFind != string.Empty)
-            {
-                var replace = string.Empty;
-                if ((sUserName == "0" && options != string.Empty) || sUserName != "0")
-                {
-                    if (canRead)
-                    {
-                        if (sUserName == "0" && options != string.Empty)
-                            sUserName = options;
-
-                        replace = TemplateCache.GetTemplate("AddThis.txt");
-                        replace = replace.Replace("[USERNAME]", sUserName.Replace("'", "\\'"));
-                        replace = replace.Replace("[URL]", url);
-                        replace = replace.Replace("[TITLE]", title.Replace("'", "\\'"));
-                    }
-                }
-
-                template = template.Replace(sFind, replace);
-                if (sFind != string.Empty)
-                    template = template.Replace(sFind, string.Empty);
-            }
-
-
-            return template;
-        }
-
     }
 }

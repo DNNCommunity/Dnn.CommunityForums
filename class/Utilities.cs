@@ -274,16 +274,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string NavigateUrl(int tabId)
         {
-            var currParams = new List<string>();
-            if (HttpContext.Current.Request.Params["asgv"] != null)
-                currParams.Add("asgv=" + HttpContext.Current.Request.Params["asgv"]);
-
-            if (HttpContext.Current.Request.Params["asg"] != null)
-                currParams.Add("asg=" + HttpContext.Current.Request.Params["asg"]);
-
-            if (currParams.Count > 0)
-                return Common.Globals.NavigateURL(tabId, string.Empty, currParams.ToArray());
-
             return Common.Globals.NavigateURL(tabId);
         }
 
@@ -306,16 +296,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-
-            // TODO: Figure out what these parameters are
-            var asgvParam = HttpContext.Current.Request.Params["asgv"];
-            if (!string.IsNullOrWhiteSpace(asgvParam))
-                currParams.Add("asgv=" + asgvParam);
-
-            var asgParam = HttpContext.Current.Request.Params["asg"];
-            if (!string.IsNullOrWhiteSpace(asgParam))
-                currParams.Add("asg=" + asgParam);
-
             var s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
