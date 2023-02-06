@@ -21,8 +21,7 @@
 			</div>
 		</td>
 		<td class="_hide_" align="right" valign="top">
-			<div style="padding:5px;">
-				<span class="afactionicon">[AF:CONTROL:ADDTHIS:0]</span>
+			<div style="padding:5px;"> 
 				<span class="afactionicon">[AF:CONTROL:PRINTER]</span>
 				<span class="afactionicon">[AF:CONTROL:EMAIL]</span>
 			</div>
