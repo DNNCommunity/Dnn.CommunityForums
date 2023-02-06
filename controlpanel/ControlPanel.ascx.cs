@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var objModules = new Entities.Modules.ModuleController();
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
             Hashtable Settings = objModules.GetModuleSettings(ModuleId);
-            string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");
+            string upFilePath = Server.MapPath(Globals.ModulePath + "upgrade4x.txt");
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
             {
                 try
@@ -141,12 +141,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             string adminHandler = VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/handlers/adminhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
             var sb = new StringBuilder();
-            sb.AppendLine("var asScriptPath = '" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/scripts/") + "';");
+            sb.AppendLine("var asScriptPath = '" + VirtualPathUtility.ToAbsolute(Globals.ModulePath+ "scripts/") + "';");
             sb.AppendFormat("var afAdminHandlerURL = '{0}';", adminHandler);
             sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemesLocation + "/" + MainSettings.Theme) + "';"); 
-            string sLoadImg;
-            sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner-lg.gif") + "';";
-            sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner.gif") + "';";
+            string sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "spinner-lg.gif") + "';" +
+             "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "afscripts", sb.ToString(), true);
 

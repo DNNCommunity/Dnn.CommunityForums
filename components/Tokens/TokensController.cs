@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				List<Token> li = new List<Token>();
 				Token tk = null;
 				System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
-				string sPath = HttpContext.Current.Server.MapPath("~/DesktopModules/activeforums/config/tokens.config");
+				string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath + "config/tokens.config");
 				xDoc.Load(sPath);
 				if (xDoc != null)
 				{

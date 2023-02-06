@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";
                     oLink.Attributes["type"] = "text/css";
-                    oLink.Attributes["href"] = Page.ResolveUrl("~/DesktopModules/ActiveForums/module.css");
+                    oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "module.css");
                     System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
                     if (oCSS != null)
                     {

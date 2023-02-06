@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -530,7 +531,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 object sToolbar = DataCache.CacheRetrieve("aftb" + ModuleId);
                 if (sToolbar == null)
                 {
-                    sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                    sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "\\ToolBar.txt"));
                     sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                     DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                 }

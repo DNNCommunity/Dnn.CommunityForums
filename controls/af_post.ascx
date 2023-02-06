@@ -164,7 +164,7 @@
     <div class="amMsgBoxHeader" id="amMsgBoxHeader">
         <div id="amMsgBoxHeaderText" style="float: left"></div>
         <div onclick="amaf_MsgBoxClose();" style="text-align: right; padding-right: 2px; cursor: pointer;">
-            <img src="<%=Page.ResolveUrl("~/DesktopModules/ActiveForums/images/close.gif")%>" alt="Close" /></div>
+            <img src="<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "close.gif")%>" alt="Close" /></div>
     </div>
     <div class="amMsgBoxText" id="amMsgBoxText"></div>
 </div>

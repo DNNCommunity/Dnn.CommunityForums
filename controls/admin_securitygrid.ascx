@@ -112,13 +112,13 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                 <table cellpadding="0" cellspacing="2">
                     <tr>
                         <td style="width: 12px;">
-                            <img id="Img43" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddRoles]');" onmouseout="amHideTip(this);" /></td>
+                            <img id="Img43" src="<%( DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath )%>tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddRoles]');" onmouseout="amHideTip(this);" /></td>
                         <td>[RESX:Roles]:</td>
                         <td style="width: 150px;">
                             <asp:Literal ID="litRoles" runat="server" /></td>
                         <td style="width: 16px;">
                             <div class="amcpimgbtn" style="width: 16px;" onclick="addObject(0);">
-                                <img id="Img41" src="~/desktopmodules/activeforums/images/add.png" runat="server" alt="[RESX:AddRole]" />
+                                <img id="Img41" src="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>add.png" runat="server" alt="[RESX:AddRole]" />
                             </div>
                         </td>
                     </tr>
@@ -130,13 +130,13 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                     <table cellpadding="0" cellspacing="2">
                         <tr>
                             <td style="width: 12px;">
-                                <img id="Img44" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddUser]');" onmouseout="amHideTip(this);" /></td>
+                                <img id="Img44" src="tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddUser]');" onmouseout="amHideTip(this);" /></td>
                             <td>[RESX:UserName]:</td>
                             <td style="width: 150px;">
                                 <asp:TextBox ID="txtUserName" runat="server" CssClass="amcptxtbx" Width="150" /></td>
                             <td style="width: 16px;">
                                 <div class="amcplnkbtn" style="width: 16px;" onclick="addObject(1);">
-                                    <img id="Img42" src="~/desktopmodules/activeforums/images/add.png" runat="server" alt="[RESX:AddUserName]" />
+                                    <img id="Img42" src="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>add.png" runat="server" alt="[RESX:AddUserName]" />
                                 </div>
                             </td>
                         </tr>

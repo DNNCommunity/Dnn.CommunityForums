@@ -65,7 +65,7 @@ function actionComplete(){
 
 <table width="98%" style="background-color:#fff;">
 	<tr>
-		<td class="amcpbold">[RESX:Title]:<img id="reqTitle" align="absmiddle" hspace="5" src="~/DesktopModules/activeforums/images/error.gif" runat="server"  onmouseover="amShowTip(this,'Title is required');" onmouseout="amHideTip();" height="16" width="16" /></td><td class="amcpbold">[RESX:Subject]:<img id="reqSubject"  align="absmiddle" hspace="5" src="~/DesktopModules/activeforums/images/error.gif" runat="server"  onmouseover="amShowTip(this,'Subject is required');" onmouseout="amHideTip();" height="16" width="16" /></td><td class="amcpbold">[RESX:TemplateType]:<img id="Img1" src="~/DesktopModules/activeforums/images/error.gif" runat="server"  onmouseover="amShowTip(this,'Template Type is Required');" onmouseout="amHideTip();" height="16" width="16" align="absmiddle" hspace="5"  /></td>
+		<td class="amcpbold">[RESX:Title]:<img id="reqTitle" align="absmiddle" hspace="5" src="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>error.gif" runat="server"  onmouseover="amShowTip(this,'Title is required');" onmouseout="amHideTip();" height="16" width="16" /></td><td class="amcpbold">[RESX:Subject]:<img id="reqSubject"  align="absmiddle" hspace="5" src="<%(DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>error.gif" runat="server"  onmouseover="amShowTip(this,'Subject is required');" onmouseout="amHideTip();" height="16" width="16" /></td><td class="amcpbold">[RESX:TemplateType]:<img id="Img1" src="<%(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagePath) %>error.gif" runat="server"  onmouseover="amShowTip(this,'Template Type is Required');" onmouseout="amHideTip();" height="16" width="16" align="absmiddle" hspace="5"  /></td>
 	</tr>
 	<tr>
 		<td><asp:TextBox ID="txtTitle" runat="server" CssClass="amcptxtbx" /></td><td><asp:TextBox ID="txtSubject" runat="server" CssClass="amcptxtbx" /></td><td><asp:DropDownList ID="drpTemplateType" runat="server" CssClass="amcptxtbx" /></td>
@@ -86,9 +86,9 @@ function actionComplete(){
 </am:callback>
 <div class="amtbwrapper">
 	<div class="amcpmdtoolbarbtm" style="width:175px;">
-			<am:imagebutton id="btnSave" runat="server" Height="50" width="50" PostBack="False" ClientSideScript="saveTemplate();" ImageLocation="TOP" text="[RESX:Button:Save]" ImageUrl="~/DesktopModules/ActiveForums/images/save32.png" />
-			<am:ImageButton ID="btnDelete" Height="50" width="50"  Confirm="true" ConfirmMessage="[RESX:Actions:DeleteConfirm]" ImageLocation="TOP" runat="server" PostBack="false" ClientSideScript="deleteTemplate();" Text="[RESX:Button:Delete]" ImageUrl="~/DesktopModules/ActiveForums/images/delete32.png" />
-			<am:ImageButton ID="btnClose" Height="50" width="50"  runat="server" PostBack="false" ImageLocation="TOP" ClientSideScript="LoadView('templates');" Text="[RESX:Button:Cancel]" ImageUrl="~/DesktopModules/ActiveForums/images/cancel32.png" />
+			<am:imagebutton id="btnSave" runat="server" Height="50" width="50" PostBack="False" ClientSideScript="saveTemplate();" ImageLocation="TOP" text="[RESX:Button:Save]" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>save32.png" />
+			<am:ImageButton ID="btnDelete" Height="50" width="50"  Confirm="true" ConfirmMessage="[RESX:Actions:DeleteConfirm]" ImageLocation="TOP" runat="server" PostBack="false" ClientSideScript="deleteTemplate();" Text="[RESX:Button:Delete]" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>delete32.png" />
+			<am:ImageButton ID="btnClose" Height="50" width="50"  runat="server" PostBack="false" ImageLocation="TOP" ClientSideScript="LoadView('templates');" Text="[RESX:Button:Cancel]" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>cancel32.png" />
 
 		</div>
 	</div>
