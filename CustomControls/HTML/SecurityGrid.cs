@@ -104,31 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					}
 				}
 			}
-			//Groups
-			string groups = GetSecureObjectList(Security, 2);
-			if (! (string.IsNullOrEmpty(groups)))
-			{
-				foreach (string g in groups.Split(';'))
-				{
-					if (! (string.IsNullOrEmpty(g)))
-					{
-						Social uc = new Social();
-						string gType = g.Split(':')[1];
-						int groupId = Convert.ToInt32(g.Split(':')[0]);
-						string groupName = uc.ActiveSocialGetGroup(groupId);
-						if (! (string.IsNullOrEmpty(groupName)))
-						{
-							PermissionInfo pi = new PermissionInfo();
-							pi.ObjectId = g;
-							pi.ObjectName = groupName;
-							pi.Type = ObjectType.GroupId;
-							pi.ObjectName += "-" + uc.ActiveSocialGetGroupType(Convert.ToInt32(gType), PortalId);
-							pl.Add(pi);
-						}
-					}
-				}
-			}
-
+			
 			string[,] grid = new string[pl.Count + 1, 28];
 			i = 0;
 			foreach (PermissionInfo pi in pl)

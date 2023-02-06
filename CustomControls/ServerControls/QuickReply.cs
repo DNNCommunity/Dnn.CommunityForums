@@ -27,6 +27,8 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Security.Policy;
+using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -286,19 +288,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                     Subscriptions.SendSubscriptions(SiteId, InstanceId, PageId, ForumId, TopicId, ReplyId, UserId);
-
-#if !SKU_LITE
-                    try
-                    {
-                        Social oSocial = new Social();
-                        oSocial.AddForumItemToJournal(SiteId, InstanceId, UserId, "forumreply", sURL, Subject, sBody);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-
-#endif
+                    Social amas = new Social();
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody,ForumInfo.Security.Read, SocialGroupId);
                 }
                 catch (Exception ex)
                 {
@@ -308,34 +299,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
-            else if (isApproved == false)
+            else
             {
                 Email.SendEmailToModerators(forumInfo.ModNotifyTemplateId, SiteId, ForumId, ri.TopicId, ReplyId, InstanceId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
             }
-            else
-            {
-                string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
-
-#if !SKU_LITE
-                try
-                {
-                    Modules.ActiveForums.Social oSocial = new Modules.ActiveForums.Social();
-                    oSocial.AddForumItemToJournal(SiteId, InstanceId, UserId, "forumreply", fullURL, Subject, sBody);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-
-#endif
-                HttpContext.Current.Response.Redirect(fullURL, false);
-            }
-
-            //End If
-
-
         }
         private string ParseTemplate()
         {
