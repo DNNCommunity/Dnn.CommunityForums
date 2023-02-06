@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="ControlPanel.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.ControlPanel" %>
 <%@ Register  assembly="DotNetNuke.Modules.ActiveForums" namespace="DotNetNuke.Modules.ActiveForums.Controls" tagPrefix="am" %>
 <script type="text/javascript">
-	var imgPath = '<%=Page.ResolveUrl("~/DesktopModules/ActiveForums/images/")%>';
+	var imgPath = '<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModulePath + "images/")%>';
 	var dlgHeight;
 	var dlgWidth;
 	var dlgTitle;
@@ -138,8 +138,8 @@
 <div>
 <div class="amcpcontainer" id="amcpcontainer">
 	<div class="amcploader" id="amcploader">
-		<span>[RESX:PleaseWait]</span>
-		<img src="~/desktopmodules/activeforums/images/spinner-lg.gif" runat="server" />
+		<span>[RESX:PleaseWait]</span>;
+		<img src="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>spinner-lg.gif") %>" runat="server" />
 	</div>
 	<div id="amcpnotify" class="amcpnotify">
 		<div>
@@ -150,14 +150,14 @@
 
 	<div class="amnavbar">
 		<div class="amcpmdtoolbar">
-			<am:imagebutton id="btnHome" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('home');" ImageLocation="TOP" text="[RESX:Dashboard]" ImageUrl="~/DesktopModules/ActiveForums/images/home32.png" />
-			<am:imagebutton id="btnForums" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('manageforums');" ImageLocation="TOP" text="[RESX:Forums]" ImageUrl="~/DesktopModules/ActiveForums/images/forums32.png" />
-			<am:imagebutton id="btnTemplates" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('templates');" ImageLocation="TOP" text="[RESX:Templates]" ImageUrl="~/DesktopModules/ActiveForums/images/templates32.png" />
-			<am:imagebutton id="btnFilters" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('filters');" ImageLocation="TOP" text="[RESX:Filters]" ImageUrl="~/DesktopModules/ActiveForums/images/filters32.png" />
-			<am:imagebutton id="btnRanks" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('ranks');" ImageLocation="TOP" text="[RESX:Ranks]" ImageUrl="~/DesktopModules/ActiveForums/images/ranks32.png" />
-			<am:imagebutton id="btnTags" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('tags');" ImageLocation="TOP" text="[RESX:Tags]" ImageUrl="~/DesktopModules/ActiveForums/images/tags32.png" />
-			<am:imagebutton id="btnCategories" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('categories');" ImageLocation="TOP" text="[RESX:Categories]" ImageUrl="~/DesktopModules/ActiveForums/images/categories32.png" />
-			<am:imagebutton id="btnReturn" runat="server" Height="50" Width="70" PostBack="False" ImageLocation="TOP" text="[RESX:Exit]" ImageUrl="~/DesktopModules/ActiveForums/images/return32.png" />
+			<am:imagebutton id="btnHome" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('home');" ImageLocation="TOP" text="[RESX:Dashboard]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>home32.png" />
+			<am:imagebutton id="btnForums" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('manageforums');" ImageLocation="TOP" text="[RESX:Forums]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>forums32.png" />
+			<am:imagebutton id="btnTemplates" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('templates');" ImageLocation="TOP" text="[RESX:Templates]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>templates32.png" />
+			<am:imagebutton id="btnFilters" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('filters');" ImageLocation="TOP" text="[RESX:Filters]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>filters32.png" />
+			<am:imagebutton id="btnRanks" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('ranks');" ImageLocation="TOP" text="[RESX:Ranks]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>ranks32.png" />
+			<am:imagebutton id="btnTags" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('tags');" ImageLocation="TOP" text="[RESX:Tags]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>tags32.png" />
+			<am:imagebutton id="btnCategories" runat="server" Height="50" Width="70" PostBack="False" ClientSideScript="LoadView('categories');" ImageLocation="TOP" text="[RESX:Categories]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>categories32.png" />
+			<am:imagebutton id="btnReturn" runat="server" Height="50" Width="70" PostBack="False" ImageLocation="TOP" text="[RESX:Exit]" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>return32.png" />
 		</div>
 	</div>
 	<am:CallBack id="cbShell" runat="server" Debug="false" CssClass="amcpshell" OnCallbackComplete="af_shellComplete">
@@ -174,7 +174,7 @@
 <div id="amModal" class="amModal" style="display:none;position:absolute;">
 <div class="amModalHeader">
 	<div class="amModalHeaderText" id="amModalHeaderText"></div>
-	<div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/close.gif")%>" alt="[RESX:Close]" /></div>
+	<div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"close.gif")%>" alt="[RESX:Close]" /></div>
 </div>
 <div class="amModalFrame" id="amModalFrameDiv">
 	<am:Callback ID="cbModal" runat="server" Debug="false">

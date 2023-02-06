@@ -65,12 +65,12 @@ function amaf_deleteCategory(row){
 			<td></td><td class="amcpbold">[RESX:CategoryName]:</td><td><asp:TextBox ID="txtCategory" runat="server" CssClass="amcptxtbx" Font-Size="14px" Height="18" Width="125"/></td><td>
 			<asp:DropDownList ID="drpForums" runat="server" CssClass="amcptxtbx" />
 			</td>
-			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveCategory();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" ImageUrl="~/DesktopModules/ActiveForums/images/save16.png" /></td>
+			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveCategory();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>save16.png" /></td>
 			<td></td>
 		</tr>
 	</table>
 	<div style="height:400px;overflow:auto;">
-	<am:ActiveGrid ID="agCategories" runat="server" DefaultColumn="CategoryName" PageSize="20000" ImagePath="~/DesktopModules/activeforums/images/">
+	<am:ActiveGrid ID="agCategories" runat="server" DefaultColumn="CategoryName" PageSize="20000" ImagePath="<%=ImagePath%>">
 		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
 					<tr><td ColumnName="TagId" style="display:none;width:0px;"></td>
 					<td ColumnName="ForumId" style="display:none;width:0px;"></td><td ColumnName="ForumGroupId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="TagName" style="height:16px;"><div class="amheadingcelltext">[RESX:CategoryName]</div></td><td class="amcptblhdr" ColumnName="Clicks" style="width:50px;height:16px;"><div class="amheadingcelltext">[RESX:TagClicks]</div></td><td class="amcptblhdr" ColumnName="Items" style="height:16px;white-space:nowrap;width:50px;"><div class="amheadingcelltext">[RESX:TagItems]</div></td><td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;"><div class="amheadingcelltext">&nbsp;</div></td></tr>

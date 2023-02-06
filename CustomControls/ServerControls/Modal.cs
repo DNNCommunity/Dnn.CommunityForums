@@ -140,11 +140,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.RenderEndTag();
             //       END HEADER TEXT
             //       BEGIN CLOSE BUTTON
-            //    <div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/close.gif") %>" alt="[RESX:Close]" /></div>
+            //    <div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "close.gif") %>" alt="[RESX:Close]" /></div>
             writer.AddAttribute("class", "amModalCloseImg");
             writer.AddAttribute("onclick", "amaf_closeDialog();");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.AddAttribute("src", Page.ResolveUrl("~/DesktopModules/activeforums/images/close.gif"));
+            writer.AddAttribute("src", Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "close.gif"));
             writer.AddAttribute("alt", "[RESX:Close]");
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag(); //Close image
