@@ -611,7 +611,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // If we have a post icon, use it
             var icon = _currentRow["TopicIcon"].ToString();
             if (!string.IsNullOrWhiteSpace(icon))
-                return "~/DesktopModules/ActiveForums/themes/" + theme + "/emoticons/" + icon;
+                return Page.ResolveUrl(Globals.ModulePath + "/emoticons/" + icon);
 
             // Otherwise, chose the icons based on the post stats
 
@@ -619,13 +619,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
 
             if(pinned && locked)
-                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_pinlocked.png";
+                return MainSettings.ThemeLocation + theme + "/images/topic_pinlocked.png";
 
             if(pinned)
-                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_pin.png";
+                return MainSettings.ThemeLocation + theme + "/images/topic_pin.png";
 
             if(locked)
-                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_lock.png";
+                return MainSettings.ThemeLocation + theme + "/images/topic_lock.png";
 
             // Unread has to be calculated based on a few fields
             var topicId = Convert.ToInt32(_currentRow["TopicId"]);
@@ -636,9 +636,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
 
             if(unread)
-                return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic.png";
+                return MainSettings.ThemeLocation + theme + "/images/topic.png";
 
-            return "~/DesktopModules/ActiveForums/themes/" + theme + "/images/topic_new.png";
+            return MainSettings.ThemeLocation + theme + "/images/topic_new.png";
         }
 
         public string GetMiniPager()

@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/jquery-forumSelector.js");
+            ClientResourceManager.RegisterScript(Page, Globals.ModulePath + "scripts/jquery-forumSelector.js");
 
             try
             {
