@@ -117,12 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddThisUsername.Help" xml:space="preserve">
-    <value>Easily add social bookmarking capabilities to your site. Visit &lt;a href="http://www.addthis.com" target="_blank"&gt;www.addthis.com&lt;/a&gt; to create an account then enter the account name in the textbox.</value>
-  </data>
-  <data name="AddThisUsername.Text" xml:space="preserve">
-    <value>AddThis Username</value>
-  </data>
   <data name="AdvancedOptions.Text" xml:space="preserve">
     <value>Advanced Options</value>
   </data>
@@ -157,7 +151,7 @@
     <value>Default Profile</value>
   </data>
   <data name="DeleteBehavior.Help" xml:space="preserve">
-    <value>Choose what happens to content when deleted. &lt;b&gt;Remove&lt;/b&gt; - Removes content from database.  &lt;b&gt;Recycle&lt;/b&gt; - Content is marked as deleted and remains in the database.</value>
+    <value>Choose what happens to content when deleted. &lt;b&gt;Remove&lt;/b&gt; - Removes content from database.  &lt;b&gt;Recycle&lt;/b&gt; - Content is marked as deleted and remains in the database. Choose this option if you want to take advantage of DNN incremental search.</value>
   </data>
   <data name="DeleteBehavior.Text" xml:space="preserve">
     <value>Delete Behavior</value>

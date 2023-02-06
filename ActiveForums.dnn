@@ -1,7 +1,7 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="Active Forums" type="Module" version="07.00.09">
-      <friendlyName>Active Forums</friendlyName>
+=      <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
       <owner>
@@ -24,6 +24,7 @@
             <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
             <supportedFeatures>
               <supportedFeature type="Searchable" />
+              <supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
@@ -72,7 +73,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.09</upgradeVersionsList>
+              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.04,07.00.05,07.00.06,07.00.07,07.00.08,07.00.09</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -102,7 +103,7 @@
 		
         <component type="Script">
            <scripts>
-            <basePath>DesktopModules\ActiveForums\sql</basePath>
+            <basePath>DesktopModules\ActiveForums</basePath>
             <script type="Install">
              <path>sql</path>
               <name>04.00.00.SqlDataProvider</name>
@@ -328,11 +329,16 @@
               <name>06.04.01.SqlDataProvider</name>
               <version>06.04.01</version>
             </script>
-             <script type="Install">
-               <path>sql</path>
-               <name>07.00.00.SqlDataProvider</name>
-               <version>07.00.00</version>
-             </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.00.SqlDataProvider</name>
+              <version>07.00.00</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.04.SqlDataProvider</name>
+              <version>07.00.04</version>
+            </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
@@ -377,13 +383,13 @@
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
-      <owner>
-        <name>DotNetNuke Active Forums Module</name>
-        <organization>DotNetNuke Corporation</organization>
-        <url>activeforums.codeplex.com</url>
-        <email>support@dnnsoftware.com</email>
-      </owner>
-      <license src="License.txt" />
+		<owner>
+			<name>DNN Community</name>
+			<organization>DNN Community</organization>
+			<url>dnncommunity.org</url>
+			<email>community@dnncommunity.org</email>
+		</owner>
+		<license src="License.txt" />
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
@@ -440,5 +446,74 @@
         </component>
       </components>
     </package>
+
+    <package name="Active Forums Viewer" type="Module" version="07.00.04">
+		  <friendlyName>Active Forums Viewer</friendlyName>
+		  <foldername>ActiveForumsViewer</foldername>
+		  <description>Community Forums: Display any forum topic view on any page within your site.</description>
+		  <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
+		  <owner>
+			  <name>DNN Community</name>
+			  <organization>DNN Community</organization>
+			  <url>dnncommunity.org</url>
+			  <email>community@dnncommunity.org</email>
+		  </owner>
+		  <license src="License.txt" />
+		  <releaseNotes src="ReleaseNotes.txt" />
+		  <azureCompatible>true</azureCompatible>
+		  <dependencies>
+			  <dependency type="CoreVersion">09.04.00</dependency>
+		  </dependencies>
+		  <components>
+			  <component type="Module">
+				  <desktopModule>
+					  <moduleName>Active Forums Viewer</moduleName>
+					  <foldername>ActiveForumsViewer</foldername>
+					  <businessControllerClass />
+					  <supportedFeatures />
+					  <moduleDefinitions>
+						  <moduleDefinition>
+							  <friendlyName>Active Forums Viewer</friendlyName>
+							  <definitionName>Active Forums Viewer</definitionName>
+							  <defaultCacheTime>0</defaultCacheTime>
+							  <moduleControls>
+								  <moduleControl>
+									  <controlKey />
+									  <controlSrc>DesktopModules/ActiveForumsViewer/ActiveForumViewer.ascx</controlSrc>
+									  <supportsPartialRendering>False</supportsPartialRendering>
+									  <controlTitle>Active Forums Viewer</controlTitle>
+									  <controlType>View</controlType>
+									  <iconFile />
+									  <helpUrl />
+									  <supportsPopUps>False</supportsPopUps>
+									  <viewOrder>0</viewOrder>
+								  </moduleControl>
+								  <moduleControl>
+									  <controlKey>Settings</controlKey>
+									  <controlSrc>DesktopModules/ActiveForumsViewer/ActiveForumViewerSettings.ascx</controlSrc>
+									  <supportsPartialRendering>False</supportsPartialRendering>
+									  <controlTitle>Settings</controlTitle>
+									  <controlType>Edit</controlType>
+									  <iconFile />
+									  <helpUrl />
+									  <supportsPopUps>False</supportsPopUps> 
+								  </moduleControl>
+							  </moduleControls>
+						  </moduleDefinition>
+					  </moduleDefinitions>
+				  </desktopModule>
+			  </component>
+			  <component type="ResourceFile">
+				  <resourceFiles>
+					  <basePath>DesktopModules\ActiveForumsViewer</basePath>
+					  <resourceFile>
+						  <name>ActiveForumsViewerResources.zip</name>
+						  <sourceFileName>ActiveForumsViewerResources.zip</sourceFileName>
+					  </resourceFile>
+				  </resourceFiles>
+			  </component>
+		  </components>
+	  </package>
+	  
   </packages>
 </dotnetnuke>
