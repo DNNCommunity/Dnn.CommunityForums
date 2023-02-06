@@ -835,7 +835,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var mainSettings = DataCache.MainSettings(moduleId);
 
-            return DataCache.GetCachedTemplate(mainSettings.TemplateCache, moduleId, "TopicView", topicTemplateId);
+            return TemplateCache.GetCachedTemplate( moduleId, "TopicView", topicTemplateId);
         }
         public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, Forum forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, int timeZoneOffset)
         {

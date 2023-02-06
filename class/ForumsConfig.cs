@@ -310,7 +310,21 @@ namespace DotNetNuke.Modules.ActiveForums
 		        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
 		    }
 		}
+        internal void Install_Or_Upgrade_MoveTemplates()
+        {
+            SettingsInfo MainSettings = DataCache.MainSettings(-1);
+            if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatePath)))
+            {
+                System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatePath));
+            }
+            TemplateController tc = new TemplateController();
+            foreach (TemplateInfo template in tc.Template_List(-1, -1))
+            {
+                tc.Template_Save(template);
+            }
+        }
 
-	}
+
+    }
 }
 

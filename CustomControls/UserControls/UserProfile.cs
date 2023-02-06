@@ -128,15 +128,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			base.OnLoad(e);
 
             string sTemplate = string.Empty;
-            if (System.IO.File.Exists(Server.MapPath(ImagePath + "/_userprofile.txt")))
+            if (System.IO.File.Exists(Server.MapPath(Globals.TemplatePath + "/_userprofile.txt")))
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath(ImagePath + "/_userprofile.txt"));
+                sTemplate = Utilities.GetFileContent(Server.MapPath(Globals.TemplatePath + "/_userprofile.txt"));
             }
             else
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath("~/DesktopModules/ActiveForums/config/templates/_userprofile.txt"));
+                sTemplate = Utilities.GetFileContent(Server.MapPath(Globals.DefaultTemplatePath + "_userprofile.txt"));
             }
             sTemplate = Utilities.ParseSpacer(sTemplate);
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
 
             if (ProfileMode == ProfileModes.Edit)
@@ -241,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = DataCache.GetTemplate("ForumTracking.txt");
+                ctlForums.DisplayTemplate = TemplateCache.GetTemplate("ForumTracking.txt");
                 ctlForums.CurrentUserId = UID;
                 ctlForums.ForumIds = up.UserForums;
                 plhTracker.Controls.Add(ctlForums);

@@ -87,17 +87,17 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		public static SettingsInfo MainSettings(int MID)
+		public static SettingsInfo MainSettings(int ModuleId)
 		{
-			object obj = CacheRetrieve(string.Format(CacheKeys.MainSettings, MID));
+			object obj = CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
 			if (obj == null || disableCache)
 			{
 				var objSettings = new SettingsInfo();
-				var sb = new SettingsBase {ForumModuleId = MID};
+				var sb = new SettingsBase {ForumModuleId = ModuleId};
 			    obj = sb.MainSettings;
 				if (disableCache == false)
 				{
-					CacheStore(string.Format(CacheKeys.MainSettings, MID), obj);
+					CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), obj);
 				}
 			}
 
@@ -109,7 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				ClearAllForumSettingsCache(ModuleId);
 				ClearSettingsCache(ModuleId);
-				ClearTemplateCache(ModuleId);
 				CacheClear(ModuleId + "fv");
 				CacheClear(ModuleId + "ForumStatTable");
 				CacheClear(ModuleId + "ForumStatsOutput");
@@ -200,28 +199,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				CacheClear(ModuleID + "FilterList");
 			}
 		}
-		public static void ClearTemplateCache(int ModuleId)
-		{
-			try
-			{
-				if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/cache")))
-				{
-					var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/cache"));
-					foreach (System.IO.FileInfo fi in di.GetFiles())
-					{
-						if ((fi.FullName.IndexOf(ModuleId + "_", 0) + 1) > 0)
-						{
-							fi.Delete();
-						}
-
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-			}
-		}
 		public static Hashtable GetSettings(int ModuleId, string SettingsKey, string CacheKey, bool UseCache)
 		{
 			var ht = new Hashtable();
@@ -264,268 +241,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return ht;
 		}
-
-#region Cache Storage
-		private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
-		{
-			string myFile;
-			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
-			string strPath;
-			strPath = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\";
-			if (! (System.IO.Directory.Exists(strPath)))
-			{
-				try
-				{
-					System.IO.Directory.CreateDirectory(strPath);
-				}
-				catch (Exception ex)
-				{
-					//   DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-					return;
-				}
-
-			}
-			try
-			{
-				myFile = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\" + FileName;
-				if (System.IO.File.Exists(myFile))
-				{
-					try
-					{
-						System.IO.File.Delete(myFile);
-					}
-					catch (Exception ex)
-					{
-						Services.Exceptions.Exceptions.LogException(ex);
-					}
-				}
-				try
-				{
-					System.IO.File.AppendAllText(myFile, Template);
-				}
-				catch (Exception ex)
-				{
-					// DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-				}
-			}
-			catch (Exception ex)
-			{
-				//DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-			}
-		}
-#endregion
-
-#region Cache Retrieval
-		public static string GetCachedTemplate(int TemplateStore, int ModuleId, string TemplateType, int TemplateId)
-		{
-			string sTemplate;
-			switch (TemplateStore)
-			{
-				case 0:
-					//Get From Memory
-					sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
-					break;
-				case 1:
-					//Get From Disk
-					sTemplate = GetTemplateFromDisk(ModuleId, TemplateType, TemplateId);
-					break;
-				default:
-					//Get From DB
-					sTemplate = GetTemplate(TemplateId, TemplateType);
-					break;
-			}
-			sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
-			sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
-
-			return sTemplate;
-		}
-		private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
-		{
-			string sTemplate = string.Empty;
-
-			string myFile;
-			object obj = CacheRetrieve(ModuleId + TemplateId + TemplateType);
-			if (disableCache)
-			{
-				obj = null;
-			}
-			if (obj == null)
-			{
-				if (TemplateId == 0)
-				{
-					try
-					{
-						myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
-						if (System.IO.File.Exists(myFile))
-						{
-							System.IO.StreamReader objStreamReader = null;
-							try
-							{
-								objStreamReader = System.IO.File.OpenText(myFile);
-							}
-							catch (Exception ex)
-							{
-								Services.Exceptions.Exceptions.LogException(ex);
-							}
-							sTemplate = objStreamReader.ReadToEnd();
-							objStreamReader.Close();
-							sTemplate = Utilities.ParseSpacer(sTemplate);
-							CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-							//Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath("~/DesktopModules/ActiveForums/config/Templates/" & TemplateType & ".txt")))
-						}
-					}
-					catch (Exception ex)
-					{
-						Services.Exceptions.Exceptions.LogException(ex);
-					}
-				}
-				else
-				{
-					sTemplate = GetTemplate(TemplateId, TemplateType);
-					CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-				}
-			}
-			else
-			{
-				sTemplate = Convert.ToString(obj);
-			}
-			return sTemplate;
-		}
-		private static string GetTemplateFromDisk(int ModuleId, string TemplateType, int TemplateId)
-		{
-			string sTemplate;
-			string myFile;
-			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
-			System.IO.StreamReader objStreamReader;
-			if (_disableCache)
-			{
-				sTemplate = GetTemplate(TemplateId, TemplateType);
-			}
-			else
-			{
-				try
-				{
-					myFile = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\" + FileName;
-					if (System.IO.File.Exists(myFile))
-					{
-						try
-						{
-							objStreamReader = System.IO.File.OpenText(myFile);
-
-							sTemplate = objStreamReader.ReadToEnd();
-							objStreamReader.Close();
-						}
-						catch (Exception exc)
-						{
-							sTemplate = GetTemplate(TemplateId, TemplateType);
-						}
-					}
-					else
-					{
-						sTemplate = GetTemplate(TemplateId, TemplateType);
-						CacheTemplateToDisk(ModuleId, TemplateId, TemplateType, sTemplate);
-					}
-				}
-				catch (Exception ex)
-				{
-					Services.Exceptions.Exceptions.LogException(ex);
-					sTemplate = "ERROR: Loading template failed";
-				}
-			}
-
-
-			return sTemplate;
-		}
-		private static string GetTemplate(int TemplateId, string TemplateType)
-		{
-			string sOut = string.Empty;
-		    try
-			{
-				if (TemplateId == 0)
-				{
-					try
-					{
-					    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
-					    if (System.IO.File.Exists(myFile))
-						{
-							System.IO.StreamReader objStreamReader = null;
-							try
-							{
-								objStreamReader = System.IO.File.OpenText(myFile);
-							}
-							catch (Exception ex)
-							{
-								Services.Exceptions.Exceptions.LogException(ex);
-							}
-							sOut = objStreamReader.ReadToEnd();
-							objStreamReader.Close();
-							sOut = Utilities.ParseSpacer(sOut);
-						}
-					}
-					catch (Exception ex)
-					{
-						Services.Exceptions.Exceptions.LogException(ex);
-					}
-				}
-				else
-				{
-					var objTemplates = new TemplateController();
-					TemplateInfo objTempInfo = objTemplates.Template_Get(TemplateId);
-					if (objTempInfo != null)
-					{
-						sOut = objTempInfo.TemplateHTML;
-						sOut = Utilities.ParseSpacer(sOut);
-					}
-				}
-
-			}
-			catch (Exception ex)
-			{
-				Services.Exceptions.Exceptions.LogException(ex);
-				sOut = "ERROR: Loading template failed";
-			}
-			return sOut;
-		}
-		internal static string GetTemplate(string TemplateFileName)
-		{
-			string sOut = string.Empty;
-			string myFile;
-			try
-			{
-				try
-				{
-					myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateFileName);
-					if (System.IO.File.Exists(myFile))
-					{
-						System.IO.StreamReader objStreamReader = null;
-						try
-						{
-							objStreamReader = System.IO.File.OpenText(myFile);
-						}
-						catch (Exception ex)
-						{
-							Services.Exceptions.Exceptions.LogException(ex);
-						}
-						sOut = objStreamReader.ReadToEnd();
-						objStreamReader.Close();
-						sOut = Utilities.ParseSpacer(sOut);
-					}
-				}
-				catch (Exception ex)
-				{
-					Services.Exceptions.Exceptions.LogException(ex);
-				}
-
-			}
-			catch (Exception ex)
-			{
-				Services.Exceptions.Exceptions.LogException(ex);
-				sOut = "ERROR: Loading template failed";
-			}
-			return sOut;
-		}
-#endregion
-
-
 	}
 }

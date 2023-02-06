@@ -162,7 +162,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
 		}
-
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }

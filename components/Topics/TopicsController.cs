@@ -543,6 +543,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 			switch (Version)
             {
+                case "08.00.00":
+                    var fc = new ForumsConfig();
+                    fc.Install_Or_Upgrade_MoveTemplates();
+                    break;
                 default:
                     break;
             }

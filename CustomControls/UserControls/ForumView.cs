@@ -113,7 +113,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var lit = new LiteralControl();
                             object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                            if (System.IO.File.Exists(Server.MapPath(Globals.TemplatePath + "ToolBar.txt")))
+                            {
+                                sToolbar = Utilities.GetFileContent(Server.MapPath(Globals.TemplatePath + "ToolBar.txt"));
+                            }
+                            else
+                            {
+                                sToolbar = Utilities.GetFileContent(Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt"));
+                            }
                             DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                             lit.Text = sToolbar.ToString();
@@ -194,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
                 }
 
-                sTemplate = DisplayTemplate == string.Empty ? DataCache.GetCachedTemplate(TemplateCache, ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate;
+                sTemplate = DisplayTemplate == string.Empty ? DotNetNuke.Modules.ActiveForums.TemplateCache.GetCachedTemplate( ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate;
                 try
                 {
                     sTemplate = ParseControls(sTemplate);
