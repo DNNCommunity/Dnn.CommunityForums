@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlForumLoader.ForumModuleId = tmpModuleId;
                     ctlForumLoader.ForumTabId = TabId;
                     ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
-                    ctlForumLoader.InheritModuleCSS = false;
                     if (!(Convert.ToString(Settings["AFTopicsTemplate"]) == null))
                     {
                         ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(Settings["AFTopicsTemplate"]);

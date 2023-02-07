@@ -156,8 +156,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public bool InheritModuleCSS { get; set; }
-
         public bool JumpToLastPost
         {
             get
