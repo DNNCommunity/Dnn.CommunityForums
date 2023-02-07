@@ -971,8 +971,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sHTML;
         }
-
-        internal static string GetFileContent(string filePath)
+		internal static string GetFileContent(string filePath)
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))

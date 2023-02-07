@@ -90,23 +90,27 @@ namespace DotNetNuke.Modules.ActiveForums
 		//'<summary>
 		//'Function to save template.</summary>
 		//'<param name="info">TemplateInfo object</param>
-		public int Template_Save(TemplateInfo info)
+		public int Template_Save(TemplateInfo templateInfo)
 		{
             // save updated template to database; will return TemplateId which is critical if new template
-            int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(info.TemplateId, info.PortalId, info.ModuleId, (int)info.TemplateType, info.IsSystem, info.Title, info.Subject, info.Template));
+            int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
             // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
             TemplateInfo TemplateInfo = Template_Get(TemplateId);
             // override the template text with what is being saved
-            TemplateInfo.Template = info.Template;
+            TemplateInfo.Template = templateInfo.Template;
             // now save to the template file
             try
             {
-                SettingsInfo MainSettings = DataCache.MainSettings(info.ModuleId);
-                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath(Globals.TemplatePath + TemplateInfo.FileName), TemplateInfo.Template);
+                SettingsInfo moduleSettings = DataCache.MainSettings(templateInfo.ModuleId); 
+				if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath)))
+                {
+                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath));
+                }
+                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath( moduleSettings.TemplatePath + TemplateInfo.FileName), TemplateInfo.Template);
             }
             catch (Exception exc)
             {
-
+				Exceptions.LogException(exc);
             }
 
             return TemplateId;
@@ -124,9 +128,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 
             TemplateInfo templateInfo = Template_Get(TemplateId);
-            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
-
-            string templateFile = HttpContext.Current.Server.MapPath(Globals.TemplatePath + templateInfo.FileName);
+            SettingsInfo moduleSettings = DataCache.MainSettings(templateInfo.ModuleId);
+            string templateFile = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + templateInfo.FileName);
             try
             {
                 if (System.IO.File.Exists(templateFile))
@@ -141,14 +144,23 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public TemplateInfo Template_Get(string TemplateName, int PortalId, int ModuleId)
 		{
-            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
             TemplateInfo ti = null;
 			foreach (TemplateInfo tiWithinLoop in Template_List(PortalId, ModuleId))
 			{
 				ti = tiWithinLoop;
 				if (TemplateName.ToUpperInvariant() == tiWithinLoop.Title.ToUpperInvariant())
                 {
-                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(Globals.TemplatePath + ti.FileName));
+                    SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
+                        }
+                    }
+                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
                     ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                     tiWithinLoop.TemplateHTML = GetHTML(tiWithinLoop.Template);
 					tiWithinLoop.TemplateText = GetText(tiWithinLoop.Template);
@@ -163,7 +175,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public TemplateInfo Template_Get(int TemplateId, int PortalId, int ModuleId)
 		{
-            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
             var ti = new TemplateInfo();
 			IDataReader dr = DataProvider.Instance().Templates_Get(TemplateId, PortalId, ModuleId);
 			while (dr.Read())
@@ -173,12 +184,22 @@ namespace DotNetNuke.Modules.ActiveForums
 					ti.TemplateId = Convert.ToInt32(dr["TemplateId"]);
 					ti.PortalId = Convert.ToInt32(dr["PortalId"]);
 					ti.ModuleId = Convert.ToInt32(dr["ModuleId"]);
-					ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(dr["TemplateType"]));
+                    ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(dr["TemplateType"]));
 					ti.IsSystem = Convert.ToBoolean(dr["IsSystem"]);
 					ti.Title = Convert.ToString(dr["Title"]);
                     ti.FileName = Convert.ToString(dr["FileName"]);
-                    ti.Subject = Convert.ToString(dr["Subject"]);
-                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(Globals.TemplatePath + ti.FileName));
+                    ti.Subject = Convert.ToString(dr["Subject"]); 
+					SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
+                        }
+                    }
+                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
                     if (string.IsNullOrEmpty(ti.Template))
                     {
                         ti.Template = Convert.ToString(dr["Template"]);
@@ -270,8 +291,18 @@ namespace DotNetNuke.Modules.ActiveForums
                         Title = Convert.ToString(dr["Title"]),
                         FileName = Convert.ToString(dr["FileName"]),
                         TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
-                    };
-                    ti.Template = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(Globals.TemplatePath + ti.FileName));
+                    }; 
+					SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+					string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+					if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+						{
+							templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
+                        }							
+					}
+                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
                     if (string.IsNullOrEmpty(ti.Template))
                     {
                         ti.Template = Convert.ToString(dr["Template"]);

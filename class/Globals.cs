@@ -136,8 +136,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
-        public const string TemplatePath = Globals.ModulePath + "templates/";
+        public const string TemplatesPath = Globals.ModulePath + "templates/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
+        public const string ThemesPath = Globals.ModulePath + "themes/";
 
         public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
@@ -212,7 +213,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLTags = "URLTAGS";
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
-
 
 	}
 
@@ -324,12 +324,13 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string Rewards = "afrwd{0}";
 		public const string PostInfo = "afpi{0}";
 		public const string ForumInfo = "affi{0}";
-		public const string ForumInfoWithUser = "affi{0}-{1}"; // KR
-		public const string AllSettings = "afset{0}"; // KR
+		public const string ForumInfoWithUser = "affi{0}-{1}"; 
+		public const string AllSettings = "afset{0}";
 		public const string MainSettings = "afms{0}";
 		public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
 		public const string ForumList = "affl{0}";
+		public const string Toolbar = "aftb{0}";
 	}
 
 

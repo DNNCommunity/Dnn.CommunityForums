@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     try
                     {
-                        string myFile = HttpContext.Current.Server.MapPath(Globals.TemplatePath + TemplateType + ".txt");
+                        string myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateType + ".txt");
                         if (System.IO.File.Exists(myFile))
                         {
                             System.IO.StreamReader objStreamReader = null;
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    myFile = HttpContext.Current.Server.MapPath(Globals.TemplatePath + TemplateFileName);
+                    myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateFileName);
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;

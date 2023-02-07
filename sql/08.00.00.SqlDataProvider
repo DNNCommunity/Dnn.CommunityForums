@@ -13,9 +13,47 @@ BEGIN
 		ADD FileName nvarchar(255) NULL
 END
 GO
-/* add FileName to activeforums_Templates */
+/* add FileName column to activeforums_Templates */
 
 /* Populate FileNames for existing templates */
+SET NOCOUNT ON
+DECLARE @ModuleId int
+DECLARE @TemplateId int
+DECLARE @Title nvarchar(150)
+DECLARE modulecursor CURSOR FOR
+	SELECT DISTINCT ModuleId from {databaseOwner}{objectQualifier}activeforums_Templates WHERE FileName IS NULL
+OPEN modulecursor
+	FETCH NEXT FROM modulecursor INTO @ModuleId
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DECLARE templatecursor CURSOR FOR
+			SELECT TemplateId, Title from {databaseOwner}{objectQualifier}activeforums_Templates WHERE ModuleId = @ModuleId AND FileName IS NULL 
+		OPEN templatecursor
+		FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			DECLARE @TemplateTitleCount int
+			SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title AND ModuleId = @ModuleId)
+			IF @TemplateTitleCount <> 1 
+				BEGIN 
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(@ModuleId)),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId
+				END
+			ELSE
+				BEGIN
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId 
+				END
+			FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
+		END
+		CLOSE templatecursor
+		DEALLOCATE templatecursor
+		FETCH NEXT FROM modulecursor INTO @ModuleId	
+	END
+CLOSE modulecursor
+DEALLOCATE modulecursor
+GO 
+/* Populate FileNames for existing templates */
+
+
 SET NOCOUNT ON
 DECLARE @TemplateId int
 DECLARE @Title nvarchar(150)

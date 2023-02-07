@@ -40,6 +40,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				LoadRanks(PortalId, ModuleId);
 				//Add Default Forums
 				LoadDefaultForums(PortalId, ModuleId);
+
+				Install_Or_Upgrade_MoveTemplates();
+
+
 				return true;
 			}
 			catch (Exception ex)
@@ -118,9 +122,9 @@ namespace DotNetNuke.Modules.ActiveForums
 							                 Subject = xNodeList[i].Attributes["templatesubject"].Value
 							             };
 						    string sHTML;
-							sHTML = GetFileContent(xNodeList[i].Attributes["importfilehtml"].Value);
+							sHTML = Utilities.GetFileContent(xNodeList[i].Attributes["importfilehtml"].Value);
 							string sText;
-							sText = GetFileContent(xNodeList[i].Attributes["importfiletext"].Value);
+							sText = Utilities.GetFileContent(xNodeList[i].Attributes["importfiletext"].Value);
 							string sTemplate = sText;
 							if (sHTML != string.Empty)
 							{
@@ -278,29 +282,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
-
-		private string GetFileContent(string FilePath)
-		{
-			string sPath = HttpContext.Current.Server.MapPath(FilePath);
-			string sContents = string.Empty;
-			System.IO.StreamReader objStreamReader;
-			if (System.IO.File.Exists(sPath))
-			{
-				try
-				{
-					//objStreamReader = IO.File.OpenText(sPath)
-					objStreamReader = new System.IO.StreamReader(sPath, System.Text.Encoding.ASCII);
-					sContents = objStreamReader.ReadToEnd();
-					objStreamReader.Close();
-				}
-				catch (Exception exc)
-				{
-					sContents = exc.Message;
-				}
-			}
-			return sContents;
-		}
-
 		public void CreateForumForGroup(int PortalId, int ModuleId, int SocialGroupId, string Config)
 		{
 			var xDoc = new System.Xml.XmlDocument();
@@ -312,10 +293,23 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
         internal void Install_Or_Upgrade_MoveTemplates()
         {
-            SettingsInfo MainSettings = DataCache.MainSettings(-1);
-            if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatePath)))
+            if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
             {
-                System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatePath));
+                System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+            }
+            if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
+            {
+                System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
+            }
+
+            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+			{
+                if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates")))
+                {
+                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates"));
+                }
             }
             TemplateController tc = new TemplateController();
             foreach (TemplateInfo template in tc.Template_List(-1, -1))
@@ -323,8 +317,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 tc.Template_Save(template);
             }
         }
-
-
     }
 }
 

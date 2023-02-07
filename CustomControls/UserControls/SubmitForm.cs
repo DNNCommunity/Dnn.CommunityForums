@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -527,22 +528,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[TOOLBAR"))
             {
                 var lit = new LiteralControl();
-                object sToolbar = DataCache.CacheRetrieve("aftb" + ModuleId);
-                if (sToolbar == null)
+                string sToolbar = string.Empty;
+                SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+                sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                if (string.IsNullOrEmpty(sToolbar))
                 {
-                    if (System.IO.File.Exists(Server.MapPath(Globals.TemplatePath + "ToolBar.txt")))
+                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
+                    if (!System.IO.File.Exists(templateFilePathFileName))
                     {
-                        sToolbar = Utilities.GetFileContent(Server.MapPath(Globals.TemplatePath + "ToolBar.txt"));
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                        }
                     }
-                    else
-                    {
-                        sToolbar = Utilities.GetFileContent(Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt"));
-                    }
-                    sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
-                    DataCache.CacheStore("aftb" + ModuleId, sToolbar);
+                    sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                    sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                    DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                 }
-                lit.Text = sToolbar.ToString();
-                template = template.Replace("[TOOLBAR]", sToolbar.ToString());
+                sToolbar = Utilities.ParseToolBar(sToolbar, TabId, ModuleId, UserId, CurrentUserType);
+                lit.Text = sToolbar;
+                template = template.Replace("[TOOLBAR]", sToolbar);
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");

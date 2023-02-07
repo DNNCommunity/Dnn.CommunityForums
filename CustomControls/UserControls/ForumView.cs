@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     CurrentUserId = UserId;
                 }
-                string sOutput = string.Empty;
+                string template = string.Empty;
                 try
                 {
                     int defaultTemplateId = MainSettings.ForumTemplateID;
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         defaultTemplateId = DefaultForumViewTemplateId;
                     }
-                    sOutput = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/"));
+                    template = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/"));
                 }
                 catch (Exception ex)
                 {
@@ -105,32 +105,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     //DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(Me, ex)
                 }
 
-                if (sOutput != string.Empty)
+                if (template != string.Empty)
                 {
                     try
                     {
-                        if (sOutput.Contains("[TOOLBAR"))
+                        if (template.Contains("[TOOLBAR"))
                         {
                             var lit = new LiteralControl();
-                            object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            if (System.IO.File.Exists(Server.MapPath(Globals.TemplatePath + "ToolBar.txt")))
+                            string sToolbar = string.Empty;
+                            SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+                            sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                            if (string.IsNullOrEmpty(sToolbar))
                             {
-                                sToolbar = Utilities.GetFileContent(Server.MapPath(Globals.TemplatePath + "ToolBar.txt"));
+                                string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
+                                if (!System.IO.File.Exists(templateFilePathFileName))
+                                {
+                                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                                    if (!System.IO.File.Exists(templateFilePathFileName))
+                                    {
+                                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                                    }
+                                }
+                                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                                DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                             }
-                            else
-                            {
-                                sToolbar = Utilities.GetFileContent(Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt"));
-                            }
-                            DataCache.CacheStore("aftb" + ModuleId, sToolbar);
-                            sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
-                            lit.Text = sToolbar.ToString();
-                            sOutput = sOutput.Replace("[TOOLBAR]", sToolbar.ToString());
+                            sToolbar = Utilities.ParseToolBar(sToolbar, TabId, ModuleId, UserId, CurrentUserType);
+                            lit.Text = sToolbar;
+                            template = template.Replace("[TOOLBAR]", sToolbar);
                         }
                         Control tmpCtl = null;
                         try
                         {
 
-                            tmpCtl = ParseControl(sOutput);
+                            tmpCtl = ParseControl(template);
 
                         }
                         catch (Exception ex)
