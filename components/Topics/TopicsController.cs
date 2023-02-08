@@ -545,7 +545,16 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "08.00.00":
                     var fc = new ForumsConfig();
-                    fc.Install_Or_Upgrade_MoveTemplates();
+		    try 
+		    {
+		    	fc.Install_Or_Upgrade_MoveTemplates();
+		    }
+		    catch (Exception ex)
+		    {
+	                LogError(ex.Message, ex);
+        	        Exceptions.LogException(ex);
+                	return "Failed";
+		    }
                     break;
                 default:
                     break;
