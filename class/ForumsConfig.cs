@@ -310,7 +310,22 @@ namespace DotNetNuke.Modules.ActiveForums
 		        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
 		    }
 		}
-
-	}
+        internal void Install_Or_Upgrade_RenameThemeCssFiles()
+        {
+            try
+            {
+                SettingsInfo MainSettings = DataCache.MainSettings(-1);
+                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesLocation), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+                {
+                    System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+                    System.IO.File.Delete(fullFilePathName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+    }
 }
 

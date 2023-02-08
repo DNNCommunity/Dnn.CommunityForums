@@ -316,17 +316,17 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesLocation + "module.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesLocation + "theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "module.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "theme.css");
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "/" + MainSettings.Theme + "module.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "/" + MainSettings.Theme + "theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "module.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "theme.css");
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "custom/module.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "custom/theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "custom/module.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "custom/theme.css");
             }
             
             string lang = "en-US";

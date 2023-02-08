@@ -32,13 +32,16 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using System.Data.SqlTypes;
 using System.Web.UI.WebControls;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	#region Topics Controller
 	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
 	{
-		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int topicId = -1;
 			TopicInfo ti = new TopicInfo();
@@ -543,10 +546,39 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 			switch (Version)
             {
-                default:
+                case "08.00.00":
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        fc.Install_Or_Upgrade_RenameThemeCssFiles();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+                   
+                    break;
+            default:
                     break;
             }
 			return Version;
+        }
+        private void LogError(string message, Exception ex)
+        {
+            if (ex != null)
+            {
+                Logger.Error(message, ex);
+                if (ex.InnerException != null)
+                {
+                    Logger.Error(ex.InnerException.Message, ex.InnerException);
+                }
+            }
+            else
+            {
+                Logger.Error(message);
+            }
         }
         #endregion
 
