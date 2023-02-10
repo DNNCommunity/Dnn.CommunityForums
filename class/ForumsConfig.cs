@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 SettingsInfo MainSettings = DataCache.MainSettings(-1);
-                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesLocation), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
                 {
                     System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
                     System.IO.File.Delete(fullFilePathName);

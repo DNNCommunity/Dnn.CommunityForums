@@ -333,6 +333,7 @@
     <Content Include="scripts\usereditor.js" />
     <Content Include="scripts\splitmanager.js" />
     <Content Include="sql\CoreForumsToActiveForums.sql" />
+    <Content Include="themes\_default\custom\theme.css" />
     <Content Include="themes\_default\emoticons\angry.gif" />
     <Content Include="themes\_default\emoticons\arrow.gif" />
     <Content Include="themes\_default\emoticons\atomic.gif" />
@@ -717,7 +718,7 @@
     <Content Include="config\templates\ProfileInfo.txt" />
     <Content Include="config\templates\BlogView.txt" />
     <Content Include="config\templates\UsersOnline.txt" />
-    <Content Include="themes\_default\module.css" />
+    <Content Include="themes\_default\theme.css" />
     <Content Include="feeds.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
