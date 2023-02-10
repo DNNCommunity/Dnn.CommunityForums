@@ -14,23 +14,23 @@
 .aftopicsum{padding-left:10px;font-size:9px}
 .afloader{background-color:#f5f5f5;opacity: 0.6;-ms-opacity: 0.5;-moz-opacity: 0.6;filter: alpha(opacity=60);}
 
-.afprmidback{background-image:url(profile_mid_back.png);}
-.afprlftback{width:9px;background-image:url(profile_left_back.png);}
-.afprrgtback{width:8px;background-image:url(profile_right_back.png);}
-.afprrgtborder{width:8px;background-image:url(profile_right_border.png);}
-.afprlftborder{width:9px;background-image:url(profile_left_border.png);}
-.afprrgtbottom{width:8px;background-image:url(profile_right_bottom.png);}
-.afprlftbottom{width:9px;background-image:url(profile_left_bottom.png);}
-.afbottomborder{background-image:url(profile_bottom_border.png);}
+.afprmidback{background-image:url(../images/profile_mid_back.png);}
+.afprlftback{width:9px;background-image:url(../images/profile_left_back.png);}
+.afprrgtback{width:8px;background-image:url(../images/profile_right_back.png);}
+.afprrgtborder{width:8px;background-image:url(../images/profile_right_border.png);}
+.afprlftborder{width:9px;background-image:url(../images/profile_left_border.png);}
+.afprrgtbottom{width:8px;background-image:url(../images/profile_right_bottom.png);}
+.afprlftbottom{width:9px;background-image:url(../images/profile_left_bottom.png);}
+.afbottomborder{background-image:url(../images/profile_bottom_border.png);}
 
 
 .afsubrow{font-size:11px;border-bottom: solid 1px #333;text-decoration:none;}
 .afsubrow a:link,.afsubrow a:visited,.afsubrow a:active{text-decoration:none;}
 
-.affolder{background:transparent url(folders.png) no-repeat 0 0px;height:27px;width:32px;}
-.affolderclosed{background:transparent url(folders.png) no-repeat 0 -27px;height:27px;width:32px;}
-.affoldernew{background:transparent url(folders.png) no-repeat 0 -54px;height:27px;width:32px;}
-.affolderblock{background:transparent url(folders.png) no-repeat 0 -81px;height:27px;width:32px;}
+.affolder{background:transparent url(../images/folders.png) no-repeat 0 0px;height:27px;width:32px;}
+.affolderclosed{background:transparent url(../images/folders.png) no-repeat 0 -27px;height:27px;width:32px;}
+.affoldernew{background:transparent url(../images/folders.png) no-repeat 0 -54px;height:27px;width:32px;}
+.affolderblock{background:transparent url(../images/folders.png) no-repeat 0 -81px;height:27px;width:32px;}
 
 .aftopicrow,.aftopicrowalt,.aftopicrownew,.aftopicrownewalt{font-size: 11px; color:#333;font-weight:normal;}
 .aftopicrownew a, .aftopicrownew a:link, .aftopicrownew a:visited, .aftopicrownew a:active, .aftopicrownewalt a, .aftopicrownewalt a:link, .aftopicrownewalt a:visited, .aftopicrownewalt a:active{font-size:11px;text-decoration:none; color:#333;font-weight:bold;}
@@ -45,7 +45,7 @@
 
 .afsearchbox{border:solid 1px #666;height:22px !important;font-size:16px !important;}
 .afsection{width:100%; margin:0px;padding:0px; border-bottom:solid 0px #b3b3b3;}
-.afsectionhd {background-color: #cdcdcd;margin: 0px;padding-left: 5px;padding-right: 5px;background-image: url(amwhiteback.png);height: 30px;cursor:pointer;}
+.afsectionhd {background-color: #cdcdcd;margin: 0px;padding-left: 5px;padding-right: 5px;background-image: url(../images/amwhiteback.png);height: 30px;cursor:pointer;}
 .afsectiondsp{padding:5px; border-bottom:solid 1px #b3b3b3;border-left:solid 1px #b3b3b3;border-right:solid 1px #b3b3b3;}
 
 .afactionicon{padding-left:5px;padding-right:0px;}
@@ -57,7 +57,7 @@
 .afforumrowbottom{color:#000;border-top:dashed 1px #cdcdcd;}
 .afforumrowbottom a,.afforumrowbottom a:link, .afforumrowbottom a:active,.afforumrowbottom a:visited{color:#000; text-decoration:underline}
 
-.ambuttonlg,.ambuttonlg_over{padding-left:2px;padding-right:6px;padding-top:2px;color: #fff;height: 24px !important;border-top:solid 0px #000;border-bottom:solid 0px #000;border-right:solid 1px #000;border-left:solid 1px #000;background-image: url(ambtnbk24.png);cursor:pointer;position: static;text-decoration:none;display:block;}
+.ambuttonlg,.ambuttonlg_over{padding-left:2px;padding-right:6px;padding-top:2px;color: #fff;height: 24px !important;border-top:solid 0px #000;border-bottom:solid 0px #000;border-right:solid 1px #000;border-left:solid 1px #000;background-image: url(../images/ambtnbk24.png);cursor:pointer;position: static;text-decoration:none;display:block;}
 .ambuttonlg A:link, .ambuttonlg A:visited, .ambuttonlg A:active, .ambuttonlg A:hover{font-size:12px;font-family: Tahoma;color:#fff;text-decoration:none;}
 .ambuttonlg_over A:link, .ambuttonlg_over A:visited, .ambuttonlg_over A:active, .ambuttonlg_over A:hover{font-size:11px;font-family: Tahoma;color:#fff;text-decoration:none;}
 
@@ -102,7 +102,7 @@
 
 
 
-.afgrouprow{background-color:#000;padding:0px;margin:0px;font-family: Verdana, Arial, Tahoma;font-weight: bold;font-size: 12px;color: #fff !important;height: 30px;background-image:url(afgrouprow.png);}
+.afgrouprow{background-color:#000;padding:0px;margin:0px;font-family: Verdana, Arial, Tahoma;font-weight: bold;font-size: 12px;color: #fff !important;height: 30px;background-image:url(../images/afgrouprow.png);}
 .afgrouprow a:link, .afgrouprow a:visited, .afgrouprow a:active{color:#fff !important;}
 .afheader{padding-left:5px;background-color:#f0f0f0;}
 .afarrow{cursor: pointer;vertical-align:middle;}
@@ -349,7 +349,7 @@ width:99%; }
 .fcv-subforums{}
 .fcv-subforums li{margin-left:8px;padding:4px;}
 .fcv-subforums li a,.fcv-subforums li a:hover{text-decoration:none !important;}
-.fcv-subforums em{background-image:url(images/sp-icons16.png);float:left; background-repeat:no-repeat; display:inline-block;width:16px;height:16px;}
+.fcv-subforums em{background-image:url(../images/sp-icons16.png);float:left; background-repeat:no-repeat; display:inline-block;width:16px;height:16px;}
 .fcv-subforums span{margin-left:6px;}
 .fcv-categorysection{}
 .fcv-categoryname{font-size:12px;font-weight:bold;padding:4px;}
