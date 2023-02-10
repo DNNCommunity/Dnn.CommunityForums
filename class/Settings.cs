@@ -162,18 +162,25 @@ namespace DotNetNuke.Modules.ActiveForums
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
         }
-        public string ThemePath
+        public string ThemesBasePath
         {
             get
             {
-                return Globals.ThemesPath + "/" + Theme;
+                return Globals.ModulePath + "themes/";
+            }
+        }
+        public string ModuleInstanceThemePath
+        {
+            get
+            {
+                return ThemesBasePath + Theme + "/";
             }
         }
         public string TemplatePath
         {
             get
             {
-                return ThemePath + "/templates";
+                return ModuleInstanceThemePath + "/templates";
             }
         }
 
