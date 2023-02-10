@@ -161,19 +161,19 @@ namespace DotNetNuke.Modules.ActiveForums
 			    var result = MainSettings.GetString(SettingKeys.Theme);
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
-		}
+        }
         public string ThemePath
         {
             get
             {
-                return Globals.ThemesPath + "/" + Theme + "/";
+                return Globals.ThemesPath + "/" + Theme;
             }
         }
         public string TemplatePath
         {
             get
             {
-                return ThemePath + "templates/";
+                return ThemePath + "/templates";
             }
         }
 
