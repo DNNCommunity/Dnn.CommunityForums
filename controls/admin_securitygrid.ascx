@@ -112,7 +112,7 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                 <table cellpadding="0" cellspacing="2">
                     <tr>
                         <td style="width: 12px;">
-                            <img id="Img43" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddRoles]');" onmouseout="amHideTip(this);" /></td>
+                            <img id="Img43" src="<%( DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath )%>tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddRoles]');" onmouseout="amHideTip(this);" /></td>
                         <td>[RESX:Roles]:</td>
                         <td style="width: 150px;">
                             <asp:Literal ID="litRoles" runat="server" /></td>
@@ -130,7 +130,7 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                     <table cellpadding="0" cellspacing="2">
                         <tr>
                             <td style="width: 12px;">
-                                <img id="Img44" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddUser]');" onmouseout="amHideTip(this);" /></td>
+                                <img id="Img44" src="tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:AddUser]');" onmouseout="amHideTip(this);" /></td>
                             <td>[RESX:UserName]:</td>
                             <td style="width: 150px;">
                                 <asp:TextBox ID="txtUserName" runat="server" CssClass="amcptxtbx" Width="150" /></td>

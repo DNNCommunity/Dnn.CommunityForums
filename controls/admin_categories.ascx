@@ -65,7 +65,7 @@ function amaf_deleteCategory(row){
 			<td></td><td class="amcpbold">[RESX:CategoryName]:</td><td><asp:TextBox ID="txtCategory" runat="server" CssClass="amcptxtbx" Font-Size="14px" Height="18" Width="125"/></td><td>
 			<asp:DropDownList ID="drpForums" runat="server" CssClass="amcptxtbx" />
 			</td>
-			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveCategory();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" ImageUrl="~/DesktopModules/ActiveForums/images/save16.png" /></td>
+			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveCategory();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" ImageUrl="<%=DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath%>save16.png" /></td>
 			<td></td>
 		</tr>
 	</table>
