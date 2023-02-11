@@ -36,12 +36,12 @@ function toggleGroup(whichgroup, cssOn, cssOff) {
     var oImage = eval(document.getElementById("imgGroup" + whichgroup));
     if (oGroup.style.display == 'none') {
         oGroup.style.display = '';
-        oImage.src = af_imgPath + '/images/arrows_down.png';
+        oImage.src = af_imgPath + '/arrows_down.png';
         oImage.className = cssOn;
         document.cookie = whichgroup + 'S=T; expires=' + myDate.toGMTString() + '; path=/;';
     } else {
         oGroup.style.display = 'none';
-        oImage.src = af_imgPath + '/images/arrows_left.png';
+        oImage.src = af_imgPath + '/arrows_left.png';
         oImage.className = cssOff;
         document.cookie = whichgroup + 'S=F; expires=' + myDate.toGMTString() + '; path=/;';
 
@@ -52,10 +52,10 @@ function aftoggleSection(whichgroup) {
     var oImage = eval(document.getElementById('imgSection' + whichgroup));
     if (oGroup.style.display == 'none') {
         oGroup.style.display = '';
-        oImage.src = af_imgPath + '/images/arrows_down.png';
+        oImage.src = af_imgPath + '/arrows_down.png';
     } else {
         oGroup.style.display = 'none';
-        oImage.src = af_imgPath + '/images/arrows_left.png';
+        oImage.src = af_imgPath + '/arrows_left.png';
     };
 };
 function af_showLoad() {
