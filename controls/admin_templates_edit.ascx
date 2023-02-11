@@ -86,9 +86,9 @@ function actionComplete(){
 </am:callback>
 <div class="amtbwrapper">
 	<div class="amcpmdtoolbarbtm" style="width:175px;">
-			<am:imagebutton id="btnSave" runat="server" Height="50" width="50" PostBack="False" ClientSideScript="saveTemplate();" ImageLocation="TOP" text="[RESX:Button:Save]" ImageUrl="~/DesktopModules/ActiveForums/images/save32.png" />
-			<am:ImageButton ID="btnDelete" Height="50" width="50"  Confirm="true" ConfirmMessage="[RESX:Actions:DeleteConfirm]" ImageLocation="TOP" runat="server" PostBack="false" ClientSideScript="deleteTemplate();" Text="[RESX:Button:Delete]" ImageUrl="~/DesktopModules/ActiveForums/images/delete32.png" />
-			<am:ImageButton ID="btnClose" Height="50" width="50"  runat="server" PostBack="false" ImageLocation="TOP" ClientSideScript="LoadView('templates');" Text="[RESX:Button:Cancel]" ImageUrl="~/DesktopModules/ActiveForums/images/cancel32.png" />
+			<am:imagebutton id="btnSave" runat="server" Height="50" width="50" PostBack="False" ClientSideScript="saveTemplate();" ImageLocation="TOP" text="[RESX:Button:Save]" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>save32.png" />
+			<am:ImageButton ID="btnDelete" Height="50" width="50"  Confirm="true" ConfirmMessage="[RESX:Actions:DeleteConfirm]" ImageLocation="TOP" runat="server" PostBack="false" ClientSideScript="deleteTemplate();" Text="[RESX:Button:Delete]" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>delete32.png" />
+			<am:ImageButton ID="btnClose" Height="50" width="50"  runat="server" PostBack="false" ImageLocation="TOP" ClientSideScript="LoadView('templates');" Text="[RESX:Button:Cancel]" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>cancel32.png" />
 
 		</div>
 	</div>
