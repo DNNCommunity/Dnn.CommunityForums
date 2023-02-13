@@ -863,7 +863,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:ALERT]", string.Empty);
                 sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
                 sbOutput.Replace("[RESX:SortPosts]:", string.Empty);
-                sbOutput.Append("<img src=\"<%(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagePath) %>spacer.gif\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
+                sbOutput.Append("<img src=\"~/DesktopModules/ActiveForums/images/spacer.gif\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
             }
 
 
