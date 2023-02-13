@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					newSearchURL = newSearchURL.Replace(tagString, string.Empty);
 				}
 			}
-			if ((sUrl.Contains("afv") && sUrl.Contains("post")) | (sUrl.Contains("afv") && sUrl.Contains("confirmaction")) | (sUrl.Contains("afv") && sUrl.Contains("sendto")) | (sUrl.Contains("afv") && sUrl.Contains("modreport")) | (sUrl.Contains("afv") && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || sUrl.Contains("asg") || (sUrl.Contains("afv") && sUrl.Contains("modtopics")))
+			if ((sUrl.Contains("afv") && sUrl.Contains("post")) | (sUrl.Contains("afv") && sUrl.Contains("confirmaction")) | (sUrl.Contains("afv") && sUrl.Contains("sendto")) | (sUrl.Contains("afv") && sUrl.Contains("modreport")) | (sUrl.Contains("afv") && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains("afv") && sUrl.Contains("modtopics")))
 			{
 				return;
 			}

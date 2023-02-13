@@ -261,14 +261,13 @@ namespace DotNetNuke.Modules.ActiveForums
             u.LastName = cu.LastName;
             u.DisplayName = cu.DisplayName;
             u.Email = cu.Email;
-            u.UserRoles = GetRoleIds(cu, _portalSettings.PortalId); //RolesToString(cu.Roles)
+            u.UserRoles = GetRoleIds(cu, _portalSettings.PortalId);
 
             if (cu.IsSuperUser)
             {
                 u.UserRoles += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
             }
-            Social social = new Social();
-            u.UserRoles += "|" + cu.UserID + "|" + social.ActiveSocialGroups(cu.UserID, _portalSettings.PortalId) + "|";
+            u.UserRoles += "|" + cu.UserID + "|" + string.Empty + "|";
 
             if (!cu.IsSuperUser)
             {
