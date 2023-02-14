@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return ModuleInstanceThemePath + "/templates";
+                return ModuleInstanceThemePath + "templates/";
             }
         }
 
