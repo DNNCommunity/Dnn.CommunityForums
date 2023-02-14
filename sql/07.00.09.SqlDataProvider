@@ -1,0 +1,180 @@
+﻿
+/* begin - issue 233 - update two procedures not storing datetime in UTC */
+/*activeforums_Util_MarkAsRead*/
+
+SET NOCOUNT ON
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Util_MarkAsRead]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Util_MarkAsRead]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Util_MarkAsRead]
+@ModuleId int,
+@UserId int,
+@ForumId int = 0
+AS
+
+DECLARE @MaxTopicRead int
+DECLARE @MaxReplyRead int
+IF @ForumId = 0
+	BEGIN
+		DECLARE @tmpForumId int
+		DECLARE forumcur CURSOR FOR
+		SELECT forumid from {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId
+		OPEN forumcur
+		FETCH NEXT FROM forumcur INTO @tmpForumId
+		WHILE @@FETCH_STATUS = 0
+			BEGIN
+				SET @MaxTopicRead = (SELECT MAX(T.TopicId) from {databaseOwner}{objectQualifier}activeforums_topics as t INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId WHERE ft.ForumId = @tmpForumId AND t.isapproved = 1 and t.isdeleted = 0)
+				SET @MaxReplyRead = (SELECT MAX(ReplyId) from {databaseOwner}{objectQualifier}activeforums_replies as r INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics as t on t.TopicId = r.TopicId INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId WHERE ft.ForumId = @tmpForumId AND r.isapproved = 1 and r.isdeleted = 0)
+				IF EXISTS(SELECT TrackingId FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE ForumId = @tmpForumId AND UserId = @UserId)
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+					SET LastAccessDate = GETUTCDATE(), MaxTopicRead = IsNull(@MaxTopicRead,0), MaxReplyRead = IsNull(@MaxReplyRead,0) WHERE ForumId = @tmpForumId AND UserId = @UserId
+				ELSE
+					INSERT INTO {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+						(ModuleId, UserId, ForumId, LastAccessDate, MaxTopicRead, MaxReplyRead)
+						Values
+						(@ModuleId, @UserId, @tmpForumId, GETUTCDATE(), IsNull(@MaxTopicRead,0), IsNull(@MaxReplyRead,0))
+				FETCH NEXT FROM forumcur INTO @tmpForumId
+			END
+		CLOSE forumcur
+		DEALLOCATE forumcur
+	END
+ELSE
+	BEGIN
+		SET @MaxTopicRead = (SELECT MAX(T.TopicId) from {databaseOwner}{objectQualifier}activeforums_topics as t INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId WHERE ft.ForumId = @ForumId AND t.isapproved = 1 and t.isdeleted = 0)
+		SET @MaxReplyRead = (SELECT MAX(ReplyId) from {databaseOwner}{objectQualifier}activeforums_replies as r INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics as t on t.TopicId = r.TopicId INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId WHERE ft.ForumId = @ForumId AND r.isapproved = 1 and r.isdeleted = 0)
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Forums_Tracking
+		SET LastAccessDate = GETUTCDATE(), MaxTopicRead = IsNull(@MaxTopicRead,0), MaxReplyRead = IsNull(@MaxReplyRead,0) WHERE ForumId = @ForumId AND UserId = @UserId
+	END
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Save]
+@PortalId int,
+@TopicId int,
+@ViewCount int,
+@ReplyCount int,
+@IsLocked bit,
+@IsPinned bit,
+@TopicIcon nvarchar(25),
+@StatusId int,
+@IsApproved bit,
+@IsDeleted bit,
+@IsAnnounce bit,
+@IsArchived bit,
+@AnnounceStart datetime,
+@AnnounceEnd datetime,
+@Subject nvarchar(255),
+@Body ntext,
+@Summary ntext,
+@DateCreated datetime,
+@DateUpdated datetime,
+@AuthorId int,
+@AuthorName nvarchar(150),
+@IPAddress nvarchar(50),
+@TopicType int,
+@Priority int,
+@URL nvarchar(1000),
+@TopicData nvarchar(max)
+AS
+DECLARE @ContentId int
+DECLARE @ForumId int
+DECLARE @ForumGroupId int
+DECLARE @ModuleId int
+SET @ForumId = -1
+SET @ModuleId = -1
+DECLARE @ApprovedStatus bit
+SET @ApprovedStatus = @IsApproved
+DECLARE @currURL nvarchar(1000)
+IF @URL <> '' AND @TopicId>0
+BEGIN
+	SET @ForumId = (SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @TopicId)
+	SET @ModuleId = (SELECT ModuleId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId= @ForumId)
+	SET @ForumGroupId = (SELECT ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId= @ForumId)
+	SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,@ForumGroupId,@ForumId,@TopicId,-1,-1)
+	IF @currURL <> ''
+		BEGIN
+			DECLARE @newURL nvarchar(1000)
+			SET @newURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleID,@ForumGroupId, @ForumId,-1,-1,-1) + @URL + '/'
+			IF LTRIM(RTRIM(LOWER(@newURL))) <> LTRIM(RTRIM(LOWER(@currURL))) 
+				BEGIN
+					exec {databaseOwner}{objectQualifier}activeforums_URL_Archive @PortalId,@ForumGroupId, @ForumId, @TopicId, @currURL
+				END
+		END
+END
+IF EXISTS(SELECT ContentId FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId)
+	BEGIN
+		SELECT @ApprovedStatus = IsApproved, @ContentId = ContentId FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId = @TopicId
+
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Content
+				SET Subject = @Subject,
+					Body = @Body,
+					Summary = @Summary,
+					DateCreated = @DateCreated,
+					DateUpdated = @DateUpdated,
+					AuthorId = @AuthorId,
+					AuthorName = @AuthorName,
+					IsDeleted = @IsDeleted
+				WHERE ContentId = @ContentId
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+				SET ViewCount = @ViewCount,
+					ReplyCount = @ReplyCount,
+					IsLocked = @IsLocked,
+					IsPinned = @IsPinned,
+					TopicIcon = @TopicIcon,
+					StatusId = @StatusId,
+					IsApproved = @IsApproved,
+					IsDeleted = @IsDeleted,
+					IsAnnounce = @IsAnnounce,
+					IsArchived = @IsArchived,
+					AnnounceStart = @AnnounceStart,
+					AnnounceEnd = @AnnounceEnd,
+					TopicType = @TopicType,
+					Priority = @Priority,
+					URL = @URL,
+					TopicData = @TopicData
+				WHERE TopicId = @TopicId	
+		END
+	END
+ELSE
+
+BEGIN
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Content
+			(Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IsDeleted, IPAddress)
+			VALUES
+			(@Subject, @Body, @Summary, @DateCreated, @DateUpdated, @AuthorId, @AuthorName, @IsDeleted, @IPAddress)
+		SET @ContentId = SCOPE_IDENTITY()
+	END
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Topics
+			(ContentId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, TopicType, AnnounceStart, AnnounceEnd, Priority, URL, TopicData)
+			VALUES
+			(@ContentId, @ViewCount, @ReplyCount, @IsLocked, @IsPinned, @TopicIcon, @StatusId, @IsApproved, @IsDeleted, @IsAnnounce, @IsArchived, @TopicType, @AnnounceStart, @AnnounceEnd, @Priority, @URL, @TopicData)
+		SET @TopicId = SCOPE_IDENTITY()
+		
+	END
+
+END
+BEGIN
+IF @IsApproved = 1 And @AuthorId > 0 
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+			SET DateLastPost = GETUTCDATE()
+			WHERE UserId = @AuthorId AND PortalId = @PortalId
+	END
+END
+SELECT @TopicId
+
+
+-- reset thread order
+IF @ForumId > -1
+	EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+	
+GO
+
+
+/* end - issue 233 - update two procedures not storing datetime in UTC */
