@@ -188,21 +188,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void SaveQuickReply()
         {
-            int iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            ForumController fc = new ForumController();
+            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
-                UserProfileController upc = new UserProfileController();
-                UserProfileInfo upi = upc.Profiles_Get(SiteId, InstanceId, this.UserId);
-                if (upi != null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < iFloodInterval)
-                    {
-                        Controls.InfoMessage im = new Controls.InfoMessage();
-                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>";
-                        plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                return;
             }
             //TODO: Fix for anon
             //If Not Current.Request.IsAuthenticated Then
@@ -222,9 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    ui.TrustLevel = -1
 
             //End If
-            ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
-            bool UserIsTrusted = false;
+             bool UserIsTrusted = false;
             UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
