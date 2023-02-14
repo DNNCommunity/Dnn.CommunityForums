@@ -62,11 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			drpPageSize.Style.Add("float", "none");
 
-            drpFloodInterval.Style.Add("float", "none");
-
-            drpEditInterval.Style.Add("float", "none");
-
-            if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
+			if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
 			{
 				rdEnableURLRewriter.SelectedIndex = 1;
 				rdEnableURLRewriter.Enabled = false;
@@ -131,9 +127,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					BindForumSecurity();
 
                     Utilities.SelectListItemByValue(drpPageSize, PageSize);
-                    Utilities.SelectListItemByValue(drpFloodInterval, FloodInterval);
-                    Utilities.SelectListItemByValue(drpEditInterval, EditInterval);
-
+	                
+					txtFloodInterval.Text = FloodInterval.ToString(); ;
+					txtEditInterval.Text = EditInterval.ToString();
 
                     Utilities.SelectListItemByValue(drpMode, Mode);
                     Utilities.SelectListItemByValue(drpThemes, Theme);
@@ -200,8 +196,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				Mode = drpMode.SelectedValue;
 				TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
 				PageSize = Utilities.SafeConvertInt(drpPageSize.SelectedValue, 10);
-                FloodInterval = Utilities.SafeConvertInt(drpFloodInterval.SelectedValue,0);
-                EditInterval = Utilities.SafeConvertInt(drpEditInterval.SelectedValue,0);
+                FloodInterval = Math.Max(0,Utilities.SafeConvertInt(txtFloodInterval.Text,0));
+                EditInterval = Math.Max(0,Utilities.SafeConvertInt(txtEditInterval.Text,0));
                 AutoLink = Utilities.SafeConvertBool(rdAutoLinks.SelectedValue);
                 DeleteBehavior = Utilities.SafeConvertInt(drpDeleteBehavior.SelectedValue);
 				ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
