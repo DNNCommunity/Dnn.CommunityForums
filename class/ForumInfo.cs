@@ -55,7 +55,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public int TotalReplies { get; set; }
 
-		public int LastPostID { get; set; }
+        public int SubscriberCount { get; set; }
+
+        public int LastPostID { get; set; }
 
 		public string GroupName { get; set; }
 

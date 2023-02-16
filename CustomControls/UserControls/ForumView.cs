@@ -408,6 +408,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 fi.TotalTopics = Convert.ToInt32(dr["TotalTopics"]);
                 fi.TotalReplies = Convert.ToInt32(dr["TotalReplies"]);
+                fi.SubscriberCount = Utilities.SafeConvertInt(dr["ForumSubscriberCount"]);
                 fi.Hidden = Convert.ToBoolean(dr["ForumHidden"]);
                 fi.LastReplyId = Convert.ToInt32(dr["LastReplyId"]);
                 fi.LastTopicId = Convert.ToInt32(dr["LastTopicId"]);
@@ -594,6 +595,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             Template = Template.Replace("[TOTALTOPICS]", fi.TotalTopics.ToString());
             Template = Template.Replace("[TOTALREPLIES]", fi.TotalReplies.ToString());
+            Template = Template.Replace("[FORUMSUBSCRIBERCOUNT]", fi.SubscriberCount.ToString());
+            
             //Last Post Section
             int intLength = 0;
             if ((Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)

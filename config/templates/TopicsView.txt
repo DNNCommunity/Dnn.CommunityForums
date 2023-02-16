@@ -3,6 +3,7 @@
 <%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 <div class="afcrumb"><i class="fa fa-comments-o fa-grey"></i>  [FORUMMAINLINK]  <i class="fa fa-long-arrow-right fa-grey"></i>  [FORUMGROUPLINK]</div>
 <div class="aftitlelg">[FORUMLINK]</div>
+<div class="afsubscribercount"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT] [RESX:FORUMSUBSCRIBERCOUNT]</div>
 <div class="afgrid">
 	<div class="afgridinner">
 		<table class="afsubgrid">
@@ -20,6 +21,9 @@
 							<td class="afgrouprow afgrouprow-m">
 								<div class="afcontrolheader"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[RESX:REPLIESHEADER]</div>
 							</td>
+							<td class="afgrouprow afgrouprow-m">
+								<div class="afcontrolheader"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[RESX:SUBSCRIBERS]</div>
+							</td>
 							<td class="afgrouprow afgrouprow-l">
 								<div class="afcontrolheader"><i class="fa fa-file-o fa-fw fa-grey"></i>&nbsp;[RESX:LASTPOSTHEADER]</div>
 							</td>
@@ -35,9 +39,13 @@
 												<tr>
 													<td rowspan="2" class="afsubject">
 													
-													<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICSHEADER] and [TOTALREPLIES] [RESX:REPLIESHEADER]</span>
+													<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICSHEADER] and [TOTALREPLIES] [RESX:REPLIESHEADER] and [FORUMSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 													<span class="aftopictitle">[FORUMNAME]</span>
-													<span class="af-colstats_responsive"><i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] <i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[TOTALREPLIES]</span>
+													<span class="af-colstats_responsive">
+														<i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] 
+														<i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[TOTALREPLIES]
+														<i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]
+														</span>
 													<span class="aftopicsubtitle">[FORUMDESCRIPTION]</span><div class="af_lastpost_responsive" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div>
 													</td>
 												</tr>
@@ -45,6 +53,7 @@
 										</td>
 										<td class="aftopicrow af-colstats af-colstats-replies">[TOTALTOPICS]</td>
 										<td class="aftopicrow af-colstats af-colstats-views">[TOTALREPLIES]</td>
+										<td class="aftopicrow af-colstats af-colstats-views">[FORUMSUBSCRIBERCOUNT]</td>
 										<td class="aftopicrow af-lastpost"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
 									</tr>
 								</table>	
@@ -70,6 +79,9 @@
 							<td class="afgrouprow afgrouprow-m">
 								<div class="afcontrolheader">[RESX:Views]</div>
 							</td>
+							<td class="afgrouprow afgrouprow-m">
+								<div class="afcontrolheader">[RESX:SUBSCRIBERS]</div>
+							</td>
 							<td class="afgrouprow afgrouprow-l">
 								<div class="afcontrolheader">[RESX:LASTPOSTHEADER]</div>
 							</td>
@@ -83,7 +95,7 @@
 										<td rowspan="2" class="afsubject" title="[BODYTITLE]">
 										
 										
-										<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views]</span>
+										<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views] and [TOPICSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 										<span class="aftopictitle"><i class="fa fa-file-o fa-fw fa-grey"></i>&nbsp;[SUBJECTLINK][AF:ICONLINK:LASTREAD]</span> 
 										<span class="aftopicstarted">Started by <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
 										
@@ -106,6 +118,7 @@
 							</td>
 							<td class="[ROWCSS] af-colstats af-colstats-replies">[REPLIES]</td>
 							<td class="[ROWCSS] af-colstats af-colstats-views">[VIEWS]</td>
+							<td class="[ROWCSS] af-colstats af-colstats-views">[TOPICSUBSCRIBERCOUNT]</td>
 							<td class="[ROWCSS] af-lastpost"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOST][RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]<br />[LASTPOSTDATE][/LASTPOST]</div></td>
 						</tr>
 						[/ANNOUNCEMENT]
@@ -137,6 +150,9 @@
 								<td class="afgrouprow afgrouprow-m">
 									<div class="afcontrolheader"><i class="fa fa-eye fa-fw fa-grey"></i>&nbsp;[RESX:Views]</div>
 								</td>
+								<td class="afgrouprow afgrouprow-m">
+									<div class="afcontrolheader"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[RESX:SUBSCRIBERS]</div>
+								</td>
 								<td class="afgrouprow afgrouprow-l">
 									<div class="afcontrolheader"><i class="fa fa-file-o fa-fw fa-grey"></i>&nbsp;[RESX:LastPost]</div>
 								</td>
@@ -150,8 +166,13 @@
 										<td  rowspan="2" style="padding-top:5px; padding-right:7px;" class="[ROWCSS] af-posticon">[POSTICON]</td>
 											<td rowspan="2" class="afsubject" title="[BODYTITLE]">
 											
-											<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views]</span>
-											<span class="aftopictitle">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</span> <span class="af-colstats_responsive"><i class="fa fa-eye fa-fw fa-grey"></i>&nbsp;[VIEWS] <i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[REPLIES]</span>
+											<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views] and [TOPICSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
+											<span class="aftopictitle">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</span> 
+											<span class="af-colstats_responsive">
+												<i class="fa fa-eye fa-fw fa-grey"></i>&nbsp;[VIEWS] 
+												<i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[REPLIES]
+												<i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[TOPICSUBSCRIBERCOUNT]
+											</span>
 											<span class="aftopicstarted">Started by <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
 											
 											
@@ -179,6 +200,7 @@
 								</td>
 								<td class="[ROWCSS] af-colstats af-colstats-replies">[REPLIES]</td>
 								<td class="[ROWCSS] af-colstats af-colstats-views">[VIEWS]</td>
+								<td class="[ROWCSS] af-colstats af-colstats-views">[TOPICSUBSCRIBERCOUNT]</td>
 								<td class="[ROWCSS] af-lastpost"><div>[LASTPOST][RESX:BY] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[LASTPOSTDISPLAYNAME][AF:ICONLINK:LASTREPLY]<br />[LASTPOSTDATE][/LASTPOST]</div></td>
 							</tr>
 							[/TOPICS]
