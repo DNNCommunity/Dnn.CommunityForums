@@ -1204,9 +1204,6 @@ From,
   <data name="[RESX:TopicReview].Text" xml:space="preserve">
     <value>Topic Review</value>
   </data>
-  <data name="[RESX:ADDTHIS].Text" xml:space="preserve">
-    <value>AddThis - Bookmarking and Sharing Button</value>
-  </data>
   <data name="[RESX:AddToFavorites].Text" xml:space="preserve">
     <value>Add this to your browser favorites</value>
   </data>

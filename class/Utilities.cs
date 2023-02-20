@@ -232,7 +232,26 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return text;
         }
-
+        internal static bool HasFloodIntervalPassed(int floodInterval, User user, Forum forumInfo)
+        {
+            /* flood interval check passes if
+            1) flood interval <= 0 (disabled)
+            2) user is unauthenticated; if not, captcha is enabled for anonymous users
+            3) user is an admin or superuser
+            4) user is designated as a trusted user for the forum
+            5) user has moderator (edit, delete, approve) permissions for the forum
+            6) time span for since user's last post exceeds flood interval
+            */
+            return floodInterval <= 0
+                   || user == null
+                   || user.IsAdmin
+                   || user.IsSuperUser
+                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
+                   || Permissions.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
+                   || Permissions.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
+                   || Permissions.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
+                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval;
+        }
         public static bool IsTrusted(int forumTrustLevel, int userTrustLevel, bool isTrustedRole, int autoTrustLevel = 0, int userPostCount = 0)
         {
             // Never trust users with trust level -1 (This overrides everything)
@@ -274,16 +293,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string NavigateUrl(int tabId)
         {
-            var currParams = new List<string>();
-            if (HttpContext.Current.Request.Params["asgv"] != null)
-                currParams.Add("asgv=" + HttpContext.Current.Request.Params["asgv"]);
-
-            if (HttpContext.Current.Request.Params["asg"] != null)
-                currParams.Add("asg=" + HttpContext.Current.Request.Params["asg"]);
-
-            if (currParams.Count > 0)
-                return Common.Globals.NavigateURL(tabId, string.Empty, currParams.ToArray());
-
             return Common.Globals.NavigateURL(tabId);
         }
 
@@ -306,16 +315,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-
-            // TODO: Figure out what these parameters are
-            var asgvParam = HttpContext.Current.Request.Params["asgv"];
-            if (!string.IsNullOrWhiteSpace(asgvParam))
-                currParams.Add("asgv=" + asgvParam);
-
-            var asgParam = HttpContext.Current.Request.Params["asg"];
-            if (!string.IsNullOrWhiteSpace(asgParam))
-                currParams.Add("asg=" + asgParam);
-
             var s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;

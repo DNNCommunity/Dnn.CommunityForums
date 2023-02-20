@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 //using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Modules.ActiveForums.Controls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -294,21 +295,10 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SaveQuickReply()
         {
             SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
-            int iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
             {
-
-                UserProfileInfo upi = ForumUser.Profile;
-                if (upi != null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < iFloodInterval)
-                    {
-                        Controls.InfoMessage im = new Controls.InfoMessage();
-                        im.Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>";
-                        plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                return;
             }
             if (!Request.IsAuthenticated)
             {
@@ -426,7 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums
             TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
             string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
 
-            if (fullURL.Contains("~/") || Request.QueryString["asg"] != null)
+            if (fullURL.Contains("~/"))
             {
                 fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
             }
@@ -441,18 +431,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 try
                 {
-                    //Dim sURL As String = Utilities.NavigateUrl(TabId, "", New String() {ParamKeys.ForumId & "=" & ForumId, ParamKeys.ViewType & "=" & Views.Topic, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ContentJumpId & "=" & ReplyId})
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId);
                     try
                     {
                         Social amas = new Social();
-                        amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read, SocialGroupId);
-                        //If Request.QueryString["asg"] Is Nothing And Not String.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey) And ForumInfo.ActiveSocialEnabled And Not ForumInfo.ActiveSocialTopicsOnly Then
-                        //    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, String.Empty, sBody, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read)
-                        //Else
-                        //    amas.AddForumItemToJournal(PortalId, ForumModuleId, UserId, "forumreply", fullURL, Subject, sBody)
-                        //End If
-
+                        amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                     }
                     catch (Exception ex)
                     {
@@ -505,13 +488,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read, SocialGroupId);
-                    //If Request.QueryString["asg"] Is Nothing And Not String.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey) And ForumInfo.ActiveSocialEnabled Then
-                    //    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, String.Empty, sBody, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read)
-                    //Else
-                    //    amas.AddForumItemToJournal(PortalId, ForumModuleId, UserId, "forumreply", fullURL, Subject, sBody)
-                    //End If
-
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                 }
                 catch (Exception ex)
                 {

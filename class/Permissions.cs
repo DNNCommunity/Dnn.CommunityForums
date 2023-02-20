@@ -233,11 +233,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			userRoles = UserRolesDictionary.GetRoles(UserId.ToString() + PortalId.ToString());
 			if (string.IsNullOrEmpty(userRoles))
 			{
-				var social = new Social();
 				var uc = new Security.Roles.RoleController();
 				string[] roles = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId).Roles;
 				string roleIds = GetRoleIds(roles, PortalId);
-				userRoles = roleIds + "|" + UserId + "|" + social.ActiveSocialGroups(UserId, PortalId) + "|";
+				userRoles = roleIds + "|" + UserId + "|" + string.Empty + "|";
 				UserRolesDictionary.AddRoles(UserId.ToString() + PortalId.ToString(), userRoles);
 			}
 			if (string.IsNullOrEmpty(userRoles))
