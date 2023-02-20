@@ -970,7 +970,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
                     
-                    if (sUrl.Contains("~/") || Request.QueryString["asg"] != null)
+                    if (sUrl.Contains("~/"))
                         sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
 
                     if (!_isEdit)
@@ -978,15 +978,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read, SocialGroupId);
-                            if (Request.QueryString["asg"] == null && !(string.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey)) && ForumInfo.ActiveSocialEnabled)
-                            {
-                                // amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, UserId, sUrl, Subject, Summary, Body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read)
-                            }
-                            else
-                            {
-                                amas.AddForumItemToJournal(PortalId, ForumModuleId, UserId, "forumtopic", sUrl, subject, body);
-                            }
+                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body,ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
@@ -1156,7 +1148,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                     var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     
-                    if (fullURL.Contains("~/") || Request.QueryString["asg"] != null)
+                    if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(ForumTabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     
                     if (fullURL.EndsWith("/"))
@@ -1167,14 +1159,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read, SocialGroupId);
-                            //If Request.QueryString["asg"] Is Nothing And Not String.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey) And ForumInfo.ActiveSocialEnabled And Not ForumInfo.ActiveSocialTopicsOnly Then
-                            //    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, String.Empty, Body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read)
-                            //Else
-                            //    amas.AddForumItemToJournal(PortalId, ForumModuleId, UserId, "forumreply", fullURL, Subject, Body)
-                            //End If
-
-
+                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
