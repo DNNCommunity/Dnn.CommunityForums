@@ -319,8 +319,10 @@ function toggleAttach(obj){
             var $propertyWindow = $(propertyWindow);
             var elem = $(obj);
             var position = elem.position();
-            position.left += 15;
-            position.top = (position.top - ($propertyWindow.height() / 2));
+            //position.left += 15;
+            //position.top = (position.top - ($propertyWindow.height() / 2));
+            position.left += 650;
+            position.top = (position.top + ($propertyWindow.height() / 2));
             position.width = $propertyWindow.innerWidth() + 20;
             position.height = $propertyWindow.innerHeight();
 
