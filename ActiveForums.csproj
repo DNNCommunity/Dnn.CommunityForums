@@ -724,8 +724,8 @@
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
-    <Compile Include="class\Likes.cs" />
-    <Compile Include="class\LikesController.cs" />
+    <Compile Include="Entities\Likes.cs" />
+    <Compile Include="Controllers\LikesController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />

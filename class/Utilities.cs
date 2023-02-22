@@ -324,7 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
-            var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             pageName = CleanStringForUrl(pageName);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
@@ -1145,7 +1145,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static TimeSpan GetTimeZoneOffsetForUser(int PortalId,int UserId)
         {
-            return GetTimeZoneOffsetForUser( new Entities.Users.UserController().GetUser(PortalId,UserId));
+            return GetTimeZoneOffsetForUser( new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,UserId));
         }
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
@@ -1410,17 +1410,17 @@ namespace DotNetNuke.Modules.ActiveForums
             return contents;
         }
 
-        public static List<Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
+        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
         {
             var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var fc = new ForumController();
             var fi = fc.Forums_Get(forumId, -1, false, true);
             if (fi == null)
                 return null;
 
-            var mods = new List<Entities.Users.UserInfo>();
+            var mods = new List<DotNetNuke.Entities.Users.UserInfo>();
             SubscriptionInfo si = null;
             var modApprove = fi.Security.ModApprove;
             var modRoles = modApprove.Split('|')[0].Split(';');
@@ -1432,7 +1432,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var rid = Convert.ToInt32(r);
                 var rName = rc.GetRole(rid, portalId).RoleName;
-                foreach (Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
+                foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);
 

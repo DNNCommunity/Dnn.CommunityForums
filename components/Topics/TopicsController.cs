@@ -391,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			 * A possible future enhancement might be to write this entry or to perhaps change the module definition ...
 			 * 
 			 */
-			var ms = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(moduleInfo.ModuleID) };
+			var ms = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModuleSettings(moduleInfo.ModuleID) };
 			/* if not using soft deletes, remove and rebuild entire index; 
 			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
 			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
@@ -403,9 +403,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
-			bool isHttps = new Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
+			bool isHttps = new DotNetNuke.Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
 			bool isRewriteLoaded = Utilities.IsRewriteLoaded();
-			string primaryPortalAlias = new Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+			string primaryPortalAlias = new DotNetNuke.Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
@@ -465,7 +465,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						//NOTE: indexer is called from scheduler and has no httpcontext, so must load and pass portalSettings
 						PortalSettings portalSettings = new PortalSettings(moduleInfo.PortalID);
-						PortalSettingsController psc = new Entities.Portals.PortalSettingsController();
+						PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
 						psc.LoadPortalSettings(portalSettings);
 						string[] additionalParameters;
 						try

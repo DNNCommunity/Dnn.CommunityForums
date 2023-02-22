@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
 		{
-			var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			var mainSettings = DataCache.MainSettings(moduleId);
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var subs = new List<SubscriptionInfo>();
             var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var modApprove = fi.Security.ModApprove;
             var modRoles = modApprove.Split('|')[0].Split(';');
             foreach (var r in modRoles)
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 		public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
 		{
-			PortalSettings portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			SettingsInfo mainSettings = DataCache.MainSettings(moduleID);
 
 			TemplateController tc = new TemplateController();
@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			//TODO: Come back to fix and mod list
 			// Try
-			//    Dim _portalSettings As Entities.Portals.PortalSettings = CType(Current.Items("PortalSettings"), Entities.Portals.PortalSettings)
+			//    Dim _portalSettings As DotNetNuke.Entities.Portals.PortalSettings = CType(Current.Items("PortalSettings"), DotNetNuke.Entities.Portals.PortalSettings)
 			//    Dim objsubs As New SubscriptionController
 			//    Dim intPost As Integer
 			//    Dim objPosts As New PostController
@@ -209,11 +209,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			//    End Try
 			//    For i = 0 To UBound(arrMods) - 1
-			//        Dim objUserController As New Entities.Users.UserController
+			//        Dim objUserController As New DotNetNuke.Entities.Users.UserController
 			//        Dim objRoleController As New Security.Roles.RoleController
 			//        Dim RoleName As String = objRoleController.GetRole(CInt(arrMods(i)), PortalId).RoleName
 			//        Dim Arr As ArrayList = Roles.GetUsersByRoleName(PortalId, RoleName)
-			//        Dim objUser As Entities.Users.UserRoleInfo
+			//        Dim objUser As DotNetNuke.Entities.Users.UserRoleInfo
 			//        For Each objUser In Arr
 			//            Dim sBody As String = myTemplate
 			//            sBody = Replace(sBody, "[FULLNAME]", objUser.FullName)
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			//            sBody = Replace(sBody, "[SUBJECT]", objPost.Subject)
 			//            sBody = Replace(sBody, "[BODY]", objPost.Body)
 			//            sBody = Replace(sBody, "[LINK]", "<a href=""" & sLink & """>" & sLink & "</a>")
-			//            Dim objUserInfo As Entities.Users.UserInfo = objUserController.GetUser(PortalId, objUser.UserID)
+			//            Dim objUserInfo As DotNetNuke.Entities.Users.UserInfo = objUserController.GetUser(PortalId, objUser.UserID)
 			//            SendNotification(FromEmail, objUserInfo.Membership.Email, strSubject, sBody, ForumID, intPost)
 			//        Next
 			//    Next

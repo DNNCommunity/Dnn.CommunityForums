@@ -1,10 +1,24 @@
 ﻿using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 namespace DotNetNuke.Modules.ActiveForums
+{
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController")]
+    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikesController
+    {
+        public List<Likes> GetForPost(int postId)
+        {
+            return base.GetForPost(postId);
+        }
+        public void Like(int contentId, int userId)
+        {
+            base.Like(contentId, userId);
+        }
+    }
+}
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     class LikesController
     {
@@ -18,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return likes;
         }
-
         public void Like(int contentId, int userId)
         {
             using (IDataContext ctx = DataContext.Instance())

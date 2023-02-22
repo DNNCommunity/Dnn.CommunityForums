@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             isPrivate = true;
                         }
-                        Entities.Modules.ModuleController objModules = new Entities.Modules.ModuleController();
+                        DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
                         Hashtable htSettings = objModules.GetTabModuleSettings(TabModuleId);
 
                         fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());

@@ -26,7 +26,7 @@ using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class ActiveAdminBase : Entities.Modules.PortalModuleBase
+    public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         private string _Params = string.Empty;
         private string _currentView = string.Empty;
@@ -94,8 +94,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                var _portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
+                var _portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                var objModules = new DotNetNuke.Entities.Modules.ModuleController();
                 var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ModuleId)};
                 return objSettings;
             }

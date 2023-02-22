@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage ToggleURLHandler(ToggleUrlHandlerDTO dto)
         {
-            var objModules = new Entities.Modules.ModuleController();
+            var objModules = new DotNetNuke.Entities.Modules.ModuleController();
             var objSettings = new SettingsInfo { MainSettings = objModules.GetModuleSettings(dto.ModuleId) };
             var cfg = new ConfigUtils();
             bool success;
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage RunMaintenance(RunMaintenanceDTO dto)
         {
-            var objModules = new Entities.Modules.ModuleController();
+            var objModules = new DotNetNuke.Entities.Modules.ModuleController();
             var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(dto.ModuleId)};
             var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, objSettings.DeleteBehavior);
             if (dto.DryRun)
