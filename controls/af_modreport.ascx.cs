@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 body = body.Replace("[Comment]", Comments);
                 body = body.Replace("[URL]", fullURL);
                 body = body.Replace("[Reason]", drpReasons.SelectedItem.Value);
-                List<Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
 
 
                 string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);

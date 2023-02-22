@@ -79,15 +79,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region DNN Actions
 
-        public Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
         {
             get
             {
-                return new Entities.Modules.Actions.ModuleActionCollection
+                return new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
                                   {
                                       {
                                           GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
-                                          Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
+                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
                                           EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
                                       }
                                   };

@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
             IsCallBack = cbShell.IsCallback;
 
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
-            var objModules = new Entities.Modules.ModuleController();
+            var objModules = new DotNetNuke.Entities.Modules.ModuleController();
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
             Hashtable Settings = objModules.GetModuleSettings(ModuleId);
             string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");

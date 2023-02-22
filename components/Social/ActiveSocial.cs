@@ -37,10 +37,10 @@ namespace DotNetNuke.Modules.ActiveForums
             //TODO: the following can probably be removed? Not sure on AS support anymore
             if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
             {
-                var mc = new Entities.Modules.ModuleController();
-                var tc = new Entities.Tabs.TabController();
-                Entities.Tabs.TabInfo ti;
-                foreach (Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
+                var mc = new DotNetNuke.Entities.Modules.ModuleController();
+                var tc = new DotNetNuke.Entities.Tabs.TabController();
+                DotNetNuke.Entities.Tabs.TabInfo ti;
+                foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
                 {
                     if (mi.DesktopModule.ModuleName.Contains("Active Social") && mi.IsDeleted == false)
                     {

@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
 
                 var _portalSettings = (PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
+                var objModules = new DotNetNuke.Entities.Modules.ModuleController();
                 var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ForumModuleId)};
 
                 return objSettings;
