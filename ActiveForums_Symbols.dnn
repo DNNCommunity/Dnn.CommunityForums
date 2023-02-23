@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums_Symbols" type="Library" version="07.00.04">
+    <package name="Active Forums_Symbols" type="Library" version="07.00.11">
       <friendlyName>Active Forums Symbols</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
