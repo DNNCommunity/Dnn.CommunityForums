@@ -645,6 +645,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.11.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
