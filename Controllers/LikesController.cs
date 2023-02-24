@@ -6,9 +6,9 @@ using System.Linq;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController")]
-    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikesController
+    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
     {
-        public List<Likes> GetForPost(int postId)
+        public List<Like> GetForPost(int postId)
         {
             return base.GetForPost(postId);
         }
@@ -20,14 +20,14 @@ namespace DotNetNuke.Modules.ActiveForums
 }
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class LikesController
+    class LikeController
     {
-        public List<Likes> GetForPost(int postId)
+        public List<Like> GetForPost(int postId)
         {
-            List<Likes> likes = new List<Likes>();
+            List<Like> likes = new List<Like>();
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Likes>();
+                var rep = ctx.GetRepository<Like>();
                 likes = rep.Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
             }
             return likes;
@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             using (IDataContext ctx = DataContext.Instance())
             {
-                var rep = ctx.GetRepository<Likes>();
+                var rep = ctx.GetRepository<Like>();
                 var like = rep.Find("Where PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
 
                 if (like != null)
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    like = new Likes();
+                    like = new Like();
                     like.PostId = contentId;
                     like.UserId = userId;
                     like.Checked = true;
