@@ -89,8 +89,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
-            ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/controlpanel/jquery-ui.min.css"));
-            
+            ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/themes/", MainSettings.Theme, "/jquery-ui.min.css"));
+
 
             lblProd.Visible = true;
             lblCopy.Visible = true;
