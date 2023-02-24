@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" CodeBehind="ControlPanel.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.ControlPanel" %>
 <%@ Register  assembly="DotNetNuke.Modules.ActiveForums" namespace="DotNetNuke.Modules.ActiveForums.Controls" tagPrefix="am" %>
 <script type="text/javascript">
-	var imgPath = "~/DesktopModules/ActiveForums/images/";
+    var imgPath = '<%=Page.ResolveUrl("~/DesktopModules/ActiveForums/images/")%>';
 	var dlgHeight;
 	var dlgWidth;
 	var dlgTitle;
@@ -174,7 +174,7 @@
 <div id="amModal" class="amModal" style="display:none;position:absolute;">
 <div class="amModalHeader">
 	<div class="amModalHeaderText" id="amModalHeaderText"></div>
-	<div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="~/DesktopModules/ActiveForums/images/close.gif" alt="[RESX:Close]" /></div>
+	<div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/close.gif")%>" alt="[RESX:Close]" /></div>
 </div>
 <div class="amModalFrame" id="amModalFrameDiv">
 	<am:Callback ID="cbModal" runat="server" Debug="false">

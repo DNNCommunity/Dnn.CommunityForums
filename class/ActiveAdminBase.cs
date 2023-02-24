@@ -145,13 +145,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public Controls.ClientTemplate GetLoadingTemplate()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl("<div class=\"amloading\"><div class=\"amload\"><img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>"));
+            template.Controls.Add(new LiteralControl("<div class=\"amloading\"><div class=\"amload\"><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>"));
             return template;
         }
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>"));
+            template.Controls.Add(new LiteralControl("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>"));
             return template;
         }
         public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
