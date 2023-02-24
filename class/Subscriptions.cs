@@ -54,9 +54,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public string DisplayName { get; set; }
 		public TimeSpan TimeZoneOffSet { get; set; }
 		public CultureInfo UserCulture { get; set; }
-
-		#endregion
-	}
+		public bool TopicSubscriber { get; set; }
+        #endregion
+    }
 
 #endregion
 	public class SubscriptionController
@@ -101,7 +101,8 @@ namespace DotNetNuke.Modules.ActiveForums
 								UserId = Convert.ToInt32(dr["UserId"]),
 								Username = dr["Username"].ToString(),
 								TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"])),
-								UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"]))
+								UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"])),
+								TopicSubscriber = Utilities.SafeConvertBool(dr["TopicSubscriber"])
 					};
 
 				    if (! (sl.Contains(si)))
