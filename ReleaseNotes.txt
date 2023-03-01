@@ -7,6 +7,12 @@
 	<hr/>
 	<div class="dnnClear">
 
+		<h3>07.00.11</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Check user's last reply date during flood control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/81">Issue 81</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.04</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
