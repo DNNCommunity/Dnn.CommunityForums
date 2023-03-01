@@ -7,6 +7,12 @@
 	<hr/>
 	<div class="dnnClear">
 
+		<h3>07.00.09</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Replace module settings dropdown with integer entry textbox for flood interval and edit interval (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/234">Issue 234</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.04</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
