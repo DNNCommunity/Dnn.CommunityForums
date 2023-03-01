@@ -6,6 +6,12 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+		<h3>08.00.01</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>FIXED: Moving forums or groups up/down in control panel doesn't work in some situations where forums/groups have been deleted (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/254">Issue 254</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.01</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>

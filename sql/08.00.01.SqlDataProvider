@@ -1,0 +1,72 @@
+﻿/* issues 254 -- begin -- Unable to move forums / forum groups up/down when forums or groups have been deleted */
+
+/*activeforums_Forums_MoveForum*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_MoveForum]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_MoveForum]
+GO
+
+CREATE PROCEDURE  {databaseOwner}{objectQualifier}activeforums_Forums_MoveForum
+@ModuleId int,
+@ForumID int, 
+@SortDirection int
+AS
+BEGIN
+	DECLARE @currIndex int
+	DECLARE @newIndex int
+	DECLARE @tmpForumId int
+	DECLARE @forumGroupId int
+	DECLARE @ParentForumId int
+	SET @ParentForumId = (SELECT ParentForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId AND ForumId = @ForumId)
+	SET @currIndex = (SELECT SortOrder FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId and ForumId = @ForumId)
+	SET @forumGroupId = (SELECT ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId and ForumId = @ForumId)
+	IF @SortDirection < 0 
+	BEGIN
+		SET @tmpForumId = (SELECT TOP 1 ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId AND ParentForumId = @ParentForumId AND ForumGroupId = @ForumGroupId AND SortOrder <= (@currIndex + @SortDirection) ORDER BY SortOrder DESC)
+	END
+	ELSE
+	BEGIN
+		SET @tmpForumId = (SELECT TOP 1 ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId AND ParentForumId = @ParentForumId AND ForumGroupId = @ForumGroupId AND SortOrder >= (@currIndex + @SortDirection) ORDER BY SortOrder ASC)
+	END
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET SortOrder = (@currIndex + @SortDirection) WHERE ModuleId = @ModuleId AND ForumId = @ForumId
+		IF @tmpForumId IS NOT NULL AND @tmpForumId >= 0 
+		BEGIN
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET SortOrder = @currIndex WHERE ModuleId = @ModuleId AND ForumId = @tmpForumId
+		END
+	END
+END
+GO
+
+/*activeforums_Groups_MoveGroup*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_MoveGroup]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_MoveGroup]
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Groups_MoveGroup
+@ModuleId int,
+@ForumGroupId int,
+@SortDirection int
+AS
+BEGIN
+	DECLARE @currIndex int
+	DECLARE @newIndex int
+	DECLARE @tmpGroupId int
+	SET @currIndex = (SELECT SortOrder FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ModuleId = @ModuleId and ForumGroupId = @ForumGroupId)
+	IF @SortDirection < 0 
+	BEGIN
+		SET @tmpGroupId = (SELECT TOP 1 ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ModuleId = @ModuleId AND SortOrder <= (@currIndex + @SortDirection) ORDER BY SortOrder DESC)
+	END
+	ELSE
+	BEGIN
+		SET @tmpGroupId = (SELECT TOP 1 ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ModuleId = @ModuleId AND SortOrder >= (@currIndex + @SortDirection) ORDER BY SortOrder ASC )
+	END
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET SortOrder = (@currIndex + @SortDirection) WHERE ModuleId = @ModuleId AND ForumGroupId = @ForumGroupId
+		IF @tmpGroupId IS NOT NULL AND @tmpGroupId >= 0 
+		BEGIN
+		
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET SortOrder = @currIndex WHERE ModuleId = @ModuleId AND ForumGroupId = @tmpGroupId
+		END
+	END
+END
+GO
+/* issues 254 -- end -- Unable to move forums / forum groups up/down when forums or groups have been deleted */
