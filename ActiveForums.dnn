@@ -336,13 +336,13 @@
             </script>
             <script type="Install">
               <path>sql</path>
-              <name>07.00.04.SqlDataProvider</name>
-              <version>07.00.04</version>
+              <name>07.00.06.SqlDataProvider</name>
+              <version>07.00.06</version>
             </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>07.00.04</version>
+              <version>07.00.06</version>
             </script>
           </scripts>
         </component>
