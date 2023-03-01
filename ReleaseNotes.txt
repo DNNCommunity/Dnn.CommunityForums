@@ -6,6 +6,12 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+		<h3>07.00.07</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Add table relationships to use cascading deletes [fixes module deletion leaving orphaned data and improving database integrity] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/97">Issue 97</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.01</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
