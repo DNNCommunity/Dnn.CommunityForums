@@ -7,11 +7,11 @@
 	<hr/>
 	<div class="dnnClear">
 
-		<h3>07.00.04</h3>
+		<h3>07.00.06</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>TASK: Remove obsolete Active Social integration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/173">Issue 173</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-    </ul>
+			<li>FIXED: Hidden forum groups not showing if some forums in the hidden group are visible (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/243">Issue 243</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
 
 		<h3>07.00.03</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
