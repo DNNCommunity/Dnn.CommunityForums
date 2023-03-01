@@ -2,7 +2,7 @@
 <div style="margin-left: auto; margin-right: auto; width: 460px; height: auto; text-align: left; padding: 20px 0px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 14px; color: rgba(0, 0, 0, 0.44); border: 0 none; line-height: 1.5;">
 
     <div style="margin-left: auto; margin-right: auto; max-width: 130px; height: 100%; text-align: left; margin-bottom: 20px; margin-top: 2px; float: left; margin-right: 20px;">
-        <img runat="server" src="~/DesktopModules/ActiveForums/images/af-logo.png")%>' alt="Active Forums" />
+        <img runat="server" src="~/DesktopModules/ActiveForums/images/af-logo.png" alt="Active Forums" />
     </div>
 
     <p style="font-weight: 300; font-size: 22px; letter-spacing: -0.02em; color: rgba(0, 0, 0, 0.6);">
