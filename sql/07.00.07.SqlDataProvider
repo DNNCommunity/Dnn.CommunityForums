@@ -1,14 +1,75 @@
 ﻿/* issue 97 - begin - delete module instance not removing data from database */
 
+SET NOCOUNT ON
+GO
+
+/* remove obsolete license key from activeforums_Settings with ModuleId = -1 to avoid missing row in CONSTRAINT from activeforums_Settings to Modules */
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Settings] WHERE ModuleId = -1 AND SettingName = 'AFKEY'
+GO
+
+/* add row(s) for modules that were deleted but left orphaned data; any modules will show up in default portal recycle bin */
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Modules] ON
+INSERT INTO {databaseOwner}[{objectQualifier}Modules] (ModuleID, ModuleDefID,IsDeleted,PortalID) 
+SELECT af.ModuleID,(SELECT ModuleDefID from {databaseOwner}[{objectQualifier}ModuleDefinitions] WHERE DefinitionName = 'Active Forums'),1,(SELECT CAST(SettingValue AS int) AS PortalId FROM {databaseOwner}[{objectQualifier}HostSettings] where SettingName = 'HostPortalId') 
+FROM (
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Filters] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Forums] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Groups]  
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Ranks] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Settings] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Subscriptions]
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Tags]
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Templates]
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Related]
+) af
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Modules] m
+ON m.ModuleID = af.ModuleId
+WHERE m.ModuleID IS NULL
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Modules] OFF
+
+/* delete any orphan tracking for topics that don't exist */
+DELETE FROM tt
+FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] tt
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t
+ON t.TopicId = tt.TopicId
+WHERE t.topicId IS NULL
+
+/* delete any orphan attachments for content that does not exist */
+DELETE a
+FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] a
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c
+ON c.ContentId = a.ContentId
+WHERE c.ContentId IS NULL
+
+DELETE ca 
+FROM {databaseOwner}[{objectQualifier}activeforums_Content_Attachments] ca
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c
+ON c.ContentId = ca.ContentId
+WHERE c.ContentId IS NULL
+
+/* delete any orphan likes for content that does not exist */
+DELETE l
+FROM {databaseOwner}[{objectQualifier}activeforums_Likes] l
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c
+ON c.ContentId = l.PostId
+WHERE c.ContentId IS NULL
+
 /* add ModuleId to activeforums_Content */
 IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'ModuleId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content]'))    
 BEGIN
 	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content] ADD
 	ModuleId INT NULL
 END
-GO
-
-SET NOCOUNT ON
 GO
 
 /* populate ModuleId in activeforums_Content */
