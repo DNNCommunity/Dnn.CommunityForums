@@ -18,14 +18,25 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Modules.ActiveForums.Data;
+using Microsoft.ApplicationBlocks.Data;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Net.Mail;
 using System.Web;
+using System.Web.Http.Results;
+using System.Web.Profile;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumsConfig
 	{
-		public string sPath = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/defaultsetup.config");
+		public string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath + "config/defaultsetup.config");
 		public bool ForumsInit(int PortalId, int ModuleId)
 		{
 			try
@@ -311,6 +322,58 @@ namespace DotNetNuke.Modules.ActiveForums
 		    }
 		}
 
-	}
+            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+            foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+            {
+                if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates")))
+                {
+                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates"));
+                }
+            }
+            TemplateController tc = new TemplateController();
+            foreach (TemplateInfo template in tc.Template_List(-1, -1))
+            {
+                tc.Template_Save(template);
+            }
+        }
+        internal void ArchiveOrphanedAttachments()
+        {
+            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
+            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
+            foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
+            {
+                if (!System.IO.Directory.Exists(attachmentFolder.FullName + "\\orphaned"))
+                {
+                    System.IO.Directory.CreateDirectory(attachmentFolder.FullName + "\\orphaned");
+				}
+				List<string> attachmentFullFileNames = System.IO.Directory.EnumerateFiles(path: attachmentFolder.FullName, searchPattern: "*", searchOption: System.IO.SearchOption.AllDirectories).ToList<string>();
+				List<string> attachmentFileNames = new List<string>();
+                foreach (string attachmentFileName in attachmentFullFileNames)
+				{
+					attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
+				}
+				List<string> databaseFileNames = new List<string>();
+                string connectionString = new Connection().connectionString;
+                string dbPrefix = new Connection().dbPrefix;
+                using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
+				{
+                    while (dr.Read())
+                    {
+						databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
+                    }
+                    dr.Close();
+                }
+				foreach (string attachmentFileName in attachmentFileNames)
+				{
+					if (!databaseFileNames.Contains(attachmentFileName))
+					{
+                        System.IO.File.Copy(attachmentFolder.FullName + "\\" + attachmentFileName, attachmentFolder.FullName + "\\orphaned\\" + attachmentFileName, true); 
+						System.IO.File.Delete(attachmentFolder.FullName + "\\" + attachmentFileName);
+                    }
+				}
+            }
+        }
+    }
 }
 
