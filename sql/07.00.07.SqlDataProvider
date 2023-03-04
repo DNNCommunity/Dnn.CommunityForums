@@ -117,15 +117,15 @@ DECLARE @PostDate datetime
 DECLARE @LastTopicId int
 DECLARE @ReplyId int
 
-IF EXISTS (SELECT TopicId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE ForumId = @ForumId AND TopicId = @TopicId)
+IF EXISTS (SELECT TopicId FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] WHERE ForumId = @ForumId AND TopicId = @TopicId)
 	BEGIN
 			
 		IF @LastReplyId > 0
 			BEGIN
-			SET @tmpLastPostId = (SELECT MAX(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
+			SET @tmpLastPostId = (SELECT MAX(ReplyId) from {databaseOwner}[{objectQualifier}activeforums_Replies] WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
 			DECLARE @LastReplyDate int
-			SET @LastReplyDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',rc.DATECREATED) FROM {databaseOwner}{objectQualifier}activeforums_Content as rc INNER JOIN {databaseOwner}{objectQualifier}activeforums_Replies as r ON r.ContentId = rc.ContentId WHERE ReplyId = @tmpLastPostId)
-			UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics
+			SET @LastReplyDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',rc.DATECREATED) FROM {databaseOwner}[{objectQualifier}activeforums_Content] as rc INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] as r ON r.ContentId = rc.ContentId WHERE ReplyId = @tmpLastPostId)
+			UPDATE {databaseOwner}[{objectQualifier}activeforums_ForumTopics]
 			SET LastReplyId = @tmpLastPostId,
 			 LastReplyDate = @LastReplyDate 
 			 WHERE ForumId = @ForumId AND TopicId = @TopicId
@@ -139,23 +139,23 @@ ELSE
 	IF @LastReplyId = -1
 		SET @LastReplyId = Null
 		DECLARE @LastTopicDate int
-		SET @LastTopicDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',tc.DATECREATED) FROM {databaseOwner}{objectQualifier}activeforums_Content as tc INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics as t ON t.ContentId = tc.ContentId WHERE TopicId = @TopicId)
-		INSERT INTO {databaseOwner}{objectQualifier}activeforums_ForumTopics
+		SET @LastTopicDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',tc.DATECREATED) FROM {databaseOwner}[{objectQualifier}activeforums_Content] as tc INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as t ON t.ContentId = tc.ContentId WHERE TopicId = @TopicId)
+		INSERT INTO {databaseOwner}[{objectQualifier}activeforums_ForumTopics]
 			(ForumId, TopicId, LastReplyId, LastTopicDate, LastReplyDate)
 			VALUES
 			(@ForumId, @TopicId, @LastReplyId, @LastTopicDate, @LastTopicDate)
 
 		/* populate ModuleId in activeforums_Content */
 		UPDATE c
-		SET c.ModuleId = f.ModuleId
+		SET c.ModuleId =  f.ModuleId
 		FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
-		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r
-		ON r.ContentId = c.ContentId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t
+		ON t.ContentId = c.ContentId 
 		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
-		ON ft.TopicId = r.TopicId
+		ON ft.TopicId = t.TopicId
 		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
 		ON f.ForumId = ft.ForumId
-		WHERE c.ModuleId IS NULL AND r.ReplyId = @ReplyId
+		WHERE c.ModuleId IS NULL AND t.TopicId = @TopicId
 		
 	END
 END
