@@ -1,4 +1,4 @@
-﻿/* issues 218 -- begin -- remove redundant indexes */
+/* issues 218 -- begin -- remove redundant indexes */
 
 /* remove old redundant indexes if they exist */
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt1')
