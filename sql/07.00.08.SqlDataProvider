@@ -1,17 +1,17 @@
 ﻿/* issues 218 -- begin -- remove redundant indexes */
 
 /* remove old redundant indexes if they exist */
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{{objectQualifier}activeforums_ForumTopics_Opt1')
-DROP INDEX [idx_{{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
 GO
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{{objectQualifier}activeforums_ForumTopics_Opt2')
-DROP INDEX [idx_{{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt2')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
 GO
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{{objectQualifier}activeforums_ForumTopics_Opt3')
-DROP INDEX [idx_{{objectQualifier}activeforums_ForumTopics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
 GO
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{{objectQualifier}activeforums_ForumTopics_Opt4')
-DROP INDEX [idx_{{objectQualifier}activeforums_ForumTopics_Opt4] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt4')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt4] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
 GO
 
 /* remove newer non-redundant indexes if they exist */
