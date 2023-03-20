@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Rate1.CausesValidation = false;
             Rate1.Width = 13;
             Rate1.Height = 14;
-            Rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>gif";
+            Rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
             plhRating.Controls.Add(Rate1);
             Rate2.ID = "Rate2";
             Rate2.CausesValidation = false;

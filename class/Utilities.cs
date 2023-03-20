@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -1179,7 +1180,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseSpacer(string template)
         {
-            var spacerTemplate = "<img src=\"" + Globals.ModulePath + "images/spacer.gif\" alt=\"--\" width=\"$2\" height=\"$1\" />";
+            var spacerTemplate = "<img src=\"" + System.Web.VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath + "spacer.gif") +"\" alt=\"--\" width=\"$2\" height=\"$1\" />";
 
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
