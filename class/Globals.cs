@@ -120,7 +120,8 @@ namespace DotNetNuke.Modules.ActiveForums
         MessageDeleted,
         SendToComplete,
         SendToFailed,
-        AlertSent
+        AlertSent,
+        UserBanned
     }
 
     #endregion
@@ -306,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ConfirmActionId = "afca";
 		public const string Tags = "aftg";
 		public const string FirstNewPost = "afnp";
-	}
+    }
 
 	public class Views
 	{

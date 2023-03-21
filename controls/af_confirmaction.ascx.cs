@@ -98,10 +98,9 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
                         case ConfirmActions.SendToFailed:
                             lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Failed]", "Messages.ascx");
-
-
-
-
+                            break;
+                        case ConfirmActions.UserBanned:
+                            lblMessage.Text = Utilities.GetSharedResource("[RESX:User:Banned]", "Messages.ascx");
                             break;
                     }
 

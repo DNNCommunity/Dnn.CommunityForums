@@ -226,6 +226,9 @@
     <Content Include="controls\af_attach.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="controls\af_modban.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="controls\af_polls.ascx" />
     <Content Include="controls\af_pollvote.ascx" />
     <Content Include="controls\af_sendto.ascx">
@@ -645,6 +648,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
+    <None Include="sql\08.00.02.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -737,6 +741,13 @@
     <Compile Include="components\Topics\TopicInfo.cs" />
     <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
+    <Compile Include="controls\af_modban.ascx.cs">
+      <DependentUpon>af_modban.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\af_modban.ascx.designer.cs">
+      <DependentUpon>af_modban.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
