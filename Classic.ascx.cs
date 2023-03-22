@@ -420,11 +420,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (show && ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);
+                    object sToolbar = DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar,ForumModuleId));
                     if (sToolbar == null)
                     {
                         sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
-                        DataCache.CacheStore("aftb" + ForumModuleId, sToolbar);
+                        DataCache.CacheStore(string.Format(CacheKeys.Toolbar,ForumModuleId), sToolbar);
                     }
                     lit.Text = sToolbar.ToString();
                     plhToolbar.Controls.Clear();

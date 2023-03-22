@@ -27,6 +27,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -82,14 +83,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ForumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
             }
 
-            SettingsInfo MainSettings = DataCache.MainSettings(ControlConfig.InstanceId);
+            SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ControlConfig.InstanceId);
             string sTemp = string.Empty;
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(InstanceId + "qr");
+                object obj = DataCache.CacheRetrieve(string.Format(CacheKeys.QuickReply, InstanceId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
+                    DataCache.CacheStore(string.Format(CacheKeys.QuickReply, InstanceId), sTemp);
                 }
                 else
                 {
@@ -339,10 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         private string ParseTemplate()
         {
-            string sOut = DisplayTemplate;
-
-            DataCache.CacheStore(InstanceId + "qr", sOut);
-            return sOut;
+            return DisplayTemplate;
         }
         private void LinkControls(ControlCollection ctrls)
         {

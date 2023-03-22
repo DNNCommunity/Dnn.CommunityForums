@@ -421,7 +421,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)
 		{
 			var gi = GetForumGroup(moduleID, forumGroupID);
-			gi.GroupSettings = DataCache.GetSettings(moduleID, gi.GroupSettingsKey, string.Format(CacheKeys.GroupInfo, forumGroupID), false);
+			gi.GroupSettings = DataCache.GetSettings(moduleID, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, gi.GroupSettingsKey), false);
 			return gi;
 		}
 
@@ -439,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				if(gi == null)
 					continue;
 
-				gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.GroupInfo, gi.ForumGroupId), false);
+				gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, gi.GroupSettingsKey), false);
 
 				groupArr[i] = gi;
 			}

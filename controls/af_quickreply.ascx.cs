@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         private void SaveQuickReply()
         {
-            SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
+            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
             int iFloodInterval = MainSettings.FloodInterval;
             if (iFloodInterval > 0)
             {
@@ -400,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ReplyId = rc.Reply_Save(PortalId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             //Check if is subscribed
-            string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
+            string cachekey = string.Format(CacheKeys.ForumView, PortalId, ModuleId);
             DataCache.CacheClearPrefix(cachekey);
 
 

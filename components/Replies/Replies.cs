@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
 		{
-			SettingsInfo ms = DataCache.MainSettings(ModuleId);
+			SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
 			ForumController fc = new ForumController();
 			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
 

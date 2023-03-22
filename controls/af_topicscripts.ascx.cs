@@ -22,7 +22,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    public partial class af_topicscripts : ForumBase
+    public partial class af_topicscripts : SettingsBase
     {
         protected override void OnLoad(EventArgs e)
 		{

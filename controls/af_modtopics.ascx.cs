@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
+            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
             Forum fi = null;
             if (e.Parameters.Length > 0)
             {
@@ -275,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
                         }
                 }
-                string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
+                string cachekey = string.Format(CacheKeys.ForumView, PortalId, ModuleId);
                 DataCache.CacheClearPrefix(cachekey);
             }
             BuildModList();

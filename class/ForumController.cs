@@ -26,6 +26,7 @@ using System.IO;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security.Roles;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -231,30 +232,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		    if (fi != null)
 		    {
-                fi.ForumSettings = DataCache.GetSettings(fi.ModuleId, fi.ForumSettingsKey, string.Format(CacheKeys.ForumInfo, forumId), useCache);
-
-                if (userId == -1)
-                    DataCache.CacheStore(string.Format(CacheKeys.ForumInfo, forumId), fi);
-		    }
+                fi.ForumSettings = DataCache.GetSettings(fi.ModuleId, fi.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, fi.ForumSettingsKey), useCache);
+				if (userId == -1)
+				{
+					DataCache.CacheStore(string.Format(CacheKeys.ForumInfo, forumId), fi);
+				}
+				else 
+				{ 
+					DataCache.CacheStore(string.Format(CacheKeys.ForumInfoWithUser, forumId, userId), fi); 
+				}
+            }
 				
 			return fi;
 		}
-
-
-		// KR - added All settings cache
-		private DataTable GetAllSettings(int moduleId)
-		{
-		    var allSettings = DataCache.CacheRetrieve(string.Format(CacheKeys.AllSettings, moduleId)) as DataTable;
-
-            if (allSettings == null)
-			{
-                allSettings = Common.Globals.ConvertDataReaderToDataTable(DataProvider.Instance().Settings_ListAll(moduleId));
-                DataCache.CacheStore(string.Format(CacheKeys.AllSettings, moduleId), allSettings);
-			}
-
-            return allSettings;
-		}
-
 		public int Forums_Save(int portalId, Forum fi, bool isNew, bool useGroup)
 		{
 			var rc = new RoleController();
@@ -387,11 +377,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
 		{
-		    const string cacheKeyTemplate = "AF-FV-{0}-{1}-{2}-{3}";
-
-			DataSet ds;
+		    DataSet ds;
 			DataTable dt;
-			var cachekey = string.Format(cacheKeyTemplate, portalId, moduleId, currentUserId, forumIds);
+			var cachekey = string.Format(CacheKeys.ForumViewForUser, portalId, moduleId, currentUserId, forumIds);
 
 			var dataSetXML = DataCache.CacheRetrieve(cachekey) as string;
 
@@ -537,11 +525,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			    }
 			}
 			catch (Exception ex)
-			{
+            {
+            }
 
-			}
-
-			DataCache.CacheClear(moduleId + "fv");
+			DataCache.CacheClear(string.Format(CacheKeys.ForumListXml, moduleId));
 
 			return forumId;
 		}

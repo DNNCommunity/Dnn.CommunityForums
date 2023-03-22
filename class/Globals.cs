@@ -329,17 +329,30 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string Rewards = "afrwd{0}";
 		public const string PostInfo = "afpi{0}";
 		public const string ForumInfo = "affi{0}";
-		public const string ForumInfoWithUser = "affi{0}-{1}"; // KR
-		public const string AllSettings = "afset{0}"; // KR
-		public const string MainSettings = "afms{0}";
-		public const string GroupInfo = "afgi{0}";
+		public const string ForumInfoWithUser = "affi{0}-{1}";
+		public const string AllSettings = "afset{0}";
+        public const string MainSettings = "afms{0}";
+        public const string ForumSettings = "affs{0}";
+        public const string ForumSettingsByKey = "affsk{0}";
+        public const string GroupSettingsByKey = "afgsk{0}";
+        public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
-		public const string ForumList = "affl{0}";
-	}
+        public const string ForumList = "affl{0}";
+        public const string ForumListXml = "afflx{0}";
+        public const string Tokens = "aftk{0}";
+        public const string ForumView = "AF-FV-{0}-{1}";
+        public const string ForumViewForUser = "AF-FV-{0}-{1}-{2}-{3}";
+        public const string Toolbar = "aftb{0}";
+        public const string QuickReply = "afqr{0}";
+        public const string RoleNames = "afrn{0}";
+        public const string CacheUpdate = "afcu{0}";
+        public const string RssTemplate = "aftprss_{0}_{1}";
+
+    }
 
 
 
-	public class SortColumns
+    public class SortColumns
 	{
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";

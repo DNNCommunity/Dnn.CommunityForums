@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string ParseToolBar(string template, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
         {
-            //var mainSettings = DataCache.MainSettings(moduleId);
+            //var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var ctlUtils = new ControlUtils();
 
@@ -1021,7 +1021,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var mUserOffSet = 0;
-                var mainSettings = DataCache.MainSettings(mid);
+                var mainSettings = SettingsBase.GetModuleSettings(mid);
                 var mServerOffSet = mainSettings.TimeZoneOffset;
                 var newDate = displayDate.AddMinutes(-mServerOffSet);
 
@@ -1048,7 +1048,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
         {
-            var mainSettings = DataCache.MainSettings(mid);
+            var mainSettings = SettingsBase.GetModuleSettings(mid);
             var mServerOffSet = mainSettings.TimeZoneOffset;
             var newDate = displayDate.AddMinutes(-mServerOffSet);
 

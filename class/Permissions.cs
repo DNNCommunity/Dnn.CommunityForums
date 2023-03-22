@@ -512,17 +512,12 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		private static ArrayList GetRoles(int PortalId)
 		{
-			object obj = DataCache.CacheRetrieve(PortalId + "RoleNames");
-			ArrayList roleNames;
-			if (obj == null)
+            ArrayList roleNames = (ArrayList)DataCache.CacheRetrieve(string.Format(CacheKeys.RoleNames, PortalId));
+			if (roleNames == null)
 			{
 				var objRoleController = new Security.Roles.RoleController();
 				roleNames = objRoleController.GetPortalRoles(PortalId);
-				DataCache.CacheStore(PortalId + "RoleNames", roleNames);
-			}
-			else
-			{
-				roleNames = (ArrayList)obj;
+				DataCache.CacheStore(string.Format(CacheKeys.RoleNames, PortalId), roleNames);
 			}
 			return roleNames;
 		}

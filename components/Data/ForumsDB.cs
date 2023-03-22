@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		public XmlDocument ForumListXML(int SiteId, int InstanceId)
 		{
 			XmlDocument xDoc = new XmlDocument();
-			object obj = DataCache.CacheRetrieve(InstanceId + "fv");
+			object obj = DataCache.CacheRetrieve(string.Format(CacheKeys.ForumListXml, InstanceId));
 			if (obj == null)
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 				//Dim sXML As String = ds.GetXml()
 				xDoc.LoadXml(sb.ToString());
-				DataCache.CacheStore(InstanceId + "fv", xDoc);
+				DataCache.CacheStore(string.Format(CacheKeys.ForumListXml, InstanceId), xDoc);
 			}
 			else
 			{

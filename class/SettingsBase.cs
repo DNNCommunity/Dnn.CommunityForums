@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Reflection;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -142,18 +143,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return tempPageId;
             }
         }
-        private bool _ShowToolbar = true;
-        public bool ShowToolbar
-        {
-            get
-            {
-                return _ShowToolbar;
-            }
-            set
-            {
-                _ShowToolbar = value;
-            }
-        }
+
+        public bool ShowToolbar { get; set; } = true;
         #endregion
 
         public UserController UserController
@@ -345,16 +336,24 @@ namespace DotNetNuke.Modules.ActiveForums
                 return (Framework.CDefault)Page;
             }
         }
+        public static SettingsInfo GetModuleSettings(int ModuleId)
+        {
+            var objSettings = new SettingsInfo();
+            var sb = new SettingsBase { ForumModuleId = ModuleId };
+            return sb.MainSettings;
+        }
+
         public SettingsInfo MainSettings
         {
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-
-                var _portalSettings = (PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
-                var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ForumModuleId)};
-
+                SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ForumModuleId));
+                if (objSettings == null)
+                {
+                    objSettings = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(ForumModuleId) }; 
+                    DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                } 
                 return objSettings;
             }
         }

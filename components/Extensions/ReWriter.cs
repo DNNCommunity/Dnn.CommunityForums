@@ -261,7 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				Entities.Modules.ModuleController objModules = new Entities.Modules.ModuleController();
 				SettingsInfo objSettings = new SettingsInfo();
 				objSettings.MainSettings = objModules.GetModuleSettings(_moduleId);
-				_mainSettings = objSettings; // DataCache.MainSettings(_moduleId)
+				_mainSettings = objSettings; // SettingsBase.GetModuleSettings(_moduleId)
 			}
 			if (_mainSettings == null)
 			{

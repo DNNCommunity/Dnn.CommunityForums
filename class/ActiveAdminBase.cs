@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId + "CacheUpdate");
+                object obj = DataCache.CacheRetrieve(string.Format(CacheKeys.QuickReply, ModuleId));
                 if (obj != null)
                 {
                     return Convert.ToDateTime(obj);
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                DataCache.CacheStore(ModuleId + "CacheUpdate", value);
+                DataCache.CacheStore(string.Format(CacheKeys.QuickReply, ModuleId), value);
                 _CacheUpdatedTime = value;
             }
         }

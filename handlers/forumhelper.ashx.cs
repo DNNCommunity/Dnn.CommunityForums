@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					if (Permissions.HasPerm(f.Security.ModMove, ForumUser.UserRoles))
 					{
 						tc.Topics_Move(PortalId, ModuleId, targetForumId, topicId);
-                        DataCache.CacheClearPrefix(string.Format("AF-FV-{0}-{1}", PortalId, ModuleId));
+                        DataCache.CacheClearPrefix(string.Format(CacheKeys.ForumView, PortalId, ModuleId));
 						return BuildOutput(string.Empty, OutputCodes.Success, true);
 					}
 				}
@@ -563,7 +563,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			}
 
 			// Return the result
-			string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
+			string cachekey = string.Format(CacheKeys.ForumView, PortalId, ModuleId);
 			DataCache.CacheClearPrefix(cachekey);
 			return BuildOutput(TopicId + "|" + replyId, OutputCodes.Success, true);
 		}

@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             int authorId;
-            var ms = DataCache.MainSettings(_moduleId);
+            var ms = SettingsBase.GetModuleSettings(_moduleId);
             if (_replyId > 0 & _replyId != _topicId)
             {
                 var rc = new ReplyController();

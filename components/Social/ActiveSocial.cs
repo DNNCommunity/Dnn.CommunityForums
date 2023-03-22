@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sGroups = string.Empty;
             try
             {
-                //Dim MainSettings As SettingsInfo = DataCache.MainSettings(ModuleId)
+                //Dim MainSettings As SettingsInfo = SettingsBase.GetModuleSettings(ModuleId)
                 if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
                 {
                     DataSet ds = SqlHelper.ExecuteDataset(_connectionString, _databaseOwner + _objectQualifier + "activesocial_Groups_ListMyGroups", PortalId, 0, 1000, userId, 1, userId);

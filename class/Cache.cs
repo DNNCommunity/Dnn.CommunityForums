@@ -21,7 +21,6 @@
 using System;
 using System.Collections;
 using System.Data;
-
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -86,34 +85,13 @@ namespace DotNetNuke.Modules.ActiveForums
 				return false;
 			}
 		}
-
-		public static SettingsInfo MainSettings(int MID)
-		{
-			object obj = CacheRetrieve(string.Format(CacheKeys.MainSettings, MID));
-			if (obj == null || disableCache)
-			{
-				var objSettings = new SettingsInfo();
-				var sb = new SettingsBase {ForumModuleId = MID};
-			    obj = sb.MainSettings;
-				if (disableCache == false)
-				{
-					CacheStore(string.Format(CacheKeys.MainSettings, MID), obj);
-				}
-			}
-
-			return (SettingsInfo)obj;
-		}
-		public static void ClearAllCache(int ModuleId, int TabId)
+        public static void ClearAllCache(int ModuleId, int TabId)
 		{
 			try
 			{
 				ClearAllForumSettingsCache(ModuleId);
 				ClearSettingsCache(ModuleId);
 				ClearTemplateCache(ModuleId);
-				CacheClear(ModuleId + "fv");
-				CacheClear(ModuleId + "ForumStatTable");
-				CacheClear(ModuleId + "ForumStatsOutput");
-				CacheClear(ModuleId + TabId + "ForumTemplate");
 			}
 			catch (Exception ex)
 			{
@@ -158,9 +136,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public static void ClearForumSettingsCache(int ForumID)
 		{
-			CacheClear(ForumID + "ForumSettings");
+			CacheClear(string.Format(CacheKeys.ForumSettings, ForumID));
 			CacheClear(string.Format(CacheKeys.ForumInfo, ForumID));
-			CacheClear(string.Format(CacheKeys.ForumInfo, ForumID) + "st");
 
 		}
 		public static void ClearAllForumSettingsCache(int ModuleID)
@@ -171,17 +148,9 @@ namespace DotNetNuke.Modules.ActiveForums
 				rd = DataProvider.Instance().Forums_List(-1, ModuleID, -1, -1, false);
 				while (rd.Read())
 				{
-					int intForumID;
-					intForumID = Convert.ToInt32(rd["ForumID"]);
-					int TopicsTemplateId;
-					int TopicTemplateId;
-					TopicsTemplateId = Convert.ToInt32(rd["TopicsTemplateId"]);
-					TopicTemplateId = Convert.ToInt32(rd["TopicTemplateId"]);
-					CacheClear(intForumID + "ForumSettings");
-					CacheClear(ModuleID + TopicsTemplateId + "TopicsTemplate");
-					CacheClear(ModuleID + TopicTemplateId + "TopicTemplate");
-					CacheClear(string.Format(CacheKeys.ForumInfo, intForumID));
-					CacheClear(string.Format(CacheKeys.ForumInfo, intForumID) + "st");
+					int ForumId = Convert.ToInt32(rd["ForumID"]);
+                    CacheClear(string.Format(CacheKeys.ForumSettings, ForumId));
+					CacheClear(string.Format(CacheKeys.ForumInfo, ForumId));
 				}
 				rd.Close();
 			}
@@ -191,7 +160,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 
 		}
-		public static void ClearFilterCache(int ModuleID)
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        public static void ClearFilterCache(int ModuleID)
 		{
 			object obj = CacheRetrieve(ModuleID + "FilterList");
 			if (obj != null)
@@ -227,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var ht = new Hashtable();
 			if (UseCache)
 			{
-				object obj = CacheRetrieve(CacheKey + "st");
+				object obj = CacheRetrieve(CacheKey);
 				if (obj == null)
 				{
 					IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
@@ -240,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
 					}
 					dr.Close();
-					CacheStore(CacheKey + "st", ht);
+					CacheStore(CacheKey, ht);
 					//Current.Cache.Insert(ModuleId & SettingsKey & "Settings", ht, Nothing, DateTime.UtcNow.AddMinutes(10), Web.Caching.Cache.NoSlidingExpiration)
 				}
 				else
@@ -264,9 +234,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return ht;
 		}
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings")]
+        public static SettingsInfo MainSettings(int ModuleId)
+        {
+            return SettingsBase.GetModuleSettings(ModuleId);
+        }
 
-#region Cache Storage
-		private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
+        #region Cache Storage
+        private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
 		{
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";

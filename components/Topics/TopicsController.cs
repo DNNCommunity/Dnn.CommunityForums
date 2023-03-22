@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UpdateModuleLastContentModifiedOnDate(ModuleId);
 
             DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
-			var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
+			var cachekey = string.Format(CacheKeys.ForumView, PortalId, ModuleId);
 			DataCache.CacheClearPrefix(cachekey);
 			try
 			{
@@ -238,7 +238,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId)
 		{
-			SettingsInfo settings = DataCache.MainSettings(ModuleId);
+			SettingsInfo settings = SettingsBase.GetModuleSettings(ModuleId);
 			if (settings.URLRewriteEnabled)
 			{
 				try
@@ -334,7 +334,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
 		{
-			SettingsInfo ms = DataCache.MainSettings(ModuleId);
+			SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
 			ForumController fc = new ForumController();
 			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
 
