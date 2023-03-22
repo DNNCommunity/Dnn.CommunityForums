@@ -11,13 +11,16 @@
 		</div>
 		<div class="row">
 			<div class="col-12 col-md-8">
+				<div class="af-crumb">[FORUMMAINLINK] > [FORUMLINK]</div>
+			</div>
+			<div class="col-12 col-md-8">
 				<h2>[AF:CONTROL:STATUSICON][SUBJECT]</h2>
+			<div class="aftopicreplies"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
+		    <div class="afsubscribercount"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[TOPICSUBSCRIBERCOUNT] [RESX:TOPICSUBSCRIBERCOUNT]</div>
+		    <div class="afsubscribercount"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT] [RESX:FORUMSUBSCRIBERCOUNT]</div>
 			</div>
 			<div class="col-12 col-md-4 text-md-right">
 				[ADDREPLY]
-			</div>
-			<div class="col-12 col-md-8">
-				<div class="af-crumb">[FORUMMAINLINK] > [FORUMLINK]</div>
 			</div>
 			<div class="col-12 col-md-4 text-md-right">
 				<div class="af-topic-controls">
