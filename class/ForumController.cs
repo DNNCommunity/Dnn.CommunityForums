@@ -33,8 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	public class ForumController
 	{
-        const string forumInfoCacheKey = "AF-FI-{0}-{1}-{2}";
-
 	    private ForumsDB _forumDB;
         internal ForumsDB ForumsDB
         {
@@ -90,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public Forum GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
 		{
 
-            var cachekey = string.Format(forumInfoCacheKey, portalId, moduleId, forumId);
+            var cachekey = string.Format(CacheKeys.ForumInfo, forumId);
 			var forum = DataCache.CacheRetrieve(cachekey) as Forum;
 			if (forum == null || ignoreCache)
 			{
@@ -220,11 +218,11 @@ namespace DotNetNuke.Modules.ActiveForums
 				return null;
 
 
-		    var cacheKeyTemplate = userId > -1 ? CacheKeys.ForumInfoWithUser : CacheKeys.ForumInfo;
+		    var cacheKey = userId > -1 ? CacheKeys.ForumInfoWithUser : CacheKeys.ForumInfo;
 
             //Try Cache First
 			if (useCache)
-			    fi = DataCache.CacheRetrieve(string.Format(cacheKeyTemplate, forumId, userId)) as Forum; 
+			    fi = DataCache.CacheRetrieve(string.Format(cacheKey, forumId, userId)) as Forum; 
 
             // If it's still null, retrieve from DB.
 			if (fi == null)
@@ -307,9 +305,7 @@ namespace DotNetNuke.Modules.ActiveForums
             
             // Clear the caches
 			DataCache.CacheClear(string.Format(CacheKeys.ForumList, fi.ModuleId));
-
-            var cachekey = string.Format(forumInfoCacheKey, portalId, fi.ModuleId, forumId);
-			DataCache.CacheClear(cachekey);
+			DataCache.CacheClear(string.Format(CacheKeys.ForumInfo, forumId));
 
 			return forumId;
 		}

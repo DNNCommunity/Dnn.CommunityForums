@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, Expiration);
 				return true;
 			}
-			catch (Exception ex)
+			catch 
 			{
 				return false;
 			}
@@ -67,12 +67,11 @@ namespace DotNetNuke.Modules.ActiveForums
 				Common.Utilities.DataCache.RemoveCache(cacheKey);
 				return true;
 			}
-			catch (Exception ex)
+			catch
 			{
 				return false;
 			}
 		}
-		// KR - remove all cache starting with the given string
 		public static bool CacheClearPrefix(string cacheKeyPrefix)
 		{
 			try
@@ -80,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				Common.Utilities.DataCache.ClearCache(cacheKeyPrefix);
 				return true;
 			}
-			catch (Exception ex)
+			catch
 			{
 				return false;
 			}
@@ -91,8 +90,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				ClearAllForumSettingsCache(ModuleId);
 				ClearSettingsCache(ModuleId);
-				ClearTemplateCache(ModuleId);
-			}
+                CacheClearPrefix(CacheKeys.TemplatePrefix);
+            }
 			catch (Exception ex)
 			{
 				Services.Exceptions.Exceptions.LogException(ex);
@@ -109,13 +108,14 @@ namespace DotNetNuke.Modules.ActiveForums
 					CacheClear(string.Format(CacheKeys.MainSettings, ModuleID));
 				}
 			}
-			catch (Exception ex)
+			catch 
 			{
 
 			}
 
 		}
-		public static void ClearForumsByGroupCache(int ModuleID, int GroupID)
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        public static void ClearForumsByGroupCache(int ModuleID, int GroupID)
 		{
 			object obj = CacheRetrieve(ModuleID + GroupID + "ForumsByGroup");
 			if (obj != null)
@@ -123,7 +123,8 @@ namespace DotNetNuke.Modules.ActiveForums
 				CacheClear(ModuleID + GroupID + "ForumsByGroup");
 			}
 		}
-		public static void ClearForumGroupsCache(int ModuleID)
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        public static void ClearForumGroupsCache(int ModuleID)
 		{
 			CacheClear(ModuleID + "ForumGroups");
 			IDataReader rd;

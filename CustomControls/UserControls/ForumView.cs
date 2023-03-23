@@ -112,8 +112,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (sOutput.Contains("[TOOLBAR"))
                         {
                             var lit = new LiteralControl();
-                            object sToolbar = DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ModuleId));
-                            if (sToolbar == null)
+                            string sToolbar = string.Empty;
+                            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
+                            sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                            if (string.IsNullOrEmpty(sToolbar))
                             {
                                 sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
                                 DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ModuleId), sToolbar);

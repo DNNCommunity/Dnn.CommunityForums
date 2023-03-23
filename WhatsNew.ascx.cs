@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_settings == null)
                 {
-                    var settingsCacheKey = "aftp_" + ModuleId;
+                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
 
                     var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)

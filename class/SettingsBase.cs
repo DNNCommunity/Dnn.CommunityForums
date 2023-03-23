@@ -338,23 +338,21 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static SettingsInfo GetModuleSettings(int ModuleId)
         {
-            var objSettings = new SettingsInfo();
-            var sb = new SettingsBase { ForumModuleId = ModuleId };
-            return sb.MainSettings;
+            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
+            if (objSettings == null)
+            {
+                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
+                DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+            }
+            return objSettings;
+            
         }
-
         public SettingsInfo MainSettings
         {
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-                SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ForumModuleId));
-                if (objSettings == null)
-                {
-                    objSettings = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(ForumModuleId) }; 
-                    DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
-                } 
-                return objSettings;
+                return GetModuleSettings(ForumModuleId);
             }
         }
         public string ImagePath

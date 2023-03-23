@@ -26,6 +26,7 @@ using System.Web.UI;
 using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -109,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (_settings == null)
                 {
-                    var settingsCacheKey = "aftp_" + RequestModuleID;
+                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, RequestModuleID);
 
                     var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)

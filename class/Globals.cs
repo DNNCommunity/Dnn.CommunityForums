@@ -343,9 +343,12 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumView = "AF-FV-{0}-{1}";
         public const string ForumViewForUser = "AF-FV-{0}-{1}-{2}-{3}";
         public const string Toolbar = "aftb{0}";
+        public const string TemplatePrefix = "aftmpl_";
+        public const string Template = TemplatePrefix + "_{0}_{1}_{2}";
         public const string QuickReply = "afqr{0}";
         public const string RoleNames = "afrn{0}";
         public const string CacheUpdate = "afcu{0}";
+        public const string WhatsNew = "aftp_{0}";
         public const string RssTemplate = "aftprss_{0}_{1}";
 
     }
