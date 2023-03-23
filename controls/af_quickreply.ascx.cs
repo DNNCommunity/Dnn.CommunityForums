@@ -400,8 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             //Check if is subscribed
-            string cachekey = string.Format(CacheKeys.ForumView, PortalId, ModuleId);
-            DataCache.CacheClearPrefix(cachekey);
+            DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
 
             // Subscribe or unsubscribe if needed

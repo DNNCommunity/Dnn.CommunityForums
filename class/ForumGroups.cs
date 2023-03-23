@@ -421,7 +421,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)
 		{
 			var gi = GetForumGroup(moduleID, forumGroupID);
-			gi.GroupSettings = DataCache.GetSettings(moduleID, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, gi.GroupSettingsKey), false);
+			gi.GroupSettings = DataCache.GetSettings(moduleID, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, moduleID,gi.GroupSettingsKey), false);
 			return gi;
 		}
 
@@ -439,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				if(gi == null)
 					continue;
 
-				gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, gi.GroupSettingsKey), false);
+				gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey,moduleId, gi.GroupSettingsKey), false);
 
 				groupArr[i] = gi;
 			}
@@ -471,16 +471,15 @@ namespace DotNetNuke.Modules.ActiveForums
 			if (isNew)
 			{
 				Permissions.CreateDefaultSets(portalId, permissionsId);
-				var moduleId = fg.ModuleId;
 				var sKey = "G:" + groupId.ToString();
-				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
-				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
-				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicFormId, "0");
-				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ReplyFormId, "0");
-				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowRSS, "false");
+				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
+				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
+				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
+				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.ReplyFormId, "0");
+				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.AllowRSS, "false");
 			}
 
-			DataCache.CacheClear(string.Format(CacheKeys.ForumList, fg.ModuleId));
+			DataCache.CacheClear(fg.ModuleId,string.Format(CacheKeys.ForumList, fg.ModuleId));
 
 			return groupId;
 		}

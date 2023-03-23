@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(tmp, PortalId);
+			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId: PortalId, ModuleId: ModuleId, Roles: tmp);
 			RoleController rc = new RoleController();
 			foreach (string key in nvc.AllKeys)
 			{

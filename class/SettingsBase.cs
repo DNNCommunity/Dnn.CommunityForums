@@ -338,11 +338,11 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static SettingsInfo GetModuleSettings(int ModuleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
+            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
             if (objSettings == null)
             {
                 objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                DataCache.CacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
             return objSettings;
             

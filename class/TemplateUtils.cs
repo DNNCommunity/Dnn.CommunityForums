@@ -54,13 +54,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return "folder.png";
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
         public static void LoadTemplateCache(int moduleID)
         {
             var tc = new TemplateController();
             foreach (var ti in tc.Template_List(-1, moduleID))
             {
-                DataCache.CacheStore(ti.Title + moduleID, ti.Template);
-                DataCache.CacheStore(ti.Subject + "_Subject_" + moduleID, ti.Subject);
+                DataCache.CacheStore(moduleID, ti.Title + moduleID, ti.Template);
+                DataCache.CacheStore(moduleID, ti.Subject + "_Subject_" + moduleID, ti.Subject);
             }
         }
 
@@ -402,14 +403,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
-            var cacheKey = string.Format(CacheKeys.PostInfo, moduleId);
-            var myTemplate = Convert.ToString(DataCache.CacheRetrieve(cacheKey));
+            var cacheKey = string.Format(CacheKeys.ProfileInfo, moduleId);
+            var myTemplate = Convert.ToString(DataCache.CacheRetrieve(moduleId,cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
                 var objTemplateInfo = GetTemplateByName("ProfileInfo", moduleId, portalId);
                 myTemplate = objTemplateInfo.TemplateHTML;
                 if (cacheKey != string.Empty)
-                    DataCache.CacheStore(cacheKey, myTemplate);
+                    DataCache.CacheStore(moduleId,cacheKey, myTemplate);
             }
 
             myTemplate = ParseProfileTemplate(myTemplate, up, portalId, moduleId, imagePath, currentUserType, true, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);

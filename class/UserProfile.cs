@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
             
-			UserProfileInfo upi = (UserProfileInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+			UserProfileInfo upi = (UserProfileInfo)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
 			if (upi == null)
 			{
 				DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					IDataReader dr;
 					dr = ds.CreateDataReader();
 					upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo))); 
-					DataCache.CacheStore(string.Format(CacheKeys.UserProfile, ModuleId, UserId),upi);
+					DataCache.CacheStore(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId),upi);
                 }
 			}
 			return upi;
@@ -268,18 +268,18 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
             DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
             // KR - clear cache when updated
-			DataCache.CacheClear(string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
+			DataCache.CacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
 		}
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
         public static void Profiles_ClearCache(int UserID)
         {
-            DataCache.CacheClearPrefix(CacheKeys.UserProfilePrefix);
+            DataCache.CacheClearPrefix(-1,CacheKeys.CachePrefix);
 
         }
         public static void Profiles_ClearCache(int ModuleId, int UserId)
         {
-            DataCache.CacheClear(string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+            DataCache.CacheClear(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
         }
     }
 #endregion

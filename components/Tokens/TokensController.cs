@@ -28,15 +28,11 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class TokensController
 	{
-		internal List<Token> TokensList()
-		{
-			return TokensList(string.Empty);
-		}
-		internal List<Token> TokensList(string group)
+		internal List<Token> TokensList(int ModuleId, string group)
 		{
 			try
 			{
-                List<Token> li = (List<Token>)DataCache.CacheRetrieve(string.Format(CacheKeys.Tokens, group));
+                List<Token> li = (List<Token>)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group));
                 if (li == null)
                 {
                     li = new List<Token>();
@@ -74,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    DataCache.CacheStore(string.Format(CacheKeys.Tokens, group), li);
+                    DataCache.CacheStore(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group), li);
                 }
                 return li;
 			}
@@ -83,10 +79,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				return null;
 			}
 		}
-		internal string TokenGet(string group, string TokenName)
+		internal string TokenGet(int ModuleId, string group, string TokenName)
 		{
 			string sOut = string.Empty;
-			List<Token> tl = TokensList(group);
+			List<Token> tl = TokensList(ModuleId, group);
 			foreach (Token t in tl)
 			{
 				if (t.TokenTag == TokenName)

@@ -190,7 +190,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     TopicsTemplate = DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "TopicsView", defaultTemplateId);
                 }
-                bool loadComplete = false;
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -239,7 +238,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 TopicsTemplate = TopicsTemplate.Replace("[AF:SORT:REPLYCREATED]", string.Empty);
                 if (TopicsTemplate.Contains("[TOPICS]"))
                 {
-                    DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
+                    DataSet ds = (DataSet)DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId));
+                    if (ds == null)
+                    {
+                        ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
+                        DataCache.CacheStore(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId,ForumId, UserId), ds, System.DateTime.UtcNow.AddMinutes(3)); 
+                    }
                     if (ds.Tables.Count > 0)
                     {
                         drForum = ds.Tables[0].Rows[0];

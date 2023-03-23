@@ -18,6 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     #region Enumerations
@@ -326,33 +328,50 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	public class CacheKeys
     {
-        public const string UserProfilePrefix = "AF-prof";
-        public const string UserProfile = UserProfilePrefix + "-{0}-{1}";
-        public const string Rewards = "afrwd{0}";
-		public const string PostInfo = "afpi{0}";
-		public const string ForumInfo = "affi{0}";
-		public const string ForumInfoWithUser = "affi{0}-{1}";
-		public const string AllSettings = "afset{0}";
-        public const string MainSettings = "afms{0}";
-        public const string ForumSettings = "affs{0}";
-        public const string ForumSettingsByKey = "affsk{0}";
-        public const string GroupSettingsByKey = "afgsk{0}";
-        public const string GroupInfo = "afgi{0}";
-		public const string ProfileTemplate = "afpit{0}";
-        public const string ForumList = "affl{0}";
-        public const string ForumListXml = "afflx{0}";
-        public const string Tokens = "aftk{0}";
-        public const string ForumView = "AF-FV-{0}-{1}";
-        public const string ForumViewForUser = "AF-FV-{0}-{1}-{2}-{3}";
-        public const string Toolbar = "aftb{0}";
-        public const string TemplatePrefix = "aftmpl_";
-        public const string Template = TemplatePrefix + "_{0}_{1}_{2}";
-        public const string QuickReply = "afqr{0}";
-        public const string RoleNames = "afrn{0}";
-        public const string CacheUpdate = "afcu{0}";
-        public const string WhatsNew = "aftp_{0}";
-        public const string RssTemplate = "aftprss_{0}_{1}";
+        public const string CachePrefix = "AF-";
+        public const string CacheModulePrefix = "AF-{0}-";
+        public const string UserProfile = "AF-{0}-prof-{1}";
+        public const string Rewards = "AF-{0}-rwd";
+		public const string ProfileInfo = "AF-{0}-pi";
+		public const string ForumInfo = "AF-{0}-fi-{1}";
+        public const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";
+        public const string HostUrl = "AF-{0}-url";
+        public const string MainSettings = "AF-{0}-ms";
+        public const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
+        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}"; 
+        public const string ForumList = "AF-{0}-fl";
+        public const string ForumListXml = "AF-{0}-flx";
+        public const string Tokens = "AF-{0}-tk-{1}";
+        public const string ForumViewPrefix = "AF-{0}-FV-";
+        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}";
+        public const string TopicViewPrefix = "AF-{0}-TV-";
+        public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}";
+        public const string TopicsViewPrefix = "AF-{0}-TVS-";
+        public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}";
+        public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
+        public const string Toolbar = "AF-{0}-tb";
+        public const string TemplatePrefix = "AF-{0}-tmpl-";
+        public const string Template = "AF-{0}-tmpl-{1}-{2}";
+        public const string QuickReply = "AF-{0}-qr";
+        public const string CacheEnabled = "AF-{0}-ce";
+        public const string CacheUpdate = "AF-{0}-cu";
+        public const string WhatsNew = "AF-{0}-tp";
+        public const string RssTemplate = "AF-{0}-tprss-_{1}";
+		public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
+        public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
+        public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
 
+        public const string RoleNames = "AF-rn-{0}";
+        public const string RoleIDs = "AF-rids-{0}";
+        public const string UserRoles  = "AF-userroles-{0}";
+
+        //public const string ForumView = "AF-{0}-FV-{1}";
+        //public const string AllSettings = "AF-afset{0}";
+        //public const string GroupInfo = "AF-gi{0}";
+
+
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        public const string ForumSettings = "AF-{0}-fs-{1}";
     }
 
 

@@ -47,11 +47,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
 
-                    var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.CacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = new ModuleController().GetModuleSettings(ModuleId);
-                        DataCache.CacheStore(settingsCacheKey, moduleSettings);
+                        moduleSettings = new ModuleController().GetModule(moduleID:ModuleId).ModuleSettings;
+                        DataCache.CacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
                     _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _authorizedForums ??
                        (_authorizedForums =
-                        new Data.Common().CheckForumIdsForView(Settings.Forums, CurrentUser.UserRoles));
+                        new Data.Common().CheckForumIdsForView(ModuleId, Settings.Forums, CurrentUser.UserRoles));
             }
         }
 

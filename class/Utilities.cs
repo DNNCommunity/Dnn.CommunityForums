@@ -100,8 +100,8 @@ namespace DotNetNuke.Modules.ActiveForums
             template = ParseSpacer(template);
 
             var tc = new TokensController();
-
-            var li = tc.TokensList(group);
+            
+            var li = tc.TokensList(config.ModuleId,group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -114,8 +114,8 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[VIEWS:TOPICS]", Views.Topics);
             template = template.Replace("[VIEWS:TOPIC]", Views.Topic);
             template = template.Replace("[PAGEID]", config.PageId.ToString());
-            template = template.Replace("[SITEID]", config.SiteId.ToString());
-            template = template.Replace("[INSTANCEID]", config.InstanceId.ToString());
+            template = template.Replace("[SITEID]", config.PortalId.ToString());
+            template = template.Replace("[INSTANCEID]", config.ModuleId.ToString());
 
             return template;
         }

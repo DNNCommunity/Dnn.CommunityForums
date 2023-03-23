@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using static DotNetNuke.Modules.ActiveForums.Templates;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -116,9 +117,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						}
 
 						ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-						templateId = tc.Template_Save(ti);
-						string ckey = ModuleId + templateId + Convert.ToString(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString()));
-						DataCache.CacheClear(ckey);
+                            templateId = tc.Template_Save(ti);
+						DataCache.CacheClear(ModuleId, string.Format(CacheKeys.Template, ModuleId, templateId, ti.TemplateType));
 						sMsg = "Template saved successfully!";
 					}
 					catch (Exception ex)
@@ -150,8 +150,9 @@ namespace DotNetNuke.Modules.ActiveForums
 							{
 								sMsg = "Enable to delete system templates";
 							}
-						}
-					}
+                            }
+                            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TemplatePrefix, ModuleId));
+                        }
 					catch (Exception ex)
 					{
 						sMsg = "Error deleting template.";
