@@ -397,7 +397,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = Request.UserHostAddress;
-            ReplyId = rc.Reply_Save(PortalId, ri);
+            ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             //Check if is subscribed
             string cachekey = string.Format(CacheKeys.ForumView, PortalId, ModuleId);

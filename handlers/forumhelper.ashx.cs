@@ -367,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 						{
 							t.IsPinned = true;
 						}
-						tc.TopicSave(PortalId, t);
+						tc.TopicSave(PortalId, ModuleId, t);
 						return BuildOutput(string.Empty, OutputCodes.Success, true);
 					}
 				}
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 						{
 							t.IsLocked = true;
 						}
-						tc.TopicSave(PortalId, t);
+						tc.TopicSave(PortalId, ModuleId, t);
 						return BuildOutput(string.Empty, OutputCodes.Success, true);
 					}
 				}
@@ -831,7 +831,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 						t.TopicData = tData.ToString();
 					}
 				}
-				tc.TopicSave(PortalId, t);
+				tc.TopicSave(PortalId, ModuleId, t);
                 tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 if (Params["tags"] != null)
 				{
