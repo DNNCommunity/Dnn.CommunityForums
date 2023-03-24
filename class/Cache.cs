@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			string myFile;
 			object obj = CacheRetrieve(ModuleId + TemplateId + TemplateType);
-			if (disableCache)
+			if (!IsCachingEnabledForModule(ModuleId))
 			{
 				obj = null;
 			}
@@ -431,7 +431,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
 			System.IO.StreamReader objStreamReader;
-			if (_disableCache)
+			if (!IsCachingEnabledForModule(ModuleId))
 			{
 				sTemplate = GetTemplate(TemplateId, TemplateType);
 			}

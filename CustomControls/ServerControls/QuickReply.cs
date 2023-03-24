@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (iFloodInterval > 0)
             {
                 UserProfileController upc = new UserProfileController();
-                UserProfileInfo upi = upc.Profiles_Get(SiteId, InstanceId, this.UserId);
+                UserProfileInfo upi = upc.Profiles_Get(PortalId, ModuleId, this.UserId);
                 if (upi != null)
                 {
                     if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < iFloodInterval)
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             //End If
             ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+            Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
             bool UserIsTrusted = false;
             UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = false;
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                     Subscriptions.SendSubscriptions(PortalId, ModuleId, PageId, ForumId, TopicId, ReplyId, UserId);
                     Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody,ForumInfo.Security.Read, SocialGroupId);
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody, forumInfo.ActiveSocialSecurityOption, forumInfo.Security.Read, forumInfo.SocialGroupId);
                 }
                 catch (Exception ex)
                 {
@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 try
                 {
                     Modules.ActiveForums.Social oSocial = new Modules.ActiveForums.Social();
-                    oSocial.AddForumItemToJournal(SiteId, InstanceId, UserId, "forumreply", fullURL, Subject, sBody);
+                    oSocial.AddForumItemToJournal(PortalId, ModuleId, UserId, "forumreply", fullURL, Subject, sBody);
                 }
                 catch (Exception ex)
                 {

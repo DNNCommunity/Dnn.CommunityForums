@@ -360,6 +360,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
+        public const string ForumSettings = "AF-{0}-fs-{1}";
+
+
 
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
@@ -369,9 +372,6 @@ namespace DotNetNuke.Modules.ActiveForums
         //public const string AllSettings = "AF-afset{0}";
         //public const string GroupInfo = "AF-gi{0}";
 
-
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
-        public const string ForumSettings = "AF-{0}-fs-{1}";
     }
 
 

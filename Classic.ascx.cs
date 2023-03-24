@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.AppPath = Page.ResolveUrl("~/DesktopModules/ActiveForums/");
                 cc.ThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/");
                 cc.TemplatePath = cc.ThemePath + "templates/";
-                cc.SiteId = PortalId;
+                cc.PortalId = PortalId;
                 cc.PageId = TabId;
                 cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
