@@ -994,7 +994,7 @@
     </Compile>
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Services\AdminServiceController.cs" />
-    <Compile Include="Services\ForumRouteMapper.cs" />
+    <Compile Include="Services\RouteMapper.cs" />
     <Compile Include="Services\ForumServiceController.cs" />
     <Compile Include="Services\ModerationService.cs" />
     <Compile Include="ForumSettings.ascx.designer.cs">
