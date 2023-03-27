@@ -258,10 +258,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //Page.ClientScript.RegisterClientScriptInclude("aftags", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/jquery.tokeninput.js"))
         }
+        protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // if someone activates this checkbox send him home :-)
+            Response.Redirect("http://localhost/", true);
+        }
 
         private void ctlForm_Click(object sender, EventArgs e)
         {
-            Page.Validate();
+            Page.Validate(); 
+            if (ContactByFaxOnlyCheckBox.Checked)
+            {
+                // if someone activates this checkbox send him home :-)
+                Response.Redirect("about:blank");
+            }
             var iFloodInterval = MainSettings.FloodInterval;
             if (iFloodInterval > 0)
             {
