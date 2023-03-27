@@ -233,7 +233,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			userRoles = UserRolesDictionary.GetRoles(PortalId, UserId);
 			if (string.IsNullOrEmpty(userRoles))
 			{
-				var social = new Social();
 				var uc = new Security.Roles.RoleController();
 				string[] roles = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId).Roles;
 				string roleIds = GetRoleIds(roles, PortalId);

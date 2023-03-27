@@ -118,26 +118,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//drpSecRoles.Items.Insert(1, New ListItem("All Users", "-1"))
 			//drpSecRoles.Items.Insert(2, New ListItem("Unauthenticated Users", "-3"))
 			//drpSecRoles.Items.Insert(3, New ListItem("Topic Author", "-10"))
-			string sGroups = string.Empty;
-
-#if !SKU_LITE
-			if (System.IO.File.Exists(Server.MapPath("~/bin/active.modules.social.dll")))
-			{
-				Social social = new Social();
-				using (IDataReader dr = social.ActiveSocialListGroups(PortalId))
-				{
-					while (dr.Read())
-					{
-						sb.Append("<optgroup label=\"" + dr["GroupName"].ToString() + "\">");
-						sb.Append("<option value=\"" + dr["GroupId"].ToString() + ":0\">Group Admin</option>");
-						sb.Append("<option value=\"" + dr["GroupId"].ToString() + ":1\">Group Member</option>");
-						sb.Append("</optgroup>");
-
-					}
-					dr.Close();
-				}
-			}
-#endif
 			sb.Append("</select>");
 			litRoles.Text = sb.ToString();
 		}

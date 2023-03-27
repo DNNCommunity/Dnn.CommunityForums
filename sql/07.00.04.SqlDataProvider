@@ -1,0 +1,14 @@
+﻿/* issue 173 - Remove legacy ActiveSocial integration */
+
+SET NOCOUNT ON
+
+/* remove active social settings */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName IN (
+'ASTAK',  /* Active Social Topics Key */
+'ASRAK',  /* Active Social Replies Key */
+'AMASON', /* Active Social Enabled on Forum */
+'AMASSEC',/* Active Social Security Key on Forum */
+'AMASTO'  /* Active Social Topics Only on Forum */
+)
+GO
+/* remove active social settings */

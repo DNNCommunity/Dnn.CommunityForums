@@ -1204,9 +1204,6 @@ From,
   <data name="[RESX:TopicReview].Text" xml:space="preserve">
     <value>Topic Review</value>
   </data>
-  <data name="[RESX:ADDTHIS].Text" xml:space="preserve">
-    <value>AddThis - Bookmarking and Sharing Button</value>
-  </data>
   <data name="[RESX:AddToFavorites].Text" xml:space="preserve">
     <value>Add this to your browser favorites</value>
   </data>
@@ -1592,42 +1589,69 @@ From,
     <value>Split mode:</value>
   </data>
   <data name="ActiveTopics-15min.Text" xml:space="preserve">
-        <value>Last 15 minutes</value>
-    </data>
+    <value>Last 15 minutes</value>
+  </data>
   <data name="ActiveTopics-30min.Text" xml:space="preserve">
-        <value>Last 30 minutes</value>
-    </data>
+    <value>Last 30 minutes</value>
+  </data>
   <data name="ActiveTopics-45min.Text" xml:space="preserve">
-        <value>Last 45 minutes</value>
-    </data>
+    <value>Last 45 minutes</value>
+  </data>
   <data name="ActiveTopics-60min.Text" xml:space="preserve">
-        <value>Last hour</value>
-    </data>
+    <value>Last hour</value>
+  </data>
   <data name="ActiveTopics-120min.Text" xml:space="preserve">
-        <value>Last 2 hours</value>
-    </data>
+    <value>Last 2 hours</value>
+  </data>
   <data name="ActiveTopics-360min.Text" xml:space="preserve">
-        <value>Last 6 hours</value>
-    </data>
+    <value>Last 6 hours</value>
+  </data>
   <data name="ActiveTopics-720min.Text" xml:space="preserve">
-        <value>Last 12 hours</value>
-    </data>
+    <value>Last 12 hours</value>
+  </data>
   <data name="ActiveTopics-1440min.Text" xml:space="preserve">
-        <value>Last day</value>
-    </data>
+    <value>Last day</value>
+  </data>
   <data name="ActiveTopics-2880min.Text" xml:space="preserve">
-        <value>Last 2 days</value>
-    </data>
+    <value>Last 2 days</value>
+  </data>
   <data name="ActiveTopics-10080min.Text" xml:space="preserve">
-        <value>Last week</value>
-    </data>
+    <value>Last week</value>
+  </data>
   <data name="ActiveTopics-20160min.Text" xml:space="preserve">
-        <value>Last 2 weeks</value>
+    <value>Last 2 weeks</value>
   </data>
   <data name="ActiveTopics-40320min.Text" xml:space="preserve">
-        <value>Last month</value>
+    <value>Last month</value>
   </data>
   <data name="ActiveTopics-80640min.Text" xml:space="preserve">
-        <value>Last 2 months</value>
+    <value>Last 2 months</value>
+  </data>
+  <data name="[RESX:NewPost].Text" xml:space="preserve">
+    <value>new post</value>
+  </data>
+  <data name="[RESX:NewReply].Text" xml:space="preserve">
+    <value>new reply</value>
+  </data>
+  <data name="[RESX:SubscribedForumName].Text" xml:space="preserve">
+    <value>Subscribed Forum {0}</value>
+  </data>
+  <data name="[RESX:SubscribedForum].Text" xml:space="preserve">
+    <value>Subscribed Forum</value>
+  </data>
+  <data name="[RESX:SubscribedTopicSubject].Text" xml:space="preserve">
+    <value>Subscribed Topic {0}</value>
+  </data>
+  <data name="[RESX:SubscribedTopic].Text" xml:space="preserve">
+    <value>Subscribed Topic</value>
+  </data>
+  <data name="[RESX:SubscribedTopicForumName].Text" xml:space="preserve">
+    <value>Subscribed Topic {0} on Forum {1}</value>
+  </data>
+  <data name="[RESX:postedIn.Text]" xml:space="preserve">
+    <value>posted in</value>
+  </data>
+  <data name="[RESX:repliedto.Text]" xml:space="preserve">
+    <value>replied to</value>
   </data>
 </root>

@@ -82,15 +82,16 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
     </CreateItem>
 
-    <CreateItem Include="**\WhatsNew.ascx">
-      <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
-    </CreateItem>
+	  <CreateItem Include="**\WhatsNew.ascx">
+		  <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
+	  </CreateItem>
 
-    <CreateItem Include="**\WhatsNewOptions.ascx">
-      <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
-    </CreateItem>
+	  <CreateItem Include="**\WhatsNewOptions.ascx">
+		  <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
+	  </CreateItem>
 
-    <ItemGroup>
+
+	  <ItemGroup>
       <BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
       <!--BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\*.dll" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
     </ItemGroup>
@@ -108,7 +109,29 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
 
-    <!-- create the INSTALL WHATSNEWRESOURCES.ZIP file -->
+	  <!-- create the INSTALL ActiveForumViewerResources.ZIP file -->
+
+
+	  <CreateItem Include="**\ActiveForumViewer.ascx">
+		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerFiles" />
+	  </CreateItem>
+
+	  <CreateItem Include="**\ActiveForumViewerSettings.ascx">
+		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerFiles" />
+	  </CreateItem>
+	  <Copy SourceFiles="@(ActiveForumsViewerFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" />
+
+	  <CreateItem Include="$(MSBuildProjectDirectory)\PackageActiveForumsViewer\**\*.*">
+		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerResourcesContent" />
+	  </CreateItem>
+
+	  <Zip Files="@(ActiveForumsViewerResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" ZipFileName="ActiveForumsViewerResources.$(Extension)" />
+	  <Copy SourceFiles="$(MSBuildProjectDirectory)\ActiveForumsViewerResources.$(Extension)" DestinationFolder="Package\" />
+
+	  <RemoveDir Directories="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" />
+
+
+	  <!-- create the INSTALL WHATSNEWRESOURCES.ZIP file -->
     <Copy SourceFiles="@(WhatsNewFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageWhatsNew" />
 
     <CreateItem Include="$(MSBuildProjectDirectory)\PackageWhatsNew\**\*.*">
@@ -167,7 +190,8 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip" />
 
     <Delete Files="$(MSBuildProjectDirectory)\Resources.Zip" />
-    <Delete Files="$(MSBuildProjectDirectory)\WhatsNewResources.Zip" />
+	  <Delete Files="$(MSBuildProjectDirectory)\WhatsNewResources.Zip" />
+	  <Delete Files="$(MSBuildProjectDirectory)\ActiveForumsViewerResources.Zip" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Symbols.$(Extension)" />
   </Target>

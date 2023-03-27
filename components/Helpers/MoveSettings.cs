@@ -52,7 +52,6 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.FloodInterval, currSettings.FloodInterval.ToString());
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.EditInterval, currSettings.EditInterval.ToString());
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.DeleteBehavior, currSettings.DeleteBehavior.ToString());
-			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.AddThisAccount, currSettings.AddThisAccount);
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.EnableAutoLink, currSettings.AutoLinkEnabled.ToString());
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.EnableURLRewriter, currSettings.URLRewriteEnabled.ToString());
 			if (string.IsNullOrEmpty(currSettings.PrefixURLBase))

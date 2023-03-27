@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	public enum SpecialTokenTypes
 	{
-		AddThis //http://www.addthis.com
+		
 	}
 
 	public enum TrustTypes
@@ -199,13 +199,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string InstallDate = "INSTALLDATE";
 		public const string IsInstalled = "INSTALLED";
 		public const string ProfileVisibility = "PROFILEVISIBILITY";
-		public const string AddThisAccount = "ADDTHISACCOUNT";
 		public const string UseShortUrls = "SHORTURLS";
 		public const string RequireCaptcha = "REQCAPTCHA";
 		public const string UseSkinBreadCrumb = "USESKINBC";
 		public const string EnableAutoLink = "AUTOLINK";
-		public const string ActiveSocialTopicKey = "ASTAK";
-		public const string ActiveSocialRepliesKey = "ASRAK";
 		public const string EnableURLRewriter = "EURLR";
 		public const string PrefixURLBase = "URLBASE";
 		public const string PrefixURLTags = "URLTAGS";
@@ -270,10 +267,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string AllowTags = "ALLOWTAGS";
 	    public const string CreatePostCount = "CREATEPOSTCOUNT";
 	    public const string ReplyPostCount = "REPLYPOSTCOUNT";
-
-		public const string ActiveSocialEnabled = "AMASON";
-		public const string ActiveSocialTopicsOnly = "AMASTO";
-		public const string ActiveSocialSecurityOption = "AMASSEC";
         public const string AllowLikes = "ALLOWLIKES";
 
 

@@ -61,14 +61,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _bTrust;
         private bool _bDelete;
         private bool _bEdit;
-        private bool _bLock;
-        private bool _bPin;
         private bool _bSubscribe;
         private bool _bModApprove;
         private bool _bModSplit;
         private bool _bModDelete;
         private bool _bModEdit;
         private bool _bModMove;
+        private bool _bModLock = false;
+        private bool _bModPin = false;
         private bool _bAllowRSS;
         private int _rowIndex;
         private int _pageSize = 20;
@@ -358,6 +358,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bTrust = Permissions.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
             _bModEdit = Permissions.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
             _bModMove = Permissions.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+            _bModPin = Permissions.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
+            _bModLock = Permissions.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
 
             _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
@@ -408,7 +410,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var sURL = string.Empty;
 
-            if (MainSettings.URLRewriteEnabled && Request.QueryString["asg"] == null && !string.IsNullOrEmpty(_topicURL))
+            if (MainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(_topicURL))
             {
                 var db = new Data.Common();
                 sURL = db.GetUrl(ModuleId, ForumGroupId, ForumId, TopicId, UserId, contentJumpId);
@@ -808,12 +810,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             // Do a few things before we switch to a string builder
 
-            // Add This
+            // Add This -- obsolete so just remove
             if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(Request));
-                sOutput = TemplateUtils.ParseSpecial(sOutput, SpecialTokenTypes.AddThis, strHost + Request.RawUrl, _topicSubject, _bRead, MainSettings.AddThisAccount);
+                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
+                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
+                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
+
 
             // Banners
             if (sOutput.Contains("[BANNER"))
@@ -1335,7 +1339,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
 
-
             // Parse Roles -- This should actually be taken care of in ParseProfileTemplate
             //if (sOutput.Contains("[ROLES:"))
             //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Profile.Roles);
@@ -1409,6 +1412,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput = sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
             }
 
+            if (_bModLock)
+            {
+                //sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock([TOPICID]);};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue\"></i></a>");
+                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock([TOPICID]);};\" title=\"[RESX:Lock]\"><i class=\"fa fa-lock fa-fm fa-blue\"></i>&nbsp;[RESX:Lock]</li>");
+
+            }
+            else
+            {
+                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", string.Empty);
+            }
+            if (_bModPin)
+            {
+                //sbOutput = sbOutput.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin([TOPICID]);};\" title=\"[RESX:Pin]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue\"></i></a>");
+                sbOutput.Replace("[ACTIONS:PIN]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin([TOPICID]);};\" title=\"[RESX:Pin]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue\"></i>&nbsp;[RESX:Pin]</li>");
+
+            }
+            else
+            {
+                sbOutput = sbOutput.Replace("[ACTIONS:PIN]", string.Empty);
+            }
             sbOutput = sbOutput.Replace("[TOPICID]", TopicId.ToString());
 
             // Status
