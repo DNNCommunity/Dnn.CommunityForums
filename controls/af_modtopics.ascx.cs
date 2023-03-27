@@ -259,9 +259,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             break;
                         }
-                }
-                string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                DataCache.CacheClearPrefix(cachekey);
+                } 
+                DataCache.CacheClearPrefix(ModuleId,  string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             }
             BuildModList();
             litTopics.RenderControl(e.Output);

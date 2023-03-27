@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
 			objModules.UpdateModuleSetting(tabModuleId, "NeedsConvert", "False");
 			objModules.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
-			DataCache.CacheClear(string.Format(CacheKeys.MainSettings, forumModuleId));
+			DataCache.CacheClear(forumModuleId,string.Format(CacheKeys.MainSettings, forumModuleId));
 
             return false;
 		}

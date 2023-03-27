@@ -249,20 +249,18 @@ namespace DotNetNuke.Modules.ActiveForums
 		public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
 		{
             
-			UserProfileInfo upi = null;
-			DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
-			if (ds.Tables.Count == 0)
+			UserProfileInfo upi = (UserProfileInfo)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+			if (upi == null)
 			{
-                //todo: UPI is always null?
-				return upi;
+				DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
+				if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+				{
+					IDataReader dr;
+					dr = ds.CreateDataReader();
+					upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo))); 
+					DataCache.CacheStore(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId),upi);
+                }
 			}
-			if (ds.Tables[0].Rows.Count > 0)
-			{
-				IDataReader dr;
-				dr = ds.CreateDataReader();
-				upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo)));
-			}
-
 			return upi;
 		}
 
@@ -270,17 +268,20 @@ namespace DotNetNuke.Modules.ActiveForums
 		public void Profiles_Save(UserProfileInfo ui)
 		{
             DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
-			// KR - clear cache when updated
-			Profiles_ClearCache(ui.UserID);
+            // KR - clear cache when updated
+			DataCache.CacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
 		}
 
 		public static void Profiles_ClearCache(int UserID)
         {
-			DataCache.CacheClearPrefix(string.Format("AF-prof-{0}", UserID));
+            DataCache.CacheClearPrefix(-1,CacheKeys.CachePrefix);
 
-		}
-
-	}
+        }
+        public static void Profiles_ClearCache(int ModuleId, int UserId)
+        {
+            DataCache.CacheClear(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+        }
+    }
 #endregion
 
 }

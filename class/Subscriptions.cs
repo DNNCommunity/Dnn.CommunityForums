@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 //ORIGINAL LINE: Imports System.Web.HttpContext
@@ -30,6 +31,9 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.UI.UserControls;
+using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -119,10 +123,21 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 	}
 	public abstract class Subscriptions
-	{
+    {
 		public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int AuthorId)
 		{
-			int iSub = DataProvider.Instance().Subscriptions_IsSubscribed(PortalId, ModuleId, ForumId, TopicId, (int)SubscriptionType, AuthorId);
+			int iSub;
+            object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.Subscriber, ModuleId, ForumId, TopicId, SubscriptionType.ToString(), AuthorId));
+			if (obj == null)
+			{
+				iSub = DataProvider.Instance().Subscriptions_IsSubscribed(PortalId, ModuleId, ForumId, TopicId, (int)SubscriptionType, AuthorId);
+				DataCache.CacheStore(ModuleId, string.Format(CacheKeys.Subscriber, ModuleId, ForumId, TopicId, SubscriptionType.ToString(), AuthorId), iSub);
+			}
+			else
+			{
+				iSub = (int)obj;
+			}
+            
 			if (iSub == 0)
 			{
 				return false;

@@ -45,13 +45,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_settings == null)
                 {
-                    var settingsCacheKey = "aftp_" + ModuleId;
+                    var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
 
-                    var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.CacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
                         moduleSettings = new ModuleController().GetModule(moduleID:ModuleId).ModuleSettings;
-                        DataCache.CacheStore(settingsCacheKey, moduleSettings);
+                        DataCache.CacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
                     _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _authorizedForums ??
                        (_authorizedForums =
-                        new Data.Common().CheckForumIdsForView(Settings.Forums, CurrentUser.UserRoles));
+                        new Data.Common().CheckForumIdsForView(ModuleId, Settings.Forums, CurrentUser.UserRoles));
             }
         }
 

@@ -33,6 +33,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Instrumentation;
+using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
+using System.Drawing.Printing;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -294,9 +296,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
-
-            var ds = DataProvider.Instance().UI_TopicView(PortalId, ModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort);
-
+            DataSet ds = (DataSet)DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ForumId,TopicId, UserId));
+            if (ds == null)
+            {
+                ds = DataProvider.Instance().UI_TopicView(PortalId, ModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
+                DataCache.CacheStore(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ForumId, TopicId, UserId), ds, System.DateTime.UtcNow.AddMinutes(3)); ;
+            }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
                 Response.Redirect(Utilities.NavigateUrl(TabId));
@@ -887,8 +892,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Topic and post actions
             var tc = new TokensController();
-            var topicActions = tc.TokenGet("topic", "[AF:CONTROL:TOPICACTIONS]");
-            var postActions = tc.TokenGet("topic", "[AF:CONTROL:POSTACTIONS]");
+            var topicActions = tc.TokenGet(ModuleId, "topic", "[AF:CONTROL:TOPICACTIONS]");
+            var postActions = tc.TokenGet(ModuleId,"topic", "[AF:CONTROL:POSTACTIONS]");
             if (sOutput.Contains("[AF:CONTROL:TOPICACTIONS]"))
             {
                 _useListActions = true;

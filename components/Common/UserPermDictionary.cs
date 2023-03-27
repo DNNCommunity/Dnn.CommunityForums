@@ -26,63 +26,44 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class UserRolesDictionary
 	{
-		internal static string GetRoles(string key)
+		internal static string GetRoles(int PortalId, int UserId)
 		{
 			try
 			{
-				object obj = DataCache.CacheRetrieve("afuserroles");
-				if (obj != null)
-				{
-					Dictionary<string, string> dict = (Dictionary<string, string>)obj;
-					if (dict.ContainsKey(key))
-					{
-						return dict[key];
-					}
-					else
-					{
-						return string.Empty;
-					}
-				}
-				else
-				{
-					return string.Empty;
-				}
+                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.CacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
+				return (dict !=null && (dict.ContainsKey(UserId.ToString()))) ? dict[UserId.ToString()] : string.Empty;
+				
 			}
-			catch (Exception ex)
+			catch
 			{
 				return string.Empty;
 			}
 		}
-		internal static bool AddRoles(string key, string v)
+		internal static bool AddRoles(int PortalId, int UserId, string Roles)
 		{
 			try
 			{
-				object obj = DataCache.CacheRetrieve("afuserroles");
-				Dictionary<string, string> dict = null;
-				if (obj == null)
+                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.CacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
+				if (dict == null)
 				{
 					dict = new Dictionary<string, string>();
 				}
-				else
+
+                if (dict.ContainsKey(UserId.ToString()))
 				{
-					dict = (Dictionary<string, string>)obj;
-				}
-				if (dict.ContainsKey(key))
-				{
-					dict[key] = v;
+					dict[UserId.ToString()] = Roles;
 				}
 				else
 				{
-					dict.Add(key, v);
+					dict.Add(UserId.ToString(), Roles);
 				}
-				DataCache.CacheStore("afuserroles", dict, DateTime.UtcNow.AddMinutes(3));
+				DataCache.CacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
 				return true;
 			}
-			catch (Exception ex)
+			catch
 			{
 				return false;
 			}
-
 		}
 	}
 }

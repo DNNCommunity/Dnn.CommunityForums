@@ -204,8 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UpdateModuleLastContentModifiedOnDate(ModuleId);
 
             DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
-			var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-			DataCache.CacheClearPrefix(cachekey);
+			DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 			try
 			{
 				var objectKey = string.Format("{0}:{1}", ForumId, TopicId);
@@ -493,8 +492,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					string permittedRolesCanView = string.Empty;
 					if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
 					{
-						var canView = new Data.Common().WhichRolesCanViewForum(forumid, roleIds);
-						permittedRolesCanView = Permissions.GetRoleNames(string.Join(";", canView.Split(":".ToCharArray())), moduleInfo.PortalID);
+						var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
+						permittedRolesCanView = Permissions.GetRoleNames(moduleInfo.PortalID, moduleInfo.ModuleID, string.Join(";", canView.Split(":".ToCharArray())));
 						AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
 					}
 					var searchDoc = new SearchDocument

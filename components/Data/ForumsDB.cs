@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		public ForumCollection Forums_List(int PortalId, int ModuleId)
 		{
 			ForumCollection f = new ForumCollection();
-			object obj = DataCache.CacheRetrieve(string.Format(CacheKeys.ForumList, ModuleId));
+			object obj = DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.ForumList, ModuleId));
 			if (obj != null)
 			{
 				f = (ForumCollection)obj;
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 					dr.Close();
 				}
 
-				DataCache.CacheStore(string.Format(CacheKeys.ForumList, ModuleId), f);
+				DataCache.CacheStore(ModuleId,string.Format(CacheKeys.ForumList, ModuleId), f);
 			}
 			return f;
 
@@ -155,14 +155,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			}
 			return ht;
 		}
-		public XmlDocument ForumListXML(int SiteId, int InstanceId)
+		public XmlDocument ForumListXML(int PortalId, int ModuleId)
 		{
 			XmlDocument xDoc = new XmlDocument();
-			object obj = DataCache.CacheRetrieve(InstanceId + "fv");
+			object obj = DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.ForumListXml, ModuleId));
 			if (obj == null)
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
-				ForumCollection fc = db.Forums_List(SiteId, InstanceId);
+				ForumCollection fc = db.Forums_List(PortalId, ModuleId);
 				//Dim ds As DataSet = SqlHelper.ExecuteDataset(connectionString, databaseOwner & objectQualifier & "activeforums_UI_ForumDisplay", SiteId, InstanceId, UserId, -1, ForumIds)
 				System.Text.StringBuilder sb = new System.Text.StringBuilder();
 				sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 				//Dim sXML As String = ds.GetXml()
 				xDoc.LoadXml(sb.ToString());
-				DataCache.CacheStore(InstanceId + "fv", xDoc);
+				DataCache.CacheStore(ModuleId,string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);
 			}
 			else
 			{

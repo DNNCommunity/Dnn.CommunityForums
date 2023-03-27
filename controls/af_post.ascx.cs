@@ -900,8 +900,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                DataCache.CacheClearPrefix(cachekey);
+                DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
                 if (ctlForm.Subscribe && authorId == UserId)
                 {
                     if (!(Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId)))
@@ -1080,8 +1079,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             //tc.ForumTopicSave(ForumID, TopicId, ReplyId)
-            var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-            DataCache.CacheClearPrefix(cachekey);
+            DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             try
             {
                 if (ctlForm.Subscribe && authorId == UserId)

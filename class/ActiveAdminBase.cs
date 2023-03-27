@@ -23,12 +23,12 @@ using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public class ActiveAdminBase : Entities.Modules.PortalModuleBase
     {
-        private string _Params = string.Empty;
         private string _currentView = string.Empty;
         private DateTime _CacheUpdatedTime;
         public const string RequiredImage = Globals.ModulePath + "images/error.gif";
@@ -39,25 +39,14 @@ namespace DotNetNuke.Modules.ActiveForums
         internal const string DefaultView = "home";
         #endregion
 
-        public string Params
-        {
-            get
-            {
-                return _Params;
-            }
-            set
-            {
-                _Params = value;
-            }
-        }
-
+        public string Params { get; set; } = string.Empty;
         public bool IsCallBack { get; set; }
 
         public string HostURL
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId + "HostURL");
+                object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.HostUrl, ModuleId));
                 if (obj == null)
                 {
                     string sURL;
@@ -69,12 +58,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sURL = "http://" + Common.Globals.GetDomainName(Request) + "/";
                     }
-                    DataCache.CacheStore(ModuleId + "HostURL", sURL, DateTime.UtcNow.AddMinutes(30));
+                    DataCache.CacheStore(ModuleId,string.Format(CacheKeys.HostUrl, ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
                 return Convert.ToString(obj);
             }
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public string GetWarningImage(string ImageId, string WarningMessage)
         {
             return "<img id=\"" + ImageId + "\" onmouseover=\"showTip(this,'" + WarningMessage + "');\" onmouseout=\"hideTip();\" alt=\"" + WarningMessage + "\" height=\"16\" width=\"16\" src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/warning.gif") + "\" />";
@@ -83,6 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Utilities.GetSharedResource(key, true);
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public Hashtable ActiveSettings
         {
             get
@@ -94,14 +85,15 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: ModuleId).ModuleSettings };
             }
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public DateTime CacheUpdatedTime
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId + "CacheUpdate");
+                object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId));
                 if (obj != null)
                 {
                     return Convert.ToDateTime(obj);
@@ -110,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                DataCache.CacheStore(ModuleId + "CacheUpdate", value);
+                DataCache.CacheStore(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId), value);
                 _CacheUpdatedTime = value;
             }
         }
@@ -120,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
             LocalResourceFile = Globals.ControlPanelResourceFile;
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         internal string ScriptEscape(string escape)
         {
             escape = escape.Replace("'", "\\'");
@@ -130,6 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Utilities.LocalizeControl(controlText, true);
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         protected override void Render(HtmlTextWriter writer)
         {
             var stringWriter = new System.IO.StringWriter();
@@ -139,6 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
             html = LocalizeControl(html);
             writer.Write(html);
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public Controls.ClientTemplate GetLoadingTemplate()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
@@ -180,6 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 _currentView = value;
             }
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public string ProductEditon
         {
             get
