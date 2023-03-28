@@ -24,6 +24,7 @@ using System.Web;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using System.Text;
 using DotNetNuke.Framework;
+using System.Runtime.InteropServices;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -49,9 +50,8 @@ namespace DotNetNuke.Modules.ActiveForums
             IsCallBack = cbShell.IsCallback;
 
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
-            var objModules = new Entities.Modules.ModuleController();
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
-            Hashtable Settings = objModules.GetModuleSettings(ModuleId);
+            Hashtable Settings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings;
             string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
             {
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var fc = new ForumsConfig();
                     bool configComplete = fc.ForumsInit(PortalId, ModuleId);
-                    objModules.UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
+                    new DotNetNuke.Entities.Modules.ModuleController().UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
                     if (System.IO.File.Exists(upFilePath))
                     {
                         System.IO.File.Delete(upFilePath);

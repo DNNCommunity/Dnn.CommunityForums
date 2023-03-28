@@ -47,7 +47,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <WarningLevel>1</WarningLevel>
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <DebugType>full</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -59,7 +59,7 @@
     <DefineConstants>TRACE;</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -654,6 +654,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />

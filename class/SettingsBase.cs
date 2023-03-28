@@ -350,12 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-
-                var _portalSettings = (PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
-                var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ForumModuleId)};
-
-                return objSettings;
+                return new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(ForumModuleId).ModuleSettings };
             }
         }
         public string ImagePath

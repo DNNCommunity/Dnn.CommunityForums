@@ -261,18 +261,10 @@ namespace DotNetNuke.Modules.ActiveForums
         private void ctlForm_Click(object sender, EventArgs e)
         {
             Page.Validate();
-            var iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
             {
-                if (ForumUser != null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, ForumUser.Profile.DateLastPost, DateTime.UtcNow) < iFloodInterval)
-                    {
-                        var im = new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>" };
-                        plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                return;
             }
             if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject)) 
                 return;

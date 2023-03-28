@@ -81,11 +81,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
-
-                var mc = new ModuleController();
+                var moduleController = new ModuleController();
 
                 // Load the current settings
-                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(mc.GetModuleSettings(ModuleId));
+                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleController.GetModule(ModuleId).ModuleSettings);
 
                 // Update Settings Values
                 settings.Forums = forums;
@@ -113,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Save Settings
-                settings.Save(mc, ModuleId);
+                settings.Save(moduleController, ModuleId);
 
                 // Redirect back to the portal home page
                 Response.Redirect(Common.Globals.NavigateURL(), true);
@@ -166,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForm()
         {
-            var moduleSettings = new ModuleController().GetModuleSettings(ModuleId) ;
+            var moduleSettings = new ModuleController().GetModule(ModuleId).ModuleSettings;
             var settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
 
             txtNumItems.Text = settings.Rows.ToString();
