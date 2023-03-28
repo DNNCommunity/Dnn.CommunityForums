@@ -16,11 +16,6 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
-//INSTANT C# TODO TASK: C# compiler constants cannot be set to explicit values:
-
-
-//#if SKU_ENTERPRISE
 
 using System;
 using System.Web.UI.WebControls;
@@ -68,19 +63,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(Settings["AFTopicTemplate"]);
                     }
-                    //Dim objModule As ForumBase = CType(LoadControl("~/desktopmodules/ActiveForums/ActiveForums.ascx"), ForumBase)
-                    //If Not objModule Is Nothing Then
-                    //    objModule.ModuleConfiguration = Me.ModuleConfiguration
-                    //    objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/ActiveForums.ascx")
-                    //    objModule.AFModID = CType(Settings["AFForumModuleID"], Integer)
-                    //    objModule.LoadGroupForumID = CType(Settings["AFForumGroupID"], Integer)
-                    //    objModule.LoadView = CType(Settings["AFViewType"], String)
-                    //    plhMod.Controls.Add(objModule)
-                    //End If
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";
                     oLink.Attributes["type"] = "text/css";
-                    oLink.Attributes["href"] = Page.ResolveUrl("~/DesktopModules/ActiveForums/module.css");
+                    oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "module.css");
                     System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
                     if (oCSS != null)
                     {
@@ -105,4 +91,3 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
     }
 }
-//#endif

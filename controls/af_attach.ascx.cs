@@ -33,14 +33,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		{
             base.OnInit(e);
 
-            LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
+            LocalResourceFile = Server.MapPath(Globals.SharedResourceFile);
 
             jQuery.RegisterJQuery(Page);
             jQuery.RegisterJQueryUI(Page);
             jQuery.RequestDnnPluginsRegistration();
             jQuery.RegisterFileUpload(Page);
 
-            ClientResourceManager.RegisterScript(Page, "~/DesktopModules/ActiveForums/scripts/jquery.afFileUpload.js", 102);
+            ClientResourceManager.RegisterScript(Page, Globals.ModulePath + "scripts/jquery.afFileUpload.js", 102);
 
             /*
             var version = System.Reflection.Assembly.GetAssembly(typeof(Common.Globals)).GetName().Version;

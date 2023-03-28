@@ -115,7 +115,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = new ModuleController().GetModuleSettings(RequestModuleID);
+                        moduleSettings =  new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleID: RequestModuleID).ModuleSettings;
+
                         DataCache.CacheStore(settingsCacheKey, moduleSettings);
                     }
 

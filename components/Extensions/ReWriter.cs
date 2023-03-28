@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					newSearchURL = newSearchURL.Replace(tagString, string.Empty);
 				}
 			}
-			if ((sUrl.Contains("afv") && sUrl.Contains("post")) | (sUrl.Contains("afv") && sUrl.Contains("confirmaction")) | (sUrl.Contains("afv") && sUrl.Contains("sendto")) | (sUrl.Contains("afv") && sUrl.Contains("modreport")) | (sUrl.Contains("afv") && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || sUrl.Contains("asg") || (sUrl.Contains("afv") && sUrl.Contains("modtopics")))
+			if ((sUrl.Contains("afv") && sUrl.Contains("post")) | (sUrl.Contains("afv") && sUrl.Contains("confirmaction")) | (sUrl.Contains("afv") && sUrl.Contains("sendto")) | (sUrl.Contains("afv") && sUrl.Contains("modreport")) | (sUrl.Contains("afv") && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains("afv") && sUrl.Contains("modtopics")))
 			{
 				return;
 			}
@@ -258,11 +258,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			if (_moduleId > 0)
 			{
-				Entities.Modules.ModuleController objModules = new Entities.Modules.ModuleController();
-				SettingsInfo objSettings = new SettingsInfo();
-				objSettings.MainSettings = objModules.GetModuleSettings(_moduleId);
-				_mainSettings = objSettings; // DataCache.MainSettings(_moduleId)
-			}
+				_mainSettings = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(moduleID: _moduleId).ModuleSettings };
+            }
 			if (_mainSettings == null)
 			{
 				return;

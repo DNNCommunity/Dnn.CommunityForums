@@ -55,6 +55,7 @@ using System.Security;
 [assembly: AssemblyVersion("07.00.06")]
 
 [assembly: AssemblyFileVersion("07.00.06")]
+
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js", "text/javascript")]
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js", "text/javascript")]
 

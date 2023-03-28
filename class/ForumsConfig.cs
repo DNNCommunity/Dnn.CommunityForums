@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.Common.Utilities;
 using System;
 using System.Web;
 
@@ -25,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumsConfig
 	{
-		public string sPath = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/defaultsetup.config");
+		public string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath + "config/defaultsetup.config");
 		public bool ForumsInit(int PortalId, int ModuleId)
 		{
 			try
@@ -207,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowRSS, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowAttach, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachCount, "3");

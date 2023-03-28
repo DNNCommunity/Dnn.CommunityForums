@@ -7,7 +7,7 @@
                 <tr>
                     <td class="afgrouprow af-groupname">
                         <div class="afgroupsectiontitle">Who's Online</div>
-                        <img class="afarrow" id="imgGroupWHOS" onclick="toggleGroup('WHOS');" src="<%=ImagePath + "/images/arrows_down.png"%>" alt="-" />
+                        <img class="afarrow" id="imgGroupWHOS" onclick="toggleGroup('WHOS');" src="~/DesktopModules/ActiveForums/images/arrows_down.png" alt="-" />
                     </td>
                 </tr>
                 <tr>

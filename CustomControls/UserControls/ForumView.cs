@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var lit = new LiteralControl();
                             object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                            sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(TemplatePath + "\\ToolBar.txt"));
                             DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                             lit.Text = sToolbar.ToString();
@@ -287,15 +287,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DataTable rsForums = ForumTable.DefaultView.ToTable();
                     Forum fi;
                     int tmpGroupCount = 0;
-                    int asForumGroupId;
-                    var social = new Social();
-                    asForumGroupId = social.GetMasterForumGroup(PortalId, TabId);
-                    int groupForumsCount = 0;
                     foreach (DataRow dr in rsForums.Rows)
                     {
-
-                        //If CBool(dr("CanView")) Or (Not CBool(dr("GroupHidden"))) Then ' And Not CBool(dr("CanView"))) Or UserInfo.IsSuperUser Then
-                        if (!(asForumGroupId == Convert.ToInt32(dr["ForumGroupId"]) && Convert.ToBoolean(dr["GroupHidden"])))
+                        fi = FillForumRow(dr);
+                        bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                        if ((UserInfo.IsSuperUser) || (canView) || (!Convert.ToBoolean(dr["GroupHidden"])))
                         {
                             if (tmpGroup != dr["GroupName"].ToString())
                             {
@@ -328,8 +324,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                             if (iForum <= Globals.ForumCount)
                             {
-                                fi = FillForumRow(dr);
-                                bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
                                 if (canView || (!fi.Hidden))
                                 {
                                     sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
@@ -582,7 +576,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Template = canRead ? Template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + fi.ForumName + "','" + ForumURL + "');\"><img src=\"" + ThemePath + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>") : Template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
             if (Template.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                Template = TemplateUtils.ParseSpecial(Template, SpecialTokenTypes.AddThis, ForumURL, fi.ForumName, canRead, MainSettings.AddThisAccount);
+                int inStart = (Template.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
+                int inEnd = (Template.IndexOf("]", inStart - 1) + 1);
+                Template.Remove(inStart, ((inEnd - inStart) + 1));
             }
 
             if (fi.ForumDesc != "")

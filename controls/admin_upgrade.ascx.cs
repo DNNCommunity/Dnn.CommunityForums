@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void cbUpgrade_Callback(object sender, Controls.CallBackEventArgs e)
         {
-            string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");
+            string upFilePath = Server.MapPath(Globals.ModulePath + "upgrade4x.txt");
             string err = "Success";
             try
             {

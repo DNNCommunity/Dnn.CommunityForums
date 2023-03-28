@@ -141,8 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 					Utilities.SelectListItemByValue(rdAutoLinks, AutoLink);
                     Utilities.SelectListItemByValue(drpDeleteBehavior, DeleteBehavior);
-					txtAddThis.Text = AddThis;
-                    Utilities.SelectListItemByValue(drpProfileVisibility, ProfileVisibility);
+					Utilities.SelectListItemByValue(drpProfileVisibility, ProfileVisibility);
                     Utilities.SelectListItemByValue(drpSignatures, Signatures);
                     Utilities.SelectListItemByValue(drpUserDisplayMode, UserNameDisplay);
                     Utilities.SelectListItemByValue(rdEnableURLRewriter, FriendlyURLs);
@@ -205,8 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 EditInterval = Utilities.SafeConvertInt(drpEditInterval.SelectedValue,0);
                 AutoLink = Utilities.SafeConvertBool(rdAutoLinks.SelectedValue);
                 DeleteBehavior = Utilities.SafeConvertInt(drpDeleteBehavior.SelectedValue);
-				AddThis = txtAddThis.Text;
-                ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
+				ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
                 Signatures = Utilities.SafeConvertInt(drpSignatures.SelectedValue);
                 UserNameDisplay = drpUserDisplayMode.SelectedValue;
                 FriendlyURLs = Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue);
@@ -305,7 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		
         private void BindThemes()
 		{
-			var di = new System.IO.DirectoryInfo(Server.MapPath("~/DesktopModules/ActiveForums/themes"));
+			var di = new System.IO.DirectoryInfo(Server.MapPath(Globals.ModulePath + "themes"));
 			drpThemes.DataSource = di.GetDirectories();
 			drpThemes.DataBind();
 		}

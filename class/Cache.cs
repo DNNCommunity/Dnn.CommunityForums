@@ -204,9 +204,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/cache")))
+				if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.ModulePath + "cache")))
 				{
-					var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/cache"));
+					var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ModulePath + "cache"));
 					foreach (System.IO.FileInfo fi in di.GetFiles())
 					{
 						if ((fi.FullName.IndexOf(ModuleId + "_", 0) + 1) > 0)
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
 			string strPath;
-			strPath = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\";
+			strPath = HttpContext.Current.Request.MapPath(Globals.ModulePath  + "cache\\");
 			if (! (System.IO.Directory.Exists(strPath)))
 			{
 				try
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			try
 			{
-				myFile = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\" + FileName;
+				myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
 				if (System.IO.File.Exists(myFile))
 				{
 					try
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-						myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
+						myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
 						if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -405,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				try
 				{
-					myFile = HttpContext.Current.Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\cache\\" + FileName;
+					myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
 					if (System.IO.File.Exists(myFile))
 					{
 						try
@@ -445,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-					    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
+					    string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
 					    if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -494,7 +494,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				try
 				{
-					myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateFileName);
+					myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateFileName);
 					if (System.IO.File.Exists(myFile))
 					{
 						System.IO.StreamReader objStreamReader = null;

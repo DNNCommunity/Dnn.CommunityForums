@@ -83,61 +83,68 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Email
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset)
         { 
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null,-1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null,-1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, int timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, int timeZoneOffset)
         {
             var uc = new Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, int timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours:0, minutes:timeZoneOffset,seconds:0));
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: user, userId: userId, userCultureInfo: Utilities.GetCultureInfoForUser(portalID, userId), timeZoneOffset: new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), topicSubscriber: false);
         }
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, 0, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, userId: 0, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null, -1, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: comments, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: user, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
             var uc = new Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
+        {
+            var uc = new Entities.Users.UserController();
+            var usr = uc.GetUser(portalID, userId);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: topicSubscriber);
+        }
+
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
             var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             var ms = DataCache.MainSettings(moduleID);
@@ -281,6 +288,16 @@ namespace DotNetNuke.Modules.ActiveForums
             result.Replace("[LINKURL]", link);
             result.Replace("[FORUMURL]", forumURL);
             result.Replace("[FORUMLINK]", "<a href=\"" + forumURL + "\">" + forumURL + "</a>");
+
+            result.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));
+            result.Replace("[REPLIEDTO]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:repliedto]") : string.Empty));
+            result.Replace("[NEWPOST]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:NewPost]") : string.Empty));
+            result.Replace("[NEWREPLY]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:NewReply]") : string.Empty ));
+            result.Replace("[SUBSCRIBEDTOPIC]", (topicSubscriber ? Utilities.GetSharedResource("[RESX:SubscribedTopic]") : string.Empty));
+            result.Replace("[SUBSCRIBEDTOPICSUBJECT]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicSubject]"), subject) : string.Empty));
+            result.Replace("[SUBSCRIBEDTOPICFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName].Text"), subject, fi.ForumName) : string.Empty));
+            result.Replace("[SUBSCRIBEDFORUM]", (topicSubscriber ? string.Empty : "[RESX:SubscribedForum]"));
+            result.Replace("[SUBSCRIBEDFORUMNAME]", (topicSubscriber ? string.Empty : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumName]"),fi.ForumName)));
 
             // Introduced for Active Forum Email Connector plug-in Starts
             if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
@@ -543,12 +560,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     switch (mainSettings.PMType)
                     {
                         case PMTypes.Core:
-                            pmLink = "<img class='ComposeMessage' data-recipient='{ \"id\": \"user-" + up.UserId + "\", \"name\": \"" + HttpUtility.JavaScriptStringEncode(up.DisplayName) + "\"}' src='" + imagePath + "/images/icon_pm.png' alt=\"[RESX:SendPM]\" title=\"[RESX:SendPM]\" border=\"0\" /></a>";
+                            pmLink = "<img class='ComposeMessage' data-recipient='{ \"id\": \"user-" + up.UserId + "\", \"name\": \"" + HttpUtility.JavaScriptStringEncode(up.DisplayName) + "\"}' src='" + imagePath + "/icon_pm.png' alt=\"[RESX:SendPM]\" title=\"[RESX:SendPM]\" border=\"0\" /></a>";
                             break;
 
                         case PMTypes.Ventrian:
                             pmUrl = Common.Globals.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", "sendto=" + up.UserId });
-                            pmLink = "<a href=\"" + pmUrl + "\"><img src=\"" + imagePath + "/images/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>";
+                            pmLink = "<a href=\"" + pmUrl + "\"><img src=\"" + imagePath + "/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>";
                             break;
                     }
                 }
@@ -910,59 +927,5 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return template;
         }
-
-        internal static string ParseSpecial(string template, SpecialTokenTypes tokenType, string url, string title, bool canRead, string options = "")
-        {
-            switch (tokenType)
-            {
-                case SpecialTokenTypes.AddThis:
-                    return ParseAddThis(template, url, title, canRead, options);
-            }
-
-            return template;
-        }
-
-        private static string ParseAddThis(string template, string url, string title, bool canRead, string options)
-        {
-            if (options == string.Empty)
-                template = template.Replace("[AF:CONTROL:ADDTHIS:0]", string.Empty);
-
-            const string pattern = "(\\[AF:CONTROL:ADDTHIS:(.*?)\\])";
-
-            var sFind = string.Empty;
-            var sUserName = string.Empty;
-
-            foreach (Match match in Regex.Matches(template, pattern))
-            {
-                sFind = match.Groups[0].Value;
-                sUserName = match.Groups[2].Value;
-            }
-
-            if (sFind != string.Empty)
-            {
-                var replace = string.Empty;
-                if ((sUserName == "0" && options != string.Empty) || sUserName != "0")
-                {
-                    if (canRead)
-                    {
-                        if (sUserName == "0" && options != string.Empty)
-                            sUserName = options;
-
-                        replace = DataCache.GetTemplate("AddThis.txt");
-                        replace = replace.Replace("[USERNAME]", sUserName.Replace("'", "\\'"));
-                        replace = replace.Replace("[URL]", url);
-                        replace = replace.Replace("[TITLE]", title.Replace("'", "\\'"));
-                    }
-                }
-
-                template = template.Replace(sFind, replace);
-                if (sFind != string.Empty)
-                    template = template.Replace(sFind, string.Empty);
-            }
-
-
-            return template;
-        }
-
     }
 }

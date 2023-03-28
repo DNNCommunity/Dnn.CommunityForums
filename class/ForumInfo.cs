@@ -386,21 +386,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowTags]); }
 		}
 
-		public bool ActiveSocialEnabled
-		{
-			get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.ActiveSocialEnabled]); }
-		}
-
-		public bool ActiveSocialTopicsOnly
-		{
-			get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.ActiveSocialTopicsOnly]); }
-		}
-
-		public int ActiveSocialSecurityOption
-		{
-			get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ActiveSocialSecurityOption], 1); }
-		}
-
 		public bool AutoSubscribeEnabled
 		{
 			get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeEnabled]); }

@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
 
@@ -41,8 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage ToggleURLHandler(ToggleUrlHandlerDTO dto)
         {
-            var objModules = new Entities.Modules.ModuleController();
-            var objSettings = new SettingsInfo { MainSettings = objModules.GetModuleSettings(dto.ModuleId) };
             var cfg = new ConfigUtils();
             bool success;
             if (Utilities.IsRewriteLoaded())
@@ -69,9 +68,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage RunMaintenance(RunMaintenanceDTO dto)
         {
-            var objModules = new Entities.Modules.ModuleController();
-            var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(dto.ModuleId)};
-            var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, objSettings.DeleteBehavior);
+            var moduleSettings = new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: dto.ModuleId).ModuleSettings };
+            var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, moduleSettings.DeleteBehavior);
             if (dto.DryRun)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Result = string.Format(Utilities.GetSharedResource("[RESX:Maint:DryRunResults]", true), rows.ToString()) });
 
