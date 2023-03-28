@@ -94,10 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                var _portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
-                var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ModuleId)};
-                return objSettings;
+                return new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
             }
         }
         public DateTime CacheUpdatedTime

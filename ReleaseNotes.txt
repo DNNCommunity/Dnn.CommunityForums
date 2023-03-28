@@ -1,4 +1,4 @@
-﻿<style>
+<style>
 	div.uv-install-wrapper h3, div.uv-install-wrapper h4, div.uv-install-wrapper p, div.uv-install-wrapper hr, div.uv-install-wrapper ul { margin-bottom: 0.5em; }
 	div.uv-install-wrapper ul { padding-left: 2em; }
 </style>
@@ -11,6 +11,23 @@
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
 			<li>FIXED: Hidden forum groups not showing if some forums in the hidden group are visible (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/243">Issue 243</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+      <li>NEW: Replace deprecated DNN platform method GetModuleSettings() with .ModuleSettings property references [huge perf improvement!] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/252">Issue 252</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.05</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Applies Flood Control to All User Types, Including Admins (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/95">Issue 95</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Improved Email Notifications &amp; Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/169">Issue 169</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Copies Missing Moderator Controls to Posts View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/153">Issue 153</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.04</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Added IUpgradeable for Future Code-Based Upgrade Tasks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/186">Issue 186</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Restored Missing 'Anonymous' Username Logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/204">Issue 204</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Remove obsolete Active Social integration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/173">Issue 173</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
 		<h3>07.00.03</h3>
