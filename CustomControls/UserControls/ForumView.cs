@@ -287,11 +287,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DataTable rsForums = ForumTable.DefaultView.ToTable();
                     Forum fi;
                     int tmpGroupCount = 0;
-                    int asForumGroupId;
-                    int groupForumsCount = 0;
                     foreach (DataRow dr in rsForums.Rows)
                     {
-                        if (!Convert.ToBoolean(dr["GroupHidden"]))
+                        fi = FillForumRow(dr);
+                        bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                        if ((UserInfo.IsSuperUser) || (canView) || (!Convert.ToBoolean(dr["GroupHidden"])))
                         {
                             if (tmpGroup != dr["GroupName"].ToString())
                             {
@@ -324,8 +324,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                             if (iForum <= Globals.ForumCount)
                             {
-                                fi = FillForumRow(dr);
-                                bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
                                 if (canView || (!fi.Hidden))
                                 {
                                     sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
