@@ -73,7 +73,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.02,07.00.03,07.00.04,07.00.05</upgradeVersionsList>
+              <upgradeVersionsList>07.00.06</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -351,7 +351,7 @@
              </script>
              <script type="UnInstall">
               <path>sql</path>
-              <name>Uninstall.SqlDataProvider</name>
+              <name>07.00.06.SqlDataProvider</name>
               <version>07.00.06</version>
              </script>
              <script type="UnInstall">
@@ -393,7 +393,7 @@
       </components>
     </package>
 	
-    <package name="Active Forums What's New" type="Module" version="07.00.05">
+    <package name="Active Forums What's New" type="Module" version="07.00.06">
       <friendlyName>Active Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
@@ -462,7 +462,7 @@
       </components>
     </package>
 
-    <package name="Active Forums Viewer" type="Module" version="07.00.05">
+    <package name="Active Forums Viewer" type="Module" version="07.00.06">
 		  <friendlyName>Active Forums Viewer</friendlyName>
 		  <foldername>ActiveForumsViewer</foldername>
 		  <description>Community Forums: Display any forum topic view on any page within your site.</description>
