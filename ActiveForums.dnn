@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="07.00.05">
+    <package name="Active Forums" type="Module" version="07.00.06">
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -84,7 +84,7 @@
             <assembly>
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
-              <version>07.00.05</version>
+              <version>07.00.06</version>
             </assembly>
           </assemblies>
         </component>
