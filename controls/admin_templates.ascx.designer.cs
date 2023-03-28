@@ -7,25 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
 
-	public partial class admin_templates_new
-	{
 
-		///<summary>
-		///agTemplates control.
-		///</summary>
-		///<remarks>
-		///Auto-generated field.
-		///To modify move field declaration from designer file to code-behind file.
-		///</remarks>
-		protected global::DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid agTemplates;
-	}
+    public partial class admin_templates_new
+    {
+
+        /// <summary>
+        /// agTemplates control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid agTemplates;
+    }
 }

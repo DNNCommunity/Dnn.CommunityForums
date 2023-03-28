@@ -357,7 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme);
+                return Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/images");
             }
         }
         public string GetViewType

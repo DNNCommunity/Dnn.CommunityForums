@@ -10,6 +10,7 @@
 		<h3>07.00.06</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
+			<li>TASK: Change hardcoded paths/files to constants (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/224">Issue 224</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>FIXED: Hidden forum groups not showing if some forums in the hidden group are visible (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/243">Issue 243</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
       <li>NEW: Replace deprecated DNN platform method GetModuleSettings() with .ModuleSettings property references [huge perf improvement!] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/252">Issue 252</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>

@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var lit = new LiteralControl();
                             object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                            sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(TemplatePath + "\\ToolBar.txt"));
                             DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                             lit.Text = sToolbar.ToString();

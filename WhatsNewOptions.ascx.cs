@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             chkRSS.CheckedChanged += chkRSS_Change;
 
-            Page.ClientScript.RegisterClientScriptInclude("afutils", Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/afutils.js"));
+            Page.ClientScript.RegisterClientScriptInclude("afutils", Page.ResolveUrl(Globals.ModulePath + "scripts/afutils.js"));
 
             if (!Page.IsPostBack)
             {
@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     trGroupNode = new TreeNode
                     {
                         Text = row["GroupName"].ToString(),
-                        ImageUrl = "~/DesktopModules/ActiveForums/images/tree/tree_group.png",
+                        ImageUrl = Globals.ModulePath + "images/tree/tree_group.png",
                         ShowCheckBox = true,
                         SelectAction = TreeNodeSelectAction.None,
                         Value = "G:" + row["ForumGroupId"]
@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var trNode = new TreeNode
                     {
                         Text = row["ForumName"].ToString(),
-                        ImageUrl = "~/DesktopModules/ActiveForums/images/tree/tree_forum.png",
+                        ImageUrl = Globals.ModulePath + "images/tree/tree_forum.png",
                         ShowCheckBox = true,
                         Expanded = false,
                         SelectAction = TreeNodeSelectAction.None,
@@ -318,7 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tNode = new TreeNode
                 {
                     Text = row["ForumName"].ToString(),
-                    ImageUrl = "~/DesktopModules/ActiveForums/images/tree/tree_forum.png",
+                    ImageUrl = Globals.ModulePath + "tree/tree_forum.png",
                     ShowCheckBox = true,
                     Value = "F:" + row["ForumId"],
                     Checked = false,
