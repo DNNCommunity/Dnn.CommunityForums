@@ -45,5 +45,39 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             Logger.Info("Hello World!");
             return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
         }
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="forumId"></param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[DnnAuthorize]
+        //[ForumsAuthorize(SecureActions.View)]
+        //public HttpResponseMessage Get(int forumId)
+        //{
+        //    if (! ServiceHelper.IsAuthorized(PortalSettings.PortalId, ActiveModule.ModuleID, forumId, SecureActions.View, UserInfo))
+        //    { return Request.CreateResponse(HttpStatusCode.Unauthorized); }
+
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        ///// <param name="forumId"></param>
+        ///// <param name="dto"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //[DnnAuthorize]
+        //[ForumsAuthorize(SecureActions.ModEdit)]
+        //[ValidateAntiForgeryToken]
+        //public HttpResponseMessage Post(int forumId, DotNetNuke.Modules.ActiveForums.Services.DTO.IDTO dto)
+        //{
+        //    if (!ServiceHelper.IsAuthorized(PortalSettings.PortalId, ActiveModule.ModuleID, forumId, SecureActions.ModEdit, UserInfo))
+        //    { 
+        //        return Request.CreateResponse(HttpStatusCode.Unauthorized); 
+        //    }
+        //    return Request.CreateResponse(HttpStatusCode.OK);
+        //}
+      
     }
 }

@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Common.Globals.glbRoleUnauthUser + ";" + Common.Globals.glbRoleAllUsers + ";";
 			}
 		}
-		public const string ModuleName = "Active Forums"
+		public const string ModuleName = "Active Forums";
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
