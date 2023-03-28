@@ -7,6 +7,14 @@
 	<hr/>
 	<div class="dnnClear">
 
+		<h3>07.00.05</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Applies Flood Control to All User Types, Including Admins (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/95">Issue 95</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Improved Email Notifications &amp; Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/169">Issue 169</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Copies Missing Moderator Controls to Posts View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/153">Issue 153</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.04</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
