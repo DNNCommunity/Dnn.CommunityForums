@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					DotNetNuke.Entities.Tabs.TabInfo ti = null;
 					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(portalId))
 					{
-						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == "Active Forums".ToUpperInvariant())
+						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
 						{
 							ModuleId = mi.ModuleID;
 							break;

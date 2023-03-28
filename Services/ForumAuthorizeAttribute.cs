@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     {
                         forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs()
                                                                                         .Where(q => q.Key.ToLowerInvariant() == "forumid")
-                                                                                        .FirstOrDefault());
+                                                                                        .FirstOrDefault().Value);
                     }
                     catch
                     {

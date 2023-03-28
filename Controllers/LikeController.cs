@@ -6,15 +6,15 @@ using System.Linq;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController")]
-    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikesController
+    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController.GetForPost()")]
         public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId)
         {
             IDataContext ctx = DataContext.Instance();
-            IRepository<DotNetNuke.Modules.ActiveForums.Entities.Likes> repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.Likes>();
+            IRepository<DotNetNuke.Modules.ActiveForums.Entities.Like> repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.Like>();
             List<DotNetNuke.Modules.ActiveForums.Likes> likes = new List<DotNetNuke.Modules.ActiveForums.Likes>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.Likes like in base.GetForPost(postId))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.Like like in base.GetForPost(postId))
             {
                 likes.Add((DotNetNuke.Modules.ActiveForums.Likes)like);
             }
@@ -29,22 +29,34 @@ namespace DotNetNuke.Modules.ActiveForums
 }
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class LikesController
+    class LikeController
     {
         readonly IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.Likes> repo;
-        public LikesController()
+        IRepository<DotNetNuke.Modules.ActiveForums.Entities.Like> repo;
+        public LikeController()
         {
             ctx = DataContext.Instance();
-            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.Likes>();
+            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.Like>();
         }
-        public List<DotNetNuke.Modules.ActiveForums.Entities.Likes> GetForPost(int postId)
-        { 
+        public bool GetForUser(int userId, int postId)
+        {
+            return repo.Get().Where(l => l.UserId == userId && l.PostId == postId && l.Checked).Select(l => l.Checked).FirstOrDefault();
+        }
+        public (int count,bool liked) Get(int userId, int postId)
+        {
+            return (Count(postId), GetForUser(userId, postId));
+        }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.Like> GetForPost(int postId)
+        {
             return repo.Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
         }
-        public void Like(int contentId, int userId)
+        public int Count(int postId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.Likes like = repo.Find("Where PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+            return repo.Find("WHERE PostId = @0 AND Checked = 1", postId).Count();
+        }
+        public int Like(int contentId, int userId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.Like like = repo.Find("Where PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
             if (like != null)
             {
                 if (like.Checked)
@@ -55,12 +67,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             else
             {
-                like = new Entities.Likes();
+                like = new Entities.Like();
                 like.PostId = contentId;
                 like.UserId = userId;
                 like.Checked = true;
                 repo.Insert(like);
-            }            
+            }
+            return Count(contentId);
         }
     }
 }
