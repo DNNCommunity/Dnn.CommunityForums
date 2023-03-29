@@ -4,7 +4,7 @@ using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Like : DotNetNuke.Modules.ActiveForums.Entities.Like { }
+    class Likes : DotNetNuke.Modules.ActiveForums.Entities.Likes { }
 }
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -12,7 +12,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("Id", AutoIncrement = true)]
     [Scope("PostId")]
     [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    class Like
+    class Likes
     {
         public int Id { get; set; }
         public int PostId { get; set; }

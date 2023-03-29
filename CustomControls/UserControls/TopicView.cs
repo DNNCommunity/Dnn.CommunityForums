@@ -1488,8 +1488,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (_allowLikes)
             {
                 Image likeImage = new Image();
-                var likesController = new LikesController();
-                var likes = likesController.GetForPost(contentId);
+                DotNetNuke.Modules.ActiveForums.Controllers.LikesController likesController = new DotNetNuke.Modules.ActiveForums.Controllers.LikesController();
+                List<DotNetNuke.Modules.ActiveForums.Entities.Likes> likes = likesController.GetForPost(contentId);
 
                 bool youLike = likes.Where(o => o.UserId == UserId)
                     .Select(o => o.Checked)

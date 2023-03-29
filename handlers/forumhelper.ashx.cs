@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 contentId = int.Parse(Params["contentId"].ToString());
             }
-            var likeController = new LikesController();
+            var likeController = new DotNetNuke.Modules.ActiveForums.Controllers.LikesController();
             likeController.Like(contentId, UserId);
             return BuildOutput(userId + "|" + contentId, OutputCodes.Success, true);
         }
