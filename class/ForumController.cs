@@ -110,7 +110,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 
 				}
-				DataCache.CacheStore(cachekey, forum);
+                forum.ForumSettings = DataCache.GetSettings(moduleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, forum.ForumSettingsKey), !ignoreCache);
+                DataCache.CacheStore(moduleId, cachekey, forum);
 			}
 		    return forum;
 		}
@@ -227,16 +228,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // If it's still null, retrieve from DB.
 			if (fi == null)
-			    fi = GetForum(portalId, moduleId, forumId, !useCache);
-
-		    if (fi != null)
-		    {
-                fi.ForumSettings = DataCache.GetSettings(fi.ModuleId, fi.ForumSettingsKey, string.Format(CacheKeys.ForumInfo, forumId), useCache);
-
-                if (userId == -1)
-                    DataCache.CacheStore(string.Format(CacheKeys.ForumInfo, forumId), fi);
-		    }
+			{ 
+				fi = GetForum(portalId, moduleId, forumId, !useCache);
 				
+                DataCache.CacheStore(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId), fi);
+            }	
 			return fi;
 		}
 
