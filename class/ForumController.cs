@@ -109,7 +109,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 
 				}
-				DataCache.CacheStore(moduleId, cachekey, forum);
+                forum.ForumSettings = DataCache.GetSettings(moduleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, forum.ForumSettingsKey), !ignoreCache);
+                DataCache.CacheStore(moduleId, cachekey, forum);
 			}
 			return forum;
 		}
@@ -221,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			if (fi == null)
 			{ 
 				fi = GetForum(portalId, moduleId, forumId, !useCache);
-				fi.ForumSettings = DataCache.GetSettings(fi.ModuleId, fi.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, fi.ForumSettingsKey), useCache);
+				
                 DataCache.CacheStore(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId), fi);
             }	
 			return fi;
