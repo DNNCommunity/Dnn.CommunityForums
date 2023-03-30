@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Reflection;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -142,18 +143,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return tempPageId;
             }
         }
-        private bool _ShowToolbar = true;
-        public bool ShowToolbar
-        {
-            get
-            {
-                return _ShowToolbar;
-            }
-            set
-            {
-                _ShowToolbar = value;
-            }
-        }
+
+        public bool ShowToolbar { get; set; } = true;
         #endregion
 
         public UserController UserController

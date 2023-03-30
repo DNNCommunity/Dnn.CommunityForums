@@ -21,7 +21,7 @@
 using System;
 using System.Collections;
 using System.Data;
-
+using System.Reflection;
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -293,9 +293,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return ht;
 		}
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings")]
+        public static SettingsInfo MainSettings(int ModuleId)
+        {
+            return SettingsBase.GetModuleSettings(ModuleId);
+        }
 
-#region Cache Storage
-		private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
+        #region Cache Storage
+        private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
 		{
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";

@@ -231,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			try
 			{
-				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				ForumGroupController fgc = new ForumGroupController();
 				ForumGroupInfo fg = fgc.GetForumGroup(ModuleId, ForumGroupId);
 				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			try
 			{
-				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
 				{
 					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;

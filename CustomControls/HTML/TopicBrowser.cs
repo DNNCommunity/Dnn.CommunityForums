@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			System.Text.StringBuilder sb = new System.Text.StringBuilder();
 			string forumPrefix = string.Empty;
 			string groupPrefix = string.Empty;
-			_mainSettings = DataCache.MainSettings(ModuleId);
+			_mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 			if (_mainSettings.URLRewriteEnabled)
 			{
 				if (ForumId > 0)

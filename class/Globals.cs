@@ -370,7 +370,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 
-	public class SortColumns
+    public class SortColumns
 	{
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";

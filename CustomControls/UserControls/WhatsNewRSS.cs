@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private const int DefaultPortalID = 0;
         private const int DefaultTabID = -1;
 
-        private const string CacheKeyTemplate = "aftprss_{0}_{1}";
 
         private const string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
         private const string RSSHeader = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">";
@@ -295,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         lastBuildDate = dateCreated;
                     }
 
-                    var ts = DataCache.MainSettings(topicModuleId);
+                    var ts = SettingsBase.GetModuleSettings(topicModuleId);
 
                     string url;
                     if (string.IsNullOrEmpty(sTopicUrl) || !useFriendly)

@@ -91,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             JournalController.Instance.SaveJournalItem(ji, -1);
         }
+        [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
         public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
         {
             AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, UserId, URL, Subject, Summary, Body, ReadRoles, SocialGroupId);

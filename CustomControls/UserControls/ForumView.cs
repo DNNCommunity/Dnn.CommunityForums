@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
                             if (string.IsNullOrEmpty(sToolbar))
                             {
-                                sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                                sToolbar = Utilities.GetFileContent(MainSettings.TemplatesLocation + "ToolBar.txt");
                                 DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ModuleId), sToolbar);
                             }
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+                SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 string sOutput = string.Empty;
                 string sTemplate;
                 int TemplateCache = MainSettings.TemplateCache;

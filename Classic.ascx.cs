@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
                 cc.ThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
                 cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
-                cc.SiteId = PortalId;
+                cc.PortalId = PortalId;
                 cc.PageId = TabId;
                 cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
@@ -409,11 +409,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);
+                    object sToolbar = DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar,ForumModuleId));
                     if (sToolbar == null)
                     {
-                        sToolbar = Utilities.GetFileContent(Globals.DefaultTemplatePath + "ToolBar.txt");
-                        DataCache.CacheStore("aftb" + ForumModuleId, sToolbar);
+                        sToolbar = Utilities.GetFileContent(MainSettings.TemplatesLocation + "ToolBar.txt");
+                        DataCache.CacheStore(string.Format(CacheKeys.Toolbar,ForumModuleId), sToolbar);
                     }
                     lit.Text = sToolbar.ToString();
                     plhToolbar.Controls.Clear();

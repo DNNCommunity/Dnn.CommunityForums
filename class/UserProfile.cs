@@ -22,6 +22,7 @@ using System.Collections;
 using System.Data;
 
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -247,7 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	public class UserProfileController
 	{
 		public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
-		{
+        {
             
 			UserProfileInfo upi = (UserProfileInfo)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
 			if (upi == null)
@@ -263,8 +264,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return upi;
 		}
-
-
 		public void Profiles_Save(UserProfileInfo ui)
 		{
             DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
@@ -272,7 +271,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			DataCache.CacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
 		}
 
-		public static void Profiles_ClearCache(int UserID)
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
+        public static void Profiles_ClearCache(int UserID)
         {
             DataCache.CacheClearPrefix(-1,CacheKeys.CachePrefix);
 
@@ -283,5 +283,4 @@ namespace DotNetNuke.Modules.ActiveForums
         }
     }
 #endregion
-
 }

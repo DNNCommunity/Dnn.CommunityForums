@@ -294,8 +294,9 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         private void SaveQuickReply()
         {
-            SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
+            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
+            int iFloodInterval = MainSettings.FloodInterval;
+            if (iFloodInterval > 0)
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
@@ -387,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = Request.UserHostAddress;
-            ReplyId = rc.Reply_Save(PortalId, ri);
+            ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             //Check if is subscribed
             DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));

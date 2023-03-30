@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 				//Dim sc As New Social.SocialSettings
 				//_mainSettings = sc.LoadSettings[_ps.PortalId]
-				_mainSettings = DataCache.MainSettings(ModuleId);
+				_mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				//  If context.Request.IsAuthenticated Then
 				_isValid = true;
 				if (AdminRequired & ! context.Request.IsAuthenticated)
