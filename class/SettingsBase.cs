@@ -352,14 +352,14 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-                return GetModuleSettings(ForumModuleId);
+                return new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(ForumModuleId).ModuleSettings };
             }
         }
         public string ImagePath
         {
             get
             {
-                return Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme);
+                return Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/images");
             }
         }
         public string GetViewType

@@ -52,9 +52,9 @@ using System.Security;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("07.00.05")]
+[assembly: AssemblyVersion("07.00.06")]
 
-[assembly: AssemblyFileVersion("07.00.05")]
+[assembly: AssemblyFileVersion("07.00.06")]
 
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js", "text/javascript")]
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js", "text/javascript")]

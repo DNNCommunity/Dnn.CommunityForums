@@ -395,12 +395,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			 * A possible future enhancement might be to write this entry or to perhaps change the module definition ...
 			 * 
 			 */
-			var ms = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(moduleInfo.ModuleID) };
-			/* if not using soft deletes, remove and rebuild entire index; 
+			var ms = new SettingsInfo { MainSettings = moduleInfo.ModuleSettings };
+            /* if not using soft deletes, remove and rebuild entire index; 
 			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
 			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
 			*/
-			if (ms.DeleteBehavior != 1)
+            if (ms.DeleteBehavior != 1)
 			{
 				DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
 				beginDateUtc = SqlDateTime.MinValue.Value.AddDays(1);

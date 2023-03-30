@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sRSSIconLink = string.Empty;
             if (Settings.RSSEnabled)
             {
-                sRSSImage = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/feedicon.gif") + "\" border=\"0\" />";
+                sRSSImage = "<img src=\"" + Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "feedicon.gif") + "\" border=\"0\" />";
                 sRSSUrl = Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + PortalId + "&tabid=" + TabId.ToString() + "&moduleid=" + ModuleId.ToString();
                 sRSSIconLink = "<a href=\"" + sRSSUrl + "\">" + sRSSImage + "</a>";
             }

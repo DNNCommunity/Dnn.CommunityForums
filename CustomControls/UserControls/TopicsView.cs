@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 this.AppRelativeVirtualPath = "~/";
                 MyTheme = MainSettings.Theme;
-                MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
+                MyThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
                 int defaultTemplateId = ForumInfo.TopicsTemplateId;
                 if (DefaultTopicsViewTemplateId >= 0)
                 {

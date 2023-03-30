@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private string _currentView = string.Empty;
         private DateTime _CacheUpdatedTime;
-        public const string RequiredImage = "~/DesktopModules/ActiveForums/Images/error.gif";
+        public const string RequiredImage = Globals.ModulePath + "images/error.gif";
         
         #region Constants
         internal const string ViewKey = "afcpView";
@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public string GetWarningImage(string ImageId, string WarningMessage)
         {
-            return "<img id=\"" + ImageId + "\" onmouseover=\"showTip(this,'" + WarningMessage + "');\" onmouseout=\"hideTip();\" alt=\"" + WarningMessage + "\" height=\"16\" width=\"16\" src=\"" + Page.ResolveUrl("~/DesktopModules/ActivePurchase/images/warning.gif") + "\" />";
+            return "<img id=\"" + ImageId + "\" onmouseover=\"showTip(this,'" + WarningMessage + "');\" onmouseout=\"hideTip();\" alt=\"" + WarningMessage + "\" height=\"16\" width=\"16\" src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/warning.gif") + "\" />";
         }
         protected string GetSharedResource(string key)
         {
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: ModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
             }
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
@@ -108,9 +108,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         protected override void OnInit(EventArgs e)
         {
- 	         base.OnInit(e);
-
-            LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/ControlPanel.ascx.resx";
+ 	        base.OnInit(e);
+            LocalResourceFile = Globals.ControlPanelResourceFile;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
@@ -138,13 +137,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public Controls.ClientTemplate GetLoadingTemplate()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl("<div class=\"amloading\"><div class=\"amload\"><img src=\"" + Page.ResolveUrl("~/desktopmodules/activeforums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>"));
+            template.Controls.Add(new LiteralControl("<div class=\"amloading\"><div class=\"amload\"><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>"));
             return template;
         }
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"" + Page.ResolveUrl("~/desktopmodules/activeforums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>"));
+            template.Controls.Add(new LiteralControl("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>"));
             return template;
         }
         public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
