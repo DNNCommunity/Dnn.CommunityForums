@@ -44,11 +44,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.Toolbar, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Toolbar, ModuleId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
-                    DataCache.CacheStore(ModuleId, string.Format(CacheKeys.Toolbar, ModuleId), sTemp);
+                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Toolbar, ModuleId), sTemp);
                 }
                 else
                 {

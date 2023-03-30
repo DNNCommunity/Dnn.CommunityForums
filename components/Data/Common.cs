@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			string sForums = string.Empty;
 			DataTable dt = null;
 
-			object data = DataCache.CacheRetrieve(ModuleId,cacheKey);
+			object data = DataCache.SettingsCacheRetrieve(ModuleId,cacheKey);
 
 			if (data != null)
 			{
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			else
 			{
 				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
-				DataCache.CacheStore(ModuleId,cacheKey, dt);
+				DataCache.SettingsCacheStore(ModuleId,cacheKey, dt);
 			}
 
 			foreach (DataRow row in dt.Rows)
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			string sRoles = string.Empty;
 			DataTable dt = null;
 
-			object data = DataCache.CacheRetrieve(ModuleId, cacheKey);
+			object data = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
 
 			if (data != null)
 			{
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			else
 			{
 				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
-				DataCache.CacheStore(ModuleId, cacheKey, dt);
+				DataCache.SettingsCacheStore(ModuleId, cacheKey, dt);
 			}
 			if (dt.Rows != null && dt.Rows.Count > 0)
 			{
@@ -231,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			try
 			{
-				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				ForumGroupController fgc = new ForumGroupController();
 				ForumGroupInfo fg = fgc.GetForumGroup(ModuleId, ForumGroupId);
 				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
@@ -269,7 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			try
 			{
-				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
 				{
 					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;

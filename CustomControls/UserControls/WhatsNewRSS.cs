@@ -44,7 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private const int DefaultPortalID = 0;
         private const int DefaultTabID = -1;
 
-        private const string CacheKeyTemplate = "aftprss_{0}_{1}";
 
         private const string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
         private const string RSSHeader = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">";
@@ -113,12 +112,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
 
-                    var moduleSettings = DataCache.CacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
                         moduleSettings =  new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleID: ModuleId).ModuleSettings;
 
-                        DataCache.CacheStore(ModuleId,settingsCacheKey, moduleSettings);
+                        DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
                     _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
@@ -171,14 +170,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Attempt to load from cache if it's enabled
-            var rss = (Settings.RSSCacheTimeout > 0) ? DataCache.CacheRetrieve(ModuleId,CacheKey) as string : null;
+            var rss = (Settings.RSSCacheTimeout > 0) ? DataCache.SettingsCacheRetrieve(ModuleId,CacheKey) as string : null;
 
             // Build the RSS if needed
             rss = rss ?? BuildRSS();
 
             // Save the rss to cache if it's enabled
             if (Settings.RSSCacheTimeout > 0)
-                DataCache.CacheStore(ModuleId,CacheKey, rss);
+                DataCache.SettingsCacheStore(ModuleId,CacheKey, rss);
 
             // Render the output
             writer.Write(rss);
@@ -295,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         lastBuildDate = dateCreated;
                     }
 
-                    var ts = DataCache.MainSettings(topicModuleId);
+                    var ts = SettingsBase.GetModuleSettings(topicModuleId);
 
                     string url;
                     if (string.IsNullOrEmpty(sTopicUrl) || !useFriendly)

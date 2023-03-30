@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 						ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                             templateId = tc.Template_Save(ti);
-						DataCache.CacheClear(ModuleId, string.Format(CacheKeys.Template, ModuleId, templateId, ti.TemplateType));
+						DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.Template, ModuleId, templateId, ti.TemplateType));
 						sMsg = "Template saved successfully!";
 					}
 					catch (Exception ex)

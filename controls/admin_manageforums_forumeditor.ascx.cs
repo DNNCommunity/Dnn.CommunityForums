@@ -338,8 +338,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
                     DataProvider.Instance().Groups_Delete(ModuleId, groupId);
-                    var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                    DataCache.CacheClearPrefix(cachekey);
                     break;
                 }
             }

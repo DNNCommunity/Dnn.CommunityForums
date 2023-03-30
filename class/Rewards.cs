@@ -77,11 +77,11 @@ namespace DotNetNuke.Modules.ActiveForums
 			List<RewardInfo> rl;
 			if (UseCache)
 			{
-				rl = (List<RewardInfo>)(DataCache.CacheRetrieve(ModuleId,cacheKey));
+				rl = (List<RewardInfo>)(DataCache.SettingsCacheRetrieve(ModuleId,cacheKey));
 				if (rl == null)
 				{
 					rl = Reward_List(PortalId, ModuleId);
-					DataCache.CacheStore(ModuleId,cacheKey, rl);
+					DataCache.SettingsCacheStore(ModuleId,cacheKey, rl);
 				}
 			}
 			else

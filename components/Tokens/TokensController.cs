@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Reflection;
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-                List<Token> li = (List<Token>)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group));
+                List<Token> li = (List<Token>)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group));
                 if (li == null)
                 {
                     li = new List<Token>();
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    DataCache.CacheStore(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group), li);
+                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group), li);
                 }
                 return li;
 			}

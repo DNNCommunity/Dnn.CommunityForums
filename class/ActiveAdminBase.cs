@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.HostUrl, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.HostUrl, ModuleId));
                 if (obj == null)
                 {
                     string sURL;
@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sURL = "http://" + Common.Globals.GetDomainName(Request) + "/";
                     }
-                    DataCache.CacheStore(ModuleId,string.Format(CacheKeys.HostUrl, ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
+                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.HostUrl, ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
                 return Convert.ToString(obj);
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId));
                 if (obj != null)
                 {
                     return Convert.ToDateTime(obj);
@@ -101,8 +101,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return DateTime.UtcNow;
             }
             set
-            {
-                DataCache.CacheStore(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId), value);
+            { 
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId), value);
                 _CacheUpdatedTime = value;
             }
         }

@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.CacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
+                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
 				return (dict !=null && (dict.ContainsKey(UserId.ToString()))) ? dict[UserId.ToString()] : string.Empty;
 				
 			}
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.CacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
+                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
 				if (dict == null)
 				{
 					dict = new Dictionary<string, string>();
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					dict.Add(UserId.ToString(), Roles);
 				}
-				DataCache.CacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
+				DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
 				return true;
 			}
 			catch

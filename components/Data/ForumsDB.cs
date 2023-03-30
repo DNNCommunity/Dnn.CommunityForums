@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		public ForumCollection Forums_List(int PortalId, int ModuleId)
 		{
 			ForumCollection f = new ForumCollection();
-			object obj = DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.ForumList, ModuleId));
+			object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.ForumList, ModuleId));
 			if (obj != null)
 			{
 				f = (ForumCollection)obj;
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 					dr.Close();
 				}
 
-				DataCache.CacheStore(ModuleId,string.Format(CacheKeys.ForumList, ModuleId), f);
+				DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.ForumList, ModuleId), f);
 			}
 			return f;
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		public XmlDocument ForumListXML(int PortalId, int ModuleId)
 		{
 			XmlDocument xDoc = new XmlDocument();
-			object obj = DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.ForumListXml, ModuleId));
+			object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.ForumListXml, ModuleId));
 			if (obj == null)
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 				//Dim sXML As String = ds.GetXml()
 				xDoc.LoadXml(sb.ToString());
-				DataCache.CacheStore(ModuleId,string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);
+				DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);
 			}
 			else
 			{

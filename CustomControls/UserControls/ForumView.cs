@@ -114,11 +114,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             var lit = new LiteralControl();
                             string sToolbar = string.Empty;
                             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-                            sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                            sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId)));
                             if (string.IsNullOrEmpty(sToolbar))
                             {
-                                sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
-                                DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ModuleId), sToolbar);
+                                sToolbar = Utilities.GetFileContent(MainSettings.TemplatesLocation + "ToolBar.txt");
+                                DataCache.SettingsCacheStore(ForumModuleId,string.Format(CacheKeys.Toolbar, ModuleId), sToolbar);
                             }
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                             lit.Text = sToolbar.ToString();
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+                SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 string sOutput = string.Empty;
                 string sTemplate;
                 int TemplateCache = MainSettings.TemplateCache;

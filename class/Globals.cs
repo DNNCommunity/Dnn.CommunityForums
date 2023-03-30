@@ -348,6 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Template = "AF-{0}-tmpl-{1}-{2}";
         public const string QuickReply = "AF-{0}-qr";
         public const string CacheEnabled = "AF-{0}-ce";
+        public const string CachingTime = "AF-{0}-ct";
         public const string CacheUpdate = "AF-{0}-cu";
         public const string WhatsNew = "AF-{0}-tp";
         public const string RssTemplate = "AF-{0}-tprss-_{1}";
@@ -370,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 
-	public class SortColumns
+    public class SortColumns
 	{
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";

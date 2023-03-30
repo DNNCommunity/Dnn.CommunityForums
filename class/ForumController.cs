@@ -26,6 +26,7 @@ using System.IO;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security.Roles;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -88,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 
 			var cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-			var forum = DataCache.CacheRetrieve(moduleId, cachekey) as Forum;
+			var forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as Forum;
 			if (forum == null || ignoreCache)
 			{
 				using (var dr = ForumsDB.Forums_Get(portalId, moduleId, forumId))
@@ -108,7 +109,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 
 				}
-				DataCache.CacheStore(moduleId, cachekey, forum);
+                forum.ForumSettings = DataCache.GetSettings(moduleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, forum.ForumSettingsKey), !ignoreCache);
+                DataCache.SettingsCacheStore(moduleId, cachekey, forum);
 			}
 			return forum;
 		}
@@ -216,12 +218,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			if (forumId <= 0)
 				return null;
 
-			fi = (Forum)DataCache.CacheRetrieve(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId));
+			fi = (Forum)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId));
 			if (fi == null)
 			{ 
 				fi = GetForum(portalId, moduleId, forumId, !useCache);
-				fi.ForumSettings = DataCache.GetSettings(fi.ModuleId, fi.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, fi.ForumSettingsKey), useCache);
-                DataCache.CacheStore(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId), fi);
+				
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId), fi);
             }	
 			return fi;
 		}
@@ -285,8 +287,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
             
             // Clear the caches
-			DataCache.CacheClear(fi.ModuleId, string.Format(CacheKeys.ForumList, fi.ModuleId));
-			DataCache.CacheClear(fi.ModuleId,string.Format(CacheKeys.ForumInfo, fi.ModuleId, forumId));
+			DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumList, fi.ModuleId));
+			DataCache.SettingsCacheClear(fi.ModuleId,string.Format(CacheKeys.ForumInfo, fi.ModuleId, forumId));
 
 			return forumId;
 		}
@@ -354,13 +356,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
 		{
-		    const string cacheKeyTemplate = "AF-FV-{0}-{1}-{2}-{3}";
-
-			DataSet ds;
+		    DataSet ds;
 			DataTable dt;
 			var cachekey = string.Format(CacheKeys.ForumViewForUser, moduleId, currentUserId, forumIds);
 
-			var dataSetXML = DataCache.CacheRetrieve(moduleId,cachekey) as string;
+			var dataSetXML = DataCache.ContentCacheRetrieve(moduleId,cachekey) as string;
 
 			// cached datatable is held as an XML string (because data vanishes if just caching the DT in this instance)
             if (dataSetXML != null)
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				sw.Close();
 				sw.Dispose();
 
-				DataCache.CacheStore(moduleId,cachekey, result);
+				DataCache.ContentCacheStore(moduleId,cachekey, result);
 			}
 
 			return dt;
@@ -504,11 +504,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			    }
 			}
 			catch (Exception ex)
-			{
+            {
+            }
 
-			}
-
-			DataCache.CacheClear(moduleId,string.Format(CacheKeys.ForumListXml, moduleId));
+			DataCache.SettingsCacheClear(moduleId,string.Format(CacheKeys.ForumListXml, moduleId));
 
 			return forumId;
 		}

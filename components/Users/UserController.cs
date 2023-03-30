@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // see if it's in cache already
-            object data = DataCache.CacheRetrieve(ModuleId,cachekey);
+            object data = DataCache.SettingsCacheRetrieve(ModuleId,cachekey);
 
             if (data != null)
             {
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(PortalId, -1, UserId));
-                DataCache.CacheStore(ModuleId,cachekey, dt);
+                DataCache.SettingsCacheStore(ModuleId,cachekey, dt);
             }
 
             foreach (DataRow row in dt.Rows)

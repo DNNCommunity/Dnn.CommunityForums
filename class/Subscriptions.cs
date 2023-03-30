@@ -127,11 +127,11 @@ namespace DotNetNuke.Modules.ActiveForums
 		public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int AuthorId)
 		{
 			int iSub;
-            object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.Subscriber, ModuleId, ForumId, TopicId, SubscriptionType.ToString(), AuthorId));
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.Subscriber, ModuleId, ForumId, TopicId, SubscriptionType.ToString(), AuthorId));
 			if (obj == null)
 			{
 				iSub = DataProvider.Instance().Subscriptions_IsSubscribed(PortalId, ModuleId, ForumId, TopicId, (int)SubscriptionType, AuthorId);
-				DataCache.CacheStore(ModuleId, string.Format(CacheKeys.Subscriber, ModuleId, ForumId, TopicId, SubscriptionType.ToString(), AuthorId), iSub);
+				DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Subscriber, ModuleId, ForumId, TopicId, SubscriptionType.ToString(), AuthorId), iSub);
 			}
 			else
 			{

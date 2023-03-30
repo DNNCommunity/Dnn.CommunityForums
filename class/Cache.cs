@@ -21,100 +21,141 @@
 using System;
 using System.Collections;
 using System.Data;
-
 using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class DataCache
-    {
-		public static bool IsCachingEnabledForModule(int ModuleId)
-		{
+	{
+		private static int settingsCacheTime = 10;
+        public static bool IsContentCachingEnabledForModule(int ModuleId)
+        {
             /* Track whether caching is being used at all in this module; this setting itself is cached to avoid repeated module lookups; 
 			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
 			*/
             if (ModuleId < 0)
-			{
-				return true;
-			}
-			else
-			{
-				object IsCachingEnabledForModule = DotNetNuke.Common.Utilities.DataCache.GetCache(string.Format(CacheKeys.CacheEnabled, ModuleId));
-				if (IsCachingEnabledForModule == null)
-				{
-					DotNetNuke.Entities.Modules.ModuleInfo objModule = new Entities.Modules.ModuleController().GetModule(ModuleId);
-					IsCachingEnabledForModule = ((!String.IsNullOrEmpty(objModule.CacheMethod)) && (objModule.CacheTime > 0)); 
-					DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CacheEnabled, ModuleId), IsCachingEnabledForModule, DateTime.UtcNow.AddMinutes(10));
-				}
-				return (bool)IsCachingEnabledForModule;
-			}
+            {
+                return true;
+            }
+            else
+            {
+                object IsCachingEnabledForModule = DotNetNuke.Common.Utilities.DataCache.GetCache(string.Format(CacheKeys.CacheEnabled, ModuleId));
+                if (IsCachingEnabledForModule == null)
+                {
+                    DotNetNuke.Entities.Modules.ModuleInfo objModule = new Entities.Modules.ModuleController().GetModule(ModuleId);
+                    IsCachingEnabledForModule = ((!String.IsNullOrEmpty(objModule.CacheMethod)) && (objModule.CacheTime > 0));
+                    DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CacheEnabled, ModuleId), IsCachingEnabledForModule, DateTime.UtcNow.AddMinutes(settingsCacheTime));
+                }
+                return (bool)IsCachingEnabledForModule;
+            }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheStore(int ModuleId, string cacheKey, object cacheObj)")]
+        public static int ContentCachingTime(int ModuleId)
+        {
+            /* Track caching being used for this module; this setting itself is cached to avoid repeated module lookups; 
+			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
+			*/
+            if (ModuleId < 0)
+            {
+                return 0;
+            }
+            else
+            {
+				if (!IsContentCachingEnabledForModule(ModuleId))
+				{
+					return 0;
+				}
+				else
+				{
+					object CachingTime = DotNetNuke.Common.Utilities.DataCache.GetCache(string.Format(CacheKeys.CachingTime, ModuleId));
+					if (CachingTime == null)
+					{
+						CachingTime = new Entities.Modules.ModuleController().GetModule(ModuleId).CacheTime;
+						DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CachingTime, ModuleId), CachingTime, DateTime.UtcNow.AddMinutes(settingsCacheTime));
+					}
+					return (int)CachingTime;
+				}
+            }
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)")]
         public static bool CacheStore(string cacheKey, object cacheObj)
         {
-            CacheStore(-1, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(10));
+            SettingsCacheStore(-1, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheTime));
 			return true;
         }
-        public static void CacheStore(int ModuleId, string cacheKey, object cacheObj)
+        public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {
-			//if (IsCachingEnabledForModule(ModuleId))
-			//{
-			CacheStore(ModuleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(10));
-			//}
+            SettingsCacheStore(ModuleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheTime));
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
+        public static void ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)
+        {
+			if (IsContentCachingEnabledForModule(ModuleId))
+			{
+                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj,DateTime.UtcNow.AddMinutes(ContentCachingTime(ModuleId)));
+			}
+		}
+		[Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
         public static bool CacheStore(string cacheKey, object cacheObj, DateTime Expiration)
         {
-				CacheStore(-1,  cacheKey, cacheObj, Expiration);
+				SettingsCacheStore(-1,  cacheKey, cacheObj, Expiration);
                 return true;
         }
-        public static void CacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)
+        public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)
         {
-			//if (IsCachingEnabledForModule(ModuleId))
-			//{
-			try
-			{
-				Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, Expiration);
-			}
-			catch
-			{
-			}
-			//}
-		}
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheRetrieve(int ModuleId, string cacheKey)")]
+            try
+            {
+                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, Expiration);
+            }
+            catch
+            {
+            }
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheRetrieve(int ModuleId, string cacheKey) or ContentCacheRetrieve(int ModuleId, string cacheKey)")]
         public static object CacheRetrieve(string cacheKey)
         {
-            return CacheRetrieve(ModuleId: -1, cacheKey: cacheKey);
+            return SettingsCacheRetrieve(ModuleId: -1, cacheKey: cacheKey);
         }
-        public static object CacheRetrieve(int ModuleId, string cacheKey)
+        public static object SettingsCacheRetrieve(int ModuleId, string cacheKey)
         {
-			//if (IsCachingEnabledForModule(ModuleId))
-			//{
+            return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
+        }
+        public static object ContentCacheRetrieve(int ModuleId, string cacheKey)
+        {
+            if (IsContentCachingEnabledForModule(ModuleId))
+            {
 				return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
-			//}
-			//else
-			//{ 
-			//	return null; 
-			//}
+            }
+            else
+            { 
+            	return null; 
+            }
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheClear(int ModuleId, string cacheKey)")]
         public static bool CacheClear(string cacheKey)
         {
-			CacheClear(ModuleId: -1, cacheKey: cacheKey);
+			SettingsCacheClear(ModuleId: -1, cacheKey: cacheKey);
 			return true;
         }
-        public static void CacheClear(int ModuleId, string cacheKey)
+        public static void SettingsCacheClear(int ModuleId, string cacheKey)
         {
-			//if (IsCachingEnabledForModule(ModuleId))
-			//{
-			try
+            try
+            {
+                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+            }
+            catch
+            {
+            }
+        }
+        public static void ContentCacheClear(int ModuleId, string cacheKey)
+        {
+			if (IsContentCachingEnabledForModule(ModuleId))
 			{
-				Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+				try
+            {
+                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+            }
+            catch
+            {
+            }
 			}
-			catch
-			{
-			}
-			//}
 		}
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheClearPrefix(int ModuleId, string cacheKeyPrefix)")]
         public static bool CacheClearPrefix(string cacheKeyPrefix)
@@ -126,11 +167,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-				//if (IsCachingEnabledForModule(ModuleId))
-				//{
-					Common.Utilities.DataCache.ClearCache(cachePrefix: cacheKeyPrefix);
-				//}
-            }
+				Common.Utilities.DataCache.ClearCache(cachePrefix: cacheKeyPrefix);
+		    }
             catch
             {
             }
@@ -144,10 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                //if (!IsCachingEnabledForModule(ModuleId))
-                //{
                 CacheClearPrefix(ModuleId, string.Format(CacheKeys.CacheModulePrefix, ModuleId));
-                //}
             }
             catch (Exception ex)
             {
@@ -164,10 +199,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				object obj = CacheRetrieve(ModuleId, cacheKey: string.Format(CacheKeys.MainSettings, ModuleId));
+				object obj = SettingsCacheRetrieve(ModuleId, cacheKey: string.Format(CacheKeys.MainSettings, ModuleId));
 				if (obj != null)
 				{
-					CacheClear(ModuleId, cacheKey: string.Format(CacheKeys.MainSettings, ModuleId));
+					SettingsCacheClear(ModuleId, cacheKey: string.Format(CacheKeys.MainSettings, ModuleId));
 				}
 			}
 			catch 
@@ -178,16 +213,16 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
         public static void ClearForumsByGroupCache(int ModuleID, int GroupID)
 		{
-			object obj = CacheRetrieve(ModuleID,ModuleID + GroupID + "ForumsByGroup");
+			object obj = SettingsCacheRetrieve(ModuleID,ModuleID + GroupID + "ForumsByGroup");
 			if (obj != null)
 			{
-				CacheClear(ModuleID, ModuleID + GroupID + "ForumsByGroup");
+				SettingsCacheClear(ModuleID, ModuleID + GroupID + "ForumsByGroup");
 			}
 		}
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Only Cleared but never Set so not needed.")]
         public static void ClearForumGroupsCache(int ModuleID)
 		{
-			CacheClear(ModuleID,ModuleID + "ForumGroups");
+			SettingsCacheClear(ModuleID,ModuleID + "ForumGroups");
 			IDataReader rd;
 			rd = DataProvider.Instance().Groups_List(ModuleID);
 			while (rd.Read())
@@ -199,8 +234,8 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
         public static void ClearForumSettingsCache(int ForumID)
 		{
-			CacheClear(-1,string.Format(CacheKeys.ForumSettings,-1, ForumID));
-			CacheClear(-1,string.Format(CacheKeys.ForumInfo, -1, ForumID));
+			SettingsCacheClear(-1,string.Format(CacheKeys.ForumSettings,-1, ForumID));
+			SettingsCacheClear(-1,string.Format(CacheKeys.ForumInfo, -1, ForumID));
 		}
 		public static void ClearAllForumSettingsCache(int ModuleID)
 		{
@@ -211,8 +246,8 @@ namespace DotNetNuke.Modules.ActiveForums
 				while (rd.Read())
 				{
 					int ForumId = Convert.ToInt32(rd["ForumID"]);
-                    CacheClear(ModuleID, string.Format(CacheKeys.ForumSettings,ModuleID, ForumId));
-					CacheClear(ModuleID, string.Format(CacheKeys.ForumInfo, ModuleID, ForumId));
+                    SettingsCacheClear(ModuleID, string.Format(CacheKeys.ForumSettings,ModuleID, ForumId));
+					SettingsCacheClear(ModuleID, string.Format(CacheKeys.ForumInfo, ModuleID, ForumId));
 				}
 				rd.Close();
 			}
@@ -223,33 +258,11 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
         public static void ClearFilterCache(int ModuleID)
 		{
-			object obj = CacheRetrieve(ModuleID,ModuleID + "FilterList");
+			object obj = SettingsCacheRetrieve(ModuleID,ModuleID + "FilterList");
 			if (obj != null)
 			{
 				//Current.Cache.Remove(ModuleID & "FilterList")
-				CacheClear(ModuleID,ModuleID + "FilterList");
-			}
-		}
-		public static void ClearTemplateCache(int ModuleId)
-		{
-			try
-			{
-				if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.ModulePath + "cache")))
-				{
-					var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ModulePath + "cache"));
-					foreach (System.IO.FileInfo fi in di.GetFiles())
-					{
-						if ((fi.FullName.IndexOf(ModuleId + "_", 0) + 1) > 0)
-						{
-							fi.Delete();
-						}
-
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				//DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+				SettingsCacheClear(ModuleID,ModuleID + "FilterList");
 			}
 		}
 		public static Hashtable GetSettings(int ModuleId, string SettingsKey, string CacheKey, bool UseCache)
@@ -257,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var ht = new Hashtable();
 			if (UseCache)
 			{
-				object obj = CacheRetrieve(ModuleId, CacheKey);
+				object obj = SettingsCacheRetrieve(ModuleId, CacheKey);
 				if (obj == null)
 				{
 					IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
@@ -270,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
 					}
 					dr.Close();
-					CacheStore(ModuleId, CacheKey, ht);
+					SettingsCacheStore(ModuleId, CacheKey, ht);
 				}
 				else
 				{
@@ -293,9 +306,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return ht;
 		}
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings")]
+        public static SettingsInfo MainSettings(int ModuleId)
+        {
+            return SettingsBase.GetModuleSettings(ModuleId);
+        }
+        #region "code will be removed after templates storage changed from database to files in 08.00.00"
 
-#region Cache Storage
-		private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
+        #region Cache Storage
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v8.0.0.0. Template Storage/Retrieval/Caching Rewritten and Template cache moved to TemplateCache.cs")]
+        private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
 		{
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
@@ -341,11 +361,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				//DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
 			}
-		}
-#endregion
+			}
+        #endregion
 
-#region Cache Retrieval
-		public static string GetCachedTemplate(int TemplateStore, int ModuleId, string TemplateType, int TemplateId)
+        #region Cache Retrieval
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v8.0.0.0. Template Storage/Retrieval/Caching Rewritten and Template cache moved to TemplateCache.cs")]
+        public static string GetCachedTemplate(int TemplateStore, int ModuleId, string TemplateType, int TemplateId)
 		{
 			string sTemplate;
 			switch (TemplateStore)
@@ -367,14 +388,14 @@ namespace DotNetNuke.Modules.ActiveForums
 			sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
 
 			return sTemplate;
-		}
-		private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
+        }
+        private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
 		{
 			string sTemplate = string.Empty;
 
 			string myFile;
 			object obj = CacheRetrieve(ModuleId + TemplateId + TemplateType);
-			if (!IsCachingEnabledForModule(ModuleId))
+			if (!IsContentCachingEnabledForModule(ModuleId))
 			{
 				obj = null;
 			}
@@ -419,14 +440,14 @@ namespace DotNetNuke.Modules.ActiveForums
 				sTemplate = Convert.ToString(obj);
 			}
 			return sTemplate;
-		}
-		private static string GetTemplateFromDisk(int ModuleId, string TemplateType, int TemplateId)
+        }
+        private static string GetTemplateFromDisk(int ModuleId, string TemplateType, int TemplateId)
 		{
 			string sTemplate;
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
 			System.IO.StreamReader objStreamReader;
-			if (!IsCachingEnabledForModule(ModuleId))
+			if (!IsContentCachingEnabledForModule(ModuleId))
 			{
 				sTemplate = GetTemplate(TemplateId, TemplateType);
 			}
@@ -464,8 +485,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 			return sTemplate;
-		}
-		private static string GetTemplate(int TemplateId, string TemplateType)
+        }
+        private static string GetTemplate(int TemplateId, string TemplateType)
 		{
 			string sOut = string.Empty;
 		    try
@@ -553,8 +574,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			return sOut;
 		}
-#endregion
+        #endregion
 
-
-	}
+    #endregion
+    }
 }

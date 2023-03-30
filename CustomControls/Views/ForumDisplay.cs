@@ -55,11 +55,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemp;
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
 
-            object obj = DataCache.CacheRetrieve(ModuleId, string.Format(CacheKeys.ForumViewTemplate,ModuleId,ForumGroupId));
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumViewTemplate,ModuleId,ForumGroupId));
             if (obj == null)
             {
                 sTemp = ParseTemplate(); 
-                DataCache.CacheStore(ModuleId, string.Format(CacheKeys.ForumViewTemplate, ModuleId, ForumGroupId),sTemp);
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumViewTemplate, ModuleId, ForumGroupId),sTemp);
             }
             else
             {

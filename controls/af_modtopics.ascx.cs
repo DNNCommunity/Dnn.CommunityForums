@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
+            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
             Forum fi = null;
             if (e.Parameters.Length > 0)
             {
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     sSubject = ti.Content.Subject;
                                     sBody = ti.Content.Body;
                                     ti.IsApproved = true;
-                                    tc.TopicSave(PortalId, ti);
+                                    tc.TopicSave(PortalId, ModuleId, ti);
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ri.IsApproved = true;
                                     sSubject = ri.Content.Subject;
                                     sBody = ri.Content.Body;
-                                    rc.Reply_Save(PortalId, ri);
+                                    rc.Reply_Save(PortalId,ForumModuleId, ri);
                                     TopicsController tc = new TopicsController();
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId, tmpReplyId);
                                     TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);

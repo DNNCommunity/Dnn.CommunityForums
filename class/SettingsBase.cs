@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Reflection;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -142,18 +143,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 return tempPageId;
             }
         }
-        private bool _ShowToolbar = true;
-        public bool ShowToolbar
-        {
-            get
-            {
-                return _ShowToolbar;
-            }
-            set
-            {
-                _ShowToolbar = value;
-            }
-        }
+
+        public bool ShowToolbar { get; set; } = true;
         #endregion
 
         public UserController UserController
@@ -347,11 +338,11 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static SettingsInfo GetModuleSettings(int ModuleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
+            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
             if (objSettings == null)
             {
                 objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.CacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
             return objSettings;
             

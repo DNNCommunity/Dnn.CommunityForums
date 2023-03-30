@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, RSSCacheTimeout.ToString());
 
                 // Clear the cache
-                DataCache.CacheClear(moduleId,string.Format(CacheKeys.WhatsNew,moduleId));
+                DataCache.SettingsCacheClear(moduleId,string.Format(CacheKeys.WhatsNew,moduleId));
 
                 return true;
             }

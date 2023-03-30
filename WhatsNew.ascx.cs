@@ -47,11 +47,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, ModuleId);
 
-                    var moduleSettings = DataCache.CacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
+                    var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
                         moduleSettings = new ModuleController().GetModule(moduleID:ModuleId).ModuleSettings;
-                        DataCache.CacheStore(ModuleId,settingsCacheKey, moduleSettings);
+                        DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
                     _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var sTopicUrl = dr["TopicURL"].ToString();
                     var sGroupPrefixUrl = dr["GroupPrefixURL"].ToString();
 
-                    var ts = DataCache.MainSettings(topicModuleId);
+                    var ts = SettingsBase.GetModuleSettings(topicModuleId);
 
                     // The Module Stores the PostDate in the Current Time Zone format of the Server, not in UTC.
                     // So we need to calculate the difference between the Site UTC Offset  and the Server UTC Offset and Users UTC Offset and the Server offset and add that to the displayed time.

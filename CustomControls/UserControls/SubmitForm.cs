@@ -527,12 +527,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[TOOLBAR"))
             {
                 var lit = new LiteralControl();
-                object sToolbar = DataCache.CacheRetrieve("aftb" + ModuleId);
+                object sToolbar = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.Toolbar, ModuleId));
                 if (sToolbar == null)
                 {
                     sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "\\ToolBar.txt"));
                     sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
-                    DataCache.CacheStore("aftb" + ModuleId, sToolbar);
+                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Toolbar, ModuleId), sToolbar);
                 }
                 lit.Text = sToolbar.ToString();
                 template = template.Replace("[TOOLBAR]", sToolbar.ToString());

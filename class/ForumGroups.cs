@@ -462,7 +462,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.AllowRSS, "false");
 			}
 
-			DataCache.CacheClear(fg.ModuleId,string.Format(CacheKeys.ForumList, fg.ModuleId));
+			DataCache.SettingsCacheClear(fg.ModuleId,string.Format(CacheKeys.ForumList, fg.ModuleId));
 
 			return groupId;
 		}

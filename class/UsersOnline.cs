@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, moduleId, 2);
 			try
 			{
-				var mainSettings = DataCache.MainSettings(moduleId);
+				var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 				
                 while (dr.Read())
 				{

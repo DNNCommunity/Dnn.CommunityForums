@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (portalSettings == null)
                 return null;
 
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : "<span class='" + profileNameClass + "'>{0}</span>";
 
