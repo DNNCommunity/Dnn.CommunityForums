@@ -973,7 +973,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
                     }
 
@@ -982,7 +982,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -1154,7 +1154,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
 
                     }
