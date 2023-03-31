@@ -58,25 +58,27 @@ var amaf = {
         http.send(data);
     }
 };
-function amaf_pinger() {
-    var d = {};
-    d.action = 1;
-    amaf.callback(d, null);
+function amaf_updateuseronline(mid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: '/API/ActiveForums/User/UpdateUserIsOnline',
+        beforeSend: sf.setModuleHeaders
+    })
 };
-function amaf_uo() {
-    var d = {};
-    d.action = 2;
-    amaf.callback(d, amaf_uocomplete);
+function amaf_uo(mid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: '/API/ActiveForums/User/GetUsersOnline',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+            var u = document.getElementById('af-usersonline');
+            u.innerHTML = data;
+    }).fail(function (xhr, status) {
+            alert('error getting users online');
+    });
 };
-function amaf_uocomplete(result) {
-    try {
-        var u = document.getElementById('af-usersonline');
-        u.innerHTML = result[0].result;
-    } catch (err) {
-        alert(err.message);
-    };
-};
-
 function amaf_topicSubscribe(fid, tid) {
     var d = {};
     d.action = 3;
