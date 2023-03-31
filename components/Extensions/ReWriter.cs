@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			if (_moduleId > 0)
 			{
-				_mainSettings = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(moduleID: _moduleId).ModuleSettings };
+				_mainSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleID: _moduleId).ModuleSettings };
             }
 			if (_mainSettings == null)
 			{

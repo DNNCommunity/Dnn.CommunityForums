@@ -20,6 +20,8 @@
 
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Modules.ActiveForums.Extensions;
+using DotNetNuke.Modules.ActiveForums.Controllers;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.UI.Skins;
 using System;
 using System.Collections.Generic;
@@ -331,7 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (!_bRead)
             {
-                var settings = Entities.Portals.PortalController.GetCurrentPortalSettings();
+                var settings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
                 if (settings.LoginTabId > 0)
                     Response.Redirect(Common.Globals.NavigateURL(settings.LoginTabId, "", "returnUrl=" + Request.RawUrl), true);
                 else
@@ -564,7 +566,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", _forumName);
                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", _groupName);
 
-                var settings = Entities.Portals.PortalController.GetCurrentPortalSettings();
+                var settings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
                 var pageName = (settings.ActiveTab.Title.Length == 0)
                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)
                                    : Server.HtmlEncode(settings.ActiveTab.Title);

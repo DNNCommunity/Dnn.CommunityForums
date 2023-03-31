@@ -26,7 +26,7 @@ using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class ActiveAdminBase : Entities.Modules.PortalModuleBase
+    public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         private string _Params = string.Empty;
         private string _currentView = string.Empty;

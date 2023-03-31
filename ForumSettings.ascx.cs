@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				rdEnableURLRewriter.Enabled = false;
 				rdEnableURLRewriter.Enabled = false;
 			}
-			var u = Entities.Users.UserController.GetCurrentUserInfo();
+			var u = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
 
 			if (u.IsSuperUser & (Request.ServerVariables["SERVER_SOFTWARE"].Contains("7") || Request.ServerVariables["SERVER_SOFTWARE"].Contains("8")) & !(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
 			{
@@ -322,10 +322,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             drpMessagingTab.Items.Clear();
             drpMessagingTab.ClearSelection();
 
-            var mc = new Entities.Modules.ModuleController();
+            var mc = new DotNetNuke.Entities.Modules.ModuleController();
             var tc = new TabController();
 
-            foreach (Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
+            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
             {
                 if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
                     continue;
