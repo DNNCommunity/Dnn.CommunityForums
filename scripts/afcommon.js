@@ -58,10 +58,14 @@ var amaf = {
         http.send(data);
     }
 };
-function amaf_pinger() {
-    var d = {};
-    d.action = 1;
-    amaf.callback(d, null);
+function amaf_pinger(mid) {
+
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: '/DesktopModules/ActiveForums/API/Ping/Ping',
+        beforeSend: sf.setModuleHeaders
+    })
 };
 function amaf_uo() {
     var d = {};

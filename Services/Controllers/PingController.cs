@@ -17,12 +17,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Web.Http;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
+using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
@@ -35,11 +39,22 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// Respond to a PING
         /// </summary>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/DesktopModules/ActiveForums/API/Ping</remarks>
+        /// <remarks>https://dnndev.me/DesktopModules/ActiveForums/API/Ping/Ping</remarks>
         [HttpGet]
-        [AllowAnonymous]
+        [DnnAuthorize]
         public HttpResponseMessage Ping()
         {
+            try
+            {
+                if (UserInfo.UserID > 0)
+                {
+                    DataProvider.Instance().Profiles_UpdateActivity(PortalSettings.PortalId, ActiveModule.ModuleID, UserInfo.UserID);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
