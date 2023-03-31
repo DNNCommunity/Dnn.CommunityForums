@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception exc)
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 		public override void UpdateSettings()
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception exc)
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 		public void LoadForums()

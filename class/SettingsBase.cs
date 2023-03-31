@@ -443,7 +443,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (ex != null)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
 
         }

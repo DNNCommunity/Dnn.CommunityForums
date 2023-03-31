@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			catch (Exception exc) //Module failed to load
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 
@@ -273,7 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				catch (Exception ex)
 				{
 					FullTextSearch = false;
-					Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+					DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
 				}
 
                 // Clear out the cache
@@ -282,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			catch (Exception exc) //Module failed to load
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 
