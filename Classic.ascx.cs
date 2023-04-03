@@ -51,7 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected override void OnInit(EventArgs e)
 		{
-            //JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnInit(e);
         }
         protected override void OnLoad(EventArgs e)
@@ -336,10 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 lang = "en-US";
             }
 
-            //Framework.jQuery.RequestRegistration();
-            //Framework.jQuery.RequestUIRegistration();
             ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-            Framework.jQuery.RequestDnnPluginsRegistration();
 
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-searchPopup.js");
 

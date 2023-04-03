@@ -44,9 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            jQuery.RequestRegistration();
-            jQuery.RequestUIRegistration();
-
             IsCallBack = cbShell.IsCallback;
 
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";

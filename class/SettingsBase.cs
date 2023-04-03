@@ -477,8 +477,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 Response.AddHeader("Location", sUrl);
             }
 
-            Framework.jQuery.RequestRegistration();
-
         }
         #endregion
 
