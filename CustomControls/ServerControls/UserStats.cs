@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				string output = string.Empty;
 				DotNetNuke.Entities.Portals.PortalSettings ps = (DotNetNuke.Entities.Portals.PortalSettings)(Context.Items["PortalSettings"]);
-				DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
+				DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 				string imagePath = string.Empty;
 				int portalId = ps.PortalId;
 				string tmp = string.Empty;
