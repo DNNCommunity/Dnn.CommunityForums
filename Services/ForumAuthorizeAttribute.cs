@@ -17,11 +17,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
+using System.Web.Helpers;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -61,11 +64,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             if (identity.IsAuthenticated)
             {
                 int forumId = -1;
-                if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey("forumId"))
+                if (forumId <= 0)
                 {
-                    forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route
-                                                                                    .DataTokens["forumId"]
-                                                                                    .ToString());
+                    if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey("forumId"))
+                    {
+                        forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route
+                                                                                        .DataTokens["forumId"]
+                                                                                        .ToString());
+                    }
                 }
                 if (forumId <= 0)
                 {
@@ -74,6 +80,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                         forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs()
                                                                                         .Where(q => q.Key.ToLowerInvariant() == "forumid")
                                                                                         .FirstOrDefault().Value);
+                    }
+                    catch
+                    {
+                    }
+                }
+                if (forumId <= 0)
+                {
+                    try
+                    {
+                        var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
+                        forumId = System.Web.Helpers.Json.Decode(postData).ForumId;
                     }
                     catch
                     {
