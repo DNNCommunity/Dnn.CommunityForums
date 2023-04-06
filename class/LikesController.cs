@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     class LikesController
@@ -18,7 +16,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return likes;
         }
-
         public void Like(int contentId, int userId)
         {
             using (IDataContext ctx = DataContext.Instance())

@@ -25,9 +25,9 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class UsersOnline
 	{
-		public string GetUsersOnline(int portalId, int moduleId, User user)
-		{
-			var sb = new StringBuilder();
+        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user)
+        {
+            var sb = new StringBuilder();
 			var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, moduleId, 2);
 			try
 			{

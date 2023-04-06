@@ -404,9 +404,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
-			bool isHttps = new Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
+			bool isHttps = new DotNetNuke.Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
 			bool isRewriteLoaded = Utilities.IsRewriteLoaded();
-			string primaryPortalAlias = new Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+			string primaryPortalAlias = new DotNetNuke.Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
@@ -466,7 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						//NOTE: indexer is called from scheduler and has no httpcontext, so must load and pass portalSettings
 						PortalSettings portalSettings = new PortalSettings(moduleInfo.PortalID);
-						PortalSettingsController psc = new Entities.Portals.PortalSettingsController();
+						PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
 						psc.LoadPortalSettings(portalSettings);
 						string[] additionalParameters;
 						try
