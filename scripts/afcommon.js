@@ -264,28 +264,24 @@ function amaf_splitCancel() {
     splitposts = new Array();
     amaf_splitButtons(false);
 };
-
 function amaf_likePost(mid, fid, cid) {
     var sf = $.ServicesFramework(mid);
     var params = {
         forumId: fid,
         contentId: cid
     };
-    var postData = JSON.stringify(params);
-    alert(postData);
     $.ajax({
         type: "POST",
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Like/Like?forumId=' + fid,
+        url: '/API/ActiveForums/Like/Like',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
-        document.getElementById('af-topicview-likes1').innerHTML = data;
-        document.getElementById('af-topicview-likes2').innerHTML = data;
-        document.getElementById('af-topicview-likes3').innerHTML = data;
+        $('#af-topicview-likes1').toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes2').toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes3').toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
     }).fail(function (xhr, status) {
         alert('error liking post');
     });
 };
-

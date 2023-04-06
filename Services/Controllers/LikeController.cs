@@ -39,8 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     {
         public class LikeDto
         {
-            public int forumId { get; set; }
-            public int contentId { get; set; }
+            public int ForumId { get; set; }
+            public int ContentId { get; set; }
         }
         /// <summary>
         /// Increments/Decrements Likes for a ContentId for a User
@@ -50,15 +50,18 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Like/Like</remarks>
         [HttpPost]
         [DnnAuthorize]
-        //[ForumsAuthorize(SecureActions.Reply)] /* this needs some work */
+        [ForumsAuthorize(SecureActions.Reply)] 
         public HttpResponseMessage Like(LikeDto dto)
         {
-            if ( (new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ActiveModule.ModuleID, dto.forumId).AllowLikes) && 
-                ServicesHelper.IsAuthorized(PortalSettings.PortalId,ActiveModule.ModuleID,dto.forumId, SecureActions.Reply, UserInfo))
+            if ((new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ActiveModule.ModuleID, dto.ForumId).AllowLikes) &&
+                ServicesHelper.IsAuthorized(PortalSettings.PortalId, ActiveModule.ModuleID, dto.ForumId, SecureActions.Reply, UserInfo))
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.contentId, UserInfo.UserID);
+                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, UserInfo.UserID));
             }
-            return Request.CreateResponse(HttpStatusCode.OK, Get(dto.forumId,dto.contentId));
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
         }
         /// <summary>
         /// Gets number of Likes for a ContentId 
@@ -73,9 +76,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ActiveModule.ModuleID, forumId).AllowLikes)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(UserInfo.UserID,contentId));
+                return Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(UserInfo.UserID, contentId));
             }
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
         }
     }
 }
