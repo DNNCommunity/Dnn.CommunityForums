@@ -27,7 +27,7 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
 /// <summary>
-/// 
+/// <inheritdoc/>
 /// </summary>
 /// <typeparam name="T"></typeparam>
     [SupportedModules(Globals.ModuleName)] /* this MUST match DesktopModule.ModuleName so use new constant */
@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
         /// <summary>
-        /// 
+        /// provide a simple method for testing
         /// </summary>
         /// <returns></returns>
         [AllowAnonymous]
