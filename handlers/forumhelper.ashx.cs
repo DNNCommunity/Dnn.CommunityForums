@@ -37,8 +37,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		{
 			None,
 			UserPing, /* no longer used */
-			GetUsersOnline,
-			TopicSubscribe,
+			GetUsersOnline,/* no longer used */
+            TopicSubscribe,
 			ForumSubscribe,
 			RateTopic,
 			DeleteTopic,
@@ -154,47 +154,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			ForumController fc = new ForumController();
 			return fc.GetForumsHtmlOption(PortalId, ModuleId, ForumUser);
 		}
-		////private string UserOnline()
-		////{
-		////	try
-		////	{
-		////		if (UserId > 0)
-		////		{
-		////			DataProvider.Instance().Profiles_UpdateActivity(PortalId, ModuleId, UserId);
-		////			return BuildOutput(UserId.ToString(), OutputCodes.Success, true, false);
-		////		}
-		////		else
-		////		{
-		////			return BuildOutput(UserId.ToString(), OutputCodes.AccessDenied, true, false);
-		////		}
-
-		////	}
-		////	catch (Exception ex)
-		////	{
-		////		return BuildOutput(ex.Message, OutputCodes.AccessDenied, false, false);
-		////	}
-		////}
-		//private string GetUserOnlineList()
-		//{
-		//	UsersOnline uo = new UsersOnline();
-		//	string sOnlineList = uo.GetUsersOnline(PortalId, ModuleId, ForumUser);
-		//	IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalId, ModuleId, 2);
-		//	int anonCount = 0;
-		//	int memCount = 0;
-		//	int memTotal = 0;
-		//	while (dr.Read())
-		//	{
-		//		anonCount = Convert.ToInt32(dr["Guests"]);
-		//		memCount = Convert.ToInt32(dr["Members"]);
-		//		memTotal = Convert.ToInt32(dr["MembersTotal"]);
-		//	}
-		//	dr.Close();
-		//	string sUsersOnline = null;
-		//	sUsersOnline = Utilities.GetSharedResource("[RESX:UsersOnline]");
-		//	sUsersOnline = sUsersOnline.Replace("[USERCOUNT]", memCount.ToString());
-		//	sUsersOnline = sUsersOnline.Replace("[TOTALMEMBERCOUNT]", memTotal.ToString());
-		//	return BuildOutput(sUsersOnline + " " + sOnlineList, OutputCodes.Success, true, false);
-		//}
 		private string SubscribeTopic()
 		{
 			if (UserId <= 0)

@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				var objModules = new Entities.Modules.ModuleController();
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 				var xDoc = new System.Xml.XmlDocument();
 				xDoc.Load(sPath);
 				if (xDoc != null)

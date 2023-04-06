@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
         [Obsolete("Deprecated in Community Forums 09.0.00. Use GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)")]
-        public string GetUsersOnline(int portalId, int moduleId, User user)
+        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user)
         {
             return GetUsersOnline(portalId, moduleId, DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, user.UserId));
         }
