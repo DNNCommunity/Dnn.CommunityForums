@@ -1648,10 +1648,10 @@ From,
   <data name="[RESX:SubscribedTopicForumName].Text" xml:space="preserve">
     <value>Subscribed Topic {0} on Forum {1}</value>
   </data>
-  <data name="[RESX:postedIn.Text]" xml:space="preserve">
-    <value>posted in</value>
+  <data name="[RESX:PostedTo.Text]" xml:space="preserve">
+    <value>posted to</value>
   </data>
-  <data name="[RESX:repliedto.Text]" xml:space="preserve">
+  <data name="[RESX:RepliedTo.Text]" xml:space="preserve">
     <value>replied to</value>
   </data>
 </root>
