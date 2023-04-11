@@ -1267,8 +1267,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetSharedResource(string key, bool isAdmin = false)
         {
-            string sValue = Services.Localization.Localization.GetString(key,Globals.ControlPanelResourceFile);
-            return String.IsNullOrEmpty(sValue) ? key : sValue;
+            string sValue = Services.Localization.Localization.GetString(key, isAdmin ? Globals.ControlPanelResourceFile : Globals.SharedResourceFile);
+            return sValue == string.Empty ? key : sValue;
         }
 
         public static string FormatFileSize(int fileSize)
