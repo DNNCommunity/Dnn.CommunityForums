@@ -306,9 +306,9 @@ namespace DotNetNuke.Modules.ActiveForums
             System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
 			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
 			{
-                if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates")))
+                if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
                 {
-                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates"));
+                    System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
                 }
             }
             TemplateController tc = new TemplateController();
