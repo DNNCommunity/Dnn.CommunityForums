@@ -88,9 +88,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		{
 			base.OnLoad(e);
 
-			imgOn = Page.ResolveUrl("~/DesktopModules/ActiveForums/images/admin_check.png");
-			imgOff = Page.ResolveUrl("~/DesktopModules/ActiveForums/images/admin_stop.png");
-			BindRoles();
+            imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
+            imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
+            BindRoles();
 			if (ReadOnly)
 			{
 				gridActions.Visible = false;
@@ -267,8 +267,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				{
 					if (! ReadOnly)
 					{
-						sb.Append("<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
-					}
+                        sb.Append("<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
+                    }
 				}
 				sb.Append("</span>" + grid[x, 1]);
 				sb.Append("</div></td></tr>");

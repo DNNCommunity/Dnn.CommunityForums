@@ -35,12 +35,12 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public abstract partial class Utilities
     {
-        internal const string AppPath = "~/DesktopModules/ActiveForums/";
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
 
 
@@ -679,7 +679,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string @out;
             try
             {
-                var myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/Filters.txt");
+                var myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "/Filters.txt");
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;
@@ -1199,12 +1199,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseSpacer(string template)
         {
-            var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
-
-            if (HttpContext.Current.Request.IsSecureConnection)
-                strHost = strHost.Replace("http://", "https://");
-
-            var spacerTemplate = string.Format("<img src=\"{0}DesktopModules/ActiveForums/images/spacer.gif\" alt=\"--\" width=\"$2\" height=\"$1\" />", strHost);
+            var spacerTemplate = "<img src=\"" + System.Web.VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath + "spacer.gif") +"\" alt=\"--\" width=\"$2\" height=\"$1\" />";
 
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
@@ -1286,20 +1281,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetSharedResource(string key, string resourceFile)
         {
-            return Services.Localization.Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/" + resourceFile + ".resx");
+            return DotNetNuke.Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/" + resourceFile + ".resx");
         }
 
         public static string GetSharedResource(string key, bool isAdmin = false)
         {
-            string sValue;
-            if (isAdmin)
-            {
-                sValue = Services.Localization.Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/ControlPanel.ascx.resx");
-                return sValue == string.Empty ? key : sValue;
-            }
-
-            sValue = Services.Localization.Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx");
-            return sValue == string.Empty ? key : sValue;
+            string sValue = DotNetNuke.Services.Localization.Localization.GetString(key, isAdmin ? Globals.ControlPanelResourceFile : Globals.SharedResourceFile);
+            return string.IsNullOrEmpty(sValue) ? key : sValue;
         }
 
         public static string FormatFileSize(int fileSize)

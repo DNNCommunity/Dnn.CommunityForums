@@ -136,8 +136,15 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
+        public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
+        public const string ModuleImagesPath = Globals.ModulePath + "images/";
 
-		public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+        public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
+        public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
+        public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
+        public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
+
+        public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string ControlRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
@@ -145,8 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
-
-	}
+    }
 
 	public class SettingKeys
 	{
@@ -207,12 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-		public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
-		public const string SharedResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
-		public const string CacheDependencyFile = "~/DesktopModules/ActiveForums/cache/cachedep.resources";
-		public const string TemplatePath = "~/DesktopModules/ActiveForums/config/templates/";
-
-	}
+    }
 
 	public class ForumSettingKeys
 	{
