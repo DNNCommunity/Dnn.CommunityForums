@@ -479,8 +479,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            Framework.jQuery.RequestRegistration();
-
         }
         #endregion
 
