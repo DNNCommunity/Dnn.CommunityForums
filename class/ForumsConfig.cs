@@ -321,23 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
 		    }
 		}
-
-            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
-            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
-            foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
-            {
-                if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates")))
-                {
-                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(themeFolder.FullName + "/templates"));
-                }
-            }
-            TemplateController tc = new TemplateController();
-            foreach (TemplateInfo template in tc.Template_List(-1, -1))
-            {
-                tc.Template_Save(template);
-            }
-        }
-        internal void ArchiveOrphanedAttachments()
+		internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
             System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);

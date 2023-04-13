@@ -23,7 +23,8 @@
             <foldername>ActiveForums</foldername>
             <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature type="Searchable" />
+                <supportedFeature type="Searchable" />
+			    <supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
@@ -72,7 +73,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.07</upgradeVersionsList>
+              <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.02,07.00.03,07.00.04,07.00.05,07.00.06,07.00.07</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -333,6 +334,31 @@
                <name>07.00.00.SqlDataProvider</name>
                <version>07.00.00</version>
              </script>
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.02.SqlDataProvider</name>
+				<version>07.00.02</version>
+			</script>
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.04.SqlDataProvider</name>
+				<version>07.00.04</version>
+			</script>
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.05.SqlDataProvider</name>
+				<version>07.00.05</version>
+			</script>
+			<script type="UnInstall">
+				<path>sql</path>
+				<name>07.00.06.SqlDataProvider</name>
+				<version>07.00.06</version>
+			</script>
+			<script type="UnInstall">
+				<path>sql</path>
+				<name>Uninstall.SqlDataProvider</name>
+				<version>07.00.06</version>
+			</script>
 			<script type="Install">
 				<path>sql</path>
 				<name>07.00.07.SqlDataProvider</name>

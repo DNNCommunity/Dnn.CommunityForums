@@ -31,13 +31,15 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using System.Data.SqlTypes;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase
-	{
-		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int topicId = -1;
 			TopicInfo ti = new TopicInfo();
@@ -547,21 +549,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var fc = new ForumsConfig();
                         fc.ArchiveOrphanedAttachments();
-                    }
-                    catch (Exception ex)
-                    {
-                        LogError(ex.Message, ex);
-                        Exceptions.LogException(ex);
-                        return "Failed";
-                    }
-
-                    break;
-                case "08.00.00":
-                    try
-                    {
-                        var fc = new ForumsConfig();
-                        fc.Install_Or_Upgrade_MoveTemplates();
-                        fc.Install_Or_Upgrade_RenameThemeCssFiles();
                     }
                     catch (Exception ex)
                     {
