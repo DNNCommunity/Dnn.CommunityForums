@@ -24,12 +24,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
-using System.Linq;
-//ORIGINAL LINE: Imports System.Web.HttpContext
+using System.Linq; 
 
 using System.Web;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
+using DotNetNuke.Services.Exceptions;
+using DotNetNuke.Services.Scheduling;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -342,9 +343,9 @@ namespace DotNetNuke.Modules.ActiveForums
 	}
 	
 	
-	public class WeeklyDigest : Services.Scheduling.SchedulerClient
+	public class WeeklyDigest : DotNetNuke.Services.Scheduling.SchedulerClient
 	{
-		public WeeklyDigest(Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
+		public WeeklyDigest(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
 		{
 			ScheduleHistoryItem = objScheduleHistoryItem;
 		}
@@ -365,7 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				ScheduleHistoryItem.Succeeded = false;
 				ScheduleHistoryItem.AddLogNote("Weekly Digest Failed:" + ex);
 				Errored(ref ex);
-				Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
 		private static DateTime GetStartOfWeek(DateTime StartDate)

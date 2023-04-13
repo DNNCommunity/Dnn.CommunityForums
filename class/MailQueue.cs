@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
 	}
@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 				ScheduleHistoryItem.Succeeded = false;
 				ScheduleHistoryItem.AddLogNote("Process Queue Failed. " + ex);
 				Errored(ref ex);
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 						}
 						catch (Exception ex)
 						{
-							Services.Exceptions.Exceptions.LogException(ex);
+							DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 						}
 					}
 					else
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return -1;
 			}
 
@@ -151,13 +151,13 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 				}
 				catch (Exception ex)
 				{
-					Services.Exceptions.Exceptions.LogException(ex);
+					DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 					return false;
 				}
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return false;
 			}
 		}

@@ -22,6 +22,7 @@ using System;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security.Permissions;
 
@@ -443,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (ex != null)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
 
         }
@@ -476,6 +477,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Response.Status = "301 Moved Permanently";
                 Response.AddHeader("Location", sUrl);
             }
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             Framework.jQuery.RequestRegistration();
 

@@ -839,7 +839,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                             sReplace = "[RESX:Private]";
 
-                        sResource = Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
+                        sResource = DotNetNuke.Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
                     }
                 }
                 s = s.Replace(match.Value, sReplace);
