@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		{
             base.OnInit(e);
 
-            LocalResourceFile = Server.MapPath(Globals.SharedResourceFile);
+            LocalResourceFile = Globals.SharedResourceFile;
 
             jQuery.RegisterJQuery(Page);
             jQuery.RegisterJQueryUI(Page);

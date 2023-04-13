@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
-            this.LocalResourceFile = Server.MapPath(Globals.SharedResourceFile);
+            this.LocalResourceFile = Globals.SharedResourceFile;
             InitializeComponent();
         }
 

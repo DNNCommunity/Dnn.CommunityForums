@@ -1281,13 +1281,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetSharedResource(string key, string resourceFile)
         {
-            return Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/" + resourceFile + ".resx");
+            return DotNetNuke.Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/" + resourceFile + ".resx");
         }
 
         public static string GetSharedResource(string key, bool isAdmin = false)
         {
-            string sValue = Services.Localization.Localization.GetString(key,Globals.ControlPanelResourceFile);
-            return String.IsNullOrEmpty(sValue) ? key : sValue;
+            string sValue = DotNetNuke.Services.Localization.Localization.GetString(key, isAdmin ? Globals.ControlPanelResourceFile : Globals.SharedResourceFile);
+            return string.IsNullOrEmpty(sValue) ? key : sValue;
         }
 
         public static string FormatFileSize(int fileSize)
