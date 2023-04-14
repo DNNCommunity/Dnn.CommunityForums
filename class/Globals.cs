@@ -306,7 +306,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
 		public const string ForumList = "affl{0}";
-	}
+        public const string Tokens = "aftk{0}";
+    }
 
     public class SortColumns
 	{
