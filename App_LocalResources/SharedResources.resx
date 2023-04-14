@@ -489,9 +489,6 @@
   <data name="Reject.Text" xml:space="preserve">
     <value>Reject</value>
   </data>
-  <data name="PostedIn.Text" xml:space="preserve">
-    <value>Posted in</value>
-  </data>
   <data name="[RESX:SubForums].Text" xml:space="preserve">
     <value>Sub Forums:</value>
   </data>
@@ -1648,8 +1645,8 @@ From,
   <data name="[RESX:SubscribedTopicForumName].Text" xml:space="preserve">
     <value>Subscribed Topic {0} on Forum {1}</value>
   </data>
-  <data name="[RESX:postedIn].Text" xml:space="preserve">
-    <value>posted in</value>
+  <data name="[RESX:postedto].Text" xml:space="preserve">
+    <value>posted to</value>
   </data>
   <data name="[RESX:repliedto].Text" xml:space="preserve">
     <value>replied to</value>
