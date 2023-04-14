@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception exc)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnInit(e);
 
-            LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
+            LocalResourceFile = Globals.SharedResourceFile;
 
             lnkSearch.Click += lnkSearch_Click;
         }

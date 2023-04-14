@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages>
-    <package name="Active Forums" type="Module" version="07.00.09">
+  <packages> 
+    <package name="Active Forums" type="Module" version="07.00.09"> 
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -23,8 +23,8 @@
             <foldername>ActiveForums</foldername>
             <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature type="Searchable" />
-              <supportedFeature type="Upgradeable" />
+                <supportedFeature type="Searchable" />
+			    <supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
@@ -72,7 +72,7 @@
             <processorCommand>UpgradeModule</processorCommand>
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
-              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
+              <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID> 
               <upgradeVersionsList>06.04.00,06.04.01,06.05.00,06.05.01,06.06.00,07.00.00,07.00.01,07.00.02,07.00.03,07.00.04,07.00.05,07.00.06,07.00.07,07.00.08,07.00.09</upgradeVersionsList>
             </attributes>
           </eventMessage>
@@ -373,8 +373,7 @@
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
               <version>07.00.09</version>
-            </script>
-          </scripts>
+         </script>
         </component>
         <component type="ResourceFile">
           <resourceFiles>
