@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="07.00.06">
+    <package name="Active Forums" type="Module" version="07.00.07">
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -23,8 +23,8 @@
             <foldername>ActiveForums</foldername>
             <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
             <supportedFeatures>
-              <supportedFeature type="Searchable" />
-              <supportedFeature type="Upgradeable" />
+                <supportedFeature type="Searchable" />
+			    <supportedFeature type="Upgradeable" />
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
@@ -73,7 +73,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.00.06</upgradeVersionsList>
+              <upgradeVersionsList>07.00.07</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -84,7 +84,7 @@
             <assembly>
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
-              <version>07.00.06</version>
+              <version>07.00.07</version>
             </assembly>
           </assemblies>
         </component>
@@ -334,30 +334,40 @@
                <name>07.00.00.SqlDataProvider</name>
                <version>07.00.00</version>
              </script>
-             <script type="Install">
-               <path>sql</path>
-               <name>07.00.02.SqlDataProvider</name>
-               <version>07.00.02</version>
-             </script>
-             <script type="Install">
-               <path>sql</path>
-               <name>07.00.04.SqlDataProvider</name>
-               <version>07.00.04</version>
-             </script>
-             <script type="Install">
-               <path>sql</path>
-               <name>07.00.05.SqlDataProvider</name>
-               <version>07.00.05</version>
-             </script>
-             <script type="UnInstall">
-              <path>sql</path>
-              <name>07.00.06.SqlDataProvider</name>
-              <version>07.00.06</version>
-             </script>
-             <script type="UnInstall">
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.02.SqlDataProvider</name>
+				<version>07.00.02</version>
+			</script>
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.04.SqlDataProvider</name>
+				<version>07.00.04</version>
+			</script>
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.05.SqlDataProvider</name>
+				<version>07.00.05</version>
+			</script>
+			<script type="UnInstall">
+				<path>sql</path>
+				<name>07.00.06.SqlDataProvider</name>
+				<version>07.00.06</version>
+			</script>
+			<script type="UnInstall">
+				<path>sql</path>
+				<name>Uninstall.SqlDataProvider</name>
+				<version>07.00.06</version>
+			</script>
+			<script type="Install">
+				<path>sql</path>
+				<name>07.00.07.SqlDataProvider</name>
+				<version>07.00.07</version>
+			</script>
+		    <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>07.00.06</version>
+              <version>07.00.07</version>
             </script>
           </scripts>
         </component>
@@ -393,7 +403,7 @@
       </components>
     </package>
 	
-    <package name="Active Forums What's New" type="Module" version="07.00.06">
+    <package name="Active Forums What's New" type="Module" version="07.00.07">
       <friendlyName>Active Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
