@@ -182,14 +182,15 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						var gi = new ForumGroupInfo
 						             {
-						                 ModuleId = ModuleId,
-						                 ForumGroupId = -1,
-						                 GroupName = xNodeList[i].Attributes["groupname"].Value,
-						                 Active = xNodeList[i].Attributes["active"].Value == "1",
-						                 Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
-						                 SortOrder = i,
-						                 GroupSettingsKey = "",
-						                 PermissionsId = -1
+										ModuleId = ModuleId,
+										ForumGroupId = -1,
+										GroupName = xNodeList[i].Attributes["groupname"].Value,
+										PrefixURL = xNodeList[i].Attributes["prefixurl"].Value,
+										Active = xNodeList[i].Attributes["active"].Value == "1",
+										Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
+										SortOrder = i,
+										GroupSettingsKey = string.Empty,
+										PermissionsId = -1
 						             };
 					    var gc = new ForumGroupController();
 						int groupId;
@@ -265,8 +266,9 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.ParentForumId = 0;
 									fi.ForumName = cNodes[c].Attributes["forumname"].Value;
 									fi.ForumDesc = cNodes[c].Attributes["forumdesc"].Value;
-									fi.ForumSecurityKey = "G:" + groupId.ToString();
-									fi.ForumSettingsKey = "G:" + groupId.ToString();
+									fi.PrefixURL = cNodes[c].Attributes["prefixurl"].Value;
+									fi.ForumSecurityKey = string.Concat("G:", groupId.ToString());
+									fi.ForumSettingsKey = string.Concat("G:", groupId.ToString());
 									fi.Active = cNodes[c].Attributes["active"].Value == "1";
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
