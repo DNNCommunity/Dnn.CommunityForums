@@ -72,8 +72,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				rdEnableURLRewriter.Enabled = false;
 				rdEnableURLRewriter.Enabled = false;
 			}
-			var u = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
 
+			var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 			if (u.IsSuperUser & (Request.ServerVariables["SERVER_SOFTWARE"].Contains("7") || Request.ServerVariables["SERVER_SOFTWARE"].Contains("8")) & !(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
 			{
 				if (Utilities.IsRewriteLoaded())

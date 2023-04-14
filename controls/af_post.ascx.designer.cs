@@ -7,11 +7,31 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.ActiveForums {
-    
-    
-    public partial class af_post {
-        
+namespace DotNetNuke.Modules.ActiveForums
+{
+
+
+    public partial class af_post
+    {
+
+        /// <summary>
+        /// ContactByFaxOnly control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ContactByFaxOnly;
+
+        /// <summary>
+        /// ContactByFaxOnlyCheckBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox ContactByFaxOnlyCheckBox;
+
         /// <summary>
         /// hidAttachments control.
         /// </summary>
@@ -20,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidAttachments;
-        
+
         /// <summary>
         /// plhMessage control.
         /// </summary>
@@ -29,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder plhMessage;
-        
+
         /// <summary>
         /// plhContent control.
         /// </summary>
@@ -38,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder plhContent;
-        
+
         /// <summary>
         /// cbPreview control.
         /// </summary>
@@ -47,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbPreview;
-        
+
         /// <summary>
         /// hidPreviewText control.
         /// </summary>
