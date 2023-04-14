@@ -22,6 +22,7 @@ using System;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security.Permissions;
 
@@ -350,19 +351,14 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-
-                var _portalSettings = (PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
-                var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ForumModuleId)};
-
-                return objSettings;
+                return new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(ForumModuleId).ModuleSettings };
             }
         }
         public string ImagePath
         {
             get
             {
-                return Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme);
+                return Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/images");
             }
         }
         public string GetViewType
@@ -448,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (ex != null)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
 
         }
@@ -481,8 +477,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Response.Status = "301 Moved Permanently";
                 Response.AddHeader("Location", sUrl);
             }
-
-            Framework.jQuery.RequestRegistration();
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
         }
         #endregion

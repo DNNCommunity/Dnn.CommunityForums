@@ -562,12 +562,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     switch (mainSettings.PMType)
                     {
                         case PMTypes.Core:
-                            pmLink = "<img class='ComposeMessage' data-recipient='{ \"id\": \"user-" + up.UserId + "\", \"name\": \"" + HttpUtility.JavaScriptStringEncode(up.DisplayName) + "\"}' src='" + imagePath + "/images/icon_pm.png' alt=\"[RESX:SendPM]\" title=\"[RESX:SendPM]\" border=\"0\" /></a>";
+                            pmLink = "<img class='ComposeMessage' data-recipient='{ \"id\": \"user-" + up.UserId + "\", \"name\": \"" + HttpUtility.JavaScriptStringEncode(up.DisplayName) + "\"}' src='" + imagePath + "/icon_pm.png' alt=\"[RESX:SendPM]\" title=\"[RESX:SendPM]\" border=\"0\" /></a>";
                             break;
 
                         case PMTypes.Ventrian:
                             pmUrl = Common.Globals.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", "sendto=" + up.UserId });
-                            pmLink = "<a href=\"" + pmUrl + "\"><img src=\"" + imagePath + "/images/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>";
+                            pmLink = "<a href=\"" + pmUrl + "\"><img src=\"" + imagePath + "/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>";
                             break;
                     }
                 }
@@ -841,7 +841,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                             sReplace = "[RESX:Private]";
 
-                        sResource = Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
+                        sResource = DotNetNuke.Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
                     }
                 }
                 s = s.Replace(match.Value, sReplace);

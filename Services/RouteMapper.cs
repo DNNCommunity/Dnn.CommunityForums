@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -17,29 +17,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using DotNetNuke.Web.Api;
 
-using System.Web;
-
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Services
 {
-	public abstract class Logger
-	{
-		public static void Log(string Msg)
-		{
-			string sPath = HttpContext.Current.Request.MapPath(Globals.ModulePath + "am.html");
-			Msg = Msg + System.Environment.NewLine;
-			System.IO.File.AppendAllText(sPath, Msg);
-			//Dim w As StreamWriter = File.AppendText(sPath)
-			//w.WriteLine(Now() & vbTab & Msg)
-			//w.Flush()
-			//w.Close()
-			//Dim Email As New MailMessage
-			//Email.To = "willm@ntweb.com"
-			//Email.From = "willm@ntweb.com"
-			//Email.Subject = "Error"
-			//Email.Body = Msg
-			//SmtpMail.Send(Email)
-		}
-	}
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public class RouteMapper : IServiceRouteMapper
+    {
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="mapRouteManager"></param>
+        public void RegisterRoutes(IMapRoute mapRouteManager)
+        {
+            mapRouteManager.MapHttpRoute("ActiveForums", "default", "{controller}/{action}", new { }, new[] { "DotNetNuke.Modules.ActiveForums", "DotNetNuke.Modules.ActiveForums.Services.Controllers" });
+        }
+    }
 }
 

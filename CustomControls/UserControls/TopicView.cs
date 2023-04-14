@@ -331,9 +331,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (!_bRead)
             {
-                var settings = Entities.Portals.PortalController.GetCurrentPortalSettings();
-                if (settings.LoginTabId > 0)
-                    Response.Redirect(Common.Globals.NavigateURL(settings.LoginTabId, "", "returnUrl=" + Request.RawUrl), true);
+                DotNetNuke.Entities.Portals.PortalSettings PortalSettings = Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                if (PortalSettings.LoginTabId > 0)
+                    Response.Redirect(Common.Globals.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl), true);
                 else
                     Response.Redirect(Utilities.NavigateUrl(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl), true);
             }
@@ -564,8 +564,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", _forumName);
                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", _groupName);
 
-                var settings = Entities.Portals.PortalController.GetCurrentPortalSettings();
-                var pageName = (settings.ActiveTab.Title.Length == 0)
+                DotNetNuke.Entities.Portals.PortalSettings settings = Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                string pageName = (settings.ActiveTab.Title.Length == 0)
                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)
                                    : Server.HtmlEncode(settings.ActiveTab.Title);
 
@@ -865,7 +865,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:ALERT]", string.Empty);
                 sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
                 sbOutput.Replace("[RESX:SortPosts]:", string.Empty);
-                sbOutput.Append("<img src=\"~/desktopmodules/activeforums/images/spacer.gif\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
+                sbOutput.Append("<img src=\"<%(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath)%>spacer.gif\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
             }
 
 
@@ -1234,7 +1234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
 
             DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-            DotNetNuke.Entities.Users.UserInfo author = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings().PortalId, authorId);
+            DotNetNuke.Entities.Users.UserInfo author = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
 
             // Populate the user object with the post author info.  
             var up = new User

@@ -21,3 +21,7 @@ You can erase any parts of this template not applicable to your Pull Request.
 <!-- Type numbers directly after the #, it will show the issues with that number -->
 
 Close #
+## For epic issues, please mark which issue is related
+<!-- Type numbers directly after the #, it will show the issues with that number -->
+
+Related to epic issue #

@@ -47,7 +47,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <WarningLevel>1</WarningLevel>
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <DebugType>full</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -59,7 +59,7 @@
     <DefineConstants>TRACE;</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -86,6 +86,7 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\microsoft-web-helpers.2.1.20710.2\lib\net40\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
@@ -269,11 +270,15 @@
     <Content Include="handlers\adminhelper.ashx" />
     <Content Include="images\add-circle.png" />
     <Content Include="images\af-fileicon.png" />
+    <Content Include="images\arrows_down.png" />
+    <Content Include="images\arrows_left.png" />
     <Content Include="images\arrow_down.png" />
     <Content Include="images\arrow_up.png" />
     <Content Include="images\check32.png" />
     <Content Include="images\checkbox.png" />
     <Content Include="images\checkbox_unchecked.png" />
+    <Content Include="images\close.png" />
+    <Content Include="images\delete_new.gif" />
     <Content Include="images\execute16.png" />
     <Content Include="images\delete16.png" />
     <Content Include="images\info32.png" />
@@ -284,7 +289,10 @@
     <Content Include="images\modal_top_left.png" />
     <Content Include="images\modal_top_right.png" />
     <Content Include="images\progress.gif" />
+    <Content Include="images\search.gif" />
     <Content Include="images\sort_16.png" />
+    <Content Include="images\spinner-lg.gif" />
+    <Content Include="images\spinner.gif" />
     <Content Include="images\testrun16.png" />
     <Content Include="images\roles_add.png" />
     <Content Include="images\save16.png" />
@@ -534,7 +542,9 @@
     <Content Include="controls\admin_filters.ascx" />
     <Content Include="controls\admin_home.ascx" />
     <Content Include="controls\admin_manageforums_home.ascx" />
-    <Content Include="controls\admin_ranks.ascx" />
+    <Content Include="controls\admin_ranks.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="controls\admin_tags.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -644,7 +654,13 @@
     <None Include="sql\06.04.01.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
+    <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
+    <None Include="sql\07.00.06.SqlDataProvider" />
+    <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\08.00.00.SqlDataProvider" />
+    <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -756,6 +772,9 @@
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\Controllers\ControllerBase.cs" />
+    <Compile Include="Services\ForumAuthorizeAttribute.cs" />
+    <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="SimulateDateDiff.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="ActiveForums.ascx.designer.cs">
@@ -979,7 +998,7 @@
     </Compile>
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Services\AdminServiceController.cs" />
-    <Compile Include="Services\ForumRouteMapper.cs" />
+    <Compile Include="Services\RouteMapper.cs" />
     <Compile Include="Services\ForumServiceController.cs" />
     <Compile Include="Services\ModerationService.cs" />
     <Compile Include="ForumSettings.ascx.designer.cs">
