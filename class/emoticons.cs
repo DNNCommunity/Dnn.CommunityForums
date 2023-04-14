@@ -19,8 +19,8 @@
 //
 
 using System.Data;
-
 using System.Web;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class emoticons
@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
 		{
-			string strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
+			string strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");
 			var sb = new System.Text.StringBuilder();
 			IDataReader dr = DataProvider.Instance().Filters_GetEmoticons(ModuleId);
 			sb.Append("<div id=\"emotions\" class=\"afemoticons\"><div id=\"emotions\" style=\"width:100%; height:100%;align:center;\">");
@@ -47,10 +47,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				else
 				{
-					sInsert = "<img src=\\'" + sEmotPath + "\\' />";
+					sInsert = string.Concat("<img src=\\'", sEmotPath, " alt=\"\" \\' />");
 				}
-				//sb.Append("<div class=""afEmot"" style=""width:16px;height:16px;""><img class=""afEmot"" src=""" & sEmotPath & """ width=""20"" height=""20"" title=""" & dr("Find").ToString & """ unselectable=""on"" style=""cursor:hand;"" onclick=""insertEmoticon('" & sInsert & "')"" />")
-				sb.Append("<span class=\"afEmot\" style=\"width:20px;height:20px;cursor:hand;\" unselectable=\"on\" onclick=\"amaf_insertHTML('" + sInsert + "')\"><img onmousedown=\"return false;\" src=\"" + sEmotPath + "\" width=\"20\" height=\"20\" title=\"" + dr["Find"] + "\" /></span>");
+
+				sb.AppendFormat("<span class=\"afEmot\" style=\"width:20px;height:20px;cursor:hand;\" unselectable=\"on\" onclick=\"amaf_insertHTML('{0}')\"><img onmousedown=\"return false;\" src=\"{1}\" width=\"20\" height=\"20\" title=\"{2}\" /></span>", sInsert, sEmotPath, dr["Find"]);
 				i += 1;
 				if (i % 2 == 0)
 				{
@@ -60,10 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			dr.Close();
 			sb.Append("</div></div>");
 
-
 			return sb.ToString();
-
-		}
+        }
 	}
 }
-

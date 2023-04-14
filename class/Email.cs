@@ -184,70 +184,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
             }
-		}		
-        public static void SendAdminWatchEmail(int postID, int userID)
-		{
-			//TODO: Come back to fix and mod list
-			// Try
-			//    Dim _portalSettings As Entities.Portals.PortalSettings = CType(Current.Items("PortalSettings"), Entities.Portals.PortalSettings)
-			//    Dim objsubs As New SubscriptionController
-			//    Dim intPost As Integer
-			//    Dim objPosts As New PostController
-			//    Dim objPost As PostInfo = objPosts.NTForums_GetPostByID(PostID)
-			//    Dim strSubject As String = _portalSettings.PortalName & " Forums:" & objPost.Subject
-			//    If objPost.ParentPostID = 0 Then
-			//        intPost = objPost.PostID
-			//    Else
-			//        intPost = objPost.ParentPostID
-			//    End If
-			//    Dim ForumID As Integer = objPost.ForumID
-			//    Dim objForums As New ForumController
-			//    Dim objForum As ForumInfo = objForums.Forums_Get(objPost.ForumID)
-
-			//    Dim myTemplate As String
-			//    myTemplate = CType(Current.Cache("AdminWatchEmail" & objForum.ModuleId), String)
-			//    If myTemplate Is Nothing Then
-			//        TemplateUtils.LoadTemplateCache(objForum.ModuleId)
-			//        myTemplate = CType(Current.Cache("AdminWatchEmail" & objForum.ModuleId), String)
-			//    End If
-			//    Dim arrMods As String()
-			//    'TODO: Come back and properly get list of moderators
-			//    'arrMods = Split(objForum.CanModerate, ";")
-			//    Dim i As Integer = 0
-			//    Dim sLink As String
-			//    sLink = Common.Globals.GetPortalDomainName(_portalSettings.PortalAlias.HTTPAlias, Current.Request) & "/default.aspx?tabid=" & _portalSettings.ActiveTab.TabID & "&view=topic&forumid=" & objPost.ForumID & "&postid=" & intPost
-			//    Dim PortalId As Integer = _portalSettings.PortalId
-			//    Dim FromEmail As String = _portalSettings.Email
-			//    Try
-			//        If Not String.IsNullOrEmpty(objForum.EmailAddress) Then
-			//            FromEmail = objForum.EmailAddress
-			//        End If
-			//    Catch ex As Exception
-
-			//    End Try
-			//    For i = 0 To UBound(arrMods) - 1
-			//        Dim objUserController As New Entities.Users.UserController
-			//        Dim objRoleController As New Security.Roles.RoleController
-			//        Dim RoleName As String = objRoleController.GetRole(CInt(arrMods(i)), PortalId).RoleName
-			//        Dim Arr As ArrayList = Roles.GetUsersByRoleName(PortalId, RoleName)
-			//        Dim objUser As Entities.Users.UserRoleInfo
-			//        For Each objUser In Arr
-			//            Dim sBody As String = myTemplate
-			//            sBody = Replace(sBody, "[FULLNAME]", objUser.FullName)
-			//            sBody = Replace(sBody, "[PORTALNAME]", _portalSettings.PortalName)
-			//            sBody = Replace(sBody, "[USERNAME]", objPost.UserName)
-			//            sBody = Replace(sBody, "[POSTDATE]", objPost.DateAdded.ToString)
-			//            sBody = Replace(sBody, "[SUBJECT]", objPost.Subject)
-			//            sBody = Replace(sBody, "[BODY]", objPost.Body)
-			//            sBody = Replace(sBody, "[LINK]", "<a href=""" & sLink & """>" & sLink & "</a>")
-			//            Dim objUserInfo As Entities.Users.UserInfo = objUserController.GetUser(PortalId, objUser.UserID)
-			//            SendNotification(FromEmail, objUserInfo.Membership.Email, strSubject, sBody, ForumID, intPost)
-			//        Next
-			//    Next
-			//Catch ex As Exception
-			//    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-			//End Try
-
 		}
 
 		/* 
@@ -257,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			SendNotification(-1, fromEmail, toEmail, subject, bodyText, bodyHTML);
 		}
+
 		public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
 		{
             //USE DNN API for this to ensure proper delivery & adherence to portal settings
@@ -282,6 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
 										smtpPassword: SMTPPassword(portalId),
 										smtpEnableSSL: EnableSMTPSSL(portalId));
 		}
+
 		public void Send()
 		{
 			try
@@ -289,21 +227,20 @@ namespace DotNetNuke.Modules.ActiveForums
 				Subject = Subject.Replace("&#91;", "[");
 				Subject = Subject.Replace("&#93;", "]");
 
-
-				foreach (var si in Recipients.Where(si => si.Email != string.Empty))
+                foreach (var si in Recipients.Where(si => si.Email != string.Empty))
 				{
 					if(UseQueue)
 					    Queue.Controller.Add(PortalId, From, si.Email, Subject, BodyHTML, BodyText, string.Empty, string.Empty);
                     else
                         SendNotification(PortalId, From, si.Email, Subject, BodyText, BodyHTML); 
 				}
-
-			}
+            }
 			catch (Exception ex)
 			{
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
+
 		#region "code modeled on DotNetNuke.Services.Mail/DotNetNuke.Entities.Host APIs to support portal-specific SMTP configuration"
 		internal static string SMTPServer(int portalId)
 		{
@@ -358,6 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				return decryptedText;
 			}
 		}
+
 		internal static bool SMTPPortalEnabled(int portalId)
 		{
 			if (portalId != null && portalId != -1)
@@ -369,6 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				return false; 
 			}
 		}
+
 		internal static string GetSmtpSetting(int portalId, string settingName)
 		{
 			if (SMTPPortalEnabled(portalId))
