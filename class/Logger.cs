@@ -26,20 +26,9 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public static void Log(string Msg)
 		{
-			string sPath = HttpContext.Current.Request.MapPath(Globals.ModulePath + "am.html");
+			string sPath = HttpContext.Current.Request.MapPath(string.Concat(Globals.ModulePath, "am.html"));
 			Msg = Msg + System.Environment.NewLine;
 			System.IO.File.AppendAllText(sPath, Msg);
-			//Dim w As StreamWriter = File.AppendText(sPath)
-			//w.WriteLine(Now() & vbTab & Msg)
-			//w.Flush()
-			//w.Close()
-			//Dim Email As New MailMessage
-			//Email.To = "willm@ntweb.com"
-			//Email.From = "willm@ntweb.com"
-			//Email.Subject = "Error"
-			//Email.Body = Msg
-			//SmtpMail.Send(Email)
-		}
+        }
 	}
 }
-

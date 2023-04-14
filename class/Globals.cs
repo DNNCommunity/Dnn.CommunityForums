@@ -95,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		Disabled = 0,
 		Core = 1,
 		Ventrian = 2
-		//Social = 3
 	}
 
 	public enum SpecialTokenTypes
@@ -131,9 +130,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-                return Common.Globals.glbRoleUnauthUser + ";" + Common.Globals.glbRoleAllUsers + ";";
+                return string.Concat(Common.Globals.glbRoleUnauthUser, ";", Common.Globals.glbRoleAllUsers, ";");
 			}
 		}
+
 		public const string ModuleName = "Active Forums";
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
@@ -233,14 +233,12 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string AttachMaxSize = "ATTACHMAXSIZE";
 		public const string AttachTypeAllowed = "ATTACHTYPEALLOWED";
         public const string AttachAllowBrowseSite = "ATTACHALLOWBROWSESITE";
-		//public const string AttachStore = "ATTACHSTORE";
 		public const string AttachMaxHeight = "ATTACHMAXHEIGHT";
 		public const string AttachMaxWidth = "ATTACHMAXWIDTH";
         public const string MaxAttachWidth = "MAXATTACHWIDTH";
         public const string MaxAttachHeight = "MAXATTACHHEIGHT";
         public const string AttachInsertAllowed = "ATTACHINSERTALLOWED";
         public const string ConvertingToJpegAllowed = "CONVERTINGTOJPEGALLOWED";
-		//public const string AttachUniqueFileNames = "ATTACHUNIQUEFILENAMES";  
 		public const string IndexContent = "INDEXCONTENT";
 		public const string AllowRSS = "ALLOWRSS";
 		public const string TopicsTemplateId = "TOPICSTEMPLATEID";
@@ -267,28 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public const string CreatePostCount = "CREATEPOSTCOUNT";
 	    public const string ReplyPostCount = "REPLYPOSTCOUNT";
         public const string AllowLikes = "ALLOWLIKES";
-
-
-        /*
-		public const string MCEnabled = "MCENABLED";
-		public const string MCUrl = "MCURL";
-		public const string MCAddress = "MCADDRESS";
-		public const string MCRestrictByAlias = "MCRESTRICTALIAS";
-		public const string MCPop3UserName = "MCPOPUSERNAME";
-		public const string MCPop3Password = "MCPOPPASSWORD";
-		public const string MCPop3Server = "MCPOPSERVER";
-		public const string MCAutoResponseTemplateId = "MCAUTORESPONSE";
-		public const string MCAdminNotifyTemplateId = "MCADMINNOTIFY";
-		public const string MCSubNotifyTemplateId = "MCSUBNOTIFY";
-		public const string MCRejectTemplateId = "MCREJECTNOTIFY";
-		public const string MCAutoCreateUsers = "MCAUTOCREATEUSERS";
-		public const string MCModType = "MCMODTYPE";
-		public const string MCEOMTag = "MCEOMTAG";
-		public const string MCEOMTagRequired = "MCEOMTAGREQ";
-		public const string MCRemoveHTML = "MCSTRIPHTML";
-        */
-
-	}
+    }
 
 	public class ParamKeys
 	{
@@ -329,11 +306,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
 		public const string ForumList = "affl{0}";
-	}
+        public const string Tokens = "aftk{0}";
+    }
 
-
-
-	public class SortColumns
+    public class SortColumns
 	{
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";

@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
 using System.Linq;
 using System.Web;
@@ -32,20 +31,23 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string GetAvatar(int userID, int avatarWidth, int avatarHeight)
         {
             var portalSettings = HttpContext.Current.Items["PortalSettings"] as PortalSettings;
+
             if (portalSettings == null)
                 return string.Empty;
 
             //GIF files when reduced using DNN class losses its animation, so for gifs send them as is
             var user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
             string imgUrl = string.Empty;
+            
             if (user != null) imgUrl = user.Profile.PhotoURL;
+            
             if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().EndsWith("gif"))
             {
-                return "<img class='af-avatar' src='" + imgUrl + "' height='" + avatarHeight + "px' width='" + avatarWidth + "px' />";
+                return string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
             }
             else
             {
-                return "<img class='af-avatar' src='" + string.Format(Common.Globals.UserProfilePicFormattedUrl(), userID, avatarWidth, avatarHeight) + "' />";
+                return string.Concat("<img class='af-avatar' src='", string.Format(Common.Globals.UserProfilePicFormattedUrl(), userID, avatarWidth, avatarHeight), "' />");
             }
         }
 
@@ -62,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var mainSettings = DataCache.MainSettings(moduleId);
 
-            var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : "<span class='" + profileNameClass + "'>{0}</span>";
+            var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : string.Concat("<span class='", profileNameClass, "'>{0}</span>");
 
             if (linkProfile && userId > 0)
             {
@@ -90,8 +92,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                 }
 
-                if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1 )
-                    outputTemplate = "<a href='" + Common.Globals.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }) + "' class='" + profileLinkClass + "' rel='nofollow'>{0}</a>";
+                if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
+                    outputTemplate = string.Concat("<a href='", Common.Globals.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
             }
 
             var displayMode = mainSettings.UserNameDisplay + string.Empty;
@@ -153,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         lastName = (user != null) ? Utilities.SafeTrim(user.LastName) : null;
                     }
 
-                    outputName = firstName + " " + lastName;
+                    outputName = string.Concat(firstName, " ", lastName);
                     break;
             }
 
@@ -172,10 +174,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (isUserOnline)
             {
-                //return "<img class='af-user-status af-user-status-online' src='" + themePath + "/images/online.png' alt='" + altOnlineText + "' style='vertical-align:middle;' vspace='2' hspace='2' />";
                 return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-blue\"></i></span>";
             }
-            //return "<img class='af-user-status af-user-status-offline' src='" + themePath + "/images/offline.png' alt='" + altOfflineText + "' style='vertical-align:middle;' vspace='2' hspace='2' />";
+
             return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-red\"></i></span>";
         }
 
@@ -197,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (returnType == 0)
                     {
-                        sRank = "<img src='" + strHost + ri.Display.Replace("activeforums/Ranks", "activeforums/images/Ranks") + "' border='0' alt='" + ri.RankName + "' />";
+                        sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "activeforums/images/Ranks"), ri.RankName);
                         break;
                     }
                     sRank = ri.RankName;

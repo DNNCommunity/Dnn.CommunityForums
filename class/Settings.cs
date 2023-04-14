@@ -162,25 +162,28 @@ namespace DotNetNuke.Modules.ActiveForums
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
 		}
+
         public string ThemesLocation
         {
             get
             {
-                return Globals.ModulePath +  "/themes";
+                return string.Concat(Globals.ModulePath, "/themes");
             }
         }
+
         public string ThemeLocation
         {
             get
             {
-                return ThemesLocation + "/" + Theme;
+                return string.Concat(ThemesLocation, "/", Theme);
             }
         }
+
         public string TemplatesLocation
         {
             get
             {
-                return Globals.ModulePath + "/config/templates";
+                return string.Concat(Globals.ModulePath, "/config/templates");
             }
         }
         public bool FullText
@@ -333,4 +336,3 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 	}
 }
-
