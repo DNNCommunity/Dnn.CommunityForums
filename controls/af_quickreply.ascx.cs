@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 //using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
+using DotNetNuke.Modules.ActiveForums.Controls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -176,7 +177,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                //Me.AFModID = MID
+                if (ContactByFaxOnlyCheckBox.Checked)
+                {
+                    // if someone activates this checkbox send him home :-)
+                    Response.Redirect("about:blank");
+                }
 
 
                 if (Request.IsAuthenticated)
@@ -291,24 +296,18 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+        protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // if someone activates this checkbox send him home :-)
+            Response.Redirect("http://localhost/", true);
+        }
         private void SaveQuickReply()
         {
             SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
-            int iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
             {
-
-                UserProfileInfo upi = ForumUser.Profile;
-                if (upi != null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < iFloodInterval)
-                    {
-                        Controls.InfoMessage im = new Controls.InfoMessage();
-                        im.Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>";
-                        plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                return;
             }
             if (!Request.IsAuthenticated)
             {

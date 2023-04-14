@@ -143,6 +143,21 @@
         border: solid 1px #666;
     }
 </style>
+ 
+		<div style="display:none;visibility:hidden;" >
+		
+            <label ID="ContactByFaxOnly" runat="server"
+               ControlName="ContactByFaxOnlyCheckBox"
+               ResourceKey="ContactByFaxOnly"
+               Suffix=":"
+               TabIndex="-1" />
+            <asp:CheckBox ID="ContactByFaxOnlyCheckBox" runat="server"
+               AutoPostBack="true"
+               Checked="false"
+               OnCheckedChanged="ContactByFaxOnlyCheckBox_CheckedChanged"
+               TabIndex="-1" />
+        </div>
+
 <div id="afgrid">
     <asp:HiddenField ID="hidAttachments" runat="server" />
     <asp:PlaceHolder ID="plhMessage" runat="server" />
@@ -150,7 +165,7 @@
 
     <div id="divPreviewWindow" class="afpreview">
         <div class="afpreviewbar">
-            <img src="<%=ImagePath%>/delete_new.gif" align="right" onclick="closePreview();" /><%=PreviewText%></div>
+            <img src="<%=ImagePath%>/delete_new.gif")%>" align="right" onclick="closePreview();" /><%=PreviewText%></div>
         <div id="divPreviewText" class="afpreviewtext"></div>
     </div>
     <am:Callback ID="cbPreview" runat="server" OnCallbackComplete="cbPreview_render">

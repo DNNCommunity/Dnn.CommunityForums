@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/");
+                return Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
             }
         }
 
@@ -545,7 +545,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected string GetSharedResource(string key)
         {
-            return Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx");
+            return Localization.GetString(key, Globals.SharedResourceFile);
         }
 
         internal bool IsHtmlPermitted(HTMLPermittedUsers permittedMode, bool userIsTrusted, bool userIsModerator)

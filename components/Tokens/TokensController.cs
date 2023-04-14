@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Reflection;
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -36,42 +36,47 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				List<Token> li = new List<Token>();
-				Token tk = null;
-				System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
-				string sPath = HttpContext.Current.Server.MapPath("~/DesktopModules/activeforums/config/tokens.config");
-				xDoc.Load(sPath);
-				if (xDoc != null)
-				{
-					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					string sQuery = "//tokens/token";
-					if (! (group == string.Empty))
-					{
-						sQuery = sQuery + "[@group='" + group + "' or @group='*']";
-					}
-					System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes(sQuery);
-					if (xNodeList.Count > 0)
-					{
-						int i = 0;
-						for (i = 0; i < xNodeList.Count; i++)
-						{
-							tk = new Token();
-							tk.Group = xNodeList[i].Attributes["group"].Value;
-							tk.TokenTag = xNodeList[i].Attributes["name"].Value;
-							if (xNodeList[i].Attributes["value"] != null)
-							{
-								tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].Attributes["value"].Value);
-							}
-							else
-							{
-								tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-							}
+                List<Token> li = (List<Token>)DataCache.CacheRetrieve(string.Format(CacheKeys.Tokens, group));
+                if (li == null)
+                {
+                    li = new List<Token>();
+                    Token tk = null;
+                    System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
+                    string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath + "config/tokens.config");
+                    xDoc.Load(sPath);
+                    if (xDoc != null)
+                    {
+                        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                        string sQuery = "//tokens/token";
+                        if (!(group == string.Empty))
+                        {
+                            sQuery = sQuery + "[@group='" + group + "' or @group='*']";
+                        }
+                        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes(sQuery);
+                        if (xNodeList.Count > 0)
+                        {
+                            int i = 0;
+                            for (i = 0; i < xNodeList.Count; i++)
+                            {
+                                tk = new Token();
+                                tk.Group = xNodeList[i].Attributes["group"].Value;
+                                tk.TokenTag = xNodeList[i].Attributes["name"].Value;
+                                if (xNodeList[i].Attributes["value"] != null)
+                                {
+                                    tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].Attributes["value"].Value);
+                                }
+                                else
+                                {
+                                    tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                }
 
-							li.Add(tk);
-						}
-					}
-				}
-				return li;
+                                li.Add(tk);
+                            }
+                        }
+                    }
+                    DataCache.CacheStore(string.Format(CacheKeys.Tokens, group), li);
+                }
+                return li;
 			}
 			catch (Exception ex)
 			{
