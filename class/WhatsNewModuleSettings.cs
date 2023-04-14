@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, RSSCacheTimeout.ToString());
 
                 // Clear the cache
-                DataCache.CacheClear("aftp_" + moduleId);
+                DataCache.CacheClear(string.Concat("aftp_", moduleId));
 
                 return true;
             }
@@ -133,6 +133,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 Format = (moduleSettings[FormatSettingsKey] != null) ? Convert.ToString(moduleSettings[FormatSettingsKey]) : DefaultFormat
             };
         }
-
     }
 }
