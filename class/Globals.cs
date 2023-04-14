@@ -95,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		Disabled = 0,
 		Core = 1,
 		Ventrian = 2
-		//Social = 3
 	}
 
 	public enum SpecialTokenTypes
