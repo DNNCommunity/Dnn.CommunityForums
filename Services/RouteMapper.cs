@@ -19,13 +19,20 @@
 //
 using DotNetNuke.Web.Api;
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Services
 {
-    public class ForumRouteMapper : IServiceRouteMapper
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public class RouteMapper : IServiceRouteMapper
     {
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="mapRouteManager"></param>
         public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            mapRouteManager.MapHttpRoute("ActiveForums", "default", "{controller}/{action}", new {}, new[] { "DotNetNuke.Modules.ActiveForums" });
+            mapRouteManager.MapHttpRoute("ActiveForums", "default", "{controller}/{action}", new { }, new[] { "DotNetNuke.Modules.ActiveForums", "DotNetNuke.Modules.ActiveForums.Services.Controllers" });
         }
     }
 }

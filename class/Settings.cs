@@ -162,7 +162,27 @@ namespace DotNetNuke.Modules.ActiveForums
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
 		}
-
+        public string ThemesLocation
+        {
+            get
+            {
+                return Globals.ModulePath +  "/themes";
+            }
+        }
+        public string ThemeLocation
+        {
+            get
+            {
+                return ThemesLocation + "/" + Theme;
+            }
+        }
+        public string TemplatesLocation
+        {
+            get
+            {
+                return Globals.ModulePath + "/config/templates";
+            }
+        }
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }
@@ -210,12 +230,6 @@ namespace DotNetNuke.Modules.ActiveForums
                            : ProfileVisibilities.Disabled;
             }
         }
-
-        public string AddThisAccount
-        {
-            get { return MainSettings.GetString(SettingKeys.AddThisAccount, string.Empty); }
-        }
-
         public bool UseShortUrls
         {
             get { return MainSettings.GetBoolean(SettingKeys.UseShortUrls); }
@@ -230,17 +244,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableAutoLink, true); }
         }
-
-        public string ActiveSocialTopicsKey
-        {
-            get { return Utilities.SafeConvertString(MainSettings.ContainsKey(SettingKeys.ActiveSocialTopicKey), string.Empty); }
-        }
-
-        public string ActiveSocialReplyKey
-        {
-            get { return MainSettings.GetString(SettingKeys.ActiveSocialRepliesKey, string.Empty); }
-        }
-
         public bool URLRewriteEnabled
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableURLRewriter); }

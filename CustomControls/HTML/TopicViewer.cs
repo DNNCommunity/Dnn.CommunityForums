@@ -263,7 +263,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					tmp = tmp.Replace(k, value);
 				}
 
-				//tmp = tmp.Replace("[AVATAR]", "<span style=""background-image:url('/desktopmodules/activesocial/profilepic.ashx?PortalId=" & PortalId.ToString & "&uid=" & row("LastAuthorId").ToString & "&h=26&w=26');""></span>")
 				return tmp;
 			}
 			catch (Exception ex)

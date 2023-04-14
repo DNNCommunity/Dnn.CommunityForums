@@ -17,23 +17,39 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Framework;
 using System;
 using System.Data;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public partial class ActiveForumViewerSettings : Entities.Modules.ModuleSettingsBase
-	{
+	public partial class ActiveForumViewerSettings : ModuleSettingsBase
+    {
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-		public override void LoadSettings()
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            LoadSettings();
+
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+
+            drpForumInstance.SelectedIndexChanged += drpForumInstance_SelectedIndexChanged;
+        }
+
+        private void LoadSettings()
 		{
 			try
 			{
 				if (! Page.IsPostBack)
 				{
-					// Load settings from TabModuleSettings: specific to this instance
-					//Dim setting1 As String = CType(TabModuleSettings["settingname1"], String)
+					// Load settings from TabModuleSettings: specific to this instance 
 					LoadForums();
 					// Load settings from ModuleSettings: general for all instances
 					if (! (Convert.ToString(Settings["AFForumModuleID"]) == null))
@@ -65,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception exc)
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 		public override void UpdateSettings()
@@ -103,25 +119,19 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception exc)
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 		public void LoadForums()
 		{
-			//Dim dr As IDataReader
-			//dr = DataProvider.Instance.PortalForums(PortalId)
-			//Dim i As Integer = 0
-			//While dr.Read
-			//    drpForumInstance.Items.Insert(i, New Web.UI.WebControls.ListItem(CType(dr("TabName"), String), CType(dr("ModuleID"), String)))
-			//End While
-			//dr.Close()
+			
 			int i = 0;
 			var mc = new Entities.Modules.ModuleController();
 			var tc = new Entities.Tabs.TabController();
 			Entities.Tabs.TabInfo ti;
 			foreach (Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
 			{
-                if (mi.DesktopModule.ModuleName.Trim().ToLowerInvariant() == "Active Forums".ToLowerInvariant() && mi.IsDeleted == false)
+                if (mi.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant() && mi.IsDeleted == false)
 				{
 					ti = tc.GetTab(mi.TabID, PortalId, false);
 					if (ti != null)
@@ -190,11 +200,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
 		}
 
-        protected override void OnInit(EventArgs e)
-        {
-            base.OnInit(e);
-
-            drpForumInstance.SelectedIndexChanged += drpForumInstance_SelectedIndexChanged;
-        }
+        
 	}
 }

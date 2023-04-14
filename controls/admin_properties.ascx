@@ -276,7 +276,7 @@
 <table width="100%" cellpadding="0" cellspacing="0">
 		<tr>
 			<td class="afdlg-ul"></td>
-			<td class="afdlg-um"><img id="Img3" src="~/desktopmodules/activesocial/admin/images/close.gif" onclick="asadmin_cancelPropForm();" runat="server" border="0" style="padding-top:5px;float:right;cursor:pointer;" /><div id="propeditor_header" style="float:left;padding:3px;padding-top:8px;padding-left:10px;font-weight:bold;">[RESX:PropertyEditor]</div></td>
+			<td class="afdlg-um"><img id="Img3" src="~/DesktopModules/ActiveForums/images/close.gif" onclick="asadmin_cancelPropForm();" runat="server" border="0" style="padding-top:5px;float:right;cursor:pointer;" /><div id="propeditor_header" style="float:left;padding:3px;padding-top:8px;padding-left:10px;font-weight:bold;">[RESX:PropertyEditor]</div></td>
 			<td class="afdlg-ur"></td>
 		</tr>
 		<tr>

@@ -28,44 +28,13 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public class Social : DataConfig
     {
-        public int GetActiveSocialStatus(int PortalId)
-        {
-#if SKU_LITE
-			//Not Available
-			return -2;
-#else
-            //TODO: the following can probably be removed? Not sure on AS support anymore
-            if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-            {
-                var mc = new Entities.Modules.ModuleController();
-                var tc = new Entities.Tabs.TabController();
-                Entities.Tabs.TabInfo ti;
-                foreach (Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
-                {
-                    if (mi.DesktopModule.ModuleName.Contains("Active Social") && mi.IsDeleted == false)
-                    {
-                        ti = tc.GetTab(mi.TabID, PortalId, false);
-                        if (ti != null)
-                        {
-                            if (ti.IsDeleted == false)
-                            {
-                                //Installed and ready
-                                return 1;
-                            }
-                        }
-                    }
-                }
-                //Not installed on portal
-                return 0;
-            }
-            //Not Installed
-            return -1;
-#endif
-        }
         public void AddTopicToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
         {
-
-            var ji = new JournalItem
+            AddTopicToJournal(PortalId, ModuleId, ForumId, TopicId, UserId, URL, Subject, Summary, Body, ReadRoles, SocialGroupId);
+        }
+        internal void AddTopicToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
+            {
+                var ji = new JournalItem
                          {
                              PortalId = PortalId,
                              ProfileId = UserId,
@@ -121,11 +90,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
             JournalController.Instance.SaveJournalItem(ji, -1);
-
-
-           
         }
         public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
+        {
+            AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, UserId, URL, Subject, Summary, Body, ReadRoles, SocialGroupId);
+        }
+        internal void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
         {
             //make sure that this is a User before trying to create a journal item, you can't post a JI without
             if (UserId > 0)
@@ -184,159 +154,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 JournalController.Instance.SaveJournalItem(ji, -1);
             }
-        }
-        public void AddForumItemToJournal(int PortalId, int ModuleId, int UserId, string entryType, string sURL, string sSubject, string sBody)
-        {
-            try
-            {
-
-                //todo: we should probably have something here
-
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        internal IDataReader ActiveSocialListGroups(int PortalId)
-        {
-            if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-            {
-                string sSQL = "Select g.GroupId, g.GroupName from " + _databaseOwner + _objectQualifier + "activesocial_Groups as g WHERE PortalId = " + PortalId.ToString() + " AND StatusId = 1";
-                return SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL);
-            }
-            return null;
-        }
-
-        internal string ActiveSocialGroups(int userId, int PortalId)
-        {
-
-            string sGroups = string.Empty;
-            try
-            {
-                //Dim MainSettings As SettingsInfo = DataCache.MainSettings(ModuleId)
-                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-                {
-                    DataSet ds = SqlHelper.ExecuteDataset(_connectionString, _databaseOwner + _objectQualifier + "activesocial_Groups_ListMyGroups", PortalId, 0, 1000, userId, 1, userId);
-                    if (ds.Tables.Count > 0)
-                    {
-                        DataTable dt = ds.Tables[0];
-                        if (dt.Rows.Count > 0)
-                        {
-                            foreach (DataRow dr in dt.Rows)
-                            {
-                                sGroups += dr["GroupId"] + ":" + dr["GroupMemberTypeId"] + ";";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        return string.Empty;
-                    }
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-            return sGroups;
-
-        }
-        internal string ActiveSocialGetGroup(int groupId)
-        {
-
-            string sGroups = string.Empty;
-            try
-            {
-                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-                {
-                    sGroups = Convert.ToString(SqlHelper.ExecuteScalar(_connectionString, _databaseOwner + _objectQualifier + "activesocial_Groups_GetName", groupId));
-                    return sGroups;
-                }
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-            return sGroups;
-        }
-        internal string ActiveSocialGetGroupType(int groupTypeId, int PortalId)
-        {
-
-            string sGroups = string.Empty;
-            try
-            {
-                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-                {
-                    using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, _databaseOwner + _objectQualifier + "activesocial_Groups_GetMemberTypes", PortalId))
-                    {
-                        while (dr.Read())
-                        {
-                            if (Convert.ToInt32(dr["GroupMemberTypeId"].ToString()) == groupTypeId)
-                            {
-                                sGroups = dr["MemberTypeName"].ToString();
-
-                            }
-                        }
-                        dr.Close();
-                    }
-                    return sGroups;
-                }
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-                //Return ex.Message
-            }
-            return sGroups;
-        }
-        internal int GetMemberTabId(int PortalId)
-        {
-
-            try
-            {
-                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-                {
-                    string sSQL = "SELECT SettingValue FROM " + _databaseOwner + _objectQualifier + "activesocial_Settings WHERE SettingName='MEMBERSTABID' AND PortalId = " + PortalId;
-                    return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sSQL));
-                }
-                return -1;
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-            return -1;
-
-        }
-        internal int GetMasterForumGroup(int PortalId, int CurrentTabId)
-        {
-            int ForumGroupId = -1;
-            int GroupViewTabId = -1;
-
-            try
-            {
-                if (System.IO.File.Exists(HttpContext.Current.Server.MapPath("~/bin/active.modules.social.dll")))
-                {
-                    string sSQL = "SELECT SettingValue FROM " + _databaseOwner + _objectQualifier + "activesocial_Settings WHERE SettingName='GLOBALGROUPFORUMTEMPLATEGROUP' AND PortalId = " + PortalId;
-                    ForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sSQL));
-                    sSQL = "SELECT SettingValue FROM " + _databaseOwner + _objectQualifier + "activesocial_Settings WHERE SettingName='GROUPSVIEWTABID' AND PortalId = " + PortalId;
-                    GroupViewTabId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sSQL));
-                    if (GroupViewTabId == CurrentTabId)
-                    {
-                        ForumGroupId = -1;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-            }
-            return ForumGroupId;
         }
     }
 }

@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
             oLink.Attributes["rel"] = "stylesheet";
             oLink.Attributes["type"] = "text/css";
-            oLink.Attributes["href"] = Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/calendar.css");
+            oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "scripts/calendar.css");
             
             var oCSS = Page.FindControl("CSS");
             if (oCSS != null)
@@ -114,11 +114,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             _userIsTrusted = Utilities.IsTrusted((int)_fi.DefaultTrustValue, _ui.TrustLevel, _canTrust, _fi.AutoTrustLevel, _ui.PostCount);
-            Spinner = Page.ResolveUrl("~/DesktopModules/activeforums/themes/" + MainSettings.Theme + "/images/loading.gif");
+            _themePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
+            Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
-
-            var myTheme = MainSettings.Theme;
-            _themePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + myTheme);
+             
             ctlForm.ID = "ctlForm";
             ctlForm.PostButton.ImageUrl = _themePath + "/images/save32.png";
             ctlForm.PostButton.ImageLocation = "TOP";
@@ -164,10 +163,10 @@ namespace DotNetNuke.Modules.ActiveForums
             switch (_editorType)
             {
                 case EditorTypes.TEXTBOX:
-                    Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/text_editor.js"));
+                    Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl(Globals.ModulePath + "scripts/text_editor.js"));
                     break;
                 case EditorTypes.ACTIVEEDITOR:
-                    Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/active_editor.js"));
+                    Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl(Globals.ModulePath + "scripts/active_editor.js"));
                     break;
                 default:
                     {
@@ -175,15 +174,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (prov.DefaultProvider.Contains("CKHtmlEditorProvider") || prov.DefaultProvider.Contains("DNNConnect.CKE"))
                         {
-                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/ck_editor.js"));
+                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl(Globals.ModulePath + "scripts/ck_editor.js"));
                         }
                         else if (prov.DefaultProvider.Contains("FckHtmlEditorProvider"))
                         {
-                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/fck_editor.js"));
+                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl(Globals.ModulePath + "scripts/fck_editor.js"));
                         }
                         else
                         {
-                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/other_editor.js"));
+                            Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl(Globals.ModulePath + "scripts/other_editor.js"));
                         }
                     }
                     break;
@@ -258,22 +257,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //Page.ClientScript.RegisterClientScriptInclude("aftags", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/jquery.tokeninput.js"))
         }
+        protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // if someone activates this checkbox send him home :-)
+            Response.Redirect("http://localhost/", true);
+        }
 
         private void ctlForm_Click(object sender, EventArgs e)
         {
-            Page.Validate();
+            Page.Validate(); 
+            if (ContactByFaxOnlyCheckBox.Checked)
+            {
+                // if someone activates this checkbox send him home :-)
+                Response.Redirect("about:blank");
+            }
             var iFloodInterval = MainSettings.FloodInterval;
             if (iFloodInterval > 0)
             {
-                if (ForumUser != null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, ForumUser.Profile.DateLastPost, DateTime.UtcNow) < iFloodInterval)
-                    {
-                        var im = new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>" };
-                        plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                return;
             }
             if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject)) 
                 return;
@@ -970,7 +972,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
                     
-                    if (sUrl.Contains("~/") || Request.QueryString["asg"] != null)
+                    if (sUrl.Contains("~/"))
                         sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
 
                     if (!_isEdit)
@@ -978,19 +980,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read, SocialGroupId);
-                            if (Request.QueryString["asg"] == null && !(string.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey)) && ForumInfo.ActiveSocialEnabled)
-                            {
-                                // amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, UserId, sUrl, Subject, Summary, Body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read)
-                            }
-                            else
-                            {
-                                amas.AddForumItemToJournal(PortalId, ForumModuleId, UserId, "forumtopic", sUrl, subject, body);
-                            }
+                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body,ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
                     }
 
@@ -999,7 +993,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -1156,7 +1150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                     var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     
-                    if (fullURL.Contains("~/") || Request.QueryString["asg"] != null)
+                    if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(ForumTabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     
                     if (fullURL.EndsWith("/"))
@@ -1167,18 +1161,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read, SocialGroupId);
-                            //If Request.QueryString["asg"] Is Nothing And Not String.IsNullOrEmpty(MainSettings.ActiveSocialTopicsKey) And ForumInfo.ActiveSocialEnabled And Not ForumInfo.ActiveSocialTopicsOnly Then
-                            //    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, String.Empty, Body, ForumInfo.ActiveSocialSecurityOption, ForumInfo.Security.Read)
-                            //Else
-                            //    amas.AddForumItemToJournal(PortalId, ForumModuleId, UserId, "forumreply", fullURL, Subject, Body)
-                            //End If
-
-
+                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
 
                     }

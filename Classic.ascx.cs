@@ -51,7 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected override void OnInit(EventArgs e)
 		{
-            //JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnInit(e);
         }
         protected override void OnLoad(EventArgs e)
@@ -131,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else
                 {
 
-                    string ctlPath = "~/DesktopModules/activeforums/controls/_default.ascx";
+                    string ctlPath = Globals.ModulePath + "controls/_default.ascx";
                     ForumBase ctlDefault = (ForumBase)(LoadControl(ctlPath));
                     ctlDefault.ID = "ctlConfig";
                     ctlDefault.ModuleConfiguration = this.ModuleConfiguration;
@@ -166,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (view.ToUpperInvariant() == "ADVANCED")
                 {
-                    ctl = (ForumBase)(LoadControl("~/desktopmodules/activeforums/advanced.ascx"));
+                    ctl = (ForumBase)(LoadControl(Globals.ModulePath + "advanced.ascx"));
                 }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {
@@ -179,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else if (view.ToUpperInvariant() == "USERSETTINGS".ToUpperInvariant())
                 {
                     string ctlPath = string.Empty;
-                    ctlPath = "~/DesktopModules/ActiveForums/controls/af_profile.ascx";
+                    ctlPath = Globals.ModulePath + "controls/af_profile.ascx";
                     if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
@@ -193,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     // this is where af_post.ascx is used
                     string ctlPath = string.Empty;
-                    ctlPath = "~/DesktopModules/ActiveForums/controls/af_" + view + ".ascx";
+                    ctlPath = Globals.ModulePath + "controls/af_" + view + ".ascx";
                     if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
@@ -243,8 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             isPrivate = true;
                         }
-                        Entities.Modules.ModuleController objModules = new Entities.Modules.ModuleController();
-                        Hashtable htSettings = objModules.GetTabModuleSettings(TabModuleId);
+                        Hashtable htSettings = new Entities.Modules.ModuleController().GetModule(TabModuleId).TabModuleSettings;
 
                         fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
                         ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
@@ -260,9 +258,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctl.Params = options;
                 }
                 ControlsConfig cc = new ControlsConfig();
-                cc.AppPath = Page.ResolveUrl("~/DesktopModules/ActiveForums/");
-                cc.ThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/");
-                cc.TemplatePath = cc.ThemePath + "templates/";
+                cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
+                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
                 cc.SiteId = PortalId;
                 cc.PageId = TabId;
                 cc.InstanceId = ModuleId;
@@ -280,8 +278,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     plhLoader.Controls.Add(ctl);
                 }
                 string sOut = null;
-                sOut = System.Environment.NewLine + "<!--  © 2004 - 2013 DNN Corp.,  All Rights Reserved -->" + System.Environment.NewLine;
-                sOut += "<!-- Active Forums 5.0  -->" + System.Environment.NewLine;
+                //TODO: this should be resources instead of harcoded text?
+               sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
+                sOut +=  string.Concat("<!-- DNN Community Forums", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;
@@ -318,12 +317,8 @@ namespace DotNetNuke.Modules.ActiveForums
             //Register theme
             if (InheritModuleCSS == false)
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/module.css");
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/jquery-ui.min.css");
-                if (Request.QueryString["asg"] != null)
-                {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/module.css");
-                }
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/module.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/jquery-ui.min.css");
             }
 
             string lang = "en-US";
@@ -340,27 +335,24 @@ namespace DotNetNuke.Modules.ActiveForums
                 lang = "en-US";
             }
 
-            //Framework.jQuery.RequestRegistration();
-            //Framework.jQuery.RequestUIRegistration();
             ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-            Framework.jQuery.RequestDnnPluginsRegistration();
 
-            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/jquery-searchPopup.js");
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-searchPopup.js");
 
-            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/json2009.min.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/afcommon.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/afutils.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/active/amlib.js");
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/json2009.min.js");
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afcommon.js");
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afutils.js");
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "active/amlib.js");
 
             StringBuilder sb = new StringBuilder();
-            string handlerURL = VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/handlers/forumhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
+            string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
             sb.AppendFormat("var afHandlerURL = '{0}';", handlerURL);
-            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme) + "';");
+            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemesLocation + "/" + MainSettings.Theme) + "/images/';");
             string sLoadImg = "";
-            sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner-lg.gif") + "';";
-            sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner.gif") + "';";
+            sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
+            sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
-            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath("~/desktopmodules/activeforums/scripts/resx.js")), false, true));
+            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
                 sb.AppendLine("setInterval('amaf_pinger()',120000);");
@@ -374,10 +366,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (ForumUser.Profile.IsMod)
             {
-                ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/afmod.js");
-                ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/active/am-ui.css");
-
-
+                ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afmod.js");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");
             }
 
 
@@ -406,24 +396,19 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ShowToolbar = false;
             }
-            if (Request.QueryString["dnnprintmode"] == null & Request.QueryString["asg"] == null)
+            if (Request.QueryString["dnnprintmode"] == null)
             {
-                bool show = true;
-                if (currView == "grid" && Request.Params["asg"] != null)
-                {
-                    show = false;
-                }
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {
                     ShowToolbar = bool.Parse(HttpContext.Current.Items["ShowToolbar"].ToString());
                 }
-                if (show && ShowToolbar == true)
+                if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
                     object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);
                     if (sToolbar == null)
                     {
-                        sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                        sToolbar = Utilities.GetFileContent(Globals.DefaultTemplatePath + "ToolBar.txt");
                         DataCache.CacheStore("aftb" + ForumModuleId, sToolbar);
                     }
                     lit.Text = sToolbar.ToString();
@@ -439,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.Height = "350px";
                 ctl.Width = "400px";
                 ctl.Name = Utilities.GetSharedResource("[RESX:TopicQuickEdit]");
-                ctl.FilePath = "~/desktopmodules/activeforums/controls/htmlcontrols/quickedit.ascx";
+                ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/quickedit.ascx";
                 this.Controls.Add(ctl);
 
                 ctl = new Controls.HtmlControlLoader();
@@ -447,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.Height = "350px";
                 ctl.Width = "500px";
                 ctl.Name = Utilities.GetSharedResource("[RESX:MoveTopicTitle]");
-                ctl.FilePath = "~/desktopmodules/activeforums/controls/htmlcontrols/movetopic.ascx";
+                ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/movetopic.ascx";
                 this.Controls.Add(ctl);
             }
         }

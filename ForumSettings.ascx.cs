@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				rdEnableURLRewriter.Enabled = false;
 				rdEnableURLRewriter.Enabled = false;
 			}
-			var u = Entities.Users.UserController.GetCurrentUserInfo();
+			var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 
 			if (u.IsSuperUser & (Request.ServerVariables["SERVER_SOFTWARE"].Contains("7") || Request.ServerVariables["SERVER_SOFTWARE"].Contains("8")) & !(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
 			{
@@ -141,8 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 					Utilities.SelectListItemByValue(rdAutoLinks, AutoLink);
                     Utilities.SelectListItemByValue(drpDeleteBehavior, DeleteBehavior);
-					txtAddThis.Text = AddThis;
-                    Utilities.SelectListItemByValue(drpProfileVisibility, ProfileVisibility);
+					Utilities.SelectListItemByValue(drpProfileVisibility, ProfileVisibility);
                     Utilities.SelectListItemByValue(drpSignatures, Signatures);
                     Utilities.SelectListItemByValue(drpUserDisplayMode, UserNameDisplay);
                     Utilities.SelectListItemByValue(rdEnableURLRewriter, FriendlyURLs);
@@ -180,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			catch (Exception exc) //Module failed to load
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 
@@ -205,8 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 EditInterval = Utilities.SafeConvertInt(drpEditInterval.SelectedValue,0);
                 AutoLink = Utilities.SafeConvertBool(rdAutoLinks.SelectedValue);
                 DeleteBehavior = Utilities.SafeConvertInt(drpDeleteBehavior.SelectedValue);
-				AddThis = txtAddThis.Text;
-                ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
+				ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
                 Signatures = Utilities.SafeConvertInt(drpSignatures.SelectedValue);
                 UserNameDisplay = drpUserDisplayMode.SelectedValue;
                 FriendlyURLs = Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue);
@@ -275,7 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				catch (Exception ex)
 				{
 					FullTextSearch = false;
-					Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+					DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
 				}
 
                 // Clear out the cache
@@ -284,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			catch (Exception exc) //Module failed to load
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 
@@ -305,7 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		
         private void BindThemes()
 		{
-			var di = new System.IO.DirectoryInfo(Server.MapPath("~/DesktopModules/ActiveForums/themes"));
+			var di = new System.IO.DirectoryInfo(Server.MapPath(Globals.ModulePath + "themes"));
 			drpThemes.DataSource = di.GetDirectories();
 			drpThemes.DataBind();
 		}
