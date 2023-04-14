@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 this.AppRelativeVirtualPath = "~/";
                 MyTheme = MainSettings.Theme;
-                MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
+                MyThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
                 int defaultTemplateId = ForumInfo.TopicsTemplateId;
                 if (DefaultTopicsViewTemplateId >= 0)
                 {
@@ -311,16 +311,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", ForumName);
                                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", GroupName);
-                                string pageName = string.Empty;
-                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-                                if (settings.ActiveTab.Title.Length == 0)
-                                {
-                                    pageName = Server.HtmlEncode(settings.ActiveTab.TabName);
-                                }
-                                else
-                                {
-                                    pageName = Server.HtmlEncode(settings.ActiveTab.Title);
-                                }
+                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                                string pageName = settings.ActiveTab.Title.Length == 0
+                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)
+                                    : Server.HtmlEncode(settings.ActiveTab.Title);
                                 MetaTemplate = MetaTemplate.Replace("[PAGENAME]", pageName);
                                 MetaTemplate = MetaTemplate.Replace("[PORTALNAME]", settings.PortalName);
                                 MetaTemplate = MetaTemplate.Replace("[TAGS]", string.Empty);
@@ -567,13 +561,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
 
                 Url = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + PortalId + "&forumid=" + ForumId + "&tabid=" + TabId + "&moduleid=" + ForumModuleId;
-                if (Request.QueryString["asg"] != null)
-                {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString["asg"]))
-                    {
-                        Url += "&asg=" + Request.QueryString["asg"];
-                    }
-                }
                 if (SocialGroupId > 0)
                 {
                     Url += "&GroupId=" + SocialGroupId;
@@ -595,8 +582,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request));
-                sOutput = TemplateUtils.ParseSpecial(sOutput, SpecialTokenTypes.AddThis, strHost + Request.RawUrl, ForumName, bRead, MainSettings.AddThisAccount);
+                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
+                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
+                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
             sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\"  EnableViewState=\"False\" runat=\"server\" />");
@@ -974,9 +962,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", GetTopic(ModuleId, TabId, ForumId, TopicId, Subject, sBodyTitle, UserId, AuthorId, ReplyCount, -1, sTopicURL) + sPollImage);
 
                     var displayName = UserProfiles.GetDisplayName(ModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, AuthorId, AuthorUserName, AuthorFirstName, AuthorLastName, AuthorDisplayName).ToString().Replace("&amp;#", "&#");
-                    if (displayName == "Anonymous")
+                    if (Utilities.StripHTMLTag(displayName) == "Anonymous")
                     {
-                        displayName = AuthorDisplayName;
+                        displayName = displayName.Replace("Anonymous", AuthorName);
                     }
                     sTopicsTemplate = sTopicsTemplate.Replace("[STARTEDBY]", displayName);
                     sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated,PortalId,UserId));

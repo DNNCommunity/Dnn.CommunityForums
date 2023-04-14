@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return false;
 			}
 		}
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				catch (Exception ex)
 				{
-					Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				}
 			}
 			catch (Exception ex)
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowRSS, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowAttach, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachCount, "3");

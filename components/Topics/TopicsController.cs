@@ -362,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				ControlUtils ctlUtils = new ControlUtils();
 				string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
 				Social amas = new Social();
-				amas.AddTopicToJournal(PortalId, ModuleId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, fi.ActiveSocialSecurityOption, fi.Security.Read, fi.SocialGroupId);
+				amas.AddTopicToJournal(PortalId, ModuleId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body,  fi.Security.Read, fi.SocialGroupId);
 			}
 			catch (Exception ex)
 			{
@@ -393,12 +393,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			 * A possible future enhancement might be to write this entry or to perhaps change the module definition ...
 			 * 
 			 */
-			var ms = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(moduleInfo.ModuleID) };
-			/* if not using soft deletes, remove and rebuild entire index; 
+			var ms = new SettingsInfo { MainSettings = moduleInfo.ModuleSettings };
+            /* if not using soft deletes, remove and rebuild entire index; 
 			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
 			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
 			*/
-			if (ms.DeleteBehavior != 1)
+            if (ms.DeleteBehavior != 1)
 			{
 				DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
 				beginDateUtc = SqlDateTime.MinValue.Value.AddDays(1);
@@ -534,7 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 
 		}
-		#endregion
+        #endregion
 
         //Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
         //    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
@@ -582,6 +582,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
     }
 
-	#endregion
+    #endregion
 }
 

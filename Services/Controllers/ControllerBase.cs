@@ -16,61 +16,34 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+// 
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using DotNetNuke.Web.Api;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
 
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-namespace DotNetNuke.Modules.ActiveForums.Controls
+namespace DotNetNuke.Modules.ActiveForums.Services
 {
-	[ToolboxData("<{0}:AddThis runat=server></{0}:AddThis>")]
-	public class AddThis : WebControl
-	{
-		private string _addThisId;
-		private string _title;
-		public string AddThisId
-		{
-			get
-			{
-				return _addThisId;
-			}
-			set
-			{
-				_addThisId = value;
-			}
-		}
-		public string Title
-		{
-			get
-			{
-				return _title;
-			}
-			set
-			{
-				_title = value;
-			}
-		}
-		protected override void Render(HtmlTextWriter writer)
-		{
-			string sURL = HttpContext.Current.Request.RawUrl;
-			string tmp = DataCache.GetTemplate("AddThis.txt");
-			if (! (string.IsNullOrEmpty(AddThisId)))
-			{
-				tmp = tmp.Replace("[USERNAME]", AddThisId.Replace("'", "\\'"));
-				tmp = tmp.Replace("[URL]", sURL);
-				tmp = tmp.Replace("[TITLE]", Title.Replace("'", "\\'"));
-				writer.Write(tmp);
-			}
-
-		}
-
-	}
-
+/// <summary>
+/// <inheritdoc/>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+    [SupportedModules(Globals.ModuleName)] /* this MUST match DesktopModule.ModuleName so use new constant */
+    public class ControllerBase<T> : DnnApiController
+    {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
+        /// <summary>
+        /// provide a simple method for testing
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage HelloWorld()
+        {
+            Logger.Info("Hello World!");
+            return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
+        }
+    }
 }
