@@ -265,9 +265,28 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public const string CreatePostCount = "CREATEPOSTCOUNT";
 	    public const string ReplyPostCount = "REPLYPOSTCOUNT";
         public const string AllowLikes = "ALLOWLIKES";
+
+        /*
+		public const string MCEnabled = "MCENABLED";
+		public const string MCUrl = "MCURL";
+		public const string MCAddress = "MCADDRESS";
+		public const string MCRestrictByAlias = "MCRESTRICTALIAS";
+		public const string MCPop3UserName = "MCPOPUSERNAME";
+		public const string MCPop3Password = "MCPOPPASSWORD";
+		public const string MCPop3Server = "MCPOPSERVER";
+		public const string MCAutoResponseTemplateId = "MCAUTORESPONSE";
+		public const string MCAdminNotifyTemplateId = "MCADMINNOTIFY";
+		public const string MCSubNotifyTemplateId = "MCSUBNOTIFY";
+		public const string MCRejectTemplateId = "MCREJECTNOTIFY";
+		public const string MCAutoCreateUsers = "MCAUTOCREATEUSERS";
+		public const string MCModType = "MCMODTYPE";
+		public const string MCEOMTag = "MCEOMTAG";
+		public const string MCEOMTagRequired = "MCEOMTAGREQ";
+		public const string MCRemoveHTML = "MCSTRIPHTML";
+        */
     }
 
-	public class ParamKeys
+    public class ParamKeys
 	{
 		public const string ForumId = "aff";
 		public const string GroupId = "afg";
