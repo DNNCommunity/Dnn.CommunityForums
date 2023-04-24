@@ -177,8 +177,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					TopicsTemplateId = Convert.ToInt32(rd["TopicsTemplateId"]);
 					TopicTemplateId = Convert.ToInt32(rd["TopicTemplateId"]);
 					CacheClear(string.Concat(intForumID, "ForumSettings"));
-					CacheClear(string.Concat(ModuleID + TopicsTemplateId, "TopicsTemplate"));
-					CacheClear(string.Concat(ModuleID + TopicTemplateId, "TopicTemplate"));
+					CacheClear(string.Concat(ModuleID, TopicsTemplateId, "TopicsTemplate"));
+					CacheClear(string.Concat(ModuleID, TopicTemplateId, "TopicTemplate"));
 					CacheClear(string.Format(CacheKeys.ForumInfo, intForumID));
 					CacheClear(string.Concat(string.Format(CacheKeys.ForumInfo, intForumID), "st"));
 				}
@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-						myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath + TemplateType, ".txt"));
+						myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 						if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
