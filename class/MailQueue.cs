@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
 	}
@@ -55,14 +55,14 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			{
 			    var intQueueCount = ProcessQueue();
 				ScheduleHistoryItem.Succeeded = true;
-				ScheduleHistoryItem.AddLogNote("Processed " + intQueueCount + " messages");
+				ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " messages"));
 			}
 			catch (Exception ex)
 			{
 				ScheduleHistoryItem.Succeeded = false;
-				ScheduleHistoryItem.AddLogNote("Process Queue Failed. " + ex);
+				ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
 				Errored(ref ex);
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 						}
 						catch (Exception ex)
 						{
-							Services.Exceptions.Exceptions.LogException(ex);
+							DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 						}
 					}
 					else
@@ -109,13 +109,11 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return -1;
 			}
-
-		}
-
-	}
+        }
+    }
 
 	public class Message
 	{
@@ -151,13 +149,13 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 				}
 				catch (Exception ex)
 				{
-					Services.Exceptions.Exceptions.LogException(ex);
+					DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 					return false;
 				}
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return false;
 			}
 		}

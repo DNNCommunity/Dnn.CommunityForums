@@ -44,9 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            jQuery.RequestRegistration();
-            jQuery.RequestUIRegistration();
-
             IsCallBack = cbShell.IsCallback;
 
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
@@ -67,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
             bool loadDefault = true;
@@ -116,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
 
@@ -181,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
 
@@ -244,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
 

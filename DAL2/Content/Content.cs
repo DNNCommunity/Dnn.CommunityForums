@@ -21,5 +21,6 @@ namespace DotNetNuke.Modules.ActiveForums.DAL2
         public bool IsDeleted { get; set; }
         public string IPAddress { get; set; }
         public int ContentItemId { get; set; }
+        public int ModuleId { get; set; }
     }
 }
