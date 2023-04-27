@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder sb = new StringBuilder();
             string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
             sb.AppendFormat("var afHandlerURL = '{0}';", handlerURL);
-            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemesLocation + "/" + MainSettings.Theme) + "/images/';");
+            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath) + "';");
             string sLoadImg = "";
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
