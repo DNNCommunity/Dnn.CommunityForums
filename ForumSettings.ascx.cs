@@ -72,7 +72,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				rdEnableURLRewriter.SelectedIndex = 1;
 				rdEnableURLRewriter.Enabled = false;
-				rdEnableURLRewriter.Enabled = false;
 			}
 			var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 
@@ -216,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				var urlSettings = new FriendlyUrlSettings(PortalId);
                 string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
                 const string ignoreForumsRegex = "(aff=|afg=|aft=|afgt=|aftg=|afv=|act=|afpg=)|";
-				if (FriendlyURLs)
+				if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
 				{
 					if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
 					{
