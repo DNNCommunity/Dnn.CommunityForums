@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = new ModuleController().GetModule(moduleID:ModuleId).ModuleSettings;
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
                         DataCache.CacheStore(settingsCacheKey, moduleSettings);
                     }
 

@@ -109,8 +109,9 @@ namespace DotNetNuke.Modules.ActiveForums
 						forum.Properties = propC.ListProperties(portalId, 1, forumId);
 					}
 
-				}
-				DataCache.CacheStore(cachekey, forum);
+                }
+                forum.ForumSettings = DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumInfo, forumId), true);
+                DataCache.CacheStore(cachekey, forum);
 			}
 		    return forum;
 		}
