@@ -163,13 +163,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     catch (Exception ex)
                     {
-                        Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                        DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
 
@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                     sTemplate = ex.Message; //ParseControls(sTemplate)
                 }
                 if (sTemplate.Contains("[NOTOOLBAR]"))
@@ -362,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 return string.Empty;
             }
         }
@@ -416,7 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return fi;

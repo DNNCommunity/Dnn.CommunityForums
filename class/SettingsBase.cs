@@ -22,6 +22,7 @@ using System;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security.Permissions;
 
@@ -31,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Members
         private int _forumModuleId = -1;
-        private string _LoadView = "";
+        private string _LoadView = string.Empty;
         private int _LoadGroupForumID = 0;
         private int _LoadPostID = 0;
         private string _imagePath = string.Empty;
@@ -48,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return uc.GetUser(PortalId, ForumModuleId);
             }
         }
+
         internal string UserForumsList
         {
             get
@@ -66,6 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return forums;
             }
         }
+
         public int ForumModuleId
         {
             get
@@ -81,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 _forumModuleId = value;
             }
         }
+
         public int ForumTabId
         {
             get
@@ -92,6 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 _forumTabId = value;
             }
         }
+
         public string Params
         {
             get
@@ -103,6 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 _Params = value;
             }
         }
+
         public bool UseAjax
         {
             get
@@ -112,6 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return tempUseAjax;
             }
         }
+
         public int PageId
         {
             get
@@ -142,6 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return tempPageId;
             }
         }
+
         private bool _ShowToolbar = true;
         public bool ShowToolbar
         {
@@ -201,7 +209,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
         #region Public Properties - User Preferences
         public CurrentUserTypes CurrentUserType
         {
@@ -226,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return CurrentUserTypes.Anon;
             }
         }
+
         public bool UserIsMod
         {
             get
@@ -241,6 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         public string UserDefaultSort
         {
             get
@@ -252,6 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return "ASC";
             }
         }
+
         public int UserDefaultPageSize
         {
             get
@@ -263,6 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return MainSettings.PageSize;
             }
         }
+
         public bool UserPrefHideSigs
         {
             get
@@ -281,6 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         public bool UserPrefHideAvatars
         {
             get
@@ -292,6 +304,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         public bool UserPrefJumpLastPost
         {
             get
@@ -314,6 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         public bool UserPrefShowReplies
         {
             get
@@ -325,6 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         public bool UserPrefTopicSubscribe
         {
             get
@@ -337,6 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
         #endregion
+
         #region Public ReadOnly Properties
         public Framework.CDefault BasePage
         {
@@ -364,13 +380,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 return GetModuleSettings(ForumModuleId);
             }
         }
+        
         public string ImagePath
         {
             get
             {
-                return Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/images");
+                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme, "/images"));
             }
         }
+
         public string GetViewType
         {
             get
@@ -386,6 +404,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
+
         public TimeSpan TimeZoneOffset
         {
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
@@ -396,6 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+
         #region Protected Methods
         protected DateTime GetUserDate(DateTime displayDate)
         {
@@ -408,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string dateString;
             try
             {
-                dateString = DisplayDate.ToString(MainSettings.DateFormatString + " " + MainSettings.TimeFormatString);
+                dateString = DisplayDate.ToString(string.Concat(MainSettings.DateFormatString, " ", MainSettings.TimeFormatString));
                 return dateString;
             }
             catch (Exception ex)
@@ -447,18 +467,17 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public void RenderMessage(string Title, string Message, string ErrorMsg, Exception ex)
         {
-            var im = new Controls.InfoMessage {Message = Utilities.GetSharedResource(Message) + "<br />"};
+            var im = new Controls.InfoMessage {Message = string.Concat(Utilities.GetSharedResource(Message), "<br />")};
             if (ex != null)
             {
                 im.Message = im.Message + ex.Message;
             }
             if (ex != null)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
 
         }
-
 
         protected override void OnLoad(EventArgs e)
 		{
@@ -468,33 +487,33 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 string sUrl;
                 string sParams = string.Empty;
+                
                 if (Request.Params["forumid"] != null)
                 {
                     if (SimulateIsNumeric.IsNumeric(Request.Params["ForumId"]))
                     {
-                        sParams = ParamKeys.ForumId + "=" + Request.Params["ForumId"];
+                        sParams = string.Concat(ParamKeys.ForumId, "=", Request.Params["ForumId"]);
                     }
                 }
+ 
                 if (Request.Params["postid"] != null)
                 {
                     if (SimulateIsNumeric.IsNumeric(Request.Params["postid"]))
                     {
-                        sParams += "|" + ParamKeys.TopicId + "=" + Request.Params["postid"];
+                        sParams += string.Concat("|", ParamKeys.TopicId, "=", Request.Params["postid"]);
                     }
                 }
-                sParams += "|" + ParamKeys.ViewType + "=" + Request.Params["view"];
+                
+                sParams += string.Concat("|", ParamKeys.ViewType, "=", Request.Params["view"]);
                 sUrl = NavigateUrl(TabId, "", sParams.Split('|'));
+
                 Response.Status = "301 Moved Permanently";
                 Response.AddHeader("Location", sUrl);
             }
 
-            Framework.jQuery.RequestRegistration();
+            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
         }
         #endregion
-
-
-
     }
 }
-

@@ -228,8 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(RSSHeader + System.Environment.NewLine);
 
             // build channel
-            var pc = new PortalController();
-            var ps = PortalController.GetCurrentPortalSettings();
+            var ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
 
             var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.BaseUtcOffset.TotalMinutes);
 

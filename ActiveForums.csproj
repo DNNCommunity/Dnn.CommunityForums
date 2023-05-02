@@ -86,6 +86,7 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\microsoft-web-helpers.2.1.20710.2\lib\net40\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
@@ -660,6 +661,7 @@
     <None Include="sql\07.00.08.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
+    <None Include="sql\07.00.07.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -771,6 +773,9 @@
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\Controllers\ControllerBase.cs" />
+    <Compile Include="Services\ForumAuthorizeAttribute.cs" />
+    <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="SimulateDateDiff.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="ActiveForums.ascx.designer.cs">
@@ -994,7 +999,7 @@
     </Compile>
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Services\AdminServiceController.cs" />
-    <Compile Include="Services\ForumRouteMapper.cs" />
+    <Compile Include="Services\RouteMapper.cs" />
     <Compile Include="Services\ForumServiceController.cs" />
     <Compile Include="Services\ModerationService.cs" />
     <Compile Include="ForumSettings.ascx.designer.cs">

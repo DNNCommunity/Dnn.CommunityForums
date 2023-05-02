@@ -46,6 +46,5 @@ namespace DotNetNuke.Modules.ActiveForums
 				return _UID;
 			}
 		}
-
-	}
+    }
 }

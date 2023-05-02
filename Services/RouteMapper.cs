@@ -17,43 +17,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using DotNetNuke.Web.Api;
 
-using System;
-//ORIGINAL LINE: Imports System.Web.HttpContext
-
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Services
 {
-    public class TopicBase : SettingsBase
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    public class RouteMapper : IServiceRouteMapper
     {
-        #region Private Members
-        private int _TopicId = -1;
-        #endregion
-
-        #region Public Properties
-        public int TopicId
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        /// <param name="mapRouteManager"></param>
+        public void RegisterRoutes(IMapRoute mapRouteManager)
         {
-            get
-            {
-                if (_TopicId == -1)
-                {
-                    if (Request.Params[ParamKeys.TopicId] != null)
-                    {
-                        if (SimulateIsNumeric.IsNumeric(Request.Params[ParamKeys.TopicId]))
-                        {
-                            _TopicId = Convert.ToInt32(Request.Params[ParamKeys.TopicId]);
-                            return _TopicId;
-                        }
-                        return _TopicId;
-                    }
-                    return _TopicId;
-                }
-                return _TopicId;
-            }
-            set
-            {
-                _TopicId = value;
-            }
+            mapRouteManager.MapHttpRoute("ActiveForums", "default", "{controller}/{action}", new { }, new[] { "DotNetNuke.Modules.ActiveForums", "DotNetNuke.Modules.ActiveForums.Services.Controllers" });
         }
-        #endregion
     }
 }
+
