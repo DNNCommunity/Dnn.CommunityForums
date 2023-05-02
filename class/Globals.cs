@@ -95,13 +95,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		Disabled = 0,
 		Core = 1,
 		Ventrian = 2
-		//Social = 3
 	}
 
-	public enum SpecialTokenTypes
-	{
-		
-	}
 
 	public enum TrustTypes
 	{
@@ -328,8 +323,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string MainSettings = "afms{0}";
 		public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
-		public const string ForumList = "affl{0}";
-	}
+        public const string ForumList = "affl{0}";
+        public const string Tokens = "aftk{0}";
+    }
 
 
 
