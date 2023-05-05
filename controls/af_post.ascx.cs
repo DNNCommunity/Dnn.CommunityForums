@@ -900,6 +900,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
+                DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, authorId));
                 DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
                 if (ctlForm.Subscribe && authorId == UserId)
                 {
@@ -1077,8 +1078,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var tmpReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
-            SaveAttachments(ri.ContentId);
-            //tc.ForumTopicSave(ForumID, TopicId, ReplyId)
+            SaveAttachments(ri.ContentId); 
+            DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             try
             {
