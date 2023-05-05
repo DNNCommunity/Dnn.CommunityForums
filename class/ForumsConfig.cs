@@ -216,8 +216,9 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.UseFilter, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "true");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "true");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowLikes, "true");
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "true");
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowRSS, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowAttach, "true");
