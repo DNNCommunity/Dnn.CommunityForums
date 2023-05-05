@@ -1,0 +1,105 @@
+﻿/* implement new mail queue */
+SET NOCOUNT ON
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_MailQueue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_MailQueue]
+GO
+CREATE TABLE {databaseOwner}{objectQualifier}activeforums_MailQueue (
+	[Id] [int] IDENTITY (1, 1) NOT NULL,
+	[PortalId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_MailQueue_PortalId] DEFAULT(-1),
+	[ModuleId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_MailQueue_ModuleId] DEFAULT(-1),
+	[EmailFrom] [nvarchar] (255) NULL ,
+	[EmailTo] [nvarchar] (255) NULL ,
+	[EmailSubject] [nvarchar] (255) NULL ,
+	[EmailBody] [ntext] NULL ,
+	[EmailBodyPlainText] [ntext] NULL ,
+	[EmailCC] [nvarchar] (255) NULL ,
+	[EmailBCC] [nvarchar] (255) NULL ,
+	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_MailQueue_DateCreated] DEFAULT(GETUTCDATE()) ,
+    CONSTRAINT [PK_{objectQualifier}activeforums_MailQueue] PRIMARY KEY CLUSTERED 
+	(
+	[Id] ASC
+	) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ,
+	CONSTRAINT [FK_{objectQualifier}activeforums_MailQueue_Modules] FOREIGN KEY (ModuleId) REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) ON DELETE CASCADE ,
+) 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue') AND name = N'IX_{objectQualifier}activeforums_MailQueue_DateCreated')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_MailQueue_DateCreated ON {databaseOwner}[{objectQualifier}activeforums_MailQueue]
+	(
+	DateCreated
+	) 
+GO
+
+/* activeforums_MailQueue_Add */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Add') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Add
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Add
+(
+	@ModuleId int,
+	@PortalId int,
+	@EmailFrom nvarchar(255),
+	@EmailTo nvarchar(255),
+	@EmailSubject nvarchar(255),
+	@EmailBody ntext,
+	@EmailBodyPlainText ntext,
+	@EmailCC nvarchar(255),
+	@EmailBCC nvarchar(255)
+)
+AS
+INSERT INTO {databaseOwner}{objectQualifier}activeforums_MailQueue
+                      (ModuleId, PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC, DateCreated)
+VALUES     (@ModuleId, @PortalId ,@EmailFrom, @EmailTo, @EmailSubject, @EmailBody, @EmailBodyPlainText, @EmailCC, @EmailBCC, GETUTCDATE())
+GO
+
+/* activeforums_MailQueue_Delete */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Delete') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Delete
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Delete
+(
+	@Id int
+)
+AS
+BEGIN
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_MailQueue WHERE Id = @Id
+END
+GO
+
+/* activeforums_MailQueue_List */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_List') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_List
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_List
+AS
+BEGIN
+SELECT     TOP 200 Id, PortalId, ModuleId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC
+FROM         {databaseOwner}{objectQualifier}activeforums_MailQueue
+ORDER BY DateCreated
+END
+GO
+
+
+/* import existing queued mail, if any */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
+INSERT INTO {databaseOwner}{objectQualifier}activeforums_MailQueue
+SELECT -1, PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC, DateCreated
+FROM {databaseOwner}{objectQualifier}activeforums_Queue
+GO
+
+/* remove queue objects */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_Add') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_Add
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_List') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_List
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_DeleteItem') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_DeleteItem
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Queue]
+GO

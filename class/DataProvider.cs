@@ -181,10 +181,22 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region MailQueue
+
+        public abstract IDataReader MailQueue_List();
+        public abstract void MailQueue_Delete(int EmailId);
+        public abstract void MailQueue_Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+
+        #region Deprecated
+
+        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use MailQueue_List().")]
         public abstract IDataReader Queue_List();
+        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use MailQueue_Delete().")]
         public abstract void Queue_Delete(int EmailId);
+        [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use MailQueue_Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
         public abstract void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use MailQueue_Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
         public abstract void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+        #endregion
         #endregion
 
         #region Maintenance

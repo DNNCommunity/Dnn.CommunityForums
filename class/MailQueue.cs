@@ -24,23 +24,29 @@ using DotNetNuke.Services.Scheduling;
 namespace DotNetNuke.Modules.ActiveForums.Queue
 {
 	public class Controller
-	{
-		public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
+        public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
 		{
 			Add(-1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
-		}
-		public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
-		{
-			try
-			{
-				DataProvider.Instance().Queue_Add(portalId, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
-			}
-			catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
-		}
-	}
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
+        public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+        {
+            Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+        }
+        public static void Add(int portalId, int moduleId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+        {
+            try
+            {
+                DataProvider.Instance().MailQueue_Add(portalId, moduleId, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+    }
 
 	public class Scheduler : SchedulerClient
 	{
@@ -71,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			var intQueueCount = 0;
 			try
 			{
-				var dr = DataProvider.Instance().Queue_List();
+				var dr = DataProvider.Instance().MailQueue_List();
 				while (dr.Read())
 				{
 					intQueueCount += 1;
@@ -90,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 					{
 						try
 						{
-							DataProvider.Instance().Queue_Delete(Convert.ToInt32(dr["Id"]));
+							DataProvider.Instance().MailQueue_Delete(Convert.ToInt32(dr["Id"]));
 						}
 						catch (Exception ex)
 						{

@@ -946,3 +946,35 @@ GO
 /* end 07.00.00 */
 
 
+<<<<<<< Updated upstream
+=======
+/* begin 07.00.08 */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt1')
+DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt2')
+DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+/* end 07.00.08 */
+
+
+/* begin 08.01.00 */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Add') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Add
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_List') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_List
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Delete') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Delete
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_MailQueue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_MailQueue]
+GO
+
+/* end 08.01.00 */
+>>>>>>> Stashed changes
