@@ -25,8 +25,9 @@ using System.Web;
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class DataCache
-	{
-		private static int settingsCacheTime = 10;
+    {
+        private static int settingsCacheTime = 10;
+        private static int contentCacheTime = 2;
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)")]
         public static bool CacheStore(string cacheKey, object cacheObj)
         {
@@ -39,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static void ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {
-			Common.Utilities.DataCache.SetCache(cacheKey, cacheObj,DateTime.UtcNow.AddMinutes(settingsCacheTime));
+			Common.Utilities.DataCache.SetCache(cacheKey, cacheObj,DateTime.UtcNow.AddMinutes(contentCacheTime));
 		}
 		[Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
         public static bool CacheStore(string cacheKey, object cacheObj, DateTime Expiration)
