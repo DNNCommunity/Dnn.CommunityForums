@@ -27,54 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums
 	public class DataCache
 	{
 		private static int settingsCacheTime = 10;
-        public static bool IsContentCachingEnabledForModule(int ModuleId)
-        {
-            /* Track whether caching is being used at all in this module; this setting itself is cached to avoid repeated module lookups; 
-			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
-			*/
-            if (ModuleId < 0)
-            {
-                return true;
-            }
-            else
-            {
-                object IsCachingEnabledForModule = DotNetNuke.Common.Utilities.DataCache.GetCache(string.Format(CacheKeys.CacheEnabled, ModuleId));
-                if (IsCachingEnabledForModule == null)
-                {
-                    DotNetNuke.Entities.Modules.ModuleInfo objModule = new Entities.Modules.ModuleController().GetModule(ModuleId);
-                    IsCachingEnabledForModule = ((!String.IsNullOrEmpty(objModule.CacheMethod)) && (objModule.CacheTime > 0));
-                    DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CacheEnabled, ModuleId), IsCachingEnabledForModule, DateTime.UtcNow.AddMinutes(settingsCacheTime));
-                }
-                return (bool)IsCachingEnabledForModule;
-            }
-        }
-        public static int ContentCachingTime(int ModuleId)
-        {
-            /* Track caching being used for this module; this setting itself is cached to avoid repeated module lookups; 
-			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
-			*/
-            if (ModuleId < 0)
-            {
-                return 0;
-            }
-            else
-            {
-				if (!IsContentCachingEnabledForModule(ModuleId))
-				{
-					return 0;
-				}
-				else
-				{
-					object CachingTime = DotNetNuke.Common.Utilities.DataCache.GetCache(string.Format(CacheKeys.CachingTime, ModuleId));
-					if (CachingTime == null)
-					{
-						CachingTime = new Entities.Modules.ModuleController().GetModule(ModuleId).CacheTime;
-						DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CachingTime, ModuleId), CachingTime, DateTime.UtcNow.AddMinutes(settingsCacheTime));
-					}
-					return (int)CachingTime;
-				}
-            }
-        }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)")]
         public static bool CacheStore(string cacheKey, object cacheObj)
         {
@@ -87,10 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static void ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {
-			if (IsContentCachingEnabledForModule(ModuleId))
-			{
-                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj,DateTime.UtcNow.AddMinutes(ContentCachingTime(ModuleId)));
-			}
+			Common.Utilities.DataCache.SetCache(cacheKey, cacheObj,DateTime.UtcNow.AddMinutes(settingsCacheTime));
 		}
 		[Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
         public static bool CacheStore(string cacheKey, object cacheObj, DateTime Expiration)
@@ -119,14 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static object ContentCacheRetrieve(int ModuleId, string cacheKey)
         {
-            if (IsContentCachingEnabledForModule(ModuleId))
-            {
-				return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
-            }
-            else
-            { 
-            	return null; 
-            }
+            return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheClear(int ModuleId, string cacheKey)")]
         public static bool CacheClear(string cacheKey)
@@ -146,16 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static void ContentCacheClear(int ModuleId, string cacheKey)
         {
-			if (IsContentCachingEnabledForModule(ModuleId))
-			{
-				try
-            {
-                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
-            }
-            catch
-            {
-            }
-			}
+			Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
 		}
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheClearPrefix(int ModuleId, string cacheKeyPrefix)")]
         public static bool CacheClearPrefix(string cacheKeyPrefix)
@@ -395,7 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			string myFile;
 			object obj = CacheRetrieve(ModuleId + TemplateId + TemplateType);
-			if (!IsContentCachingEnabledForModule(ModuleId))
+			if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
 			{
 				obj = null;
 			}
@@ -447,13 +380,11 @@ namespace DotNetNuke.Modules.ActiveForums
 			string myFile;
 			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
 			System.IO.StreamReader objStreamReader;
-			if (!IsContentCachingEnabledForModule(ModuleId))
-			{
-				sTemplate = GetTemplate(TemplateId, TemplateType);
-			}
-			else
-			{
-				try
+            if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
+            {
+                sTemplate = GetTemplate(TemplateId, TemplateType);
+            }
+            try
 				{
 					myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
 					if (System.IO.File.Exists(myFile))
@@ -481,7 +412,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					Services.Exceptions.Exceptions.LogException(ex);
 					sTemplate = "ERROR: Loading template failed";
 				}
-			}
+			//}
 
 
 			return sTemplate;

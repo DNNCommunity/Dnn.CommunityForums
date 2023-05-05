@@ -313,19 +313,31 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 		}
 
-		public bool MailQueue
-		{
-			get
-			{
-				return Settings.GetBoolean(SettingKeys.MailQueue);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
-			}
-		}
+        public bool MailQueue
+        {
+            get
+            {
+                return Settings.GetBoolean(SettingKeys.MailQueue);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
+            }
+        }
+        public bool CacheTemplates
+        {
+            get
+            {
+                return Settings.GetBoolean(SettingKeys.CacheTemplates, true);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
+            }
+        }
 
-		public bool EnablePoints
+
+        public bool EnablePoints
 		{
 			get
 			{
