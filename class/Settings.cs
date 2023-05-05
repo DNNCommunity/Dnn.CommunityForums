@@ -197,7 +197,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetInt(SettingKeys.TemplateCache); }
         }
-
+        public bool CacheTemplates
+        {
+            get
+            {
+                return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true);
+            }
+        }
         public bool MailQueue
         {
             get { return MainSettings.GetBoolean(SettingKeys.MailQueue); }
