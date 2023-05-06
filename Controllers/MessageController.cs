@@ -20,6 +20,12 @@
 using DotNetNuke.Modules.ActiveForums;
 using System.Collections.Generic;
 using System;
+using DotNetNuke.Common.Controls;
+using DotNetNuke.Modules.ActiveForums.DAL2;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.UI.UserControls;
+using System.Linq;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -32,20 +38,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var subs = new List<SubscriptionInfo>();
                 var si = new SubscriptionInfo { Email = message.SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
                 subs.Add(si);
-                var oEmail = new Email
-                {
-                    PortalId = message.PortalId,
-                    UseQueue = false,
-                    Recipients = subs,
-                    Subject = message.Subject,
-                    From = message.SendFrom,
-                    BodyText = message.BodyText,
-                    BodyHTML = message.Body,
-                };
                 try
                 {
-                    var objThread = new System.Threading.Thread(oEmail.Send);
-                    objThread.Start();
+                    // var objThread = new System.Threading.Thread(
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
+                    {
+                        BodyHTML = message.Body,
+                        BodyText = message.BodyText,
+                        From = message.SendFrom,
+                        ModuleId = message.ModuleId,
+                        PortalId = message.PortalId,
+                    UseQueue = false,
+                        Recipients = subs,
+                        Subject = message.Subject,
+                    });
+                    ;
+                    ;
+                    //objThread.Start();
                     return true;
                 }
                 catch (Exception ex)

@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!(sMessage == string.Empty) && !(sSubject == string.Empty))
                     {
-                        Email.SendNotification(PortalId, moduleId: ModuleId, fromEmail: UserInfo.Email, toEmail: sEmail, subject: sSubject, bodyText: sMessage, bodyHTML: sMessage.Replace(System.Environment.NewLine, "<br />"));
+                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(PortalId, moduleId: ModuleId, fromEmail: UserInfo.Email, toEmail: sEmail, subject: sSubject, bodyText: sMessage, bodyHTML: sMessage.Replace(System.Environment.NewLine, "<br />"));
                     }
 
 

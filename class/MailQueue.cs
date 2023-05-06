@@ -22,6 +22,13 @@ using System.Collections.Generic;
 using DotNetNuke.Services.Scheduling;
 namespace DotNetNuke.Modules.ActiveForums.Queue
 {
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Message.")]
+    public class Message : DotNetNuke.Modules.ActiveForums.Entities.Message
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send().")]
+        public bool SendMail()
+        { return DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(this); }
+    }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
     public class Controller : DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController
 	{
@@ -72,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
                     var message = new DotNetNuke.Modules.ActiveForums.Entities.Message
                     {
                         PortalId = m.PortalId,
+                        ModuleId = m.ModuleId,
                         Subject = m.EmailSubject,
                         SendFrom = m.EmailFrom,
                         SendTo = m.EmailTo,
@@ -98,44 +106,6 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
                 });
                 return intQueueCount;
             }
-            ////{
-            ////	var dr = DataProvider.Instance().MailQueue_List();
-            ////	while (dr.Read())
-            ////	{
-            ////		int Id = Convert.ToInt32(dr["Id"]);
-            ////                 intQueueCount += 1;
-            ////		var objEmail = new Message
-            ////                 {
-            ////                     PortalId = Convert.ToInt32(dr["PortalId"]),
-            ////                     Subject = dr["EmailSubject"].ToString(),
-            ////			SendFrom = dr["EmailFrom"].ToString(),
-            ////			SendTo = dr["EmailTo"].ToString(),
-            ////			Body = dr["EmailBody"].ToString(),
-            ////			BodyText = dr["EmailBodyPlainText"].ToString(),
-            ////		};
-
-            ////		var canDelete = objEmail.SendMail();
-            ////		if (canDelete)
-            ////		{
-            ////			try
-            ////			{ 
-            ////				DataProvider.Instance().MailQueue_Delete(Convert.ToInt32(dr["Id"]));
-            ////			}
-            ////			catch (Exception ex)
-            ////			{
-            ////				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            ////			}
-            ////		}
-            ////		else
-            ////		{
-            ////			intQueueCount = intQueueCount - 1;
-            ////		}
-            ////	}
-            ////	dr.Close();
-            ////	dr.Dispose();
-
-            ////	return intQueueCount;
-            ////}
             catch (Exception ex)
 			{
 				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);

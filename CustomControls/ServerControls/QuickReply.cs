@@ -290,7 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                Email.SendEmailToModerators(forumInfo.ModNotifyTemplateId, SiteId, ForumId, ri.TopicId, ReplyId, InstanceId, PageId, string.Empty);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, PortalId, ForumId, ri.TopicId, ReplyId, ModuleId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
             }

@@ -30,55 +30,6 @@ CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_MailQueue_DateCreated
 	) 
 GO
 
-/* activeforums_MailQueue_Add */
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Add') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Add
-GO
-CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Add
-(
-	@ModuleId int,
-	@PortalId int,
-	@EmailFrom nvarchar(255),
-	@EmailTo nvarchar(255),
-	@EmailSubject nvarchar(255),
-	@EmailBody ntext,
-	@EmailBodyPlainText ntext,
-	@EmailCC nvarchar(255),
-	@EmailBCC nvarchar(255)
-)
-AS
-INSERT INTO {databaseOwner}{objectQualifier}activeforums_MailQueue
-                      (ModuleId, PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC, DateCreated)
-VALUES     (@ModuleId, @PortalId ,@EmailFrom, @EmailTo, @EmailSubject, @EmailBody, @EmailBodyPlainText, @EmailCC, @EmailBCC, GETUTCDATE())
-GO
-
-/* activeforums_MailQueue_Delete */
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Delete') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Delete
-GO
-CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Delete
-(
-	@Id int
-)
-AS
-BEGIN
-DELETE FROM {databaseOwner}{objectQualifier}activeforums_MailQueue WHERE Id = @Id
-END
-GO
-
-/* activeforums_MailQueue_List */
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_List') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_List
-GO
-CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_List
-AS
-BEGIN
-SELECT     TOP 200 Id, PortalId, ModuleId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC
-FROM         {databaseOwner}{objectQualifier}activeforums_MailQueue
-ORDER BY DateCreated
-END
-GO
-
 
 /* import existing queued mail, if any */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))

@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Mail;
+using System.Reflection;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Common.Utilities;
@@ -34,22 +35,13 @@ using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class Email
-    {
-        public int PortalId;
-        public int ModuleId;
-        public string Subject;
-		public string From;
-		public string BodyText;
-		public string BodyHTML;
+	public class Email : DotNetNuke.Modules.ActiveForums.Entities.Email {  
 
-		public List<SubscriptionInfo> Recipients;
-	
-        public bool UseQueue = false;
 
 		public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
 		{
-			var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+
+			var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			var mainSettings = DataCache.MainSettings(moduleId);
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
@@ -65,7 +57,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			
             //Send now
 			
-            var oEmail = new Email();
 			var subs = new List<SubscriptionInfo>();
 			var si = new SubscriptionInfo
 			             {
@@ -78,20 +69,23 @@ namespace DotNetNuke.Modules.ActiveForums
 			             };
 
 		    subs.Add(si);
-			oEmail.PortalId = portalId;
-			oEmail.ModuleId = moduleId;
-			oEmail.UseQueue = mainSettings.MailQueue;
-			oEmail.Recipients = subs;
-			oEmail.Subject = subject;
-			oEmail.From = sFrom;
-			oEmail.BodyText = bodyText;
-			oEmail.BodyHTML = bodyHTML;
-
-			new Thread(oEmail.Send).Start();
-		}
+            //new Thread(
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
+            {
+                PortalId = portalId,
+                ModuleId = moduleId,
+                BodyHTML = bodyHTML,
+                BodyText = bodyText,
+                Recipients = subs,
+                Subject = subject,
+                From = sFrom
+            });
+            //).Start();
+        }
+        #region Deprecated
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments)
         {
-            SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
         }
 
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user)
@@ -267,116 +261,28 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
         public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
         {
-            SendNotification(-1, -1, fromEmail, toEmail, subject, bodyText, bodyHTML);
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(-1, -1, fromEmail, toEmail, subject, bodyText, bodyHTML);
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
         public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
         {
-            SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyText, bodyHTML);
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyText, bodyHTML);
         }
-        
-
-
-        #endregion
+		[Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.Send().")]
         public void Send()
 		{
-			try
+			DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
 			{
-				Subject = Subject.Replace("&#91;", "[");
-				Subject = Subject.Replace("&#93;", "]");
-
-                foreach (var si in Recipients.Where(si => si.Email != string.Empty))
-				{
-					if(UseQueue)
-					    Queue.Controller.Add(portalId: PortalId,moduleId:ModuleId, From, emailTo: si.Email, emailSubject: Subject, emailBody: BodyHTML, emailBodyPlainText: BodyText, emailCC: string.Empty, emailBcc: string.Empty);
-                    else
-                        SendNotification(PortalId, ModuleId, fromEmail: From, toEmail: si.Email, subject: Subject, bodyText: BodyText, bodyHTML: BodyHTML); 
-				}
-            }
-			catch (Exception ex)
-			{
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
+				BodyText = this.BodyText,
+				BodyHTML = this.BodyHTML,
+				From = this.From,
+				Subject = this.Subject,
+				ModuleId = this.ModuleId,
+				PortalId = this.PortalId,
+				Recipients = this.Recipients
+			});
 		}
 
-		#region "code modeled on DotNetNuke.Services.Mail/DotNetNuke.Entities.Host APIs to support portal-specific SMTP configuration"
-		internal static string SMTPServer(int portalId)
-		{
-			return GetSmtpSetting(portalId, "SMTPServer");
-		}
-		internal static string SMTPAuthentication(int portalId)
-		{
-			return GetSmtpSetting(portalId, "SMTPAuthentication");
-		}
-		internal static bool EnableSMTPSSL(int portalId)
-		{
-			if (SMTPPortalEnabled(portalId))
-			{
-				return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", portalId, false);
-			}
-			else
-			{
-				return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
-			}
-		}
-		internal static string SMTPUsername(int portalId)
-		{
-			return GetSmtpSetting(portalId, "SMTPUsername");
-		}
-		internal static string SMTPPassword(int portalId)
-		{
-			if (SMTPPortalEnabled(portalId))
-			{
-				return PortalController.GetEncryptedString("SMTPPassword", portalId, Config.GetDecryptionkey());
-			}
-			else
-			{
-				string decryptedText;
-				try
-				{
-					decryptedText = HostController.Instance.GetEncryptedString("SMTPPassword", Config.GetDecryptionkey());
-				}
-				catch (Exception)
-				{
-					//fixes case where smtppassword failed to encrypt due to failing upgrade
-					var current = HostController.Instance.GetString("SMTPPassword");
-					if (!string.IsNullOrEmpty(current))
-					{
-						HostController.Instance.UpdateEncryptedString("SMTPPassword", current, Config.GetDecryptionkey());
-						decryptedText = current;
-					}
-					else
-					{
-						decryptedText = string.Empty;
-					}
-				}
-				return decryptedText;
-			}
-		}
-
-		internal static bool SMTPPortalEnabled(int portalId)
-		{
-			if (portalId != null && portalId != -1)
-			{
-				return PortalController.GetPortalSetting("SMTPmode", portalId, Null.NullString).Equals("P", StringComparison.OrdinalIgnoreCase);
-			}
-			else 
-			{ 
-				return false; 
-			}
-		}
-
-		internal static string GetSmtpSetting(int portalId, string settingName)
-		{
-			if (SMTPPortalEnabled(portalId))
-			{
-				return PortalController.GetPortalSetting(settingName, portalId, Null.NullString);
-			}
-            else
-            {
-				return HostController.Instance.GetString(settingName);
-			}
-		}
-        #endregion
+        #endregion  
     }
 }
