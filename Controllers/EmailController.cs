@@ -39,6 +39,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     public class EmailController
     { 
+
+        public bool UseQueue = false;
+
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
         {
             var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);

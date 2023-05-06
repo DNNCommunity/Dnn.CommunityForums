@@ -857,21 +857,18 @@
     </Compile>
     <Compile Include="controls\admin_properties.ascx.cs">
       <DependentUpon>admin_properties.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_securitygrid.ascx.designer.cs">
       <DependentUpon>admin_securitygrid.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_securitygrid.ascx.cs">
       <DependentUpon>admin_securitygrid.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_upgrade.ascx.designer.cs">
       <DependentUpon>admin_upgrade.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_upgrade.ascx.cs">
       <DependentUpon>admin_upgrade.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_attach.ascx.designer.cs">
       <DependentUpon>af_attach.ascx</DependentUpon>
@@ -974,9 +971,7 @@
     </Compile>
     <Compile Include="CustomControls\ServerControls\TopMembers.cs" />
     <Compile Include="CustomControls\ServerControls\UserStats.cs" />
-    <Compile Include="CustomControls\ServerControls\WhatsNewControl.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="CustomControls\ServerControls\WhatsNewControl.cs" />
     <Compile Include="CustomControls\UserControls\Members.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1034,56 +1029,48 @@
     </Compile>
     <Compile Include="controls\admin_categories.ascx.cs">
       <DependentUpon>admin_categories.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_filters.ascx.designer.cs">
       <DependentUpon>admin_filters.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_filters.ascx.cs">
       <DependentUpon>admin_filters.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_home.ascx.designer.cs">
       <DependentUpon>admin_home.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_home.ascx.cs">
       <DependentUpon>admin_home.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_manageforums_home.ascx.designer.cs">
       <DependentUpon>admin_manageforums_home.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_manageforums_home.ascx.cs">
       <DependentUpon>admin_manageforums_home.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_ranks.ascx.designer.cs">
       <DependentUpon>admin_ranks.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_ranks.ascx.cs">
       <DependentUpon>admin_ranks.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_tags.ascx.designer.cs">
       <DependentUpon>admin_tags.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_tags.ascx.cs">
       <DependentUpon>admin_tags.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_templates.ascx.designer.cs">
       <DependentUpon>admin_templates.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_templates.ascx.cs">
       <DependentUpon>admin_templates.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_templates_edit.ascx.designer.cs">
       <DependentUpon>admin_templates_edit.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_templates_edit.ascx.cs">
       <DependentUpon>admin_templates_edit.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_confirmaction.ascx.designer.cs">
       <DependentUpon>af_confirmaction.ascx</DependentUpon>
@@ -1154,9 +1141,7 @@
       <DependentUpon>af_post.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\ActiveAdminBase.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="class\ActiveAdminBase.cs" />
     <Compile Include="class\AMPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -1172,21 +1157,18 @@
     </Compile>
     <Compile Include="ControlPanel.ascx.cs">
       <DependentUpon>ControlPanel.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_manageforums.ascx.designer.cs">
       <DependentUpon>admin_manageforums.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_manageforums.ascx.cs">
       <DependentUpon>admin_manageforums.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\admin_manageforums_forumeditor.ascx.designer.cs">
       <DependentUpon>admin_manageforums_forumeditor.ascx</DependentUpon>
     </Compile>
     <Compile Include="controls\admin_manageforums_forumeditor.ascx.cs">
       <DependentUpon>admin_manageforums_forumeditor.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_confirmaction.ascx.cs">
       <DependentUpon>af_confirmaction.ascx</DependentUpon>

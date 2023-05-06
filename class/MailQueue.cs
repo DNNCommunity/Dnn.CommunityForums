@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
     }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
     public class Controller : DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController
-	{
+    {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue.Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
         public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
         {
@@ -43,35 +43,35 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
             DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
         }
     }
-	public class Scheduler : SchedulerClient
-	{
-		public Scheduler(ScheduleHistoryItem objScheduleHistoryItem)
-		{
-			ScheduleHistoryItem = objScheduleHistoryItem;
-		}
+    public class Scheduler : SchedulerClient
+    {
+        public Scheduler(ScheduleHistoryItem objScheduleHistoryItem)
+        {
+            ScheduleHistoryItem = objScheduleHistoryItem;
+        }
 
 
-		public override void DoWork()
-		{
-			try
-			{
-				var intQueueCount = ProcessQueue();
-				ScheduleHistoryItem.Succeeded = true;
-				ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " messages"));
-			}
-			catch (Exception ex)
-			{
-				ScheduleHistoryItem.Succeeded = false;
-				ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
-				Errored(ref ex);
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
-		}
+        public override void DoWork()
+        {
+            try
+            {
+                var intQueueCount = ProcessQueue();
+                ScheduleHistoryItem.Succeeded = true;
+                ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " messages"));
+            }
+            catch (Exception ex)
+            {
+                ScheduleHistoryItem.Succeeded = false;
+                ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
+                Errored(ref ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
 
-		private static int ProcessQueue()
-		{
-			var intQueueCount = 0;
-			try
+        private static int ProcessQueue()
+        {
+            var intQueueCount = 0;
+            try
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.GetBatch().ForEach(m =>
                 {
@@ -107,17 +107,11 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
                 return intQueueCount;
             }
             catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-				return -1;
-			}
-		}
-	}
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Message.")]
-    public class Message : DotNetNuke.Modules.ActiveForums.Entities.Message 
-	{
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send().")]
-        public bool SendMail()
-		{ return DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(this); }
-	}
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return -1;
+            }
+        }
+    }
+
 }
