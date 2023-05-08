@@ -227,8 +227,8 @@
     }
 
         .activeForums .af-topic > div .body {
-            padding-top: 1em;
-            padding-bottom: 2em
+            padding: 1em;
+            padding-bottom: 2em;
         }
 
         .activeForums .af-topic > div .signature {
