@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="07.00.07">
+    <package name="Active Forums" type="Module" version="07.00.11">
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -84,7 +84,7 @@
             <assembly>
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
-              <version>07.00.07</version>
+              <version>07.00.11</version>
             </assembly>
           </assemblies>
         </component>
@@ -354,15 +354,10 @@
               <name>07.00.06.SqlDataProvider</name>
               <version>07.00.06</version>
             </script>
-            <script type="Install">
-              <path>sql</path>
-              <name>07.00.07.SqlDataProvider</name>
-              <version>07.00.07</version>
-            </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>07.00.07</version>
+              <version>07.00.11</version>
             </script>
           </scripts>
         </component>
@@ -394,11 +389,12 @@
           </config>
         </component>
         <component type="Cleanup" version="06.04.00" fileName="06.04.00.txt" />
-        <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
+		  <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
+		  <component type="Cleanup" version="07.00.11" fileName="07.00.11.txt" />
       </components>
     </package>
 
-    <package name="Active Forums What's New" type="Module" version="07.00.07">
+    <package name="Active Forums What's New" type="Module" version="07.00.11">
       <friendlyName>Active Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
@@ -467,7 +463,7 @@
       </components>
     </package>
 
-    <package name="Active Forums Viewer" type="Module" version="07.00.07">
+    <package name="Active Forums Viewer" type="Module" version="07.00.11">
       <friendlyName>Active Forums Viewer</friendlyName>
       <foldername>ActiveForumsViewer</foldername>
       <description>Community Forums: Display any forum topic view on any page within your site.</description>
