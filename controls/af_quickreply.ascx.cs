@@ -461,7 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else if (isApproved == false)
             {
-                List<Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
                 string subject = Utilities.GetSharedResource("NotificationSubjectReply");
                 subject = subject.Replace("[DisplayName]", UserInfo.DisplayName);

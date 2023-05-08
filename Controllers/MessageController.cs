@@ -48,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         From = message.SendFrom,
                         ModuleId = message.ModuleId,
                         PortalId = message.PortalId,
-                    UseQueue = false,
                         Recipients = subs,
                         Subject = message.Subject,
                     });
