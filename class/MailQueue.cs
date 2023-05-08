@@ -43,75 +43,12 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
             DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
         }
     }
-    public class Scheduler : SchedulerClient
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
+    public class Scheduler : DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler
     {
-        public Scheduler(ScheduleHistoryItem objScheduleHistoryItem)
-        {
-            ScheduleHistoryItem = objScheduleHistoryItem;
-        }
-
-
-        public override void DoWork()
-        {
-            try
-            {
-                var intQueueCount = ProcessQueue();
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " messages"));
-            }
-            catch (Exception ex)
-            {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
-                Errored(ref ex);
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-
-        private static int ProcessQueue()
-        {
-            var intQueueCount = 0;
-            try
-            {
-                DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.GetBatch().ForEach(m =>
-                {
-                    intQueueCount += 1;
-                    var message = new DotNetNuke.Modules.ActiveForums.Entities.Message
-                    {
-                        PortalId = m.PortalId,
-                        ModuleId = m.ModuleId,
-                        Subject = m.EmailSubject,
-                        SendFrom = m.EmailFrom,
-                        SendTo = m.EmailTo,
-                        Body = m.EmailBody,
-                        BodyText = m.EmailBodyPlainText,
-                    };
-
-                    var canDelete = DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(message);
-                    if (canDelete)
-                    {
-                        try
-                        {
-                            DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Delete(m.Id);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-                    }
-                    else
-                    {
-                        intQueueCount = intQueueCount - 1;
-                    }
-                });
-                return intQueueCount;
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return -1;
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
+        public Scheduler(ScheduleHistoryItem objScheduleHistoryItem) : base(objScheduleHistoryItem) { }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
+        public override void DoWork() => base.DoWork();
     }
-
 }

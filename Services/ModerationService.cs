@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                      LastName = ui.LastName,
                                      Username = ui.Username
                                  };
-                    Email.SendEmail(fi.ModRejectTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, au);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, au);
                 }
 
             }

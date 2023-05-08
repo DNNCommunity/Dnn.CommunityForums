@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
             
             if (subs.Count > 0)
             {
-                Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
             }
         }
 

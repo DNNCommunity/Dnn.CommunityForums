@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums
             
             if (fi.ModApproveTemplateId > 0 & topic.Author.AuthorId > 0)
 			{
-				Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, 0, string.Empty, topic.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, 0, string.Empty, topic.Author);
 			}
 
 			Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, 0, topic.Content.AuthorId);
