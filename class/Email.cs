@@ -35,60 +35,22 @@ using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    #region Deprecated
+
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Email.")]
     public class Email : DotNetNuke.Modules.ActiveForums.Entities.Email
     {
-
-
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEMail().")]
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
         {
-
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-            var mainSettings = DataCache.MainSettings(moduleId);
-            var sTemplate = string.Empty;
-            var tc = new TemplateController();
-            var ti = tc.Template_Get(templateId, portalId, moduleId);
-            var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            bodyText = bodyText.Replace("[REASON]", comments);
-            bodyHTML = bodyHTML.Replace("[REASON]", comments);
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(forumId, -1, false, true);
-            var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
-
-            //Send now
-
-            var subs = new List<SubscriptionInfo>();
-            var si = new SubscriptionInfo
-            {
-                DisplayName = author.DisplayName,
-                Email = author.Email,
-                FirstName = author.FirstName,
-                LastName = author.LastName,
-                UserId = author.AuthorId,
-                Username = author.Username
-            };
-
-            subs.Add(si);
-            //new Thread(
-            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
-            {
-                PortalId = portalId,
-                ModuleId = moduleId,
-                BodyHTML = bodyHTML,
-                BodyText = bodyText,
-                Recipients = subs,
-                Subject = subject,
-                From = sFrom
-            });
-            //).Start();
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(templateId, portalId, moduleId, tabId, forumId, topicId, replyId, comments, author);
         }
-        #region Deprecated
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators().")]
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments)
         {
             DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
         }
-
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators().")]
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user)
         {
             DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId, portalId, forumId, topicId, replyId, moduleID, tabID, comments, user);
@@ -127,7 +89,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 Recipients = this.Recipients
             });
         }
-
         #endregion  
     }
 }
