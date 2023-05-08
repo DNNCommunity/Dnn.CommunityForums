@@ -205,6 +205,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetBoolean(SettingKeys.MailQueue); }
         }
+        public bool CacheTemplates
+        {
+            get { return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }
+        }
 
         public int FloodInterval
         {
