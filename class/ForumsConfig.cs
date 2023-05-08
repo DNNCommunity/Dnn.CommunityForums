@@ -115,18 +115,18 @@ namespace DotNetNuke.Modules.ActiveForums
 						for (i = 0; i < xNodeList.Count; i++)
 						{
 							var ti = new TemplateInfo
-							             {
-							                 TemplateId = -1,
-							                 TemplateType =
-							                     (Templates.TemplateTypes)
-							                     Enum.Parse(typeof (Templates.TemplateTypes), xNodeList[i].Attributes["templatetype"].Value),
-							                 IsSystem = true,
-							                 PortalId = PortalId,
-							                 ModuleId = ModuleId,
-							                 Title = xNodeList[i].Attributes["templatetitle"].Value,
-							                 Subject = xNodeList[i].Attributes["templatesubject"].Value
-							             };
-						    string sHTML;
+							{
+								TemplateId = -1,
+								TemplateType =
+												 (Templates.TemplateTypes)
+												 Enum.Parse(typeof(Templates.TemplateTypes), xNodeList[i].Attributes["templatetype"].Value),
+								IsSystem = true,
+								PortalId = PortalId,
+								ModuleId = ModuleId,
+								Title = xNodeList[i].Attributes["templatetitle"].Value,
+								Subject = xNodeList[i].Attributes["templatesubject"].Value
+							};
+							string sHTML;
 							sHTML = Utilities.GetFileContent(xNodeList[i].Attributes["importfilehtml"].Value);
 							string sText;
 							sText = Utilities.GetFileContent(xNodeList[i].Attributes["importfiletext"].Value);
@@ -189,17 +189,17 @@ namespace DotNetNuke.Modules.ActiveForums
 					for (i = 0; i < xNodeList.Count; i++)
 					{
 						var gi = new ForumGroupInfo
-						             {
-						                 ModuleId = ModuleId,
-						                 ForumGroupId = -1,
-						                 GroupName = xNodeList[i].Attributes["groupname"].Value,
-						                 Active = xNodeList[i].Attributes["active"].Value == "1",
-						                 Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
-						                 SortOrder = i,
-						                 GroupSettingsKey = "",
-						                 PermissionsId = -1
-						             };
-					    var gc = new ForumGroupController();
+						{
+							ModuleId = ModuleId,
+							ForumGroupId = -1,
+							GroupName = xNodeList[i].Attributes["groupname"].Value,
+							Active = xNodeList[i].Attributes["active"].Value == "1",
+							Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
+							SortOrder = i,
+							GroupSettingsKey = "",
+							PermissionsId = -1
+						};
+						var gc = new ForumGroupController();
 						int groupId;
 						groupId = gc.Groups_Save(PortalId, gi, true);
 						gi = gc.GetForumGroup(ModuleId, groupId);
@@ -226,17 +226,17 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowHTML, sAllowHTML);
 						if (sAllowHTML.ToLowerInvariant() == "true")
 						{
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
 						}
-                        else
+						else
 						{
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.TEXTBOX).ToString());
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.TEXTBOX).ToString());
@@ -291,107 +291,109 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			var xDoc = new System.Xml.XmlDocument();
 			xDoc.LoadXml(Config);
-		    {
-		        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-		        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
-		    }
+			{
+				System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+				System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
+			}
 		}
-        private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
-        {
-            try
-            {
-                var tc = new TemplateController();
-                int ForumViewTemplateId = tc.Template_Get(TemplateName: "ForumView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                var objModules = new DotNetNuke.Entities.Modules.ModuleController();
-                objModules.UpdateModuleSetting(ModuleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId));
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-       internal void Install_Or_Upgrade_RenameThemeCssFiles()
-        {
-            try
-            {
-                SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
-                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
-                {
-                    System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
-                    System.IO.File.Delete(fullFilePathName);
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        internal void Install_Or_Upgrade_MoveTemplates()
-        {
-            if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatePath)))
-            {
-                System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatePath));
-            }
-            if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
-            {
-                System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
-            }
+		private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
+		{
+			try
+			{
+				var tc = new TemplateController();
+				int ForumViewTemplateId = tc.Template_Get(TemplateName: "ForumView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+				objModules.UpdateModuleSetting(ModuleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId));
+			}
+			catch (Exception ex)
+			{
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+			}
+		}
+		internal void Install_Or_Upgrade_RenameThemeCssFiles()
+		{
+			try
+			{
+				SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
+				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+				{
+					System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+					System.IO.File.Delete(fullFilePathName);
+				}
+			}
+			catch (Exception ex)
+			{
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+			}
+		}
+		internal void Install_Or_Upgrade_MoveTemplates()
+		{
+			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+			{
+				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+			}
+			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
+			{
+				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
+			}
 
-            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
-            System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
-            foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
-            {
-                if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
-                {
-                    System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
-                }
-            }
-            TemplateController tc = new TemplateController();
-            foreach (TemplateInfo template in tc.Template_List(-1, -1))
-            {
-                tc.Template_Save(template);
-            }
-        }
-        internal void ArchiveOrphanedAttachments()
-        {
-            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
-            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
+			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+			System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+			{
+				if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
+				{
+					System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
+				}
+			}
+			TemplateController tc = new TemplateController();
+			foreach (TemplateInfo template in tc.Template_List(-1, -1))
+			{
+				tc.Template_Save(template);
+			}
+		}
+		internal void ArchiveOrphanedAttachments()
+		{
+			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
+			System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
 
-            foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
-            {
-                if (!System.IO.Directory.Exists(string.Concat(attachmentFolder.FullName, "\\orphaned")))
-                {
-                    System.IO.Directory.CreateDirectory(string.Concat(attachmentFolder.FullName, "\\orphaned"));
-                }
+			foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
+			{
+				if (!System.IO.Directory.Exists(string.Concat(attachmentFolder.FullName, "\\orphaned")))
+				{
+					System.IO.Directory.CreateDirectory(string.Concat(attachmentFolder.FullName, "\\orphaned"));
+				}
 
-                List<string> attachmentFullFileNames = System.IO.Directory.EnumerateFiles(path: attachmentFolder.FullName, searchPattern: "*", searchOption: System.IO.SearchOption.AllDirectories).ToList<string>();
-                List<string> attachmentFileNames = new List<string>();
+				List<string> attachmentFullFileNames = System.IO.Directory.EnumerateFiles(path: attachmentFolder.FullName, searchPattern: "*", searchOption: System.IO.SearchOption.AllDirectories).ToList<string>();
+				List<string> attachmentFileNames = new List<string>();
 
-                foreach (string attachmentFileName in attachmentFullFileNames)
-                {
-                    attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
-                }
+				foreach (string attachmentFileName in attachmentFullFileNames)
+				{
+					attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
+				}
 
-                List<string> databaseFileNames = new List<string>();
-                string connectionString = new Connection().connectionString;
-                string dbPrefix = new Connection().dbPrefix;
+				List<string> databaseFileNames = new List<string>();
+				string connectionString = new Connection().connectionString;
+				string dbPrefix = new Connection().dbPrefix;
 
-                using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
-                {
-                    while (dr.Read())
-                    {
-                        databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
-                    }
-                    dr.Close();
-                }
+				using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
+				{
+					while (dr.Read())
+					{
+						databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
+					}
+					dr.Close();
+				}
 
-                foreach (string attachmentFileName in attachmentFileNames)
-                {
-                    if (!databaseFileNames.Contains(attachmentFileName))
-                    {
-                        System.IO.File.Copy(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName), string.Concat(attachmentFolder.FullName, "\\orphaned\\", attachmentFileName), true);
-                        System.IO.File.Delete(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName));
-                    }
-                }
-            }
-        }
+				foreach (string attachmentFileName in attachmentFileNames)
+				{
+					if (!databaseFileNames.Contains(attachmentFileName))
+					{
+						System.IO.File.Copy(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName), string.Concat(attachmentFolder.FullName, "\\orphaned\\", attachmentFileName), true);
+						System.IO.File.Delete(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName));
+					}
+				}
+			}
+		}
+	}
+}
