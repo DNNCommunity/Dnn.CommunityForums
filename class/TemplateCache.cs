@@ -40,8 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         string sTemplate = string.Empty;
         object obj = null;
-        DotNetNuke.Entities.Modules.ModuleInfo objModule = new Entities.Modules.ModuleController().GetModule(ModuleId);
-        if ((!String.IsNullOrEmpty(objModule.CacheMethod)) && (objModule.CacheTime > 0))
+        if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
         {
             obj = DataCache.CacheRetrieve(ModuleId + TemplateId + TemplateType);
         }

@@ -206,7 +206,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-		public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
+        public const string CacheTemplates = "CACHETEMPLATES";
+
+        public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
 		public const string SharedResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
 		public const string CacheDependencyFile = "~/DesktopModules/ActiveForums/cache/cachedep.resources";
 		public const string TemplatePath = "~/DesktopModules/ActiveForums/config/templates/";
@@ -286,7 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string MCRemoveHTML = "MCSTRIPHTML";
         */
 
-	}
+    }
 
 	public class ParamKeys
 	{

@@ -345,17 +345,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 return (Framework.CDefault)Page;
             }
         }
+         public static SettingsInfo GetModuleSettings(int ModuleId)
+        {
+            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
+            if (objSettings == null)
+            {
+                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
+                DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+            }
+            return objSettings;
+
+        }
         public SettingsInfo MainSettings
         {
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-
-                var _portalSettings = (PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-                var objModules = new Entities.Modules.ModuleController();
-                var objSettings = new SettingsInfo {MainSettings = objModules.GetModuleSettings(ForumModuleId)};
-
-                return objSettings;
+                return GetModuleSettings(ForumModuleId);
             }
         }
         public string ImagePath
