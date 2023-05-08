@@ -558,6 +558,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
+                case "07.00.11":
+                    try
+                    {
+						DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 default:
                     break;
             }

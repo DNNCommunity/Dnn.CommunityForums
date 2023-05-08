@@ -839,7 +839,7 @@
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
-    <Compile Include="components\Helpers\MoveSettings.cs" />
+    <Compile Include="components\Helpers\UpgradeModuleSettings.cs" />
     <Compile Include="components\Helpers\TextUtils.cs" />
     <Compile Include="components\Helpers\URL.cs" />
     <Compile Include="components\Properties\PropertiesController.cs" />

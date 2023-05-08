@@ -128,10 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return MainSettings.GetBoolean(SettingKeys.IsInstalled); }
         }
 
-        public bool NeedsConversion
-        {
-            get { return MainSettings.GetBoolean("NeedsConvert", false); }
-        }
 
         public PMTypes PMType
         {

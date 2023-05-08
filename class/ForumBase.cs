@@ -575,21 +575,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (Request.QueryString["dnnprintmode"] != null)
                 return;
 
-            // Do a conversion if needed 
-            // TODO: Figure out what's happening here
-            if (ModuleId > 0)
-            {
-                if (MainSettings.NeedsConversion)
-                {
-                    if (!(string.IsNullOrEmpty(UserForumsList)))
-                    {
-                        var move = new Helpers.SettingConversion();
-                        move.MoveSettings(ForumModuleId, ModuleId);
-
-                    }
-                }
-            }
-
             var p = new List<string>();
 
             var viewType = Request.Params[ParamKeys.ViewType];
