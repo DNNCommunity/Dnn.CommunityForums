@@ -545,11 +545,26 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             switch (Version)
             {
+                case "07.00.07":
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        fc.ArchiveOrphanedAttachments();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 case "08.00.00":
                     try
                     {
                         var fc = new ForumsConfig();
                         fc.Install_Or_Upgrade_MoveTemplates();
+                        fc.Install_Or_Upgrade_RenameThemeCssFiles();
                     }
                     catch (Exception ex)
                     {
