@@ -367,7 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-                return new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(ForumModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ForumModuleId).ModuleSettings };
             }
         }
         

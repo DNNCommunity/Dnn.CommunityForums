@@ -97,17 +97,17 @@ namespace DotNetNuke.Modules.ActiveForums
             return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null,-1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, int timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo user, int timeZoneOffset)
         {
             return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, int timeZoneOffset)
         {
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
             return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, int timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, int timeZoneOffset)
         {
             return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: user, userId: userId, userCultureInfo: Utilities.GetCultureInfoForUser(portalID, userId), timeZoneOffset: new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), topicSubscriber: false);
         }
@@ -126,28 +126,28 @@ namespace DotNetNuke.Modules.ActiveForums
             return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: comments, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
             return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: user, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
             return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
             return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: topicSubscriber);
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
-            var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             var ms = DataCache.MainSettings(moduleID);
             var sOut = template;
 
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // Load the user if needed
             if (user == null)
             {
-                var objUsers = new Entities.Users.UserController();
+                var objUsers = new DotNetNuke.Entities.Users.UserController();
                 var objUser = objUsers.GetUser(portalID, userId);
                 user = objUser;
             }
@@ -822,7 +822,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseProfile(int portalId, int userId, string template, CurrentUserTypes currentUserType, int currentUserId)
         {
-            var objuser = Entities.Users.UserController.GetUserById(portalId, userId);
+            var objuser = DotNetNuke.Entities.Users.UserController.GetUserById(portalId, userId);
+
             var s = template ?? string.Empty;
             const string pattern = "(\\[DNN:PROFILE:(.+?)\\])";
 
@@ -839,11 +840,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sResource = string.Format(sResource, match.Groups[2].Value);
 
-                        if (profprop.Visibility == Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType != CurrentUserTypes.Anon || currentUserType != CurrentUserTypes.Auth))
+                        if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType != CurrentUserTypes.Anon || currentUserType != CurrentUserTypes.Auth))
                             sReplace = profprop.PropertyValue;
-                        else if (profprop.Visibility == Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
+                        else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
                             sReplace = profprop.PropertyValue;
-                        else if (profprop.Visibility == Entities.Users.UserVisibilityMode.AllUsers)
+                        else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AllUsers)
                             sReplace = profprop.PropertyValue;
                         else
                             sReplace = "[RESX:Private]";

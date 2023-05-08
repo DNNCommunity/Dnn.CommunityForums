@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				var objModules = new Entities.Modules.ModuleController();
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 				// Update ModuleSettings
 				objModules.UpdateModuleSetting(ModuleId, "AFTopicsTemplate", drpTopicsTemplate.SelectedItem.Value);
 				objModules.UpdateModuleSetting(ModuleId, "AFTopicTemplate", drpTopicTemplate.SelectedItem.Value);
@@ -126,10 +126,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			
 			int i = 0;
-			var mc = new Entities.Modules.ModuleController();
-			var tc = new Entities.Tabs.TabController();
-			Entities.Tabs.TabInfo ti;
-			foreach (Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
+			var mc = new DotNetNuke.Entities.Modules.ModuleController();
+			var tc = new DotNetNuke.Entities.Tabs.TabController();
+			DotNetNuke.Entities.Tabs.TabInfo ti;
+			foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
 			{
                 if (mi.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant() && mi.IsDeleted == false)
 				{
