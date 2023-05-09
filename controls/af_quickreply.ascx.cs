@@ -396,7 +396,6 @@ namespace DotNetNuke.Modules.ActiveForums
             reply.IsDeleted = false;
             reply.Content.IPAddress = Request.UserHostAddress;
             ReplyId = rc.Reply_Save(PortalId, reply);
-            rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             //Check if is subscribed
             string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
             DataCache.CacheClearPrefix(cachekey);

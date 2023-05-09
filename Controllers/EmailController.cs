@@ -34,17 +34,18 @@ using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     public class EmailController
     { 
 
-        public bool UseQueue = false;
-
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
         {
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            PortalSettings portalSettings = new PortalSettings(portalId);
+            PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
+            psc.LoadPortalSettings(portalSettings);
             var sTemplate = string.Empty;
             var tc = new TemplateController();
             var ti = tc.Template_Get(templateId, portalId, moduleId);
@@ -134,7 +135,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
         {
-            PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            PortalSettings portalSettings = new PortalSettings(portalId);
+            PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
+            psc.LoadPortalSettings(portalSettings);
             TemplateController tc = new TemplateController();
             TemplateUtils.lstSubscriptionInfo = subs;
             TemplateInfo ti = templateId > 0 ? tc.Template_Get(templateId) : tc.Template_Get("SubscribedEmail", portalId, moduleID);

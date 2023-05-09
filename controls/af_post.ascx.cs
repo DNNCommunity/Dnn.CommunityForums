@@ -34,6 +34,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Modules.ActiveForums.DAL2;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -1087,7 +1088,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.StatusId = ctlForm.StatusId;
             ri.TopicId = TopicId;
             var tmpReplyId = rc.Reply_Save(PortalId, ri);
-            rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             //tc.ForumTopicSave(ForumID, TopicId, ReplyId)
@@ -1113,33 +1113,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
                 if (bSend && !_isEdit)
-                {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, _fi, TopicId, tmpReplyId, ri.Content.AuthorId);
+                { 
+                    DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
                 if (ri.IsApproved == false)
                 {
-                    var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
-
-                    var mods = Utilities.GetListOfModerators(PortalId, ForumId);
-                    var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-                    var notifySubject = Utilities.GetSharedResource("NotificationSubjectReply");
-                    notifySubject = notifySubject.Replace("[DisplayName]", UserInfo.DisplayName);
-                    notifySubject = notifySubject.Replace("[TopicSubject]", ti.Content.Subject);
-                    var notifyBody = Utilities.GetSharedResource("NotificationBodyReply");
-                    notifyBody = notifyBody.Replace("[Post]", ri.Content.Body);
-                    var notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ri.ReplyId);
-
-                    var notification = new Notification
-                                           {
-                                               NotificationTypeID = notificationType.NotificationTypeId,
-                                               Subject = notifySubject,
-                                               Body = notifyBody,
-                                               IncludeDismissAction = false,
-                                               SenderUserID = UserInfo.UserID,
-                                               Context = notificationKey
-                                           };
-
-                    NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+                    DotNetNuke.Modules.ActiveForums.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(Utilities.NavigateUrl(ForumTabId, "", @params), false);
@@ -1156,19 +1135,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (fullURL.EndsWith("/"))
                         fullURL += "?" + ParamKeys.ContentJumpId + "=" + tmpReplyId;
 
-                    if (!_isEdit)
-                    {
-                        try
-                        {
-                            var amas = new Social();
-                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, forum.Security.Read, SocialGroupId);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-
-                    }
                     Response.Redirect(fullURL);
                 }
             }

@@ -308,6 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 Social amas = new Social();
                 amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, forum.Security.Read, forum.SocialGroupId);
+                rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             }
             catch (Exception ex)
             {
