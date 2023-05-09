@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 		}
 		internal static void MoveSettingsForModuleInstance(int forumModuleId, int tabModuleId)
         {
-            var objModules = new Entities.Modules.ModuleController();
+            var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 			var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
 
 		    objModules.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
