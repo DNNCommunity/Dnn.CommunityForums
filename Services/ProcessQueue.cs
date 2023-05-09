@@ -60,10 +60,22 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                 {
                     intQueueCount += 1;
                     bool completed = false;
-                    switch (i.ProcessType)
-                    { 
+                    switch (item.ProcessType)
+                    {
+                        case ProcessType.ApprovedTopicCreated:
+                            DotNetNuke.Modules.ActiveForums.TopicsController.ProcessApprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
+                            completed = true;
+                            break;
                         case ProcessType.ApprovedReplyCreated:
-                            DotNetNuke.Modules.ActiveForums.ReplyController.ProcessApprovedReplyAfterAction(i.PortalId, -1, i.ModuleId, i.ForumId, i.TopicId, i.ReplyId);
+                            DotNetNuke.Modules.ActiveForums.ReplyController.ProcessApprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
+                            completed = true;
+                            break;
+                        case ProcessType.UnapprovedTopicCreated:
+                            DotNetNuke.Modules.ActiveForums.TopicsController.ProcessUnapprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
+                            completed = true;
+                            break;
+                        case ProcessType.UnapprovedReplyCreated:
+                            DotNetNuke.Modules.ActiveForums.ReplyController.ProcessUnapprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
                             completed = true;
                             break;
                         default:

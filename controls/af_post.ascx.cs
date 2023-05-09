@@ -35,6 +35,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.ActiveForums.DAL2;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -797,8 +798,6 @@ namespace DotNetNuke.Modules.ActiveForums
             else
                 ti.IsApproved = _isApproved;
 
-            bool bSend = ti.IsApproved;
-
             ti.IsArchived = false;
             ti.IsDeleted = false;
             ti.IsLocked = _canLock && ctlForm.Locked;
@@ -932,63 +931,34 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                if (bSend && !_isEdit)
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, _fi, TopicId, 0, ti.Content.AuthorId);
+                if (ti.IsApproved == false)
+                {
+                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+
+                    string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
+                    Response.Redirect(NavigateUrl(ForumTabId, "", @params), false);
+                }
+                if (!_isEdit)
+                {
+                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueApprovedTopicAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+                }
 
                 if (ti.IsApproved == false)
                 {
-                    var mods = Utilities.GetListOfModerators(PortalId, ForumId);
-                    var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-                   
-                    var notifySubject = Utilities.GetSharedResource("NotificationSubjectTopic");
-                    notifySubject = notifySubject.Replace("[DisplayName]", UserInfo.DisplayName);
-                    notifySubject = notifySubject.Replace("[TopicSubject]", ti.Content.Subject);
-                   
-                    var notifyBody = Utilities.GetSharedResource("NotificationBodyTopic");
-                    notifyBody = notifyBody.Replace("[Post]", ti.Content.Body);
-                    
-                    var notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);
-
-                    var notification = new Notification
-                                           {
-                                               NotificationTypeID = notificationType.NotificationTypeId,
-                                               Subject = notifySubject,
-                                               Body = notifyBody,
-                                               IncludeDismissAction = false,
-                                               SenderUserID = UserInfo.UserID,
-                                               Context = notificationKey
-                                           };
-
-                    NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(NavigateUrl(ForumTabId, "", @params), false);
                 }
                 else
                 {
-                    if (ti != null)
-                        ti.TopicId = TopicId;
-
-                    var ctlUtils = new ControlUtils();
-
-                    var sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
+                    ControlUtils ctlUtils = new ControlUtils();
+                    string sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
                     
                     if (sUrl.Contains("~/"))
-                        sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
-
-                    if (!_isEdit)
                     {
-                        try
-                        {
-                            var amas = new Social();
-                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body,forum.Security.Read, SocialGroupId);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
+                        sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
                     }
-
                     Response.Redirect(sUrl, false);
                 }
             }
@@ -1082,8 +1052,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.IsApproved = ctlForm.IsApproved;
             else
                 ri.IsApproved = _isApproved;
-
-            var bSend = ri.IsApproved;
+             
             ri.IsDeleted = false;
             ri.StatusId = ctlForm.StatusId;
             ri.TopicId = TopicId;
@@ -1112,10 +1081,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
                     }
                 }
-                if (bSend && !_isEdit)
-                { 
-                    DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
-                }
+                
                 if (ri.IsApproved == false)
                 {
                     DotNetNuke.Modules.ActiveForums.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
@@ -1123,17 +1089,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(Utilities.NavigateUrl(ForumTabId, "", @params), false);
                 }
-                else
+                if (!_isEdit)
                 {
+                    DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
                     var ctlUtils = new ControlUtils();
                     var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                     var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     
                     if (fullURL.Contains("~/"))
+                    {
                         fullURL = Utilities.NavigateUrl(ForumTabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
-                    
+                    }
+
                     if (fullURL.EndsWith("/"))
+                    {
                         fullURL += "?" + ParamKeys.ContentJumpId + "=" + tmpReplyId;
+                    }
 
                     Response.Redirect(fullURL);
                 }

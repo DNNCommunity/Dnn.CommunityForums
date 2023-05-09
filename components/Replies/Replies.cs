@@ -188,7 +188,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     fileManager.DeleteFile(file); 
 		    }
 		}
-		public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+        public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int replyId = -1;
 			ReplyInfo ri = new ReplyInfo();
@@ -277,11 +278,11 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal static void QueueApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Add(ProcessType.ApprovedReplyCreated, PortalId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Add(ProcessType.ApprovedReplyCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId);
         }
         internal static void QueueUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Add(ProcessType.UnapprovedReplyCreated, PortalId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Add(ProcessType.UnapprovedReplyCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId);
         }
         internal static void ProcessApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {
