@@ -751,7 +751,7 @@
     <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
     <Compile Include="Controllers\EmailController.cs" />
-    <Compile Include="Controllers\MailQueueController.cs" />
+    <Compile Include="Controllers\EmailNotificationQueueController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
@@ -772,11 +772,11 @@
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\Email.cs" />
-    <Compile Include="Entities\MailQueue.cs" />
+    <Compile Include="Entities\EmailNotificationQueue.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
-    <Compile Include="Services\MailQueue.cs" />
+    <Compile Include="Services\EmailNotificationQueue.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
     <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="SimulateDateDiff.cs" />

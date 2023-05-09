@@ -1,13 +1,13 @@
 ﻿/* implement new mail queue */
 SET NOCOUNT ON
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_MailQueue]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_MailQueue]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
 GO
-CREATE TABLE {databaseOwner}{objectQualifier}activeforums_MailQueue (
+CREATE TABLE {databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue (
 	[Id] [int] IDENTITY (1, 1) NOT NULL,
-	[PortalId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_MailQueue_PortalId] DEFAULT(-1),
-	[ModuleId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_MailQueue_ModuleId] DEFAULT(-1),
+	[PortalId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_PortalId] DEFAULT(-1),
+	[ModuleId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_ModuleId] DEFAULT(-1),
 	[EmailFrom] [nvarchar] (255) NULL ,
 	[EmailTo] [nvarchar] (255) NULL ,
 	[EmailSubject] [nvarchar] (255) NULL ,
@@ -15,16 +15,16 @@ CREATE TABLE {databaseOwner}{objectQualifier}activeforums_MailQueue (
 	[EmailBodyPlainText] [ntext] NULL ,
 	[EmailCC] [nvarchar] (255) NULL ,
 	[EmailBCC] [nvarchar] (255) NULL ,
-	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_MailQueue_DateCreated] DEFAULT(GETUTCDATE()) ,
-    CONSTRAINT [PK_{objectQualifier}activeforums_MailQueue] PRIMARY KEY CLUSTERED 
+	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_DateCreated] DEFAULT(GETUTCDATE()) ,
+    CONSTRAINT [PK_{objectQualifier}activeforums_EmailNotificationQueue] PRIMARY KEY CLUSTERED 
 	(
 	[Id] ASC
 	) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ,
-	CONSTRAINT [FK_{objectQualifier}activeforums_MailQueue_Modules] FOREIGN KEY (ModuleId) REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) ON DELETE CASCADE ,
+	CONSTRAINT [FK_{objectQualifier}activeforums_EmailNotificationQueue_Modules] FOREIGN KEY (ModuleId) REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) ON DELETE CASCADE ,
 ) 
 GO
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue') AND name = N'IX_{objectQualifier}activeforums_MailQueue_DateCreated')
-CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_MailQueue_DateCreated ON {databaseOwner}[{objectQualifier}activeforums_MailQueue]
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue') AND name = N'IX_{objectQualifier}activeforums_EmailNotificationQueue_DateCreated')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_EmailNotificationQueue_DateCreated ON {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
 	(
 	DateCreated
 	) 
@@ -33,7 +33,7 @@ GO
 
 /* import existing queued mail, if any */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
-INSERT INTO {databaseOwner}{objectQualifier}activeforums_MailQueue
+INSERT INTO {databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue
 SELECT -1, PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC, DateCreated
 FROM {databaseOwner}{objectQualifier}activeforums_Queue
 GO

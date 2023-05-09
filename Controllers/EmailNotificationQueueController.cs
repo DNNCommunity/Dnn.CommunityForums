@@ -26,7 +26,7 @@ using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public class MailQueueController
+    public class EmailNotificationQueueController
     {
         public static void Add(int portalId, int moduleId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
         {
@@ -34,8 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 using (IDataContext ctx = DataContext.Instance())
                 {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.MailQueue>();
-                    repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.MailQueue
+                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
+                    repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue
                     {
                         PortalId = portalId,
                         ModuleId = moduleId,
@@ -49,7 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         DateCreated = DateTime.UtcNow
                     });
                 }
-                DataProvider.Instance().MailQueue_Add(portalId, moduleId, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
             }
             catch (Exception ex)
             {
@@ -62,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 using (IDataContext ctx = DataContext.Instance())
                 {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.MailQueue>();
+                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
                     repo.Delete(repo.GetById(Id));
                 }
             }
@@ -71,13 +70,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
-        public static List<DotNetNuke.Modules.ActiveForums.Entities.MailQueue> GetBatch()
+        public static List<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue> GetBatch()
         {
             try
             {
                 using (IDataContext ctx = DataContext.Instance())
                 {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.MailQueue>();
+                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
                     return repo.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
                 }
             }

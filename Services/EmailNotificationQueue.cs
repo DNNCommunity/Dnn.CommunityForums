@@ -14,13 +14,13 @@
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
 // TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN doworkafaffdaafdfdfffdfdffd WITH THE SOFTWARE OR THE USE OR OTHER 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Services.Scheduling;
-namespace DotNetNuke.Modules.ActiveForums.Services.MailQueue
+namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
 {
     public class Scheduler : DotNetNuke.Services.Scheduling.SchedulerClient
     {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.MailQueue
             var intQueueCount = 0;
             try
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.GetBatch().ForEach(m =>
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.GetBatch().ForEach(m =>
                 {
                     intQueueCount += 1;
                     var message = new DotNetNuke.Modules.ActiveForums.Entities.Message
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.MailQueue
                     {
                         try
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Delete(m.Id);
+                            DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Delete(m.Id);
                         }
                         catch (Exception ex)
                         {

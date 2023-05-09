@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 foreach (var si in message.Recipients.Where(si => si.Email != string.Empty))
                 {
                     if (SettingsBase.GetModuleSettings(message.ModuleId).MailQueue)
-                        DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Add(portalId: message.PortalId, moduleId: message.ModuleId, message.From, emailTo: si.Email, emailSubject: message.Subject, emailBody: message.BodyHTML, emailBodyPlainText: message.BodyText, emailCC: string.Empty, emailBcc: string.Empty);
+                        DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Add(portalId: message.PortalId, moduleId: message.ModuleId, message.From, emailTo: si.Email, emailSubject: message.Subject, emailBody: message.BodyHTML, emailBodyPlainText: message.BodyText, emailCC: string.Empty, emailBcc: string.Empty);
                     else
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(message.PortalId, message.ModuleId, fromEmail: message.From, toEmail: si.Email, subject: message.Subject, bodyText: message.BodyText, bodyHTML: message.BodyHTML);
                 }
