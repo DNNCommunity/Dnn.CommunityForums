@@ -777,6 +777,8 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Services\MailQueue.cs" />
+    <Compile Include="Services\ProcessQueue.cs" />
+    <Compile Include="Services\EmailNotificationQueue.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
     <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="SimulateDateDiff.cs" />

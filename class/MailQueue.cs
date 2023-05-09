@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
         }
     }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
-    public class Scheduler : DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler
+    public class Scheduler : DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
         public Scheduler(ScheduleHistoryItem objScheduleHistoryItem) : base(objScheduleHistoryItem) { }

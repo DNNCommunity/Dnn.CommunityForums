@@ -203,9 +203,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
-                if (ForumId > 0 & ForumInfo != null)
+                if (ForumId > 0 & forum != null)
                 {
-                    ctl.ForumInfo = ForumInfo;
+                    ctl.forum = forum;
                 }
                 ctl.ID = view;
                 ctl.ForumId = ForumId;

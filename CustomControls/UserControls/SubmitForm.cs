@@ -981,7 +981,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                            TopicTemplate = _topicReviewTemplate,
                                            OptPageSize = int.MaxValue,
                                            OptDefaultSort = "DESC",
-                                           ForumInfo = ForumInfo
+                                           forum = ForumInfo
                                        };
                 plhTopicReview.Controls.Add(ctlTopicView);
             }
@@ -1145,7 +1145,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             afpolledit.PollType = _pollType;
             afpolledit.PollOptions = _pollOptions;
             afpolledit.ModuleConfiguration = ModuleConfiguration;
-            afpolledit.ForumInfo = ForumInfo;
+            afpolledit.forum = ForumInfo;
 
             reqSubject.ErrorMessage = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", MyThemePath);
             reqSubject.EnableClientScript = false;
@@ -1278,7 +1278,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         ctlAttach = (DotNetNuke.Modules.ActiveForums.Controls.af_attach)ctrl;
                         ctlAttach.ModuleConfiguration = this.ModuleConfiguration;
                         ctlAttach.ModuleId = ModuleId;
-                        ctlAttach.ForumInfo = ForumInfo;
+                        ctlAttach.forum = ForumInfo;
                         break;
                     case "ctlCaptcha":
                         ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;

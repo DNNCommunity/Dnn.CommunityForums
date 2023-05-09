@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    fi = ForumInfo;
+                    fi = forum;
                 }
                 switch (e.Parameters[0].ToLowerInvariant())
                 {

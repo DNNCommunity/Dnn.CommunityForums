@@ -29,6 +29,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Security.Policy;
 using System.Xml.Linq;
+using DotNetNuke.Modules.ActiveForums.DAL2;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -79,9 +81,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             InstanceId = ControlConfig.InstanceId;
             SiteId = ControlConfig.SiteId;
             ForumController fc = new ForumController();
-            if (ForumInfo == null)
+            if (forum == null)
             {
-                ForumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+                forum = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
             }
 
             SettingsInfo MainSettings = DataCache.MainSettings(ControlConfig.InstanceId);
@@ -109,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = sTemp.Replace("[USERROLES]", ForumUser.UserRoles);
                 sTemp = sTemp.Replace("[THEMEPATH]", ThemePath);
                 sTemp = sTemp.Replace("[SUBJECT]", Subject);
-                sTemp = sTemp.Replace("[REPLYROLES]", ForumInfo.Security.Reply);
+                sTemp = sTemp.Replace("[REPLYROLES]", forum.Security.Reply);
                 if (!HttpContext.Current.Request.IsAuthenticated)
                 {
                     sTemp = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + sTemp;
@@ -189,74 +191,39 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void SaveQuickReply()
         {
             ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
+            Forum forum = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forum))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
             }
-            //TODO: Fix for anon
-            //If Not Current.Request.IsAuthenticated Then
-            //    If Not ctlCaptcha.IsValid Or txtUserName.Value = "" Then
-            //        Exit Sub
-            //    End If
-            //End If
-            //Dim ui As New UserProfileInfo
-            //If UserId > 0 Then
-            //    Dim upc As New UserProfileController
-            //    ui = upc.Profiles_Get(PortalId, ForumModuleId, UserId)
-            //Else
-            //    ui.TopicCount = 0
-            //    ui.ReplyCount = 0
-            //    ui.RewardPoints = 0
-            //    ui.IsMod = False
-            //    ui.TrustLevel = -1
-
-            //End If
-             bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
-            bool isApproved = false;
-            isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
-            if (UserIsTrusted || Permissions.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
+            bool UserIsTrusted = Utilities.IsTrusted((int)forum.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forum.Security.Trust, ForumUser.UserRoles), forum.AutoTrustLevel, ControlConfig.User.PostCount);
+            bool isApproved = Convert.ToBoolean(((forum.IsModerated == true) ? false : true));
+            if (UserIsTrusted || Permissions.HasPerm(forum.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
-            ReplyInfo ri = new ReplyInfo();
+            ReplyInfo reply = new ReplyInfo();
             Data.Topics db = new Data.Topics();
-            //im rc As New ReplyController
-            int ReplyId = -1;
-            string sUsername = string.Empty;
-            if (HttpContext.Current.Request.IsAuthenticated)
-            {
-                sUsername = ControlConfig.User.DisplayName;
-            }
-            else
-            {
-                sUsername = Utilities.CleanString(SiteId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, InstanceId, ThemePath, false);
-            }
+            string sUsername = (HttpContext.Current.Request.IsAuthenticated) ? ControlConfig.User.DisplayName : Utilities.CleanString(SiteId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, InstanceId, ThemePath, false);
 
-            string sBody = string.Empty;
-            //TODO: Check for allowhtml
-            bool allowHtml = false;
-            //If forumInfo.AllowHTML Then
-            //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
-            //End If
-            sBody = Utilities.CleanString(SiteId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, InstanceId, ThemePath, forumInfo.AllowEmoticons);
+            bool allowHtml = IsHtmlPermitted(forum.EditorPermittedUsers, UserIsTrusted, Permissions.HasPerm(forum.Security.ModEdit, ForumUser.UserRoles)); ;
+            string sBody = Utilities.CleanString(SiteId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forum.UseFilter, forum.AllowScript, InstanceId, ThemePath, forum.AllowEmoticons);
             DateTime createDate = DateTime.UtcNow;
-            ri.TopicId = TopicId;
-            ri.ReplyToId = TopicId;
-            ri.Content.AuthorId = UserId;
-            ri.Content.AuthorName = sUsername;
-            ri.Content.Body = sBody;
-            ri.Content.DateCreated = createDate;
-            ri.Content.DateUpdated = createDate;
-            ri.Content.IsDeleted = false;
-            ri.Content.Subject = Subject;
-            ri.Content.Summary = string.Empty;
-            ri.IsApproved = isApproved;
-            ri.IsDeleted = false;
-            ri.Content.IPAddress = HttpContext.Current.Request.UserHostAddress;
-            ReplyId = db.Reply_Save(ri);
+            reply.TopicId = TopicId;
+            reply.ReplyToId = TopicId;
+            reply.Content.AuthorId = UserId;
+            reply.Content.AuthorName = sUsername;
+            reply.Content.Body = sBody;
+            reply.Content.DateCreated = createDate;
+            reply.Content.DateUpdated = createDate;
+            reply.Content.IsDeleted = false;
+            reply.Content.Subject = Subject;
+            reply.Content.Summary = string.Empty;
+            reply.IsApproved = isApproved;
+            reply.IsDeleted = false;
+            reply.Content.IPAddress = HttpContext.Current.Request.UserHostAddress;
+            int ReplyId = db.Reply_Save(reply);
             //Check if is subscribed
             if (HttpContext.Current.Request.Params["chkSubscribe"] != null)
             {
@@ -272,25 +239,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (isApproved)
             {
-                //Send Subscriptions
-                try
-                {
-                    string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
-                    Subscriptions.SendSubscriptions(SiteId, InstanceId, PageId, ForumId, TopicId, ReplyId, UserId);
-                    Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody,ForumInfo.Security.Read, SocialGroupId);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
-                }
+                DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
                 //Redirect to show post
                 string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, PortalId, ForumId, ri.TopicId, ReplyId, ModuleId, PageId, string.Empty);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forum.ModNotifyTemplateId, PortalId, ForumId, reply.TopicId, ReplyId, ModuleId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
             }

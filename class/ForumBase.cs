@@ -423,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public Forum ForumInfo
+        public Forum forum
         {
             get 
             {
@@ -470,11 +470,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(forum.Security.Trust, ForumUser.UserRoles))
                         _canCreate = true;
 
                     // If CreatePostCount is not set, no need to go further
-                    else if (ForumInfo.CreatePostCount <= 0)
+                    else if (forum.CreatePostCount <= 0)
                         _canCreate = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
@@ -482,7 +482,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = false;
 
                     else
-                        _canCreate = ForumUser.PostCount >= ForumInfo.CreatePostCount; 
+                        _canCreate = ForumUser.PostCount >= forum.CreatePostCount; 
                 }
 
                 return _canCreate.Value;
@@ -500,11 +500,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(forum.Security.Trust, ForumUser.UserRoles))
                         _canReply = true;
 
                     // If ReplyPostCount is not set, no need to go further
-                    else if (ForumInfo.ReplyPostCount <= 0)
+                    else if (forum.ReplyPostCount <= 0)
                         _canReply = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
@@ -512,7 +512,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = false;
 
                     else
-                        _canReply = ForumUser.PostCount >= ForumInfo.ReplyPostCount;   
+                        _canReply = ForumUser.PostCount >= forum.ReplyPostCount;   
                 }
 
                 return _canReply.Value;

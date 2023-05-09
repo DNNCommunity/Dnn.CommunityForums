@@ -176,8 +176,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (ForumInfo == null)
-                ForumInfo = new ForumController().Forums_Get(PortalId, ForumModuleId, ForumId, UserId, true, false, TopicId);
+            if (forum == null)
+                forum = new ForumController().Forums_Get(PortalId, ForumModuleId, ForumId, UserId, true, false, TopicId);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -356,7 +356,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bModPin = Permissions.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
             _bModLock = Permissions.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
 
-            _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
+            _isTrusted = Utilities.IsTrusted((int)forum.DefaultTrustValue, ForumUser.TrustLevel, Permissions.HasPerm(forum.Security.Trust, ForumUser.UserRoles));
 
             _forumName = _drForum["ForumName"].ToString();
             _groupName = _drForum["GroupName"].ToString();
@@ -469,8 +469,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Handle the postinfo token if present
-            if (sOutput.Contains("[POSTINFO]") && ForumInfo.ProfileTemplateId > 0)
-                sOutput = sOutput.Replace("[POSTINFO]", DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
+            if (sOutput.Contains("[POSTINFO]") && forum.ProfileTemplateId > 0)
+                sOutput = sOutput.Replace("[POSTINFO]", DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "ProfileInfo", forum.ProfileTemplateId));
 
             // Run some basic rpleacements
             sOutput = sOutput.Replace("[PORTALID]", PortalId.ToString());
@@ -621,9 +621,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var ctlUtils = new ControlUtils();
 
-                var groupUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, string.Empty, ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
-                var forumUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
-                var topicUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, _topicURL, -1, -1, string.Empty, 1, -1, SocialGroupId);
+                var groupUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, string.Empty, forum.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
+                var forumUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
+                var topicUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, _topicURL, -1, -1, string.Empty, 1, -1, SocialGroupId);
 
                 var sCrumb = "<a href=\"" + groupUrl + "\">" + _groupName + "</a>|";
                 sCrumb += "<a href=\"" + forumUrl + "\">" + _forumName + "</a>";
@@ -700,7 +700,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     dtForums = null,
                     ForumId = ForumId,
                     EnableViewState = false,
-                    ForumInfo = ForumId > 0 ? ForumInfo : null
+                    forum = ForumId > 0 ? forum : null
                 };
 
                 if (!(plh.Controls.Contains(ctlForumJump)))
@@ -745,7 +745,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.ForumTabId = TabId;
 
                     if (ForumId > 0)
-                        ctlQuickReply.ForumInfo = ForumInfo;
+                        ctlQuickReply.forum = forum;
 
                     plh.Controls.Add(ctlQuickReply);
                 }
@@ -761,7 +761,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlTopicSort.ForumId = ForumId;
                 ctlTopicSort.DefaultSort = _defaultSort;
                 if (ForumId > 0)
-                    ctlTopicSort.ForumInfo = ForumInfo;
+                    ctlTopicSort.forum = forum;
 
                 plh.Controls.Add(ctlTopicSort);
             }
@@ -776,7 +776,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlTopicStatus.Status = _statusId;
                 ctlTopicStatus.ForumId = ForumId;
                 if (ForumId > 0)
-                    ctlTopicStatus.ForumInfo = ForumInfo;
+                    ctlTopicStatus.forum = forum;
 
                 plh.Controls.Add(ctlTopicStatus);
             }
@@ -940,27 +940,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Parent Forum Link
             if (sOutput.Contains("[PARENTFORUMLINK]"))
             {
-                if (ForumInfo.ParentForumId > 0)
+                if (forum.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
-                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ForumId + "=" + forum.ParentForumId }) + "\">" + forum.ParentForumName + "</a>");
                     else
-                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forum.ParentForumId }) + "\">" + forum.ParentForumName + "</a>");
                 }
-                else if (ForumInfo.ForumGroupId > 0)
-                    sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.GroupName + "</a>");
+                else if (forum.ForumGroupId > 0)
+                    sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + forum.GroupName + "</a>");
             }
 
             // Parent Forum Name
-            if (string.IsNullOrEmpty(ForumInfo.ParentForumName))
-                sbOutput.Replace("[PARENTFORUMNAME]", ForumInfo.ParentForumName);
+            if (string.IsNullOrEmpty(forum.ParentForumName))
+                sbOutput.Replace("[PARENTFORUMNAME]", forum.ParentForumName);
 
             // ForumLinks
 
             var ctlUtils = new ControlUtils();
-            var groupUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, string.Empty, ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
-            var forumUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
-            var topicUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, _topicURL, -1, -1, string.Empty, 1, -1, SocialGroupId);
+            var groupUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, string.Empty, forum.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
+            var forumUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
+            var topicUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, _topicURL, -1, -1, string.Empty, 1, -1, SocialGroupId);
 
             sbOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");
             sbOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + groupUrl + "\">" + _groupName + "</a>");
@@ -1669,8 +1669,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var intPages = Convert.ToInt32(Math.Ceiling(_rowCount / (double)_pageSize));
 
-            if (!(_topicURL.Contains(ForumInfo.PrefixURL)))
-                _topicURL = "/" + ForumInfo.PrefixURL + "/" + _topicURL;
+            if (!(_topicURL.Contains(forum.PrefixURL)))
+                _topicURL = "/" + forum.PrefixURL + "/" + _topicURL;
 
             var @params = new List<string>();
             if (!string.IsNullOrWhiteSpace(Request.Params[ParamKeys.Sort]))
@@ -1694,9 +1694,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         pager1.BaseURL = "/" + MainSettings.PrefixURLBase;
                     }
-                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
+                    if (!(string.IsNullOrEmpty(forum.ForumGroup.PrefixURL)))
                     {
-                        pager1.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
+                        pager1.BaseURL += "/" + forum.ForumGroup.PrefixURL;
                     }
                     pager1.BaseURL += _topicURL;
                 }
@@ -1722,9 +1722,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         pager2.BaseURL = "/" + MainSettings.PrefixURLBase;
                     }
-                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
+                    if (!(string.IsNullOrEmpty(forum.ForumGroup.PrefixURL)))
                     {
-                        pager2.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
+                        pager2.BaseURL += "/" + forum.ForumGroup.PrefixURL;
                     }
                     pager2.BaseURL += _topicURL;
                 }

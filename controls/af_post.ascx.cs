@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (oCSS != null)
                 oCSS.Controls.Add(oLink);
 
-            _fi = ForumInfo;
+            _fi = forum;
             _authorId = UserId;
             _canModEdit = Permissions.HasPerm(_fi.Security.ModEdit, ForumUser.UserRoles);
             _canModApprove = Permissions.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles);
@@ -293,9 +293,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool ValidateProperties()
         {
-            if (ForumInfo.Properties != null && ForumInfo.Properties.Count > 0)
+            if (forum.Properties != null && forum.Properties.Count > 0)
             {
-                foreach (var p in ForumInfo.Properties)
+                foreach (var p in forum.Properties)
                 {
                     if (p.IsRequired)
                     {
@@ -325,8 +325,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "preview":
                     var message = e.Parameters[1];
 
-                    var topicTemplateID = ForumInfo.TopicTemplateId;
-                    message = Utilities.CleanString(PortalId, message, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, ImagePath, ForumInfo.AllowEmoticons);
+                    var topicTemplateID = forum.TopicTemplateId;
+                    message = Utilities.CleanString(PortalId, message, _allowHTML, _editorType, forum.UseFilter, forum.AllowScript, ForumModuleId, ImagePath, forum.AllowEmoticons);
                     message = Utilities.ManageImagePath(message);
                     var uc = new UserController();
                     var up = uc.GetUser(PortalId, ForumModuleId, UserId) ?? new User
@@ -336,7 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                                                                     Profile = {TopicCount = 0, ReplyCount = 0},
                                                                                     DateCreated = DateTime.UtcNow
                                                                                 };
-                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, ForumTabId, ForumInfo, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
+                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, ForumTabId, forum, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
                     hidPreviewText.Value = message;
                     break;
             }
@@ -506,8 +506,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (MainSettings.UseSkinBreadCrumb)
             {
-                var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId.ToString()) + "\">" + ForumInfo.GroupName + "</a>|";
-                sCrumb += "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ForumId + "=" + ForumInfo.ForumID.ToString()) + "\">" + ForumInfo.ForumName + "</a>";
+                var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + forum.ForumGroupId.ToString()) + "\">" + forum.GroupName + "</a>|";
+                sCrumb += "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ForumId + "=" + forum.ForumID.ToString()) + "\">" + forum.ForumName + "</a>";
                 if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
                     template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
             }
@@ -670,8 +670,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var subject = ctlForm.Subject;
             var body = ctlForm.Body;
-            subject = Utilities.CleanString(PortalId, subject, false, EditorTypes.TEXTBOX, ForumInfo.UseFilter, false, ForumModuleId, _themePath, false);
-            body = Utilities.CleanString(PortalId, body, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, _themePath, ForumInfo.AllowEmoticons);
+            subject = Utilities.CleanString(PortalId, subject, false, EditorTypes.TEXTBOX, forum.UseFilter, false, ForumModuleId, _themePath, false);
+            body = Utilities.CleanString(PortalId, body, _allowHTML, _editorType, forum.UseFilter, forum.AllowScript, ForumModuleId, _themePath, forum.AllowEmoticons);
             var summary = ctlForm.Summary;
             int authorId;
             string authorName;
@@ -742,7 +742,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
             }
 
-            if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)))
+            if (!(string.IsNullOrEmpty(forum.PrefixURL)))
             {
                 var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
                 if (SimulateIsNumeric.IsNumeric(cleanSubject))
@@ -751,11 +751,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 var topicUrl = cleanSubject;
                 var urlPrefix = "/";
 
-                if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
-                    urlPrefix += ForumInfo.ForumGroup.PrefixURL + "/";
+                if (!(string.IsNullOrEmpty(forum.ForumGroup.PrefixURL)))
+                    urlPrefix += forum.ForumGroup.PrefixURL + "/";
 
-                if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)))
-                    urlPrefix += ForumInfo.PrefixURL + "/";
+                if (!(string.IsNullOrEmpty(forum.PrefixURL)))
+                    urlPrefix += forum.PrefixURL + "/";
 
                 var urlToCheck = urlPrefix + cleanSubject;
 
@@ -805,12 +805,12 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.StatusId = ctlForm.StatusId;
             ti.TopicIcon = ctlForm.TopicIcon;
             ti.TopicType = 0;
-            if (ForumInfo.Properties != null)
+            if (forum.Properties != null)
             {
                 var tData = new StringBuilder();
                 tData.Append("<topicdata>");
                 tData.Append("<properties>");
-                foreach (var p in ForumInfo.Properties)
+                foreach (var p in forum.Properties)
                 {
                     var pkey = "afprop-" + p.PropertyId.ToString();
 
@@ -848,7 +848,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
+            if (Permissions.HasPerm(forum.Security.Tag, ForumUser.UserRoles))
             {
                 DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumModuleId, TopicId);
                 var tagForm = string.Empty;
@@ -866,7 +866,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
+            if (Permissions.HasPerm(forum.Security.Categorize, ForumUser.UserRoles))
             {
                 if (Request.Form["amaf-catselect"] != null)
                 {
@@ -970,7 +970,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var ctlUtils = new ControlUtils();
 
-                    var sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
+                    var sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
                     
                     if (sUrl.Contains("~/"))
                         sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
@@ -980,7 +980,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body,ForumInfo.Security.Read, SocialGroupId);
+                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body,forum.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
@@ -1148,7 +1148,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var ctlUtils = new ControlUtils();
                     var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-                    var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
+                    var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     
                     if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(ForumTabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
@@ -1161,7 +1161,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.Security.Read, SocialGroupId);
+                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, forum.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {

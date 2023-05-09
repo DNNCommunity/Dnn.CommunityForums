@@ -83,8 +83,8 @@ namespace DotNetNuke.Modules.ActiveForums
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
             html = html.Replace("[AF:LINK:FORUMMAIN]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:FORUMS]</a>");
-            html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId) + "\">" + ForumInfo.GroupName + "</a>");
-            html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>");
+            html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + forum.ForumGroupId) + "\">" + forum.GroupName + "</a>");
+            html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + forum.ForumName + "</a>");
 
             html = Utilities.LocalizeControl(html);
 
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
                 ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, sTopicURL, -1, -1, string.Empty, 1, ReplyId, SocialGroupId);
+                string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, sTopicURL, -1, -1, string.Empty, 1, ReplyId, SocialGroupId);
                 string subject = Utilities.GetSharedResource("AlertSubject");
                 subject = subject.Replace("[DisplayName]", authorName);
                 subject = subject.Replace("[Subject]", sSubject);

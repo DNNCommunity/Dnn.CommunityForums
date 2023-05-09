@@ -22,10 +22,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Reflection;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.ActiveForums.API;
+using DotNetNuke.Modules.ActiveForums.DAL2;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
+using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -213,85 +220,137 @@ namespace DotNetNuke.Modules.ActiveForums
 		public ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
 		{
 			IDataReader dr = DataProvider.Instance().Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-			ReplyInfo ri = null;
+			ReplyInfo reply = null;
 			while (dr.Read())
 			{
-				ri = new ReplyInfo();
-				ri.ReplyId = Convert.ToInt32(dr["ReplyId"]);
-				ri.ReplyToId = Convert.ToInt32(dr["ReplyToId"]);
-				ri.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
-				ri.Content.AuthorName = dr["AuthorName"].ToString();
-				ri.Content.Body = dr["Body"].ToString();
-				ri.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-				ri.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
-				ri.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
-				ri.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-				ri.Content.Subject = dr["Subject"].ToString();
-				ri.Content.Summary = dr["Summary"].ToString();
-				ri.Content.IPAddress = dr["IPAddress"].ToString();
-				ri.Author.AuthorId = ri.Content.AuthorId;
-				ri.Author.DisplayName = dr["DisplayName"].ToString();
-				ri.Author.Email = dr["Email"].ToString();
-				ri.Author.FirstName = dr["FirstName"].ToString();
-				ri.Author.LastName = dr["LastName"].ToString();
-				ri.Author.Username = dr["Username"].ToString();
-				ri.ContentId = Convert.ToInt32(dr["ContentId"]);
-				ri.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
-				ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-				ri.StatusId = Convert.ToInt32(dr["StatusId"]);
-				ri.TopicId = Convert.ToInt32(dr["TopicId"]);
-				//tl.Add(ti)
+				reply = new ReplyInfo();
+				reply.ReplyId = Convert.ToInt32(dr["ReplyId"]);
+				reply.ReplyToId = Convert.ToInt32(dr["ReplyToId"]);
+				reply.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
+				reply.Content.AuthorName = dr["AuthorName"].ToString();
+				reply.Content.Body = dr["Body"].ToString();
+				reply.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
+				reply.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
+				reply.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
+				reply.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+				reply.Content.Subject = dr["Subject"].ToString();
+				reply.Content.Summary = dr["Summary"].ToString();
+				reply.Content.IPAddress = dr["IPAddress"].ToString();
+				reply.Author.AuthorId = reply.Content.AuthorId;
+				reply.Author.DisplayName = dr["DisplayName"].ToString();
+				reply.Author.Email = dr["Email"].ToString();
+				reply.Author.FirstName = dr["FirstName"].ToString();
+				reply.Author.LastName = dr["LastName"].ToString();
+				reply.Author.Username = dr["Username"].ToString();
+				reply.ContentId = Convert.ToInt32(dr["ContentId"]);
+				reply.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
+				reply.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+				reply.StatusId = Convert.ToInt32(dr["StatusId"]);
+				reply.TopicId = Convert.ToInt32(dr["TopicId"]);
 			}
 			dr.Close();
-			return ri;
-		}
-		public ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
-		{
-			SettingsInfo ms = DataCache.MainSettings(ModuleId);
-			ForumController fc = new ForumController();
-			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
-
-			ReplyController rc = new ReplyController();
-			ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-			if (reply == null)
-			{
-				return null;
-			}
-			reply.IsApproved = true;
-			rc.Reply_Save(PortalId, reply);
-			TopicsController tc = new TopicsController();
-			tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
-			TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
-
-			if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
-			{
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
-			}
-
-			Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
-
-			try
-			{
-				ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
-
-				if (fullURL.Contains("~/"))
-				{
-					fullURL = Utilities.NavigateUrl(TabId, "", new string[] {ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId});
-				}
-				if (fullURL.EndsWith("/"))
-				{
-					fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
-				}
-				Social amas = new Social();
-				amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body,fi.Security.Read, fi.SocialGroupId);
-			}
-			catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
 			return reply;
 		}
+		public ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+        {
+            ForumController fc = new ForumController();
+            Forum forum = fc.Forums_Get(ForumId, -1, false, true);
+
+            ReplyController rc = new ReplyController();
+            ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+            if (reply == null)
+            {
+                return null;
+            }
+            reply.IsApproved = true;
+            rc.Reply_Save(PortalId, reply);
+            TopicsController tc = new TopicsController();
+            tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
+            TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+
+            if (forum.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
+            {
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(forum.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
+            }
+            QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId,forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
+            return reply;
+        }
+        internal static void QueueApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        {
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Add(ProcessType.ApprovedReplyCreated, PortalId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId);
+        }
+        internal static void QueueUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        {
+            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Add(ProcessType.UnapprovedReplyCreated, PortalId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId);
+        }
+        internal static void ProcessApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+        {
+            try
+            {
+				DotNetNuke.Modules.ActiveForums.ForumController fc = new DotNetNuke.Modules.ActiveForums.ForumController();
+				DotNetNuke.Modules.ActiveForums.TopicsController tc = new DotNetNuke.Modules.ActiveForums.TopicsController();
+				DotNetNuke.Modules.ActiveForums.ReplyController rc = new DotNetNuke.Modules.ActiveForums.ReplyController();
+				Forum forum = fc.GetForum(PortalId, ModuleId, ForumId);
+				TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, ForumId);
+				ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+				Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
+
+                ControlUtils ctlUtils = new ControlUtils();
+                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, forum.SocialGroupId);
+
+                if (fullURL.Contains("~/"))
+                {
+                    fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                }
+                if (fullURL.EndsWith("/"))
+                {
+                    fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
+                }
+                Social amas = new Social();
+                amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, forum.Security.Read, forum.SocialGroupId);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+        internal static void ProcessUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+        {
+            try
+            {
+                DotNetNuke.Modules.ActiveForums.ForumController fc = new DotNetNuke.Modules.ActiveForums.ForumController();
+				DotNetNuke.Modules.ActiveForums.TopicsController tc = new DotNetNuke.Modules.ActiveForums.TopicsController(); 
+				DotNetNuke.Modules.ActiveForums.ReplyController rc = new DotNetNuke.Modules.ActiveForums.ReplyController();
+				Forum forum = fc.GetForum(PortalId, ModuleId, ForumId);
+				TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, ForumId);
+				ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
+                string subject = Utilities.GetSharedResource("NotificationSubjectReply");
+				subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
+                subject = subject.Replace("[TopicSubject]", topic.Content.Subject);
+                string body = Utilities.GetSharedResource("NotificationBodyReply");
+                body = body.Replace("[Post]", reply.Content.Body);
+                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ModuleId, ForumId, TopicId, ReplyId);
+
+                Notification notification = new Notification();
+                notification.NotificationTypeID = notificationType.NotificationTypeId;
+                notification.Subject = subject;
+                notification.Body = body;
+                notification.IncludeDismissAction = false;
+				notification.SenderUserID = reply.Content.AuthorId;
+                notification.Context = notificationKey;
+
+                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
             // signal to platform that module has updated content in order to be included in incremental search crawls

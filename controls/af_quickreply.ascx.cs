@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Modules.ActiveForums.DAL2;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -188,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
 
-                    AllowSubscribe = Permissions.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
+                    AllowSubscribe = Permissions.HasPerm(forum.Security.Subscribe, ForumUser.UserRoles);
                 }
                 else
                 {
@@ -304,7 +305,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SaveQuickReply()
         {
             SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forum))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
@@ -330,15 +331,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 ui.TrustLevel = -1;
 
             }
-            bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ui.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, ui.PostCount);
-            bool isApproved = false;
-            isApproved = Convert.ToBoolean(((ForumInfo.IsModerated == true) ? false : true));
-            if (UserIsTrusted || Permissions.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles))
+            bool UserIsTrusted = Utilities.IsTrusted((int)forum.DefaultTrustValue, ui.TrustLevel, Permissions.HasPerm(forum.Security.Trust, ForumUser.UserRoles), forum.AutoTrustLevel, ui.PostCount);
+            bool isApproved = Convert.ToBoolean(((forum.IsModerated == true) ? false : true));
+            if (UserIsTrusted || Permissions.HasPerm(forum.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
-            ReplyInfo ri = new ReplyInfo();
+            ReplyInfo reply = new ReplyInfo();
             ReplyController rc = new ReplyController();
             int ReplyId = -1;
             string sUsername = string.Empty;
@@ -379,24 +378,24 @@ namespace DotNetNuke.Modules.ActiveForums
             string sBody = string.Empty;
             if (AllowHTML)
             {
-                AllowHTML = IsHtmlPermitted(ForumInfo.EditorPermittedUsers, IsTrusted, Permissions.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles));
+                AllowHTML = IsHtmlPermitted(forum.EditorPermittedUsers, IsTrusted, Permissions.HasPerm(forum.Security.ModEdit, ForumUser.UserRoles));
             }
-            sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, ForumInfo.AllowEmoticons);
+            sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, forum.AllowEmoticons);
             DateTime createDate = DateTime.UtcNow;
-            ri.TopicId = TopicId;
-            ri.ReplyToId = TopicId;
-            ri.Content.AuthorId = UserId;
-            ri.Content.AuthorName = sUsername;
-            ri.Content.Body = sBody;
-            ri.Content.DateCreated = createDate;
-            ri.Content.DateUpdated = createDate;
-            ri.Content.IsDeleted = false;
-            ri.Content.Subject = Subject;
-            ri.Content.Summary = string.Empty;
-            ri.IsApproved = isApproved;
-            ri.IsDeleted = false;
-            ri.Content.IPAddress = Request.UserHostAddress;
-            ReplyId = rc.Reply_Save(PortalId, ri);
+            reply.TopicId = TopicId;
+            reply.ReplyToId = TopicId;
+            reply.Content.AuthorId = UserId;
+            reply.Content.AuthorName = sUsername;
+            reply.Content.Body = sBody;
+            reply.Content.DateCreated = createDate;
+            reply.Content.DateUpdated = createDate;
+            reply.Content.IsDeleted = false;
+            reply.Content.Subject = Subject;
+            reply.Content.Summary = string.Empty;
+            reply.IsApproved = isApproved;
+            reply.IsDeleted = false;
+            reply.Content.IPAddress = Request.UserHostAddress;
+            ReplyId = rc.Reply_Save(PortalId, reply);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             //Check if is subscribed
             string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
@@ -423,7 +422,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ControlUtils ctlUtils = new ControlUtils();
             TopicsController tc = new TopicsController();
             TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-            string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
+            string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
 
             if (fullURL.Contains("~/"))
             {
@@ -435,51 +434,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (isApproved)
             {
-
-                //Send Subscriptions
-
-                try
-                {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId);
-                    try
-                    {
-                        Social amas = new Social();
-                        amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
-                }
-                //Redirect to show post
-
+                DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
                 Response.Redirect(fullURL, false);
             }
-            else if (isApproved == false)
+            else 
             {
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
-                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-                string subject = Utilities.GetSharedResource("NotificationSubjectReply");
-                subject = subject.Replace("[DisplayName]", UserInfo.DisplayName);
-                subject = subject.Replace("[TopicSubject]", ti.Content.Subject);
-                string body = Utilities.GetSharedResource("NotificationBodyReply");
-                body = body.Replace("[Post]", sBody);
-                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);
-
-                Notification notification = new Notification();
-                notification.NotificationTypeID = notificationType.NotificationTypeId;
-                notification.Subject = subject;
-                notification.Body = body;
-                notification.IncludeDismissAction = false;
-                notification.SenderUserID = UserInfo.UserID;
-                notification.Context = notificationKey;
-
-                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
-
+                DotNetNuke.Modules.ActiveForums.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
                 var @params = new List<string> { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 if (SocialGroupId > 0)
                 {
@@ -487,28 +447,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 Response.Redirect(Utilities.NavigateUrl(TabId, "", @params.ToArray()), false);
             }
-            else
-            {
-                //Dim fullURL As String = Utilities.NavigateUrl(TabId, "", New String() {ParamKeys.ForumId & "=" & ForumId, ParamKeys.ViewType & "=" & Views.Topic, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ContentJumpId & "=" & ReplyId})
-                //If MainSettings.UseShortUrls Then
-                //    fullURL = Utilities.NavigateUrl(TabId, "", New String() {ParamKeys.TopicId & "=" & TopicId, ParamKeys.ContentJumpId & "=" & ReplyId})
-                //End If
-
-                try
-                {
-                    Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-                Response.Redirect(fullURL, false);
-            }
-
-            //End If
-
-
         }
 
 

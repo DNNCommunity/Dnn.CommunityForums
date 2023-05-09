@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.ModuleConfiguration = modInfo;
                         objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/classic.ascx");
                         objModule.ForumModuleId = ForumModuleId; //CType(Settings["AFForumModuleID"], Integer)
-                        objModule.ForumInfo = fi;
+                        objModule.forum = fi;
                         objModule.ForumId = ForumId;
                         objModule.ForumGroupId = ForumGroupId;
                         objModule.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
