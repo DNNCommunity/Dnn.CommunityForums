@@ -730,9 +730,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Subscriptions]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Tags]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Tags]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Templates]
 GO
@@ -744,6 +741,9 @@ DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Tags]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Tags]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]
@@ -958,20 +958,8 @@ GO
 
 /* begin 08.01.00 */
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Add') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Add
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_List') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_List
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_MailQueue_Delete') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_MailQueue_Delete
-GO
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_MailQueue]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_MailQueue]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
 GO
 
 /* end 08.01.00 */

@@ -30,17 +30,17 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
         { return DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(this); }
     }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
-    public class Controller : DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController
+    public class Controller : DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue.Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
         public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue.Add(int portalId, int moduleId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC).")]
         public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Add(-1, -1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
         }
     }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]

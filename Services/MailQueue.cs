@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.MailQueue
             var intQueueCount = 0;
             try
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.GetBatch().ForEach(m =>
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.GetBatch().ForEach(m =>
                 {
                     intQueueCount += 1;
                     var message = new DotNetNuke.Modules.ActiveForums.Entities.Message
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.MailQueue
                     {
                         try
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.MailQueueController.Delete(m.Id);
+                            DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Delete(m.Id);
                         }
                         catch (Exception ex)
                         {

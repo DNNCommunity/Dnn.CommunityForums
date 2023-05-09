@@ -23,10 +23,9 @@ using System;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    [TableName("activeforums_MailQueue")]
+    [TableName("activeforums_EmailNotificationQueue")]
     [PrimaryKey("Id", AutoIncrement = true)] 
-    [Cacheable("activeforums_MailQueue", CacheItemPriority.Normal)]
-    public class MailQueue
+    public class EmailNotificationQueue
     {
         public int Id { get; set; }
         public int PortalId { get; set; }
