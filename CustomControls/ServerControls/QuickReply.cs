@@ -205,10 +205,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             ReplyInfo reply = new ReplyInfo();
             Data.Topics db = new Data.Topics();
-            string sUsername = (HttpContext.Current.Request.IsAuthenticated) ? ControlConfig.User.DisplayName : Utilities.CleanString(SiteId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, InstanceId, ThemePath, false);
-
-            bool allowHtml = IsHtmlPermitted(forum.EditorPermittedUsers, UserIsTrusted, Permissions.HasPerm(forum.Security.ModEdit, ForumUser.UserRoles)); ;
-            string sBody = Utilities.CleanString(SiteId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forum.UseFilter, forum.AllowScript, InstanceId, ThemePath, forum.AllowEmoticons);
+            bool allowHtml = IsHtmlPermitted(forum.EditorPermittedUsers, UserIsTrusted, Permissions.HasPerm(forum.Security.ModEdit, ForumUser.UserRoles));
+            string sUsername = Utilities.CleanString(PortalId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, ForumModuleId, ThemePath, false);
+            string sBody = Utilities.CleanString(PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forum.UseFilter, forum.AllowScript, ModuleId, ThemePath, forum.AllowEmoticons);
             DateTime createDate = DateTime.UtcNow;
             reply.TopicId = TopicId;
             reply.ReplyToId = TopicId;
