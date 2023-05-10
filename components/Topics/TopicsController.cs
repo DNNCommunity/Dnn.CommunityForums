@@ -464,11 +464,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
 					}
 					else
-					{
-						//NOTE: indexer is called from scheduler and has no httpcontext, so must load and pass portalSettings
-						PortalSettings portalSettings = new PortalSettings(moduleInfo.PortalID);
-						PortalSettingsController psc = new Entities.Portals.PortalSettingsController();
-						psc.LoadPortalSettings(portalSettings);
+                    {
+                        PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 						string[] additionalParameters;
 						try
                         {

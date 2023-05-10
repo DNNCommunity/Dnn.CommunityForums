@@ -23,6 +23,7 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -30,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public static string GetAvatar(int userID, int avatarWidth, int avatarHeight)
         {
-            var portalSettings = HttpContext.Current.Items["PortalSettings"] as PortalSettings;
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
             if (portalSettings == null)
                 return string.Empty;
@@ -58,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
         {
-            var portalSettings = HttpContext.Current.Items["PortalSettings"] as PortalSettings;
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             if (portalSettings == null)
                 return null;
 
