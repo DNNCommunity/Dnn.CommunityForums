@@ -695,7 +695,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string @out;
             try
             {
-                var myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
+                var myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/DesktopModules/ActiveForums/config/templates/Filters.txt");
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;

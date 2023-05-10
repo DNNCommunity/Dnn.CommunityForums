@@ -531,7 +531,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 object sToolbar = DataCache.CacheRetrieve("aftb" + ModuleId);
                 if (sToolbar == null)
                 {
-                    sToolbar = Utilities.GetFileContent(DotNetNuke.Modules.ActiveForums.Utilities.MapPath(MainSettings.TemplatesLocation + "\\ToolBar.txt"));
+                    sToolbar = Utilities.GetFileContent(DotNetNuke.Modules.ActiveForums.Utilities.MapPath(SettingKeys.TemplatePath + "\\ToolBar.txt"));
                     sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                     DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                 }

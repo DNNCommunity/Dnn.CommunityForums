@@ -161,17 +161,17 @@ namespace DotNetNuke.Modules.ActiveForums
             return u;
         }
         // KR - added caching to profiles to skip the DB hit
-        public UserProfileInfo Profiles_Get(int SiteId, int InstanceId, int UserId)
+        public UserProfileInfo Profiles_Get(int PortalId, int InstanceId, int UserId)
         {
 
-            string cachekey = string.Format("AF-prof-{0}-{1}-{2}", UserId, SiteId, InstanceId);
+            string cachekey = string.Format("AF-prof-{0}-{1}-{2}", UserId, PortalId, InstanceId);
             DataTable dt = null;
             UserProfileInfo upi = null;
             Data.Profiles db = new Data.Profiles();
             PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             if (PortalId == -1)
             {
-                SiteId = _portalSettings.PortalId;
+                PortalId = _portalSettings.PortalId;
             }
 
             // see if it's in cache already
@@ -183,14 +183,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(SiteId, -1, UserId));
+                dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(PortalId, -1, UserId));
                 DataCache.CacheStore(cachekey, dt);
             }
 
             foreach (DataRow row in dt.Rows)
             {
                 upi = new UserProfileInfo();
-                upi.PortalId = SiteId;
+                upi.PortalId = PortalId;
                 upi.UserID = UserId;
                 upi.ModuleId = -1;
                 upi.AdminWatch = bool.Parse(row["AdminWatch"].ToString());

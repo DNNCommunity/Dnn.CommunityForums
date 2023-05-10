@@ -80,6 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception ex)
 			{
+				Exceptions.LogException(ex);
 				return null;
 			}
 		}
