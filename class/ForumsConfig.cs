@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumsConfig
 	{
-		public string sPath = HttpContext.Current.Server.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
+		public string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
 		public bool ForumsInit(int PortalId, int ModuleId)
 		{
 			try
@@ -295,7 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		private string GetFileContent(string FilePath)
 		{
-			string sPath = HttpContext.Current.Server.MapPath(FilePath);
+			string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(FilePath);
 			string sContents = string.Empty;
 			System.IO.StreamReader objStreamReader;
 			if (System.IO.File.Exists(sPath))
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		internal void ArchiveOrphanedAttachments()
         {
-            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
+            var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
             System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
 
             foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)

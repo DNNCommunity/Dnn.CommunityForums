@@ -386,7 +386,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			{
 				view = Params["view"].ToString().ToLowerInvariant();
 			}
-            string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath);
+            string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.ModulePath);
             string sFile = string.Empty;
 			switch (view)
 			{
@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			sFile = sFile.Replace("[AF:CONTROLS:SELECTEMAILTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.Email));
 			sFile = sFile.Replace("[AF:CONTROLS:SELECTMODEMAILTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.ModEmail));
 			sFile = sFile.Replace("[AF:CONTROLS:GROUPFORUMS]", cpControls.ForumGroupOptions());
-			sFile = sFile.Replace("[AF:CONTROLS:SECGRID:ROLES]", cpControls.BindRolesForSecurityGrid(HttpContext.Current.Server.MapPath("~/")));
+			sFile = sFile.Replace("[AF:CONTROLS:SECGRID:ROLES]", cpControls.BindRolesForSecurityGrid(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/")));
 
 			sFile = Utilities.LocalizeControl(sFile, true);
 			return sFile;

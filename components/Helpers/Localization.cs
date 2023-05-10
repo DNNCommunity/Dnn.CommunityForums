@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				resourcefilename = resourcefilename.Substring(0, resourcefilename.Length - 5) + "." + "Portal-" + PortalId.ToString() + ".resx";
 			}
 
-			return HttpContext.Current.Server.MapPath(resourcefilename);
+			return DotNetNuke.Modules.ActiveForums.Utilities.MapPath(resourcefilename);
 
 		}
 
