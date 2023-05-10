@@ -168,8 +168,8 @@ namespace DotNetNuke.Modules.ActiveForums
             DataTable dt = null;
             UserProfileInfo upi = null;
             Data.Profiles db = new Data.Profiles();
-            PortalSettings _portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-            if (SiteId == -1)
+            PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            if (PortalId == -1)
             {
                 SiteId = _portalSettings.PortalId;
             }
@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
         {
-            PortalSettings _portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             User u = new User
             {
                 UserId = dnnUser.UserID,
