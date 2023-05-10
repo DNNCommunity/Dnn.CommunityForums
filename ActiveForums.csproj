@@ -657,6 +657,7 @@
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\08.01.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
@@ -753,6 +754,7 @@
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\EmailNotificationQueueController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\ProcessQueueController.cs" />
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -773,12 +775,12 @@
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\Email.cs" />
     <Compile Include="Entities\EmailNotificationQueue.cs" />
+    <Compile Include="Entities\ProcessType.cs" />
+    <Compile Include="Entities\ProcessQueue.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Services\MailQueue.cs" />
-    <Compile Include="Services\Controllers\LikeController.cs" />
-    <Compile Include="Services\Controllers\UserController.cs" />
     <Compile Include="Services\ProcessQueue.cs" />
     <Compile Include="Services\EmailNotificationQueue.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />

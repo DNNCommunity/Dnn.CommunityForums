@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
             var intQueueCount = 0;
             try
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.GetBatch().ForEach(i =>
+                DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.GetBatch().ForEach(item =>
                 {
                     intQueueCount += 1;
                     bool completed = false;
                     switch (item.ProcessType)
-                    {
+                    { 
                         case ProcessType.ApprovedTopicCreated:
                             DotNetNuke.Modules.ActiveForums.TopicsController.ProcessApprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
                             completed = true;
@@ -87,9 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                     {
                         try
                         {
-                            i.Processed = true;
-                            i.DateProcessed = DateTime.UtcNow;
-                            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Update(i);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Delete(item.Id);
                         }
                         catch (Exception ex)
                         {

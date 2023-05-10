@@ -15,14 +15,12 @@ CREATE TABLE {databaseOwner}{objectQualifier}activeforums_ProcessQueue (
 	[TopicId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_TopicId] DEFAULT(-1), 
 	[ReplyId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_ReplyId] DEFAULT(-1), 
 	[AuthorId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_AuthorId] DEFAULT(-1), 
-	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_DateCreated] DEFAULT(GETUTCDATE())  
+	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_DateCreated] DEFAULT(GETUTCDATE())  ,
     CONSTRAINT [PK_{objectQualifier}activeforums_ProcessQueue] PRIMARY KEY CLUSTERED 
 	(
 	[Id] ASC
 	) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ,
-	CONSTRAINT [FK_{objectQualifier}activeforums_ProcessQueue_Modules] FOREIGN KEY (ModuleId) REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) ON DELETE CASCADE ,
-	CONSTRAINT [FK_{objectQualifier}activeforums_ProcessQueue_Forums] FOREIGN KEY (ForumId) REFERENCES {databaseOwner}[{objectQualifier}activeforums_Forums] (ForumId) ON DELETE CASCADE ,
-	CONSTRAINT [FK_{objectQualifier}activeforums_ProcessQueue_Topics] FOREIGN KEY (TopicId) REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (ForumId) ON DELETE CASCADE ,
+	CONSTRAINT [FK_{objectQualifier}activeforums_ProcessQueue_Modules] FOREIGN KEY (ModuleId) REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) ON DELETE CASCADE , 
 ) 
 GO
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ProcessQueue') AND name = N'IX_{objectQualifier}activeforums_ProcessQueue_DateCreated')
@@ -35,12 +33,11 @@ GO
 /* create scheduler entries for mail queue and process queue; remove existing queue */
 
 IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler,DotNetNuke.Modules.ActiveForums')
-	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,
-	ObjectDependencies,FriendlyName,Servers)
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,FriendlyName,Servers)
 	VALUES('DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler,DotNetNuke.Modules.ActiveForums',1,'m',1,'m',5,'',0,1,'',N'DNN Community Forums Email Notification Queue',NULL)
 GO
 IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler,DotNetNuke.Modules.ActiveForums')
-	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,Servers)
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,FriendlyName,Servers)
 	VALUES('DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler,DotNetNuke.Modules.ActiveForums',1,'m',1,'m',5,'',0,1,'',N'DNN Community Forums Process Queue',NULL)
 GO
 

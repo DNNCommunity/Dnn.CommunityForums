@@ -1,4 +1,6 @@
-﻿IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]') AND type in (N'P', N'PC'))
+﻿SET NOCOUNT ON
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_ManageFullText]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topic_GetPrevNext]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
@@ -974,5 +976,6 @@ GO
 IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums'
 GO
+/* end 08.01.00 */ 
 
-/* end 08.02.00 */ 
+/* end 08.01.00 */
