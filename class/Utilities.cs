@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sPath = filePath;
 
             if (!(sPath.Contains(@"\\")) && !(sPath.Contains(@":\")))
-                sPath = HttpContext.Current.Server.MapPath(filePath);
+                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(filePath);
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -676,7 +676,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string @out;
             try
             {
-                var myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
+                var myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;
@@ -920,13 +920,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return name.Length > 0 ? name : currentName;
         }
-
         internal static bool IsRewriteLoaded()
         {
             try
             {
                 /* handle situations where this code is called without an HttpContext */
-                var sConfig = GetFile((HttpContext.Current != null) ? HttpContext.Current.Server.MapPath("~/web.config") : System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
+                var sConfig = GetFile((HttpContext.Current != null) ? DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/web.config") : System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
                 return sConfig.Contains("DotNetNuke.Modules.ActiveForums.ForumsReWriter");
             }
             catch (Exception ex)
@@ -961,6 +960,19 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sContents;
         }
+        internal static string MapPath(string path)
+        {
+            try
+            {
+                /* handle situations where method is called without an HttpContext */
+                return (HttpContext.Current != null) ? HttpContext.Current.Server.MapPath(path) : System.Web.Hosting.HostingEnvironment.MapPath(path);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return path;
+            }
+        }
 
         public static string ManageImagePath(string sHTML)
         {
@@ -993,7 +1005,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
-                sPath = HttpContext.Current.Server.MapPath(sPath);
+                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
 
             var sContents = string.Empty;
             if (File.Exists(sPath))

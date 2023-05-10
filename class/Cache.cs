@@ -208,9 +208,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(string.Concat(Globals.ModulePath, "cache"))))
+				if (System.IO.Directory.Exists(DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "cache"))))
 				{
-					var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(string.Concat(Globals.ModulePath, "cache")));
+					var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "cache")));
 					foreach (System.IO.FileInfo fi in di.GetFiles())
 					{
 						if ((fi.FullName.IndexOf(string.Concat(ModuleId, "_"), 0) + 1) > 0)
@@ -357,7 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-						myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
+						myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 						if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -446,7 +446,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-					    string myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
+					    string myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 					    if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -495,7 +495,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				try
 				{
-					myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateFileName);
+					myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + TemplateFileName);
 					if (System.IO.File.Exists(myFile))
 					{
 						System.IO.StreamReader objStreamReader = null;
