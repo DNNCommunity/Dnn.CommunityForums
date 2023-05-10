@@ -36,6 +36,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
 using System.Web.UI;
+using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -272,7 +273,25 @@ namespace DotNetNuke.Modules.ActiveForums
             var nfi = new CultureInfo("en-US", false).DateTimeFormat;
             return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
         }
-
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings()
+        {
+            try
+            {
+                if (HttpContext.Current.Items["PortalSettings"] != null)
+                {
+                    return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                }
+                else
+                {
+                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex); 
+                return null; 
+            }
+        }
         public static string GetHost()
         {
             string strHost;
@@ -319,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             pageName = CleanStringForUrl(pageName);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;

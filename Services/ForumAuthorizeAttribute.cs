@@ -103,9 +103,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 else
                 {
                     ModuleInfo moduleInfo = context.ActionContext.Request.FindModuleInfo();
-                    PortalSettings portal = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
+                    PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                     UserInfo userInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().UserInfo;
-                    return ServicesHelper.IsAuthorized(portal.PortalId, moduleInfo.ModuleID, forumId, PermissionNeeded, userInfo);
+                    return ServicesHelper.IsAuthorized(portalSettings.PortalId, moduleInfo.ModuleID, forumId, PermissionNeeded, userInfo);
                 }
             }
             return false;

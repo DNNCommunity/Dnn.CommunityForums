@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (!_bRead)
             {
-                DotNetNuke.Entities.Portals.PortalSettings PortalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                DotNetNuke.Entities.Portals.PortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                 if (PortalSettings.LoginTabId > 0)
                     Response.Redirect(Common.Globals.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl), true);
                 else
@@ -570,7 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", _forumName);
                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", _groupName);
 
-                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                 string pageName = (settings.ActiveTab.Title.Length == 0)
 
                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)

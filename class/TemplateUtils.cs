@@ -30,6 +30,8 @@ using Microsoft.ApplicationBlocks.Data;
 using System.Data;
 using System.Collections.Generic;
 using System.Globalization;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -147,8 +149,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-            var ms = DataCache.MainSettings(moduleID);
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            var ms = SettingsBase.GetModuleSettings(moduleID);
             var sOut = template;
 
             // If we have a template name, load the template into sOut
