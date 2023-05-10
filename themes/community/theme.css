@@ -182,7 +182,7 @@
         margin-bottom: 0
     }
 
-    .activeForums .af-crumb {
+    .activeForums .af-crumb { 
         line-height: 2.5em
     }
 
@@ -219,6 +219,7 @@
 
         .activeForums .af-topic-item .af-topic .af-topic-content-top,
         .activeForums .af-topic-item .af-topic .body {
+            padding: 1em;
             border-bottom: solid 2px #e5edf0
         }
 
@@ -418,7 +419,6 @@
 
 .activeForums .fa {
     font-size: 1.1em;
-    padding: 1em;
 }
 
 .afcontainer {
@@ -699,10 +699,12 @@
 
 .activeForums .af-topic .fa-thumbs-up {
     color: #4d4d4d;
+    padding: 1em;
 }
 
 .activeForums .af-topic .fa-thumbs-o-up {
     color: #409bbf;
+    padding: 1em;
 }
 
 .activeForums .af-crumb {
