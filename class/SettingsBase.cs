@@ -448,6 +448,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Utilities.NavigateUrl(TabId, ControlKey, AdditionalParameters);
         }
+        public string NavigateUrl(int TabId, int PortalId, string ControlKey, params string[] AdditionalParameters)
+        {
+            return Utilities.NavigateUrl(TabId, PortalId, ControlKey, AdditionalParameters);
+        }
         private string[] AddParams(string param, string[] currParams)
         {
             var tmpParams = new[] { param };

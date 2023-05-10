@@ -421,19 +421,19 @@ namespace DotNetNuke.Modules.ActiveForums
             ControlUtils ctlUtils = new ControlUtils();
             TopicsController tc = new TopicsController();
             TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-            string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
-
-            if (fullURL.Contains("~/"))
-            {
-                fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
-            }
-            if (fullURL.EndsWith("/"))
-            {
-                fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
-            }
+            
             if (isApproved)
             {
                 DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
+                string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
+                if (fullURL.Contains("~/"))
+                {
+                    fullURL = Utilities.NavigateUrl(TabId,PortalId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                }
+                if (fullURL.EndsWith("/"))
+                {
+                    fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
+                }
                 Response.Redirect(fullURL, false);
             }
             else 
@@ -444,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     @params.Add("GroupId=" + SocialGroupId);
                 }
-                Response.Redirect(Utilities.NavigateUrl(TabId, "", @params.ToArray()), false);
+                Response.Redirect(Utilities.NavigateUrl(TabId,PortalId, "", @params.ToArray()), false);
             }
         }
 

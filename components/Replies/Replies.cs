@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                    fullURL = Utilities.NavigateUrl(TabId, PortalId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 }
                 if (fullURL.EndsWith("/"))
                 {

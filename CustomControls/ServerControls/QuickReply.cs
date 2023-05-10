@@ -240,14 +240,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
                 //Redirect to show post
-                string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                string fullURL = Utilities.NavigateUrl(PageId,PortalId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forum.ModNotifyTemplateId, PortalId, ForumId, reply.TopicId, ReplyId, ModuleId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
-                HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
+                HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId,PortalId, "", Params), false);
             }
         }
         private string ParseTemplate()

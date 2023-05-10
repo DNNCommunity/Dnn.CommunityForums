@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, 0, topic.Content.AuthorId);
 
                 ControlUtils ctlUtils = new ControlUtils();
-                string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
+                string sUrl = ctlUtils.BuildUrl(TabId,  ModuleId, forum.ForumGroup.PrefixURL, forum.PrefixURL, forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, forum.SocialGroupId);
 
                 Social amas = new Social();
                 amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, forum.Security.Read, forum.SocialGroupId);

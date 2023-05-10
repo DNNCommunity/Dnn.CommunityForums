@@ -20,7 +20,7 @@
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Services.Scheduling;
-namespace DotNetNuke.Modules.ActiveForums.Services.MailQueue
+namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
 {
     public class Scheduler : DotNetNuke.Services.Scheduling.SchedulerClient
     {

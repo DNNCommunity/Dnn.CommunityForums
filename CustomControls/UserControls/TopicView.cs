@@ -214,9 +214,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var firstUnreadPost = DataProvider.Instance().Utility_GetFirstUnRead(TopicId, Convert.ToInt32(Request.Params[ParamKeys.FirstNewPost]));
                     if (firstUnreadPost > lastPostRead)
                     {
-                        var tURL = Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=topic", ParamKeys.ContentJumpId + "=" + firstUnreadPost });
+                        var tURL = Utilities.NavigateUrl(TabId,PortalId, "", new[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=topic", ParamKeys.ContentJumpId + "=" + firstUnreadPost });
                         if (MainSettings.UseShortUrls)
-                            tURL = Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + firstUnreadPost });
+                            tURL = Utilities.NavigateUrl(TabId,PortalId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + firstUnreadPost });
 
                         Response.Redirect(tURL);
                     }

@@ -273,11 +273,38 @@ namespace DotNetNuke.Modules.ActiveForums
             var nfi = new CultureInfo("en-US", false).DateTimeFormat;
             return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
         }
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId)
+        {
+            try
+            {
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
+                {
+                    portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                    if (portalSettings.PortalId != portalId)
+                    {
+                        portalSettings = null;
+                    }
+                }
+                if (portalSettings == null)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                    PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
+                    psc.LoadPortalSettings(portalSettings);
+                }
+                return portalSettings;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return null;
+            }
+        }
         public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings()
         {
             try
             {
-                if (HttpContext.Current.Items["PortalSettings"] != null)
+                if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
                 {
                     return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
                 }
@@ -288,8 +315,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex); 
-                return null; 
+                Exceptions.LogException(ex);
+                return null;
             }
         }
         public static string GetHost()
@@ -311,6 +338,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return Common.Globals.NavigateURL(tabId);
         }
 
+        public static string NavigateUrl(int tabId, int portalId, string controlKey, params string[] additionalParameters)
+        {
+            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
+        }
         public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
         {
             return NavigateUrl(tabId, controlKey, string.Empty, -1, additionalParameters);
@@ -330,7 +361,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-            var s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
+            var s = Common.Globals.NavigateURL(tabId, portalSettings, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
 
@@ -338,7 +370,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             pageName = CleanStringForUrl(pageName);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;

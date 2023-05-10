@@ -662,7 +662,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (p.Count <= 0) 
                 return;
             
-            var sURL = Utilities.NavigateUrl(TabId, string.Empty, p.ToArray());
+            var sURL = Utilities.NavigateUrl(TabId,PortalId, string.Empty, p.ToArray());
             if (string.IsNullOrEmpty(sURL))
                 return;
 
