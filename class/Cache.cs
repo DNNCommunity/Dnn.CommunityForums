@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-						myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat("~/DesktopModules/ActiveForums/config/templates/" , TemplateType, ".txt"));
+						myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 						if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -440,7 +440,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-					    string myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat("~/DesktopModules/ActiveForums/config/templates/", TemplateType, ".txt"));
+					    string myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 					    if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				try
 				{
-					myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateFileName);
+					myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateFileName));
 					if (System.IO.File.Exists(myFile))
 					{
 						System.IO.StreamReader objStreamReader = null;

@@ -1,4 +1,4 @@
-﻿/* implement new mail queue */
+/* implement new mail queue */
 SET NOCOUNT ON
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]') AND type in (N'U'))

@@ -21,25 +21,13 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Modules.ActiveForums;
 using System;
 using System.Web.Caching;
-namespace DotNetNuke.Modules.ActiveForums.Entities
-{
-    [TableName("activeforums_ProcessQueue")]
-    [PrimaryKey("Id", AutoIncrement = true)] 
-    [Cacheable("activeforums_ProcessQueue", CacheItemPriority.Normal)]
-    public class ProcessQueue
-    {
-        public int Id { get; set; }
-        public int PortalId { get; set; }
-        public int ModuleId { get; set; }
-        public DotNetNuke.Modules.ActiveForums.Entities.ProcessType ProcessType { get; set; }
-        public int ForumGroupId { get; set; }
-        public int ForumId { get; set; }
-        public int TopicId { get; set; }
-        public int TabId { get; set; }
-        public int ReplyId { get; set; }
-        public int AuthorId { get; set; }
-        public bool Processed { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateProcessed { get; set; }
+namespace DotNetNuke.Modules.ActiveForums.Entities { 
+    public enum ProcessType
+    { 
+        ApprovedTopicCreated = 1,
+        UnapprovedTopicCreated = 2,
+        ApprovedReplyCreated = 3,
+        UnapprovedReplyCreated = 4,
+
     }
 }
