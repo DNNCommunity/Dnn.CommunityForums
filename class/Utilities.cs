@@ -361,19 +361,18 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
-            var s = Common.Globals.NavigateURL(tabId, portalSettings, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
-                return s;
+                return Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray()); ;
 
             var tc = new TabController();
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
             pageName = CleanStringForUrl(pageName);
-            s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
-            return s;
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
+            return Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
         }
+
 
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue)
         {
