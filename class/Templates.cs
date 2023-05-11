@@ -270,7 +270,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
 		{
-            SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
             try
             {
 				var tl = new List<TemplateInfo>();
