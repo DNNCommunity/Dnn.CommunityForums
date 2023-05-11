@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TopicId { get; set; }
         public int TabId { get; set; }
         public int ReplyId { get; set; }
-        public int AuthorId { get; set; } 
-        public DateTime DateCreated { get; set; } 
+        public int AuthorId { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
     }
 }
