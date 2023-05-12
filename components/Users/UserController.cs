@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UserProfileInfo upi = null;
             Data.Profiles db = new Data.Profiles();
             PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            if (PortalId == -1)
+            if (SiteId == -1)
             {
                 SiteId = _portalSettings.PortalId;
             }

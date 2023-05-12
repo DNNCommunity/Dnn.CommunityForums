@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var ctlUtils = new ControlUtils();
 
-            if (HttpContext.Current.Request.IsAuthenticated)
+            if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
             {
                 template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-file fa-fw fa-grey\"></i>&nbsp;[RESX:NotRead]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
                 template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-files-o fa-fw fa-grey\"></i>&nbsp;[RESX:MyTopics]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                if (HttpContext.Current.Items["PortalSettings"] != null)
+                if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
                 {
                     return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
                 }
@@ -292,7 +292,34 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null; 
             }
         }
-        public static string GetHost()
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId)
+        {
+            try
+            {
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
+                {
+                    portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                    if (portalSettings.PortalId != portalId)
+                    {
+                        portalSettings = null;
+                    }
+                }
+                if (portalSettings == null)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                    PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
+                    psc.LoadPortalSettings(portalSettings);
+                }
+                return portalSettings;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return null;
+            }
+        }
+       public static string GetHost()
         {
             string strHost;
             if (HttpContext.Current.Request.IsSecureConnection)
@@ -311,14 +338,17 @@ namespace DotNetNuke.Modules.ActiveForums
             return Common.Globals.NavigateURL(tabId);
         }
 
+        public static string NavigateUrl(int tabId, int portalId, string controlKey, params string[] additionalParameters)
+        {
+            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
+        }
         public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
         {
-            return NavigateUrl(tabId, controlKey, string.Empty, -1, additionalParameters);
+            int portalId = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, DotNetNuke.Common.Utilities.Null.NullInteger).PortalID;
+            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
         }
-
         public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
         {
-
             string[] parameters = new string[additionalParameters.Count];
             for (int i = 0; i < additionalParameters.Count; i++)
             {
@@ -329,8 +359,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
-            var currParams = additionalParameters.ToList();
-            var s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
+            var currParams = additionalParameters.ToList(); 
+            string s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
 
@@ -338,8 +368,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             pageName = CleanStringForUrl(pageName);
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
@@ -993,27 +1023,36 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+
+
+
+
+        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. ManageImagePath(string sHTML, Uri hostUri)")]
         public static string ManageImagePath(string sHTML)
         {
-            var strHost = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host);
-            return ManageImagePath(sHTML, strHost);
+            return ManageImagePath(sHTML, HttpContext.Current.Request.Url);
         }
-
-        public static string ManageImagePath(string sHTML, string hostURL)
+        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. ManageImagePath(string sHTML, Uri hostUri)")]
+        public static string ManageImagePath(string sHTML, string hostWithScheme)
         {
-            var strHost = hostURL.ToLower();
+            return ManageImagePath(sHTML, new Uri(hostWithScheme));
+        }
+        
+        public static string ManageImagePath(string sHTML, Uri hostUri)
+        {
+            string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
 
             var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
             while (iStart != -1)
             {
-                sHTML = sHTML.Insert(iStart + 5, strHost);
+                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
                 iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
             }
 
             iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
             while (iStart != -1)
             {
-                sHTML = sHTML.Insert(iStart + 5, strHost);
+                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
                 iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
             }
 
