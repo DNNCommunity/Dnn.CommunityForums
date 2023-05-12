@@ -54,3 +54,14 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Queue]
 GO
+
+/* remove old scheduler */
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler,DotNetNuke.Modules.ActiveForums')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler,DotNetNuke.Modules.ActiveForums'
+GO
+
+/* create scheduler */
+IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.EmailNotificationQueue.Scheduler,DotNetNuke.Modules.ActiveForums')
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,Servers,FriendlyName)
+	VALUES('DotNetNuke.Modules.ActiveForums.EmailNotificationQueue.Scheduler,DotNetNuke.Modules.ActiveForums',1,'m',1,'m',5,'',0,1,'','','DNN Community Forums Email Notification Queue')
+GO
