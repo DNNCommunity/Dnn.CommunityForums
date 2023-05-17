@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				var objSettings = new SettingsInfo();
 				var sb = new SettingsBase {ForumModuleId = MID};
-			    obj = sb.MainSettings;
+				obj = sb.MainSettings;
 				if (disableCache == false)
 				{
 					CacheStore(string.Format(CacheKeys.MainSettings, MID), obj);

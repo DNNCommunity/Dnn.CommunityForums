@@ -110,7 +110,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
                 forum.ForumSettings = DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumInfo, forumId), !ignoreCache);
-
                 DataCache.CacheStore(cachekey, forum);
 			}
 		    return forum;
