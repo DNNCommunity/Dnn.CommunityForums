@@ -23,6 +23,7 @@ using System;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+
 #region Content Info
 	public class Content
 	{
@@ -32,24 +33,15 @@ namespace DotNetNuke.Modules.ActiveForums
 #region Public Properties
 
 	    public int ContentId { get; set; }
-
-	    public string Subject { get; set; }
-
-	    public string Summary { get; set; }
-
-	    public string Body { get; set; }
-
-	    public DateTime DateCreated { get; set; }
-
-	    public DateTime DateUpdated { get; set; }
-
-	    public int AuthorId { get; set; }
-
-	    public string AuthorName { get; set; }
-
-	    public bool IsDeleted { get; set; }
-
-	    public string IPAddress { get; set; }
+        public string Subject { get; set; }
+        public string Summary { get; set; }
+        public string Body { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public int AuthorId { get; set; }
+        public string AuthorName { get; set; }
+        public bool IsDeleted { get; set; }
+        public string IPAddress { get; set; }
 
 	    #endregion
 
@@ -57,4 +49,3 @@ namespace DotNetNuke.Modules.ActiveForums
 #endregion
 
 }
-

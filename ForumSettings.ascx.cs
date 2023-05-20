@@ -266,8 +266,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					}
 					else if (IsFullTextAvailable && !FullTextSearch) // Available, but not selected
 					{
-                        // Remove the search indexes if they exist
-						DataProvider.Instance().Search_ManageFullText(false);
+						try
+						{
+                            // Remove the search indexes if they exist
+                            DataProvider.Instance().Search_ManageFullText(false);
+                        }
+                        catch (InvalidOperationException)
+                        {
+							// stored procedures have never been installed
+                        }
+                        catch 
+                        {
+                            throw; // anything else
+                        }
 					}
 				}
 				catch (Exception ex)
