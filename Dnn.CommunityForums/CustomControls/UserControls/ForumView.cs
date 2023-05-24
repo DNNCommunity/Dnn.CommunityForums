@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (tmpDR != null)
                         {
                             sGroupName = tmpDR["GroupName"].ToString();
-                            sCrumb = "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + tmpDR["GroupName"] + "</div>";
+                            sCrumb = "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateURL(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + tmpDR["GroupName"] + "</div>";
                         }
 
 
@@ -704,7 +704,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (SocialGroupId > 0)
                             @params.Add("GroupId=" + SocialGroupId.ToString());
 
-                        sURL = Utilities.NavigateUrl(TabID, "", @params.ToArray());
+                        sURL = Utilities.NavigateURL(TabID, "", @params.ToArray());
                     }
 
 
@@ -815,7 +815,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (CanView)
             {
-                sOut = "<a href=\"" + Utilities.NavigateUrl(TabID, "", Params) + "\">" + Name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(TabID, "", Params) + "\">" + Name + "</a>";
             }
             else if (Hidden)
             {
