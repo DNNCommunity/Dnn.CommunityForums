@@ -23,6 +23,9 @@ using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.ActiveForums.Controls;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -57,19 +60,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId + "HostURL");
+                object obj = DataCache.CacheRetrieve(string.Concat(ModuleId + "HostURL"));
                 if (obj == null)
                 {
                     string sURL;
                     if (Request.IsSecureConnection)
                     {
-                        sURL = "https://" + Common.Globals.GetDomainName(Request) + "/";
+                        sURL = string.Concat("https://", Common.Globals.GetDomainName(Request), "/");
                     }
                     else
                     {
-                        sURL = "http://" + Common.Globals.GetDomainName(Request) + "/";
+                        sURL = string.Concat("http://", Common.Globals.GetDomainName(Request), "/");
                     }
-                    DataCache.CacheStore(ModuleId + "HostURL", sURL, DateTime.UtcNow.AddMinutes(30));
+                    DataCache.CacheStore(string.Concat(ModuleId, "HostURL"), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
                 return Convert.ToString(obj);
@@ -77,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public string GetWarningImage(string ImageId, string WarningMessage)
         {
-            return "<img id=\"" + ImageId + "\" onmouseover=\"showTip(this,'" + WarningMessage + "');\" onmouseout=\"hideTip();\" alt=\"" + WarningMessage + "\" height=\"16\" width=\"16\" src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/warning.gif") + "\" />";
+            return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
         }
         protected string GetSharedResource(string key)
         {
@@ -94,14 +97,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId,tabId: TabId, ignoreCache: false).ModuleSettings };
             }
         }
         public DateTime CacheUpdatedTime
         {
             get
             {
-                object obj = DataCache.CacheRetrieve(ModuleId + "CacheUpdate");
+                object obj = DataCache.CacheRetrieve(string.Concat(ModuleId, "CacheUpdate"));
                 if (obj != null)
                 {
                     return Convert.ToDateTime(obj);
@@ -110,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             set
             {
-                DataCache.CacheStore(ModuleId + "CacheUpdate", value);
+                DataCache.CacheStore(string.Concat(ModuleId, "CacheUpdate"), value);
                 _CacheUpdatedTime = value;
             }
         }
@@ -142,13 +145,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public Controls.ClientTemplate GetLoadingTemplate()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl("<div class=\"amloading\"><div class=\"amload\"><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>"));
+            template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
             return template;
         }
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif") + "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>"));
+            template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
             return template;
         }
         public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)

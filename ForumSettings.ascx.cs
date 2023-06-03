@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				rdEnableURLRewriter.Enabled = false;
 				rdEnableURLRewriter.Enabled = false;
 			}
-			var u = Entities.Users.UserController.GetCurrentUserInfo();
+			var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 
 			if (u.IsSuperUser & (Request.ServerVariables["SERVER_SOFTWARE"].Contains("7") || Request.ServerVariables["SERVER_SOFTWARE"].Contains("8")) & !(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
 			{
@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			catch (Exception exc) //Module failed to load
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 
@@ -266,14 +266,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					}
 					else if (IsFullTextAvailable && !FullTextSearch) // Available, but not selected
 					{
-                        // Remove the search indexes if they exist
-						DataProvider.Instance().Search_ManageFullText(false);
+						try
+						{
+                            // Remove the search indexes if they exist
+                            DataProvider.Instance().Search_ManageFullText(false);
+                        }
+                        catch (InvalidOperationException)
+                        {
+							// stored procedures have never been installed
+                        }
+                        catch 
+                        {
+                            throw; // anything else
+                        }
 					}
 				}
 				catch (Exception ex)
 				{
 					FullTextSearch = false;
-					Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+					DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
 				}
 
                 // Clear out the cache
@@ -282,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			catch (Exception exc) //Module failed to load
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 

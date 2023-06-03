@@ -35,28 +35,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             LocalResourceFile = Globals.SharedResourceFile;
 
-            jQuery.RegisterJQuery(Page);
-            jQuery.RegisterJQueryUI(Page);
-            jQuery.RequestDnnPluginsRegistration();
             jQuery.RegisterFileUpload(Page);
 
             ClientResourceManager.RegisterScript(Page, Globals.ModulePath + "scripts/jquery.afFileUpload.js", 102);
-
-            /*
-            var version = System.Reflection.Assembly.GetAssembly(typeof(Common.Globals)).GetName().Version;
-            if (version != null && version.Major == 7 && version.Minor < 2)
-            {
-                // v7.0, 7.1
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/scripts/jquery.iframe-transport.js", 101);
-                ClientResourceManager.RegisterScript(Page, "~/DesktopModules/Journal/scripts/jquery.dnnUserFileUpload.js", 102);
-            }
-            else
-            {
-                // v7.2+
-                ClientResourceManager.RegisterScript(Page, "~/Resources/Shared/Components/UserFileManager/jquery.dnnUserFileUpload.js", 102);
-            }
-            */
-
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
     }

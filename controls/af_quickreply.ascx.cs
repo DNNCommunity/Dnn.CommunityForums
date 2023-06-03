@@ -177,7 +177,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                //Me.AFModID = MID
+                if (ContactByFaxOnlyCheckBox.Checked)
+                {
+                    // if someone activates this checkbox send him home :-)
+                    Response.Redirect("about:blank");
+                }
 
 
                 if (Request.IsAuthenticated)
@@ -292,6 +296,11 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+        protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // if someone activates this checkbox send him home :-)
+            Response.Redirect("http://localhost/", true);
+        }
         private void SaveQuickReply()
         {
             SettingsInfo ms = DataCache.MainSettings(ForumModuleId);

@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var moduleController = new ModuleController();
 
                 // Load the current settings
-                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleController.GetModule(ModuleId).ModuleSettings);
+                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: true).ModuleSettings);
 
                 // Update Settings Values
                 settings.Forums = forums;
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception exc)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForm()
         {
-            var moduleSettings = new ModuleController().GetModule(ModuleId).ModuleSettings;
+            var moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             var settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
 
             txtNumItems.Text = settings.Rows.ToString();
