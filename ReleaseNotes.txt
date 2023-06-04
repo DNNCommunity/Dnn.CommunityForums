@@ -6,6 +6,13 @@
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
 	<div class="dnnClear">
+
+		<h3>07.00.08</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>FIXED: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+      </ul>
+ 
 		<h3>07.00.07</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
@@ -16,7 +23,7 @@
 			<li>TASK: Removed Deprecated DNN APIs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/271">Issue 271</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Git Cleanup Tasks (No Issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Improved String Handling &amp; Whitespace Cleanup in Many Classes (No Issue, thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
-		</ul>
+		</ul> 
 
 		<h3>07.00.06</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
@@ -64,6 +71,7 @@
 			<li>TASK: Removed hard-coded Active Forums 4.3 Template Files, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Improved Null date checking logic, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Removed hidden &amp; hard-coded legacy copyright from the HTML source, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+
 		</ul>
 
 		<h3>07.00.01</h3>
