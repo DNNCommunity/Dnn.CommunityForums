@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				var objModules = new Entities.Modules.ModuleController();
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 				var xDoc = new System.Xml.XmlDocument();
 				xDoc.Load(sPath);
 				if (xDoc != null)
@@ -198,6 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						                 ModuleId = ModuleId,
 						                 ForumGroupId = -1,
 						                 GroupName = xNodeList[i].Attributes["groupname"].Value,
+						                 PrefixURL = xNodeList[i].Attributes["prefixurl"].Value,
 						                 Active = xNodeList[i].Attributes["active"].Value == "1",
 						                 Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
 						                 SortOrder = i,
@@ -278,6 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.ParentForumId = 0;
 									fi.ForumName = cNodes[c].Attributes["forumname"].Value;
 									fi.ForumDesc = cNodes[c].Attributes["forumdesc"].Value;
+									fi.PrefixURL = cNodes[c].Attributes["prefixurl"].Value;
 									fi.ForumSecurityKey = string.Concat("G:", groupId.ToString());
 									fi.ForumSettingsKey = string.Concat("G:", groupId.ToString());
 									fi.Active = cNodes[c].Attributes["active"].Value == "1";

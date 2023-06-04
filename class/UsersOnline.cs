@@ -23,15 +23,15 @@ using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class UsersOnline
-    {
-        public string GetUsersOnline(int portalId, int moduleId, User user)
+	public class UsersOnline
+	{
+        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user)
         {
             var sb = new StringBuilder();
-            var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, moduleId, 2);
-            try
-            {
-                var mainSettings = DataCache.MainSettings(moduleId);
+			var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, moduleId, 2);
+			try
+			{
+				var mainSettings = DataCache.MainSettings(moduleId);
 
                 while (dr.Read())
                 {

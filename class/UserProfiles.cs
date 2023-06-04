@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Empty;
 
             //GIF files when reduced using DNN class losses its animation, so for gifs send them as is
-            var user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
+            var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
             string imgUrl = string.Empty;
             
             if (user != null) imgUrl = user.Profile.PhotoURL;
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (string.IsNullOrWhiteSpace(username) && userId > 0)
                     {
-                        user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
                         displayName = (user != null) ? user.DisplayName : null;
                     }
 
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (string.IsNullOrWhiteSpace(username) && userId > 0)
                     {
-                        user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
                         username = (user != null) ? user.Username : null;
                     }
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (string.IsNullOrWhiteSpace(firstName) && userId > 0)
                     {
-                        user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
                         firstName = (user != null) ? user.FirstName : null;
                     }
 
@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (string.IsNullOrWhiteSpace(lastName) && userId > 0)
                     {
-                        user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
                         lastName = (user != null) ? user.LastName : null;
                     }
 
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "FULLNAME":
                     if (string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName) && userId > 0)
                     {
-                        user = new Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
                         firstName = (user != null) ? Utilities.SafeTrim(user.FirstName) : null;
                         lastName = (user != null) ? Utilities.SafeTrim(user.LastName) : null;
                     }
