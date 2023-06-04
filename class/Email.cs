@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
 		{
-			var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			var mainSettings = DataCache.MainSettings(moduleId);
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var subs = new List<SubscriptionInfo>();
             var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var modApprove = fi.Security.ModApprove;
             var modRoles = modApprove.Split('|')[0].Split(';');
             foreach (var r in modRoles)
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 		public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
 		{
-			PortalSettings portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			SettingsInfo mainSettings = DataCache.MainSettings(moduleID);
 
 			TemplateController tc = new TemplateController();
@@ -183,7 +183,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
-            }
+            } 
+       
 		}
 
 		/* 

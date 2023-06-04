@@ -24,7 +24,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -265,7 +264,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			if (_moduleId > 0)
 			{
-				_mainSettings = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModule(moduleID: _moduleId).ModuleSettings };
+				_mainSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: _moduleId, tabId: _tabId, ignoreCache: false).ModuleSettings };
+
             }
 			if (_mainSettings == null)
 			{

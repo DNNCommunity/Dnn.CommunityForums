@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
-            Hashtable Settings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings;
+            Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
             {
