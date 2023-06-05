@@ -10,7 +10,11 @@
 		<h3>07.00.08</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>FIXED: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: URL Rewrite incorrectly not available on IIS versions higher than v8 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/282">Issue 282</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Updated incorrect image paths from /images/images to /images (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/191">Issue 191</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Added a missing SQL query to remove orphaned rewrite URL data (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Updated namespaces to be more contectually obvious to developers (No issue, thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
       </ul>
  
 		<h3>07.00.07</h3>
