@@ -32,29 +32,26 @@ namespace DotNetNuke.Modules.ActiveForums
 			try
 			{
 				var mainSettings = DataCache.MainSettings(moduleId);
-				
+
                 while (dr.Read())
-				{
-                    if(sb.Length > 0)
+                {
+                    if (sb.Length > 0)
                         sb.Append(", ");
 
-				    sb.Append(UserProfiles.GetDisplayName(moduleId, true, false, user.IsAdmin || user.IsSuperUser, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
-				}
+                    sb.Append(UserProfiles.GetDisplayName(moduleId, true, false, user.IsAdmin || user.IsSuperUser, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
+                }
 
-				dr.Close();
-				return sb.ToString();
-			}
-			catch (Exception ex)
-			{
-				if (! dr.IsClosed)
-				{
-					dr.Close();
-				}
-				return string.Empty;
-			}
-
-
-		}
-
-	}
+                dr.Close();
+                return sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                if (!dr.IsClosed)
+                {
+                    dr.Close();
+                }
+                return string.Empty;
+            }
+        }
+    }
 }

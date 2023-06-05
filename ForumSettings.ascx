@@ -66,20 +66,11 @@
 	<fieldset>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblFloodInterval" runat="server" resourcekey="FloodInterval" Suffix=":" />
-            <asp:DropDownList ID="drpFloodInterval" runat="server">
-                <asp:ListItem>0</asp:ListItem>
-                <asp:ListItem>100</asp:ListItem>
-                <asp:ListItem>200</asp:ListItem>
-                <asp:ListItem>300</asp:ListItem>
-            </asp:DropDownList>
+            <asp:TextBox ID="txtFloodInterval" runat="server" MaxLength="5" Width="35" Text="0" />
 	    </div>
-		<div class="dnnFormItem">
+		<div class="dnnFormItem"> 
 			<dnn:label ID="lblEditInterval" runat="server" resourcekey="EditInterval" Suffix=":" />
-            <asp:DropDownList ID="drpEditInterval" runat="server">
-                <asp:ListItem>0</asp:ListItem>
-                <asp:ListItem>30</asp:ListItem>
-                <asp:ListItem>60</asp:ListItem>
-            </asp:DropDownList>
+            <asp:TextBox ID="txtEditInterval" runat="server" MaxLength="3" Width="25" Text="0" />
 		</div>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblAutoLinks" runat="server" resourcekey="AutoLink" Suffix=":" />

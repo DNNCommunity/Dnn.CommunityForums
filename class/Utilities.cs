@@ -170,8 +170,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static string ParseToolBar(string template, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
         {
-            //var mainSettings = DataCache.MainSettings(moduleId);
-
             var ctlUtils = new ControlUtils();
 
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -202,14 +200,12 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i>&nbsp;[RESX:ActiveTopics]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "activetopics", 1, -1, -1)));
             template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment fa-fw fa-blue\"></i>&nbsp;[RESX:FORUMS]</a>", NavigateUrl(tabId)));
 
-
             // Search popup
             var searchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
             var advancedSearchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
             var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
             template = template.Replace("[AF:TB:Search]", string.Format(@"<span class='aftb-search' data-searchUrl='{0}'><span class='aftb-search-link'><span><i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}</span><span class='ui-icon ui-icon-triangle-1-s'></span></span><span class='aftb-search-popup'><input type='text' placeholder='Search for...' maxlength='50'><button>[RESX:Search]</button><br /><a href='{1}'>[RESX:SearchAdvanced]</a><input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]<input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]</span></span>", HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
-
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);
@@ -230,6 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return text;
         }
+
         internal static bool HasFloodIntervalPassed(int floodInterval, User user, Forum forumInfo)
         {
             /* flood interval check passes if
@@ -279,14 +276,13 @@ namespace DotNetNuke.Modules.ActiveForums
             string strHost;
             if (HttpContext.Current.Request.IsSecureConnection)
             {
-                strHost = (Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/").Replace("http://", "https://");
+                strHost = (string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/")).Replace("http://", "https://");
             }
             else
             {
-                strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
+                strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");
             }
             return strHost.ToLowerInvariant();
-
         }
 
         public static string NavigateUrl(int tabId)
@@ -349,7 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var key = Convert.ToInt32(Enum.Parse(enumType, values.GetValue(i).ToString()));
                 var text = Convert.ToString(Enum.Parse(enumType, values.GetValue(i).ToString()));
                 if (localize)
-                    text = "[RESX:" + text + "]";
+                    text = string.Concat("[RESX:", text, "]");
 
                 pDDL.Items.Add(new ListItem(text, key.ToString()));
             }
@@ -414,7 +410,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var urlText = match.Value;
             if (urlText.Length > maxLengthAutoLinkLabel)
-                urlText = match.Value.Substring(0, maxLengthAutoLinkLabel - 22) + "..." + match.Value.Substring(match.Value.Length - 20);
+                urlText = string.Concat(match.Value.Substring(0, maxLengthAutoLinkLabel - 22), "...", match.Value.Substring(match.Value.Length - 20));
 
             return url.ToLowerInvariant().Contains(currentSite.ToLowerInvariant()) ? string.Format(inSite, url, urlText) : string.Format(outSite, url, urlText);
         }
@@ -430,7 +426,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (Match m in Regex.Matches(text, encodedHref, RegexOptions.IgnoreCase))
                     text = text.Replace(m.Value, HttpUtility.HtmlDecode(m.Value));
 
-
                 const string regHref = "<a.*?href=[\"'](?<url>.*?)[\"'].*?>(?<http>http[s]?.*?)</a>";
 
                 // Remove all exiting <A> anchors, so they will be treated by the ReplaceLink function. (adding target=_blank & nofollow)
@@ -442,7 +437,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return original;
                 }
-
 
                 // Look for http(s) URLs  that are not perceded by a quote or <a>.
                 String strRegexUrl = @"(?<!['""]+|<a.*?>\s*)http[s]?://([\w+?\.\w+])+([a-zA-Z0-9\~\!\@\\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?";
@@ -511,7 +505,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var matches = objRegEx.Matches(strMessage);
                     foreach (Match m in matches)
                     {
-                        strMessage = strMessage.Replace(m.Value, "[CODEHOLDER" + i + "]");
+                        strMessage = strMessage.Replace(m.Value, string.Concat("[CODEHOLDER", i, "]"));
                         codes.Add(m.Value);
                         i += 1;
                     }
@@ -527,7 +521,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     i = 0;
                     foreach (var s in codes)
                     {
-                        strMessage = strMessage.Replace("[CODEHOLDER" + i + "]", HttpUtility.HtmlEncode(s));
+                        strMessage = strMessage.Replace(string.Concat("[CODEHOLDER", i, "]"), HttpUtility.HtmlEncode(s));
                         i += 1;
                     }
                 }
@@ -590,7 +584,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (chrUpper == chrLower)
                     strReturn = strReturn + chrCurrent;
                 else
-                    strReturn = strReturn + "[" + chrLower + chrUpper + "]";
+                    strReturn = string.Concat(strReturn, "[", chrLower, chrUpper, "]");
             }
 
             return strReturn;
@@ -626,7 +620,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (processEmoticons)
                         {
                             if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                                sReplace = "<img src='" + themePath + sReplace + "' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />";
+                                sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />", themePath, sReplace);
 
                             strMessage = strMessage.Replace(sFind, sReplace);
                         }
@@ -639,6 +633,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
             dr.Close();
+
             return strMessage;
         }
 
@@ -660,7 +655,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "EMOTICON":
                         if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
                         {
-                            sReplace = "<img src='" + themePath + sReplace + "' align=\"absmiddle\"  border=\"0\"  class=\"afEmoticon\" />";
+                            sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\"  border=\"0\"  class=\"afEmoticon\" />", themePath, sReplace);
                             strMessage = strMessage.Replace(sReplace, sFind);
                         }
                         break;
@@ -668,7 +663,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
             dr.Close();
+
             strMessage = ManageImagePath(strMessage);
+
             return strMessage;
         }
 
@@ -677,7 +674,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string @out;
             try
             {
-                var myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "/Filters.txt");
+                var myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;
@@ -706,7 +703,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    @out = "File Not Found<br />Path:" + myFile;
+                    @out = string.Concat("File Not Found<br />Path:", myFile);
                 }
             }
             catch (Exception exc)
@@ -784,6 +781,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sText = sText.Replace("[MODEDITDATE]", string.Empty);
             sText = sText.Replace("[SIGNATURE]", string.Empty);
             sText = sText.Replace("AFHOLD:", "AF:DIR:");
+
             return sText;
         }
 
@@ -864,24 +862,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string CheckSqlString(string input)
         {
-            input = input.Replace("\\", "");
-            input = input.Replace("[", "");
-            input = input.Replace("]", "");
-            input = input.Replace("(", "");
-            input = input.Replace(")", "");
-            input = input.Replace("{", "");
-            input = input.Replace("}", "");
+            input = input.Replace("\\", string.Empty);
+            input = input.Replace("[", string.Empty);
+            input = input.Replace("]", string.Empty);
+            input = input.Replace("(", string.Empty);
+            input = input.Replace(")", string.Empty);
+            input = input.Replace("{", string.Empty);
+            input = input.Replace("}", string.Empty);
             input = input.Replace("'", "''");
-            input = input.Replace("UNION", "");
-            input = input.Replace("TABLE", "");
-            input = input.Replace("WHERE", "");
-            input = input.Replace("DROP", "");
-            input = input.Replace("EXECUTE", "");
-            input = input.Replace("EXEC ", "");
-            input = input.Replace("FROM ", "");
-            input = input.Replace("CMD ", "");
-            input = input.Replace(";", "");
-            input = input.Replace("--", "");
+            input = input.Replace("UNION", string.Empty);
+            input = input.Replace("TABLE", string.Empty);
+            input = input.Replace("WHERE", string.Empty);
+            input = input.Replace("DROP", string.Empty);
+            input = input.Replace("EXECUTE", string.Empty);
+            input = input.Replace("EXEC ", string.Empty);
+            input = input.Replace("FROM ", string.Empty);
+            input = input.Replace("CMD ", string.Empty);
+            input = input.Replace(";", string.Empty);
+            input = input.Replace("--", string.Empty);
 
             return input;
         }
@@ -1026,7 +1024,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 var dateFormat = mainSettings.DateFormatString;
                 var timeFormat = mainSettings.TimeFormatString;
-                var formatString = dateFormat + " " + timeFormat;
+                var formatString = string.Concat(dateFormat, " ", timeFormat);
+
                 try
                 {
                     dateStr = newDate.ToString(formatString);
@@ -1035,6 +1034,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     dateStr = displayDate.ToString();
                 }
+
                 return dateStr;
             }
             catch (Exception ex)
@@ -1043,6 +1043,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateStr;
             }
         }
+
         public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
         {
             var mainSettings = DataCache.MainSettings(mid);
@@ -1051,10 +1052,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return newDate.AddMinutes(offset);
         }
+        
         public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
         {
             return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
         }
+        
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
@@ -1077,7 +1080,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static string GetUserFormattedDate(DateTime date, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
-            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset,format);
+            return GetUserFormattedDateTime(date, userCultureInfo, timeZoneOffset, format);
         }
         public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, string format)
         {
@@ -1090,6 +1093,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
         }
+        
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
@@ -1140,16 +1144,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return GetTimeZoneInfoForUser(userInfo).BaseUtcOffset;
         }
-        public static TimeSpan GetTimeZoneOffsetForUser(int PortalId,int UserId)
+        public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
         {
             return GetTimeZoneOffsetForUser( new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,UserId));
+
         }
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
             return displayDate.AddMinutes(offset.TotalMinutes);
         }
-
-
+        
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
         {
             var sb = new StringBuilder();
@@ -1171,7 +1175,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.Append("<a href=\"" + Common.Globals.NavigateURL(tabID, "", Params) + "#" + postId + "\" rel=\"nofollow\">" + HTMLEncode(subject) + "</a>");
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
                     }
                     else
                     {
@@ -1183,7 +1187,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.Append("<a href=\"" + Common.Globals.NavigateURL(tabID, "", Params) + "#" + postId + "\" rel=\"nofollow\">" + HTMLEncode(subject) + "</a>");
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
                     }
                     else
                     {
@@ -1192,12 +1196,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
             }
+
             return sb.ToString();
         }
 
         public static string ParseSpacer(string template)
         {
-            var spacerTemplate = "<img src=\"" + System.Web.VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath + "spacer.gif") +"\" alt=\"--\" width=\"$2\" height=\"$1\" />";
+            var spacerTemplate = string.Format("<img src=\"{0}\" alt=\"--\" width=\"$2\" height=\"$1\" />", System.Web.VirtualPathUtility.ToAbsolute(string.Concat(Globals.ModuleImagesPath, "spacer.gif")));
 
             const string expression = @"\[SPACER\:(\d+)\:(\d+)\]";
 
@@ -1279,7 +1284,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetSharedResource(string key, string resourceFile)
         {
-            return DotNetNuke.Services.Localization.Localization.GetString(key, Globals.ModulePath + "App_LocalResources/" + resourceFile + ".resx");
+            return DotNetNuke.Services.Localization.Localization.GetString(key, string.Concat(Globals.ModulePath, "App_LocalResources/", resourceFile, ".resx"));
         }
 
         public static string GetSharedResource(string key, bool isAdmin = false)
@@ -1302,7 +1307,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return (fileSize / 1024.0).ToString("#0.00") + " KB";
 
                 if (fileSize < 1024)
-                    return fileSize + " Bytes";
+                    return string.Concat(fileSize, " Bytes");
             }
             catch (Exception ex)
             {
@@ -1602,5 +1607,4 @@ namespace DotNetNuke.Modules.ActiveForums
                 selectedItem.Selected = true;
         }
     }
-
 }

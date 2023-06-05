@@ -55,12 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			{
 			    var intQueueCount = ProcessQueue();
 				ScheduleHistoryItem.Succeeded = true;
-				ScheduleHistoryItem.AddLogNote("Processed " + intQueueCount + " messages");
+				ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " messages"));
 			}
 			catch (Exception ex)
 			{
 				ScheduleHistoryItem.Succeeded = false;
-				ScheduleHistoryItem.AddLogNote("Process Queue Failed. " + ex);
+				ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
 				Errored(ref ex);
 				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
@@ -112,10 +112,8 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return -1;
 			}
-
-		}
-
-	}
+        }
+    }
 
 	public class Message
 	{
