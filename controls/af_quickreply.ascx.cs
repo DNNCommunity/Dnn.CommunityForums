@@ -177,7 +177,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                //Me.AFModID = MID
+                if (ContactByFaxOnlyCheckBox.Checked)
+                {
+                    // if someone activates this checkbox send him home :-)
+                    Response.Redirect("about:blank");
+                }
 
 
                 if (Request.IsAuthenticated)
@@ -292,6 +296,11 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
+        protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // if someone activates this checkbox send him home :-)
+            Response.Redirect("http://localhost/", true);
+        }
         private void SaveQuickReply()
         {
             SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
@@ -452,7 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else if (isApproved == false)
             {
-                List<Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
                 string subject = Utilities.GetSharedResource("NotificationSubjectReply");
                 subject = subject.Replace("[DisplayName]", UserInfo.DisplayName);

@@ -15,7 +15,7 @@ function openDialog(row){
 <div class="amcpsubnav"><div onclick="openDialog();" class="amcplnkbtn">[RESX:AddTemplate]</div></div>
 <div class="amcpbrdnav">[RESX:Templates]</div>
 <div class="amcpcontrols">
-	<am:ActiveGrid ID="agTemplates" runat="server" ImagePath="~/DesktopModules/ActiveForums/images/" PageSize="15">
+	<am:ActiveGrid ID="agTemplates" runat="server" ImagePath="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>" PageSize="15">
 		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
 					<tr><td ColumnName="TemplateId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="Title" style="width:100px;height:16px;"><div class="amheadingcelltext">[RESX:TemplateType]</div></td><td class="amcptblhdr" ColumnName="Title" style="height:16px;"><div class="amheadingcelltext">[RESX:Title]</div></td><td class="amcptblhdr" ColumnName="DateCreated" style="height:16px;white-space:nowrap;width:120px;"><div class="amheadingcelltext">[RESX:DateCreated]</div></td></tr>
 		</HeaderTemplate>

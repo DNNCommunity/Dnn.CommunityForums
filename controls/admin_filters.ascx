@@ -95,7 +95,7 @@ function saveFilter() {
 <div class="amcpsubnav"><div onclick="amaf_openDialog();" class="amcplnkbtn">[RESX:AddFilter]</div><div onclick="amaf_loadDefaults();" class="amcplnkbtn">[RESX:RestoreDefaults]</div></div>
 <div class="amcpbrdnav">[RESX:Filters]</div>
 <div class="amcpcontrols">
-	<am:ActiveGrid ID="agFilters" runat="server" DefaultColumn="FilterType" PageSize="15" ImagePath="~/DesktopModules/activeforums/images/">
+	<am:ActiveGrid ID="agFilters" runat="server" DefaultColumn="FilterType" PageSize="15" ImagePath="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>">
 		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
 					<tr><td ColumnName="FilterId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="Find" style="width:100px;height:16px;"><div class="amheadingcelltext">[RESX:Find]</div></td><td class="amcptblhdr" ColumnName="Replace" style="height:16px;"><div class="amheadingcelltext">[RESX:Replace]</div></td><td class="amcptblhdr" ColumnName="FilterType" style="height:16px;white-space:nowrap;width:120px;"><div class="amheadingcelltext">[RESX:FilterType]</div></td><td class="amcptblhdr" style="height:16px;white-space:nowrap;width:30px;"><div class="amheadingcelltext">&nbsp;</div></td></tr>
 		</HeaderTemplate>

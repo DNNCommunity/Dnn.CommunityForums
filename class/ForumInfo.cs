@@ -28,54 +28,30 @@ namespace DotNetNuke.Modules.ActiveForums
 	public class Forum
 	{
 		#region AF Forums DB Fields
-
-		public int ForumID { get; set; }
-
-		public int ModuleId { get; set; }
-
-		public int PortalId { get; set; }
-
-		public int TabId { get; set; }
-
-		public int ForumGroupId { get; set; }
-
-		public int ParentForumId { get; set; }
-
-		public string ForumName { get; set; }
-
-		public string ForumDesc { get; set; }
-
-		public int SortOrder { get; set; }
-
-		public bool Active { get; set; }
-
-		public bool Hidden { get; set; }
-
-		public int TotalTopics { get; set; }
-
-		public int TotalReplies { get; set; }
-
-		public int LastPostID { get; set; }
-
-		public string GroupName { get; set; }
-
-		public string ParentForumName { get; set; }
-
-		public string ForumSettingsKey { get; set; }
-
-		public string ForumSecurityKey { get; set; }
-
-		public int LastTopicId { get; set; }
-
-		public int LastReplyId { get; set; }
-
-		public int PermissionsId { get; set; }
-
-		public bool InheritSecurity { get; set; }
-
-		public ForumGroupInfo ForumGroup { get; set; }
-
-		public string PrefixURL { get; set; }
+        public int ForumID { get; set; }
+        public int ModuleId { get; set; }
+        public int PortalId { get; set; }
+        public int TabId { get; set; }
+        public int ForumGroupId { get; set; }
+        public int ParentForumId { get; set; }
+        public string ForumName { get; set; }
+        public string ForumDesc { get; set; }
+        public int SortOrder { get; set; }
+        public bool Active { get; set; }
+        public bool Hidden { get; set; }
+        public int TotalTopics { get; set; }
+        public int TotalReplies { get; set; }
+        public int LastPostID { get; set; }
+        public string GroupName { get; set; }
+        public string ParentForumName { get; set; }
+        public string ForumSettingsKey { get; set; }
+        public string ForumSecurityKey { get; set; }
+        public int LastTopicId { get; set; }
+        public int LastReplyId { get; set; }
+        public int PermissionsId { get; set; }
+        public bool InheritSecurity { get; set; }
+        public ForumGroupInfo ForumGroup { get; set; }
+        public string PrefixURL { get; set; }
 
 		public string ForumURL
 		{
@@ -86,48 +62,32 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public string TopicUrl { get; set; }
-
-		public ForumCollection SubForums { get; set; }
-
-		public List<PropertiesInfo> Properties { get; set; }
-
-		public int SocialGroupId { get; set; }
-
-		public bool HasProperties { get; set; }
-
-		#endregion
+        public ForumCollection SubForums { get; set; }
+        public List<PropertiesInfo> Properties { get; set; }
+        public int SocialGroupId { get; set; }
+        public bool HasProperties { get; set; }
+        #endregion
 
 		#region Settings & Security
 
 		public PermissionInfo Security { get; set; }
-
-		public Hashtable ForumSettings { get; set; }
+        public Hashtable ForumSettings { get; set; }
 
 		#endregion
 
 		#region Last Post
 
 		public DateTime LastRead { get; set; }
-
-		public DateTime LastPostDateTime { get; set; }
-
-		public int LastPostUserID { get; set; }
-
-		public string LastPostUserName { get; set; }
-
-		public string LastPostFirstName { get; set; }
-
-		public string LastPostLastName { get; set; }
-
-		public string LastPostSubject { get; set; }
-
-		public int LastPostLastPostID { get; set; }
-
-		public string LastPostDisplayName { get; set; }
-
-		public int LastPostParentPostID { get; set; }
-
-		#endregion
+        public DateTime LastPostDateTime { get; set; }
+        public int LastPostUserID { get; set; }
+        public string LastPostUserName { get; set; }
+        public string LastPostFirstName { get; set; }
+        public string LastPostLastName { get; set; }
+        public string LastPostSubject { get; set; }
+        public int LastPostLastPostID { get; set; }
+        public string LastPostDisplayName { get; set; }
+        public int LastPostParentPostID { get; set; }
+        #endregion
 		
 		// initialization
 		public Forum()
@@ -142,10 +102,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public string TopicSubject { get; set; }
-
-		public int TopicId { get; set; }
-
-		public int CustomFieldType { get; set; }
+        public int TopicId { get; set; }
+        public int CustomFieldType { get; set; }
 
 		public bool AllowAttach
 		{
