@@ -334,46 +334,47 @@
               <name>07.00.00.SqlDataProvider</name>
               <version>07.00.00</version>
             </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.02.SqlDataProvider</name>
-				   <version>07.00.02</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.04.SqlDataProvider</name>
-				   <version>07.00.04</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.05.SqlDataProvider</name>
-				   <version>07.00.05</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.06.SqlDataProvider</name>
-				   <version>07.00.06</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.07.SqlDataProvider</name>
-				   <version>07.00.07</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.08.SqlDataProvider</name>
-				   <version>07.00.08</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.09.SqlDataProvider</name>
-				   <version>07.00.09</version>
-			   </script>
-			  <script type="UnInstall">
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.02.SqlDataProvider</name>
+              <version>07.00.02</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.04.SqlDataProvider</name>
+              <version>07.00.04</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.05.SqlDataProvider</name>
+              <version>07.00.05</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.06.SqlDataProvider</name>
+              <version>07.00.06</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.07.SqlDataProvider</name>
+              <version>07.00.07</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.08.SqlDataProvider</name>
+              <version>07.00.08</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.09.SqlDataProvider</name>
+              <version>07.00.09</version>
+            </script>
+            <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
               <version>07.00.09</version>
-         </script>
+            </script>
+          </scripts>
         </component>
         <component type="ResourceFile">
           <resourceFiles>
