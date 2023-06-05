@@ -33,15 +33,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			sCode = sCode.Replace("]", "&#93;");
 			sCode = Regex.Replace(sCode, "(&#91;CODE&#93;)", "[CODE]", RegexOptions.IgnoreCase);
 			sCode = Regex.Replace(sCode, "(&#91;\\/CODE&#93;)", "[/CODE]", RegexOptions.IgnoreCase);
-			//objRegEx = New Regex("\[CODE([^>]*)\](.*?)\[/CODE\]", RegexOptions.Singleline Or RegexOptions.IgnoreCase)
 			objRegEx = new Regex("\\[CODE([^>]*)\\]((.|\\n)*?)\\[/CODE\\]", RegexOptions.IgnoreCase);
-			//sCode = HandleBrackets(sCode)
 
-			//If objRegEx.IsMatch(sCode) Then
-
-			//Else
-			//    objRegEx = New Regex("[CODE](.*?)[/CODE]", RegexOptions.Singleline Or RegexOptions.IgnoreCase)
-			//End If
 			MatchCollection Matches;
 
 			Matches = objRegEx.Matches(sCode);
@@ -51,55 +44,34 @@ namespace DotNetNuke.Modules.ActiveForums
 			foreach (Match myMatch in Matches)
 			{
 				codeSnip = myMatch.Result("$2");
-                tmp = "<pre><code>" + codeSnip + "</code></pre>";
+                tmp = string.Concat("<pre><code>", codeSnip, "</code></pre>");
                 if ((myMatch.Result("$1").IndexOf("vb", 0) + 1) > 0)
 				{
-					//Dim objCode As New Manoli.Utils.CSharpFormat.VisualBasicFormat
-					//objCode.Alternate = False
-					//objCode.EmbedStyleSheet = False
-					//tmp = objCode.FormatCode(codeSnip)
 					tmp = HandleBrackets(tmp);
-					sCode = sCode.Replace(myMatch.Value, "<div class=\"afcodeblock\">" + tmp + "</div>");
+					sCode = sCode.Replace(myMatch.Value, string.Concat("<div class=\"afcodeblock\">", tmp, "</div>"));
 				}
 				else if ((myMatch.Result("$1").IndexOf("html", 0) + 1) > 0)
 				{
-					//Dim objCode As New Manoli.Utils.CSharpFormat.HtmlFormat
-					//objCode.Alternate = False
-					//objCode.EmbedStyleSheet = False
-					//tmp = objCode.FormatCode(codeSnip)
 					tmp = HandleBrackets(tmp);
-					sCode = sCode.Replace(myMatch.Value, "<div class=\"afcodeblock\">" + tmp + "</div>");
+					sCode = sCode.Replace(myMatch.Value, string.Concat("<div class=\"afcodeblock\">", tmp, "</div>"));
 				}
 				else if ((myMatch.Result("$1").IndexOf("csharp", 0) + 1) > 0)
 				{
-					//Dim objCode As New Manoli.Utils.CSharpFormat.CSharpFormat
-					//objCode.Alternate = False
-					//objCode.EmbedStyleSheet = False
-					//tmp = objCode.FormatCode(codeSnip)
 					tmp = HandleBrackets(tmp);
-					sCode = sCode.Replace(myMatch.Value, "<div class=\"afcodeblock\">" + tmp + "</div>");
+					sCode = sCode.Replace(myMatch.Value, string.Concat("<div class=\"afcodeblock\">", tmp, "</div>"));
 				}
 				else if ((myMatch.Result("$1").IndexOf("script", 0) + 1) > 0)
 				{
-					//Dim objCode As New Manoli.Utils.CSharpFormat.JavaScriptFormat
-					//objCode.Alternate = False
-					//objCode.EmbedStyleSheet = False
-					//tmp = objCode.FormatCode(codeSnip)
 					tmp = HandleBrackets(tmp);
-					sCode = sCode.Replace(myMatch.Value, "<div class=\"afcodeblock\">" + tmp + "</div>");
+					sCode = sCode.Replace(myMatch.Value, string.Concat("<div class=\"afcodeblock\">", tmp, "</div>"));
 				}
 				else
 				{
-					//Dim objCode As New Manoli.Utils.CSharpFormat.HtmlFormat
-					//objCode.Alternate = False
-					//objCode.EmbedStyleSheet = False
-					//tmp = objCode.FormatCode(codeSnip)
 					tmp = HandleBrackets(tmp);
-					sCode = sCode.Replace(myMatch.Value, "<div class=\"afcodeblock\">" + tmp + "</div>");
+					sCode = sCode.Replace(myMatch.Value, string.Concat("<div class=\"afcodeblock\">", tmp, "</div>"));
 				}
 			}
-			//sCode = sCode.Replace("</pre>", vbCrLf & "</pre>")
-			//sOut = "<div class=""afcodeblock"">" & sCode & "</div>"
+
 			return HandleBrackets(sCode);
 		}
 		private static string HandleBrackets(string sCode)
