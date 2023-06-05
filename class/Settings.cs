@@ -163,6 +163,29 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
+        public string ThemesLocation
+        {
+            get
+            {
+                return string.Concat(Globals.ModulePath, "/themes");
+            }
+        }
+
+        public string ThemeLocation
+        {
+            get
+            {
+                return string.Concat(ThemesLocation, "/", Theme);
+            }
+        }
+
+        public string TemplatesLocation
+        {
+            get
+            {
+                return string.Concat(Globals.ModulePath, "/config/templates");
+            }
+        }
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }
@@ -311,4 +334,3 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 	}
 }
-

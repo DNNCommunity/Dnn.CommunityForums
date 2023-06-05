@@ -94,7 +94,7 @@ function saveRank() {
 <div class="amcpbrdnav">
 	[RESX:RanksRecognition]</div>
 <div class="amcpcontrols">
-	<am:ActiveGrid ID="agRanks" runat="server" ImagePath="~/DesktopModules/activeforums/images/">
+	<am:ActiveGrid ID="agRanks" runat="server" ImagePath="<%=ImagePath%>">
 		<headertemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
 								<tr><td ColumnName="RankId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="RankName" style="height:16px;"><div class="amheadingcelltext">[RESX:RankName]</div></td><td class="amcptblhdr" ColumnName="MinPosts" style="width:120px;height:16px;"><div class="amheadingcelltext">[RESX:MinPoints]</div></td><td class="amcptblhdr" ColumnName="MaxPosts" style="height:16px;white-space:nowrap;width:120px;"><div class="amheadingcelltext">[RESX:MaxPoints]</div></td><td class="amcptblhdr" ColumnName="Display" style="height:16px;white-space:nowrap;width:120px;"><div class="amheadingcelltext">[RESX:Display]</div></td></tr>
 					</headertemplate>

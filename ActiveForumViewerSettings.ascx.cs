@@ -81,14 +81,14 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception exc)
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 		public override void UpdateSettings()
 		{
 			try
 			{
-				var objModules = new Entities.Modules.ModuleController();
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 				// Update ModuleSettings
 				objModules.UpdateModuleSetting(ModuleId, "AFTopicsTemplate", drpTopicsTemplate.SelectedItem.Value);
 				objModules.UpdateModuleSetting(ModuleId, "AFTopicTemplate", drpTopicTemplate.SelectedItem.Value);
@@ -119,19 +119,19 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception exc)
 			{
-				Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
 		public void LoadForums()
 		{
 			
 			int i = 0;
-			var mc = new Entities.Modules.ModuleController();
-			var tc = new Entities.Tabs.TabController();
-			Entities.Tabs.TabInfo ti;
-			foreach (Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
+			var mc = new DotNetNuke.Entities.Modules.ModuleController();
+			var tc = new DotNetNuke.Entities.Tabs.TabController();
+			DotNetNuke.Entities.Tabs.TabInfo ti;
+			foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
 			{
-                if (mi.DesktopModule.ModuleName.Trim().ToLowerInvariant() == "Active Forums".ToLowerInvariant() && mi.IsDeleted == false)
+                if (mi.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant() && mi.IsDeleted == false)
 				{
 					ti = tc.GetTab(mi.TabID, PortalId, false);
 					if (ti != null)

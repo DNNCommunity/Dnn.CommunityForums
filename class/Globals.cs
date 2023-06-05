@@ -95,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		Disabled = 0,
 		Core = 1,
 		Ventrian = 2
-		//Social = 3
 	}
 
 	public enum SpecialTokenTypes
@@ -131,13 +130,21 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-                return Common.Globals.glbRoleUnauthUser + ";" + Common.Globals.glbRoleAllUsers + ";";
+                return string.Concat(Common.Globals.glbRoleUnauthUser, ";", Common.Globals.glbRoleAllUsers, ";");
 			}
 		}
 
+		public const string ModuleName = "Active Forums";
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
+        public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
+        public const string ModuleImagesPath = Globals.ModulePath + "images/";
 
-		public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+        public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
+        public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
+        public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
+        public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
+
+        public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string ControlRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
@@ -145,8 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
-
-	}
+    }
 
 	public class SettingKeys
 	{
@@ -206,14 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-        public const string CacheTemplates = "CACHETEMPLATES";
-
-        public const string AdminResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/AdminResources.resx";
-		public const string SharedResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx";
-		public const string CacheDependencyFile = "~/DesktopModules/ActiveForums/cache/cachedep.resources";
-		public const string TemplatePath = "~/DesktopModules/ActiveForums/config/templates/";
-
-	}
+    }
 
 	public class ForumSettingKeys
 	{
@@ -233,14 +232,12 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string AttachMaxSize = "ATTACHMAXSIZE";
 		public const string AttachTypeAllowed = "ATTACHTYPEALLOWED";
         public const string AttachAllowBrowseSite = "ATTACHALLOWBROWSESITE";
-		//public const string AttachStore = "ATTACHSTORE";
 		public const string AttachMaxHeight = "ATTACHMAXHEIGHT";
 		public const string AttachMaxWidth = "ATTACHMAXWIDTH";
         public const string MaxAttachWidth = "MAXATTACHWIDTH";
         public const string MaxAttachHeight = "MAXATTACHHEIGHT";
         public const string AttachInsertAllowed = "ATTACHINSERTALLOWED";
         public const string ConvertingToJpegAllowed = "CONVERTINGTOJPEGALLOWED";
-		//public const string AttachUniqueFileNames = "ATTACHUNIQUEFILENAMES";  
 		public const string IndexContent = "INDEXCONTENT";
 		public const string AllowRSS = "ALLOWRSS";
 		public const string TopicsTemplateId = "TOPICSTEMPLATEID";
@@ -268,7 +265,6 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public const string ReplyPostCount = "REPLYPOSTCOUNT";
         public const string AllowLikes = "ALLOWLIKES";
 
-
         /*
 		public const string MCEnabled = "MCENABLED";
 		public const string MCUrl = "MCURL";
@@ -287,10 +283,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string MCEOMTagRequired = "MCEOMTAGREQ";
 		public const string MCRemoveHTML = "MCSTRIPHTML";
         */
-
     }
 
-	public class ParamKeys
+    public class ParamKeys
 	{
 		public const string ForumId = "aff";
 		public const string GroupId = "afg";
@@ -329,11 +324,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
 		public const string ForumList = "affl{0}";
-	}
+        public const string Tokens = "aftk{0}";
+    }
 
-
-
-	public class SortColumns
+    public class SortColumns
 	{
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";

@@ -22,6 +22,7 @@ using System;
 
 namespace DotNetNuke.Modules.ActiveForums.API
 {
+	// TODO: Determine if we need to remove this class 
 	public class Content
 	{
 		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
