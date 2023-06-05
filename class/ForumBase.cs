@@ -528,7 +528,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
 
-            var xNode = ForumData.SelectSingleNode(string.Concat("//forums/forum[@forumid='" + ForumId, ForumId, "']/security/"));
+            var xNode = ForumData.SelectSingleNode(string.Concat("//forums/forum[@forumid='" + ForumId, "']/security/", secType));
 
             if (xNode == null)
             {

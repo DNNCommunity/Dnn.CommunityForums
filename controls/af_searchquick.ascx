@@ -4,5 +4,6 @@
 		<td><asp:Label id="lblSearch" runat="server" resourcekey="SearchCaption" CssClass="afnormal">Search this forum:</asp:Label></td>
 		<td><asp:TextBox id="txtSearch" runat="server" CssClass="afminisearchbox" /></td>
 		<td><div class="afsearchgo"><asp:LinkButton id="lnkSearch" runat="server"><img src="<%=Page.ResolveUrl("~/DesktopModules/activeforums/images/search.gif")%>" border="0" alt="[RESX:Search]" /></asp:LinkButton></div></td>
+
 	</tr>
 </table>

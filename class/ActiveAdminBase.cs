@@ -23,10 +23,13 @@ using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Modules.ActiveForums.Controls;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class ActiveAdminBase : Entities.Modules.PortalModuleBase
+    public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         private string _Params = string.Empty;
         private string _currentView = string.Empty;
@@ -94,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId,tabId: TabId, ignoreCache: false).ModuleSettings };
             }
         }
         public DateTime CacheUpdatedTime

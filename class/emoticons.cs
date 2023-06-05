@@ -47,11 +47,11 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				else
 				{
-					sInsert = string.Concat("<img src=\\'", sEmotPath, " alt=\"\" \\' />");
-				}
+                    sInsert = $"<img src=\\'{sEmotPath}\\' />";
+                }
+                sb.AppendFormat("<span class=\"afEmot\" style=\"width:20px;height:20px;cursor:hand;\" unselectable=\"on\" onclick=\"amaf_insertHTML('{0}')\"><img onmousedown=\"return false;\" src=\"{1}\" width=\"20\" height=\"20\" title=\"{2}\" /></span>", sInsert, sEmotPath, dr["Find"]);
 
-				sb.AppendFormat("<span class=\"afEmot\" style=\"width:20px;height:20px;cursor:hand;\" unselectable=\"on\" onclick=\"amaf_insertHTML('{0}')\"><img onmousedown=\"return false;\" src=\"{1}\" width=\"20\" height=\"20\" title=\"{2}\" /></span>", sInsert, sEmotPath, dr["Find"]);
-				i += 1;
+                i += 1;
 				if (i % 2 == 0)
 				{
 					sb.Append("<br />");
