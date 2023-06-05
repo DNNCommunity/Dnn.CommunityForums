@@ -373,7 +373,8 @@
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
               <version>07.00.09</version>
-         </script>
+			  </script>
+			  </scripts>
         </component>
         <component type="ResourceFile">
           <resourceFiles>
