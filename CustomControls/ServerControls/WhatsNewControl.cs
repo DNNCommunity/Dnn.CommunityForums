@@ -28,7 +28,7 @@ using System.Web.UI.WebControls;
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [ToolboxData("<{0}:WhatsNewControl runat=server></{0}:WhatsNewControl>")]
-    public class WhatsNewControl : Entities.Modules.PortalModuleBase
+    public class WhatsNewControl : DotNetNuke.Entities.Modules.PortalModuleBase
     {
 
         #region Private Member Variables

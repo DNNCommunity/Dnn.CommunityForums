@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumsConfig
 	{
-		public string sPath = HttpContext.Current.Server.MapPath(Globals.ModulePath + "config/defaultsetup.config");
+		public string sPath = HttpContext.Current.Server.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
 		public bool ForumsInit(int PortalId, int ModuleId)
 		{
 			try
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				var objModules = new Entities.Modules.ModuleController();
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
 				var xDoc = new System.Xml.XmlDocument();
 				xDoc.Load(sPath);
 				if (xDoc != null)
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
 							string sTemplate = sText;
 							if (sHTML != string.Empty)
 							{
-								sTemplate = "<template><html>" + HttpContext.Current.Server.HtmlEncode(sHTML) + "</html><plaintext>" + sText + "</plaintext></template>";
+								sTemplate = string.Concat("<template><html>", HttpContext.Current.Server.HtmlEncode(sHTML), "</html><plaintext>", sText, "</plaintext></template>");
 							}
 							ti.Template = sTemplate;
 							tc.Template_Save(ti);
@@ -147,10 +147,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 			}
 		}
+
 		private void LoadFilters(int PortalId, int ModuleId)
 		{
 			Utilities.ImportFilter(PortalId, ModuleId);
 		}
+
 		private void LoadRanks(int PortalId, int ModuleId)
 		{
 			try
@@ -171,11 +173,12 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 				}
 			}
-			catch (Exception ex)
+			catch 
 			{
-
+				// do nothing? 
 			}
 		}
+
 		private void LoadDefaultForums(int PortalId, int ModuleId)
 		{
 			var xDoc = new System.Xml.XmlDocument();
@@ -195,17 +198,18 @@ namespace DotNetNuke.Modules.ActiveForums
 						                 ModuleId = ModuleId,
 						                 ForumGroupId = -1,
 						                 GroupName = xNodeList[i].Attributes["groupname"].Value,
+						                 PrefixURL = xNodeList[i].Attributes["prefixurl"].Value,
 						                 Active = xNodeList[i].Attributes["active"].Value == "1",
 						                 Hidden = xNodeList[i].Attributes["hidden"].Value == "1",
 						                 SortOrder = i,
-						                 GroupSettingsKey = "",
+						                 GroupSettingsKey = string.Empty,
 						                 PermissionsId = -1
 						             };
 					    var gc = new ForumGroupController();
 						int groupId;
 						groupId = gc.Groups_Save(PortalId, gi, true);
 						gi = gc.GetForumGroup(ModuleId, groupId);
-						string sKey = "G:" + groupId.ToString();
+						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
 						{
@@ -275,8 +279,9 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.ParentForumId = 0;
 									fi.ForumName = cNodes[c].Attributes["forumname"].Value;
 									fi.ForumDesc = cNodes[c].Attributes["forumdesc"].Value;
-									fi.ForumSecurityKey = "G:" + groupId.ToString();
-									fi.ForumSettingsKey = "G:" + groupId.ToString();
+									fi.PrefixURL = cNodes[c].Attributes["prefixurl"].Value;
+									fi.ForumSecurityKey = string.Concat("G:", groupId.ToString());
+									fi.ForumSettingsKey = string.Concat("G:", groupId.ToString());
 									fi.Active = cNodes[c].Attributes["active"].Value == "1";
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
@@ -299,7 +304,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				try
 				{
-					//objStreamReader = IO.File.OpenText(sPath)
 					objStreamReader = new System.IO.StreamReader(sPath, System.Text.Encoding.ASCII);
 					sContents = objStreamReader.ReadToEnd();
 					objStreamReader.Close();
@@ -321,25 +325,31 @@ namespace DotNetNuke.Modules.ActiveForums
 		        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
 		    }
 		}
+
 		internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
             System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
+
             foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
             {
-                if (!System.IO.Directory.Exists(attachmentFolder.FullName + "\\orphaned"))
+                if (!System.IO.Directory.Exists(string.Concat(attachmentFolder.FullName, "\\orphaned")))
                 {
-                    System.IO.Directory.CreateDirectory(attachmentFolder.FullName + "\\orphaned");
+                    System.IO.Directory.CreateDirectory(string.Concat(attachmentFolder.FullName, "\\orphaned"));
 				}
+
 				List<string> attachmentFullFileNames = System.IO.Directory.EnumerateFiles(path: attachmentFolder.FullName, searchPattern: "*", searchOption: System.IO.SearchOption.AllDirectories).ToList<string>();
 				List<string> attachmentFileNames = new List<string>();
+
                 foreach (string attachmentFileName in attachmentFullFileNames)
 				{
 					attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
 				}
+
 				List<string> databaseFileNames = new List<string>();
                 string connectionString = new Connection().connectionString;
                 string dbPrefix = new Connection().dbPrefix;
+
                 using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
 				{
                     while (dr.Read())
@@ -348,16 +358,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     dr.Close();
                 }
+
 				foreach (string attachmentFileName in attachmentFileNames)
 				{
 					if (!databaseFileNames.Contains(attachmentFileName))
 					{
-                        System.IO.File.Copy(attachmentFolder.FullName + "\\" + attachmentFileName, attachmentFolder.FullName + "\\orphaned\\" + attachmentFileName, true); 
-						System.IO.File.Delete(attachmentFolder.FullName + "\\" + attachmentFileName);
+                        System.IO.File.Copy(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName), string.Concat(attachmentFolder.FullName, "\\orphaned\\", attachmentFileName), true); 
+						System.IO.File.Delete(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName));
                     }
 				}
             }
         }
     }
 }
-

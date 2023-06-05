@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         string sQuery = "//tokens/token";
                         if (!(group == string.Empty))
                         {
-                            sQuery = sQuery + "[@group='" + group + "' or @group='*']";
+                            sQuery = string.Concat(sQuery, "[@group='", group, "' or @group='*']");
                         }
                         System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes(sQuery);
                         if (xNodeList.Count > 0)

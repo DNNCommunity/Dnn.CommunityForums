@@ -1364,6 +1364,8 @@
   <ItemGroup>
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Entities\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup>
