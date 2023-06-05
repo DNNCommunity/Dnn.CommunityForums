@@ -16,17 +16,34 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
+// 
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Services
 {
-    public class ForumRouteMapper : IServiceRouteMapper
+/// <summary>
+/// <inheritdoc/>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+    [SupportedModules(Globals.ModuleName)] /* this MUST match DesktopModule.ModuleName so use new constant */
+    public class ControllerBase<T> : DnnApiController
     {
-        public void RegisterRoutes(IMapRoute mapRouteManager)
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
+        /// <summary>
+        /// provide a simple method for testing
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage HelloWorld()
         {
-            mapRouteManager.MapHttpRoute("ActiveForums", "default", "{controller}/{action}", new {}, new[] { "DotNetNuke.Modules.ActiveForums" });
+            Logger.Info("Hello World!");
+            return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
         }
     }
 }
-

@@ -28,7 +28,7 @@ using System.Web.UI.WebControls;
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [ToolboxData("<{0}:WhatsNewControl runat=server></{0}:WhatsNewControl>")]
-    public class WhatsNewControl : Entities.Modules.PortalModuleBase
+    public class WhatsNewControl : DotNetNuke.Entities.Modules.PortalModuleBase
     {
 
         #region Private Member Variables
@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 dr.Close();
 
-                var sRSSImage = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/feedicon.gif") + "\" border=\"0\" />";
+                var sRSSImage = "<img src=\"" + Page.ResolveUrl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>feedicon.gif") + "\" border=\"0\" />";
                 var sRSSURL = Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + PortalId + "&tabid=" + TabId.ToString() + "&moduleid=" + ModuleId.ToString();
                 var sRSSIconLink = "<a href=\"" + sRSSURL + "\">" + sRSSImage + "</a>";
                 sFooterTemplate = sFooterTemplate.Replace("[RSSICON]", sRSSImage);

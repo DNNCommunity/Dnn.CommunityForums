@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 this.AppRelativeVirtualPath = "~/";
                 MyTheme = MainSettings.Theme;
-                MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
+                MyThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
                 int defaultTemplateId = ForumInfo.TopicsTemplateId;
                 if (DefaultTopicsViewTemplateId >= 0)
                 {
@@ -311,16 +311,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", ForumName);
                                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", GroupName);
-                                string pageName = string.Empty;
-                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-                                if (settings.ActiveTab.Title.Length == 0)
-                                {
-                                    pageName = Server.HtmlEncode(settings.ActiveTab.TabName);
-                                }
-                                else
-                                {
-                                    pageName = Server.HtmlEncode(settings.ActiveTab.Title);
-                                }
+                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                                string pageName = settings.ActiveTab.Title.Length == 0
+                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)
+                                    : Server.HtmlEncode(settings.ActiveTab.Title);
                                 MetaTemplate = MetaTemplate.Replace("[PAGENAME]", pageName);
                                 MetaTemplate = MetaTemplate.Replace("[PORTALNAME]", settings.PortalName);
                                 MetaTemplate = MetaTemplate.Replace("[TAGS]", string.Empty);
