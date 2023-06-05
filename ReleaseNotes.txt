@@ -11,7 +11,8 @@
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
 			<li>FIXED: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-      </ul>
+      <li>FIXED: User's Last Post date/time not stored in UTC (affecting flood control if used) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/233">Issue 233</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
  
 		<h3>07.00.07</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
@@ -40,12 +41,6 @@
 			<li>NEW: Applies Flood Control to All User Types, Including Admins (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/95">Issue 95</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Improved Email Notifications &amp; Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/169">Issue 169</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Copies Missing Moderator Controls to Posts View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/153">Issue 153</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-		</ul>
-
-		<h3>07.00.08</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
-			<li>FIXED: Some image files in themes are referenced using /images/images/ rather than /images/  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/191">Issue 191</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
 		<h3>07.00.04</h3>
