@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = new ModuleController().GetModuleSettings(ModuleId);
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
                         DataCache.CacheStore(settingsCacheKey, moduleSettings);
                     }
 
@@ -79,15 +79,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region DNN Actions
 
-        public Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
         {
             get
             {
-                return new Entities.Modules.Actions.ModuleActionCollection
+                return new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
                                   {
                                       {
                                           GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
-                                          Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
+                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
                                           EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
                                       }
                                   };
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sRSSIconLink = string.Empty;
             if (Settings.RSSEnabled)
             {
-                sRSSImage = "<img src=\"" + Page.ResolveUrl("~/DesktopModules/ActiveForums/images/feedicon.gif") + "\" border=\"0\" />";
+                sRSSImage = "<img src=\"" + Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "feedicon.gif") + "\" border=\"0\" />";
                 sRSSUrl = Page.ResolveUrl("~/desktopmodules/activeforumswhatsnew/feeds.aspx") + "?portalId=" + PortalId + "&tabid=" + TabId.ToString() + "&moduleid=" + ModuleId.ToString();
                 sRSSIconLink = "<a href=\"" + sRSSUrl + "\">" + sRSSImage + "</a>";
             }

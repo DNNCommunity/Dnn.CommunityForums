@@ -319,8 +319,10 @@ function toggleAttach(obj){
             var $propertyWindow = $(propertyWindow);
             var elem = $(obj);
             var position = elem.position();
-            position.left += 15;
-            position.top = (position.top - ($propertyWindow.height() / 2));
+            //position.left += 15;
+            //position.top = (position.top - ($propertyWindow.height() / 2));
+            position.left += 650;
+            position.top = (position.top + ($propertyWindow.height() / 2));
             position.width = $propertyWindow.innerWidth() + 20;
             position.height = $propertyWindow.innerHeight();
 
@@ -346,7 +348,7 @@ function addRole(){
 		cellLeft.appendChild(textNode)
 		var cellRight = row.insertCell(1);
 		var img = document.createElement('img');
-		img.src = '<%=Page.ResolveUrl("~/desktopmodules/activeforums/images/delete16.png")%>';
+        img.src = "~/DesktopModules/ActiveForums/images/delete16.png";
 		img.onclick = function() {removeRole(this,drp.options[drp.selectedIndex].value)};
 		cellRight.appendChild(img);        
 		var hidRoles = document.getElementById('<%=hidRoles.ClientID%>');
@@ -857,7 +859,7 @@ function afadmin_getProperties() {
 						<td width="100%">
 							<asp:TextBox ID="txtForumDesc" runat="server" CssClass="amcptxtbx" TextMode="MultiLine" /></td>
 						<td>
-							<img src="~/desktopmodules/activeforums/images/spacer.gif" width="20" runat="server" /></td>
+							<img src="~/DesktopModules/ActiveForums/images/spacer.gif" width="20" runat="server" /></td>
 					</tr>
 					<tr id="trPrefix" runat="server">
 						<td valign="top">
@@ -866,7 +868,7 @@ function afadmin_getProperties() {
 						<td width="100%">
 							<asp:TextBox ID="txtPrefixURL" runat="server" Width="100%" CssClass="amcptxtbx" MaxLength="50" onkeypress="return filterVanity(this,event);" /></td>
 						<td>
-							<img src="~/desktopmodules/activeforums/images/spacer.gif" width="20" runat="server" /></td>
+							<img src="~/DesktopModules/ActiveForums/images/spacer.gif" width="20" runat="server" /></td>
 					</tr>
 				</table>
 				<table width="100%">
@@ -1420,7 +1422,7 @@ function afadmin_getProperties() {
 				<td></td>
 				<td class="amcpbold" style="white-space: nowrap">[RESX:SelectRoles]:</td>
 				<td><asp:DropDownList ID="drpRoles" runat="server" CssClass="amcptxtbx" /></td>
-				<td><div onclick="addRole();"><img id="Img40" src="~/desktopmodules/activeforums/images/add.png" runat="server" border="0" align="absmiddle" alt="[RESX:ClickToAdd]" /></div></td>
+				<td><div onclick="addRole();"><img id="Img40" src="~/DesktopModules/ActiveForums/images/add.png" runat="server" border="0" align="absmiddle" alt="[RESX:ClickToAdd]" /></div></td>
 			</tr>
 			<tr>
 				<td colspan="4" class="amcpnormal"><asp:Literal ID="tbRoles" runat="server" /></td>
@@ -1459,7 +1461,7 @@ function afadmin_getProperties() {
 <div style="display: none; width: 500px; height: 350px; position: absolute; padding: 0; margin: 0;" id="propeditor" class="afmodalform afroundall">
 	<div class="amcp-mod-inner" style="height: 348px;">
 		<div class="amcp-mod-hd">
-			<img src="~/desktopmodules/activeforums/images/close.gif" onclick="afadmin_cancelPropForm();" runat="server" border="0" />
+			<img src="~/DesktopModules/ActiveForums/images/close.gif" onclick="afadmin_cancelPropForm();" runat="server" border="0" />
 			<div id="propeditor_header" style="float: left; padding: 3px; padding-top: 8px; padding-left: 10px; font-weight: bold;">[RESX:PropertyEditor]</div>
 			<div class="afclear"></div>
 		</div>

@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var lit = new LiteralControl();
                             object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            sToolbar = Utilities.GetFileContent(SettingKeys.TemplatePath + "ToolBar.txt");
+                            sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(TemplatePath + "\\ToolBar.txt"));
                             DataCache.CacheStore("aftb" + ModuleId, sToolbar);
                             sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
                             lit.Text = sToolbar.ToString();
@@ -163,13 +163,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     catch (Exception ex)
                     {
-                        Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                        DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
 
@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                     sTemplate = ex.Message; //ParseControls(sTemplate)
                 }
                 if (sTemplate.Contains("[NOTOOLBAR]"))
@@ -287,11 +287,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DataTable rsForums = ForumTable.DefaultView.ToTable();
                     Forum fi;
                     int tmpGroupCount = 0;
-                    int asForumGroupId;
-                    int groupForumsCount = 0;
                     foreach (DataRow dr in rsForums.Rows)
                     {
-                        if (!Convert.ToBoolean(dr["GroupHidden"]))
+                        fi = FillForumRow(dr);
+                        bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                        if ((UserInfo.IsSuperUser) || (canView) || (!Convert.ToBoolean(dr["GroupHidden"])))
                         {
                             if (tmpGroup != dr["GroupName"].ToString())
                             {
@@ -310,7 +310,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", dr["GroupName"].ToString());
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", dr["ForumGroupId"].ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(" + GroupId.ToString() + ");\" src=\"" + ThemePath + GetImage(GroupId) + "\" alt=\"[RESX:ToggleGroup]\" />");
+                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<td class=\"afgrouprow\" align=\"right\" style=\"text-align:right;padding-right:10px;\"><img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(\'" + GroupId.ToString() + "\', \'afarrow\', \'afarrow\');\" src=\"" + Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + GetImage(GroupId)) + "\" alt=\"" + Utilities.GetSharedResource("[RESX:ToggleGroup]") + "\" /></td>");
+
 
                                     //any replacements on the group
                                     string sNewGroup = "<div id=\"group" + GroupId + "\" " + GetDisplay(GroupId) + " class=\"afgroup\">" + sGroup + "</div>";
@@ -324,8 +325,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                             if (iForum <= Globals.ForumCount)
                             {
-                                fi = FillForumRow(dr);
-                                bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
                                 if (canView || (!fi.Hidden))
                                 {
                                     sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
@@ -364,7 +363,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 return string.Empty;
             }
         }
@@ -419,7 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return fi;
@@ -715,11 +714,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (Convert.ToBoolean(Request.Cookies[GroupID + "Show"].Value))
                 {
-                    return "images/arrows_down.png";
+                    return "arrows_down.png";
                 }
-                return "images/arrows_left.png";
+                return "arrows_left.png";
             }
-            return "images/arrows_down.png";
+            return "arrows_down.png";
         }
 
         private string GetDisplay(int GroupID)

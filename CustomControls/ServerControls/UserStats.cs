@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				string output = string.Empty;
 				DotNetNuke.Entities.Portals.PortalSettings ps = (DotNetNuke.Entities.Portals.PortalSettings)(Context.Items["PortalSettings"]);
-				DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
+				DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 				string imagePath = string.Empty;
 				int portalId = ps.PortalId;
 				string tmp = string.Empty;
@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					DotNetNuke.Entities.Tabs.TabInfo ti = null;
 					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(portalId))
 					{
-						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == "Active Forums".ToUpperInvariant())
+						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
 						{
 							ModuleId = mi.ModuleID;
 							break;
