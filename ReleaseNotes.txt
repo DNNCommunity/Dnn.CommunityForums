@@ -7,6 +7,25 @@
 	<hr/>
 	<div class="dnnClear">
 
+		<h3>07.00.08</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>FIXED: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+      <li>FIXED: User's Last Post date/time not stored in UTC (affecting flood control if used) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/233">Issue 233</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+ 
+		<h3>07.00.07</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Improved Caching for Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/258">Issue 258</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added New Email Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/169">Issue 169</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added Web API Layer for Future Development (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/268">Issue 268</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Templates Not Removed From the Database After Deleting the Module (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/97">Issue 97</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Removed Deprecated DNN APIs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/271">Issue 271</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Git Cleanup Tasks (No Issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Improved String Handling &amp; Whitespace Cleanup in Many Classes (No Issue, thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
+		</ul> 
+
 		<h3>07.00.06</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
@@ -47,6 +66,7 @@
 			<li>TASK: Removed hard-coded Active Forums 4.3 Template Files, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Improved Null date checking logic, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Removed hidden &amp; hard-coded legacy copyright from the HTML source, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+
 		</ul>
 
 		<h3>07.00.01</h3>

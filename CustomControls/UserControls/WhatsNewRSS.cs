@@ -26,6 +26,8 @@ using System.Web.UI;
 using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using System.Reflection;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -115,8 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var moduleSettings = DataCache.CacheRetrieve(settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings =  new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleID: RequestModuleID).ModuleSettings;
-
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: RequestModuleID, tabId: RequestTabID, ignoreCache: false).ModuleSettings;
                         DataCache.CacheStore(settingsCacheKey, moduleSettings);
                     }
 
@@ -227,8 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(RSSHeader + System.Environment.NewLine);
 
             // build channel
-            var pc = new PortalController();
-            var ps = PortalController.GetCurrentPortalSettings();
+            var ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
 
             var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.BaseUtcOffset.TotalMinutes);
 
