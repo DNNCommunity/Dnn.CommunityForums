@@ -310,7 +310,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", dr["GroupName"].ToString());
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", dr["ForumGroupId"].ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(" + GroupId.ToString() + ");\" src=\"" + ThemePath + GetImage(GroupId) + "\" alt=\"[RESX:ToggleGroup]\" />");
+                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<td class=\"afgrouprow\" align=\"right\" style=\"text-align:right;padding-right:10px;\"><img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(\'" + GroupId.ToString() + "\', \'afarrow\', \'afarrow\');\" src=\"" + Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + GetImage(GroupId)) + "\" alt=\"" + Utilities.GetSharedResource("[RESX:ToggleGroup]") + "\" /></td>");
+
 
                                     //any replacements on the group
                                     string sNewGroup = "<div id=\"group" + GroupId + "\" " + GetDisplay(GroupId) + " class=\"afgroup\">" + sGroup + "</div>";
@@ -710,11 +711,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (Convert.ToBoolean(Request.Cookies[GroupID + "Show"].Value))
                 {
-                    return "images/arrows_down.png";
+                    return "arrows_down.png";
                 }
-                return "images/arrows_left.png";
+                return "arrows_left.png";
             }
-            return "images/arrows_down.png";
+            return "arrows_down.png";
         }
 
         private string GetDisplay(int GroupID)

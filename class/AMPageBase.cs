@@ -49,8 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-				var sb = new SettingsBase {ForumModuleId = AFModID};
-			    return sb.MainSettings;
+                return DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings(AFModID);
 			}
 		}
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]

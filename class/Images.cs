@@ -20,38 +20,39 @@
 
 using System;
 using System.IO;
-//ORIGINAL LINE: Imports System.Web.HttpContext
 using System.Drawing;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public abstract class Images
 	{
 		public static int imgHeight;
 		public static int imgWidth;
+
 		private static int GetHeight(string sPath)
 		{
 			var g = Image.FromFile(sPath);
-			//Dim thisFormat = g.RawFormat
 			return g.Height;
 		}
+
 		private static int GetWidth(string sPath)
 		{
 			var g = Image.FromFile(sPath);
-			//Dim thisFormat = g.RawFormat
 			return g.Width;
 		}
+
 		public static int GetHeightFromStream(Stream sFile)
 		{
 			var g = Image.FromStream(sFile, true);
-			//Dim thisFormat = g.RawFormat
 			return g.Height;
 		}
+
 		public static int GetWidthFromStream(Stream sFile)
 		{
 			var g = Image.FromStream(sFile, true);
-			//Dim thisFormat = g.RawFormat
 			return g.Width;
 		}
+
 		public static void CreateImage(string sFile, int intHeight, int intWidth)
 		{
 			string tmp;
@@ -75,14 +76,15 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				tmp = sFile;
 			}
+
 			File.Copy(sFile, tmp);
 			var g = Image.FromFile(tmp);
-			//Dim thisFormat = g.RawFormat
 			int newHeight;
 			int newWidth;
 			newHeight = intHeight;
 			newWidth = intWidth;
 			Size imgSize;
+
 			if (g.Width > newWidth | g.Height > newHeight)
 			{
 				imgSize = NewImageSize(g.Width, g.Height, newWidth, newHeight);
@@ -122,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			var newStream = new MemoryStream();
 			var g = Image.FromStream(sFile);
-			//Dim thisFormat = g.RawFormat
+
 			if (intHeight > 0 & intWidth > 0)
 			{
 				int newHeight;
@@ -167,16 +169,17 @@ namespace DotNetNuke.Modules.ActiveForums
 			g.Dispose();
 			imgOutput1.Dispose();
 			bmpOutput.Dispose();
+
 			return newStream;
+        }
 
-
-		}
 		public static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string MYmimeType)
 		{
 			try
 			{
 				int i;
 				System.Drawing.Imaging.ImageCodecInfo[] encoders = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
+
 				for (i = 0; i <= (encoders.Length - 1); i++)
 				{
 					if (encoders[i].MimeType == MYmimeType)
@@ -184,6 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						return encoders[i];
 					}
 				}
+
 				return null;
 			}
 			catch
@@ -191,6 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				return null;
 			}
 		}
+
 		public static Size NewImageSize(int currentWidth, int currentHeight, int newWidth, int newHeight)
 		{
 			double tempMultiplier;
@@ -207,8 +212,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			var NewSize = new Size(Convert.ToInt32(currentWidth * tempMultiplier), Convert.ToInt32(currentHeight * tempMultiplier));
 
 			return NewSize;
-
-		}
+        }
 	}
 }
-

@@ -25,13 +25,15 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Framework;
 using System.Text;
 using System.Xml;
+using System.Web;
+using DotNetNuke.Entities.Urls;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
 	public partial class ForumSettings : ForumSettingsBase
 	{
-
-	    private int? _fullTextStatus;
+        private int? _fullTextStatus;
         
 	    private int FullTextStatus
 	    {
@@ -62,18 +64,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			drpPageSize.Style.Add("float", "none");
 
-            drpFloodInterval.Style.Add("float", "none");
-
-            drpEditInterval.Style.Add("float", "none");
-
-            if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
+			if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
 			{
 				rdEnableURLRewriter.SelectedIndex = 1;
 				rdEnableURLRewriter.Enabled = false;
-				rdEnableURLRewriter.Enabled = false;
 			}
 			var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-			if (u.IsSuperUser & (Request.ServerVariables["SERVER_SOFTWARE"].Contains("7") || Request.ServerVariables["SERVER_SOFTWARE"].Contains("8")) & !(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
+			if (u.IsSuperUser & (HttpRuntime.IISVersion.Major >= 7) &!(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
 			{
 				if (Utilities.IsRewriteLoaded())
 				{
@@ -130,9 +127,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					BindForumSecurity();
 
                     Utilities.SelectListItemByValue(drpPageSize, PageSize);
-                    Utilities.SelectListItemByValue(drpFloodInterval, FloodInterval);
-                    Utilities.SelectListItemByValue(drpEditInterval, EditInterval);
-
+	                
+					txtFloodInterval.Text = FloodInterval.ToString(); ;
+					txtEditInterval.Text = EditInterval.ToString();
 
                     Utilities.SelectListItemByValue(drpMode, Mode);
                     Utilities.SelectListItemByValue(drpThemes, Theme);
@@ -192,21 +189,44 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		/// </history>
 		/// -----------------------------------------------------------------------------
 		public override void UpdateSettings()
-		{
+        {
+
+                     
 			try
 			{
 				Theme = drpThemes.SelectedValue;
 				Mode = drpMode.SelectedValue;
 				TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
 				PageSize = Utilities.SafeConvertInt(drpPageSize.SelectedValue, 10);
-                FloodInterval = Utilities.SafeConvertInt(drpFloodInterval.SelectedValue,0);
-                EditInterval = Utilities.SafeConvertInt(drpEditInterval.SelectedValue,0);
+                FloodInterval = Math.Max(0,Utilities.SafeConvertInt(txtFloodInterval.Text,0));
+                EditInterval = Math.Max(0,Utilities.SafeConvertInt(txtEditInterval.Text,0));
                 AutoLink = Utilities.SafeConvertBool(rdAutoLinks.SelectedValue);
                 DeleteBehavior = Utilities.SafeConvertInt(drpDeleteBehavior.SelectedValue);
 				ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
                 Signatures = Utilities.SafeConvertInt(drpSignatures.SelectedValue);
                 UserNameDisplay = drpUserDisplayMode.SelectedValue;
                 FriendlyURLs = Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue);
+
+				var urlSettings = new FriendlyUrlSettings(PortalId);
+                string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
+                const string ignoreForumsRegex = "(aff=|afg=|aft=|afgt=|aftg=|afv=|act=|afpg=)|";
+				if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
+				{
+					if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
+					{
+						DoNotRedirectRegex = string.Concat(ignoreForumsRegex, DoNotRedirectRegex);
+						DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+					}
+				}
+				else 
+				{
+                    if (DoNotRedirectRegex.Contains(ignoreForumsRegex))
+                    {
+                        DoNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                    }
+                }
+
                 FullTextSearch = Utilities.SafeConvertBool(rdFullTextSearch.SelectedValue);
                 MailQueue = Utilities.SafeConvertBool(rdMailQueue.SelectedValue);
 
@@ -265,8 +285,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					}
 					else if (IsFullTextAvailable && !FullTextSearch) // Available, but not selected
 					{
-                        // Remove the search indexes if they exist
-						DataProvider.Instance().Search_ManageFullText(false);
+						try
+						{
+                            // Remove the search indexes if they exist
+                            DataProvider.Instance().Search_ManageFullText(false);
+                        }
+                        catch (InvalidOperationException)
+                        {
+							// stored procedures have never been installed
+                        }
+                        catch 
+                        {
+                            throw; // anything else
+                        }
 					}
 				}
 				catch (Exception ex)
