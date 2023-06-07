@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>True</azureCompatible>
       <dependencies>
-        <dependency type="managedPackage" version="7.0.8">Active Forums</dependency>
+        <dependency type="managedPackage" version="7.0.9">Active Forums</dependency>
       </dependencies>
       <components>
         <component type="ResourceFile">
