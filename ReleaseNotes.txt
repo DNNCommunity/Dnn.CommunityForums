@@ -18,6 +18,7 @@
 			<li>BUG: Added a missing SQL query to remove orphaned rewrite URL data (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Fixed flood control bug due to a GitHub merge conflict (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Updated namespaces to be more contectually obvious to developers (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved a minor build issue that was packaging VS &amp; Git files in the Resources.zip (No issue, thanks <a href="https://github.com/willstrohl" target="_blank">@WillStrohl</a>!)</li>
 		</ul>
  
 		<h3>07.00.07</h3>
