@@ -1,3 +1,4 @@
+
 ﻿/* begin - issue #169 - More specific email notifications -- need to retrieve topic-or-forum-level subscriber */
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
@@ -106,3 +107,4 @@ SELECT DISTINCT * FROM @subs
 GO
 
 /* end -  issue #169 - More specific email notifications -- need to retrieve topic-or-forum-level subscriber */
+
