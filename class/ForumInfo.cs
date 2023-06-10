@@ -53,6 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public ForumGroupInfo ForumGroup { get; set; }
         public string PrefixURL { get; set; }
 
+
 		public string ForumURL
 		{
 			get

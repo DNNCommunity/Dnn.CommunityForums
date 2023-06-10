@@ -1,3 +1,4 @@
+
 ﻿/* issue 205 - begin - what's new view with non-random option and topics only should be sorted to show most recent based on create/reply date rather than just original create date */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_TP_GetPosts]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_TP_GetPosts]
@@ -112,3 +113,5 @@ IF @RandomOrder = 1 AND @TopicsOnly = 0
 	END
 GO
 /* issue 205 - end - what's new view with non-random option and topics only should be sorted to show most recent based on create/reply date rather than just original create date */
+
+

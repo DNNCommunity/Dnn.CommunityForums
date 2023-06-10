@@ -662,9 +662,10 @@
     <None Include="sql\07.00.12.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
-    <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.08.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
+    <None Include="sql\07.00.10.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -753,6 +754,7 @@
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
+    <Compile Include="class\TemplateCache.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
     <Compile Include="components\Topics\TopicInfo.cs" />
     <Compile Include="components\Topics\TopicsController.cs" />

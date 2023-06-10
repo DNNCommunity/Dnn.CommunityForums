@@ -27,6 +27,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -182,7 +183,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
                 string sOutput = string.Empty;
                 string sTemplate;
-                int TemplateCache = MainSettings.TemplateCache;
                 if (UseTemplatePath && TemplatePath != string.Empty)
                 {
                     DisplayTemplate = Utilities.GetFileContent(TemplatePath + "ForumView.htm");
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
                 }
 
-                sTemplate = DisplayTemplate == string.Empty ? DataCache.GetCachedTemplate(TemplateCache, ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate;
+                sTemplate = DisplayTemplate == string.Empty ? DotNetNuke.Modules.ActiveForums.TemplateCache.GetCachedTemplate( ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate; 
                 try
                 {
                     sTemplate = ParseControls(sTemplate);
@@ -407,6 +407,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 fi.TotalTopics = Convert.ToInt32(dr["TotalTopics"]);
                 fi.TotalReplies = Convert.ToInt32(dr["TotalReplies"]);
+                fi.SubscriberCount = Utilities.SafeConvertInt(dr["ForumSubscriberCount"]);
                 fi.Hidden = Convert.ToBoolean(dr["ForumHidden"]);
                 fi.LastReplyId = Convert.ToInt32(dr["LastReplyId"]);
                 fi.LastTopicId = Convert.ToInt32(dr["LastTopicId"]);
@@ -593,6 +594,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             Template = Template.Replace("[TOTALTOPICS]", fi.TotalTopics.ToString());
             Template = Template.Replace("[TOTALREPLIES]", fi.TotalReplies.ToString());
+            Template = Template.Replace("[FORUMSUBSCRIBERCOUNT]", fi.SubscriberCount.ToString());
+            
             //Last Post Section
             int intLength = 0;
             if ((Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
