@@ -4,6 +4,12 @@
 SET NOCOUNT ON
 GO
 
+/* Remove orphaned URL rewrite records */
+DELETE u FROM {databaseOwner}[{objectQualifier}activeforums_URL] u  
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t  
+ON t.TopicId = u.TopicId  
+WHERE t.TopicId IS NULL  
+
 /* remove obsolete license key from activeforums_Settings with ModuleId = -1 to avoid missing row in CONSTRAINT from activeforums_Settings to Modules */
 DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Settings] WHERE ModuleId = -1 AND SettingName = 'AFKEY'
 GO
