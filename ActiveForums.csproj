@@ -654,7 +654,7 @@
     <None Include="sql\06.04.01.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
-    <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.02.SqlDataProvider" /> 
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
@@ -662,6 +662,8 @@
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\07.00.09.SqlDataProvider" /> 
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -746,8 +748,8 @@
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
-    <Compile Include="class\Likes.cs" />
-    <Compile Include="class\LikesController.cs" />
+    <Compile Include="Entities\Like.cs" />
+    <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
@@ -774,6 +776,7 @@
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
+    <Compile Include="Services\Controllers\LikeController.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
     <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="SimulateDateDiff.cs" />
@@ -1362,6 +1365,9 @@
   <ItemGroup>
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
+    <Folder Include="config\templates\community\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Entities\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup>

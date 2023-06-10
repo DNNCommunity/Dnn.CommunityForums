@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             _themePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
             Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
-             
+
             ctlForm.ID = "ctlForm";
             ctlForm.PostButton.ImageUrl = _themePath + "/images/save32.png";
             ctlForm.PostButton.ImageLocation = "TOP";
@@ -271,8 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // if someone activates this checkbox send him home :-)
                 Response.Redirect("about:blank");
             }
-            var iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;

@@ -1,0 +1,48 @@
+/* Remove orphaned URL rewrite records */
+DELETE u FROM {databaseOwner}[{objectQualifier}activeforums_URL] u  
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t  
+ON t.TopicId = u.TopicId  
+WHERE t.TopicId IS NULL  
+
+/* issues 218 -- begin -- remove redundant indexes */
+
+/* remove old redundant indexes if they exist */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt2')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt3] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'idx_{objectQualifier}activeforums_ForumTopics_Opt4')
+DROP INDEX [idx_{objectQualifier}activeforums_ForumTopics_Opt4] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+
+/* remove newer non-redundant indexes if they exist */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt1')
+DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt2')
+DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+GO
+
+/* create newer non-redundant indexes  */
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics
+(
+	[ForumId] ASC,
+	[TopicId] ASC 
+)
+INCLUDE ([LastReplyId])
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics
+(
+	[TopicId] ASC,
+	[ForumId] ASC 
+)
+INCLUDE ([LastReplyId])
+GO
+ 
+
+/* issues 218 -- end -- remove redundant indexes */
