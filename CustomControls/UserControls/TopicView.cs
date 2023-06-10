@@ -467,12 +467,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sOutput = DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "TopicView", _topicTemplateId);
+                sOutput = TemplateCache.GetCachedTemplate(ModuleId, "TopicView", _topicTemplateId);
             }
 
             // Handle the postinfo token if present
             if (sOutput.Contains("[POSTINFO]") && ForumInfo.ProfileTemplateId > 0)
-                sOutput = sOutput.Replace("[POSTINFO]", DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
+                sOutput = sOutput.Replace("[POSTINFO]", TemplateCache.GetCachedTemplate(ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
 
             // Run some basic rpleacements
             sOutput = sOutput.Replace("[PORTALID]", PortalId.ToString());

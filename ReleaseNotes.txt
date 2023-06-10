@@ -7,6 +7,12 @@
 	<hr/>
 	<div class="dnnClear">
 
+		<h3>07.00.10</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Honor module cache settings when loading templates [used by designers] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/155">Issue 155</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.09</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>

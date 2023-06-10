@@ -220,6 +220,13 @@
 				<asp:ListItem Value="True" resourcekey="Yes" />
 				<asp:ListItem Value="False" resourcekey="No" />
 			</asp:RadioButtonList>
+		</div>  
+		<div class="dnnFormItem">
+			<dnn:label ID="lblCacheTemplates" runat="server" resourcekey="CacheTemplates" Suffix=":" />
+			<asp:RadioButtonList ID="rdCacheTemplates" RepeatDirection="Horizontal" runat="server">
+				<asp:ListItem Value="True" resourcekey="Yes" />
+				<asp:ListItem Value="False" resourcekey="No" />
+			</asp:RadioButtonList>
 		</div>
 	</fieldset>
 	<asp:HiddenField ID="txtGroupModSec" runat="server" />
