@@ -39,9 +39,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <summary>
         /// Fired by UI while user is online to update user's profile with 
         /// </summary>
+        /// <param>none</param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/User/UpdateUserIsOnline</remarks>
-        [HttpGet]
+        [HttpPost]
         [DnnAuthorize]
         public HttpResponseMessage UpdateUserIsOnline()
         {

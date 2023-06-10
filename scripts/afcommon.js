@@ -61,7 +61,7 @@ var amaf = {
 function amaf_updateuseronline(mid) {
     var sf = $.ServicesFramework(mid);
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: '/API/ActiveForums/User/UpdateUserIsOnline',
         beforeSend: sf.setModuleHeaders
     })
