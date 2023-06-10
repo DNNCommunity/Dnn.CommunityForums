@@ -1,3 +1,9 @@
+/* Remove orphaned URL rewrite records */
+DELETE u FROM {databaseOwner}[{objectQualifier}activeforums_URL] u  
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t  
+ON t.TopicId = u.TopicId  
+WHERE t.TopicId IS NULL  
+
 /* issues 218 -- begin -- remove redundant indexes */
 
 /* remove old redundant indexes if they exist */
@@ -40,3 +46,4 @@ GO
  
 
 /* issues 218 -- end -- remove redundant indexes */
+
