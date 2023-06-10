@@ -41,6 +41,19 @@ function afQuickSubmit() {
 //-->
 </script>
 
+		<div style="display:none;visibility:hidden;" >
+		
+            <label ID="ContactByFaxOnly" runat="server"
+               ControlName="ContactByFaxOnlyCheckBox"
+               ResourceKey="ContactByFaxOnly"
+               Suffix=":"
+               TabIndex="-1" />
+            <asp:CheckBox ID="ContactByFaxOnlyCheckBox" runat="server"
+               AutoPostBack="true"
+               Checked="false"
+               OnCheckedChanged="ContactByFaxOnlyCheckBox_CheckedChanged"
+               TabIndex="-1" />
+        </div>
 <table class="afgrid">
 	<tr>
 		<td class="afgrouprow"><div class="afcontrolheader">[RESX:QuickReply]</div></td>

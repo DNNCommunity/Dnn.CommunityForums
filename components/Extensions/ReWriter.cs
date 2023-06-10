@@ -17,12 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using DotNetNuke.Common.Utilities.Internal;
+using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -34,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		private int _tabId = -1;
 		private int _moduleId = -1;
 		private int _topicId = -1;
-		private int _page = 1;
+		private int _page = 0;
 		private int _contentId = -1;
 		private int _userId = -1;
 		private int _archived = 0;
@@ -58,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			_tabId = -1;
 			_moduleId = -1;
 			_topicId = -1;
-			_page = 1;
+			_page = 0;
 			_contentId = -1;
 			_archived = 0;
 			_forumgroupId = -1;
@@ -78,8 +79,8 @@ namespace DotNetNuke.Modules.ActiveForums
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".aspx")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".gif")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".jpg")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".css")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".png")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".css")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".png")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".swf")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".htm")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".html")
@@ -95,18 +96,23 @@ namespace DotNetNuke.Modules.ActiveForums
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".doc")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".docx")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".ppt")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".pptx")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".zip")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".pptx")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".zip")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains(".zipx")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/api/")
 				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/portals/")
-				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/"))
+				|| Request.Url.LocalPath.ToLowerInvariant().Contains("/desktopmodules/")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".eot")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".ttf")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".otf")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".svg")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".webp")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".woff")
+                || Request.Url.LocalPath.ToLowerInvariant().Contains(".woff2"))
 			{
 				return;
 			}
-			int PortalId = -1;
-			DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
-			objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
+			DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 			if (objPortalAliasInfo == null && ! (HttpContext.Current.Request.Url.IsDefaultPort) )
 			{
 				objPortalAliasInfo = PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host + ":" + HttpContext.Current.Request.Url.Port.ToString());
@@ -115,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				return;
 			}
-			PortalId = objPortalAliasInfo.PortalID;
+            int PortalId = objPortalAliasInfo.PortalID;
 
 			string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
             // TODO: this is all probably now handled by moving the exclusion logic earlier and may be redundant?
@@ -155,7 +161,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 			bool canContinue = false;
-			Data.Common db = new Data.Common();
 			string tagName = string.Empty;
 			string catName = string.Empty;
 			if (newSearchURL.Contains("/category/") || newSearchURL.Contains("/tag/"))
@@ -183,9 +188,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				return;
 			}
-			try
-			{
-				using (IDataReader dr = db.URLSearch(PortalId, newSearchURL))
+            Data.Common db = new Data.Common();
+            try
+            {
+                using (IDataReader dr = db.URLSearch(PortalId, newSearchURL))
 				{
 					while (dr.Read())
 					{
@@ -202,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					dr.Close();
 				}
 			}
-			catch (Exception ex)
+			catch
 			{
 
 			}
@@ -258,7 +264,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			if (_moduleId > 0)
 			{
-				_mainSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleID: _moduleId).ModuleSettings };
+				_mainSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: _moduleId, tabId: _tabId, ignoreCache: false).ModuleSettings };
+
             }
 			if (_mainSettings == null)
 			{
@@ -358,6 +365,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			if (canContinue)
 			{
+				// avoid redirect, e.g. "/Forums" == "forums/"
+				if (((searchURL.StartsWith("/") || searchURL.EndsWith("/")) && searchURL.IndexOf("/") == searchURL.LastIndexOf("/")) &&
+					((newSearchURL.StartsWith("/") || newSearchURL.EndsWith("/")) && newSearchURL.IndexOf("/") == newSearchURL.LastIndexOf("/")) &&
+					 searchURL.Replace("/", string.Empty).ToLowerInvariant() == newSearchURL.Replace("/", string.Empty).ToLowerInvariant())
+				{ 
+					return;
+				}
 				if (searchURL != newSearchURL)
 				{
 					string urlTail = searchURL.Replace(newSearchURL, string.Empty);
@@ -378,10 +392,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						_page = Convert.ToInt32(urlTail);
 					}
 				}
-
-				string sPage = string.Empty;
-				sPage = "&afpg=" + _page.ToString();
-				string qs = string.Empty;
+				string sPage = (_page != 0 ? $"&afpg={_page}" : string.Empty);
+                string qs = string.Empty;
 				if (sUrl.Contains("?"))
 				{
 					qs = "&" + sUrl.Substring(sUrl.IndexOf("?") + 1);
@@ -394,14 +406,14 @@ namespace DotNetNuke.Modules.ActiveForums
 				string sendTo = string.Empty;
 				if ((_topicId > 0) || (_forumId > 0) || (_forumgroupId > 0))
 				{
-					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId +
-								(_forumgroupId > 0 ? "&afg=" + _forumgroupId : string.Empty) +
-								(_forumId > 0 ? "&aff=" + _forumId : string.Empty) +
-								(_topicId > 0 ? "&aft=" + _topicId : string.Empty) +
-								sPage + qs +
+					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, $"~/default.aspx?tabid={_tabId}" +
+								(_forumgroupId > 0 ? $"&afg={_forumgroupId}" : string.Empty) +
+								(_forumId > 0 ? $"&aff={_forumId}" : string.Empty) +
+								(_topicId > 0 ? $"&aft={_topicId}" : string.Empty) +
+                                sPage + qs +
 								((_forumgroupId > 0 || _forumId > 0) ? catQS : string.Empty));
 				}
-				else if (_urlType == 2 && _otherId > 0)
+                else if (_urlType == 2 && _otherId > 0)
 				{
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&act=" + _otherId + sPage + qs);
 				}
@@ -437,7 +449,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + sPage + qs);
 				}
-
 				RewriteUrl(app.Context, sendTo);
 			}
 		}
