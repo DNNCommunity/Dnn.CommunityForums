@@ -1147,7 +1147,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
         {
             return GetTimeZoneOffsetForUser( new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,UserId));
-
         }
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {

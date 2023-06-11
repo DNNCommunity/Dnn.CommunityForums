@@ -1657,4 +1657,13 @@ From,
   <data name="[RESX:SubscribedForumTopicForumName].Text" xml:space="preserve">
     <value>Topic {0} on Subscribed Forum {1}</value>
   </data>
+	<data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve">
+        <value>Subscribed to this topic</value>
+  </data>
+	<data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve">
+        <value>Subscribed to this forum</value>
+   </data>
+	<data name="[RESX:SUBSCRIBERS].Text" xml:space="preserve">
+        <value>Subscribers</value>
+   </data>
 </root>

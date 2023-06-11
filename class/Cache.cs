@@ -58,8 +58,14 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public static object CacheRetrieve(string cacheKey)
 		{
-			object obj = Common.Utilities.DataCache.GetCache(cacheKey);
-			return obj;
+			if (disableCache)
+			{
+				return null;
+			}
+			else 
+			{ 
+				return Common.Utilities.DataCache.GetCache(cacheKey); 
+            }
 		}
 		public static bool CacheClear(string cacheKey)
 		{
@@ -87,17 +93,17 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		public static SettingsInfo MainSettings(int MID)
+		public static SettingsInfo MainSettings(int ModuleId)
 		{
-			object obj = CacheRetrieve(string.Format(CacheKeys.MainSettings, MID));
+			object obj = CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
 			if (obj == null || disableCache)
 			{
 				var objSettings = new SettingsInfo();
-				var sb = new SettingsBase {ForumModuleId = MID};
-				obj = sb.MainSettings;
+				var sb = new SettingsBase {ForumModuleId = ModuleId};
+			    obj = sb.MainSettings;
 				if (disableCache == false)
 				{
-					CacheStore(string.Format(CacheKeys.MainSettings, MID), obj);
+					CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), obj);
 				}
 			}
 
@@ -522,4 +528,4 @@ namespace DotNetNuke.Modules.ActiveForums
 #endregion
 
     }
-}
+} 

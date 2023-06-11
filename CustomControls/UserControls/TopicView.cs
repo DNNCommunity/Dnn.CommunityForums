@@ -20,6 +20,8 @@
 
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Modules.ActiveForums.Extensions;
+using DotNetNuke.Modules.ActiveForums.Controllers;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.UI.Skins;
 using System;
 using System.Collections.Generic;
@@ -78,6 +80,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _topicDescription = string.Empty;
         private int _viewCount;
         private int _replyCount;
+        private int _topicSubscriberCount;
+        private int _forumSubscriberCount;
         private int _rowCount;
         private int _statusId;
         private int _topicAuthorId;
@@ -371,6 +375,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _tags = _drForum["Tags"].ToString();
             _viewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
             _replyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
+            _topicSubscriberCount = Utilities.SafeConvertInt(_drForum["TopicSubscriberCount"]);
+            _forumSubscriberCount = Utilities.SafeConvertInt(_drForum["ForumSubscriberCount"]);
             _topicAuthorId = Utilities.SafeConvertInt(_drForum["AuthorId"]);
             _topicAuthorDisplayName = _drForum["TopicAuthor"].ToString();
             _topicRating = Utilities.SafeConvertInt(_drForum["TopicRating"]);
@@ -465,12 +471,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sOutput = DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "TopicView", _topicTemplateId);
+                sOutput = TemplateCache.GetCachedTemplate(ModuleId, "TopicView", _topicTemplateId);
             }
 
             // Handle the postinfo token if present
             if (sOutput.Contains("[POSTINFO]") && ForumInfo.ProfileTemplateId > 0)
-                sOutput = sOutput.Replace("[POSTINFO]", DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
+                sOutput = sOutput.Replace("[POSTINFO]", TemplateCache.GetCachedTemplate(ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
 
             // Run some basic rpleacements
             sOutput = sOutput.Replace("[PORTALID]", PortalId.ToString());
@@ -566,6 +572,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
                 string pageName = (settings.ActiveTab.Title.Length == 0)
+
                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)
                                    : Server.HtmlEncode(settings.ActiveTab.Title);
 
@@ -1006,6 +1013,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Reply Count
             sbOutput.Replace("[REPLYCOUNT]", _replyCount.ToString());
             sbOutput.Replace("[AF:LABEL:ReplyCount]", _replyCount.ToString());
+
+            // Topic Subscriber Count
+            sbOutput.Replace("[TOPICSUBSCRIBERCOUNT]", _topicSubscriberCount.ToString());
+
+            // Forum Subscriber Count
+            sbOutput.Replace("[FORUMSUBSCRIBERCOUNT]", _forumSubscriberCount.ToString());           
 
             // View Count
             sbOutput.Replace("[VIEWCOUNT]", _viewCount.ToString());
@@ -1484,32 +1497,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_allowLikes)
             {
-                Image likeImage = new Image();
-                var likesController = new LikesController();
-                var likes = likesController.GetForPost(contentId);
+                (int count, bool liked) likes = new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(UserId,contentId);
+                string image = likes.liked ? "fa-thumbs-o-up" : "fa-thumbs-up";
 
-                bool youLike = likes.Where(o => o.UserId == UserId)
-                    .Select(o => o.Checked)
-                    .FirstOrDefault();
-                string image = string.Empty;
-                if (youLike)
-                    image = "fa-thumbs-o-up";
-                else
-                    image = "fa-thumbs-up";
-
-                likeImage.ImageUrl = image;
                 if (CanReply)
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i class=\"fa " + image + "\" onclick=\"amaf_likePost(" + UserId + "," + contentId + ")\" > " + likes.Count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i class=\"fa " + image + " fa-2x\" onclick=\"amaf_likePost(" + UserId + "," + contentId + ")\" > " + likes.Count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i class=\"fa " + image + " fa-3x\" onclick=\"amaf_likePost(" + UserId + "," + contentId + ")\" > " + likes.Count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
                 }
                 else
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i class=\"fa " + image + "\" > " + likes.Count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i class=\"fa " + image + " fa-2x\" > " + likes.Count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i class=\"fa " + image + " fa-3x\" > " + likes.Count.ToString() + "</i>");
-                    //sbOutput = sbOutput.Replace("[LIKES]", "<img src=\"" + image + "\" onclick=\"amaf_likePost(" + UserId + "," + contentId + ")\" /> " + likes.Count.ToString());
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" > " + likes.count.ToString() + "</i>");
                 }
             }
             else
