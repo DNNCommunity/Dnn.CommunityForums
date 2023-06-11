@@ -185,7 +185,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string MailQueue = "MAILQUEUE";
 		public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
-		public const string TemplateCache = "TEMPLATECACHE";
 		public const string FloodInterval = "FLOODINTERVAL";
 		public const string EditInterval = "EDITINTERVAL";
 		public const string LoggingLevel = "LOGGINGLEVEL";
