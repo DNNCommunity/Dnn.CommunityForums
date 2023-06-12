@@ -212,7 +212,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-    }
+        public const string CacheTemplates = "CACHETEMPLATES";
+
+
+	}
 
 	public class ForumSettingKeys
 	{
