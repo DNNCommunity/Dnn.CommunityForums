@@ -405,7 +405,6 @@
         </component>
 		  <component type="Cleanup" version="06.04.00" fileName="06.04.00.txt" />
 		  <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
-		  <component type="Cleanup" version="07.00.10" fileName="07.00.10.txt" />
       </components>
     </package>
 	
