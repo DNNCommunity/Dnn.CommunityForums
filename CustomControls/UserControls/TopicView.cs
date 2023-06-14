@@ -80,6 +80,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _topicDescription = string.Empty;
         private int _viewCount;
         private int _replyCount;
+        private int _topicSubscriberCount;
+        private int _forumSubscriberCount;
         private int _rowCount;
         private int _statusId;
         private int _topicAuthorId;
@@ -373,6 +375,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _tags = _drForum["Tags"].ToString();
             _viewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
             _replyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
+            _topicSubscriberCount = Utilities.SafeConvertInt(_drForum["TopicSubscriberCount"]);
+            _forumSubscriberCount = Utilities.SafeConvertInt(_drForum["ForumSubscriberCount"]);
             _topicAuthorId = Utilities.SafeConvertInt(_drForum["AuthorId"]);
             _topicAuthorDisplayName = _drForum["TopicAuthor"].ToString();
             _topicRating = Utilities.SafeConvertInt(_drForum["TopicRating"]);
@@ -467,12 +471,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sOutput = DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "TopicView", _topicTemplateId);
+                sOutput = TemplateCache.GetCachedTemplate(ModuleId, "TopicView", _topicTemplateId);
             }
 
             // Handle the postinfo token if present
             if (sOutput.Contains("[POSTINFO]") && ForumInfo.ProfileTemplateId > 0)
-                sOutput = sOutput.Replace("[POSTINFO]", DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
+                sOutput = sOutput.Replace("[POSTINFO]", TemplateCache.GetCachedTemplate(ModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
 
             // Run some basic rpleacements
             sOutput = sOutput.Replace("[PORTALID]", PortalId.ToString());
@@ -1010,6 +1014,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Reply Count
             sbOutput.Replace("[REPLYCOUNT]", _replyCount.ToString());
             sbOutput.Replace("[AF:LABEL:ReplyCount]", _replyCount.ToString());
+
+            // Topic Subscriber Count
+            sbOutput.Replace("[TOPICSUBSCRIBERCOUNT]", _topicSubscriberCount.ToString());
+
+            // Forum Subscriber Count
+            sbOutput.Replace("[FORUMSUBSCRIBERCOUNT]", _forumSubscriberCount.ToString());           
 
             // View Count
             sbOutput.Replace("[VIEWCOUNT]", _viewCount.ToString());
