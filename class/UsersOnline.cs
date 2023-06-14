@@ -40,8 +40,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append(", ");
 
                     sb.Append(UserProfiles.GetDisplayName(moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
-                    sb.Append(UserProfiles.GetDisplayName(moduleId, true, false, user.IsAdmin || user.IsSuperUser, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
-
                 }
 
                 dr.Close();
