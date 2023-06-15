@@ -1,4 +1,3 @@
-
 ﻿/* issue 97 - begin - delete module instance not removing data from database */
 
 SET NOCOUNT ON
