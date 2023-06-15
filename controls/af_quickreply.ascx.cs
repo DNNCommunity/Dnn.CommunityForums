@@ -431,7 +431,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (fullURL.EndsWith("/"))
             {
-                fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
+                fullURL += Utilities.IsRewriteLoaded() ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
             }
             if (isApproved)
             {
