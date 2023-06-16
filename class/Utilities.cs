@@ -99,9 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             template = ParseSpacer(template);
 
-            var tc = new TokensController();
-
-            var li = tc.TokensList(group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.List(group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
