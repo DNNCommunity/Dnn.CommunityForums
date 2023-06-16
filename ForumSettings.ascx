@@ -66,11 +66,11 @@
 	<fieldset>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblFloodInterval" runat="server" resourcekey="FloodInterval" Suffix=":" />
-            <asp:TextBox ID="txtFloodInterval" runat="server" MaxLength="5" Width="35" Text="0" />
+            <asp:TextBox ID="txtFloodInterval" runat="server" MaxLength="5" Width="75" Text="0" />
 	    </div>
 		<div class="dnnFormItem"> 
 			<dnn:label ID="lblEditInterval" runat="server" resourcekey="EditInterval" Suffix=":" />
-            <asp:TextBox ID="txtEditInterval" runat="server" MaxLength="3" Width="25" Text="0" />
+            <asp:TextBox ID="txtEditInterval" runat="server" MaxLength="3" Width="75" Text="0" />
 		</div>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblAutoLinks" runat="server" resourcekey="AutoLink" Suffix=":" />
