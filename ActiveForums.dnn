@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
-  <packages>
-    <package name="Active Forums" type="Module" version="07.00.11">
+  <packages> 
+    <package name="Active Forums" type="Module" version="07.00.11"> 
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
@@ -334,45 +334,55 @@
               <name>07.00.00.SqlDataProvider</name>
               <version>07.00.00</version>
             </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.02.SqlDataProvider</name>
-				   <version>07.00.02</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.04.SqlDataProvider</name>
-				   <version>07.00.04</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.05.SqlDataProvider</name>
-				   <version>07.00.05</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.06.SqlDataProvider</name>
-				   <version>07.00.06</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.07.SqlDataProvider</name>
-				   <version>07.00.07</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.08.SqlDataProvider</name>
-				   <version>07.00.08</version>
-			   </script>
-			   <script type="Install">
-				   <path>sql</path>
-				   <name>07.00.09.SqlDataProvider</name>
-				   <version>07.00.09</version>
-			   </script>
-			  <script type="UnInstall">
+            <script type="Install">
+              <path>sql</path> 
+              <name>07.00.02.SqlDataProvider</name>
+              <version>07.00.02</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.04.SqlDataProvider</name>
+              <version>07.00.04</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.05.SqlDataProvider</name>
+              <version>07.00.05</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.06.SqlDataProvider</name>
+              <version>07.00.06</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.07.SqlDataProvider</name>
+              <version>07.00.07</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.08.SqlDataProvider</name>
+              <version>07.00.08</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.09.SqlDataProvider</name>
+              <version>07.00.09</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>07.00.10.SqlDataProvider</name>
+              <version>07.00.10</version>
+            </script>
+             <script type="Install">
+              <path>sql</path>
+              <name>07.00.11.SqlDataProvider</name>
+              <version>07.00.11</version>
+            </script>
+            <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>07.00.11</version>
+              <version>07.00.11</version> 
             </script>
           </scripts>
         </component>
@@ -402,7 +412,7 @@
               </configuration>
             </uninstall>
           </config>
-        </component>
+        </component> 
         <component type="Cleanup" version="06.04.00" fileName="06.04.00.txt" />
 		  <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
 		  <component type="Cleanup" version="07.00.11" fileName="07.00.11.txt" />
@@ -410,6 +420,7 @@
     </package>
 
     <package name="Active Forums What's New" type="Module" version="07.00.11">
+
       <friendlyName>Active Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
       <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
@@ -477,74 +488,75 @@
         </component>
       </components>
     </package>
-
+ 
     <package name="Active Forums Viewer" type="Module" version="07.00.11">
-      <friendlyName>Active Forums Viewer</friendlyName>
-      <foldername>ActiveForumsViewer</foldername>
-      <description>Community Forums: Display any forum topic view on any page within your site.</description>
-      <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
-      <owner>
-        <name>DNN Community</name>
-        <organization>DNN Community</organization>
-        <url>dnncommunity.org</url>
-        <email>community@dnncommunity.org</email>
-      </owner>
-      <license src="License.txt" />
-      <releaseNotes src="ReleaseNotes.txt" />
-      <azureCompatible>true</azureCompatible>
-      <dependencies>
-        <dependency type="CoreVersion">09.04.00</dependency>
-      </dependencies>
-      <components>
-        <component type="Module">
-          <desktopModule>
-            <moduleName>Active Forums Viewer</moduleName>
-            <foldername>ActiveForumsViewer</foldername>
-            <businessControllerClass />
-            <supportedFeatures />
-            <moduleDefinitions>
-              <moduleDefinition>
-                <friendlyName>Active Forums Viewer</friendlyName>
-                <definitionName>Active Forums Viewer</definitionName>
-                <defaultCacheTime>0</defaultCacheTime>
-                <moduleControls>
-                  <moduleControl>
-                    <controlKey />
-                    <controlSrc>DesktopModules/ActiveForumsViewer/ActiveForumViewer.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Active Forums Viewer</controlTitle>
-                    <controlType>View</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <supportsPopUps>False</supportsPopUps>
-                    <viewOrder>0</viewOrder>
-                  </moduleControl>
-                  <moduleControl>
-                    <controlKey>Settings</controlKey>
-                    <controlSrc>DesktopModules/ActiveForumsViewer/ActiveForumViewerSettings.ascx</controlSrc>
-                    <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle>Settings</controlTitle>
-                    <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
-                    <supportsPopUps>False</supportsPopUps>
-                  </moduleControl>
-                </moduleControls>
-              </moduleDefinition>
-            </moduleDefinitions>
-          </desktopModule>
-        </component>
-        <component type="ResourceFile">
-          <resourceFiles>
-            <basePath>DesktopModules\ActiveForumsViewer</basePath>
-            <resourceFile>
-              <name>ActiveForumsViewerResources.zip</name>
-              <sourceFileName>ActiveForumsViewerResources.zip</sourceFileName>
-            </resourceFile>
-          </resourceFiles>
-        </component>
-      </components>
-    </package>
+		  <friendlyName>Active Forums Viewer</friendlyName>
+		  <foldername>ActiveForumsViewer</foldername>
+		  <description>Community Forums: Display any forum topic view on any page within your site.</description>
+		  <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
+		  <owner>
+			  <name>DNN Community</name>
+			  <organization>DNN Community</organization>
+			  <url>dnncommunity.org</url>
+			  <email>community@dnncommunity.org</email>
+		  </owner>
+		  <license src="License.txt" />
+		  <releaseNotes src="ReleaseNotes.txt" />
+		  <azureCompatible>true</azureCompatible>
+		  <dependencies>
+			  <dependency type="CoreVersion">09.04.00</dependency>
+		  </dependencies>
+		  <components>
+			  <component type="Module">
+				  <desktopModule>
+					  <moduleName>Active Forums Viewer</moduleName>
+					  <foldername>ActiveForumsViewer</foldername>
+					  <businessControllerClass />
+					  <supportedFeatures />
+					  <moduleDefinitions>
+						  <moduleDefinition>
+							  <friendlyName>Active Forums Viewer</friendlyName>
+							  <definitionName>Active Forums Viewer</definitionName>
+							  <defaultCacheTime>0</defaultCacheTime>
+							  <moduleControls>
+								  <moduleControl>
+									  <controlKey />
+									  <controlSrc>DesktopModules/ActiveForumsViewer/ActiveForumViewer.ascx</controlSrc>
+									  <supportsPartialRendering>False</supportsPartialRendering>
+									  <controlTitle>Active Forums Viewer</controlTitle>
+									  <controlType>View</controlType>
+									  <iconFile />
+									  <helpUrl />
+									  <supportsPopUps>False</supportsPopUps>
+									  <viewOrder>0</viewOrder>
+								  </moduleControl>
+								  <moduleControl>
+									  <controlKey>Settings</controlKey>
+									  <controlSrc>DesktopModules/ActiveForumsViewer/ActiveForumViewerSettings.ascx</controlSrc>
+									  <supportsPartialRendering>False</supportsPartialRendering>
+									  <controlTitle>Settings</controlTitle>
+									  <controlType>Edit</controlType>
+									  <iconFile />
+									  <helpUrl />
+									  <supportsPopUps>False</supportsPopUps> 
+								  </moduleControl>
+							  </moduleControls>
+						  </moduleDefinition>
+					  </moduleDefinitions>
+				  </desktopModule>
+			  </component>
+			  <component type="ResourceFile">
+				  <resourceFiles>
+					  <basePath>DesktopModules\ActiveForumsViewer</basePath>
+					  <resourceFile>
+						  <name>ActiveForumsViewerResources.zip</name>
+						  <sourceFileName>ActiveForumsViewerResources.zip</sourceFileName>
+					  </resourceFile>
+				  </resourceFiles>
+			  </component>
+		  </components>
+	  </package>
+	  
 
   </packages>
 </dotnetnuke>

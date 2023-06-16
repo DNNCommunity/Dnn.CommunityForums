@@ -5,6 +5,7 @@
 <div class="uv-install-wrapper">
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
+
 	<div class="dnnClear">
 		<h3>07.00.11</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
@@ -13,11 +14,28 @@
 		</ul>
 
 
-		<h3>07.00.08</h3>
+	<div class="dnnClear">			
+		<h3>07.00.10</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>FIXED: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-      <li>FIXED: User's Last Post date/time not stored in UTC (affecting flood control if used) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/233">Issue 233</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Show subscriber counts in Forum, Topics, and Topic views [designers should review/update templates]  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/185">Issue 185</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Honor module cache settings when loading templates [used by designers] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/155">Issue 155</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Moved Users Online backend to Web API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/275">PR 275</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+
+		<h3>07.00.09</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Replaced flood control dropdown list with a textbox for finer tune control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/234">Issue 234</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: User's Last Post date/time not stored in UTC (affecting flood control if used) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/233">Issue 233</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: URL Rewrite incorrectly not available on IIS versions higher than v8 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/282">Issue 282</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Updated incorrect image paths from /images/images to /images (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/191">Issue 191</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Added a missing SQL query to remove orphaned rewrite URL data (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Fixed flood control bug due to a GitHub merge conflict (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Updated namespaces to be more contectually obvious to developers (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved a minor build issue that was packaging VS &amp; Git files in the Resources.zip (No issue, thanks <a href="https://github.com/willstrohl" target="_blank">@WillStrohl</a>!)</li>
 		</ul>
  
 		<h3>07.00.07</h3>
