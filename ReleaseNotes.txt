@@ -9,13 +9,9 @@
 		<h3>07.00.10</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
-			<li>NEW: Show subscriber counts in Forum, Topics, and Topic views [designers should review/pdate templates]  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/185">Issue 185</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-		</ul>
-
-		<h3>07.00.10</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
+			<li>NEW: Show subscriber counts in Forum, Topics, and Topic views [designers should review/update templates]  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/185">Issue 185</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Honor module cache settings when loading templates [used by designers] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/155">Issue 155</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Moved Users Online backend to Web API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/275">PR 275</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
 		<h3>07.00.11</h3>
