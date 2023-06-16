@@ -934,6 +934,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+        internal static bool UseFriendlyURLs(int ModuleId)
+        {
+            return IsRewriteLoaded() && SettingsBase.GetModuleSettings(ModuleId).URLRewriteEnabled;
+        }
 
         /// <summary>
         /// Get the template as a string from the specified path
