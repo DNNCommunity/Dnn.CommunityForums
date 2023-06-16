@@ -656,7 +656,16 @@
     <None Include="sql\07.00.00.SqlDataProvider" />
 
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.02.SqlDataProvider" /> 
+    <None Include="sql\07.00.05.SqlDataProvider" />
+    <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\07.00.09.SqlDataProvider" />
+    <None Include="sql\07.00.10.SqlDataProvider" />
+    <None Include="sql\07.00.11.SqlDataProvider" />
+    <None Include="sql\08.00.00.SqlDataProvider" />
+
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.08.SqlDataProvider" />
