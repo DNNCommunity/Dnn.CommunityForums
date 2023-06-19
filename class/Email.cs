@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (string.IsNullOrEmpty(r)) continue;
                 var rid = Convert.ToInt32(r);
-                var rName = rc.GetRole(rid, portalId).RoleName;
+                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
                 foreach (UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);

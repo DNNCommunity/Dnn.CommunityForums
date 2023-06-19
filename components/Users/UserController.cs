@@ -269,11 +269,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return u;
         }
 
-        private string GetRoleIds(UserInfo u, int SiteId)
+        private string GetRoleIds(UserInfo u, int PortalId)
         {
             string RoleIds = string.Empty;
-            DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in rc.GetPortalRoles(SiteId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
             {
                 string roleName = r.RoleName;
                 foreach (string role in u.Roles)

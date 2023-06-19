@@ -979,7 +979,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, TopicId, UserId, sUrl, subject, summary, body,ForumInfo.Security.Read, SocialGroupId);
+                            amas.AddTopicToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, UserId, sUrl, subject, summary, body,ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
@@ -1160,7 +1160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.Security.Read, SocialGroupId);
+                            amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, subject, string.Empty, body, ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {

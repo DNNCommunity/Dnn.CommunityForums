@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
 				}
 				Social amas = new Social();
-				amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body,fi.Security.Read, fi.SocialGroupId);
+				amas.AddReplyToJournal(PortalId, ModuleId,TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body,fi.Security.Read, fi.SocialGroupId);
 			}
 			catch (Exception ex)
 			{

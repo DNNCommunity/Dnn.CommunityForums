@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                             sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
                                         }
                                         Social amas = new Social();
-                                        amas.AddTopicToJournal(PortalId, ForumModuleId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
+                                        amas.AddTopicToJournal(PortalId, ForumModuleId ,TabId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
                                     }
                                     catch (Exception ex)
                                     {
@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                             fullURL = Utilities.NavigateUrl(ForumTabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                                         }
                                         Social amas = new Social();
-                                        amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, sBody, fi.Security.Read, fi.SocialGroupId);
+                                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, sBody, fi.Security.Read, fi.SocialGroupId);
                                     }
                                     catch (Exception ex)
                                     {

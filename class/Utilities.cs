@@ -1403,7 +1403,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
         {
-            var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
             var fc = new ForumController();
@@ -1422,7 +1421,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     continue;
 
                 var rid = Convert.ToInt32(r);
-                var rName = rc.GetRole(rid, portalId).RoleName;
+                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
                 foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);

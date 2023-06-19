@@ -21,6 +21,8 @@
 using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.Linq;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -378,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			db.SavePermSet(PermissionsId, "Read", permSet);
 		}
 
-		public static string GetRoleIds(string[] Roles, int SiteId)
+		public static string GetRoleIds(string[] Roles, int PortalId)
 		{
 			int i = 0;
 			string RoleIds = string.Empty;
@@ -386,8 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			object obj = null; 
 			if (obj == null)
 			{
-				var rc = new Security.Roles.RoleController();
-				foreach (Security.Roles.RoleInfo ri in rc.GetPortalRoles(SiteId))
+				foreach (Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId))
 				{
 					string roleName = ri.RoleName;
 					foreach (string role in Roles)
@@ -488,33 +489,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		private static string GetRole(string role, int PortalId)
 		{
-			ArrayList roles = GetRoles(PortalId);
-			int i;
-		    for (i = 0; i < roles.Count; i++)
-			{
-			    var roleInfo = (Security.Roles.RoleInfo)(roles[i]);
-			    if (roleInfo.RoleID == Convert.ToInt32(role))
-				{
-					return roleInfo.RoleName;
-				}
-			}
-
-		    return string.Empty;
+			return GetRoles(PortalId).Where(r => r.RoleName == role).Select(r=> r.RoleName).FirstOrDefault();
 		}
 
-		private static ArrayList GetRoles(int PortalId)
+		private static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int PortalId)
 		{
 			object obj = DataCache.CacheRetrieve(string.Concat(PortalId, "RoleNames"));
-			ArrayList roleNames;
+			System.Collections.Generic.IList< DotNetNuke.Security.Roles.RoleInfo> roleNames;
 			if (obj == null)
 			{
-				var objRoleController = new Security.Roles.RoleController();
-				roleNames = objRoleController.GetPortalRoles(PortalId);
+				roleNames = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
 				DataCache.CacheStore(string.Concat(PortalId, "RoleNames"), roleNames);
 			}
 			else
 			{
-				roleNames = (ArrayList)obj;
+				roleNames = (System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo>)obj;
 			}
 
 			return roleNames;
