@@ -47,9 +47,9 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, int timeZoneOffset)
+        public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
         {
-            var newDate = DateTime.Parse(GetDate(displayDate, instanceId, timeZoneOffset));
+            var newDate = DateTime.Parse(GetDate(displayDate, ModuleId, timeZoneOffset));
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
@@ -114,8 +114,8 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[VIEWS:TOPICS]", Views.Topics);
             template = template.Replace("[VIEWS:TOPIC]", Views.Topic);
             template = template.Replace("[PAGEID]", config.PageId.ToString());
-            template = template.Replace("[SITEID]", config.SiteId.ToString());
-            template = template.Replace("[INSTANCEID]", config.InstanceId.ToString());
+            template = template.Replace("[PortalId]", config.PortalId.ToString());
+            template = template.Replace("[ModuleId]", config.ModuleId.ToString());
 
             return template;
         }

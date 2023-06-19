@@ -336,7 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return result.ToString();
         }
 
-        private static long GetEmailInfo(int siteID, int instanceID, int forumID, int topicID, string ipAddress)
+        private static long GetEmailInfo(int PortalId, int ModuleId, int forumID, int topicID, string ipAddress)
         {
             long ItemID = -1;
 
@@ -377,7 +377,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             //dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
-            IDataReader dataReader = (IDataReader)(SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", siteID, instanceID, forumID, topicID, ipAddress, userIds.ToString()));
+            IDataReader dataReader = (IDataReader)(SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", PortalId, ModuleId, forumID, topicID, ipAddress, userIds.ToString()));
             if (dataReader.Read())
             {
                 ItemID = Convert.ToInt32(dataReader["RecordID"]);

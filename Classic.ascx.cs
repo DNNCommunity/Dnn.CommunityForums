@@ -261,9 +261,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
                 cc.ThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
                 cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
-                cc.SiteId = PortalId;
+                cc.PortalId = PortalId;
                 cc.PageId = TabId;
-                cc.InstanceId = ModuleId;
+                cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
                 cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
