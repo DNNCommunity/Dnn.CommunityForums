@@ -1502,15 +1502,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (CanReply)
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1-" + contentId.ToString() + "\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2-" + contentId.ToString() + "\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3-" + contentId.ToString() + "\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
                 }
                 else
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
                 }
             }
             else
