@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
             
             // Build the link
             string link;
-            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.IsRewriteLoaded())
+            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
                     link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
