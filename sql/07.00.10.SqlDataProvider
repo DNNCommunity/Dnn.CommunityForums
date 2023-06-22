@@ -1,3 +1,4 @@
+
 ﻿/* issue 185 - begin - show subscriber count on topic  */
 
 /*activeforums_UI_TopicView*/
@@ -477,6 +478,5 @@ If @UserId > 0 AND @ParentForumId =-1
 GO
 
 /* issue 185 - end - show subscriber count on topic  */
-
 
 

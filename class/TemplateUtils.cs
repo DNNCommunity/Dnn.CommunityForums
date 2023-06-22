@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 var contentId = (replyId > 0) ? replyId : -1;
-                link = new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId);
+                link = String.Concat(Common.Globals.NavigateURL(tabID), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
             if (!(link.StartsWith("http")))

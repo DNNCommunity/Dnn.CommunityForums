@@ -5,7 +5,14 @@
 <div class="uv-install-wrapper">
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
-	<div class="dnnClear">			
+
+	<div class="dnnClear">
+		<h3>07.00.11</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>TASK: Refactor old upgrade code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.10</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
