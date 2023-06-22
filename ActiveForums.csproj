@@ -274,10 +274,12 @@
     <Content Include="images\arrows_left.png" />
     <Content Include="images\arrow_down.png" />
     <Content Include="images\arrow_up.png" />
+    <Content Include="images\cancel32.png" />
     <Content Include="images\check32.png" />
     <Content Include="images\checkbox.png" />
     <Content Include="images\checkbox_unchecked.png" />
     <Content Include="images\close.png" />
+    <Content Include="images\delete32.png" />
     <Content Include="images\delete_new.gif" />
     <Content Include="images\execute16.png" />
     <Content Include="images\delete16.png" />
@@ -289,6 +291,7 @@
     <Content Include="images\modal_top_left.png" />
     <Content Include="images\modal_top_right.png" />
     <Content Include="images\progress.gif" />
+    <Content Include="images\save32.png" />
     <Content Include="images\search.gif" />
     <Content Include="images\sort_16.png" />
     <Content Include="images\spinner-lg.gif" />
@@ -654,24 +657,13 @@
     <None Include="sql\06.04.01.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
-
     <None Include="sql\07.00.02.SqlDataProvider" />
-    <None Include="sql\07.00.02.SqlDataProvider" /> 
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
     <None Include="sql\07.00.08.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
-    <None Include="sql\07.00.11.SqlDataProvider" />
-    <None Include="sql\08.00.00.SqlDataProvider" />
-
-    <None Include="sql\07.00.06.SqlDataProvider" />
-    <None Include="sql\07.00.05.SqlDataProvider" />
-    <None Include="sql\07.00.08.SqlDataProvider" />
-    <None Include="sql\07.00.09.SqlDataProvider" />
-    <None Include="sql\07.00.10.SqlDataProvider" />
-
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
