@@ -97,10 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		Ventrian = 2
 	}
 
-	public enum SpecialTokenTypes
-	{
-		
-	}
 
 	public enum TrustTypes
 	{

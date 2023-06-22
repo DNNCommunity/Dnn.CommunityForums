@@ -656,7 +656,16 @@
     <None Include="sql\07.00.00.SqlDataProvider" />
 
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.02.SqlDataProvider" /> 
+    <None Include="sql\07.00.05.SqlDataProvider" />
+    <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\07.00.09.SqlDataProvider" />
+    <None Include="sql\07.00.10.SqlDataProvider" />
+    <None Include="sql\07.00.11.SqlDataProvider" />
+    <None Include="sql\08.00.00.SqlDataProvider" />
+
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.08.SqlDataProvider" />
@@ -756,6 +765,7 @@
     <Compile Include="components\Topics\TopicInfo.cs" />
     <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
+    <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -774,6 +784,7 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Entities\Token.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Services\Controllers\UserController.cs" />
@@ -851,8 +862,6 @@
     <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="components\Scheduler\DailyDigest.cs" />
     <Compile Include="components\Social\ActiveSocial.cs" />
-    <Compile Include="components\Tokens\Token.cs" />
-    <Compile Include="components\Tokens\TokensController.cs" />
     <Compile Include="components\Users\User.cs" />
     <Compile Include="components\Users\UserController.cs" />
     <Compile Include="controls\admin_properties.ascx.designer.cs">

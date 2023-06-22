@@ -13,8 +13,6 @@
 			<li>TASK: Refactor old upgrade code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
-
-	<div class="dnnClear">			
 		<h3>07.00.10</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
@@ -22,7 +20,6 @@
 			<li>NEW: Honor module cache settings when loading templates [used by designers] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/155">Issue 155</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Moved Users Online backend to Web API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/275">PR 275</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
-
 
 		<h3>07.00.09</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>

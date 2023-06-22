@@ -893,9 +893,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Topic and post actions
-            var tc = new TokensController();
-            var topicActions = tc.TokenGet("topic", "[AF:CONTROL:TOPICACTIONS]");
-            var postActions = tc.TokenGet("topic", "[AF:CONTROL:POSTACTIONS]");
+            var topicActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.Get("topic", "[AF:CONTROL:TOPICACTIONS]");
+            var postActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.Get("topic", "[AF:CONTROL:POSTACTIONS]");
             if (sOutput.Contains("[AF:CONTROL:TOPICACTIONS]"))
             {
                 _useListActions = true;
