@@ -102,6 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public DateTime DateUpdated { get; set; }
         public DateTime DateLastActivity { get; set; }
         public DateTime DateLastPost { get; set; }
+        public DateTime DateLastReply { get; set; }
         public string Signature { get; set; }
         public bool SignatureDisabled { get; set; }
         public int TrustLevel { get; set; }

@@ -97,10 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		Ventrian = 2
 	}
 
-	public enum SpecialTokenTypes
-	{
-		
-	}
 
 	public enum TrustTypes
 	{
@@ -212,7 +208,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-    }
+        public const string CacheTemplates = "CACHETEMPLATES";
+
+
+	}
 
 	public class ForumSettingKeys
 	{
