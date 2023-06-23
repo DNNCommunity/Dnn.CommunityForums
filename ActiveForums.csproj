@@ -224,6 +224,7 @@
     <Content Include="controls\admin_securitygrid.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
+    <Content Include="controls\admin_upgrade.ascx" />
     <Content Include="controls\af_attach.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -662,6 +663,12 @@
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
     <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\07.00.12.SqlDataProvider" />
+    <None Include="sql\08.00.00.SqlDataProvider" />
+    <None Include="sql\07.00.06.SqlDataProvider" />
+    <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
@@ -776,6 +783,8 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
@@ -846,6 +855,7 @@
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
+    <Compile Include="components\Helpers\MoveSettings.cs" />
     <Compile Include="components\Helpers\UpgradeModuleSettings.cs" />
     <Compile Include="components\Helpers\TextUtils.cs" />
     <Compile Include="components\Helpers\URL.cs" />
@@ -854,6 +864,8 @@
     <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="components\Scheduler\DailyDigest.cs" />
     <Compile Include="components\Social\ActiveSocial.cs" />
+    <Compile Include="components\Tokens\Token.cs" />
+    <Compile Include="components\Tokens\TokensController.cs" />
     <Compile Include="components\Users\User.cs" />
     <Compile Include="components\Users\UserController.cs" />
     <Compile Include="controls\admin_properties.ascx.designer.cs">
@@ -868,6 +880,13 @@
     </Compile>
     <Compile Include="controls\admin_securitygrid.ascx.cs">
       <DependentUpon>admin_securitygrid.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\admin_upgrade.ascx.designer.cs">
+      <DependentUpon>admin_upgrade.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controls\admin_upgrade.ascx.cs">
+      <DependentUpon>admin_upgrade.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_attach.ascx.designer.cs">
@@ -1361,8 +1380,6 @@
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
     <Folder Include="config\templates\community\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Entities\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup>
