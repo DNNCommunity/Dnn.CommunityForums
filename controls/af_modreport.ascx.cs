@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (Request.IsAuthenticated)
                 {
 
-                    string strReasons = GetSharedResource("[RESX:ReasonOptions]"); //.GetString("ReasonOptions", "~/DesktopModules/ActiveForums/App_LocalResources/af_modalert")
+                    string strReasons = GetSharedResource("[RESX:ReasonOptions]"); 
                     int i = 0;
                     foreach (string strReason in strReasons.Split(new char[] { ';' }))
                     {
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
-            this.LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/af_modalert.ascx.resx";
+            this.LocalResourceFile = Globals.ModulePath + "app_localresources/af_modalert.ascx.resx";
             InitializeComponent();
 
             btnSend.Click += new System.EventHandler(btnSend_Click);
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 body = body.Replace("[Comment]", Comments);
                 body = body.Replace("[URL]", fullURL);
                 body = body.Replace("[Reason]", drpReasons.SelectedItem.Value);
-                List<Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
 
 
                 string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);

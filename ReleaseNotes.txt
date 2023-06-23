@@ -1,11 +1,88 @@
-﻿<style>
+<style>
 	div.uv-install-wrapper h3, div.uv-install-wrapper h4, div.uv-install-wrapper p, div.uv-install-wrapper hr, div.uv-install-wrapper ul { margin-bottom: 0.5em; }
 	div.uv-install-wrapper ul { padding-left: 2em; }
 </style>
 <div class="uv-install-wrapper">
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
+
 	<div class="dnnClear">
+		<h3>07.00.11</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Refactored Legacy Upgrade Code to Only Run at Module Start (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Like UI Image Does Not Update On-Click (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/320">Issue 320</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Flood Control Does Not Take Replies into Account (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/81">Issue 81</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Redirect Fails When Replying and Using the Friendly URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/324">Issue 324</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Incorrect Links in Email Notifications When Using the URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/322">Issue 322</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved Inconsistent Friendly URL logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/326">Issue 326</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Bad Redirect When Replying and Using the Friendly URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/324">Issue 324</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Input for Avatar Width Size too Small (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/317">Issue 317</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>TASK: Refactor Legacy Upgrade Code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Modernize Tokens Entities/Controllers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/297">PR 297</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: ModuleImagePath Path in Control Panel Resolved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/310">PR 310</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: 07.00.10 Upgrade fails when executing SQL for 07.00.05 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/321">PR 321</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.10</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Show subscriber counts in Forum, Topics, and Topic views [designers should review/update templates]  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/185">Issue 185</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Honor module cache settings when loading templates [used by designers] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/155">Issue 155</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Moved Users Online backend to Web API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/275">PR 275</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.09</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Replaced flood control dropdown list with a textbox for finer tune control (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/234">Issue 234</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: User's Last Post date/time not stored in UTC (affecting flood control if used) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/233">Issue 233</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Removed redundant indexes on the activeforums_ForumTopics table (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/218">Issue 218</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: URL Rewrite incorrectly not available on IIS versions higher than v8 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/282">Issue 282</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Updated incorrect image paths from /images/images to /images (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/191">Issue 191</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Added a missing SQL query to remove orphaned rewrite URL data (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Fixed flood control bug due to a GitHub merge conflict (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Updated namespaces to be more contectually obvious to developers (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved a minor build issue that was packaging VS &amp; Git files in the Resources.zip (No issue, thanks <a href="https://github.com/willstrohl" target="_blank">@WillStrohl</a>!)</li>
+		</ul>
+ 
+		<h3>07.00.07</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Improved Caching for Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/258">Issue 258</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added New Email Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/169">Issue 169</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added Web API Layer for Future Development (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/268">Issue 268</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Templates Not Removed From the Database After Deleting the Module (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/97">Issue 97</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Removed Deprecated DNN APIs (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/271">Issue 271</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Git Cleanup Tasks (No Issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Improved String Handling &amp; Whitespace Cleanup in Many Classes (No Issue, thanks <a href="https://github.com/WillStrohl" target="_blank">@WillStrohl</a>!)</li>
+		</ul> 
+
+		<h3>07.00.06</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Replaced the Deprecated DNN Platform Method `GetModuleSettings()` with the Replacement `.ModuleSettings` Property (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/252">Issue 252</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Hidden forum groups not showing if some forums in the hidden group are visible (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/243">Issue 243</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Fixed the Order of &quot;What&rsquo;s New&quot; (Companion) Module w/ Topics-Only Option (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/205">Issue 205</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Replaced Hardcoded Paths/Files to Constants (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/224">Issue 224</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.05</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Applies Flood Control to All User Types, Including Admins (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/95">Issue 95</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Improved Email Notifications &amp; Tokens (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/169">Issue 169</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Copies Missing Moderator Controls to Posts View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/153">Issue 153</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.04</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Added IUpgradeable for Future Code-Based Upgrade Tasks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/186">Issue 186</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Restored Missing 'Anonymous' Username Logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/204">Issue 204</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Remove obsolete Active Social integration (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/173">Issue 173</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.03</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
@@ -21,6 +98,7 @@
 			<li>TASK: Removed hard-coded Active Forums 4.3 Template Files, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Improved Null date checking logic, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Removed hidden &amp; hard-coded legacy copyright from the HTML source, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+
 		</ul>
 
 		<h3>07.00.01</h3>

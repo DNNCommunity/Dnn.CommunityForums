@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
 using System.Collections;
 using System.Data;
@@ -38,32 +37,21 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public int ForumGroupId { get; set; }
-
-		public int ModuleId { get; set; }
-
-		public string GroupName { get; set; }
-
-		public int UserID { get; set; }
-
-		public int SortOrder { get; set; }
-
-		public int PortalID { get; set; }
-
-		public bool Hidden { get; set; }
-
-		public bool Active { get; set; }
-
-		public string GroupSettingsKey { get; set; }
-
-		public int PermissionsId { get; set; }
-
-		public string PrefixURL { get; set; }
+        public int ModuleId { get; set; }
+        public string GroupName { get; set; }
+        public int UserID { get; set; }
+        public int SortOrder { get; set; }
+        public int PortalID { get; set; }
+        public bool Hidden { get; set; }
+        public bool Active { get; set; }
+        public string GroupSettingsKey { get; set; }
+        public int PermissionsId { get; set; }
+        public string PrefixURL { get; set; }
 
 		#region Settings & Security
 
 		public PermissionInfo Security { get; set; }
-
-		public Hashtable GroupSettings { get; set; }
+        public Hashtable GroupSettings { get; set; }
 
 		public bool AllowAttach
 		{
@@ -94,23 +82,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.AllowRSS]); }
 		}
-
-		// TODO: Eliminate this
-		public bool ActiveSocialEnabled
-		{
-			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.ActiveSocialEnabled]); }
-		}
-
-		public bool ActiveSocialTopicsOnly
-		{
-			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.ActiveSocialTopicsOnly]); }
-		}
-
-		public int ActiveSocialSecurityOption
-		{
-			get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.ActiveSocialSecurityOption], 1); }
-		}
-
 		public bool AllowScript
 		{
 			get { return Utilities.SafeConvertBool(GroupSettings[ForumSettingKeys.AllowScript]); }
@@ -207,8 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						   : EditorTypes.HTMLEDITORPROVIDER;
 
 				return val;
-				
-			}
+            }
 		}
 
 		public string EditorWidth
@@ -226,7 +196,6 @@ namespace DotNetNuke.Modules.ActiveForums
                            : EditorTypes.HTMLEDITORPROVIDER;
 
                 return val;
-
             }
         }
 
@@ -345,10 +314,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.ReplyPostCount]); }
 		}
-
-		#endregion
-
-	}
+        #endregion
+    }
 
 	public class ForumGroupController
 	{
@@ -472,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				Permissions.CreateDefaultSets(portalId, permissionsId);
 				var moduleId = fg.ModuleId;
-				var sKey = "G:" + groupId.ToString();
+				var sKey = string.Concat("G:", groupId.ToString());
 				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
 				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
 				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicFormId, "0");
@@ -485,6 +452,4 @@ namespace DotNetNuke.Modules.ActiveForums
 			return groupId;
 		}
 	}
-
 }
-

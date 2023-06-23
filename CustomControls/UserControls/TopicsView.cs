@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int RowIndex = 1;
         private int PageSize = 20;
         private int TopicRowCount = 0;
+        private int ForumSubscriberCount;
         private string MyTheme = "_default";
         private string MyThemePath = string.Empty;
         private string LastReplySubjectReplaceTag = string.Empty;
@@ -174,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 this.AppRelativeVirtualPath = "~/";
                 MyTheme = MainSettings.Theme;
-                MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
+                MyThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
                 int defaultTemplateId = ForumInfo.TopicsTemplateId;
                 if (DefaultTopicsViewTemplateId >= 0)
                 {
@@ -188,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    TopicsTemplate = DataCache.GetCachedTemplate(MainSettings.TemplateCache, ModuleId, "TopicsView", defaultTemplateId);
+                    TopicsTemplate = TemplateCache.GetCachedTemplate( ModuleId, "TopicsView", defaultTemplateId);
                 }
                 bool loadComplete = false;
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
@@ -292,6 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 bAllowRSS = false;
                             }
                             TopicRowCount = Convert.ToInt32(drForum["TopicRowCount"]);
+                            ForumSubscriberCount = Utilities.SafeConvertInt(drForum["ForumSubscriberCount"]);
                             if (UserId > 0)
                             {
                                 IsSubscribedForum = Convert.ToBoolean(((Convert.ToInt32(drForum["IsSubscribedForum"]) > 0) ? true : false));
@@ -311,16 +313,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", ForumName);
                                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", GroupName);
-                                string pageName = string.Empty;
-                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-                                if (settings.ActiveTab.Title.Length == 0)
-                                {
-                                    pageName = Server.HtmlEncode(settings.ActiveTab.TabName);
-                                }
-                                else
-                                {
-                                    pageName = Server.HtmlEncode(settings.ActiveTab.Title);
-                                }
+                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                                string pageName = settings.ActiveTab.Title.Length == 0
+                                    ? Server.HtmlEncode(settings.ActiveTab.TabName)
+                                    : Server.HtmlEncode(settings.ActiveTab.Title);
                                 MetaTemplate = MetaTemplate.Replace("[PAGENAME]", pageName);
                                 MetaTemplate = MetaTemplate.Replace("[PORTALNAME]", settings.PortalName);
                                 MetaTemplate = MetaTemplate.Replace("[TAGS]", string.Empty);
@@ -523,6 +519,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
             //Tag Cloud
             sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud instanceid=\"" + ModuleId + "\" siteid=\"" + PortalId + "\" tabid=\"" + TabId + "\" runat=\"server\" />");
+
+            sOutput = sOutput.Replace("[FORUMSUBSCRIBERCOUNT]", ForumSubscriberCount.ToString());
+           
             //Forum Subscription Control
             if (bSubscribe)
             {
@@ -567,13 +566,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
 
                 Url = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + PortalId + "&forumid=" + ForumId + "&tabid=" + TabId + "&moduleid=" + ForumModuleId;
-                if (Request.QueryString["asg"] != null)
-                {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString["asg"]))
-                    {
-                        Url += "&asg=" + Request.QueryString["asg"];
-                    }
-                }
                 if (SocialGroupId > 0)
                 {
                     Url += "&GroupId=" + SocialGroupId;
@@ -681,7 +673,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var ProfileVisibility = MainSettings.ProfileVisibility;
             string UserNameDisplay = MainSettings.UserNameDisplay;
             bool DisableUserProfiles = false;
-            string sLastReply = TemplateUtils.GetTemplateSection(sOutput, "[LASTPOST]", "[/LASTPOST]");
+        string sLastReply = TemplateUtils.GetTemplateSection(sOutput, "[LASTPOST]", "[/LASTPOST]");
             int iLength = 0;
             if (sLastReply.Contains("[LASTPOSTSUBJECT:"))
             {
@@ -720,6 +712,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string AuthorDisplayName = Convert.ToString(drTopic["AuthorDisplayName"]).ToString().Replace("&amp;#", "&#");
                     int ReplyCount = Convert.ToInt32(drTopic["ReplyCount"]);
                     int ViewCount = Convert.ToInt32(drTopic["ViewCount"]);
+                    int TopicSubscriberCount = Utilities.SafeConvertInt(drTopic["TopicSubscriberCount"]);
                     DateTime DateCreated = Convert.ToDateTime(drTopic["DateCreated"]);
                     int StatusId = Convert.ToInt32(drTopic["StatusId"]);
                     //LastReply info
@@ -812,8 +805,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
 
                     }
-
-
                     sTopicsTemplate = sTopicsTemplate.Replace("[TOPICID]", TopicId.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[AUTHORID]", AuthorId.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[FORUMID]", ForumId.ToString());
@@ -975,14 +966,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", GetTopic(ModuleId, TabId, ForumId, TopicId, Subject, sBodyTitle, UserId, AuthorId, ReplyCount, -1, sTopicURL) + sPollImage);
 
                     var displayName = UserProfiles.GetDisplayName(ModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, AuthorId, AuthorUserName, AuthorFirstName, AuthorLastName, AuthorDisplayName).ToString().Replace("&amp;#", "&#");
-                    if (displayName == "Anonymous")
+                    if (Utilities.StripHTMLTag(displayName) == "Anonymous")
                     {
-                        displayName = AuthorDisplayName;
+                        displayName = displayName.Replace("Anonymous", AuthorName);
                     }
                     sTopicsTemplate = sTopicsTemplate.Replace("[STARTEDBY]", displayName);
                     sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated,PortalId,UserId));
                     sTopicsTemplate = sTopicsTemplate.Replace("[REPLIES]", ReplyCount.ToString());
-                    sTopicsTemplate = sTopicsTemplate.Replace("[VIEWS]", ViewCount.ToString());
+                    sTopicsTemplate = sTopicsTemplate.Replace("[VIEWS]", ViewCount.ToString()); 
+                    sTopicsTemplate = sTopicsTemplate.Replace("[TOPICSUBSCRIBERCOUNT]", TopicSubscriberCount.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[ROWCSS]", GetRowCSS(UserLastTopicRead, UserLastReplyRead, TopicId, LastReplyId, rowcount));
 
                     if (Convert.ToInt32(drTopic["TopicRating"]) == 0)

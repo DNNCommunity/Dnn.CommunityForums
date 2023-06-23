@@ -58,25 +58,27 @@ var amaf = {
         http.send(data);
     }
 };
-function amaf_pinger() {
-    var d = {};
-    d.action = 1;
-    amaf.callback(d, null);
+function amaf_updateuseronline(mid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "POST",
+        url: '/API/ActiveForums/User/UpdateUserIsOnline',
+        beforeSend: sf.setModuleHeaders
+    })
 };
-function amaf_uo() {
-    var d = {};
-    d.action = 2;
-    amaf.callback(d, amaf_uocomplete);
+function amaf_uo(mid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: '/API/ActiveForums/User/GetUsersOnline',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+            var u = document.getElementById('af-usersonline');
+            u.innerHTML = data;
+    }).fail(function (xhr, status) {
+            alert('error getting users online');
+    });
 };
-function amaf_uocomplete(result) {
-    try {
-        var u = document.getElementById('af-usersonline');
-        u.innerHTML = result[0].result;
-    } catch (err) {
-        alert(err.message);
-    };
-};
-
 function amaf_topicSubscribe(fid, tid) {
     var d = {};
     d.action = 3;
@@ -264,24 +266,24 @@ function amaf_splitCancel() {
     splitposts = new Array();
     amaf_splitButtons(false);
 };
-
-function amaf_likePost(userId, contentId) {
-    var d = {};
-    d.action = 16;
-    d.userId = userId;
-    d.contentId = contentId;
-    amaf.callback(d, amaf_likePostComplete);
-};
-function amaf_likePostComplete(result) {
-    if (result[0].success == true) {
-        if (typeof (result[0].result) != 'undefined') {
-            var rid = result[0].result.split('|')[1];
-            if (rid > 0) {
-                afreload();
-            } else {
-                window.history.go(-1);
-            };
-        }
-
+function amaf_likePost(mid, fid, cid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        contentId: cid
     };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Like/Like',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        $('#af-topicview-likes1-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes2-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes3-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+    }).fail(function (xhr, status) {
+        alert('error liking post');
+    });
 };
