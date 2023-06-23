@@ -69,8 +69,8 @@
 				 </table>
 			   <div class="amtbwrapper" style="text-align:center;">
 					<div style="margin-left:0 auto;margin-right:0 auto;min-width:50px;max-width:110px;">
-					<am:imagebutton id="btnAdminSave" CssClass="amimagebutton" Height="50" Width="50" runat="server" PostBack="False" ClientSideScript="amaf_saveAdmin();" ImageLocation="TOP" text="[RESX:Button:Save]" ImageUrl="~/DesktopModules/ActiveForums/images/save32.png" />
-					<am:ImageButton ID="btnAdminCancel"  CssClass="amimagebutton" Height="50" Width="50" runat="server" PostBack="false" ImageLocation="TOP" ClientSideScript="amaf_cancelAdmin();" Text="[RESX:Button:Cancel]" ImageUrl="~/DesktopModules/ActiveForums/images/cancel32.png" />
+					<am:imagebutton id="btnAdminSave" runat="server" CssClass="amimagebutton" Height="50" Width="50" runat="server" PostBack="False" ClientSideScript="amaf_saveAdmin();" ImageLocation="TOP" text="[RESX:Button:Save]" ImageUrl="~/DesktopModules/activeforums/images/save32.png" />
+					<am:ImageButton ID="btnAdminCancel" runat="server" CssClass="amimagebutton" Height="50" Width="50" runat="server" PostBack="false" ImageLocation="TOP" ClientSideScript="amaf_cancelAdmin();" Text="[RESX:Button:Cancel]" ImageUrl="~/DesktopModules/activeforums/images/cancel32.png" />
 					</div>
 				</div>
 			<am:Callback ID="cbAdmin" runat="server" OnCallbackComplete="amaf_cbAdminComplete">

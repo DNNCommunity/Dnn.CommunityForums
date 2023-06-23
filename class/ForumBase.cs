@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/");
+                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme));
             }
         }
 
@@ -181,12 +181,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!Request.IsAuthenticated)
                     return Utilities.NullDate();
 
-                var lastAccess = Session[UserId.ToString() + ModuleId + "LastAccess"];
+                var lastAccess = Session[string.Concat(UserId.ToString(), ModuleId, "LastAccess")];
                 return  lastAccess == null ? Utilities.NullDate() : Convert.ToDateTime(lastAccess);
             }
             set
             {
-                Session[UserId.ToString() + ModuleId + "LastAccess"] = value;
+                Session[string.Concat(UserId.ToString(), ModuleId, "LastAccess")] = value;
             }
         }
 
@@ -516,12 +516,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 return _canReply.Value;
             }
         }
-
-
         #endregion
 
         #region Helper Methods
-
         private bool SecurityCheck(string secType)
         {
             if (ForumUser == null)
@@ -529,7 +526,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
 
-            var xNode = ForumData.SelectSingleNode("//forums/forum[@forumid='" + ForumId + "']/security/" + secType);
+            var xNode = ForumData.SelectSingleNode(string.Concat("//forums/forum[@forumid='" + ForumId, "']/security/", secType));
 
             if (xNode == null)
             {
@@ -543,7 +540,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected string GetSharedResource(string key)
         {
-            return Localization.GetString(key, "~/DesktopModules/ActiveForums/App_LocalResources/SharedResources.resx");
+            return Localization.GetString(key, Globals.SharedResourceFile);
         }
 
         internal bool IsHtmlPermitted(HTMLPermittedUsers permittedMode, bool userIsTrusted, bool userIsModerator)
@@ -576,21 +573,6 @@ namespace DotNetNuke.Modules.ActiveForums
             if (Request.QueryString["dnnprintmode"] != null)
                 return;
 
-            // Do a conversion if needed 
-            // TODO: Figure out what's happening here
-            if (ModuleId > 0)
-            {
-                if (MainSettings.NeedsConversion)
-                {
-                    if (!(string.IsNullOrEmpty(UserForumsList)))
-                    {
-                        var move = new Helpers.SettingConversion();
-                        move.MoveSettings(ForumModuleId, ModuleId);
-
-                    }
-                }
-            }
-
             var p = new List<string>();
 
             var viewType = Request.Params[ParamKeys.ViewType];
@@ -598,22 +580,22 @@ namespace DotNetNuke.Modules.ActiveForums
             // Topic View
             if (TopicId > 0 && (viewType == Views.Topic))
             {
-                p.Add(ParamKeys.TopicId + "=" + TopicId);
+                p.Add(string.Concat(ParamKeys.TopicId, "=", TopicId));
 
                 var firstNewPost = Request.Params[ParamKeys.FirstNewPost];
                 if(!string.IsNullOrWhiteSpace(firstNewPost))
-                    p.Add(ParamKeys.FirstNewPost + "=" + firstNewPost);
+                    p.Add(string.Concat(ParamKeys.FirstNewPost, "=", firstNewPost));
 
                 var contentJumpId = Request.Params[ParamKeys.ContentJumpId];
                 if (!string.IsNullOrWhiteSpace(contentJumpId))
-                    p.Add(ParamKeys.ContentJumpId + "=" + contentJumpId);
+                    p.Add(string.Concat(ParamKeys.ContentJumpId, "=", contentJumpId));
 
                 var pageId = Request.Params[ParamKeys.PageId];
                 if (!string.IsNullOrWhiteSpace(pageId))
                 {
                     int parsedPageId;
                     if(int.TryParse(pageId, out parsedPageId) && parsedPageId > 1)
-                        p.Add(ParamKeys.PageId + "=" + pageId);
+                        p.Add(string.Concat(ParamKeys.PageId, "=", pageId));
                 }
 
                 var pageJumpId = Request.Params[ParamKeys.PageJumpId];
@@ -621,7 +603,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     int parsedPageJumpId;
                     if (int.TryParse(pageJumpId, out parsedPageJumpId) && parsedPageJumpId > 1)
-                        p.Add(ParamKeys.PageJumpId + "=" + pageJumpId);
+                        p.Add(string.Concat(ParamKeys.PageJumpId, "=", pageJumpId));
                 }
 
                 var sort = Request.QueryString[ParamKeys.Sort];
@@ -634,21 +616,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     sort = sort.ToUpperInvariant();
                     if((sort != defaultSort) && (sort == "ASC" || sort == "DESC"))
-                        p.Add(ParamKeys.Sort + "=" + sort);
+                        p.Add(string.Concat(ParamKeys.Sort, "=", sort));
                 }
             }
 
             // Topics View
             else if (ForumId > 0 && viewType == Views.Topics)
             {
-                p.Add(ParamKeys.ForumId + "=" + ForumId);
+                p.Add(string.Concat(ParamKeys.ForumId, "=", ForumId));
 
                 var pageId = Request.Params[ParamKeys.PageId];
                 if (!string.IsNullOrWhiteSpace(pageId))
                 {
                     int parsedPageId;
                     if (int.TryParse(pageId, out parsedPageId) && parsedPageId > 1)
-                        p.Add(ParamKeys.PageId + "=" + pageId);
+                        p.Add(string.Concat(ParamKeys.PageId, "=", pageId));
                 }
 
                 var pageJumpId = Request.Params[ParamKeys.PageJumpId];
@@ -656,10 +638,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     int parsedPageJumpId;
                     if (int.TryParse(pageJumpId, out parsedPageJumpId) && parsedPageJumpId > 1)
-                        p.Add(ParamKeys.PageJumpId + "=" + pageJumpId);
+                        p.Add(string.Concat(ParamKeys.PageJumpId, "=", pageJumpId));
                 }
             }
-
 
             if (p.Count <= 0) 
                 return;
@@ -675,4 +656,3 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
     }
 }
-

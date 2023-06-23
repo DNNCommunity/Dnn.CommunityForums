@@ -86,10 +86,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public User DNNGetCurrentUser(int SiteId, int ModuleId)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
-            User u = new User();
-            DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
-            u = LoadUser(cu);
+            DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
+            User u = LoadUser(cu);
 
             u = FillProfile(SiteId, ModuleId, u);
             ForumController fc = new ForumController();
@@ -107,20 +105,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private User GetDNNUser(int SiteId, int ModuleId, int userId)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
-            User u = new User();
             DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-            DotNetNuke.Entities.Users.UserInfo dnnUser = uc.GetUser(_portalSettings.PortalId, userId);
-            u = LoadUser(dnnUser);
-            return u;
+            DotNetNuke.Entities.Users.UserInfo dnnUser = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userId);
+            return LoadUser(dnnUser);
         }
         public User GetDNNUser(int SiteId, int ModuleId, string userName)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
-            User u = new User();
-            DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(_portalSettings.PortalId, userName);
-            u = LoadUser(dnnUser);
-            return u;
+            DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
+            return LoadUser(dnnUser);
         }
         public User GetUser(int SiteId, int ModuleId, int userId)
         {
@@ -176,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DataTable dt = null;
             UserProfileInfo upi = null;
             Data.Profiles db = new Data.Profiles();
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            PortalSettings _portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
             if (SiteId == -1)
             {
                 SiteId = _portalSettings.PortalId;
@@ -212,6 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 //.Bio = dr("Bio").ToString
                 upi.DateLastActivity = DateTime.Parse(row["DateLastActivity"].ToString());
                 upi.DateLastPost = DateTime.Parse(row["DateLastPost"].ToString());
+                upi.DateLastReply = DateTime.Parse(row["DateLastReply"].ToString());
                 upi.ForumsAllowed = string.Empty;
                 upi.ICQ = row["ICQ"].ToString();
                 upi.Interests = row["Interests"].ToString();
@@ -247,29 +240,29 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
         {
-            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
-            User u = new User();
-            DotNetNuke.Entities.Users.UserInfo cu = dnnUser;
+            PortalSettings _portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+            User u = new User
+            {
+                UserId = dnnUser.UserID,
+                UserName = dnnUser.Username,
+                IsSuperUser = dnnUser.IsSuperUser,
+                IsAdmin = dnnUser.IsInRole(_portalSettings.AdministratorRoleName),
+                DateCreated = dnnUser.Membership.CreatedDate,
+                DateUpdated = dnnUser.Membership.LastActivityDate,
+                FirstName = dnnUser.FirstName,
+                LastName = dnnUser.LastName,
+                DisplayName = dnnUser.DisplayName,
+                Email = dnnUser.Email,
+                UserRoles = GetRoleIds(dnnUser, _portalSettings.PortalId)
+            };
 
-            u.UserId = cu.UserID;
-            u.UserName = cu.Username;
-            u.IsSuperUser = cu.IsSuperUser;
-            u.IsAdmin = cu.IsInRole(_portalSettings.AdministratorRoleName);
-            u.DateCreated = cu.Membership.CreatedDate;
-            u.DateUpdated = cu.Membership.LastActivityDate;
-            u.FirstName = cu.FirstName;
-            u.LastName = cu.LastName;
-            u.DisplayName = cu.DisplayName;
-            u.Email = cu.Email;
-            u.UserRoles = GetRoleIds(cu, _portalSettings.PortalId);
-
-            if (cu.IsSuperUser)
+            if (dnnUser.IsSuperUser)
             {
                 u.UserRoles += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
             }
-            u.UserRoles += "|" + cu.UserID + "|" + string.Empty + "|";
+            u.UserRoles += "|" + dnnUser.UserID + "|" + string.Empty + "|";
 
-            if (!cu.IsSuperUser)
+            if (!dnnUser.IsSuperUser)
             {
                 u.Properties = GetUserProperties(dnnUser);
             }
