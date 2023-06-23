@@ -22,6 +22,7 @@
 			<li>TASK: Modernize Tokens Entities/Controllers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/297">PR 297</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: ModuleImagePath Path in Control Panel Resolved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/310">PR 310</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: 07.00.10 Upgrade fails when executing SQL for 07.00.05 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/321">PR 321</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: 07.00.11 Upgrade fails when executing SQL for 07.00.10 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/341">PR 341</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
 		<h3>07.00.10</h3>
