@@ -324,8 +324,19 @@ namespace DotNetNuke.Modules.ActiveForums
 				UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
 			}
 		}
+        public bool CacheTemplates
+        {
+            get
+            {
+                return Settings.GetBoolean(SettingKeys.CacheTemplates, true);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
+            }
+        }
 
-		public bool EnablePoints
+        public bool EnablePoints
 		{
 			get
 			{

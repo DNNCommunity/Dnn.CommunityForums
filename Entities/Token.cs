@@ -17,16 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Web.Api;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    public class ForumRouteMapper : IServiceRouteMapper
+    internal class Token
     {
-        public void RegisterRoutes(IMapRoute mapRouteManager)
-        {
-            mapRouteManager.MapHttpRoute("ActiveForums", "default", "{controller}/{action}", new {}, new[] { "DotNetNuke.Modules.ActiveForums" });
-        }
+        internal string Group { get; set; }
+        internal string TokenTag { get; set; }
+        internal string TokenReplace { get; set; }
+        internal string Permissions { get; set; }
     }
 }
-

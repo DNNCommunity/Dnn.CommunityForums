@@ -118,7 +118,7 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                             <asp:Literal ID="litRoles" runat="server" /></td>
                         <td style="width: 16px;">
                             <div class="amcpimgbtn" style="width: 16px;" onclick="addObject(0);">
-                                <img id="Img41" src="~/desktopmodules/activeforums/images/add.png" runat="server" alt="[RESX:AddRole]" />
+                                <img id="Img41" src="~/DesktopModules/ActiveForums/images/add.png" runat="server" alt="[RESX:AddRole]" />
                             </div>
                         </td>
                     </tr>
@@ -136,7 +136,7 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                                 <asp:TextBox ID="txtUserName" runat="server" CssClass="amcptxtbx" Width="150" /></td>
                             <td style="width: 16px;">
                                 <div class="amcplnkbtn" style="width: 16px;" onclick="addObject(1);">
-                                    <img id="Img42" src="~/desktopmodules/activeforums/images/add.png" runat="server" alt="[RESX:AddUserName]" />
+                                    <img id="Img42" src="~/DesktopModules/ActiveForums/images/add.png" runat="server" alt="[RESX:AddUserName]" />
                                 </div>
                             </td>
                         </tr>

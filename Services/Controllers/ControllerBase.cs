@@ -16,63 +16,34 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+// 
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+using DotNetNuke.Web.Api;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Instrumentation;
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Services
 {
-	internal class Token
-	{
-		private string _group;
-		private string _tokenTag;
-		private string _tokenReplace;
-		private string _permissions;
-		internal string Group
-		{
-			get
-			{
-				return _group;
-			}
-			set
-			{
-				_group = value;
-			}
-		}
-		internal string TokenTag
-		{
-			get
-			{
-				return _tokenTag;
-			}
-			set
-			{
-				_tokenTag = value;
-			}
-		}
-		internal string TokenReplace
-		{
-			get
-			{
-				return _tokenReplace;
-			}
-			set
-			{
-				_tokenReplace = value;
-			}
-		}
-		internal string Permissions
-		{
-			get
-			{
-				return _permissions;
-			}
-			set
-			{
-				_permissions = value;
-			}
-		}
-	}
+/// <summary>
+/// <inheritdoc/>
+/// </summary>
+/// <typeparam name="T"></typeparam>
+    [SupportedModules(Globals.ModuleName)] /* this MUST match DesktopModule.ModuleName so use new constant */
+    public class ControllerBase<T> : DnnApiController
+    {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
+        /// <summary>
+        /// provide a simple method for testing
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage HelloWorld()
+        {
+            Logger.Info("Hello World!");
+            return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
+        }
+    }
 }

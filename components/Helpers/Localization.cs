@@ -99,12 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public string GetResourceFile(string type, string language, int PortalId)
 		{
-			string resourcefilename = "~/DesktopModules/ActiveForums/app_localresources/SharedResources.resx";
-			//If IO.File.Exists(HttpContext.Current.Server.MapPath("~/admin/users/app_localresources/profile.ascx.resx")) Then
-			//    resourcefilename = "~/admin/users/app_localresources/profile.ascx.resx"
-			//ElseIf IO.File.Exists(HttpContext.Current.Server.MapPath("~/desktopmodules/admin/security/app_localresources/profile.ascx.resx")) Then
-			//    resourcefilename = "~/desktopmodules/admin/security/app_localresources/profile.ascx.resx"
-			//End If
+			string resourcefilename = Globals.SharedResourceFile;
 			if (language != Localization.SystemLocale)
 			{
 				resourcefilename = resourcefilename.Substring(0, resourcefilename.Length - 5) + "." + language + ".resx";
