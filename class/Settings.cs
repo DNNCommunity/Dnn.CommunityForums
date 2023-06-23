@@ -128,10 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return MainSettings.GetBoolean(SettingKeys.IsInstalled); }
         }
 
-        public bool NeedsConversion
-        {
-            get { return MainSettings.GetBoolean("NeedsConvert", false); }
-        }
 
         public PMTypes PMType
         {
@@ -195,15 +191,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty); }
         }
-
-        public int TemplateCache
-        {
-            get { return MainSettings.GetInt(SettingKeys.TemplateCache); }
-        }
-
         public bool MailQueue
         {
             get { return MainSettings.GetBoolean(SettingKeys.MailQueue); }
+        }
+        public bool CacheTemplates
+        {
+            get { return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }
         }
 
         public int FloodInterval

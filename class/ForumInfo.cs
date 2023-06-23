@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public int TotalTopics { get; set; }
         public int TotalReplies { get; set; }
         public int LastPostID { get; set; }
+        public int SubscriberCount { get; set; }
         public string GroupName { get; set; }
         public string ParentForumName { get; set; }
         public string ForumSettingsKey { get; set; }
@@ -52,6 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool InheritSecurity { get; set; }
         public ForumGroupInfo ForumGroup { get; set; }
         public string PrefixURL { get; set; }
+
 
 		public string ForumURL
 		{

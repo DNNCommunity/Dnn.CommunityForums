@@ -378,7 +378,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
                 return GetModuleSettings(ForumModuleId);
-
             }
         }
         

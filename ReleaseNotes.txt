@@ -5,7 +5,33 @@
 <div class="uv-install-wrapper">
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
+
 	<div class="dnnClear">
+		<h3>07.00.11</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Refactored Legacy Upgrade Code to Only Run at Module Start (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Like UI Image Does Not Update On-Click (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/320">Issue 320</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Flood Control Does Not Take Replies into Account (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/81">Issue 81</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Redirect Fails When Replying and Using the Friendly URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/324">Issue 324</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Incorrect Links in Email Notifications When Using the URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/322">Issue 322</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved Inconsistent Friendly URL logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/326">Issue 326</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Bad Redirect When Replying and Using the Friendly URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/324">Issue 324</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Input for Avatar Width Size too Small (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/317">Issue 317</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>TASK: Refactor Legacy Upgrade Code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Modernize Tokens Entities/Controllers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/297">PR 297</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: ModuleImagePath Path in Control Panel Resolved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/310">PR 310</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: 07.00.10 Upgrade fails when executing SQL for 07.00.05 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/321">PR 321</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: 07.00.11 Upgrade fails when executing SQL for 07.00.10 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/341">PR 341</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
+		<h3>07.00.10</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Show subscriber counts in Forum, Topics, and Topic views [designers should review/update templates]  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/185">Issue 185</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Honor module cache settings when loading templates [used by designers] (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/155">Issue 155</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Moved Users Online backend to Web API (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/275">PR 275</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
 
 		<h3>07.00.09</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
@@ -18,6 +44,7 @@
 			<li>BUG: Added a missing SQL query to remove orphaned rewrite URL data (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Fixed flood control bug due to a GitHub merge conflict (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>TASK: Updated namespaces to be more contectually obvious to developers (No issue, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved a minor build issue that was packaging VS &amp; Git files in the Resources.zip (No issue, thanks <a href="https://github.com/willstrohl" target="_blank">@WillStrohl</a>!)</li>
 		</ul>
  
 		<h3>07.00.07</h3>

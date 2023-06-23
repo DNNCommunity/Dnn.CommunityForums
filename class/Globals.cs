@@ -97,10 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		Ventrian = 2
 	}
 
-	public enum SpecialTokenTypes
-	{
-		
-	}
 
 	public enum TrustTypes
 	{
@@ -185,7 +181,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string MailQueue = "MAILQUEUE";
 		public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
-		public const string TemplateCache = "TEMPLATECACHE";
 		public const string FloodInterval = "FLOODINTERVAL";
 		public const string EditInterval = "EDITINTERVAL";
 		public const string LoggingLevel = "LOGGINGLEVEL";
@@ -213,7 +208,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLCategories = "URLCATS";
 		public const string PrefixURLOther = "URLOTHER";
 
-    }
+        public const string CacheTemplates = "CACHETEMPLATES";
+
+
+	}
 
 	public class ForumSettingKeys
 	{

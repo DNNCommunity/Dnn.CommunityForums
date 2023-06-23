@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_pinger()',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup

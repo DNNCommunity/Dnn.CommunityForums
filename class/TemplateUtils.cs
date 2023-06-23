@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
             
             // Build the link
             string link;
-            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.IsRewriteLoaded())
+            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
                     link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 var contentId = (replyId > 0) ? replyId : -1;
-                link = new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId);
+                link = String.Concat(Common.Globals.NavigateURL(tabID), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
             if (!(link.StartsWith("http")))
@@ -862,7 +862,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var mainSettings = DataCache.MainSettings(moduleId);
 
-            return DataCache.GetCachedTemplate(mainSettings.TemplateCache, moduleId, "TopicView", topicTemplateId);
+            return TemplateCache.GetCachedTemplate(moduleId, "TopicView", topicTemplateId);
         }
         public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, Forum forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, int timeZoneOffset)
         {

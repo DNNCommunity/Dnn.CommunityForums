@@ -58,25 +58,27 @@ var amaf = {
         http.send(data);
     }
 };
-function amaf_pinger() {
-    var d = {};
-    d.action = 1;
-    amaf.callback(d, null);
+function amaf_updateuseronline(mid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "POST",
+        url: '/API/ActiveForums/User/UpdateUserIsOnline',
+        beforeSend: sf.setModuleHeaders
+    })
 };
-function amaf_uo() {
-    var d = {};
-    d.action = 2;
-    amaf.callback(d, amaf_uocomplete);
+function amaf_uo(mid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: '/API/ActiveForums/User/GetUsersOnline',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+            var u = document.getElementById('af-usersonline');
+            u.innerHTML = data;
+    }).fail(function (xhr, status) {
+            alert('error getting users online');
+    });
 };
-function amaf_uocomplete(result) {
-    try {
-        var u = document.getElementById('af-usersonline');
-        u.innerHTML = result[0].result;
-    } catch (err) {
-        alert(err.message);
-    };
-};
-
 function amaf_topicSubscribe(fid, tid) {
     var d = {};
     d.action = 3;
@@ -278,9 +280,9 @@ function amaf_likePost(mid, fid, cid) {
         url: '/API/ActiveForums/Like/Like',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
-        $('#af-topicview-likes1').toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
-        $('#af-topicview-likes2').toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
-        $('#af-topicview-likes3').toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes1-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes2-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
+        $('#af-topicview-likes3-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
     }).fail(function (xhr, status) {
         alert('error liking post');
     });
