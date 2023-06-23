@@ -1,5 +1,4 @@
-
-﻿/* issue 185 - begin - show subscriber count on topic  */
+/* issue 185 - begin - show subscriber count on topic  */
 
 /*activeforums_UI_TopicView*/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicView]') AND type in (N'P', N'PC'))
