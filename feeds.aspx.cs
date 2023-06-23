@@ -108,9 +108,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string BuildRSS(int PortalId, int TabId, int ModuleId, int intPosts, int ForumID, bool IngnoreSecurity, bool IncludeBody)
         {
-            DotNetNuke.Entities.Portals.PortalController pc = new DotNetNuke.Entities.Portals.PortalController();
-            DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-            DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
+            DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+            DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
             UserController uc = new UserController();
             User u = uc.GetUser(PortalId, ModuleId);
 
@@ -146,16 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append("<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">" + System.Environment.NewLine);
                         string[] Params = { ParamKeys.ForumId + "=" + ForumID, ParamKeys.ViewType + "=" + Views.Topics };
                         string URL = string.Empty;
-                        if (Request.QueryString["asg"] == null)
-                        {
-                            URL = DotNetNuke.Common.Globals.NavigateURL(TabId, "", Params);
-                        }
-                        else if (SimulateIsNumeric.IsNumeric(Request.QueryString["asg"]))
-                        {
-                            Params = new string[] { "asg=" + Request.QueryString["asg"], ParamKeys.ForumId + "=" + ForumID, ParamKeys.ViewType + "=" + Views.Topics };
-                            URL = DotNetNuke.Common.Globals.NavigateURL(TabId, "", Params);
-                        }
-
+                        URL = DotNetNuke.Common.Globals.NavigateURL(TabId, "", Params);
                         if (URL.IndexOf(Request.Url.Host) == -1)
                         {
                             URL = DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host) + URL;
@@ -208,15 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder sb = new StringBuilder(1024);
             string[] Params = { ParamKeys.ForumId + "=" + dr["ForumID"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic };
             string URL = DotNetNuke.Common.Globals.NavigateURL(PostTabID, "", Params);
-            if (Request.QueryString["asg"] != null)
-            {
-                if (SimulateIsNumeric.IsNumeric(Request.QueryString["asg"]))
-                {
-                    Params = new string[] { "asg=" + Request.QueryString["asg"], ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + dr["TopicId"].ToString() };
-                    URL = DotNetNuke.Common.Globals.NavigateURL(PostTabID, "", Params);
-                }
-            }
-            else if (MainSettings.URLRewriteEnabled && !(string.IsNullOrEmpty(dr["FullUrl"].ToString())))
+            if (MainSettings.URLRewriteEnabled && !(string.IsNullOrEmpty(dr["FullUrl"].ToString())))
             {
                 string sTopicURL = string.Empty;
                 if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))

@@ -33,29 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-/*
-#if !SKU_LITE
-            try
-            {
-                Social social = new Social();
-                if (MainSettings.ProfileType == ProfileTypes.Social)
-                {
-                    int memberTabId = social.GetMemberTabId(PortalId);
-                    if (memberTabId > -1)
-                    {
-                        Response.Redirect(Utilities.NavigateUrl(memberTabId));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-#endif
-*/
-
-
             lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
             bool bCanLoad = false;
             string sMode = MainSettings.MemberListMode;

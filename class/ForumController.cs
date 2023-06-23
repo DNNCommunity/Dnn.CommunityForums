@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
 using System.Data;
 using System.Text;
@@ -74,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if ((hasPermissions || (!strict && !f.Hidden && (permissionType == "CanView" || permissionType == "CanRead"))) && f.Active)
 				{
-					forumIds += f.ForumID + ";";
+					forumIds += string.Concat(f.ForumID, ";");
 				}
 			}
 
@@ -109,8 +108,9 @@ namespace DotNetNuke.Modules.ActiveForums
 						forum.Properties = propC.ListProperties(portalId, 1, forumId);
 					}
 
-				}
-				DataCache.CacheStore(cachekey, forum);
+                }
+                forum.ForumSettings = DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumInfo, forumId), !ignoreCache);
+                DataCache.CacheStore(cachekey, forum);
 			}
 		    return forum;
 		}
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				while (dr.Read())
 				{
-					forumIds += dr["ForumId"] + ";";
+					forumIds += string.Concat(dr["ForumId"], ";");
 				}
 				dr.Close();
 			}
@@ -287,27 +287,27 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				if (fi.ForumSettingsKey == "" && fi.ForumID > 0)
 				{
-					fi.ForumSettingsKey = "F:" + fi.ForumID;
+					fi.ForumSettingsKey = string.Concat("F:", fi.ForumID);
 				}
 			}
 			else if (useGroup == false && string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
 			{
-				fi.ForumSettingsKey = "F:" + fi.ForumID;
+				fi.ForumSettingsKey = string.Concat("F:", fi.ForumID);
 			}
 
 			var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
 			if (String.IsNullOrEmpty(fi.ForumSettingsKey))
-				fi.ForumSettingsKey = "F:" + forumId;
+				fi.ForumSettingsKey = string.Concat("F:", forumId);
 
 			if (fi.ForumSettingsKey.Contains("G:"))
-			    DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, "F:" + fi.ForumID, "F:" + fi.ForumID);
+			    DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID), string.Concat("F:", fi.ForumID));
 
 			if (isNew && useGroup == false)
 			{
 				var moduleId = fi.ModuleId;
 				Permissions.CreateDefaultSets(portalId, permissionsId);
 
-				var sKey = "F:" + forumId.ToString();
+				var sKey = string.Concat("F:", forumId.ToString());
 				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
 				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
 				Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicFormId, "0");
@@ -372,7 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		private static string GetSubForums(int itemCount, int parentForumId, DataTable dtForums, ref int n)
 		{
 			var sb = new StringBuilder();
-			dtForums.DefaultView.RowFilter = "ParentForumId = " + parentForumId;
+			dtForums.DefaultView.RowFilter = string.Concat("ParentForumId = ", parentForumId);
 			if (dtForums.DefaultView.Count > 0)
 			{
 				foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			    var fgc = new ForumGroupController();
 				var gi = fgc.Groups_Get(moduleId, forumGroupId);
 				var socialGroup = rc.GetRole(socialGroupId, portalId);
-				var groupAdmin = socialGroupId.ToString() + ":0";
+				var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
 				var groupMember = socialGroupId.ToString();
 
 			    var ri = rc.GetRoleByName(portalId, "Administrators");
@@ -536,16 +536,14 @@ namespace DotNetNuke.Modules.ActiveForums
 			        }
 			    }
 			}
-			catch (Exception ex)
+			catch
 			{
-
+				// do nothing?? 
 			}
 
-			DataCache.CacheClear(moduleId + "fv");
+			DataCache.CacheClear(string.Concat(moduleId, "fv"));
 
 			return forumId;
 		}
-
-
-	}
+    }
 }

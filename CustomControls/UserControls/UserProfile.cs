@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 btnProfileEdit.Width = 50;
                 btnProfileEdit.ImageLocation = "TOP";
                 btnProfileEdit.Text = "[RESX:Button:Edit]";
-                btnProfileEdit.ImageUrl = "~/DesktopModules/ActiveForums/images/edit32.png";
+                btnProfileEdit.ImageUrl = Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "edit32.png");
                 btnProfileEdit.Visible = false;
                 plhProfileEditButton.Controls.Add(btnProfileEdit);
             }
@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 btnProfileCancel.Width = 50;
                 btnProfileCancel.ImageLocation = "TOP";
                 btnProfileCancel.Text = "[RESX:Button:Cancel]";
-                btnProfileCancel.ImageUrl = "~/DesktopModules/ActiveForums/images/cancel32.png";
+                btnProfileCancel.ImageUrl = Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "cancel32.png");
                 btnProfileCancel.Visible = false;
                 plhProfileCancelButton.Controls.Add(btnProfileCancel);
             }
@@ -211,28 +211,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 btnProfileSave.Width = 50;
                 btnProfileSave.ImageLocation = "TOP";
                 btnProfileSave.Text = "[RESX:Button:Save]";
-                btnProfileSave.ImageUrl = "~/DesktopModules/ActiveForums/images/save32.png";
+                btnProfileSave.ImageUrl = Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "save32.png");
                 btnProfileSave.Visible = false;
                 plhProfileSaveButton.Controls.Add(btnProfileSave);
             }
 
             if (plhProfileAdminSettings != null)
             {
-                ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("~/DesktopModules/ActiveForums/controls/profile_adminsettings.ascx"));
+                ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_adminsettings.ascx"));
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
                 tmpCtl.UserProfile = up.Profile;
                 plhProfileAdminSettings.Controls.Add(tmpCtl);
             }
             if (plhProfilePrefs != null)
             {
-                ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("~/DesktopModules/ActiveForums/controls/profile_mypreferences.ascx"));
+                ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_mypreferences.ascx"));
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
                 tmpCtl.UserProfile = up.Profile;
                 plhProfilePrefs.Controls.Add(tmpCtl);
             }
             if (plhProfileUserAccount != null)
             {
-                ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("~/DesktopModules/ActiveForums/controls/profile_useraccount.ascx"));
+                ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_useraccount.ascx"));
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
                 tmpCtl.UserProfile = up.Profile;
                 plhProfileUserAccount.Controls.Add(tmpCtl);
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = DataCache.GetTemplate("ForumTracking.txt");
+                ctlForums.DisplayTemplate = TemplateCache.GetTemplate("ForumTracking.txt");
                 ctlForums.CurrentUserId = UID;
                 ctlForums.ForumIds = up.UserForums;
                 plhTracker.Controls.Add(ctlForums);

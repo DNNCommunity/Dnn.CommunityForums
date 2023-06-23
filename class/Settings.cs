@@ -128,10 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return MainSettings.GetBoolean(SettingKeys.IsInstalled); }
         }
 
-        public bool NeedsConversion
-        {
-            get { return MainSettings.GetBoolean("NeedsConvert", false); }
-        }
 
         public PMTypes PMType
         {
@@ -163,6 +159,29 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
+        public string ThemesLocation
+        {
+            get
+            {
+                return string.Concat(Globals.ModulePath, "/themes");
+            }
+        }
+
+        public string ThemeLocation
+        {
+            get
+            {
+                return string.Concat(ThemesLocation, "/", Theme);
+            }
+        }
+
+        public string TemplatesLocation
+        {
+            get
+            {
+                return string.Concat(Globals.ModulePath, "/config/templates");
+            }
+        }
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }
@@ -172,15 +191,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty); }
         }
-
-        public int TemplateCache
-        {
-            get { return MainSettings.GetInt(SettingKeys.TemplateCache); }
-        }
-
         public bool MailQueue
         {
             get { return MainSettings.GetBoolean(SettingKeys.MailQueue); }
+        }
+        public bool CacheTemplates
+        {
+            get { return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }
         }
 
         public int FloodInterval
@@ -224,17 +241,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableAutoLink, true); }
         }
-
-        public string ActiveSocialTopicsKey
-        {
-            get { return Utilities.SafeConvertString(MainSettings.ContainsKey(SettingKeys.ActiveSocialTopicKey), string.Empty); }
-        }
-
-        public string ActiveSocialReplyKey
-        {
-            get { return MainSettings.GetString(SettingKeys.ActiveSocialRepliesKey, string.Empty); }
-        }
-
         public bool URLRewriteEnabled
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableURLRewriter); }
@@ -324,4 +330,3 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 	}
 }
-

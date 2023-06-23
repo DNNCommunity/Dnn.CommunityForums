@@ -31,13 +31,15 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using System.Data.SqlTypes;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase
-	{
-		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int topicId = -1;
 			TopicInfo ti = new TopicInfo();
@@ -360,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				ControlUtils ctlUtils = new ControlUtils();
 				string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
 				Social amas = new Social();
-				amas.AddTopicToJournal(PortalId, ModuleId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, fi.ActiveSocialSecurityOption, fi.Security.Read, fi.SocialGroupId);
+				amas.AddTopicToJournal(PortalId, ModuleId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body,  fi.Security.Read, fi.SocialGroupId);
 			}
 			catch (Exception ex)
 			{
@@ -391,21 +393,21 @@ namespace DotNetNuke.Modules.ActiveForums
 			 * A possible future enhancement might be to write this entry or to perhaps change the module definition ...
 			 * 
 			 */
-			var ms = new SettingsInfo { MainSettings = new Entities.Modules.ModuleController().GetModuleSettings(moduleInfo.ModuleID) };
-			/* if not using soft deletes, remove and rebuild entire index; 
+			var ms = new SettingsInfo { MainSettings = moduleInfo.ModuleSettings };
+            /* if not using soft deletes, remove and rebuild entire index; 
 			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
 			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
 			*/
-			if (ms.DeleteBehavior != 1)
+            if (ms.DeleteBehavior != 1)
 			{
 				DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);
 				beginDateUtc = SqlDateTime.MinValue.Value.AddDays(1);
             }
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
-			bool isHttps = new Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
-			bool isRewriteLoaded = Utilities.IsRewriteLoaded();
-			string primaryPortalAlias = new Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+			bool isHttps = new DotNetNuke.Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
+			bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
+			string primaryPortalAlias = new DotNetNuke.Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
@@ -457,7 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
 					}
 					string link = string.Empty;
-					if (!string.IsNullOrEmpty(forumPrefixUrl) && isRewriteLoaded)
+					if (!string.IsNullOrEmpty(forumPrefixUrl) && useFriendlyURLs)
 					{
 						link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
 					}
@@ -465,7 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						//NOTE: indexer is called from scheduler and has no httpcontext, so must load and pass portalSettings
 						PortalSettings portalSettings = new PortalSettings(moduleInfo.PortalID);
-						PortalSettingsController psc = new Entities.Portals.PortalSettingsController();
+						PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
 						psc.LoadPortalSettings(portalSettings);
 						string[] additionalParameters;
 						try
@@ -532,13 +534,67 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 
 		}
-		#endregion
+        #endregion
 
-		//Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
-		//    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
-		//End Function
-	}
+        //Public Function ActiveForums_GetPostsForSearch(ByVal ModuleID As Integer) As ArrayList
+        //    Return CBO.FillCollection(DataProvider.Instance().ActiveForums_GetPostsForSearch(ModuleID), GetType(PostInfo))
+        //End Function
+        #region "IUpgradeable"
+        public string UpgradeModule(string Version)
+        {
+            switch (Version)
+            {
+                case "07.00.07":
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        fc.ArchiveOrphanedAttachments();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
 
-	#endregion
+                    break;
+                case "07.00.11":
+                    try
+                    {
+						DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+            return Version;
+        }
+        private void LogError(string message, Exception ex)
+        {
+            if (ex != null)
+            {
+                Logger.Error(message, ex);
+                if (ex.InnerException != null)
+                {
+                    Logger.Error(ex.InnerException.Message, ex.InnerException);
+                }
+            }
+            else
+            {
+                Logger.Error(message);
+            }
+        }
+        #endregion
+
+    }
+
+    #endregion
 }
 

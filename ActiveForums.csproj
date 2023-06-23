@@ -47,7 +47,7 @@
     <DebugSymbols>true</DebugSymbols>
     <Optimize>false</Optimize>
     <WarningLevel>1</WarningLevel>
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <DebugType>full</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -59,7 +59,7 @@
     <DefineConstants>TRACE;</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <Optimize>true</Optimize>
-    <WarningLevel>1</WarningLevel>
+    <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -86,6 +86,7 @@
     <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\DotNetNuke.Core.9.4.0\lib\net45\Microsoft.ApplicationBlocks.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>packages\microsoft-web-helpers.2.1.20710.2\lib\net40\Microsoft.Web.Helpers.dll</HintPath>
     </Reference>
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="07.00.11.txt" />
     <Content Include="07.00.03.txt" />
     <Content Include="ActiveForums.ascx">
       <SubType>ASPXCodeBehind</SubType>
@@ -216,11 +218,12 @@
     <Content Include="config\templates\ModAlert_html.txt" />
     <Content Include="config\templates\ToolBar.txt" />
     <Content Include="config\templates\_UserProfile.txt" />
-    <Content Include="controls\admin_properties.ascx" />
+    <Content Include="controls\admin_properties.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="controls\admin_securitygrid.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="controls\admin_upgrade.ascx" />
     <Content Include="controls\af_attach.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -267,11 +270,17 @@
     <Content Include="handlers\adminhelper.ashx" />
     <Content Include="images\add-circle.png" />
     <Content Include="images\af-fileicon.png" />
+    <Content Include="images\arrows_down.png" />
+    <Content Include="images\arrows_left.png" />
     <Content Include="images\arrow_down.png" />
     <Content Include="images\arrow_up.png" />
+    <Content Include="images\cancel32.png" />
     <Content Include="images\check32.png" />
     <Content Include="images\checkbox.png" />
     <Content Include="images\checkbox_unchecked.png" />
+    <Content Include="images\close.png" />
+    <Content Include="images\delete32.png" />
+    <Content Include="images\delete_new.gif" />
     <Content Include="images\execute16.png" />
     <Content Include="images\delete16.png" />
     <Content Include="images\info32.png" />
@@ -282,7 +291,11 @@
     <Content Include="images\modal_top_left.png" />
     <Content Include="images\modal_top_right.png" />
     <Content Include="images\progress.gif" />
+    <Content Include="images\save32.png" />
+    <Content Include="images\search.gif" />
     <Content Include="images\sort_16.png" />
+    <Content Include="images\spinner-lg.gif" />
+    <Content Include="images\spinner.gif" />
     <Content Include="images\testrun16.png" />
     <Content Include="images\roles_add.png" />
     <Content Include="images\save16.png" />
@@ -667,7 +680,9 @@
     <Content Include="controls\admin_filters.ascx" />
     <Content Include="controls\admin_home.ascx" />
     <Content Include="controls\admin_manageforums_home.ascx" />
-    <Content Include="controls\admin_ranks.ascx" />
+    <Content Include="controls\admin_ranks.ascx">
+      <SubType>ASPXCodeBehind</SubType>
+    </Content>
     <Content Include="controls\admin_tags.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -773,10 +788,17 @@
     <None Include="sql\06.01.06.SqlDataProvider" />
     <None Include="sql\06.01.03.SqlDataProvider" />
     <None Include="sql\06.03.03.SqlDataProvider" />
+    <None Include="sql\07.00.04.SqlDataProvider" />
     <None Include="sql\06.04.01.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.05.SqlDataProvider" />
+    <None Include="sql\07.00.06.SqlDataProvider" />
+    <None Include="sql\07.00.07.SqlDataProvider" />
+    <None Include="sql\07.00.08.SqlDataProvider" />
+    <None Include="sql\07.00.09.SqlDataProvider" />
+    <None Include="sql\07.00.10.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\ModAlert_text.txt" />
     <Content Include="config\templates\ModEmail_text.txt" />
@@ -861,14 +883,16 @@
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
-    <Compile Include="class\Likes.cs" />
-    <Compile Include="class\LikesController.cs" />
+    <Compile Include="Entities\Like.cs" />
+    <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
+    <Compile Include="class\TemplateCache.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
     <Compile Include="components\Topics\TopicInfo.cs" />
     <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
+    <Compile Include="Controllers\TokenController.cs" />
     <Compile Include="controls\af_topicscripts.ascx.cs">
       <DependentUpon>af_topicscripts.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -887,7 +911,13 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Entities\Token.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\Controllers\ControllerBase.cs" />
+    <Compile Include="Services\Controllers\UserController.cs" />
+    <Compile Include="Services\Controllers\LikeController.cs" />
+    <Compile Include="Services\ForumAuthorizeAttribute.cs" />
+    <Compile Include="Services\ServicesHelper.cs" />
     <Compile Include="SimulateDateDiff.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="ActiveForums.ascx.designer.cs">
@@ -951,7 +981,7 @@
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
-    <Compile Include="components\Helpers\MoveSettings.cs" />
+    <Compile Include="components\Helpers\UpgradeModuleSettings.cs" />
     <Compile Include="components\Helpers\TextUtils.cs" />
     <Compile Include="components\Helpers\URL.cs" />
     <Compile Include="components\Properties\PropertiesController.cs" />
@@ -959,8 +989,6 @@
     <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="components\Scheduler\DailyDigest.cs" />
     <Compile Include="components\Social\ActiveSocial.cs" />
-    <Compile Include="components\Tokens\Token.cs" />
-    <Compile Include="components\Tokens\TokensController.cs" />
     <Compile Include="components\Users\User.cs" />
     <Compile Include="components\Users\UserController.cs" />
     <Compile Include="controls\admin_properties.ascx.designer.cs">
@@ -975,13 +1003,6 @@
     </Compile>
     <Compile Include="controls\admin_securitygrid.ascx.cs">
       <DependentUpon>admin_securitygrid.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="controls\admin_upgrade.ascx.designer.cs">
-      <DependentUpon>admin_upgrade.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="controls\admin_upgrade.ascx.cs">
-      <DependentUpon>admin_upgrade.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_attach.ascx.designer.cs">
@@ -1111,7 +1132,7 @@
     </Compile>
     <Compile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.cs" />
     <Compile Include="Services\AdminServiceController.cs" />
-    <Compile Include="Services\ForumRouteMapper.cs" />
+    <Compile Include="Services\RouteMapper.cs" />
     <Compile Include="Services\ForumServiceController.cs" />
     <Compile Include="Services\ModerationService.cs" />
     <Compile Include="ForumSettings.ascx.designer.cs">
@@ -1475,6 +1496,8 @@
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
     <Folder Include="config\templates\community\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Entities\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup>

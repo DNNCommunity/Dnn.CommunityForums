@@ -27,6 +27,8 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Security.Policy;
+using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -186,21 +188,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void SaveQuickReply()
         {
-            int iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            ForumController fc = new ForumController();
+            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
-                UserProfileController upc = new UserProfileController();
-                UserProfileInfo upi = upc.Profiles_Get(SiteId, InstanceId, this.UserId);
-                if (upi != null)
-                {
-                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < iFloodInterval)
-                    {
-                        Controls.InfoMessage im = new Controls.InfoMessage();
-                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), iFloodInterval) + "</div>";
-                        plhMessage.Controls.Add(im);
-                        return;
-                    }
-                }
+                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                return;
             }
             //TODO: Fix for anon
             //If Not Current.Request.IsAuthenticated Then
@@ -220,9 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    ui.TrustLevel = -1
 
             //End If
-            ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
-            bool UserIsTrusted = false;
+             bool UserIsTrusted = false;
             UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
@@ -286,19 +277,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                     Subscriptions.SendSubscriptions(SiteId, InstanceId, PageId, ForumId, TopicId, ReplyId, UserId);
-
-#if !SKU_LITE
-                    try
-                    {
-                        Social oSocial = new Social();
-                        oSocial.AddForumItemToJournal(SiteId, InstanceId, UserId, "forumreply", sURL, Subject, sBody);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-
-#endif
+                    Social amas = new Social();
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody,ForumInfo.Security.Read, SocialGroupId);
                 }
                 catch (Exception ex)
                 {
@@ -308,34 +288,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
-            else if (isApproved == false)
+            else
             {
                 Email.SendEmailToModerators(forumInfo.ModNotifyTemplateId, SiteId, ForumId, ri.TopicId, ReplyId, InstanceId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
             }
-            else
-            {
-                string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
-
-#if !SKU_LITE
-                try
-                {
-                    Modules.ActiveForums.Social oSocial = new Modules.ActiveForums.Social();
-                    oSocial.AddForumItemToJournal(SiteId, InstanceId, UserId, "forumreply", fullURL, Subject, sBody);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-
-#endif
-                HttpContext.Current.Response.Redirect(fullURL, false);
-            }
-
-            //End If
-
-
         }
         private string ParseTemplate()
         {

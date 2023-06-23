@@ -36,9 +36,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		public enum Actions: int
 		{
 			None,
-			UserPing,
-			GetUsersOnline,
-			TopicSubscribe,
+			UserPing, /* no longer used */
+			GetUsersOnline,/* no longer used */
+            TopicSubscribe,
 			ForumSubscribe,
 			RateTopic,
 			DeleteTopic,
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			LoadTopic,
 			SaveTopic,
 			ForumList,
-            LikePost
+            LikePost /*no longer used*/
 
 		}
 		public override void ProcessRequest(HttpContext context)
@@ -78,11 +78,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			switch (action)
 			{
 				case Actions.UserPing:
-					sOut = UserOnline();
-					break;
-				case Actions.GetUsersOnline:
-					sOut = GetUserOnlineList();
-					break;
+					throw new NotImplementedException();
+					////sOut = UserOnline();
+					////break;
+                case Actions.GetUsersOnline:
+                    throw new NotImplementedException();
+					////sOut = GetUserOnlineList();
+					////break;
 				case Actions.TopicSubscribe:
 					sOut = SubscribeTopic();
 					break;
@@ -123,75 +125,17 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					sOut = ForumList();
 					break;
                 case Actions.LikePost:
-                    sOut = LikePost();
-                    break;
+					throw new NotImplementedException();
+                    //sOut = LikePost();
+                    //break;
 			}
 			context.Response.ContentType = "text/plain";
 			context.Response.Write(sOut);
 		}
-
-        private string LikePost()
-        {
-            int userId = 0;
-            int contentId = 0;
-            if (Params.ContainsKey("userId") && SimulateIsNumeric.IsNumeric(Params["userId"]))
-            {
-                userId = int.Parse(Params["userId"].ToString());
-            }
-            if (Params.ContainsKey("contentId") && SimulateIsNumeric.IsNumeric(Params["contentId"]))
-            {
-                contentId = int.Parse(Params["contentId"].ToString());
-            }
-            var likeController = new LikesController();
-            likeController.Like(contentId, UserId);
-            return BuildOutput(userId + "|" + contentId, OutputCodes.Success, true);
-        }
-
 		private string ForumList()
 		{
 			ForumController fc = new ForumController();
 			return fc.GetForumsHtmlOption(PortalId, ModuleId, ForumUser);
-		}
-		private string UserOnline()
-		{
-			try
-			{
-				if (UserId > 0)
-				{
-					DataProvider.Instance().Profiles_UpdateActivity(PortalId, ModuleId, UserId);
-					return BuildOutput(UserId.ToString(), OutputCodes.Success, true, false);
-				}
-				else
-				{
-					return BuildOutput(UserId.ToString(), OutputCodes.AccessDenied, true, false);
-				}
-
-			}
-			catch (Exception ex)
-			{
-				return BuildOutput(ex.Message, OutputCodes.AccessDenied, false, false);
-			}
-		}
-		private string GetUserOnlineList()
-		{
-			UsersOnline uo = new UsersOnline();
-			string sOnlineList = uo.GetUsersOnline(PortalId, ModuleId, ForumUser);
-			IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalId, ModuleId, 2);
-			int anonCount = 0;
-			int memCount = 0;
-			int memTotal = 0;
-			while (dr.Read())
-			{
-				anonCount = Convert.ToInt32(dr["Guests"]);
-				memCount = Convert.ToInt32(dr["Members"]);
-				memTotal = Convert.ToInt32(dr["MembersTotal"]);
-			}
-			dr.Close();
-			string sUsersOnline = null;
-			sUsersOnline = Utilities.GetSharedResource("[RESX:UsersOnline]");
-			sUsersOnline = sUsersOnline.Replace("[USERCOUNT]", memCount.ToString());
-			sUsersOnline = sUsersOnline.Replace("[TOTALMEMBERCOUNT]", memTotal.ToString());
-			return BuildOutput(sUsersOnline + " " + sOnlineList, OutputCodes.Success, true, false);
 		}
 		private string SubscribeTopic()
 		{
