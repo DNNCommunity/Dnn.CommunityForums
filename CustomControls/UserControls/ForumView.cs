@@ -767,7 +767,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (sTopicURL.EndsWith("/"))
                     {
-                        sURL = sTopicURL + "?" + ParamKeys.ContentJumpId + "=" + PostId;
+                        sURL = sTopicURL + "?" + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", PostId) : String.Concat("?", ParamKeys.ContentJumpId, "=", PostId));
                     }
                     else
                     {
