@@ -28,7 +28,7 @@ using System.Web.UI.WebControls;
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [ToolboxData("<{0}:WhatsNewControl runat=server></{0}:WhatsNewControl>")]
-    public class WhatsNewControl : Entities.Modules.PortalModuleBase
+    public class WhatsNewControl : DotNetNuke.Entities.Modules.PortalModuleBase
     {
 
         #region Private Member Variables
@@ -192,12 +192,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 dr = DataProvider.Instance().GetPosts(PortalId, ForumIds, TopicsOnly, RandomOrder, Rows, Tags, FilterByUserId);
             }
 
-            var useFriendly = Utilities.IsRewriteLoaded();
-            var sHost = Utilities.GetHost();
-            try
+           try
             {
                 var sTempTemplate = sTemplate;
-                string lastPostDate;
                 while (dr.Read())
                 {
                     var groupName = Convert.ToString(dr["GroupName"]);
@@ -253,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (TabId == -1)
                         TabId = Convert.ToInt32(topicTabId);
 
-                    if (useFriendly && !(string.IsNullOrEmpty(sForumUrl)) && !(string.IsNullOrEmpty(sTopicURL)))
+                    if (Utilities.UseFriendlyURLs( Utilities.SafeConvertInt(topicModuleId)) && !(string.IsNullOrEmpty(sForumUrl)) && !(string.IsNullOrEmpty(sTopicURL)))
                     {
                         var ctlUtils = new ControlUtils();
                         sTopicURL = ctlUtils.BuildUrl(Convert.ToInt32(topicTabId), Convert.ToInt32(topicModuleId), sGroupPrefixURL, sForumUrl, Convert.ToInt32(groupId), Convert.ToInt32(forumId), Convert.ToInt32(topicId), sTopicURL, -1, -1, string.Empty, 1, Convert.ToInt32(replyId), -1);

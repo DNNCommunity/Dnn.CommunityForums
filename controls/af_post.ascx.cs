@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             _themePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
             Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
-             
+
             ctlForm.ID = "ctlForm";
             ctlForm.PostButton.ImageUrl = _themePath + "/images/save32.png";
             ctlForm.PostButton.ImageLocation = "TOP";
@@ -257,10 +257,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //Page.ClientScript.RegisterClientScriptInclude("aftags", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/jquery.tokeninput.js"))
         }
+        protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // if someone activates this checkbox send him home :-)
+            Response.Redirect("http://localhost/", true);
+        }
 
         private void ctlForm_Click(object sender, EventArgs e)
         {
-            Page.Validate();
+            Page.Validate(); 
+            if (ContactByFaxOnlyCheckBox.Checked)
+            {
+                // if someone activates this checkbox send him home :-)
+                Response.Redirect("about:blank");
+            }
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
@@ -973,7 +983,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
                     }
 
@@ -982,7 +992,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
 
@@ -1141,8 +1151,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(ForumTabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     
-                    if (fullURL.EndsWith("/"))
-                        fullURL += "?" + ParamKeys.ContentJumpId + "=" + tmpReplyId;
+                    if (fullURL.EndsWith("/")) 
+                        fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
 
                     if (!_isEdit)
                     {
@@ -1153,7 +1163,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
 
                     }

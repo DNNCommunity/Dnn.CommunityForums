@@ -287,8 +287,8 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				if (fullURL.EndsWith("/"))
 				{
-					fullURL += "?" + ParamKeys.ContentJumpId + "=" + ReplyId;
-				}
+                    fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
+                }
 				Social amas = new Social();
 				amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body,fi.Security.Read, fi.SocialGroupId);
 			}

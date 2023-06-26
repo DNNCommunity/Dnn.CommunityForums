@@ -18,6 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class URL
@@ -85,12 +87,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return sURL;
 		}
+		[Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. ReplyLink(int tabId, int moduleId, TopicInfo ti, int userId, int replyId)")]
 
-		public static string ReplyLink(int tabId, TopicInfo ti, int userId, int replyId)
+        public static string ReplyLink(int tabId, TopicInfo ti, int userId, int replyId)
+		{
+			return ReplyLink(tabId, DotNetNuke.Common.Utilities.Null.NullInteger, ti, userId, replyId);
+		}
+            public static string ReplyLink(int tabId, int moduleId, TopicInfo ti, int userId, int replyId)
 		{
 			var sURL = Utilities.NavigateUrl(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
 
-			if (string.IsNullOrEmpty(ti.URL) || ! Utilities.IsRewriteLoaded())
+			if (string.IsNullOrEmpty(ti.URL) || ! Utilities.UseFriendlyURLs(moduleId))
 				return sURL;
 
             var db = new Data.Common();

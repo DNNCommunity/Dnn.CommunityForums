@@ -133,6 +133,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 Format = (moduleSettings[FormatSettingsKey] != null) ? Convert.ToString(moduleSettings[FormatSettingsKey]) : DefaultFormat
             };
         }
-
     }
 }

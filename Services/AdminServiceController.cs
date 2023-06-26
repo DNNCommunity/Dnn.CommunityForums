@@ -30,7 +30,7 @@ using DotNetNuke.Web.Api;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [ValidateAntiForgeryToken]
-    [SupportedModules("Active Forums")]
+    [SupportedModules(Globals.ModuleName)]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]
     public class AdminServiceController : DnnApiController
     {
@@ -43,7 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public HttpResponseMessage ToggleURLHandler(ToggleUrlHandlerDTO dto)
         {
             var cfg = new ConfigUtils();
-            bool success;
             if (Utilities.IsRewriteLoaded())
             {
                 cfg.DisableRewriter(HttpContext.Current.Server.MapPath("~/web.config"));

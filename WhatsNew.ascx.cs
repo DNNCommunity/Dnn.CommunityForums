@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = new ModuleController().GetModule(moduleID:ModuleId).ModuleSettings;
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
                         DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
@@ -79,15 +79,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region DNN Actions
 
-        public Entities.Modules.Actions.ModuleActionCollection ModuleActions
+        public DotNetNuke.Entities.Modules.Actions.ModuleActionCollection ModuleActions
         {
             get
             {
-                return new Entities.Modules.Actions.ModuleActionCollection
+                return new DotNetNuke.Entities.Modules.Actions.ModuleActionCollection
                                   {
                                       {
                                           GetNextActionID(), "Edit", /* Utilities.GetSharedResource("Configure") */
-                                          Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
+                                          DotNetNuke.Entities.Modules.Actions.ModuleActionType.EditContent, "", "",
                                           EditUrl(), false, Security.SecurityAccessLevel.Edit, true, false
                                       }
                                   };
@@ -104,7 +104,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var sb = new StringBuilder(Settings.Header);
 
-            var useFriendly = Utilities.IsRewriteLoaded();
             var sHost = Utilities.GetHost();
 
             try
@@ -136,17 +135,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var ts = SettingsBase.GetModuleSettings(topicModuleId);
 
-                    // The Module Stores the PostDate in the Current Time Zone format of the Server, not in UTC.
-                    // So we need to calculate the difference between the Site UTC Offset  and the Server UTC Offset and Users UTC Offset and the Server offset and add that to the displayed time.
-                    //AF now stores in UTC; 
-                    //var dtNow = DateTime.UtcNow;
-                    //var timeOffsetServer = (int)TimeZoneInfo.Local.GetUtcOffset(dtNow).TotalMinutes;
-                    //var timeOffsetSite = (int)PortalSettings.TimeZone.GetUtcOffset(dtNow).TotalMinutes;
-                    //var timeOffsetUser = (int)UserInfo.Profile.PreferredTimeZone.GetUtcOffset(postDate).TotalMinutes;
-
-                    //var timeOffset = (timeOffsetSite - timeOffsetServer) + (timeOffsetUser- timeOffsetServer);
-
-                    // Use a stringBuilder for better performance;
                     var sbTemplate = new StringBuilder(Settings.Format ?? string.Empty);
 
                     sbTemplate = sbTemplate.Replace("[FORUMGROUPNAME]", groupName);
@@ -166,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
 
-                    if (useFriendly && !(string.IsNullOrEmpty(sForumUrl) && string.IsNullOrEmpty(sTopicUrl)))
+                    if (Utilities.UseFriendlyURLs(topicModuleId) && !(string.IsNullOrEmpty(sForumUrl) && string.IsNullOrEmpty(sTopicUrl)))
                     {
                         var ctlUtils = new ControlUtils();
 

@@ -187,6 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch
 			{
+                // do nothing? 
 			}
 		}
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
@@ -252,9 +253,9 @@ namespace DotNetNuke.Modules.ActiveForums
         private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
 		{
 			string myFile;
-			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
+			string FileName = string.Concat(ModuleId, "_", TemplateId, TemplateType, ".resources");
 			string strPath;
-			strPath = HttpContext.Current.Request.MapPath(Globals.ModulePath  + "cache\\");
+			strPath = HttpContext.Current.Request.MapPath(string.Concat(Globals.ModulePath, "cache\\"));
 			if (! (System.IO.Directory.Exists(strPath)))
 			{
 				try
@@ -263,14 +264,13 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				catch (Exception ex)
 				{
-					//   DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
 					return;
 				}
 
 			}
 			try
 			{
-				myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
+				myFile = HttpContext.Current.Request.MapPath(string.Concat(Globals.ModulePath, "cache\\")) + FileName;
 				if (System.IO.File.Exists(myFile))
 				{
 					try
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 					catch (Exception ex)
 					{
-						Services.Exceptions.Exceptions.LogException(ex);
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 					}
 				}
 				try
@@ -288,12 +288,12 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				catch (Exception ex)
 				{
-					// DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+					// do nothing??
 				}
 			}
 			catch (Exception ex)
 			{
-				//DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
+				// do nothing??
 			}
 			}
         #endregion
@@ -339,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-						myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
+						myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 						if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -349,18 +349,17 @@ namespace DotNetNuke.Modules.ActiveForums
 							}
 							catch (Exception ex)
 							{
-								Services.Exceptions.Exceptions.LogException(ex);
+                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 							}
 							sTemplate = objStreamReader.ReadToEnd();
 							objStreamReader.Close();
 							sTemplate = Utilities.ParseSpacer(sTemplate);
-							CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-							//Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath("~/DesktopModules/ActiveForums/config/Templates/" & TemplateType & ".txt")))
+							CacheStore(string.Concat(ModuleId, TemplateId, TemplateType), sTemplate);
 						}
 					}
 					catch (Exception ex)
 					{
-						Services.Exceptions.Exceptions.LogException(ex);
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 					}
 				}
 				else
@@ -379,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			string sTemplate;
 			string myFile;
-			string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
+			string FileName = string.Concat(ModuleId, "_", TemplateId, TemplateType, ".resources");
 			System.IO.StreamReader objStreamReader;
             if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
             {
@@ -387,7 +386,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             try
 				{
-					myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
+					myFile = HttpContext.Current.Request.MapPath(string.Concat(Globals.ModulePath, "cache\\")) + FileName;
 					if (System.IO.File.Exists(myFile))
 					{
 						try
@@ -410,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				catch (Exception ex)
 				{
-					Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 					sTemplate = "ERROR: Loading template failed";
 				}
 			//}
@@ -427,7 +426,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				{
 					try
 					{
-					    string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
+					    string myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
 					    if (System.IO.File.Exists(myFile))
 						{
 							System.IO.StreamReader objStreamReader = null;
@@ -437,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums
 							}
 							catch (Exception ex)
 							{
-								Services.Exceptions.Exceptions.LogException(ex);
+                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 							}
 							sOut = objStreamReader.ReadToEnd();
 							objStreamReader.Close();
@@ -446,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 					catch (Exception ex)
 					{
-						Services.Exceptions.Exceptions.LogException(ex);
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 					}
 				}
 				else
@@ -463,7 +462,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				sOut = "ERROR: Loading template failed";
 			}
 			return sOut;
@@ -486,7 +485,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						}
 						catch (Exception ex)
 						{
-							Services.Exceptions.Exceptions.LogException(ex);
+							Exceptions.LogException(ex);
 						}
 						sOut = objStreamReader.ReadToEnd();
 						objStreamReader.Close();
@@ -495,13 +494,13 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				catch (Exception ex)
 				{
-					Services.Exceptions.Exceptions.LogException(ex);
+					Exceptions.LogException(ex);
 				}
 
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+				Exceptions.LogException(ex);
 				sOut = "ERROR: Loading template failed";
 			}
 			return sOut;

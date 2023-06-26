@@ -108,9 +108,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string BuildRSS(int PortalId, int TabId, int ModuleId, int intPosts, int ForumID, bool IngnoreSecurity, bool IncludeBody)
         {
-            DotNetNuke.Entities.Portals.PortalController pc = new DotNetNuke.Entities.Portals.PortalController();
-            DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
-            DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.GetCurrentUserInfo();
+            DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+            DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
             UserController uc = new UserController();
             User u = uc.GetUser(PortalId, ModuleId);
 

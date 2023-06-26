@@ -115,8 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings =  new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleID: ModuleId).ModuleSettings;
-
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: RequestModuleID, tabId: RequestTabID, ignoreCache: false).ModuleSettings;
                         DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
@@ -227,8 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(RSSHeader + System.Environment.NewLine);
 
             // build channel
-            var pc = new PortalController();
-            var ps = PortalController.GetCurrentPortalSettings();
+            var ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
 
             var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.BaseUtcOffset.TotalMinutes);
 
@@ -256,8 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var forumids = Settings.RSSIgnoreSecurity ? Settings.Forums : AuthorizedForums;
 
-            var useFriendly = Utilities.IsRewriteLoaded();
-            var dr = DataProvider.Instance().GetPosts(PortalId, forumids, true, false, Settings.Rows, Settings.Tags);
+            var dr = DataProvider.Instance().GetPosts(RequestPortalID, forumids, true, false, Settings.Rows, Settings.Tags);
             var sHost = Utilities.GetHost();
 
             try
@@ -297,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var ts = SettingsBase.GetModuleSettings(topicModuleId);
 
                     string url;
-                    if (string.IsNullOrEmpty(sTopicUrl) || !useFriendly)
+                    if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
                         url = Common.Globals.NavigateURL(topicTabId, "", Params);

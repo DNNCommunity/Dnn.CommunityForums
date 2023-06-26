@@ -24,6 +24,9 @@
 						<td class="afgrouprow afgrouprow-m">
 							<div class="afcontrolheader"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[RESX:REPLIESHEADER]</div>
 						</td>
+						<td class="afgrouprow afgrouprow-m">
+							<div class="afcontrolheader"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[RESX:SUBSCRIBERS]</div>
+						</td>
 						<td class="afgrouprow afgrouprow-l">
 							<div class="afcontrolheader"><i class="fa fa-file-o fa-fw fa-grey"></i>&nbsp;[RESX:LASTPOSTHEADER]</div>
 						</td>
@@ -32,7 +35,7 @@
 						
 					[FORUMS]
 					<tr class="forum-cols">
-						<td colspan="4">
+						<td colspan="5">
 							 <table class="afgrid" cellspacing="0" cellpadding="0" width="100%">
 								<tr>
 									<td class="aftopicrow af-icons">[FORUMICONCSS]</td>
@@ -40,9 +43,13 @@
 										<table>
 											<tr>
 												<td rowspan="2" class="afsubject">
-													<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICSHEADER] and [TOTALREPLIES] [RESX:REPLIESHEADER]</span>
+													<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICSHEADER] and [TOTALREPLIES] [RESX:REPLIESHEADER] and [FORUMSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 													<span class="aftopictitle">[FORUMNAME]</span>
-													<span class="af-colstats_responsive"><i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] <i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[TOTALREPLIES]</span>
+													<span class="af-colstats_responsive">
+														<i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] 
+														<i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[TOTALREPLIES]
+														<i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]
+													</span>
 													<span class="aftopicsubtitle">[FORUMDESCRIPTION]</span>
 													<div class="af_lastpost_responsive" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div>
 												</td>
@@ -51,6 +58,7 @@
 									</td>
 									<td class="aftopicrow af-colstats af-colstats-replies">[TOTALTOPICS]</td>
 									<td class="aftopicrow af-colstats af-colstats-views">[TOTALREPLIES]</td>
+									<td class="aftopicrow af-colstats af-colstats-views">[FORUMSUBSCRIBERCOUNT]</td>
 									<td class="aftopicrow af-lastpost"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
 								</tr>
 							</table>	
@@ -59,7 +67,7 @@
 
 					[SUBFORUMS]
 					<tr class="sub-forum-cols">
-						<td colspan="4">
+						<td colspan="5">
 							<table class="afgrid" cellspacing="0" cellpadding="0" width="100%">
 								<tr>
 									<td colspan="0">
@@ -71,9 +79,13 @@
 														<tr>
 															<td rowspan="2" class="afsubject">
 															
-															<span class="afhiddenstats">[TOTALTOPICS] Topics and [TOTALREPLIES] Replies</span>
+															<span class="afhiddenstats">[TOTALTOPICS] [RESX:TOPICS] and [TOTALREPLIES] [RESX:REPLIES] and [FORUMSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 															<span class="aftopictitle">[FORUMICONSM][FORUMNAME]</span>
-															<span class="af-colstats_responsive"><i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] <i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[TOTALREPLIES]</span>
+															<span class="af-colstats_responsive">
+																<i class="fa fa-files-o fa-fw fa-grey"></i>&nbsp;[TOTALTOPICS] 
+																<i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[TOTALREPLIES]
+																<i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]
+															</span>
 															<span class="aftopicsubtitle">[FORUMDESCRIPTION]</span>
 															<div class="af_lastpost_responsive" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div>
 															</td>
@@ -82,6 +94,7 @@
 												</td>
 												<td class="aftopicrow af-colstats af-colstats-replies">[TOTALTOPICS]</td>
 												<td class="aftopicrow af-colstats af-colstats-views">[TOTALREPLIES]</td>
+												<td class="aftopicrow af-colstats af-colstats-views">[FORUMSUBSCRIBERCOUNT]</td>
 												<td class="aftopicrow af-lastpost"><div class="af_lastpost" style="white-space:nowrap;">[LASTPOSTSUBJECT:25]<br />[RESX:BY] [DISPLAYNAME]<br />[LASTPOSTDATE]</div></td>
 											</tr>
 										</table>	

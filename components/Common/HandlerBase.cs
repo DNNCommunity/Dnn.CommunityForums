@@ -233,12 +233,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				}
 				else
 				{
-					string DomainName = null;
 					DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
 					string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
 					objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
 					_pid = objPortalAliasInfo.PortalID;
-					_ps = DotNetNuke.Entities.Portals.PortalController.GetCurrentPortalSettings();
+					_ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
 
 
 				}
@@ -276,7 +275,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				{
 					string jsonPost = string.Empty;
 					string prop = string.Empty;
-					bool propComplete = true;
 					string val = string.Empty;
 					string tmp = string.Empty;
 					bool bObj = false;

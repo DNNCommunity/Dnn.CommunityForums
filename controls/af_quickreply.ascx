@@ -41,10 +41,23 @@ function afQuickSubmit() {
 //-->
 </script>
 
+		<div style="display:none;visibility:hidden;" >
+		
+            <label ID="ContactByFaxOnly" runat="server"
+               ControlName="ContactByFaxOnlyCheckBox"
+               ResourceKey="ContactByFaxOnly"
+               Suffix=":"
+               TabIndex="-1" />
+            <asp:CheckBox ID="ContactByFaxOnlyCheckBox" runat="server"
+               AutoPostBack="true"
+               Checked="false"
+               OnCheckedChanged="ContactByFaxOnlyCheckBox_CheckedChanged"
+               TabIndex="-1" />
+        </div>
 <table class="afgrid">
 	<tr>
 		<td class="afgrouprow"><div class="afcontrolheader">[RESX:QuickReply]</div></td>
-		<td class="afgrouprow" align="right" style="text-align:right;padding-right:10px;"><img align="absmiddle" class="afarrow" id="imgGroupQR" alt="toggle" onclick="toggleGroup('QR');" src='<%=ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"arrows_down.png")%>'" /></td>
+		<td class="afgrouprow" align="right" style="text-align:right;padding-right:10px;"><img align="absmiddle" class="afarrow" id="imgGroupQR" alt="toggle" onclick="toggleGroup('QR');" src='<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"arrows_down.png")%>'" /></td>
 	</tr>
 	<tr>
 		<td colspan="2" class="afborder">

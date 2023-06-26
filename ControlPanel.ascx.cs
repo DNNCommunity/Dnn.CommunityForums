@@ -44,47 +44,22 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            jQuery.RequestRegistration();
-            jQuery.RequestUIRegistration();
-
             IsCallBack = cbShell.IsCallback;
 
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
-            Hashtable Settings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings;
-            string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");
+            Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
             {
                 try
                 {
                     var fc = new ForumsConfig();
                     bool configComplete = fc.ForumsInit(PortalId, ModuleId);
-                    new DotNetNuke.Entities.Modules.ModuleController().UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
-                    if (System.IO.File.Exists(upFilePath))
-                    {
-                        System.IO.File.Delete(upFilePath);
-                    }
+                    new DotNetNuke.Entities.Modules.ModuleController().UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString()); 
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
-                }
-            }
-            bool loadDefault = true;
-            if (System.IO.File.Exists(upFilePath))
-            {
-                var db = new Data.Common();
-                if (db.SecurityUpgraded())
-                {
-                    if (System.IO.File.Exists(upFilePath))
-                    {
-                        System.IO.File.Delete(upFilePath);
-                    }
-                }
-                else
-                {
-                    loadDefault = false;
-                    GetControl("upgrade", string.Empty, IsCallBack);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
 
@@ -116,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
 
@@ -143,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sb = new StringBuilder();
             sb.AppendLine("var asScriptPath = '" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/scripts/") + "';");
             sb.AppendFormat("var afAdminHandlerURL = '{0}';", adminHandler);
-            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute("~/DesktopModules/ActiveForums/images/") + "';");
+            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath) + "';");
             string sLoadImg;
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner.gif") + "';";
@@ -181,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
 
@@ -244,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
 

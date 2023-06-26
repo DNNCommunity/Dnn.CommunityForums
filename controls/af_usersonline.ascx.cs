@@ -43,9 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                //cbUsersOnline.PostURL = Page.ResolveUrl("~/DesktopModules/activeforums/cb.aspx")
-                //cbUsersOnline.Parameter = "uo|" & PortalId.ToString & "|" & ModuleId.ToString & "|" & Me.UserId.ToString
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo()',50000);", true);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ModuleId.ToString() + ")',50000);", true);
                 bool bolShow = true;
                 if (Request.Cookies["WHOSShow"] != null)
                 {
@@ -61,7 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     DisplayMode = " style=\"display:none;\"";
                 }
                 BindUsersOnline();
-                //hidUserId.Value = CStr(Me.UserId)
             }
             catch (Exception ex)
             {
@@ -75,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindUsersOnline()
         {
             UsersOnline uo = new UsersOnline();
-            string sOnlineList = uo.GetUsersOnline(PortalId, ModuleId, ForumUser);
+            string sOnlineList = uo.GetUsersOnline(PortalId, ModuleId, UserInfo);
             IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalId, -1, 2);
             int anonCount = 0;
             int memCount = 0;

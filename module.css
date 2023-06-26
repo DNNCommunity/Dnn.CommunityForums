@@ -157,7 +157,7 @@ position: relative;
 }
 
 td.afgrouprow.afgrouprow-f {
-width: 60%;
+width: 50%;
 text-align: left;
 }
 td.afgrouprow.afgrouprow-m {
@@ -285,9 +285,9 @@ span.fa-rater {
 }
 
 ul.fa-rater li {
-    float:left;
-    list-style-type:none;
-    cursor:pointer;
+    float: left;
+    list-style-type: none;
+    cursor: pointer;
 }
 
 .fa-star1:after, .fa-star2:after, .fa-star3:after, .fa-star4:after, .fa-star5:after {

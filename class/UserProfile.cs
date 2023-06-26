@@ -26,211 +26,172 @@ using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-#region UserProfileInfo
-	public class UserProfileInfo
-	{
-#region Private Members
-		private int _ProfileId = -1;
-		private int _UserId = -1;
-	    private string _PrefDefaultSort = "ASC";
-	    private bool _PrefUseAjax = true;
-		private EmailFormats _PrefEmailFormat;
-	    private int _PrefPageSize = 20;
-	    private string _Bio = string.Empty;
+    #region UserProfileInfo
+    public class UserProfileInfo
+    {
+        #region Private Members
+        private int _ProfileId = -1;
+        private int _UserId = -1;
+        private string _PrefDefaultSort = "ASC";
+        private bool _PrefUseAjax = true;
+        private EmailFormats _PrefEmailFormat;
+        private int _PrefPageSize = 20;
+        private string _Bio = string.Empty;
+        #endregion
 
-	    #endregion
-#region Constructors
-		public UserProfileInfo()
-		{
-		    IsUserOnline = false;
-		    IsMod = false;
+        #region Constructors
+        public UserProfileInfo()
+        {
+            IsUserOnline = false;
+            IsMod = false;
 
-		    _PrefDefaultSort = "ASC";
-			_PrefPageSize = 20;
-			PrefBlockSignatures = false;
-			PrefBlockAvatars = false;
-			PrefJumpLastPost = false;
-			PrefDefaultShowReplies = false;
-			_PrefUseAjax = false;
-			PrefTopicSubscribe = false;
-		}
-		public UserProfileInfo(int UserId, int PortalId)
-		{
-		    IsUserOnline = false;
-		    IsMod = false;
-		    PrefBlockSignatures = false;
-		    PrefBlockAvatars = false;
-		    PrefTopicSubscribe = false;
-		    PrefJumpLastPost = false;
-		    PrefDefaultShowReplies = false;
-		}
+            _PrefDefaultSort = "ASC";
+            _PrefPageSize = 20;
+            PrefBlockSignatures = false;
+            PrefBlockAvatars = false;
+            PrefJumpLastPost = false;
+            PrefDefaultShowReplies = false;
+            _PrefUseAjax = false;
+            PrefTopicSubscribe = false;
+        }
 
-	    #endregion
-#region Public Properties
-		public int ProfileId
-		{
-			get
-			{
-				return _ProfileId;
-			}
-			set
-			{
-				_ProfileId = value;
-			}
-		}
-		public int UserID
-		{
-			get
-			{
-				return _UserId;
-			}
-			set
-			{
-				_UserId = value;
-			}
-		}
+        public UserProfileInfo(int UserId, int PortalId)
+        {
+            IsUserOnline = false;
+            IsMod = false;
+            PrefBlockSignatures = false;
+            PrefBlockAvatars = false;
+            PrefTopicSubscribe = false;
+            PrefJumpLastPost = false;
+            PrefDefaultShowReplies = false;
+        }
+        #endregion
 
-	    public int PortalId { get; set; }
+        #region Public Properties
+        public int ProfileId
+        {
+            get
+            {
+                return _ProfileId;
+            }
+            set
+            {
+                _ProfileId = value;
+            }
+        }
+        public int UserID
+        {
+            get
+            {
+                return _UserId;
+            }
+            set
+            {
+                _UserId = value;
+            }
+        }
 
-	    public int ModuleId { get; set; }
+        public int PortalId { get; set; }
+        public int ModuleId { get; set; }
+        public int TopicCount { get; set; }
+        public int ReplyCount { get; set; }
+        public int ViewCount { get; set; }
+        public int AnswerCount { get; set; }
+        public int RewardPoints { get; set; }
+        public string UserCaption { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public DateTime DateLastActivity { get; set; }
+        public DateTime DateLastPost { get; set; }
+        public DateTime DateLastReply { get; set; }
+        public string Signature { get; set; }
+        public bool SignatureDisabled { get; set; }
+        public int TrustLevel { get; set; }
+        public bool AdminWatch { get; set; }
+        public bool AttachDisabled { get; set; }
+        public string Avatar { get; set; }
+        public AvatarTypes AvatarType { get; set; }
+        public bool AvatarDisabled { get; set; }
 
-	    public int TopicCount { get; set; }
+        public string PrefDefaultSort
+        {
+            get
+            {
+                return _PrefDefaultSort;
+            }
+            set
+            {
+                _PrefDefaultSort = value;
+            }
+        }
 
-	    public int ReplyCount { get; set; }
+        public bool PrefDefaultShowReplies { get; set; }
+        public bool PrefJumpLastPost { get; set; }
+        public bool PrefTopicSubscribe { get; set; }
+        public SubscriptionTypes PrefSubscriptionType { get; set; }
 
-	    public int ViewCount { get; set; }
+        public bool PrefUseAjax
+        {
+            get
+            {
+                return _PrefUseAjax;
+            }
+            set
+            {
+                _PrefUseAjax = value;
+            }
+        }
 
-	    public int AnswerCount { get; set; }
+        public bool PrefBlockAvatars { get; set; }
+        public bool PrefBlockSignatures { get; set; }
 
-	    public int RewardPoints { get; set; }
+        public int PrefPageSize
+        {
+            get
+            {
+                return _PrefPageSize;
+            }
+            set
+            {
+                _PrefPageSize = value;
+            }
+        }
 
-	    public string UserCaption { get; set; }
+        public string Yahoo { get; set; }
+        public string MSN { get; set; }
+        public string ICQ { get; set; }
+        public string AOL { get; set; }
+        public string Occupation { get; set; }
+        public string Location { get; set; }
+        public string Interests { get; set; }
+        public string WebSite { get; set; }
+        public string Badges { get; set; }
+        public string Roles { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string DisplayName { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public bool IsMod { get; set; }
 
-	    public DateTime DateCreated { get; set; }
+        public string Bio
+        {
+            get
+            {
+                return _Bio;
+            }
+            set
+            {
+                _Bio = value;
+            }
+        }
 
-	    public DateTime DateUpdated { get; set; }
-
-	    public DateTime DateLastActivity { get; set; }
-
-	    public DateTime DateLastPost { get; set; }
-
-	    public string Signature { get; set; }
-
-	    public bool SignatureDisabled { get; set; }
-
-	    public int TrustLevel { get; set; }
-
-	    public bool AdminWatch { get; set; }
-
-	    public bool AttachDisabled { get; set; }
-
-	    public string Avatar { get; set; }
-
-	    public AvatarTypes AvatarType { get; set; }
-
-	    public bool AvatarDisabled { get; set; }
-
-	    public string PrefDefaultSort
-		{
-			get
-			{
-				return _PrefDefaultSort;
-			}
-			set
-			{
-				_PrefDefaultSort = value;
-			}
-		}
-
-	    public bool PrefDefaultShowReplies { get; set; }
-
-	    public bool PrefJumpLastPost { get; set; }
-
-	    public bool PrefTopicSubscribe { get; set; }
-
-	    public SubscriptionTypes PrefSubscriptionType { get; set; }
-
-	    public bool PrefUseAjax
-		{
-			get
-			{
-				return _PrefUseAjax;
-			}
-			set
-			{
-				_PrefUseAjax = value;
-			}
-		}
-
-	    public bool PrefBlockAvatars { get; set; }
-
-	    public bool PrefBlockSignatures { get; set; }
-
-	    public int PrefPageSize
-		{
-			get
-			{
-				return _PrefPageSize;
-			}
-			set
-			{
-				_PrefPageSize = value;
-			}
-		}
-
-	    public string Yahoo { get; set; }
-
-	    public string MSN { get; set; }
-
-	    public string ICQ { get; set; }
-
-	    public string AOL { get; set; }
-
-	    public string Occupation { get; set; }
-
-	    public string Location { get; set; }
-
-	    public string Interests { get; set; }
-
-	    public string WebSite { get; set; }
-
-	    public string Badges { get; set; }
-
-	    public string Roles { get; set; }
-
-	    public string FirstName { get; set; }
-
-	    public string LastName { get; set; }
-
-	    public string DisplayName { get; set; }
-
-	    public string Username { get; set; }
-
-	    public string Email { get; set; }
-
-	    public bool IsMod { get; set; }
-
-	    public string Bio
-		{
-			get
-			{
-				return _Bio;
-			}
-			set
-			{
-				_Bio = value;
-			}
-		}
-
-	    public bool IsUserOnline { get; set; }
-
-	    public Hashtable ProfileProperties { get; set; }
-
-	    public CurrentUserTypes CurrentUserType { get; set; }
-
-	    public string ForumsAllowed { get; set; }
-
-	    public string UserForums { get; set; }
+        public bool IsUserOnline { get; set; }
+        public Hashtable ProfileProperties { get; set; }
+        public CurrentUserTypes CurrentUserType { get; set; }
+        public string ForumsAllowed { get; set; }
+        public string UserForums { get; set; }
+        #endregion
 
 	    #endregion
 #region Public ReadOnly Properties

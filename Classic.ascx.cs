@@ -51,7 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected override void OnInit(EventArgs e)
 		{
-            //JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             base.OnInit(e);
         }
         protected override void OnLoad(EventArgs e)
@@ -166,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else if (view.ToUpperInvariant() == "ADVANCED")
                 {
-                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "advanced.ascx")));
+                    ctl = (ForumBase)(LoadControl(Globals.ModulePath + "advanced.ascx"));
                 }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {
@@ -243,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             isPrivate = true;
                         }
-                        Hashtable htSettings = new Entities.Modules.ModuleController().GetModule(TabModuleId).TabModuleSettings;
+                        Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).TabModuleSettings;
 
                         fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
                         ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
@@ -336,10 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 lang = "en-US";
             }
 
-            //Framework.jQuery.RequestRegistration();
-            //Framework.jQuery.RequestUIRegistration();
             ClientAPI.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-            Framework.jQuery.RequestDnnPluginsRegistration();
 
             ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery-searchPopup.js");
 
@@ -351,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder sb = new StringBuilder();
             string handlerURL = VirtualPathUtility.ToAbsolute(Globals.ModulePath + "handlers/forumhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
             sb.AppendFormat("var afHandlerURL = '{0}';", handlerURL);
-            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(MainSettings.ThemesLocation + "/" + MainSettings.Theme) + "/images/';");
+            sb.AppendLine("var af_imgPath = '" + VirtualPathUtility.ToAbsolute(Globals.ModuleImagesPath) + "';");
             string sLoadImg = "";
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
@@ -359,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_pinger()',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup

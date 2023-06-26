@@ -27,6 +27,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -168,13 +169,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     catch (Exception ex)
                     {
-                        Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                        DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
 
@@ -187,7 +188,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 string sOutput = string.Empty;
                 string sTemplate;
-                int TemplateCache = MainSettings.TemplateCache;
                 if (UseTemplatePath && TemplatePath != string.Empty)
                 {
                     DisplayTemplate = Utilities.GetFileContent(TemplatePath + "ForumView.htm");
@@ -199,14 +199,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
                 }
 
-                sTemplate = DisplayTemplate == string.Empty ? DataCache.GetCachedTemplate(TemplateCache, ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate;
+                sTemplate = DisplayTemplate == string.Empty ? DotNetNuke.Modules.ActiveForums.TemplateCache.GetCachedTemplate( ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate; 
                 try
                 {
                     sTemplate = ParseControls(sTemplate);
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                     sTemplate = ex.Message; //ParseControls(sTemplate)
                 }
                 if (sTemplate.Contains("[NOTOOLBAR]"))
@@ -315,7 +315,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", dr["GroupName"].ToString());
                                     sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", dr["ForumGroupId"].ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(" + GroupId.ToString() + ");\" src=\"" + ThemePath + GetImage(GroupId) + "\" alt=\"[RESX:ToggleGroup]\" />");
+                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", "<td class=\"afgrouprow\" align=\"right\" style=\"text-align:right;padding-right:10px;\"><img class=\"afarrow\" id=\"imgGroup" + GroupId.ToString() + "\" onclick=\"toggleGroup(\'" + GroupId.ToString() + "\', \'afarrow\', \'afarrow\');\" src=\"" + Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + GetImage(GroupId)) + "\" alt=\"" + Utilities.GetSharedResource("[RESX:ToggleGroup]") + "\" /></td>");
+
 
                                     //any replacements on the group
                                     string sNewGroup = "<div id=\"group" + GroupId + "\" " + GetDisplay(GroupId) + " class=\"afgroup\">" + sGroup + "</div>";
@@ -367,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 return string.Empty;
             }
         }
@@ -411,6 +412,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 fi.TotalTopics = Convert.ToInt32(dr["TotalTopics"]);
                 fi.TotalReplies = Convert.ToInt32(dr["TotalReplies"]);
+                fi.SubscriberCount = Utilities.SafeConvertInt(dr["ForumSubscriberCount"]);
                 fi.Hidden = Convert.ToBoolean(dr["ForumHidden"]);
                 fi.LastReplyId = Convert.ToInt32(dr["LastReplyId"]);
                 fi.LastTopicId = Convert.ToInt32(dr["LastTopicId"]);
@@ -421,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return fi;
@@ -597,6 +599,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             Template = Template.Replace("[TOTALTOPICS]", fi.TotalTopics.ToString());
             Template = Template.Replace("[TOTALREPLIES]", fi.TotalReplies.ToString());
+            Template = Template.Replace("[FORUMSUBSCRIBERCOUNT]", fi.SubscriberCount.ToString());
+            
             //Last Post Section
             int intLength = 0;
             if ((Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
@@ -715,11 +719,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (Convert.ToBoolean(Request.Cookies[GroupID + "Show"].Value))
                 {
-                    return "images/arrows_down.png";
+                    return "arrows_down.png";
                 }
-                return "images/arrows_left.png";
+                return "arrows_left.png";
             }
-            return "images/arrows_down.png";
+            return "arrows_down.png";
         }
 
         private string GetDisplay(int GroupID)

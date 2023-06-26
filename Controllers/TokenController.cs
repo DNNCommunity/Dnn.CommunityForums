@@ -23,16 +23,26 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Web;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class TokensController
-	{
-		internal List<Token> TokensList(int ModuleId, string group)
-		{
-			try
-			{
-                List<Token> li = (List<Token>)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group));
+    [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
+    public class TokensController { TokensController() { throw new NotImplementedException(); } }    
+}
+    namespace DotNetNuke.Modules.ActiveForums.Controllers
+{
+    internal static class TokenController
+    {
+        internal static List<Token> List()
+        {
+            return List(string.Empty);
+        }
+        internal static List<Token> List(string group)
+        {
+            try
+            {
+                List<Token> li = (List<Token>)DataCache.CacheRetrieve(string.Format(CacheKeys.Tokens, group));
                 if (li == null)
                 {
                     li = new List<Token>();
@@ -46,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         string sQuery = "//tokens/token";
                         if (!(group == string.Empty))
                         {
-                            sQuery = sQuery + "[@group='" + group + "' or @group='*']";
+                            sQuery = string.Concat(sQuery, "[@group='", group, "' or @group='*']");
                         }
                         System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes(sQuery);
                         if (xNodeList.Count > 0)
@@ -70,29 +80,29 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.Tokens,ModuleId, group), li);
+                    DataCache.CacheStore(string.Format(CacheKeys.Tokens, group), li);
                 }
                 return li;
-			}
-			catch (Exception ex)
-			{
-				return null;
-			}
-		}
-		internal string TokenGet(int ModuleId, string group, string TokenName)
-		{
-			string sOut = string.Empty;
-			List<Token> tl = TokensList(ModuleId, group);
-			foreach (Token t in tl)
-			{
-				if (t.TokenTag == TokenName)
-				{
-					sOut = t.TokenReplace;
-					break;
-				}
-			}
-			return sOut;
-		}
-	}
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        internal static string Get(string group, string TokenName)
+        {
+            string sOut = string.Empty;
+            List<Token> tl = List(group);
+            foreach (Token t in tl)
+            {
+                if (t.TokenTag == TokenName)
+                {
+                    sOut = t.TokenReplace;
+                    break;
+                }
+            }
+            return sOut;
+        }
+    }
 }
 

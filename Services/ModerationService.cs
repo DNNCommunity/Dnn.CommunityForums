@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (fi.ModRejectTemplateId > 0 && authorId > 0)
             {
-                var uc = new Entities.Users.UserController();
+                var uc = new DotNetNuke.Entities.Users.UserController();
                 var ui = uc.GetUser(PortalSettings.PortalId, authorId);
                 if (ui != null)
                 {
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
            
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)
             {
-                var uc = new Entities.Users.UserController();
+                var uc = new DotNetNuke.Entities.Users.UserController();
                 var ui = uc.GetUser(PortalSettings.PortalId, authorId);
                 if (ui != null)
                 {

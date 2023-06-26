@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections;
-//ORIGINAL LINE: Imports System.Web.HttpContext
 using System.Collections.Specialized;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -53,17 +52,20 @@ namespace DotNetNuke.Modules.ActiveForums
 		ModLock,
 		ModPin
 	}
+
 	public enum ObjectType: int
 	{
 		RoleId,
 		UserId,
 		GroupId
 	}
+
 	public enum SecureType: int
 	{
 		ForumGroup,
 		Forum
 	}
+
 #region PermissionInfo
 	public class PermissionInfo
 	{
@@ -73,78 +75,42 @@ namespace DotNetNuke.Modules.ActiveForums
 #region Public Properties
 
 	    public string View { get; set; }
-
-	    public string Read { get; set; }
-
-	    public string Create { get; set; }
-
-	    public string Reply { get; set; }
-
-	    public string Edit { get; set; }
-
-	    public string Delete { get; set; }
-
-	    public string Lock { get; set; }
-
-	    public string Pin { get; set; }
-
-	    public string Attach { get; set; }
-
-	    public string Poll { get; set; }
-
-	    public string Block { get; set; }
-
-	    public string Trust { get; set; }
-
-	    public string Subscribe { get; set; }
-
-	    public string Announce { get; set; }
-
-	    public string ModApprove { get; set; }
-
-	    public string ModMove { get; set; }
-
-	    public string ModSplit { get; set; }
-
-	    public string ModDelete { get; set; }
-
-	    public string ModUser { get; set; }
-
-	    public string ModEdit { get; set; }
-
-	    public string ModLock { get; set; }
-
-	    public string ModPin { get; set; }
-
-	    public int UserTrustLevel { get; set; }
-
-	    public ObjectType Type { get; set; }
-
-	    public string ObjectId { get; set; }
-
-	    public string ObjectName { get; set; }
-
-	    public string Tag {get; set;}
+        public string Read { get; set; }
+        public string Create { get; set; }
+        public string Reply { get; set; }
+        public string Edit { get; set; }
+        public string Delete { get; set; }
+        public string Lock { get; set; }
+        public string Pin { get; set; }
+        public string Attach { get; set; }
+        public string Poll { get; set; }
+        public string Block { get; set; }
+        public string Trust { get; set; }
+        public string Subscribe { get; set; }
+        public string Announce { get; set; }
+        public string ModApprove { get; set; }
+        public string ModMove { get; set; }
+        public string ModSplit { get; set; }
+        public string ModDelete { get; set; }
+        public string ModUser { get; set; }
+        public string ModEdit { get; set; }
+		public string ModLock { get; set; }
+        public string ModPin { get; set; }
+        public int UserTrustLevel { get; set; }
+        public ObjectType Type { get; set; }
+        public string ObjectId { get; set; }
+        public string ObjectName { get; set; }
+        public string Tag {get; set;}
 		public string Categorize {get; set;}
 		public string Prioritize {get; set;}
 #endregion
 	}
 #endregion
-#region PermissionsController
-	public class PermissionsController
-	{
-		//Public Function GetByUser(ByVal PortalId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal IsSuperUser As Boolean) As PermissionInfo
-		//    Dim db As New Data.Common
-		//    ' Return CType(DotNetNuke.Common.Utilities.CBO.FillObject(db.Security_GetByUser(PortalId, ForumId, UserId, IsSuperUser), GetType(PermissionInfo)), PermissionInfo)
-		//End Function
-	}
-#endregion
+
 #region PermissionCollection
 	public class PermissionCollection : CollectionBase, ICollection, IList
 	{
-
-
-		private PermissionInfo _Item;
+        private PermissionInfo _Item;
 
 		public void CopyTo(Array array, int index)
 		{
@@ -166,15 +132,13 @@ namespace DotNetNuke.Modules.ActiveForums
 				return List.SyncRoot;
 			}
 		}
-
-
+		
 		public int Add(PermissionInfo value)
 		{
 			return List.Add(value);
 		}
 
-
-		public bool Contains(PermissionInfo value)
+        public bool Contains(PermissionInfo value)
 		{
 			return List.Contains(value);
 		}
@@ -224,6 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 	}
 #endregion
+
 #region Permissions
 	public class Permissions
 	{
@@ -239,27 +204,33 @@ namespace DotNetNuke.Modules.ActiveForums
 				userRoles = roleIds + "|" + UserId + "|" + string.Empty + "|";
 				UserRolesDictionary.AddRoles(PortalId, UserId, userRoles);
 			}
+
 			if (string.IsNullOrEmpty(userRoles))
 			{
 				return false;
 			}
+
 		    return HasPerm(AuthorizedRoles, userRoles);
 		}
+
 		public static bool HasPerm(string AuthorizedRoles, string UserPermSet)
 		{
 			if (string.IsNullOrEmpty(AuthorizedRoles) || string.IsNullOrEmpty(UserPermSet))
 			{
 				return false;
 			}
+
 			string[] permSet = AuthorizedRoles.Split('|');
 			string[] userSet = UserPermSet.Split('|');
 			//Authorized
 			string[] authRoles = permSet[0].Split(';');
 			string[] userRoles = userSet[0].Split(';');
+
 		    if (HasRequiredPerm(authRoles, userRoles))
 		    {
 		        return true;
 		    }
+
 		    if (! (string.IsNullOrEmpty(permSet[1])))
 			{
 				string[] authUsers = permSet[1].Split(';');
@@ -272,6 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				    }
 				}
 			}
+
 			if (! (string.IsNullOrEmpty(permSet[2])))
 			{
 				string[] authGroups = permSet[2].Split(';');
@@ -284,48 +256,55 @@ namespace DotNetNuke.Modules.ActiveForums
 				    }
 				}
 			}
+
 			return false;
 		}
+
 		public static string RemovePermFromSet(string objectId, int objectType, string PermissionSet)
 		{
 			if (string.IsNullOrEmpty(PermissionSet))
 			{
 				return string.Empty;
 			}
+
 			string newSet = PermissionSet;
 			string[] permSet = newSet.Split('|');
 			string permSection = permSet[objectType];
 			string newSection = string.Empty;
+
 			foreach (string s in permSection.Split(';'))
 			{
 				if (! (string.IsNullOrEmpty(s)))
 				{
 					if (s != objectId)
 					{
-						newSection += s + ";";
+						newSection += string.Concat(s, ";");
 					}
 				}
 			}
+
 			permSet[objectType] = newSection;
 			if (permSet[0] != null)
 			{
-				newSet = permSet[0] + "|";
+				newSet = string.Concat(permSet[0], "|");
 			}
 			else
 			{
 				newSet = "|";
 			}
+
 			if (permSet[1] != null)
 			{
-				newSet += permSet[1] + "|";
+				newSet += string.Concat(permSet[1], "|");
 			}
 			else
 			{
 				newSet += "|";
 			}
+
 			if (permSet[2] != null)
 			{
-				newSet += permSet[2] + "|";
+				newSet += string.Concat(permSet[2], "|");
 			}
 			else
 			{
@@ -334,14 +313,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return newSet;
 		}
+
 		public static string AddPermToSet(string objectId, int objectType, string PermissionSet)
 		{
 			string newSet = RemovePermFromSet(objectId, objectType, PermissionSet);
 			string[] permSet = newSet.Split('|');
-			permSet[objectType] += objectId + ";";
-			newSet = permSet[0] + "|" + permSet[1] + "|" + permSet[2] + "|";
+			permSet[objectType] += string.Concat(objectId, ";");
+			newSet = string.Concat(permSet[0] + "|" + permSet[1] + "|" + permSet[2], "|");
+
 			return newSet;
 		}
+
 		internal static bool RemoveObjectFromAll(string objectId, int objectType, int PermissionsId)
 		{
 			var enumType = typeof(SecureActions);
@@ -354,8 +336,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				permSet = RemovePermFromSet(objectId, objectType, permSet);
 				db.SavePermSet(PermissionsId, text, permSet);
 			}
+
 			return true;
 		}
+
 		internal static void CreateDefaultSets(int PortalId, int PermissionsId)
 		{
 			var db = new Data.Common();
@@ -363,6 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			Security.Roles.RoleInfo ri;
 			ri = rc.GetRoleByName(PortalId, "Registered Users");
 			string permSet;
+
 			if (ri != null)
 			{
 				permSet = db.GetPermSet(PermissionsId, "View");
@@ -378,6 +363,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				permSet = AddPermToSet(ri.RoleID.ToString(), 0, permSet);
 				db.SavePermSet(PermissionsId, "Reply", permSet);
 			}
+
 			permSet = db.GetPermSet(PermissionsId, "View");
 			permSet = AddPermToSet("-3", 0, permSet);
 			db.SavePermSet(PermissionsId, "View", permSet);
@@ -406,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						{
 							if (roleName == role)
 							{
-								RoleIds += ri.RoleID.ToString() + ";";
+								RoleIds += string.Concat(ri.RoleID.ToString(), ";");
 								break;
 							}
 						}
@@ -414,6 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, PortalId),RoleIds);
 			}
+
 		    return RoleIds;
 		}
 		internal static NameValueCollection GetRolesNVC(int PortalId, int ModuleId, string Roles)
@@ -444,6 +431,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						}
 					}
 				}
+
 				return nvc;
 			}
 			catch (Exception ex)
@@ -457,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 			try
 			{
-				string RoleNames = "";
+				string RoleNames = string.Empty;
 				int i = 0;
 				string roleName;
 				foreach (string role in Roles.Split(new[] {';'}))
@@ -467,21 +455,22 @@ namespace DotNetNuke.Modules.ActiveForums
 						switch (role)
 						{
 							case "-1":
-								RoleNames = RoleNames + Common.Globals.glbRoleAllUsersName + ";";
+								RoleNames = string.Concat(RoleNames + Common.Globals.glbRoleAllUsersName, ";");
 								break;
 							case "-3":
-								RoleNames = RoleNames + Common.Globals.glbRoleUnauthUserName + ";";
+								RoleNames = string.Concat(RoleNames + Common.Globals.glbRoleUnauthUserName, ";");
 								break;
 							default:
 								roleName = GetRole(PortalId, ModuleId: ModuleId, role);
 								if (roleName != null)
 								{
-									RoleNames = RoleNames + roleName + ";";
+									RoleNames = string.Concat(RoleNames + roleName, ";");
 								}
 								break;
 						}
 					}
 				}
+
 				return RoleNames;
 			}
 			catch (Exception ex)
@@ -502,6 +491,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					return roleInfo.RoleName;
 				}
 			}
+
 		    return string.Empty;
 		}
 		private static ArrayList GetRoles(int PortalId, int ModuleId)
@@ -513,8 +503,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				roleNames = objRoleController.GetPortalRoles(PortalId);
 				DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.RoleNames, PortalId), roleNames);
 			}
+
 			return roleNames;
 		}
+
 		public static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles)
 		{
 			bool bolAuth = false;
@@ -529,7 +521,7 @@ namespace DotNetNuke.Modules.ActiveForums
 							if (! (string.IsNullOrEmpty(AuthRole)))
 							{
                                 //TODO: verify that this logic is correct
-								if (role == AuthRole && role != "" && AuthRole != "")
+								if (role == AuthRole && role != string.Empty && AuthRole != string.Empty)
 								{
 									bolAuth = true;
 									break;
@@ -544,8 +536,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				return bolAuth;
 			}
+
 		    return false;
 		}
+		
 		public static bool HasAccess(string AuthorizedRoles, string UserRoles)
 		{
 			bool bolAuth = false;
@@ -566,12 +560,13 @@ namespace DotNetNuke.Modules.ActiveForums
 						break;
 					}
 				}
+
 				return bolAuth;
 			}
+
 		    return false;
 		}
-
-	}
+    }
 #endregion
 
 }
