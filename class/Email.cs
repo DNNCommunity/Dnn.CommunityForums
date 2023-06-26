@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
 		{
-			var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 		public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
 		{
-			PortalSettings portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+			PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
 			SettingsInfo mainSettings = SettingsBase.GetModuleSettings(moduleID);
 
 			TemplateController tc = new TemplateController();

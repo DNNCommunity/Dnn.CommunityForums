@@ -193,55 +193,54 @@ namespace DotNetNuke.Modules.ActiveForums
         public string UserForums { get; set; }
         #endregion
 
-	    #endregion
-#region Public ReadOnly Properties
-		public int PostCount
-		{
-			get
-			{
-				return TopicCount + ReplyCount;
-			}
-		}
-#endregion
-	}
-#endregion
-#region UserProfileController
-	public class UserProfileController
-	{
-		public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
+        #endregion
+        #region Public ReadOnly Properties
+        public int PostCount
         {
-            
-			UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
-			if (upi == null)
-			{
-				DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
-				if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-				{
-					IDataReader dr;
-					dr = ds.CreateDataReader();
-					upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo))); 
-					DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId),upi);
+            get
+            {
+                return TopicCount + ReplyCount;
+            }
+        }
+        #endregion
+        #region UserProfileController
+    }
+    public class UserProfileController
+    {
+        public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
+        {
+
+            UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+            if (upi == null)
+            {
+                DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    IDataReader dr;
+                    dr = ds.CreateDataReader();
+                    upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo)));
+                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId), upi);
                 }
-			}
-			return upi;
-		}
-		public void Profiles_Save(UserProfileInfo ui)
-		{
+            }
+            return upi;
+        }
+        public void Profiles_Save(UserProfileInfo ui)
+        {
             DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
             // KR - clear cache when updated
-			DataCache.SettingsCacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
-		}
+            DataCache.SettingsCacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
+        }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
         public static void Profiles_ClearCache(int UserID)
         {
-            DataCache.CacheClearPrefix(-1,CacheKeys.CachePrefix);
+            DataCache.CacheClearPrefix(-1, CacheKeys.CachePrefix);
 
         }
         public static void Profiles_ClearCache(int ModuleId, int UserId)
         {
-            DataCache.SettingsCacheClear(ModuleId,string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+            DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId));
         }
     }
-#endregion
+    #endregion
 }

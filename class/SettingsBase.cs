@@ -362,17 +362,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return objSettings;
             
         }
-        public static SettingsInfo GetModuleSettings(int ModuleId)
-        {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
-            if (objSettings == null)
-            {
-                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
-            }
-            return objSettings;
-
-        }
         public SettingsInfo MainSettings
         {
             get

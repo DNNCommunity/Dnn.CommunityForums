@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var moduleSettings = DataCache.SettingsCacheRetrieve(ModuleId,settingsCacheKey) as Hashtable;
                     if (moduleSettings == null)
                     {
-                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: RequestModuleID, tabId: RequestTabID, ignoreCache: false).ModuleSettings;
+                        moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
                         DataCache.SettingsCacheStore(ModuleId,settingsCacheKey, moduleSettings);
                     }
 
@@ -254,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var forumids = Settings.RSSIgnoreSecurity ? Settings.Forums : AuthorizedForums;
 
-            var dr = DataProvider.Instance().GetPosts(RequestPortalID, forumids, true, false, Settings.Rows, Settings.Tags);
+            var dr = DataProvider.Instance().GetPosts(PortalId, forumids, true, false, Settings.Rows, Settings.Tags);
             var sHost = Utilities.GetHost();
 
             try
