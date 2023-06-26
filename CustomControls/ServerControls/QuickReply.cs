@@ -54,20 +54,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Members
         private int InstanceId = -1;
         private int SiteId = -1;
-        private string _Subject = string.Empty;
         #endregion
         #region Public Properties
-        public string Subject
-        {
-            get
-            {
-                return _Subject;
-            }
-            set
-            {
-                _Subject = value;
-            }
-        }
+        public string Subject { get; set; } = string.Empty;
         #endregion
         #region Event Handlers
         protected override void OnInit(EventArgs e)
