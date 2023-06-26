@@ -43,7 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public HttpResponseMessage ToggleURLHandler(ToggleUrlHandlerDTO dto)
         {
             var cfg = new ConfigUtils();
-            bool success;
             if (Utilities.IsRewriteLoaded())
             {
                 cfg.DisableRewriter(HttpContext.Current.Server.MapPath("~/web.config"));

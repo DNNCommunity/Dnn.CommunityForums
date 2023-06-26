@@ -872,7 +872,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:ALERT]", string.Empty);
                 sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
                 sbOutput.Replace("[RESX:SortPosts]:", string.Empty);
-                sbOutput.Append("<img src=\"<%(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath)%>spacer.gif\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
+                sbOutput.Append("<img src=\""+Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"spacer.gif")+"\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
             }
 
 
@@ -893,9 +893,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Topic and post actions
-            var tc = new TokensController();
-            var topicActions = tc.TokenGet("topic", "[AF:CONTROL:TOPICACTIONS]");
-            var postActions = tc.TokenGet("topic", "[AF:CONTROL:POSTACTIONS]");
+            var topicActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.Get("topic", "[AF:CONTROL:TOPICACTIONS]");
+            var postActions = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.Get("topic", "[AF:CONTROL:POSTACTIONS]");
             if (sOutput.Contains("[AF:CONTROL:TOPICACTIONS]"))
             {
                 _useListActions = true;
@@ -1502,15 +1501,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (CanReply)
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1-" + contentId.ToString() + "\" class=\"fa " + image + "\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2-" + contentId.ToString() + "\" class=\"fa " + image + " fa-2x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3-" + contentId.ToString() + "\" class=\"fa " + image + " fa-3x\" style=\"cursor:pointer\" onclick=\"amaf_likePost(" + ModuleId + "," + ForumId + "," + contentId + ")\" > " + likes.count.ToString() + "</i>");
                 }
                 else
                 {
-                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" > " + likes.count.ToString() + "</i>");
-                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKES]", "<i id=\"af-topicview-likes1\" class=\"fa " + image + "\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx2]", "<i id=\"af-topicview-likes2\" class=\"fa " + image + " fa-2x\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
+                    sbOutput = sbOutput.Replace("[LIKESx3]", "<i id=\"af-topicview-likes3\" class=\"fa " + image + " fa-3x\" style=\"cursor:default\" > " + likes.count.ToString() + "</i>");
                 }
             }
             else

@@ -406,9 +406,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
 			bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
-			bool isRewriteLoaded = Utilities.IsRewriteLoaded();
-			string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
-
+            bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
+            string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+			
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 			Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
@@ -459,7 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
 					}
 					string link = string.Empty;
-					if (!string.IsNullOrEmpty(forumPrefixUrl) && isRewriteLoaded)
+					if (!string.IsNullOrEmpty(forumPrefixUrl) && useFriendlyURLs)
 					{
 						link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
 					}
@@ -549,6 +549,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var fc = new ForumsConfig();
                         fc.ArchiveOrphanedAttachments();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "07.00.11":
+                    try
+                    {
+						DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings();
                     }
                     catch (Exception ex)
                     {

@@ -55,22 +55,22 @@
         </div>
         <div class="dnnFormItem">
 			<dnn:Label ID="lblTimeFormat" resourcekey="TimeFormat" runat="server" Suffix=":" /> 
-			<asp:TextBox ID="txtTimeFormat" runat="server" Width="100" />
+			<asp:TextBox ID="txtTimeFormat" runat="server" Width="150" />
 		</div>
         <div class="dnnFormItem">
 			<dnn:Label ID="lblDateFormat" resourcekey="DateFormat" runat="server" Suffix=":" /> 
-			<asp:TextBox ID="txtDateFormat" runat="server" Width="100" />
+			<asp:TextBox ID="txtDateFormat" runat="server" Width="150" />
 		</div>
 	</fieldset>
 	<h2 id="H1" class="dnnFormSectionHead"><a href="" class="dnnSectionExpanded"><%=LocalizeString("ContentOptions")%></a></h2>
 	<fieldset>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblFloodInterval" runat="server" resourcekey="FloodInterval" Suffix=":" />
-            <asp:TextBox ID="txtFloodInterval" runat="server" MaxLength="5" Width="35" Text="0" />
+            <asp:TextBox ID="txtFloodInterval" runat="server" MaxLength="5" Width="75" Text="0" />
 	    </div>
 		<div class="dnnFormItem"> 
 			<dnn:label ID="lblEditInterval" runat="server" resourcekey="EditInterval" Suffix=":" />
-            <asp:TextBox ID="txtEditInterval" runat="server" MaxLength="3" Width="25" Text="0" />
+            <asp:TextBox ID="txtEditInterval" runat="server" MaxLength="3" Width="75" Text="0" />
 		</div>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblAutoLinks" runat="server" resourcekey="AutoLink" Suffix=":" />
@@ -115,7 +115,7 @@
 		</div> 
 		<div class="dnnFormItem">
 			<dnn:label ID="lblAvatarSize" runat="server" resourcekey="AvatarSize" Suffix=":" />
-			<ul class="afavatarform"><li><%=LocalizeString("Height")%>:<asp:TextBox ID="txtAvatarHeight" runat="server" Width="20" MaxLength="3" /></li><li><%=LocalizeString("Width")%>:<asp:TextBox ID="txtAvatarWidth" runat="server" Width="20" MaxLength="3" /></li></ul>
+			<ul class="afavatarform"><li><%=LocalizeString("Height")%>: <asp:TextBox ID="txtAvatarHeight" runat="server" Width="75" MaxLength="3" /></li><li><%=LocalizeString("Width")%>: <asp:TextBox ID="txtAvatarWidth" runat="server" Width="75" MaxLength="3" /></li></ul>
 		</div>
 		<div class="dnnFormItem">
 			<dnn:label ID="lblSignatures" runat="server" resourcekey="UserSignatures" Suffix=":" />
@@ -152,23 +152,23 @@
 			<div class="pointOptions">
 				<div class="dnnFormItem">
 					<dnn:label runat="server" resourcekey="TopicPointValue" Suffix=":" />
-					<asp:TextBox ID="txtTopicPointValue" runat="server" MaxLength="3" Width="25" Text="1" />
+					<asp:TextBox ID="txtTopicPointValue" runat="server" MaxLength="3" Width="60" Text="1" />
 				</div>
 				<div class="dnnFormItem">
 					<dnn:label runat="server" resourcekey="ReplyPointValue" Suffix=":" />
-					<asp:TextBox ID="txtReplyPointValue" runat="server" MaxLength="3" Width="25" Text="1" />
+					<asp:TextBox ID="txtReplyPointValue" runat="server" MaxLength="3" Width="60" Text="1" />
 				</div>
 				 <div class="dnnFormItem">
 					<dnn:label runat="server" resourcekey="AnswerPointValue" Suffix=":" />
-					<asp:TextBox ID="txtAnswerPointValue" runat="server" MaxLength="3" Width="25" Text="1" />
+					<asp:TextBox ID="txtAnswerPointValue" runat="server" MaxLength="3" Width="60" Text="1" />
 				</div>
 				<div class="dnnFormItem">
 					<dnn:label runat="server" resourcekey="MarkAnswerPointValue" Suffix=":" />
-					<asp:TextBox ID="txtMarkAnswerPointValue" runat="server" MaxLength="3" Width="25" Text="1" />
+					<asp:TextBox ID="txtMarkAnswerPointValue" runat="server" MaxLength="3" Width="60" Text="1" />
 				</div>
 				 <div class="dnnFormItem">
 					<dnn:label runat="server" resourcekey="ModPointValue" Suffix=":" />
-					<asp:TextBox ID="txtModPointValue" runat="server" MaxLength="3" Width="25" Text="1" />
+					<asp:TextBox ID="txtModPointValue" runat="server" MaxLength="3" Width="60" Text="1" />
 				</div>
 			</div>
 

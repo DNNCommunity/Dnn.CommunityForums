@@ -23,19 +23,25 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Web;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class TokensController
-	{
-		internal List<Token> TokensList()
-		{
-			return TokensList(string.Empty);
-		}
-		internal List<Token> TokensList(string group)
-		{
-			try
-			{
+    [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
+    public class TokensController { TokensController() { throw new NotImplementedException(); } }    
+}
+    namespace DotNetNuke.Modules.ActiveForums.Controllers
+{
+    internal static class TokenController
+    {
+        internal static List<Token> List()
+        {
+            return List(string.Empty);
+        }
+        internal static List<Token> List(string group)
+        {
+            try
+            {
                 List<Token> li = (List<Token>)DataCache.CacheRetrieve(string.Format(CacheKeys.Tokens, group));
                 if (li == null)
                 {
@@ -77,26 +83,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataCache.CacheStore(string.Format(CacheKeys.Tokens, group), li);
                 }
                 return li;
-			}
-			catch (Exception ex)
-			{
-				return null;
-			}
-		}
-		internal string TokenGet(string group, string TokenName)
-		{
-			string sOut = string.Empty;
-			List<Token> tl = TokensList(group);
-			foreach (Token t in tl)
-			{
-				if (t.TokenTag == TokenName)
-				{
-					sOut = t.TokenReplace;
-					break;
-				}
-			}
-			return sOut;
-		}
-	}
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        internal static string Get(string group, string TokenName)
+        {
+            string sOut = string.Empty;
+            List<Token> tl = List(group);
+            foreach (Token t in tl)
+            {
+                if (t.TokenTag == TokenName)
+                {
+                    sOut = t.TokenReplace;
+                    break;
+                }
+            }
+            return sOut;
+        }
+    }
 }
 

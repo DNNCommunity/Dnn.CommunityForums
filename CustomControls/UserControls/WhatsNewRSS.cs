@@ -256,7 +256,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var forumids = Settings.RSSIgnoreSecurity ? Settings.Forums : AuthorizedForums;
 
-            var useFriendly = Utilities.IsRewriteLoaded();
             var dr = DataProvider.Instance().GetPosts(RequestPortalID, forumids, true, false, Settings.Rows, Settings.Tags);
             var sHost = Utilities.GetHost();
 
@@ -297,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var ts = DataCache.MainSettings(topicModuleId);
 
                     string url;
-                    if (string.IsNullOrEmpty(sTopicUrl) || !useFriendly)
+                    if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
                         url = Common.Globals.NavigateURL(topicTabId, "", Params);

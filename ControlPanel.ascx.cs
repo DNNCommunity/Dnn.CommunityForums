@@ -49,7 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums
             btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
             Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
-            string upFilePath = Server.MapPath("~/desktopmodules/activeforums/upgrade4x.txt");
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
             {
                 try
@@ -65,23 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 catch (Exception ex)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-            }
-            bool loadDefault = true;
-            if (System.IO.File.Exists(upFilePath))
-            {
-                var db = new Data.Common();
-                if (db.SecurityUpgraded())
-                {
-                    if (System.IO.File.Exists(upFilePath))
-                    {
-                        System.IO.File.Delete(upFilePath);
-                    }
-                }
-                else
-                {
-                    loadDefault = false;
-                    GetControl("upgrade", string.Empty, IsCallBack);
                 }
             }
 

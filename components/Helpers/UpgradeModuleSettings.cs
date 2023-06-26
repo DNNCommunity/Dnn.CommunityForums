@@ -21,15 +21,45 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.Reflection;
+using System.Web.UI.WebControls;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
-	public class SettingConversion
-	{
-		public bool MoveSettings(int forumModuleId, int tabModuleId)
+	internal static class UpgradeModuleSettings
+    {
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeModuleSettings));
+        internal static void MoveSettings() {
+
+			/* at some point around v6, general module settings were moved from the activeforums_settings table to the DNN platform Settings table;
+			 * the code that did that migration would check every time during page load (in ForumBase.OnLoad()) to see if the settings conversion was required.
+			 * So code has been moved here, and is now called once during module upgrade for one version to ensure that this is done.
+			 */
+
+			foreach (PortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+			{
+				foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalID))
+				{
+					if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                    {
+                        if (!SettingsBase.GetModuleSettings(module.ModuleID).IsInstalled)
+						{
+                            MoveSettingsForModuleInstance(module.ModuleID, tabModuleId: module.TabModuleID);
+                        }                            
+                    }
+				}
+			}
+		}
+		internal static void MoveSettingsForModuleInstance(int forumModuleId, int tabModuleId)
         {
             var objModules = new DotNetNuke.Entities.Modules.ModuleController();
-            var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
+			var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
 
 		    objModules.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.UserNameDisplay, currSettings.UserNameDisplay);
@@ -86,14 +116,14 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 			{
 				objModules.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLCategories, currSettings.PrefixURLCategory);
 			}
+			Logger.InfoFormat("Settings converted for module Id {0} tab module Id {1}", forumModuleId, tabModuleId);
 
-			objModules.UpdateModuleSetting(tabModuleId, "NeedsConvert", "False");
+            objModules.DeleteModuleSetting(tabModuleId, "NeedsConvert");
 			objModules.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
 			DataCache.CacheClear(string.Format(CacheKeys.MainSettings, forumModuleId));
 
-            return false;
 		}
-
 	}
 }
 
+ 
