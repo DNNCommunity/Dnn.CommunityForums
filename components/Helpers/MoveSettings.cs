@@ -27,9 +27,9 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 	public class SettingConversion
 	{
 		public bool MoveSettings(int forumModuleId, int tabModuleId)
-		{
-			var objModules = DotNetNuke.Entities.Modules.ModuleController.Instance;
-			var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
+        {
+            var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+            var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
 
 		    objModules.UpdateModuleSetting(tabModuleId, SettingKeys.PageSize, currSettings.PageSize.ToString());
 			objModules.UpdateModuleSetting(tabModuleId, SettingKeys.UserNameDisplay, currSettings.UserNameDisplay);
