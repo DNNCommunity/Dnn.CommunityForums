@@ -22,9 +22,11 @@ using System;
 
 namespace DotNetNuke.Modules.ActiveForums.API
 {
-	public class Content
-	{
-		public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+    public class Content
+    {
+        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			try
 			{
@@ -35,8 +37,9 @@ namespace DotNetNuke.Modules.ActiveForums.API
 			{
 				return -1;
 			}
-		}
-		public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+        }
+        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+        public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			try
 			{
@@ -48,12 +51,14 @@ namespace DotNetNuke.Modules.ActiveForums.API
 				return -1;
 			}
 		}
-	}
-	public class ForumGroups
+    }
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+    public class ForumGroups
 	{
 
-	}
-	public class Forums
+    }
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+    public class Forums
 	{
 		public int Forums_Save(int PortalId, Forum fi, bool isNew, bool UseGroup)
 		{
@@ -67,8 +72,9 @@ namespace DotNetNuke.Modules.ActiveForums.API
 				return -1;
 			}
 		}
-	}
-	public class Rewards
+    }
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in v9.0.0.0.")]
+    public class Rewards
 	{
 
 	}

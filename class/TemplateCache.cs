@@ -23,131 +23,35 @@ using System.Collections;
 using System.Data;
 
 using System.Web;
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums 
 {
     internal class TemplateCache
+{
+    #region Cache Retrieval
+    public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
     {
-        #region Cache Retrieval
-        public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
-        {
-            string sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
-            sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
-            sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
+        string sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
+        sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
+        sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
             sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
-            return sTemplate;
-        }
-        private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
+        return sTemplate;
+    }
+    private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
+    {
+        string sTemplate = string.Empty;
+        object obj = null;
+        if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
         {
-            string sTemplate = string.Empty;
-            object obj = null;
-            DotNetNuke.Entities.Modules.ModuleInfo objModule = new Entities.Modules.ModuleController().GetModule(ModuleId);
-            if ((!String.IsNullOrEmpty(objModule.CacheMethod)) && (objModule.CacheTime > 0))
-            {
-                obj = DataCache.CacheRetrieve(ModuleId + TemplateId + TemplateType);
-            }
-            if (obj == null)
-            {
-                if (TemplateId == 0)
-                {
-                    try
-                    {
-                        string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
-                        if (System.IO.File.Exists(myFile))
-                        {
-                            System.IO.StreamReader objStreamReader = null;
-                            try
-                            {
-                                objStreamReader = System.IO.File.OpenText(myFile);
-                            }
-                            catch (Exception ex)
-                            {
-                                Services.Exceptions.Exceptions.LogException(ex);
-                            }
-                            sTemplate = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                            sTemplate = Utilities.ParseSpacer(sTemplate);
-                            DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                            //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath(Globals.ModulePath + "config/Templates/" & TemplateType & ".txt")))
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                else
-                {
-                    sTemplate = GetTemplate(TemplateId, TemplateType);
-                    DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                }
-            }
-            else
-            {
-                sTemplate = Convert.ToString(obj);
-            }
-            return sTemplate;
+            obj = DataCache.CacheRetrieve(ModuleId + TemplateId + TemplateType);
         }
-
-        private static string GetTemplate(int TemplateId, string TemplateType)
+        if (obj == null)
         {
-            string sOut = string.Empty;
-            try
-            {
-                if (TemplateId == 0)
-                {
-                    try
-                    {
-                        string myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateType + ".txt");
-                        if (System.IO.File.Exists(myFile))
-                        {
-                            System.IO.StreamReader objStreamReader = null;
-                            try
-                            {
-                                objStreamReader = System.IO.File.OpenText(myFile);
-                            }
-                            catch (Exception ex)
-                            {
-                                Services.Exceptions.Exceptions.LogException(ex);
-                            }
-                            sOut = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                            sOut = Utilities.ParseSpacer(sOut);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                else
-                {
-                    var objTemplates = new TemplateController();
-                    TemplateInfo objTempInfo = objTemplates.Template_Get(TemplateId);
-                    if (objTempInfo != null)
-                    {
-                        sOut = objTempInfo.TemplateHTML;
-                        sOut = Utilities.ParseSpacer(sOut);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Services.Exceptions.Exceptions.LogException(ex);
-                sOut = "ERROR: Loading template failed";
-            }
-            return sOut;
-        }
-        internal static string GetTemplate(string TemplateFileName)
-        {
-            string sOut = string.Empty;
-            string myFile;
-            try
+            if (TemplateId == 0)
             {
                 try
                 {
-                    myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateFileName);
+                        string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;
@@ -157,7 +61,53 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         catch (Exception ex)
                         {
-                            Services.Exceptions.Exceptions.LogException(ex);
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        }
+                        sTemplate = objStreamReader.ReadToEnd();
+                        objStreamReader.Close();
+                        sTemplate = Utilities.ParseSpacer(sTemplate);
+                        DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
+                            //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath(Globals.ModulePath + "config/Templates/" & TemplateType & ".txt")))
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+            else
+            {
+                sTemplate = GetTemplate(TemplateId, TemplateType);
+                DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
+            }
+        }
+        else
+        {
+            sTemplate = Convert.ToString(obj);
+        }
+        return sTemplate;
+    }
+   
+    private static string GetTemplate(int TemplateId, string TemplateType)
+    {
+        string sOut = string.Empty;
+        try
+        {
+            if (TemplateId == 0)
+            {
+                try
+                {
+                        string myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateType + ".txt");
+                    if (System.IO.File.Exists(myFile))
+                    {
+                        System.IO.StreamReader objStreamReader = null;
+                        try
+                        {
+                            objStreamReader = System.IO.File.OpenText(myFile);
+                        }
+                        catch (Exception ex)
+                        {
+                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         }
                         sOut = objStreamReader.ReadToEnd();
                         objStreamReader.Close();
@@ -166,18 +116,67 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 catch (Exception ex)
                 {
-                    Services.Exceptions.Exceptions.LogException(ex);
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
+            }
+            else
+            {
+                var objTemplates = new TemplateController();
+                TemplateInfo objTempInfo = objTemplates.Template_Get(TemplateId);
+                if (objTempInfo != null)
+                {
+                    sOut = objTempInfo.TemplateHTML;
+                    sOut = Utilities.ParseSpacer(sOut);
+                }
+            }
 
+        }
+        catch (Exception ex)
+        {
+            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            sOut = "ERROR: Loading template failed";
+        }
+        return sOut;
+    }
+    internal static string GetTemplate(string TemplateFileName)
+    {
+        string sOut = string.Empty;
+        string myFile;
+        try
+        {
+            try
+            {
+                    myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateFileName);
+                if (System.IO.File.Exists(myFile))
+                {
+                    System.IO.StreamReader objStreamReader = null;
+                    try
+                    {
+                        objStreamReader = System.IO.File.OpenText(myFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                    sOut = objStreamReader.ReadToEnd();
+                    objStreamReader.Close();
+                    sOut = Utilities.ParseSpacer(sOut);
+                }
             }
             catch (Exception ex)
             {
-                Services.Exceptions.Exceptions.LogException(ex);
-                sOut = "ERROR: Loading template failed";
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-            return sOut;
-        }
-        #endregion
 
+        }
+        catch (Exception ex)
+        {
+            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            sOut = "ERROR: Loading template failed";
+        }
+        return sOut;
     }
+    #endregion
+
+}
 }

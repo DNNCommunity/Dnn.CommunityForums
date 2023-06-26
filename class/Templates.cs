@@ -211,61 +211,61 @@ namespace DotNetNuke.Modules.ActiveForums
                     ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
 
                 }
-				catch (Exception ex)
-				{
-					return null;
-				}
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
 
+            return ti;
+        }
+        #endregion
 
-			}
-			return ti;
-		}
-#endregion
-#region Private Methods
-		private string GetHTML(string Template)
-		{
-			try
-			{
-			    if (Template.Contains("<html>"))
-				{
-					string sHTML;
-					var xDoc = new System.Xml.XmlDocument();
-					xDoc.LoadXml(Template);
-					System.Xml.XmlNode xNode;
-					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					xNode = xRoot.SelectSingleNode("/template/html");
-					sHTML = xNode.InnerText;
-					return sHTML;
-				}
-			    return Template;
-			}
-			catch (Exception ex)
-			{
-				return Template;
-			}
+        #region Private Methods
+        private string GetHTML(string Template)
+        {
+            try
+            {
+                if (Template.Contains("<html>"))
+                {
+                    string sHTML;
+                    var xDoc = new System.Xml.XmlDocument();
+                    xDoc.LoadXml(Template);
+                    System.Xml.XmlNode xNode;
+                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                    xNode = xRoot.SelectSingleNode("/template/html");
+                    sHTML = xNode.InnerText;
+                    return sHTML;
+                }
+                return Template;
+            }
+            catch (Exception ex)
+            {
+                return Template;
+            }
+        }
 
-		}
-		private string GetText(string Template)
-		{
-			try
-			{
-			    if (Template.Contains("<plaintext>"))
-				{
-					string sText;
-					var xDoc = new System.Xml.XmlDocument();
-					xDoc.LoadXml(Template);
-					System.Xml.XmlNode xNode;
-					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					xNode = xRoot.SelectSingleNode("/template/plaintext");
-					sText = xNode.InnerText;
-					return sText;
-				}
-			    return Template;
-			}
-			catch (Exception ex)
-			{
-				return Template;
-			}
+        private string GetText(string Template)
+        {
+            try
+            {
+                if (Template.Contains("<plaintext>"))
+                {
+                    string sText;
+                    var xDoc = new System.Xml.XmlDocument();
+                    xDoc.LoadXml(Template);
+                    System.Xml.XmlNode xNode;
+                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                    xNode = xRoot.SelectSingleNode("/template/plaintext");
+                    sText = xNode.InnerText;
+                    return sText;
+                }
+                return Template;
+            }
+            catch (Exception ex)
+            {
+                return Template;
+            }
 
 		}
 		private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)

@@ -58,8 +58,14 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public static object CacheRetrieve(string cacheKey)
 		{
-			object obj = Common.Utilities.DataCache.GetCache(cacheKey);
-			return obj;
+			if (disableCache)
+			{
+				return null;
+			}
+			else 
+			{ 
+				return Common.Utilities.DataCache.GetCache(cacheKey); 
+            }
 		}
 		public static bool CacheClear(string cacheKey)
 		{
@@ -109,14 +115,14 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				ClearAllForumSettingsCache(ModuleId);
 				ClearSettingsCache(ModuleId);
-				CacheClear(ModuleId + "fv");
-				CacheClear(ModuleId + "ForumStatTable");
-				CacheClear(ModuleId + "ForumStatsOutput");
-				CacheClear(ModuleId + TabId + "ForumTemplate");
+				CacheClear(string.Concat(ModuleId, "fv"));
+				CacheClear(string.Concat(ModuleId, "ForumStatTable"));
+				CacheClear(string.Concat(ModuleId, "ForumStatsOutput"));
+				CacheClear(string.Concat(ModuleId, TabId, "ForumTemplate"));
 			}
 			catch (Exception ex)
 			{
-				Services.Exceptions.Exceptions.LogException(ex);
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 
 		}
@@ -138,15 +144,15 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public static void ClearForumsByGroupCache(int ModuleID, int GroupID)
 		{
-			object obj = CacheRetrieve(ModuleID + GroupID + "ForumsByGroup");
+			object obj = CacheRetrieve(string.Concat(ModuleID, GroupID, "ForumsByGroup"));
 			if (obj != null)
 			{
-				CacheClear(ModuleID + GroupID + "ForumsByGroup");
+				CacheClear(string.Concat(ModuleID, GroupID, "ForumsByGroup"));
 			}
 		}
 		public static void ClearForumGroupsCache(int ModuleID)
 		{
-			CacheClear(ModuleID + "ForumGroups");
+			CacheClear(string.Concat(ModuleID, "ForumGroups"));
 			IDataReader rd;
 			rd = DataProvider.Instance().Groups_List(ModuleID);
 			while (rd.Read())
@@ -157,11 +163,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public static void ClearForumSettingsCache(int ForumID)
 		{
-			CacheClear(ForumID + "ForumSettings");
+			CacheClear(string.Concat(ForumID, "ForumSettings"));
 			CacheClear(string.Format(CacheKeys.ForumInfo, ForumID));
-			CacheClear(string.Format(CacheKeys.ForumInfo, ForumID) + "st");
-
-		}
+			CacheClear(string.Concat(string.Format(CacheKeys.ForumInfo, ForumID), "st"));
+        }
 		public static void ClearAllForumSettingsCache(int ModuleID)
 		{
 			try
@@ -176,17 +181,17 @@ namespace DotNetNuke.Modules.ActiveForums
 					int TopicTemplateId;
 					TopicsTemplateId = Convert.ToInt32(rd["TopicsTemplateId"]);
 					TopicTemplateId = Convert.ToInt32(rd["TopicTemplateId"]);
-					CacheClear(intForumID + "ForumSettings");
-					CacheClear(ModuleID + TopicsTemplateId + "TopicsTemplate");
-					CacheClear(ModuleID + TopicTemplateId + "TopicTemplate");
+					CacheClear(string.Concat(intForumID, "ForumSettings"));
+					CacheClear(string.Concat(ModuleID, TopicsTemplateId, "TopicsTemplate"));
+					CacheClear(string.Concat(ModuleID, TopicTemplateId, "TopicTemplate"));
 					CacheClear(string.Format(CacheKeys.ForumInfo, intForumID));
-					CacheClear(string.Format(CacheKeys.ForumInfo, intForumID) + "st");
+					CacheClear(string.Concat(string.Format(CacheKeys.ForumInfo, intForumID), "st"));
 				}
 				rd.Close();
 			}
-			catch (Exception ex)
+			catch
 			{
-
+                // do nothing? 
 			}
 
 		}
@@ -195,8 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			object obj = CacheRetrieve(ModuleID + "FilterList");
 			if (obj != null)
 			{
-				//Current.Cache.Remove(ModuleID & "FilterList")
-				CacheClear(ModuleID + "FilterList");
+				CacheClear(string.Concat(ModuleID, "FilterList"));
 			}
 		}
 		public static Hashtable GetSettings(int ModuleId, string SettingsKey, string CacheKey, bool UseCache)
@@ -204,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var ht = new Hashtable();
 			if (UseCache)
 			{
-				object obj = CacheRetrieve(CacheKey + "st");
+				object obj = CacheRetrieve(string.Concat(CacheKey, "st"));
 				if (obj == null)
 				{
 					IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
@@ -217,9 +221,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
 					}
 					dr.Close();
-					CacheStore(CacheKey + "st", ht);
-					//Current.Cache.Insert(ModuleId & SettingsKey & "Settings", ht, Nothing, DateTime.UtcNow.AddMinutes(10), Web.Caching.Cache.NoSlidingExpiration)
-				}
+					CacheStore(string.Concat(CacheKey, "st"), ht);
+                }
 				else
 				{
 					ht = (Hashtable)obj;

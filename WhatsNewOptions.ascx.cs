@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             chkRSS.CheckedChanged += chkRSS_Change;
 
-            Page.ClientScript.RegisterClientScriptInclude("afutils", Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/afutils.js"));
+            Page.ClientScript.RegisterClientScriptInclude("afutils", Page.ResolveUrl(Globals.ModulePath + "scripts/afutils.js"));
 
             if (!Page.IsPostBack)
             {
@@ -81,11 +81,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
-
-                var mc = new ModuleController();
+                var moduleController = new ModuleController();
 
                 // Load the current settings
-                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(mc.GetModuleSettings(ModuleId));
+                var settings = WhatsNewModuleSettings.CreateFromModuleSettings(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: true).ModuleSettings);
 
                 // Update Settings Values
                 settings.Forums = forums;
@@ -113,14 +112,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Save Settings
-                settings.Save(mc, ModuleId);
+                settings.Save(moduleController, ModuleId);
 
                 // Redirect back to the portal home page
                 Response.Redirect(Common.Globals.NavigateURL(), true);
             }
             catch (Exception exc)
             {
-                Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
+                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
@@ -166,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForm()
         {
-            var moduleSettings = new ModuleController().GetModuleSettings(ModuleId) ;
+            var moduleSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             var settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
 
             txtNumItems.Text = settings.Rows.ToString();
@@ -268,7 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     trGroupNode = new TreeNode
                     {
                         Text = row["GroupName"].ToString(),
-                        ImageUrl = "~/DesktopModules/ActiveForums/images/tree/tree_group.png",
+                        ImageUrl = Globals.ModulePath + "images/tree/tree_group.png",
                         ShowCheckBox = true,
                         SelectAction = TreeNodeSelectAction.None,
                         Value = "G:" + row["ForumGroupId"]
@@ -284,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var trNode = new TreeNode
                     {
                         Text = row["ForumName"].ToString(),
-                        ImageUrl = "~/DesktopModules/ActiveForums/images/tree/tree_forum.png",
+                        ImageUrl = Globals.ModulePath + "images/tree/tree_forum.png",
                         ShowCheckBox = true,
                         Expanded = false,
                         SelectAction = TreeNodeSelectAction.None,
@@ -319,7 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tNode = new TreeNode
                 {
                     Text = row["ForumName"].ToString(),
-                    ImageUrl = "~/DesktopModules/ActiveForums/images/tree/tree_forum.png",
+                    ImageUrl = Globals.ModulePath + "tree/tree_forum.png",
                     ShowCheckBox = true,
                     Value = "F:" + row["ForumId"],
                     Checked = false,

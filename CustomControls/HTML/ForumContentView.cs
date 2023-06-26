@@ -208,14 +208,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				ParentForumId = ForumId;
 			}
-			string groupTemplate = TemplateUtils.GetTemplateSection(ItemTemplate, "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
-			string forumTemplate = TemplateUtils.GetTemplateSection(ItemTemplate, "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
-			string subForumTemplate = TemplateUtils.GetTemplateSection(ItemTemplate, "[AF:DIR:SUBFORUM]", "[/AF:DIR:SUBFORUM]");
-			bool useFriendlyUrl = Utilities.IsRewriteLoaded();
-			int currGroup = -1;
-			string gtmp = string.Empty;
-			string ftmp = string.Empty;
-			string subtmp = string.Empty;
 			using (IDataReader dr = db.ForumContent_List(PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId))
 			{
 				//ParentForum Section

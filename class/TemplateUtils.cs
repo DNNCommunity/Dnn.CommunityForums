@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (var ti in tc.Template_List(-1, moduleID))
             {
                 DataCache.CacheStore(ti.Title + moduleID, ti.Template);
-                DataCache.CacheStore(ti.Subject + "_Subject_" + moduleID, ti.Subject);
+                DataCache.CacheStore(string.Concat(ti.Subject, "_Subject_", moduleID), ti.Subject);
             }
         }
 
@@ -74,72 +74,80 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                ti = new TemplateInfo { TemplateHTML = "Error loading " + templateName + " template." };
+                ti = new TemplateInfo { TemplateHTML = string.Concat("Error loading ", templateName, " template.") };
                 ti.TemplateText = ti.TemplateHTML;
             }
+
             return ti;
         }
 
         #region Email
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, int timeZoneOffset)
         { 
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null,-1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null,-1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, int timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo user, int timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, Utilities.GetCultureInfoForUser(portalID, -1), new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, int timeZoneOffset)
         {
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), false);
         }
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, int timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, int timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, Utilities.GetCultureInfoForUser(portalID, userId),new TimeSpan(hours:0, minutes:timeZoneOffset,seconds:0));
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: user, userId: userId, userCultureInfo: Utilities.GetCultureInfoForUser(portalID, userId), timeZoneOffset: new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), topicSubscriber: false);
         }
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, 0, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, userId: 0, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, null, -1, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, null, -1, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: comments, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
-        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, string.Empty, user, -1, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: user, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            var uc = new Entities.Users.UserController();
+            var uc = new DotNetNuke.Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, usr, userId, userCulture, timeZoneOffset);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
-            var portalSettings = (Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            var uc = new DotNetNuke.Entities.Users.UserController();
+            var usr = uc.GetUser(portalID, userId);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: topicSubscriber);
+        }
+
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
+        {
+            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             var ms = DataCache.MainSettings(moduleID);
             var sOut = template;
 
@@ -148,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (templateName.Contains("_Subject_"))
                 {
-                    templateName = templateName.Replace("_Subject_" + moduleID, string.Empty);
+                    templateName = templateName.Replace(string.Concat("_Subject_", moduleID), string.Empty);
                     var objTemplate = GetTemplateByName(templateName, moduleID, portalID);
                     sOut = objTemplate.Subject;
                 }
@@ -160,7 +168,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // Load Subject and body from topic or reply
-
             var subject = string.Empty;
             var body = string.Empty;
             var dateCreated = Utilities.NullDate();
@@ -197,13 +204,12 @@ namespace DotNetNuke.Modules.ActiveForums
             // Load the user if needed
             if (user == null)
             {
-                var objUsers = new Entities.Users.UserController();
+                var objUsers = new DotNetNuke.Entities.Users.UserController();
                 var objUser = objUsers.GetUser(portalID, userId);
                 user = objUser;
             }
 
             // Load the user properties
-
             string sFirstName;
             string sLastName;
             string sDisplayName;
@@ -223,29 +229,28 @@ namespace DotNetNuke.Modules.ActiveForums
                 sDisplayName = string.Empty;
                 sUsername = string.Empty;
             }
-
+            
             // Build the link
-
             string link;
-            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.IsRewriteLoaded())
+            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
-                    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.TopicId + "=" + topicId })
-                        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
+                    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
+                        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
                 else
-                    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId })
-                        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId });
+                    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
+                        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
             }
             else
             {
                 var contentId = (replyId > 0) ? replyId : -1;
-                link = new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId);
+                link = String.Concat(Common.Globals.NavigateURL(tabID), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
             if (!(link.StartsWith("http")))
             {
                 if (!link.StartsWith("/"))
-                    link = "/" + link;
+                    link = string.Concat("/", link);
 
                 if (link.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
                     link = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + link;
@@ -253,11 +258,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             // Build the forum Url
-            var forumURL = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumID })
-                : Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topics });
+            var forumURL = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
+                : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
 
             // Build Moderation url
-            var modLink = Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ViewType + "=modtopics", ParamKeys.ForumId + "=" + forumID });
+            var modLink = Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
             if (modLink.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
                 modLink = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + modLink;
 
@@ -270,17 +275,29 @@ namespace DotNetNuke.Modules.ActiveForums
             result.Replace("[PORTALID]", portalID.ToString());
             result.Replace("[FIRSTNAME]", sFirstName);
             result.Replace("[LASTNAME]", sLastName);
-            result.Replace("[FULLNAME]", sFirstName + " " + sLastName);
+            result.Replace("[FULLNAME]", string.Concat(sFirstName, " ", sLastName));
             result.Replace("[GROUPNAME]", fi.GroupName); 
             result.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated,userCultureInfo,timeZoneOffset));
             result.Replace("[COMMENTS]", comments);
             result.Replace("[PORTALNAME]", portalSettings.PortalName);
-            result.Replace("[MODLINK]", "<a href=\"" + modLink + "\">" + modLink + "</a>");
-            result.Replace("[LINK]", "<a href=\"" + link + "\">" + link + "</a>");
-            result.Replace("[HYPERLINK]", "<a href=\"" + link + "\">" + link + "</a>");
+            result.Replace("[MODLINK]", string.Concat("<a href=\"", modLink, "\">", modLink, "</a>"));
+            result.Replace("[LINK]", string.Concat("<a href=\"", link, "\">", link, "</a>"));
+            result.Replace("[HYPERLINK]", string.Concat("<a href=\"", link, "\">", link, "</a>"));
             result.Replace("[LINKURL]", link);
             result.Replace("[FORUMURL]", forumURL);
-            result.Replace("[FORUMLINK]", "<a href=\"" + forumURL + "\">" + forumURL + "</a>");
+            result.Replace("[FORUMLINK]", string.Concat("<a href=\"", forumURL, "\">", forumURL, "</a>"));
+
+            result.Replace("[POSTEDORREPLIEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]")));
+            result.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));
+            result.Replace("[REPLIEDTO]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:repliedto]") : string.Empty));
+            result.Replace("[NEWPOST]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:NewPost]") : string.Empty));
+            result.Replace("[NEWREPLY]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:NewReply]") : string.Empty ));
+            result.Replace("[SUBSCRIBEDTOPIC]", (topicSubscriber ? Utilities.GetSharedResource("[RESX:SubscribedTopic]") : string.Empty));
+            result.Replace("[SUBSCRIBEDTOPICSUBJECT]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicSubject]"), subject) : string.Empty));
+            result.Replace("[SUBSCRIBEDTOPICFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Empty));
+            result.Replace("[SUBSCRIBEDFORUM]", (topicSubscriber ? string.Empty : "[RESX:SubscribedForum]"));
+            result.Replace("[SUBSCRIBEDFORUMNAME]", (topicSubscriber ? string.Empty : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumName]"),fi.ForumName)));
+            result.Replace("[SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumTopicForumName]"), subject, fi.ForumName)));
 
             // Introduced for Active Forum Email Connector plug-in Starts
             if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
@@ -296,7 +313,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 { }
             }
             // Introduced for Active Forum Email Connector plug-in Ends
-
 
             if (user != null)
             {
@@ -376,6 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return GetPostInfo(portalId, moduleId, userId, username, up, imagePath, isMod, ipAddress, isUserOnline, currentUserType, currentUserId, userPrefHideAvatar, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+
         public static string GetPostInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
             var sPostInfo = ParseProfileInfo(portalId, moduleId, userId, username, up, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
@@ -384,6 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var sr = new StringReader(sPostInfo);
             var sTrim = string.Empty;
+
             while (sr.Peek() != -1)
             {
                 var tmp = sr.ReadLine();
@@ -392,12 +410,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     sTrim += tmp.Trim() + "<br />";
                 }
             }
+
             return sTrim;
         }
+
         public static string ParseProfileInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, int timeZoneOffset)
         {
             return ParseProfileInfo(portalId, moduleId, userId, username, up, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+
         public static string ParseProfileInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
             var mainSettings = DataCache.MainSettings(moduleId);
@@ -416,10 +437,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return myTemplate;
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, int userId, int portalId, int moduleId, int currentUserId, int timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, userId, portalId, moduleId, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, int userId, int portalId, int moduleId, int currentUserId, TimeSpan timeZoneOffset)
         {
             var uc = new UserController();
@@ -427,38 +450,47 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, string.Empty, CurrentUserTypes.Anon, false, false, false, string.Empty, currentUserId, timeZoneOffset);
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, int timeZoneOffset)
         { 
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, TimeSpan timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, false, false, false, string.Empty, -1, timeZoneOffset);
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, int timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, false, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, TimeSpan timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, false, false, false, string.Empty, -1, timeZoneOffset);
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, TimeSpan timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, timeZoneOffset);
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, false, false, false, string.Empty, currentUserId, timeZoneOffset);
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, int timeZoneOffset)
         {
             return ParseProfileTemplate(profileTemplate, up, portalId, moduleId, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
+        
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)
         {
             try
@@ -500,8 +532,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // IP Address
                 result.Replace("[MODIPADDRESS]", isMod ? ipAddress : string.Empty);
-
-
+                
                 // User Edit
                 result.Replace("[AF:BUTTON:EDITUSER]", isAdmin && up.UserId > 0 ? string.Format("<button class='af-button af-button-edituser' data-id='{0}' data-name='{1}'>[RESX:Edit]</button>", up.UserId, Utilities.JSON.EscapeJsonString(up.DisplayName)) : string.Empty);
 
@@ -543,12 +574,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     switch (mainSettings.PMType)
                     {
                         case PMTypes.Core:
-                            pmLink = "<img class='ComposeMessage' data-recipient='{ \"id\": \"user-" + up.UserId + "\", \"name\": \"" + HttpUtility.JavaScriptStringEncode(up.DisplayName) + "\"}' src='" + imagePath + "/images/icon_pm.png' alt=\"[RESX:SendPM]\" title=\"[RESX:SendPM]\" border=\"0\" /></a>";
+                            pmLink = string.Concat("<img class='ComposeMessage' data-recipient='{ \"id\": \"user-", up.UserId, "\", \"name\": \"", HttpUtility.JavaScriptStringEncode(up.DisplayName), "\"}' src='", imagePath, "/icon_pm.png' alt=\"[RESX:SendPM]\" title=\"[RESX:SendPM]\" border=\"0\" /></a>");
                             break;
 
                         case PMTypes.Ventrian:
-                            pmUrl = Common.Globals.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", "sendto=" + up.UserId });
-                            pmLink = "<a href=\"" + pmUrl + "\"><img src=\"" + imagePath + "/images/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>";
+                            pmUrl = Common.Globals.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", string.Concat("sendto=", up.UserId) });
+                            pmLink = string.Concat("<a href=\"", pmUrl, "\"><img src=\"", imagePath, "/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>");
                             break;
                     }
                 }
@@ -589,7 +620,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Display Name
                 result.Replace("[AF:PROFILE:DISPLAYNAME]", UserProfiles.GetDisplayName(moduleId, true, isMod, isAdmin, up.UserId, up.UserName, up.FirstName, up.LastName, up.DisplayName));
 
-
                 // These fields are no longer used
                 result.Replace("[AF:PROFILE:LOCATION]", string.Empty);
                 result.Replace("[AF:PROFILE:WEBSITE]", string.Empty);
@@ -609,19 +639,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Date Created
                 var sDateCreated = string.Empty;
                 var sDateCreatedReplacement = "[AF:PROFILE:DATECREATED]";
+                
                 if (up.UserId > 0 && up.Profile != null && up.Profile.DateCreated != null)
                 {
                     if (pt.Contains("[AF:PROFILE:DATECREATED:"))
                     {
                         var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + (sDateCreatedReplacement.Length), 1);
                         sDateCreated = Utilities.GetUserFormattedDateTime(up.Profile.DateCreated, portalId, currentUserId, sFormat);
-                        sDateCreatedReplacement = "[AF:PROFILE:DATECREATED:" + sFormat + "]";
+                        sDateCreatedReplacement = string.Concat("[AF:PROFILE:DATECREATED:", sFormat, "]");
                     }
                     else
                     {
                         sDateCreated = Utilities.GetUserFormattedDateTime(up.Profile.DateCreated, portalId, currentUserId);
                     }
                 }
+
                 result.Replace(sDateCreatedReplacement, sDateCreated);
 
                 // Last Activity
@@ -633,7 +665,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         string sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
                         sDateLastActivity = Utilities.GetUserFormattedDateTime(up.Profile.DateLastActivity, portalId, currentUserId, sFormat); 
-                        sDateLastActivityReplacement = "[AF:PROFILE:DATELASTACTIVITY:" + sFormat + "]";
+                        sDateLastActivityReplacement = string.Concat("[AF:PROFILE:DATELASTACTIVITY:", sFormat, "]");
                     }
                     else
                     {
@@ -656,16 +688,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:REWARDPOINTS]", up.Profile.RewardPoints.ToString());
                 result.Replace("[AF:PROFILE:EMAIL]", up.Email);
 
-
                 return result.ToString();
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
-
         }
-
         #endregion
 
         public static string ParseRoles(string template, string userRoles)
@@ -754,7 +783,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     case "[SIGNATURE]":
                         sb.Replace(match.Value, "[AF:PROFILE:SIGNATURE]");
-
                         break;
                 }
             }
@@ -794,10 +822,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseProfile(int portalId, int userId, string template, CurrentUserTypes currentUserType, int currentUserId)
         {
-            var objuser = Entities.Users.UserController.GetUserById(portalId, userId);
-
+            var objuser = DotNetNuke.Entities.Users.UserController.GetUserById(portalId, userId);
             var s = template ?? string.Empty;
-
             const string pattern = "(\\[DNN:PROFILE:(.+?)\\])";
 
             foreach (Match match in Regex.Matches(s, pattern))
@@ -813,21 +839,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sResource = string.Format(sResource, match.Groups[2].Value);
 
-                        if (profprop.Visibility == Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType != CurrentUserTypes.Anon || currentUserType != CurrentUserTypes.Auth))
+                        if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AdminOnly && (currentUserType != CurrentUserTypes.Anon || currentUserType != CurrentUserTypes.Auth))
                             sReplace = profprop.PropertyValue;
-                        else if (profprop.Visibility == Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
+                        else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.MembersOnly && currentUserType != CurrentUserTypes.Anon)
                             sReplace = profprop.PropertyValue;
-                        else if (profprop.Visibility == Entities.Users.UserVisibilityMode.AllUsers)
+                        else if (profprop.Visibility == DotNetNuke.Entities.Users.UserVisibilityMode.AllUsers)
                             sReplace = profprop.PropertyValue;
                         else
                             sReplace = "[RESX:Private]";
 
-                        sResource = Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
+                        sResource = DotNetNuke.Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
                     }
                 }
                 s = s.Replace(match.Value, sReplace);
-                s = s.Replace("[RESX:DNNProfile:" + match.Groups[2].Value + "]", sResource);
+                s = s.Replace(string.Concat("[RESX:DNNProfile:", match.Groups[2].Value, "]"), sResource);
             }
+
             return s;
         }
 
@@ -835,7 +862,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var mainSettings = DataCache.MainSettings(moduleId);
 
-            return TemplateCache.GetCachedTemplate( moduleId, "TopicView", topicTemplateId);
+            return TemplateCache.GetCachedTemplate(moduleId, "TopicView", topicTemplateId);
         }
         public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, Forum forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, int timeZoneOffset)
         {
@@ -856,8 +883,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTopic = sTopic.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(postDate, portalId, userId));
                 sTopic = sTopic.Replace("[POSTINFO]", GetPostInfo(portalId, moduleId, userId, up.UserName, up, imagePath, false, HttpContext.Current.Request.UserHostAddress, true, currentUserType, currentUserId, false, timeZoneOffset));
                 sTemplate = ParsePreview(portalId, sTopic, body, moduleId);
-                sTemplate = "<table class=\"afgrid\" width=\"100%\" cellspacing=\"0\" cellpadding=\"4\" border=\"1\">" + sTemplate;
-                sTemplate = sTemplate + "</table>";
+                sTemplate = string.Concat("<table class=\"afgrid\" width=\"100%\" cellspacing=\"0\" cellpadding=\"4\" border=\"1\">", sTemplate);
+                sTemplate = string.Concat(sTemplate, "</table>");
                 sTemplate = Utilities.LocalizeControl(sTemplate);
                 sTemplate = Utilities.StripTokens(sTemplate);
             }
@@ -878,7 +905,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 const string pattern = "(&#91;IMAGE:(.+?)&#93;)";
                 foreach (Match match in Regex.Matches(message, pattern))
                 {
-                    var sImage = "<img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalId + "&moduleid=" + moduleId + "&attachid=" + match.Groups[2].Value + "\" border=\"0\" />";
+                    var sImage = string.Format("<img src=\"{0}DesktopModules/ActiveForums/viewer.aspx?portalid={1}&moduleid={2}&attachid={3}\" border=\"0\" />", strHost, portalId, moduleId, match.Groups[2].Value);
                     message = message.Replace(match.Value, sImage);
                 }
             }
@@ -886,13 +913,13 @@ namespace DotNetNuke.Modules.ActiveForums
             //TODO: Legacy Attachments Functionality - Probably can remove.
             if (message.Contains("&#91;THUMBNAIL:"))
             {
-                var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
+                var strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");
                 const string pattern = "(&#91;THUMBNAIL:(.+?)&#93;)";
                 foreach (Match match in Regex.Matches(message, pattern))
                 {
                     var thumbId = match.Groups[2].Value.Split(':')[0];
                     var parentId = match.Groups[2].Value.Split(':')[1];
-                    var sImage = "<a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalId + "&moduleid=" + moduleId + "&attachid=" + parentId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalId + "&moduleid=" + moduleId + "&attachid=" + thumbId + "\" border=\"0\" /></a>";
+                    var sImage = string.Format("<a href=\"{0}DesktopModules/ActiveForums/viewer.aspx?portalid={1}&moduleid={2}&attachid={3}\" target=\"_blank\"><img src=\"{4}DesktopModules/ActiveForums/viewer.aspx?portalid={5}&moduleid={6}&attachid={7}\" border=\"0\" /></a>", strHost, portalId, moduleId, parentId, strHost, portalId, moduleId, thumbId);
                     message = message.Replace(match.Value, sImage);
                 }
             }
