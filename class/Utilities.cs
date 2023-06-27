@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
+                if (HttpContext.Current?.Items["PortalSettings"] != null)
                 {
                     return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
                 }
@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 PortalSettings portalSettings = null;
-                if (HttpContext.Current != null && HttpContext.Current.Items["PortalSettings"] != null)
+                if (HttpContext.Current?.Items["PortalSettings"] != null)
                 {
                     portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
                     if (portalSettings.PortalId != portalId)
