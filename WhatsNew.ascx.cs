@@ -104,7 +104,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var sb = new StringBuilder(Settings.Header);
 
-            var useFriendly = Utilities.IsRewriteLoaded();
             var sHost = Utilities.GetHost();
 
             try
@@ -136,17 +135,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var ts = DataCache.MainSettings(topicModuleId);
 
-                    // The Module Stores the PostDate in the Current Time Zone format of the Server, not in UTC.
-                    // So we need to calculate the difference between the Site UTC Offset  and the Server UTC Offset and Users UTC Offset and the Server offset and add that to the displayed time.
-                    //AF now stores in UTC; 
-                    //var dtNow = DateTime.UtcNow;
-                    //var timeOffsetServer = (int)TimeZoneInfo.Local.GetUtcOffset(dtNow).TotalMinutes;
-                    //var timeOffsetSite = (int)PortalSettings.TimeZone.GetUtcOffset(dtNow).TotalMinutes;
-                    //var timeOffsetUser = (int)UserInfo.Profile.PreferredTimeZone.GetUtcOffset(postDate).TotalMinutes;
-
-                    //var timeOffset = (timeOffsetSite - timeOffsetServer) + (timeOffsetUser- timeOffsetServer);
-
-                    // Use a stringBuilder for better performance;
                     var sbTemplate = new StringBuilder(Settings.Format ?? string.Empty);
 
                     sbTemplate = sbTemplate.Replace("[FORUMGROUPNAME]", groupName);
@@ -166,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sbTemplate = sbTemplate.Replace("[REPLYID]", replyId.ToString());
                     sbTemplate = sbTemplate.Replace("[REPLYCOUNT]", replyCount.ToString());
 
-                    if (useFriendly && !(string.IsNullOrEmpty(sForumUrl) && string.IsNullOrEmpty(sTopicUrl)))
+                    if (Utilities.UseFriendlyURLs(topicModuleId) && !(string.IsNullOrEmpty(sForumUrl) && string.IsNullOrEmpty(sTopicUrl)))
                     {
                         var ctlUtils = new ControlUtils();
 

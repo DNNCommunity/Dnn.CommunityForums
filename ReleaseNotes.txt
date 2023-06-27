@@ -5,7 +5,26 @@
 <div class="uv-install-wrapper">
 	<h3><b>Community Forums</b> Module for DNN</h3>
 	<hr/>
-	<div class="dnnClear">			
+
+	<div class="dnnClear">
+		<h3>07.00.11</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Refactored Legacy Upgrade Code to Only Run at Module Start (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Like UI Image Does Not Update On-Click (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/320">Issue 320</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Flood Control Does Not Take Replies into Account (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/81">Issue 81</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Redirect Fails When Replying and Using the Friendly URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/324">Issue 324</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Incorrect Links in Email Notifications When Using the URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/322">Issue 322</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved Inconsistent Friendly URL logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/326">Issue 326</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Bad Redirect When Replying and Using the Friendly URL Rewriter (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/324">Issue 324</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Input for Avatar Width Size too Small (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/317">Issue 317</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<li>TASK: Refactor Legacy Upgrade Code (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/298">Issue 298</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: Modernize Tokens Entities/Controllers (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/297">PR 297</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: ModuleImagePath Path in Control Panel Resolved (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/310">PR 310</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: 07.00.10 Upgrade fails when executing SQL for 07.00.05 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/321">PR 321</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASK: 07.00.11 Upgrade fails when executing SQL for 07.00.10 (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/341">PR 341</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.10</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>

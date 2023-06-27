@@ -115,20 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			}
 			return sRoles;
 		}
-		public bool SecurityUpgraded()
-		{
-			string sSQL = "SELECT Count(PermissionsId) FROM " + dbPrefix + "Permissions ";
-			int secCount = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sSQL));
-			if (secCount > 0)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-
-		}
+		
 
 		#endregion
 

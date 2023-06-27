@@ -1152,8 +1152,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(ForumTabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     
-                    if (fullURL.EndsWith("/"))
-                        fullURL += "?" + ParamKeys.ContentJumpId + "=" + tmpReplyId;
+                    if (fullURL.EndsWith("/")) 
+                        fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
 
                     if (!_isEdit)
                     {

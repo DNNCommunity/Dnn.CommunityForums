@@ -42,7 +42,7 @@ function amaf_deleteTag(row){
 	<table>
 		<tr>
 			<td></td><td class="amcpbold">[RESX:TagName]:</td><td><asp:TextBox ID="txtTag" runat="server" CssClass="amcptxtbx" Font-Size="14px" Height="18" Width="125"/></td>
-			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveTag();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" ImageUrl="<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>save16.png" /></td>
+			<td><am:ImageButton ID="imgSave" runat="server" PostBack="false" ClientSideScript="amaf_saveTag();" CssClass="amsmallbtn" Text="[RESX:Save]" Height="18" Width="50" ImageLocation="LEFT" ImageUrl="~/DesktopModules/activeforums/images/save16.png" /></td>
 			<td></td>
 		</tr>
 	</table>

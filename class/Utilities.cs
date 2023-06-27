@@ -100,9 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             template = ParseSpacer(template);
 
-            var tc = new TokensController();
-
-            var li = tc.TokensList(group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.List(group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -229,7 +227,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return text;
         }
-
         internal static bool HasFloodIntervalPassed(int floodInterval, User user, Forum forumInfo)
         {
             /* flood interval check passes if
@@ -238,7 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums
             3) user is an admin or superuser
             4) user is designated as a trusted user for the forum
             5) user has moderator (edit, delete, approve) permissions for the forum
-            6) time span for since user's last post exceeds flood interval
+            6) time span for since user's last post or reply exceeds flood interval
             */
             return floodInterval <= 0
                    || user == null
@@ -248,7 +245,8 @@ namespace DotNetNuke.Modules.ActiveForums
                    || Permissions.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
                    || Permissions.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
                    || Permissions.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
-                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval;
+                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval
+                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastReply, DateTime.UtcNow) > floodInterval;
         }
         public static bool IsTrusted(int forumTrustLevel, int userTrustLevel, bool isTrustedRole, int autoTrustLevel = 0, int userPostCount = 0)
         {
@@ -981,6 +979,10 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return false;
             }
+        }
+        internal static bool UseFriendlyURLs(int ModuleId)
+        {
+            return IsRewriteLoaded() && SettingsBase.GetModuleSettings(ModuleId).URLRewriteEnabled;
         }
 
         /// <summary>

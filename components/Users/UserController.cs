@@ -204,6 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 //.Bio = dr("Bio").ToString
                 upi.DateLastActivity = DateTime.Parse(row["DateLastActivity"].ToString());
                 upi.DateLastPost = DateTime.Parse(row["DateLastPost"].ToString());
+                upi.DateLastReply = DateTime.Parse(row["DateLastReply"].ToString());
                 upi.ForumsAllowed = string.Empty;
                 upi.ICQ = row["ICQ"].ToString();
                 upi.Interests = row["Interests"].ToString();
