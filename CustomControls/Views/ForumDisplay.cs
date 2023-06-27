@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 groupTemplate = TemplateUtils.GetTemplateSection(DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
             var db = new Data.ForumsDB();
-            ForumData = db.ForumListXML(ControlConfig.SiteId, ControlConfig.InstanceId);
+            ForumData = db.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
             if (ForumData != null)
             {
                 XmlNodeList xGroups;

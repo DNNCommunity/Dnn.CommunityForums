@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(ControlConfig.InstanceId + "aftb");
+                object obj = DataCache.CacheRetrieve(ControlConfig.ModuleId + "aftb");
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         private string ParseTemplate()
         {
-            string tb = DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, InstanceId, UserId, CurrentUserTypes.Admin)
+            string tb = DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, ModuleId, UserId, CurrentUserTypes.Admin)
             //tb = tb.Replace
             tb = tb.Replace("[AF:TB:Unanswered]", "<af:link id=\"lnkUnanswered\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=unanswered" }) + "\" text=\"[RESX:Unanswered]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:ActiveTopics]", "<af:link id=\"lnkActive\" NavigateURL=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=activetopics" }) + "\" text=\"[RESX:ActiveTopics]\" runat=\"server\" />");
@@ -94,10 +94,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb = tb.Replace("[AF:TB:MyProfile]", string.Empty);
             tb = tb.Replace("[AF:TB:MemberList]", string.Empty);
             tb = tb.Replace("[AF:TB:MySettings]", string.Empty);
-            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.InstanceId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.ModuleId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
             //TODO: Check for moderator
             tb = tb.Replace("[AF:TB:ModList]", string.Empty);
-            DataCache.CacheStore(ControlConfig.InstanceId + "aftb", tb);
+            DataCache.CacheStore(ControlConfig.ModuleId + "aftb", tb);
             return tb;
         }
     }

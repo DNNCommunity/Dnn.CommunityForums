@@ -519,7 +519,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Forum Drop Downlist
             sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
             //Tag Cloud
-            sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud instanceid=\"" + ModuleId + "\" siteid=\"" + PortalId + "\" tabid=\"" + TabId + "\" runat=\"server\" />");
+            sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud ModuleId=\"" + ModuleId + "\" PortalId=\"" + PortalId + "\" tabid=\"" + TabId + "\" runat=\"server\" />");
 
             sOutput = sOutput.Replace("[FORUMSUBSCRIBERCOUNT]", ForumSubscriberCount.ToString());
            

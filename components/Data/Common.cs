@@ -34,9 +34,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
 		}
-		public IDataReader GetRoles(int SiteId)
+		public IDataReader GetRoles(int PortalId)
 		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", SiteId);
+			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
 		}
 		public string GetPermSet(int PermissionsId, string Key)
 		{

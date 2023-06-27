@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			db.SavePermSet(PermissionsId, "Read", permSet);
 		}
 
-		public static string GetRoleIds(string[] Roles, int SiteId)
+		public static string GetRoleIds(string[] Roles, int PortalId)
 		{
 			int i = 0;
 			string RoleIds = string.Empty;
@@ -387,7 +387,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			if (obj == null)
 			{
 				var rc = new Security.Roles.RoleController();
-				foreach (Security.Roles.RoleInfo ri in rc.GetPortalRoles(SiteId))
+				foreach (Security.Roles.RoleInfo ri in rc.GetPortalRoles(PortalId))
 				{
 					string roleName = ri.RoleName;
 					foreach (string role in Roles)
