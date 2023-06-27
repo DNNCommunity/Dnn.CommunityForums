@@ -105,8 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
 			sb.Append("<option value=\"-1\">All Users</option>");
 			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
-			DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in rc.GetPortalRoles(PortalId))
+			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
 			}
@@ -165,12 +164,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string userNames = string.Empty;
 			if (! (string.IsNullOrEmpty(users)))
 			{
-				DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
 				foreach (string uid in users.Split(';'))
 				{
 					if (! (string.IsNullOrEmpty(uid)))
 					{
-						DotNetNuke.Entities.Users.UserInfo u = uc.GetUser(PortalId, Convert.ToInt32(uid));
+						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
 						if (u != null)
 						{
 							PermissionInfo pi = new PermissionInfo();

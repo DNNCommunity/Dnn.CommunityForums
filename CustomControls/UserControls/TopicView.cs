@@ -1249,9 +1249,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var rewardPoints = dr.GetInt("RewardPoints");
             var dateLastActivity = dr.GetDateTime("DateLastActivity");
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
-
-            DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-            DotNetNuke.Entities.Users.UserInfo author = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
+             
+            DotNetNuke.Entities.Users.UserInfo author = DotNetNuke.Entities.Users.UserController.Instance.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
 
             // Populate the user object with the post author info.  
             var up = new User

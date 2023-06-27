@@ -103,10 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				if (ModuleId == -1)
 				{
-					DotNetNuke.Entities.Modules.ModuleController mc = new DotNetNuke.Entities.Modules.ModuleController();
-					DotNetNuke.Entities.Tabs.TabController tc = new DotNetNuke.Entities.Tabs.TabController();
-					DotNetNuke.Entities.Tabs.TabInfo ti = null;
-					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(portalId))
+					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId))
 					{
 						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
 						{

@@ -408,10 +408,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
-			bool isHttps = new DotNetNuke.Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
-			bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
-			string primaryPortalAlias = new DotNetNuke.Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
-
+			bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
+            bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
+            string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+			
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 			Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();

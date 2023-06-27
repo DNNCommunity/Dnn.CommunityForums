@@ -150,9 +150,8 @@ namespace DotNetNuke.Modules.ActiveForums
                             ModController mc = new ModController();
                             mc.Mod_Reject(PortalId, ForumModuleId, UserId, tmpForumId, tmpTopicId, tmpReplyId);
                             if (fi.ModRejectTemplateId > 0 & tmpAuthorId > 0)
-                            {
-                                DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-                                DotNetNuke.Entities.Users.UserInfo ui = uc.GetUser(PortalId, tmpAuthorId);
+                            { 
+                                DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tmpAuthorId);
                                 if (ui != null)
                                 {
                                     Author au = new Author();

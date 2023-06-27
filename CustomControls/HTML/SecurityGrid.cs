@@ -93,13 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string users = GetSecureObjectList(Security, 1);
 			string userNames = string.Empty;
 			if (! (string.IsNullOrEmpty(users)))
-			{
-				DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
+			{ 
 				foreach (string uid in users.Split(';'))
 				{
 					if (! (string.IsNullOrEmpty(uid)))
 					{
-						DotNetNuke.Entities.Users.UserInfo u = uc.GetUser(PortalId, Convert.ToInt32(uid));
+						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
 						if (u != null)
 						{
 							PermissionInfo pi = new PermissionInfo();
