@@ -59,7 +59,7 @@ function amaf_modPin(mid, fid, tid) {
         dataType: "json",
         url: '/API/ActiveForums/Topic/Pin',
         beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
+    }).done(function () {
         afreload();
     }).fail(function (xhr, status) {
         alert('error pinning post');
@@ -78,8 +78,9 @@ function amaf_modLock(mid, fid, tid) {
         dataType: "json",
         url: '/API/ActiveForums/Topic/Lock',
         beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
+    }).done(function () {
         afreload();
+        //$('#af-topic-lock-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
     }).fail(function (xhr, status) {
         alert('error locking post');
     });

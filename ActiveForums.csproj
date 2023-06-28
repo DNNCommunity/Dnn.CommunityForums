@@ -224,7 +224,6 @@
     <Content Include="controls\admin_securitygrid.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="controls\admin_upgrade.ascx" />
     <Content Include="controls\af_attach.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -856,7 +855,6 @@
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
-    <Compile Include="components\Helpers\MoveSettings.cs" />
     <Compile Include="components\Helpers\UpgradeModuleSettings.cs" />
     <Compile Include="components\Helpers\TextUtils.cs" />
     <Compile Include="components\Helpers\URL.cs" />
@@ -865,8 +863,6 @@
     <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="components\Scheduler\DailyDigest.cs" />
     <Compile Include="components\Social\ActiveSocial.cs" />
-    <Compile Include="components\Tokens\Token.cs" />
-    <Compile Include="components\Tokens\TokensController.cs" />
     <Compile Include="components\Users\User.cs" />
     <Compile Include="components\Users\UserController.cs" />
     <Compile Include="controls\admin_properties.ascx.designer.cs">
@@ -881,13 +877,6 @@
     </Compile>
     <Compile Include="controls\admin_securitygrid.ascx.cs">
       <DependentUpon>admin_securitygrid.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="controls\admin_upgrade.ascx.designer.cs">
-      <DependentUpon>admin_upgrade.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="controls\admin_upgrade.ascx.cs">
-      <DependentUpon>admin_upgrade.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_attach.ascx.designer.cs">

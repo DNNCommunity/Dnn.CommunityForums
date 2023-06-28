@@ -1421,7 +1421,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModLock)
             {
-                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock(" + ModuleId + "," + ForumId +",[TOPICID]);};\" title=\"[RESX:Lock]\"><i class=\"fa fa-lock fa-fm fa-blue\"></i>&nbsp;[RESX:Lock]</li>");
+                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock(" + ModuleId + "," + ForumId +",[TOPICID]);};\" title=\"[RESX:Lock]\"><i id=\"af-topic-lock-" + contentId.ToString() + "\"class=\"fa fa-lock fa-fm fa-blue\"></i>&nbsp;[RESX:Lock]</li>");
 
             }
             else
@@ -1430,7 +1430,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (_bModPin)
             {
-                sbOutput.Replace("[ACTIONS:PIN]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:Pin]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue\"></i>&nbsp;[RESX:Pin]</li>");
+                sbOutput.Replace("[ACTIONS:PIN]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:Pin]\"><i id=\"af-topic-pin-" + contentId.ToString() + "\" class=\"fa fa-thumb-tack fa-fm fa-blue\"></i>&nbsp;[RESX:Pin]</li>");
 
             }
             else
