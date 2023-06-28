@@ -1,61 +1,6 @@
-<%@ Control Language="C#" AutoEventWireup="false" Codebehind="af_quickreply.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.af_quickreplyform" %>
-<%@ Register TagPrefix="am" Namespace="DotNetNuke.Modules.ActiveForums.Controls" assembly="DotNetNuke.Modules.ActiveForums" %>
-<%@ Register TagPrefix="dnn" Assembly="DotNetNuke" Namespace="DotNetNuke.UI.WebControls"%>
-<script type="text/javascript">
-<!--
-	var isSubmitted = false;
-function insertCode(sText) {
-		var newMessage;
-		var strMessage = document.getElementById('txtBody').value;
-		newMessage = strMessage+sText;
-		document.getElementById('txtBody').value=newMessage;
-		document.getElementById('txtBody').focus();
-		return;
-	};
-function nothing () {
-		return;
-	};	
-
-
-function insertQuote() {
-	var txt = "";
-	if (document.getSelection) txt = document.getSelection();
-	else if (document.selection && document.selection.createRange) txt = document.selection.createRange().text;
-	else return;
-	if (txt != "")	{
-		var s = new String();
-		s += "[quote]";
-		s += txt + "[/quote]";
-		insertCode(s);	
-	}else
-		insertCode('[quote] [/quote]');
-};
-function afQuickSubmit() {
-	if (isSubmitted == false) {
-		isSubmitted = true;
-		var hid = document.getElementById('hidReply1');
-		hid.value = 'true';
-		document.forms[0].submit();
-	}
-};
-//-->
-</script>
-
-		<div style="display:none;visibility:hidden;" >
-		
-            <label ID="ContactByFaxOnly" runat="server"
-               ControlName="ContactByFaxOnlyCheckBox"
-               ResourceKey="ContactByFaxOnly"
-               Suffix=":"
-               TabIndex="-1" />
-            <asp:CheckBox ID="ContactByFaxOnlyCheckBox" runat="server"
-               AutoPostBack="true"
-               Checked="false"
-               OnCheckedChanged="ContactByFaxOnlyCheckBox_CheckedChanged"
-               TabIndex="-1" />
-        </div>
-<div id="QR" runat="server" />
-<%--<table class="afgrid">
+﻿
+<div>
+<table class="afgrid">
 	<tr>
 		<td class="afgrouprow"><div class="afcontrolheader">[RESX:QuickReply]</div></td>
 		<td class="afgrouprow" align="right" style="text-align:right;padding-right:10px;"><img align="absmiddle" class="afarrow" id="imgGroupQR" alt="toggle" onclick="toggleGroup('QR');" src='<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"arrows_down.png")%>'" /></td>
@@ -64,12 +9,28 @@ function afQuickSubmit() {
 		<td colspan="2" class="afborder">
 		<div id="groupQR" <%=DisplayMode%>><asp:PlaceHolder ID="plhMessage" runat="server" />
 			<table width="100%"  cellspacing="0" cellpadding="4">
-				<tr id="trUsername" runat="server">
-					<td><asp:RequiredFieldValidator ID="reqUserName" runat="server" ControlToValidate="txtUserName" Enabled="false" /></td>
-					<td class="NormalBold" style="white-space:nowrap">[RESX:Username]:</td>
-					<td>
-						<input type="text" id="txtUserName" class="aftextbox" maxlength="25" runat="server" width="200" /></td>
-					<td></td>
+				<tr>
+					[AF:UI:ANON]
+					<table cellpadding="0" cellspacing="4" border="0" width="99%">
+						<tr>
+							<td style="text-align:left;">[RESX:Username]:[AF:REQ:USERNAME]</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td style="text-align:left;"><div style="width:150px;">[AF:INPUT:USERNAME]</div></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td style="text-align:left;">[RESX:SecurityCode]:[AF:REQ:SECURITYCODE]</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td style="text-align:left;"><div style="width:150px;">[AF:INPUT:CAPTCHA]</div></td>
+							<td></td>
+						</tr>
+					</table>
+					[/AF:UI:ANON]
+
 				</tr>
 				<tr>
 					<td></td>
@@ -122,4 +83,5 @@ function afQuickSubmit() {
 
 </table>
 <input type="hidden" name="hidReply1" id="hidReply1" value="" />
-<input type="hidden" name="hidReply2" id="hidReply2" value="" /></div>--%>
+<input type="hidden" name="hidReply2" id="hidReply2" value="" /><
+/div>

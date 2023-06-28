@@ -202,6 +202,8 @@
     </Content>
     <None Include="config\templates\TopicsView.txt" />
     <Content Include="config\templates\ForumView.txt" />
+    <Content Include="config\templates\QuickReply.txt" />
+    <Content Include="config\templates\ReplyEditor.txt" />
     <Content Include="config\templates\TopicView.txt" />
     <Content Include="config\templates\DailyDigest_html.txt" />
     <Content Include="config\templates\ForumDirectory.txt" />
@@ -738,7 +740,6 @@
     <Content Include="images\ranks\yellow_star_06.gif" />
     <Content Include="scripts\afadmin.js" />
     <Content Include="scripts\afutils.js" />
-    <Content Include="config\templates\ReplyEditor.txt" />
     <Content Include="config\templates\TopicEditor.txt" />
     <Content Include="config\templates\ProfileInfo.txt" />
     <Content Include="config\templates\BlogView.txt" />

@@ -935,12 +935,12 @@ function afadmin_getProperties() {
 							<asp:DropDownList ID="drpReplyForm" runat="server" CssClass="amcptxtbx" /></td>
 						<td></td>
 					</tr>
-					<%-- <tr>
+					 <tr>
 					<td><img id="Img24" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:QuickReplyForm]');" onmouseout="amHideTip(this);" /></td>
 					<td class="amcpbold" style="white-space:nowrap">[RESX:QuickReplyForm]:</td>
 					<td width="100%"><asp:DropDownList ID="drpQuickReplyForm" runat="server" CssClass="amcptxtbx" /></td>
 					<td></td>
-				</tr>--%>
+				</tr>
 					<tr>
 						<td>
 							<img id="Img16" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:UserProfileTemplate]');" onmouseout="amHideTip(this);" /></td>

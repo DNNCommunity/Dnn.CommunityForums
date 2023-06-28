@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using System.IO;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -39,136 +40,43 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_quickreplyform : ForumBase
     {
         #region Private Members
+        private bool bolIsAnon = false;
         private bool _CanReply = false;
         private string _ThemePath = string.Empty;
-        private bool _UseFilter = true;
-        private string _Subject = string.Empty;
-        private bool _ModAppove = false;
-        private bool _CanTrust = false;
-        private bool _IsTrusted = false;
-        private bool _TrustDefault = false;
-        private bool _AllowHTML = false;
-        private bool _AllowScripts = false;
-        private bool _AllowSubscribe = false;
         private int _ForumId = -1;
-        private bool _CanSubscribe = false;
+        private Forum _fi;
 
         #endregion
         #region Public Members
         public string SubscribedChecked = string.Empty;
-        //public IClientCapability device = ClientCapabilityProvider.CurrentClientCapability;
+        public string txtBodyID;
+        public string DisplayMode;
+        public string BoldText;
+        public string ItalicsText;
+        public string UnderlineText;
+        public string QuoteText;
+        public string BoldDesc;
+        public string ItalicsDesc;
+        public string UnderlineDesc;
+        public string QuoteDesc;
+        public string CodeText;
+        public string CodeDesc;
+        public string ImageText;
+        public string ImageDesc;
+        public string SubmitText = Utilities.GetSharedResource("Submit.Text");
+
         #endregion
         #region Public Properties
-        public bool UseFilter
-        {
-            get
-            {
-                return _UseFilter;
-            }
-            set
-            {
-                _UseFilter = value;
-            }
-        }
-        public string Subject
-        {
-            get
-            {
-                return _Subject;
-            }
-            set
-            {
-                _Subject = value;
-            }
-        }
-        public bool ModApprove
-        {
-            get
-            {
-                return _ModAppove;
-            }
-            set
-            {
-                _ModAppove = value;
-            }
-        }
-        public bool CanTrust
-        {
-            get
-            {
-                return _CanTrust;
-            }
-            set
-            {
-                _CanTrust = value;
-            }
-        }
-        public bool IsTrusted
-        {
-            get
-            {
-                return _IsTrusted;
-            }
-            set
-            {
-                _IsTrusted = value;
-            }
-        }
-        public bool TrustDefault
-        {
-            get
-            {
-                return _TrustDefault;
-            }
-            set
-            {
-                _TrustDefault = value;
-            }
-        }
-        public bool AllowHTML
-        {
-            get
-            {
-                return _AllowHTML;
-            }
-            set
-            {
-                _AllowHTML = value;
-            }
-        }
-        public bool AllowScripts
-        {
-            get
-            {
-                return _AllowScripts;
-            }
-            set
-            {
-                _AllowScripts = value;
-            }
-        }
-        public bool AllowSubscribe
-        {
-            get
-            {
-                return _AllowSubscribe;
-            }
-            set
-            {
-                _AllowSubscribe = value;
-            }
-        }
-        public bool CanSubscribe
-        {
-            get
-            {
-                return _CanSubscribe;
-            }
-            set
-            {
-                _CanSubscribe = value;
-            }
-        }
+        public bool UseFilter { get; set; } = true;
+        public string Subject { get; set; } = string.Empty;
+        public bool ModApprove { get; set; } = false;
+        public bool CanTrust { get; set; } = false;
+        public bool IsTrusted { get; set; } = false;
+        public bool TrustDefault { get; set; } = false;
+        public bool AllowHTML { get; set; } = false;
+        public bool AllowScripts { get; set; } = false;
+        public bool AllowSubscribe { get; set; } = false;
+        public bool CanSubscribe { get; set; } = false;
         #endregion
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
@@ -216,14 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ImageText = Utilities.GetSharedResource("[RESX:Image]");
                 ImageDesc = Utilities.GetSharedResource("[RESX:ImageDesc]");
 
-                if (UseFilter)
-                {
-                    btnToolBar.Visible = true;
-                }
-                else
-                {
-                    btnToolBar.Visible = false;
-                }
+                btnToolBar.Visible = UseFilter;
                 Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + Subject;
                 trSubscribe.Visible = AllowSubscribe;
                 if (!Request.IsAuthenticated && CanReply)
@@ -254,8 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-
-        #region  Web Form Designer Generated Code
+         
 
         //This call is required by the Web Form Designer.
         [System.Diagnostics.DebuggerStepThrough()]
@@ -263,23 +163,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
         }
-
-        private bool bolIsAnon = false;
-        public string txtBodyID;
-        public string DisplayMode;
-        public string BoldText;
-        public string ItalicsText;
-        public string UnderlineText;
-        public string QuoteText;
-        public string BoldDesc;
-        public string ItalicsDesc;
-        public string UnderlineDesc;
-        public string QuoteDesc;
-        public string CodeText;
-        public string CodeDesc;
-        public string ImageText;
-        public string ImageDesc;
-        public string SubmitText = Utilities.GetSharedResource("Submit.Text");
 
 
         //NOTE: The following placeholder declaration is required by the Web Form Designer.
@@ -289,13 +172,26 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
+            _fi = ForumInfo;
+            string template;
+            if (_fi.QuickReplyFormId == 0)
+            {
+                var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\QuickReply.txt";
+                template = File.ReadAllText(myFile);
+            }
+            else
+            {
+                var tc = new TemplateController();
+                var ti = tc.Template_Get(_fi.QuickReplyFormId, PortalId, ForumModuleId);
+                template = ti.TemplateHTML;
+            }
+
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
             InitializeComponent();
         }
-
-        #endregion
+         
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // if someone activates this checkbox send him home :-)

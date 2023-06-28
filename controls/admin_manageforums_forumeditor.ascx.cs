@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var newForum = fc.GetForum(PortalId, ModuleId, forumId, true);
 
-            ctlSecurityGrid = LoadControl(Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
+            ctlSecurityGrid = LoadControl(virtualPath: Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if (ctlSecurityGrid != null)
             {
                 ctlSecurityGrid.Perms = newForum.Security;
@@ -466,7 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Utilities.SelectListItemByValue(drpTopicTemplate, fi.TopicTemplateId);
             Utilities.SelectListItemByValue(drpTopicForm, fi.TopicFormId);
             Utilities.SelectListItemByValue(drpReplyForm, fi.ReplyFormId);
-            //Utilities.SelectListItemByValue(drpQuickReplyForm, fi.QuickReplyFormId);
+            Utilities.SelectListItemByValue(drpQuickReplyForm, fi.QuickReplyFormId);
             Utilities.SelectListItemByValue(drpProfileDisplay, fi.ProfileTemplateId);
             Utilities.SelectListItemByValue(drpModApprovedTemplateId, fi.ModApproveTemplateId);
             Utilities.SelectListItemByValue(drpModRejectTemplateId, fi.ModRejectTemplateId);
@@ -785,7 +785,7 @@ namespace DotNetNuke.Modules.ActiveForums
             BindTemplateDropDown(drpTopicTemplate, Templates.TemplateTypes.TopicView, "[RESX:Default]", "0");
             BindTemplateDropDown(drpTopicForm, Templates.TemplateTypes.TopicForm, "[RESX:Default]", "0");
             BindTemplateDropDown(drpReplyForm, Templates.TemplateTypes.ReplyForm, "[RESX:Default]", "0");
-            //BindTemplateDropDown(drpQuickReplyForm, Templates.TemplateTypes.QuickReplyForm, "[RESX:Default]", "0")
+            BindTemplateDropDown(drpQuickReplyForm, Templates.TemplateTypes.QuickReplyForm, "[RESX:Default]", "0");
             
             BindTemplateDropDown(drpProfileDisplay, Templates.TemplateTypes.PostInfo, "[RESX:Default]", "0");
             BindTemplateDropDown(drpModApprovedTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
