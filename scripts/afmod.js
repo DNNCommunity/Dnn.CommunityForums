@@ -46,27 +46,43 @@ function amaf_modMoveComplete(result) {
         afreload();
     };
 };
-function amaf_modPin(tid) {
-    var d = {};
-    d.action = 8;
-    d.topicid = tid;
-    amaf.callback(d, amaf_modPinComplete);
-};
-function amaf_modPinComplete(result) {
-    if (result[0].success == true) {
-        afreload();
+function amaf_modPin(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
-};
-function amaf_modLock(tid) {
-    var d = {};
-    d.action = 9;
-    d.topicid = tid;
-    amaf.callback(d, amaf_modLockComplete);
-};
-function amaf_modLockComplete(result) {
-    if (result[0].success == true) {
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Topic/Pin',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
         afreload();
+    }).fail(function (xhr, status) {
+        alert('error pinning post');
+    });
+};
+function amaf_modLock(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Topic/Lock',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        afreload();
+    }).fail(function (xhr, status) {
+        alert('error locking post');
+    });
 };
 function amaf_quickEdit(tid) {
     amaf_resetQuickEdit();

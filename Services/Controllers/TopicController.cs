@@ -35,53 +35,65 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public class LikeController : ControllerBase<LikeController>
+    public class TopicController : ControllerBase<LikeController>
     {
-        public struct LikeDto
+        public struct TopicDto
         {
             public int ForumId { get; set; }
+            public int TopicId { get; set; }
             public int ContentId { get; set; }
         }
         /// <summary>
-        /// Increments/Decrements Likes for a ContentId for a User
+        /// Pins a Topic
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Like/Like</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Reply)] 
-        public HttpResponseMessage Like(LikeDto dto)
+        [ForumsAuthorize(SecureActions.ModPin)]
+        [ForumsAuthorize(SecureActions.Pin)]
+        public HttpResponseMessage Pin(TopicDto dto)
         {
-            if ((new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ActiveModule.ModuleID, dto.ForumId).AllowLikes) &&
-                ServicesHelper.IsAuthorized(PortalSettings.PortalId, ActiveModule.ModuleID, dto.ForumId, SecureActions.Reply, UserInfo))
+            int topicId = dto.TopicId;
+            if (topicId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, UserInfo.UserID));
+                TopicsController tc = new TopicsController();
+                TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                if (t != null)
+                {
+                    t.IsPinned = !t.IsPinned;
+                    tc.TopicSave(PortalSettings.PortalId, t);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
             }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
         /// <summary>
-        /// Gets number of Likes for a ContentId 
+        /// Locks a Topic
         /// </summary>
-        /// <param name="forumId"></param>
-        /// <param name="contentId"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Like/Get/1/1</remarks>
-        [HttpGet]
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Lock</remarks>
+        [HttpPost]
         [DnnAuthorize]
-        public HttpResponseMessage Get(int forumId, int contentId)
+        [ForumsAuthorize(SecureActions.ModPin)]
+        [ForumsAuthorize(SecureActions.Pin)]
+        public HttpResponseMessage Lock(TopicDto dto)
         {
-            if (new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ActiveModule.ModuleID, forumId).AllowLikes)
+            int topicId = dto.TopicId;
+            if (topicId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(UserInfo.UserID, contentId));
+                TopicsController tc = new TopicsController();
+                TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                if (t != null)
+                {
+                    t.IsLocked = !t.IsLocked;
+                    tc.TopicSave(PortalSettings.PortalId, t);
+                    return Request.CreateResponse(HttpStatusCode.OK);
+                }
             }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }
