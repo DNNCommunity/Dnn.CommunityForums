@@ -24,13 +24,14 @@ using System.Data;
 using System.IO;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-#region ReplyInfo
-	public class ReplyInfo
+    #region ReplyInfo
+    public class ReplyInfo
 	{
 #region Private Members
 		private int _ReplyId;
@@ -184,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int replyId = -1;
-			ReplyInfo ri = new ReplyInfo();
+			DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
 			DateTime dt = DateTime.UtcNow;
 			ri.Content.DateUpdated = dt;
 			ri.Content.DateCreated = dt;
@@ -203,20 +204,20 @@ namespace DotNetNuke.Modules.ActiveForums
             UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
 		}
-		public int Reply_Save(int PortalId, ReplyInfo ri)
+		public int Reply_Save(int PortalId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
 		{
 			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
 			UserProfileController.Profiles_ClearCache(ri.Content.AuthorId);
 
             return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 		}
-		public ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
+		public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
 		{
 			IDataReader dr = DataProvider.Instance().Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-			ReplyInfo ri = null;
+			DotNetNuke.Modules.ActiveForums.ReplyInfo ri = null;
 			while (dr.Read())
 			{
-				ri = new ReplyInfo();
+				ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
 				ri.ReplyId = Convert.ToInt32(dr["ReplyId"]);
 				ri.ReplyToId = Convert.ToInt32(dr["ReplyToId"]);
 				ri.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
@@ -245,14 +246,14 @@ namespace DotNetNuke.Modules.ActiveForums
 			dr.Close();
 			return ri;
 		}
-		public ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+		public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
 		{
 			SettingsInfo ms = DataCache.MainSettings(ModuleId);
 			ForumController fc = new ForumController();
 			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
 
 			ReplyController rc = new ReplyController();
-			ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+			DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
 			if (reply == null)
 			{
 				return null;
