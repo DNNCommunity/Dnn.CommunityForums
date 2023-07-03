@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.CancelButton.Width = Unit.Pixel(50);
             ctlForm.CancelButton.ConfirmMessage = GetSharedResource("[RESX:ConfirmCancel]");
             ctlForm.ModuleConfiguration = ModuleConfiguration;
-            ctlForm.Subscribe = UserPrefTopicSubscribe;
+            //ctlForm.Subscribe = UserPrefTopicSubscribe;
             if (_fi.AllowHTML)
             {
                 _allowHTML = IsHtmlPermitted(_fi.EditorPermittedUsers, _userIsTrusted, _canModEdit);
@@ -255,7 +255,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.BubbleClick += ctlForm_Click;
             cbPreview.CallbackEvent += cbPreview_Callback;
 
-            //Page.ClientScript.RegisterClientScriptInclude("aftags", Page.ResolveUrl("~/desktopmodules/activeforums/scripts/jquery.tokeninput.js"))
         }
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
@@ -389,8 +388,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctlForm.StatusId = ti.StatusId;
                 ctlForm.TopicPriority = ti.Priority;
 
-                if (ti.Author.AuthorId > 0)
-                    ctlForm.Subscribe = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, ti.Author.AuthorId);
+                //if (ti.Author.AuthorId > 0)
+                //    ctlForm.Subscribe = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, ti.Author.AuthorId);
 
                 _contentId = ti.ContentId;
                 _authorId = ti.Author.AuthorId;
@@ -477,12 +476,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctlForm.IsApproved = ri.IsApproved;
                 _contentId = ri.ContentId;
                 _authorId = ri.Author.AuthorId;
-
-               
-
-                if (ri.Author.AuthorId > 0)
-                    ctlForm.Subscribe = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, ri.Author.AuthorId);
-
                 if (ri.Content.AuthorId != UserId && _canModApprove)
                     ctlForm.ShowModOptions = true;
             }
@@ -912,23 +905,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
                 DataCache.CacheClearPrefix(cachekey);
-                if (ctlForm.Subscribe && authorId == UserId)
-                {
-                    if (!(Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId)))
-                    {
-                        var sc = new SubscriptionController();
-                        sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
-                    }
-                }
-                else if (_isEdit)
-                {
-                    bool isSub = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId);
-                    if (isSub && !ctlForm.Subscribe)
-                    {
-                        var sc = new SubscriptionController();
-                        sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
-                    }
-                }
 
                 if (bSend && !_isEdit)
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, _fi, TopicId, 0, ti.Content.AuthorId);
@@ -1089,29 +1065,12 @@ namespace DotNetNuke.Modules.ActiveForums
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
-            //tc.ForumTopicSave(ForumID, TopicId, ReplyId)
+             
             var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
             DataCache.CacheClearPrefix(cachekey);
             try
             {
-                if (ctlForm.Subscribe && authorId == UserId)
-                {
-                    if (!(Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId)))
-                    {
-                        var sc = new SubscriptionController();
-                        sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
-                    }
-                }
-                else if (_isEdit)
-                {
-                    var isSub = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId);
-                    if (isSub && !ctlForm.Subscribe)
-                    {
-                        var sc = new SubscriptionController();
-                        sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
-                    }
-                }
-                if (bSend && !_isEdit)
+               if (bSend && !_isEdit)
                 {
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, _fi, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }

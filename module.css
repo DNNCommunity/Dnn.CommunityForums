@@ -1,6 +1,9 @@
-﻿/* TEMP until all image icons are taken out for responsive optimizations!*/
+﻿input[type=checkbox], input[type=radio] {
+    cursor: pointer;
+}
 
-.fa-grey {
+/* TEMP until all image icons are taken out for responsive optimizations!*/
+    .fa-grey {
     color:#555555;
 }
 
