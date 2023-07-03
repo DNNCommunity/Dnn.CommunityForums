@@ -41,7 +41,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             public int ForumId { get; set; }
             public int TopicId { get; set; }
-            public int ContentId { get; set; }
         }
         /// <summary>
         /// Pins a Topic
@@ -64,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     t.IsPinned = !t.IsPinned;
                     tc.TopicSave(PortalSettings.PortalId, t);
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Request.CreateResponse(HttpStatusCode.OK, value: t.IsPinned);
                 }
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -77,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Lock</remarks>
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModPin)]
-        [ForumsAuthorize(SecureActions.Pin)]
+        [ForumsAuthorize(SecureActions.ModLock)]
+        [ForumsAuthorize(SecureActions.Lock)]
         public HttpResponseMessage Lock(TopicDto dto)
         {
             int topicId = dto.TopicId;
@@ -90,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     t.IsLocked = !t.IsLocked;
                     tc.TopicSave(PortalSettings.PortalId, t);
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
                 }
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);

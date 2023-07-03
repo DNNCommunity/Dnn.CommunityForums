@@ -4,13 +4,15 @@
 amaf.resx = {
     DelTopic:'[RESX:Delete]',
     EditTopic: '[RESX:Edit]',
-    LockTopic: '[RESX:Lock]',
+    LockTopic: '[RESX:LockTopic]',
+    UnLockTopic: '[RESX:UnLockTopic]',
     MoveTopic: '[RESX:Move]',
-    PinTopic: '[RESX:Pin]',
+    PinTopic: '[RESX:PinTopic]',
+    UnPinTopic: '[RESX:UnPinTopic]',
     DeleteConfirm: '[RESX:Confirm:Delete]',
     PinConfirm: '[RESX:Confirm:Pin]',
     LockConfirm: '[RESX:Confirm:Lock]',
-    UnPinConfim: '[RESX:Confirm:UnPin]',
+    UnPinConfirm: '[RESX:Confirm:UnPin]',
     UnLockConfirm: '[RESX:Confirm:UnLock]'
 };
 
