@@ -753,13 +753,14 @@
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
+    <Compile Include="Controllers\TopicController.cs" />
+    <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
     <Compile Include="class\TemplateCache.cs" />
     <Compile Include="class\WhatsNewModuleSettings.cs" />
-    <Compile Include="components\Topics\TopicInfo.cs" />
     <Compile Include="components\Topics\TopicsController.cs" />
     <Compile Include="Constants\SEOConstants.cs" />
     <Compile Include="Controllers\TokenController.cs" />
@@ -781,6 +782,7 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Entities\TopicInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />

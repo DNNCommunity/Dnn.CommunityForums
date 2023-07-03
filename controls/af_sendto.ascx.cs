@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using System.Web.UI;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
