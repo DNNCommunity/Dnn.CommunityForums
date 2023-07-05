@@ -32,6 +32,7 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -236,7 +237,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 isApproved = true;
             }
-            ReplyInfo ri = new ReplyInfo();
+            DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
             ReplyController rc = new ReplyController();
             int ReplyId = -1;
             string sUsername = string.Empty;
