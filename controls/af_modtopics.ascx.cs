@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -126,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
                                     ReplyController rc = new ReplyController();
-                                    ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
                                     if (ri != null)
                                     {
                                         auth = ri.Author;
@@ -218,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                             {
                                 ReplyController rc = new ReplyController();
-                                ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
                                 if (ri != null)
                                 {
                                     ri.IsApproved = true;

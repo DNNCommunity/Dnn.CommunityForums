@@ -19,10 +19,11 @@
 //
 
 using System;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class URL
+    public class URL
 	{
 		public static string ForumLink(int tabId, Forum fi)
 		{
