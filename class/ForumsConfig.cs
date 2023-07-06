@@ -327,30 +327,72 @@ namespace DotNetNuke.Modules.ActiveForums
 		    }
 		}
 
-		internal void ArchiveOrphanedAttachments()
+        internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
-            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
+            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
 
-			foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
-			{
-				if (!System.IO.Directory.Exists(string.Concat(attachmentFolder.FullName, "\\orphaned")))
-				{
-					System.IO.Directory.CreateDirectory(string.Concat(attachmentFolder.FullName, "\\orphaned"));
-				}
+            foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
+            {
+                if (!System.IO.Directory.Exists(string.Concat(attachmentFolder.FullName, "\\orphaned")))
+                {
+                    System.IO.Directory.CreateDirectory(string.Concat(attachmentFolder.FullName, "\\orphaned"));
+                }
 
-				List<string> attachmentFullFileNames = System.IO.Directory.EnumerateFiles(path: attachmentFolder.FullName, searchPattern: "*", searchOption: System.IO.SearchOption.AllDirectories).ToList<string>();
-				List<string> attachmentFileNames = new List<string>();
+                List<string> attachmentFullFileNames = System.IO.Directory.EnumerateFiles(path: attachmentFolder.FullName, searchPattern: "*", searchOption: System.IO.SearchOption.AllDirectories).ToList<string>();
+                List<string> attachmentFileNames = new List<string>();
 
-				foreach (string attachmentFileName in attachmentFullFileNames)
-				{
-					attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
-				}
+                foreach (string attachmentFileName in attachmentFullFileNames)
+                {
+                    attachmentFileNames.Add(new System.IO.FileInfo(attachmentFileName).Name);
+                }
 
-				List<string> databaseFileNames = new List<string>();
-				string connectionString = new Connection().connectionString;
-				string dbPrefix = new Connection().dbPrefix;
+                List<string> databaseFileNames = new List<string>();
+                string connectionString = new Connection().connectionString;
+                string dbPrefix = new Connection().dbPrefix;
 
+                using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
+                {
+                    while (dr.Read())
+                    {
+                        databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
+                    }
+                    dr.Close();
+                }
+
+                foreach (string attachmentFileName in attachmentFileNames)
+                {
+                    if (!databaseFileNames.Contains(attachmentFileName))
+                    {
+                        System.IO.File.Copy(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName), string.Concat(attachmentFolder.FullName, "\\orphaned\\", attachmentFileName), true);
+                        System.IO.File.Delete(string.Concat(attachmentFolder.FullName, "\\", attachmentFileName));
+                    }
+                }
+            }
+        }
+        internal static void FillMissingTopicUrls()
+        {
+            string connectionString = new Connection().connectionString;
+            string dbPrefix = new Connection().dbPrefix;
+            var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
+			var fc = new DotNetNuke.Modules.ActiveForums.ForumController();
+
+            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}Topics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
+            {
+                while (dr.Read())
+                {
+                    int portalId = (Utilities.SafeConvertInt(dr["PortalId"]));
+                    int moduleId = (Utilities.SafeConvertInt(dr["ModuleId"]));
+                    int forumId = (Utilities.SafeConvertInt(dr["ForumId"]));
+                    int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
+                    string subject = (Utilities.SafeConvertString(dr["Subject"]));
+                    Forum forumInfo = fc.GetForum(portalId, moduleId, forumId);
+					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.Get(topicId);
+					topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
+					tc.Update(topicInfo); 
+                }
+                dr.Close();
+            } 
 				using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
 				{
 					while (dr.Read())

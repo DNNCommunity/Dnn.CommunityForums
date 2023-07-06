@@ -1,0 +1,91 @@
+
+/* Begin - update activeforums_SaveTopicNextPrev */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev]
+	@ForumId INT
+	
+AS
+BEGIN
+	
+	SET NOCOUNT ON
+	;WITH cteRank AS
+	(
+
+		SELECT    
+			T.TopicId,
+			LAG(T.TopicId,1,NULL) OVER (ORDER BY tc.DateCreated, rc.DateCreated) PrevTopic,
+			LEAD(T.TopicId,1,NULL) OVER (ORDER BY tc.DateCreated, rc.DateCreated) NextTopic
+		FROM 
+			dbo.activeforums_ForumTopics as ft 
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as t ON t.TopicId = ft.TopicId 
+			INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] as tc on tc.ContentId = t.ContentId 
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] as r on r.ReplyId = ft.LastReplyId 
+			LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] as rc on r.ContentId = rc.ContentId 
+		WHERE (ft.ForumId = @ForumId)	
+	)
+	UPDATE 
+		t
+	SET
+		NextTopic = r.NextTopic,
+		PrevTopic = r.PrevTopic 
+	FROM 
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN cteRank r ON t.TopicId = r.TopicId   
+		
+	
+	-- update the first and last - BY DATE to wraparound 
+	DECLARE @MaxTopicId int, @MinTopicId int
+	
+	;WITH cteRank AS
+	(
+		SELECT    
+			T.TopicId
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] as ft 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t ON t.TopicId = ft.TopicId 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] tc on tc.ContentId = t.ContentId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r on  r.ReplyId = ft.LastReplyId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] rc on rc.ContentId = r.ContentId 
+		WHERE     
+			(ft.ForumId = @ForumId)	AND (t.NextTopic IS NULL OR t.PrevTopic IS NULL)
+	)	
+	SELECT 
+		@MaxTopicId = MAX(topicid), 
+		@MinTopicId = MIN(topicid) 
+	FROM 
+		cteRank
+		 
+	
+	-- update first
+	UPDATE 
+		{databaseOwner}[{objectQualifier}activeforums_Topics]
+	SET 
+		PrevTopic = @MaxTopicId  
+	FROM
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft ON ft.TopicId = t.TopicId
+	WHERE 
+		PrevTopic IS NULL 
+		AND ft.ForumId = @ForumId
+	
+	-- update last
+	UPDATE 
+		{databaseOwner}[{objectQualifier}activeforums_Topics] 
+	SET 
+		NextTopic = @MinTopicId 
+	FROM
+		{databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft ON ft.TopicId = t.TopicId
+	WHERE 
+		NextTopic IS NULL 
+		AND ft.ForumId = @ForumId
+END
+GO
+
+
+
+/* End - update activeforums_SaveTopicNextPrev */

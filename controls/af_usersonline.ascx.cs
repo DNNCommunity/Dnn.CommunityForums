@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ModuleId.ToString() + ")',50000);", true);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ForumModuleId.ToString() + ")',50000);", true);
                 bool bolShow = true;
                 if (Request.Cookies["WHOSShow"] != null)
                 {
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindUsersOnline()
         {
             UsersOnline uo = new UsersOnline();
-            string sOnlineList = uo.GetUsersOnline(PortalId, ModuleId, UserInfo);
+            string sOnlineList = uo.GetUsersOnline(PortalId, ForumModuleId, UserInfo);
             IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalId, -1, 2);
             int anonCount = 0;
             int memCount = 0;

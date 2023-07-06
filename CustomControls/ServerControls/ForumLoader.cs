@@ -28,6 +28,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.IO;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -60,6 +61,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     //Next
                     DotNetNuke.Entities.Modules.ModuleInfo modInfo = new DotNetNuke.Entities.Modules.ModuleInfo();
                     modInfo.TabID = TabId;
+                    int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
+                    if (tmpForumTabId>0) { modInfo.TabID = tmpForumTabId; }
                     modInfo.ModuleID = ForumModuleId;
                     modInfo.PortalID = PortalId;
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
@@ -72,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/classic.ascx");
                         objModule.ForumModuleId = ForumModuleId; //CType(Settings["AFForumModuleID"], Integer)
                         objModule.ForumInfo = fi;
-                        objModule.ForumId = ForumId;
+                        objModule.ForumId = ForumId; 
                         objModule.ForumGroupId = ForumGroupId;
                         objModule.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                         objModule.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;

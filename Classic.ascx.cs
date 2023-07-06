@@ -31,6 +31,8 @@ using System.Text;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Utilities;
+using System.Linq;
+using DotNetNuke.Entities.Modules;
 
 //using DotNetNuke.Framework.JavaScriptLibraries;
 
@@ -209,8 +211,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ctl.ID = view;
                 ctl.ForumId = ForumId;
-                ctl.ForumModuleId = ForumModuleId;
-                if (ForumTabId == -1)
+                ctl.ForumModuleId = ForumModuleId; 
+                int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
+                ForumTabId = tmpForumTabId;
+                if (ForumTabId <=0)
                 {
                     ForumTabId = TabId;
                 }
@@ -361,7 +365,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ForumModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup
@@ -387,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = Utilities.ParseToolBar(html, TabId, ForumModuleId, UserId, CurrentUserType, ForumId);
+            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType, forumId: ForumId);
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
