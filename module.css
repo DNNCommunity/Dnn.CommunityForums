@@ -1,6 +1,7 @@
-﻿.DotNetNuke-ActiveForums input[type=checkbox], input[type=radio] {
+﻿.DotNetNuke-ActiveForums input[type=checkbox], .DotNetNuke-ActiveForums input[type=radio] {
     cursor: pointer;
 }
+
 
 /* TEMP until all image icons are taken out for responsive optimizations!*/
     .fa-grey {
