@@ -32,11 +32,12 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using System.Data.SqlTypes;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	#region Topics Controller
-	public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
+    #region Topics Controller
+    public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
         public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
@@ -561,7 +562,20 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "07.00.11":
                     try
                     {
-						DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "07.00.12":
+                    try
+                    {
+						ForumsConfig.FillMissingTopicUrls();
                     }
                     catch (Exception ex)
                     {

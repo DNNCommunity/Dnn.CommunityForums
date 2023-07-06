@@ -131,9 +131,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
                                 DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                             }
-                            sToolbar = Utilities.ParseToolBar(sToolbar, TabId, ModuleId, UserId, CurrentUserType);
+                            sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
                             lit.Text = sToolbar;
-                            template = template.Replace("[TOOLBAR]", sToolbar);
+                            sOutput = sOutput.Replace("[TOOLBAR]", sToolbar.ToString());
                         }
                         Control tmpCtl = null;
                         try
@@ -782,7 +782,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (sTopicURL.EndsWith("/"))
                     {
-                        sURL = sTopicURL + "?" + ParamKeys.ContentJumpId + "=" + PostId;
+                        sURL = sTopicURL + "?" + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", PostId) : String.Concat("?", ParamKeys.ContentJumpId, "=", PostId));
                     }
                     else
                     {

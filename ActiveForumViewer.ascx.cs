@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -48,7 +49,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     ctlForumLoader.DefaultView = viewType;
                     ctlForumLoader.ForumModuleId = tmpModuleId;
-                    ctlForumLoader.ForumTabId = TabId;
+                    int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(tmpModuleId).FirstOrDefault().TabID;
+                    if (tmpForumTabId <= 0) { tmpForumTabId = TabId; }
+                    ctlForumLoader.ForumTabId = tmpForumTabId; 
                     ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
                     ctlForumLoader.InheritModuleCSS = false;
                     if (!(Convert.ToString(Settings["AFTopicsTemplate"]) == null))

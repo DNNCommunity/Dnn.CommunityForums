@@ -892,7 +892,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (sTopicURL.EndsWith("/"))
                         {
-                            sLastReplyURL = sTopicURL + "?" + ParamKeys.ContentJumpId + "=" + LastReplyId;
+                            sLastReplyURL = sTopicURL + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", LastReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", LastReplyId));
                         }
                     }
                     string sLastReadURL = string.Empty;
@@ -916,7 +916,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         if (sTopicURL.EndsWith("/"))
                         {
-                            sLastReadURL = sTopicURL + "?" + ParamKeys.FirstNewPost + "=" + UserLastReplyRead;
+                            sLastReadURL = sTopicURL + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", UserLastReplyRead) : String.Concat("?", ParamKeys.FirstNewPost, "=", UserLastReplyRead));
                         }
                     }
 

@@ -34,6 +34,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -670,7 +671,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var subject = ctlForm.Subject;
             var body = ctlForm.Body;
-            subject = Utilities.CleanString(PortalId, subject, false, EditorTypes.TEXTBOX, ForumInfo.UseFilter, false, ForumModuleId, _themePath, false);
+            subject = Utilities.CleanString(PortalId, Utilities.XSSFilter(subject, true), false, EditorTypes.TEXTBOX, ForumInfo.UseFilter, false, ForumModuleId, _themePath, false);
             body = Utilities.CleanString(PortalId, body, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, _themePath, ForumInfo.AllowEmoticons);
             var summary = ctlForm.Summary;
             int authorId;
@@ -742,55 +743,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
             }
 
-            if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)))
-            {
-                var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
-                if (SimulateIsNumeric.IsNumeric(cleanSubject))
-                    cleanSubject = "Topic-" + cleanSubject;
+            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ForumModuleId, TopicId:TopicId, subject:subject, forumInfo: ForumInfo);
 
-                var topicUrl = cleanSubject;
-                var urlPrefix = "/";
-
-                if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
-                    urlPrefix += ForumInfo.ForumGroup.PrefixURL + "/";
-
-                if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)))
-                    urlPrefix += ForumInfo.PrefixURL + "/";
-
-                var urlToCheck = urlPrefix + cleanSubject;
-
-                var topicsDb = new Data.Topics();
-                for (var u = 0; u <= 200; u++)
-                {
-                    var tid = topicsDb.TopicIdByUrl(PortalId, ModuleId, urlToCheck);
-                    if (tid > 0 && tid == TopicId)
-                        break;
-
-                    if (tid <= 0)
-                        break;
-
-                    topicUrl = (u + 1) + "-" + cleanSubject;
-                    urlToCheck = urlPrefix + topicUrl;
-                }
-                if (topicUrl.Length > 150)
-                {
-                    topicUrl = topicUrl.Substring(0, 149);
-                    topicUrl = topicUrl.Substring(0, topicUrl.LastIndexOf("-", StringComparison.Ordinal));
-                }
-
-                ti.TopicUrl = topicUrl;
-            }
-            else
-            {
-                //.URL = String.Empty
-                ti.TopicUrl = string.Empty;
-            }
-
-            ti.Content.Body = body; //Utilities.CleanString(PortalId, Body, fi.AllowHTML, fi.EditorType, fi.UseFilter, fi.AllowScript, ForumModuleId, String.Empty)
+            ti.Content.Body = body; 
             ti.Content.Subject = subject;
             ti.Content.Summary = summary;
             ti.IsAnnounce = ti.AnnounceEnd != Utilities.NullDate() && ti.AnnounceStart != Utilities.NullDate();
-            
+
             if (_canModApprove && _fi.IsModerated)
                 ti.IsApproved = ctlForm.IsApproved;
             else
@@ -874,7 +833,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataProvider.Instance().Tags_DeleteTopicToCategory(PortalId, ForumModuleId, -1, TopicId);
                     foreach (var c in cats)
                     {
-                        if (string.IsNullOrEmpty(c) || !SimulateIsNumeric.IsNumeric(c)) 
+                        if (string.IsNullOrEmpty(c) || !SimulateIsNumeric.IsNumeric(c))
                             continue;
 
                         var cid = Convert.ToInt32(c);
@@ -892,7 +851,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (pollId > 0)
                 {
                     var options = ctlForm.PollOptions.Split(new[] { System.Environment.NewLine }, StringSplitOptions.None);
-               
+
                     foreach (string opt in options)
                     {
                         if (opt.Trim() != string.Empty)
@@ -938,25 +897,25 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var mods = Utilities.GetListOfModerators(PortalId, ForumId);
                     var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-                   
+
                     var notifySubject = Utilities.GetSharedResource("NotificationSubjectTopic");
                     notifySubject = notifySubject.Replace("[DisplayName]", UserInfo.DisplayName);
                     notifySubject = notifySubject.Replace("[TopicSubject]", ti.Content.Subject);
-                   
+
                     var notifyBody = Utilities.GetSharedResource("NotificationBodyTopic");
                     notifyBody = notifyBody.Replace("[Post]", ti.Content.Body);
-                    
+
                     var notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);
 
                     var notification = new Notification
-                                           {
-                                               NotificationTypeID = notificationType.NotificationTypeId,
-                                               Subject = notifySubject,
-                                               Body = notifyBody,
-                                               IncludeDismissAction = false,
-                                               SenderUserID = UserInfo.UserID,
-                                               Context = notificationKey
-                                           };
+                    {
+                        NotificationTypeID = notificationType.NotificationTypeId,
+                        Subject = notifySubject,
+                        Body = notifyBody,
+                        IncludeDismissAction = false,
+                        SenderUserID = UserInfo.UserID,
+                        Context = notificationKey
+                    };
 
                     NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
 
@@ -996,6 +955,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
+        
 
         private void SaveReply()
         {
@@ -1045,7 +1006,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var tc = new TopicsController();
             var rc = new ReplyController();
-            ReplyInfo ri;
+            DotNetNuke.Modules.ActiveForums.ReplyInfo ri;
             
             if (PostId > 0)
             {
@@ -1054,7 +1015,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                ri = new ReplyInfo();
+                ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
                 var dt = DateTime.UtcNow;
                 ri.Content.DateCreated = dt;
                 ri.Content.DateUpdated = dt;

@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 {
 	public class Topics : DataConfig
 	{
-		public int Reply_Save(ReplyInfo ri)
+		public int Reply_Save(DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
 		{
 			return Convert.ToInt32(Reply_Save(ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 		}

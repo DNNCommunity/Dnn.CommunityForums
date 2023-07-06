@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string ParseToolBar(string template, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 
@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i>&nbsp;[RESX:MySettings]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "afprofile", 1, -1, -1)));
 
                 if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
-                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i>&nbsp;[RESX:ControlPanel]</a>", NavigateUrl(tabId, "EDIT", "mid=" + moduleId)));
+                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i>&nbsp;[RESX:ControlPanel]</a>", NavigateUrl(forumTabId, "EDIT", "mid=" + forumModuleId)));
                 else
                     template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
 

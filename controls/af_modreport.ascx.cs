@@ -29,7 +29,7 @@ using DotNetNuke;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
-
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ReplyId > 0 & TopicId != ReplyId)
                 {
                     ReplyController rc = new ReplyController();
-                    ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+                    DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;

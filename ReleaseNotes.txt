@@ -7,6 +7,15 @@
 	<hr/>
 
 	<div class="dnnClear">
+		<h3>07.00.12</h3>
+		<h4>Features, Enhancements, and Bug Fixes</h4>
+		<ul>
+			<li>NEW: Performance Improvements for New Posts (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/311">PR 311</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Fills in Missing Friendly URLs on Topics Where it is Missing (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/345">Issue 345</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Incorrect Friendly URL When Including Jump To TopicID (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/346">Issue 346</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>TASKS: Clean-up the Project File (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/351">PR 351</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+
 		<h3>07.00.11</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>

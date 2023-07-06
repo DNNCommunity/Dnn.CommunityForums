@@ -546,7 +546,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
                     DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                 }
-                sToolbar = Utilities.ParseToolBar(sToolbar, TabId, ModuleId, UserId, CurrentUserType);
+                sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
                 lit.Text = sToolbar;
                 template = template.Replace("[TOOLBAR]", sToolbar);
             }
