@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
                             sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(TemplatePath + "\\ToolBar.txt"));
                             DataCache.CacheStore("aftb" + ModuleId, sToolbar);
-                            sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
+                            sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
                             lit.Text = sToolbar.ToString();
                             sOutput = sOutput.Replace("[TOOLBAR]", sToolbar.ToString());
                         }
@@ -767,7 +767,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (sTopicURL.EndsWith("/"))
                     {
-                        sURL = sTopicURL + "?" + ParamKeys.ContentJumpId + "=" + PostId;
+                        sURL = sTopicURL + "?" + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", PostId) : String.Concat("?", ParamKeys.ContentJumpId, "=", PostId));
                     }
                     else
                     {

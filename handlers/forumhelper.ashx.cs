@@ -28,10 +28,12 @@ using System.Text;
 using System.Xml;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
-	public class forumhelper : HandlerBase
+    public class forumhelper : HandlerBase
 	{
 		public enum Actions: int
 		{
@@ -401,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			else
 			{
 				ReplyController rc = new ReplyController();
-				ReplyInfo ri = rc.Reply_Get(PortalId, ModuleId, TopicId, replyId);
+				DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ModuleId, TopicId, replyId);
 				if (Permissions.HasAccess(f.Security.ModDelete, ForumUser.UserRoles) || (Permissions.HasAccess(f.Security.Delete, ForumUser.UserRoles) && ri.Content.AuthorId == UserId))
 				{
 					DataProvider.Instance().Reply_Delete(forumId, TopicId, replyId, MainSettings.DeleteBehavior);
@@ -618,71 +620,24 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				Data.ForumsDB db = new Data.ForumsDB();
 				forumId = db.Forum_GetByTopicId(topicId);
 				ForumController fc = new ForumController();
-				Forum f = fc.Forums_Get(PortalId, -1, forumId, this.UserId, true, false, -1);
-				if (Permissions.HasPerm(f.Security.ModEdit, ForumUser.UserRoles))
+				Forum ForumInfo = fc.Forums_Get(PortalId, -1, forumId, this.UserId, true, false, -1);
+				if (Permissions.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles))
 				{
 					string subject = Params["subject"].ToString();
 					subject = Utilities.XSSFilter(subject, true);
-					if (! (string.IsNullOrEmpty(f.PrefixURL)))
-					{
-						string cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
-						if (SimulateIsNumeric.IsNumeric(cleanSubject))
-						{
-							cleanSubject = "Topic-" + cleanSubject;
-						}
-						string topicUrl = cleanSubject;
-						string urlPrefix = "/";
-						if (! (string.IsNullOrEmpty(f.ForumGroup.PrefixURL)))
-						{
-							urlPrefix += f.ForumGroup.PrefixURL + "/";
-						}
-						if (! (string.IsNullOrEmpty(f.PrefixURL)))
-						{
-							urlPrefix += f.PrefixURL + "/";
-						}
-						string urlToCheck = urlPrefix + cleanSubject;
-						Data.Topics topicsDb = new Data.Topics();
-						for (int u = 0; u <= 200; u++)
-						{
-							int tid = topicsDb.TopicIdByUrl(PortalId, f.ModuleId, urlToCheck);
-							if (tid > 0 && tid == topicId)
-							{
-								break;
-							}
-							else if (tid > 0)
-							{
-								topicUrl = (u + 1) + "-" + cleanSubject;
-								urlToCheck = urlPrefix + topicUrl;
-							}
-							else
-							{
-								break;
-							}
-						}
-						if (topicUrl.Length > 150)
-						{
-							topicUrl = topicUrl.Substring(0, 149);
-							topicUrl = topicUrl.Substring(0, topicUrl.LastIndexOf("-"));
-						}
-						t.TopicUrl = topicUrl;
-						//.URL = topicUrl
-					}
-					else
-					{
-						//.URL = String.Empty
-						t.TopicUrl = string.Empty;
-					}
+                    t.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ForumInfo.ModuleId, TopicId: topicId, subject: subject, forumInfo: ForumInfo);
+                    
 					t.Content.Subject = subject;
 					t.IsPinned = bool.Parse(Params["pinned"].ToString());
 					t.IsLocked = bool.Parse(Params["locked"].ToString());
 					t.Priority = int.Parse(Params["priority"].ToString());
 					t.StatusId = int.Parse(Params["status"].ToString());
-					if (f.Properties != null)
+					if (ForumInfo.Properties != null)
 					{
 						StringBuilder tData = new StringBuilder();
 						tData.Append("<topicdata>");
 						tData.Append("<properties>");
-						foreach (PropertiesInfo p in f.Properties)
+						foreach (PropertiesInfo p in ForumInfo.Properties)
 						{
 							string pkey = "prop-" + p.PropertyId.ToString();
 
@@ -711,7 +666,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 if (Params["tags"] != null)
 				{
-					DataProvider.Instance().Tags_DeleteByTopicId(PortalId, f.ModuleId, topicId);
+					DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumInfo.ModuleId, topicId);
 					string tagForm = string.Empty;
 					if (Params["tags"] != null)
 					{
@@ -722,8 +677,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 						string[] Tags = tagForm.Split(',');
 						foreach (string tag in Tags)
 						{
-							string sTag = Utilities.CleanString(PortalId, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, f.ModuleId, string.Empty, false);
-							DataProvider.Instance().Tags_Save(PortalId, f.ModuleId, -1, sTag, 0, 1, 0, topicId, false, -1, -1);
+							string sTag = Utilities.CleanString(PortalId, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, ForumInfo.ModuleId, string.Empty, false);
+							DataProvider.Instance().Tags_Save(PortalId, ForumInfo.ModuleId, -1, sTag, 0, 1, 0, topicId, false, -1, -1);
 						}
 					}
 				}
@@ -731,7 +686,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				if (Params["categories"] != null)
 				{
 					string[] cats = Params["categories"].ToString().Split(';');
-					DataProvider.Instance().Tags_DeleteTopicToCategory(PortalId, f.ModuleId, -1, topicId);
+					DataProvider.Instance().Tags_DeleteTopicToCategory(PortalId, ForumInfo.ModuleId, -1, topicId);
 					foreach (string c in cats)
 					{
 						int cid = -1;
@@ -740,7 +695,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 							cid = Convert.ToInt32(c);
 							if (cid > 0)
 							{
-								DataProvider.Instance().Tags_AddTopicToCategory(PortalId, f.ModuleId, cid, topicId);
+								DataProvider.Instance().Tags_AddTopicToCategory(PortalId, ForumInfo.ModuleId, cid, topicId);
 							}
 						}
 					}

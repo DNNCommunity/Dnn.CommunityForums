@@ -289,36 +289,34 @@ namespace DotNetNuke.Modules.ActiveForums
             if (_currentRow == null)
                 return null;
 
-            var forumId = _currentRow["ForumID"].ToString();
-
-            var @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topics };
-
-            return NavigateUrl(TabId, string.Empty, @params);
+            int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
+            int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
+            Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
+            return new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
         }
 
         public string GetThreadUrl()
         {
             if (_currentRow == null)
                 return null;
+            int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
+            int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
+            int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
+            Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
+            return new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, SocialGroupId);
 
-            var forumId = _currentRow["ForumID"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
-
-            var @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId };
-
-            return NavigateUrl(TabId, string.Empty, @params);
         }
 
         public string GetLastRead()
         {
             if (_currentRow == null) return null;
-
-            var forumId = _currentRow["ForumID"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
-            var userLastRead = _currentRow["UserLastTopicRead"].ToString();
-
-            var @params = new [] {ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.FirstNewPost + "=" + userLastRead };
-            return NavigateUrl(TabId, string.Empty, @params);
+            int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
+            int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
+            int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
+            int userLastRead = Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"].ToString());
+            Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
+            return new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, SocialGroupId);
+             
         }
 
         public string GetArrowPath()
