@@ -15,23 +15,14 @@ namespace DotNetNuke.Modules.ActiveForums.Tests
     public class UtilitiesTests
     {
         [Test()]
-        public void IsTrustedUserTrustLevelTest()
+        [TestCase(-1, 0)]
+        [TestCase(5, 4)]
+        public void IsTrustedTest(int userTrustLevel, int userPostCount)
         {
             //Arrange
-            int userTrustLevel = -1;
+
             //Act
             bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, 0);
-            //Assert
-            Assert.IsFalse(isTrusted);
-        }
-        [Test()]
-        public void IsTrustedAutoTrustTest()
-        {
-            //Arrange
-            int autoTrustLevel = 5;
-            int userPostCount = 4;
-            //Act
-            bool isTrusted = Utilities.IsTrusted(0, 0, false, autoTrustLevel, userPostCount);
             //Assert
             Assert.IsFalse(isTrusted);
         }
@@ -76,5 +67,59 @@ namespace DotNetNuke.Modules.ActiveForums.Tests
             //Assert
             return actualResult;
         }
+
+        [Test()]
+        public void HTMLEncodeTestEmptyTag()
+        {
+            //Arrange
+            //Act
+            string actualResult = Utilities.HTMLEncode(string.Empty);
+            //Assert
+            Assert.IsEmpty(actualResult);
+        }
+        [Test()]
+        public void HTMLEncodeTest()
+        {
+            //Arrange
+            string tag = "<p>";
+            string expectedResult = "&lt;p&gt;";
+            //Act
+            string actualResult = Utilities.HTMLEncode(tag);
+            //Assert
+            Assert.AreEqual(actualResult, expectedResult);
+        }
+        [Test()]
+        public void HTMLDecodeTestEmptyTag()
+        {
+            //Arrange
+            //Act
+            string actualResult = Utilities.HTMLDecode(string.Empty);
+            //Assert
+            Assert.IsEmpty(actualResult);
+        }
+        [Test()]
+        public void HTMLDecodeTest()
+        {
+            //Arrange
+            string tag = "&lt;p&gt;";
+            string expectedResult = "<p>";
+            //Act
+            string actualResult = Utilities.HTMLDecode(tag);
+            //Assert
+            Assert.AreEqual(actualResult, expectedResult);
+        }
+        [Test()]
+        [TestCase("", ExpectedResult = false)]
+        [TestCase("<p>test<p>", ExpectedResult = true)]
+        [TestCase("<p>test</p>", ExpectedResult = true)]
+        [TestCase(" test ", ExpectedResult = false)]
+        public bool HasHTMLTest(string value)
+        {
+            //Arrange
+            //Act
+            return Utilities.HasHTML(value);
+            //Assert 
+        }
+
     }
 }
