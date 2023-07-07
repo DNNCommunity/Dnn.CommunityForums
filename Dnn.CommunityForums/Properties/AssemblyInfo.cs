@@ -22,6 +22,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Web.UI;
 using System.Security;
+using System.Runtime.CompilerServices;
 
 [assembly: SecurityRules(SecurityRuleSet.Level1)]
 
@@ -78,3 +79,6 @@ using System.Security;
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
 [assembly: ComVisibleAttribute(false)]
+ 
+
+[assembly: InternalsVisibleTo("ActiveForumsTests")]

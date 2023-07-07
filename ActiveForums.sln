@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30611.23
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveForums", "ActiveForums.csproj", "{2D42BCCC-D1B2-4831-B80C-41199DE25798}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{EB06303A-600A-440A-90AE-CB5595B24B68}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -13,12 +11,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNN.CommunityForums", "DNN.CommunityForums", "{0B784AA6-C30E-4798-B9EA-435F625A20FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNN.CommunityForumsTests", "DNN.CommunityForumsTests", "{BA1EED02-1BB1-443A-B4BA-F436F4027C1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveForumsTests", "Dnn.CommunityForumsTests\ActiveForumsTests.csproj", "{B268075A-B369-4B84-8AB9-D338AD41C6D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveForums", "Dnn.CommunityForums\ActiveForums.csproj", "{2D42BCCC-D1B2-4831-B80C-41199DE25798}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B268075A-B369-4B84-8AB9-D338AD41C6D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B268075A-B369-4B84-8AB9-D338AD41C6D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B268075A-B369-4B84-8AB9-D338AD41C6D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B268075A-B369-4B84-8AB9-D338AD41C6D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D42BCCC-D1B2-4831-B80C-41199DE25798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D42BCCC-D1B2-4831-B80C-41199DE25798}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D42BCCC-D1B2-4831-B80C-41199DE25798}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -26,6 +36,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B268075A-B369-4B84-8AB9-D338AD41C6D6} = {BA1EED02-1BB1-443A-B4BA-F436F4027C1E}
+		{2D42BCCC-D1B2-4831-B80C-41199DE25798} = {0B784AA6-C30E-4798-B9EA-435F625A20FE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DACD6BD0-773E-403D-A41B-38957EE5F01D}
