@@ -363,7 +363,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = RemoveFilterWords(portalId, moduleId, themePath, text);
+                text = Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text);
 
                 return text;
             }
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = RemoveFilterWords(portalId, moduleId, themePath, text);
+                text = Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text);
 
                 return text;
             }
@@ -489,7 +489,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sClean;
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string ImportFilter(int portalID, int moduleID)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
+        }
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
 
@@ -513,7 +527,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
 
                     strMessage = HTMLEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
@@ -533,7 +547,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         strMessage = HTMLEncode(strMessage);
 
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
 
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
                 }
@@ -556,7 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var sCode = strMessage.Substring(intStart, intEnd - intStart);
                 strMessage = strMessage.Replace(sCode, "[CODEHOLDER]");
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -566,7 +580,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -588,130 +602,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             return strReturn;
-        }
-
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
-        {
-            if (removeHTML)
-            {
-                var newSubject = StripHTMLTag(strMessage);
-                if (newSubject == string.Empty)
-                {
-                    newSubject = strMessage.Replace("<", string.Empty);
-                    newSubject = newSubject.Replace(">", string.Empty);
-                }
-                strMessage = newSubject;
-            }
-
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sFind, sReplace.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (processEmoticons)
-                        {
-                            if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                                sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />", themePath, sReplace);
-
-                            strMessage = strMessage.Replace(sFind, sReplace);
-                        }
-                        break;
-
-                    case "REGEX":
-                        strMessage = Regex.Replace(strMessage, sFind.Trim(), sReplace, RegexOptions.IgnoreCase);
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            return strMessage;
-        }
-
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sReplace, sFind.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                        {
-                            sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\"  border=\"0\"  class=\"afEmoticon\" />", themePath, sReplace);
-                            strMessage = strMessage.Replace(sReplace, sFind);
-                        }
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            strMessage = ManageImagePath(strMessage);
-
-            return strMessage;
-        }
-
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            string @out;
-            try
-            {
-                var myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
-                if (File.Exists(myFile))
-                {
-                    StreamReader objStreamReader;
-                    try
-                    {
-                        objStreamReader = File.OpenText(myFile);
-                    }
-                    catch (Exception exc)
-                    {
-                        @out = exc.Message;
-                        return @out;
-                    }
-                    var strFilter = objStreamReader.ReadLine();
-                    while (strFilter != null)
-                    {
-                        var row = Regex.Split(strFilter, ",,");
-                        var sFind = row[0].Substring(1, row[0].Length - 2);
-                        var sReplace = row[1].Trim(' ');
-                        sReplace = sReplace.Substring(1, sReplace.Length - 2);
-                        var sType = row[2].Substring(1, row[2].Length - 2);
-                        DataProvider.Instance().Filters_Save(portalID, moduleID, -1, sFind, sReplace, sType);
-                        strFilter = objStreamReader.ReadLine();
-                    }
-                    objStreamReader.Close();
-                    @out = "Success";
-                }
-                else
-                {
-                    @out = string.Concat("File Not Found<br />Path:", myFile);
-                }
-            }
-            catch (Exception exc)
-            {
-                @out = exc.Message;
-            }
-
-            return @out;
         }
 
         public static bool InputIsValid(string body)
