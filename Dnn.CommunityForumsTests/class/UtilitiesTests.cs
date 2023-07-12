@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Microsoft.Pex.Framework;
+using NUnit.Framework;
 using DotNetNuke.Modules.ActiveForums;
 using System;
 using System.Collections.Generic;
@@ -9,20 +10,21 @@ using System.Globalization;
 using Moq;
 using System.Runtime.InteropServices.WindowsRuntime;
 
-namespace DotNetNuke.Modules.ActiveForums.Tests
+namespace DotNetNuke.Modules.ActiveForumsTests
 {
     [TestFixture()]
-    public class UtilitiesTests
+    public partial class UtilitiesTests
     {
         [Test()]
         [TestCase(-1, 0)]
         [TestCase(5, 4)]
+        [PexMethod(MaxBranches = 20000)]
         public void IsTrustedTest(int userTrustLevel, int userPostCount)
         {
             //Arrange
 
             //Act
-            bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, 0);
+            bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, userPostCount);
             //Assert
             Assert.IsFalse(isTrusted);
         }
@@ -39,11 +41,10 @@ namespace DotNetNuke.Modules.ActiveForums.Tests
         }
 
         [Test()]
-        public void CleanStringForUrlTest()
+        [TestCase("  this is a : messy string for a +url = 0 -", "this-is-a-messy-string-for-a-url-0")]
+        public void CleanStringForUrlTest(string input, string expectedResult)
         {
-            //Arrange
-            string input = "  this is a : messy string for a +url = 0 -";
-            string expectedResult = "this-is-a-messy-string-for-a-url-0";
+            //Arrange 
             //Act
             string actualResult = Utilities.CleanStringForUrl(input);
             //Assert

@@ -81,6 +81,5 @@ using System.Runtime.CompilerServices;
 [assembly: ComVisibleAttribute(false)]
  
 
-[assembly: InternalsVisibleTo("ActiveForumsTests")]
-[assembly: InternalsVisibleTo("ActiveForums.Tests")]
+[assembly: InternalsVisibleTo("ActiveForumsTests")] 
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Explorables")]

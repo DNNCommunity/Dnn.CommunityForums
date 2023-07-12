@@ -44,6 +44,11 @@
     <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\Dnn.CommunityForums\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ExtendedReflection, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>c:\program files\microsoft visual studio\2022\enterprise\common7\ide\extensions\microsoft\pex\Microsoft.ExtendedReflection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Pex.Framework, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\Dnn.CommunityForums\packages\Microsoft.CodeCoverage.17.4.1\lib\net462\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
@@ -71,8 +76,21 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="class\UtilitiesTests.CleanStringForUrlTest.g.cs">
+      <DependentUpon>UtilitiesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="class\UtilitiesTests.cs" />
+    <Compile Include="class\UtilitiesTests.HasFloodIntervalPassedTest1.g.cs">
+      <DependentUpon>UtilitiesTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="class\UtilitiesTests.HasHTMLTest.g.cs">
+      <DependentUpon>UtilitiesTests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="class\UtilitiesTests.IsTrustedTest.g.cs">
+      <DependentUpon>UtilitiesTests.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\PexAssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
