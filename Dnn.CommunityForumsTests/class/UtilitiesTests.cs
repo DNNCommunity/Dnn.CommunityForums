@@ -1,5 +1,4 @@
-﻿using Microsoft.Pex.Framework;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using DotNetNuke.Modules.ActiveForums;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [Test()]
         [TestCase(-1, 0)]
         [TestCase(5, 4)]
-        [PexMethod(MaxBranches = 20000)]
         public void IsTrustedTest(int userTrustLevel, int userPostCount)
         {
             //Arrange
