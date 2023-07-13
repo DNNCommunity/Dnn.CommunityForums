@@ -78,12 +78,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dnn.CommunityForums\ActiveForums.csproj">
-      <Project>{2d42bccc-d1b2-4831-b80c-41199de25798}</Project>
-      <Name>ActiveForums</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
