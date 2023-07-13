@@ -1,0 +1,1448 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:Actions:DeleteConfirm].Text" xml:space="preserve">
+    <value>Weet u zeker dat u dit item wilt verwijderen?</value>
+  </data>
+  <data name="[RESX:Active].Text" xml:space="preserve">
+    <value>Actief</value>
+  </data>
+  <data name="[RESX:Button:Cancel].Text" xml:space="preserve">
+    <value>Annuleren</value>
+  </data>
+  <data name="[RESX:Button:Delete].Text" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="[RESX:Button:Save].Text" xml:space="preserve">
+    <value>Opslaan</value>
+  </data>
+  <data name="[RESX:Dashboard].Text" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="[RESX:Forum].Text" xml:space="preserve">
+    <value>Forum</value>
+  </data>
+  <data name="[RESX:ForumDesc].Text" xml:space="preserve">
+    <value>Beschrijving</value>
+  </data>
+  <data name="[RESX:ForumGroup].Text" xml:space="preserve">
+    <value>Groep / Forum</value>
+  </data>
+  <data name="[RESX:ForumName].Text" xml:space="preserve">
+    <value>Forum Naam</value>
+  </data>
+  <data name="[RESX:GroupName].Text" xml:space="preserve">
+    <value>Forum Groep</value>
+  </data>
+  <data name="[RESX:Hidden].Text" xml:space="preserve">
+    <value>Verborgen</value>
+  </data>
+  <data name="[RESX:Mod].Text" xml:space="preserve">
+    <value>Moderatie</value>
+  </data>
+  <data name="[RESX:Security].Text" xml:space="preserve">
+    <value>Beveiliging</value>
+  </data>
+  <data name="[RESX:Settings].Text" xml:space="preserve">
+    <value>Instellingen</value>
+  </data>
+  <data name="[RESX:Stats].Text" xml:space="preserve">
+    <value>Statistieken</value>
+  </data>
+  <data name="[RESX:Actions:Complete].Text" xml:space="preserve">
+    <value>Afgerond</value>
+  </data>
+  <data name="[RESX:Actions:ForumSaved].Text" xml:space="preserve">
+    <value>Forum Succesvol Opgeslagen</value>
+  </data>
+  <data name="[RESX:Actions:GroupSaved].Text" xml:space="preserve">
+    <value>Groep Succesvol Opgeslagen</value>
+  </data>
+  <data name="[RESX:AllowAttach].Text" xml:space="preserve">
+    <value>Bijlagen</value>
+  </data>
+  <data name="[RESX:AllowedTypes].Text" xml:space="preserve">
+    <value>Toegestane Extensies</value>
+  </data>
+  <data name="[RESX:AllowHTML].Text" xml:space="preserve">
+    <value>HTML Input</value>
+  </data>
+  <data name="[RESX:AllowPostIcon].Text" xml:space="preserve">
+    <value>Bericht Iconen</value>
+  </data>
+  <data name="[RESX:AllowRSS].Text" xml:space="preserve">
+    <value>RSS</value>
+  </data>
+  <data name="[RESX:AllowScripts].Text" xml:space="preserve">
+    <value>Scripts</value>
+  </data>
+  <data name="[RESX:Disabled].Text" xml:space="preserve">
+    <value>Uit</value>
+  </data>
+  <data name="[RESX:EditorHeight].Text" xml:space="preserve">
+    <value>Hoogte</value>
+  </data>
+  <data name="[RESX:EditorStyle].Text" xml:space="preserve">
+    <value>Stijl</value>
+  </data>
+  <data name="[RESX:EditorToolBar].Text" xml:space="preserve">
+    <value>Werkbalk</value>
+  </data>
+  <data name="[RESX:EditorType].Text" xml:space="preserve">
+    <value>Editor</value>
+  </data>
+  <data name="[RESX:EditorWidth].Text" xml:space="preserve">
+    <value>Breedte</value>
+  </data>
+  <data name="[RESX:EmailAddress].Text" xml:space="preserve">
+    <value>E-mailadres</value>
+  </data>
+  <data name="[RESX:Emoticons].Text" xml:space="preserve">
+    <value>Emoticons</value>
+  </data>
+  <data name="[RESX:Enabled].Text" xml:space="preserve">
+    <value>Aan</value>
+  </data>
+  <data name="[RESX:EnableFilter].Text" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="[RESX:Feature].Text" xml:space="preserve">
+    <value>Eigenschappen</value>
+  </data>
+  <data name="[RESX:FileStore].Text" xml:space="preserve">
+    <value>Opslag Bijlagen</value>
+  </data>
+  <data name="[RESX:ForumOwner].Text" xml:space="preserve">
+    <value>Forum Eigenaar</value>
+  </data>
+  <data name="[RESX:IndexContent].Text" xml:space="preserve">
+    <value>Index Inhoud</value>
+  </data>
+  <data name="[RESX:MaxAttach].Text" xml:space="preserve">
+    <value># Bijlagen</value>
+  </data>
+  <data name="[RESX:MaxFileSize].Text" xml:space="preserve">
+    <value>Maximum Grootte</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve">
+    <value>Maximum Hoogte Afbeelding</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve">
+    <value>Maximum Breedte Afbeelding</value>
+  </data>
+  <data name="[RESX:SecureObjects].Text" xml:space="preserve">
+    <value>Rollen/Gebruikers</value>
+  </data>
+  <data name="[RESX:Status].Text" xml:space="preserve">
+    <value>Eigenschappen In- en/of Uitschakelen</value>
+  </data>
+  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve">
+    <value>Topics Display</value>
+  </data>
+  <data name="[RESX:TopicTemplate].Text" xml:space="preserve">
+    <value>Topic Display</value>
+  </data>
+  <data name="[RESX:UniqueFileNames].Text" xml:space="preserve">
+    <value>Unieke bestandsnamen aanmaken</value>
+  </data>
+  <data name="[RESX:AllowUserPhotos].Text" xml:space="preserve">
+    <value>Foto's Gebruiker Toestaan </value>
+  </data>
+  <data name="[RESX:AvatarDimensions].Text" xml:space="preserve">
+    <value>Avatar Dimensies</value>
+  </data>
+  <data name="[RESX:DateFormat].Text" xml:space="preserve">
+    <value>Datum Formaat</value>
+  </data>
+  <data name="[RESX:DateTime].Text" xml:space="preserve">
+    <value>Datum &amp; Tijd Instellingen</value>
+  </data>
+  <data name="[RESX:DefaultCache].Text" xml:space="preserve">
+    <value>Cache Opslag</value>
+  </data>
+  <data name="[RESX:DefaultPageSize].Text" xml:space="preserve">
+    <value>Standaard Paginagrootte</value>
+  </data>
+  <data name="[RESX:EnableAvatarsLinks].Text" xml:space="preserve">
+    <value>Avatar Links</value>
+  </data>
+  <data name="[RESX:EnableAvatars].Text" xml:space="preserve">
+    <value>Avatars</value>
+  </data>
+  <data name="[RESX:EnableProfiles].Text" xml:space="preserve">
+    <value>Ingeschakeld</value>
+  </data>
+  <data name="[RESX:EnableSubscriptions].Text" xml:space="preserve">
+    <value>Abonnementen</value>
+  </data>
+  <data name="[RESX:ForumStatSettings].Text" xml:space="preserve">
+    <value>Instellingen Statistieken</value>
+  </data>
+  <data name="[RESX:ForumTemplate].Text" xml:space="preserve">
+    <value>Sjabloon</value>
+  </data>
+  <data name="[RESX:ForumTheme].Text" xml:space="preserve">
+    <value>Thema</value>
+  </data>
+  <data name="[RESX:MainSettings].Text" xml:space="preserve">
+    <value>HoofdInstellingen</value>
+  </data>
+  <data name="[RESX:MemberListMode].Text" xml:space="preserve">
+    <value>Leden Lijst Modus</value>
+  </data>
+  <data name="[RESX:ServerTimeZone].Text" xml:space="preserve">
+    <value>Tijdzone Server</value>
+  </data>
+  <data name="[RESX:Signatures].Text" xml:space="preserve">
+    <value>Handtekeningen</value>
+  </data>
+  <data name="[RESX:StatsEnabled].Text" xml:space="preserve">
+    <value>Ingeschakeld</value>
+  </data>
+  <data name="[RESX:StatsInterval].Text" xml:space="preserve">
+    <value>Bijwerk Interval</value>
+  </data>
+  <data name="[RESX:StatsTemplate].Text" xml:space="preserve">
+    <value>Sjabloon</value>
+  </data>
+  <data name="[RESX:TimeFormat].Text" xml:space="preserve">
+    <value>Tijd Formaat</value>
+  </data>
+  <data name="[RESX:UserDisplayMode].Text" xml:space="preserve">
+    <value>Gebruiker Weergave Modus</value>
+  </data>
+  <data name="[RESX:UserProfiles].Text" xml:space="preserve">
+    <value>Gebruiker Instellingen Profiel</value>
+  </data>
+  <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
+    <value>Gebruikers Online</value>
+  </data>
+  <data name="[RESX:AllowUserBios].Text" xml:space="preserve">
+    <value>Biografie Gebruiker Toestaan</value>
+  </data>
+  <data name="[RESX:About].Text" xml:space="preserve">
+    <value>Over</value>
+  </data>
+  <data name="[RESX:DisplayName].Text" xml:space="preserve">
+    <value>Weergavenaam</value>
+  </data>
+  <data name="[RESX:EnableFullText].Text" xml:space="preserve">
+    <value>Inschakelen Volledige Tekst</value>
+  </data>
+  <data name="[RESX:Filters].Text" xml:space="preserve">
+    <value>Filters</value>
+  </data>
+  <data name="[RESX:FirstName].Text" xml:space="preserve">
+    <value>Voornaam</value>
+  </data>
+  <data name="[RESX:FullName].Text" xml:space="preserve">
+    <value>Volledige Naam</value>
+  </data>
+  <data name="[RESX:LastName].Text" xml:space="preserve">
+    <value>Achternaam</value>
+  </data>
+  <data name="[RESX:ManageForums].Text" xml:space="preserve">
+    <value>Forums Onderhoud</value>
+  </data>
+  <data name="[RESX:MemberListModeDisabledAll].Text" xml:space="preserve">
+    <value>Uitgeschakeld - Alle Gebruikers</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledAll].Text" xml:space="preserve">
+    <value>Ingeschakeld - Alle Gebruikers</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledMod].Text" xml:space="preserve">
+    <value>Ingeschakeld - Moderators</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledReg].Text" xml:space="preserve">
+    <value>Ingeschakeld - Geregistreerde Gebruikers</value>
+  </data>
+  <data name="[RESX:QuickLinks].Text" xml:space="preserve">
+    <value>Snelle Links</value>
+  </data>
+  <data name="[RESX:QuickStats].Text" xml:space="preserve">
+    <value>Snelle Statistieken</value>
+  </data>
+  <data name="[RESX:Ranks].Text" xml:space="preserve">
+    <value>Rangschikking</value>
+  </data>
+  <data name="[RESX:RecentMembers].Text" xml:space="preserve">
+    <value>Recente Leden</value>
+  </data>
+  <data name="[RESX:RecentTopics].Text" xml:space="preserve">
+    <value>Recente Berichten</value>
+  </data>
+  <data name="[RESX:SigDisable].Text" xml:space="preserve">
+    <value>Uitgeschakeld</value>
+  </data>
+  <data name="[RESX:SigHTML].Text" xml:space="preserve">
+    <value>Toestaan HTML en Platte tekst</value>
+  </data>
+  <data name="[RESX:SigPlainText].Text" xml:space="preserve">
+    <value>Alleen Platte tekst Toestaan</value>
+  </data>
+  <data name="[RESX:SubscriptionOptions].Text" xml:space="preserve">
+    <value>Opties Abonnement:</value>
+  </data>
+  <data name="[RESX:TemplateCacheDisk].Text" xml:space="preserve">
+    <value>Bestandsysteem</value>
+  </data>
+  <data name="[RESX:TemplateCacheMemory].Text" xml:space="preserve">
+    <value>Geheugen</value>
+  </data>
+  <data name="[RESX:TopForums].Text" xml:space="preserve">
+    <value>Top Forums</value>
+  </data>
+  <data name="[RESX:TopMembers].Text" xml:space="preserve">
+    <value>Top Leden</value>
+  </data>
+  <data name="[RESX:UserName].Text" xml:space="preserve">
+    <value>Gebruikersnaam</value>
+  </data>
+  <data name="[RESX:Categories].Text" xml:space="preserve">
+    <value>Categorieën</value>
+  </data>
+  <data name="[RESX:CustomFields].Text" xml:space="preserve">
+    <value>Aangepaste Velden</value>
+  </data>
+  <data name="[RESX:Features].Text" xml:space="preserve">
+    <value>Eigenschappen</value>
+  </data>
+  <data name="[RESX:Forums].Text" xml:space="preserve">
+    <value>Forums</value>
+  </data>
+  <data name="[RESX:MailConnector].Text" xml:space="preserve">
+    <value>Mail Verbinding</value>
+  </data>
+  <data name="[RESX:Tags].Text" xml:space="preserve">
+    <value>Labels</value>
+  </data>
+  <data name="[RESX:Templates].Text" xml:space="preserve">
+    <value>Sjablonen</value>
+  </data>
+  <data name="[RESX:QuickReplyForm].Text" xml:space="preserve">
+    <value>Snel Antwoord Formulier</value>
+  </data>
+  <data name="[RESX:ReplyForm].Text" xml:space="preserve">
+    <value>Antwoord Formulier</value>
+  </data>
+  <data name="[RESX:Tips:Active].Text" xml:space="preserve">
+    <value>Deze box aanvinken om gemakkelijk een forum aan of uit te zetten.</value>
+  </data>
+  <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve">
+    <value>Geef het e-mailadres op dat gebruikt zal worden als het verzendadres bij het verzenden van notificaties. </value>
+  </data>
+  <data name="[RESX:Tips:ForumDesc].Text" xml:space="preserve">
+    <value>Geef een korte beschrijving op voor dit forum.</value>
+  </data>
+  <data name="[RESX:Tips:ForumGroup].Text" xml:space="preserve">
+    <value>Selecteer de hoofdgroep voor dit forum of een forum, om een sub-forum te maken</value>
+  </data>
+  <data name="[RESX:Tips:ForumName].Text" xml:space="preserve">
+    <value>Geef de naam op voor dit forum.</value>
+  </data>
+  <data name="[RESX:Tips:Hidden].Text" xml:space="preserve">
+    <value>Deze box aanvinken om het forum niet aan geautoriseerde gebruikers niet te tonen.</value>
+  </data>
+  <data name="[RESX:Tips:QuickReplyForm].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon voor de weergave van het Snel Antwoord formulier.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyForm].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon welke gebruikers gebruiken wanneer zij antwoord geven.</value>
+  </data>
+  <data name="[RESX:Tips:TopicForm].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon welke gebruikers gebruiken wanneer zij een nieuw onderwerp aanmaken.</value>
+  </data>
+  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon om de lijst met onderwerpen weer te geven</value>
+  </data>
+  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon om onderwerpen en antwoorden in weer te geven</value>
+  </data>
+  <data name="[RESX:TopicForm].Text" xml:space="preserve">
+    <value>Onderwerp Formulier</value>
+  </data>
+  <data name="[RESX:AddTemplate].Text" xml:space="preserve">
+    <value>Toevoegen Sjabloon</value>
+  </data>
+  <data name="[RESX:All].Text" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="[RESX:DateCreated].Text" xml:space="preserve">
+    <value>Datum Gemaakt</value>
+  </data>
+  <data name="[RESX:DateUpdated].Text" xml:space="preserve">
+    <value>Datum Bijgewerkt</value>
+  </data>
+  <data name="[RESX:Details].Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="[RESX:Email].Text" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="[RESX:ForumView].Text" xml:space="preserve">
+    <value>Forum Weergave</value>
+  </data>
+  <data name="[RESX:HTML].Text" xml:space="preserve">
+    <value>HTML</value>
+  </data>
+  <data name="[RESX:PlainText].Text" xml:space="preserve">
+    <value>Platte Tekst</value>
+  </data>
+  <data name="[RESX:Subject].Text" xml:space="preserve">
+    <value>Onderwerp</value>
+  </data>
+  <data name="[RESX:System].Text" xml:space="preserve">
+    <value>Systeem</value>
+  </data>
+  <data name="[RESX:TemplateType].Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="[RESX:Title].Text" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="[RESX:TopicsView].Text" xml:space="preserve">
+    <value>Topics View</value>
+  </data>
+  <data name="[RESX:TopicView].Text" xml:space="preserve">
+    <value>Topic View</value>
+  </data>
+  <data name="[RESX:Actions:RequiredFields].Text" xml:space="preserve">
+    <value>Voer s.v.p. een waarde in voor de verplichte velden</value>
+  </data>
+  <data name="[RESX:Actions:Warning].Text" xml:space="preserve">
+    <value>WAARSCHUWING</value>
+  </data>
+  <data name="[RESX:ConfigureProperties].Text" xml:space="preserve">
+    <value>Configureer Opties</value>
+  </data>
+  <data name="[RESX:Author].Text" xml:space="preserve">
+    <value>Auteur</value>
+  </data>
+  <data name="[RESX:Date].Text" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="[RESX:Default].Text" xml:space="preserve">
+    <value>Standaard</value>
+  </data>
+  <data name="[RESX:Name].Text" xml:space="preserve">
+    <value>Naam</value>
+  </data>
+  <data name="[RESX:NewForumGroup].Text" xml:space="preserve">
+    <value>Nieuw Forum Groep</value>
+  </data>
+  <data name="[RESX:NewForum].Text" xml:space="preserve">
+    <value>Nieuw Forum</value>
+  </data>
+  <data name="[RESX:NoData].Text" xml:space="preserve">
+    <value>Geen Data Gevonden</value>
+  </data>
+  <data name="[RESX:NoForums].Text" xml:space="preserve">
+    <value>Geen Forums Gevonden</value>
+  </data>
+  <data name="[RESX:NoMembers].Text" xml:space="preserve">
+    <value>Geen Leden Gevonden</value>
+  </data>
+  <data name="[RESX:NoTopics].Text" xml:space="preserve">
+    <value>Geen Berichten Gevonden</value>
+  </data>
+  <data name="[RESX:Replies].Text" xml:space="preserve">
+    <value>Antwoorden</value>
+  </data>
+  <data name="[RESX:Topics].Text" xml:space="preserve">
+    <value>Onderwerpen</value>
+  </data>
+  <data name="[RESX:Topic].Text" xml:space="preserve">
+    <value>Onderwerp</value>
+  </data>
+  <data name="[RESX:TotalActiveMembers].Text" xml:space="preserve">
+    <value>Totaal Actieve Leden</value>
+  </data>
+  <data name="[RESX:TotalForums].Text" xml:space="preserve">
+    <value>Totaal Forums</value>
+  </data>
+  <data name="[RESX:TotalMembers].Text" xml:space="preserve">
+    <value>Totaal Leden</value>
+  </data>
+  <data name="[RESX:TotalReplies].Text" xml:space="preserve">
+    <value>Totaal Antwoorden</value>
+  </data>
+  <data name="[RESX:TotalTopics].Text" xml:space="preserve">
+    <value>Totaal Onderwerpen</value>
+  </data>
+  <data name="[RESX:Groups].Text" xml:space="preserve">
+    <value>Groepen</value>
+  </data>
+  <data name="[RESX:Members].Text" xml:space="preserve">
+    <value>Leden</value>
+  </data>
+  <data name="[RESX:Actions:SettingsSaved].Text" xml:space="preserve">
+    <value>Instellingen zijn bijgewerkt!</value>
+  </data>
+  <data name="[RESX:Approved].Text" xml:space="preserve">
+    <value>Goedgekeurd</value>
+  </data>
+  <data name="[RESX:AuditLog].Text" xml:space="preserve">
+    <value>Loggen &amp; Tracking</value>
+  </data>
+  <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve">
+    <value>Auto Niveau Vertrouwen</value>
+  </data>
+  <data name="[RESX:Database].Text" xml:space="preserve">
+    <value>Database</value>
+  </data>
+  <data name="[RESX:DefaultTrust].Text" xml:space="preserve">
+    <value>Standaard Vertrouwen</value>
+  </data>
+  <data name="[RESX:DeleteAction].Text" xml:space="preserve">
+    <value>Verwijder Gedrag</value>
+  </data>
+  <data name="[RESX:Deleted].Text" xml:space="preserve">
+    <value>Verwijderd</value>
+  </data>
+  <data name="[RESX:DropDownDefault].Text" xml:space="preserve">
+    <value>-- SELECTEER --</value>
+  </data>
+  <data name="[RESX:DropDownDisabled].Text" xml:space="preserve">
+    <value>-- UITGESCHAKELD --</value>
+  </data>
+  <data name="[RESX:EmailTemplates].Text" xml:space="preserve">
+    <value>E-mail Sjablonen</value>
+  </data>
+  <data name="[RESX:FileSystem].Text" xml:space="preserve">
+    <value>Bestandsysteem</value>
+  </data>
+  <data name="[RESX:FloodInterval].Text" xml:space="preserve">
+    <value>Vloed Interval</value>
+  </data>
+  <data name="[RESX:Full].Text" xml:space="preserve">
+    <value>Volledig</value>
+  </data>
+  <data name="[RESX:LoggingLevel].Text" xml:space="preserve">
+    <value>Logging Niveau</value>
+  </data>
+  <data name="[RESX:MailQueue].Text" xml:space="preserve">
+    <value>Inschakelen Mail Queue</value>
+  </data>
+  <data name="[RESX:Moderated].Text" xml:space="preserve">
+    <value>Gemodereerd</value>
+  </data>
+  <data name="[RESX:Moderate].Text" xml:space="preserve">
+    <value>Modereren</value>
+  </data>
+  <data name="[RESX:Moved].Text" xml:space="preserve">
+    <value>Verplaatst</value>
+  </data>
+  <data name="[RESX:None].Text" xml:space="preserve">
+    <value>Geen</value>
+  </data>
+  <data name="[RESX:NotTrusted].Text" xml:space="preserve">
+    <value>Niet Vertrouwd</value>
+  </data>
+  <data name="[RESX:No].Text" xml:space="preserve">
+    <value>Nee</value>
+  </data>
+  <data name="[RESX:Recycle].Text" xml:space="preserve">
+    <value>Gerecycled</value>
+  </data>
+  <data name="[RESX:Rejected].Text" xml:space="preserve">
+    <value>Afgewezen</value>
+  </data>
+  <data name="[RESX:Remove].Text" xml:space="preserve">
+    <value>Verwijder</value>
+  </data>
+  <data name="[RESX:Tips:CacheStore].Text" xml:space="preserve">
+    <value>Kies de locatie waar u de cache wilt opslaan.  </value>
+  </data>
+  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon voor de pagina die al uw forums zal weergeven.</value>
+  </data>
+  <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve">
+    <value>Selecteer het grafische thema voor uw forum.</value>
+  </data>
+  <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve">
+    <value>Bepaal het niveau van logging voor uw forums.&lt;br /&gt;Uitgeschakeld - Er worden geen activiteiten vastgelegd&lt;br /&gt;Moderatie - Verplaats en verwijderen worden vastgelegd.&lt;br /&gt;Volledige - Alla activiteiten worden vastgelegd.</value>
+  </data>
+  <data name="[RESX:Tips:Moderated].Text" xml:space="preserve">
+    <value>Schakel deze optie in indien u berichten en antwoorden wilt goedkeuren alvorens ze op het forum te laten verschijnen.</value>
+  </data>
+  <data name="[RESX:Tips:PageSize].Text" xml:space="preserve">
+    <value>Geef het standaard aantal items op welke u wilt tonen op de onderwerp en antwoord pagina.</value>
+  </data>
+  <data name="[RESX:Tips:ServerTimeZone].Text" xml:space="preserve">
+    <value>Selecteer de tijdzone van uw webserver.</value>
+  </data>
+  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve">
+    <value>Selecteer het sjabloon om de informatie van een auteur te tonen bij een onderwerp of antwoord.</value>
+  </data>
+  <data name="[RESX:Trusted].Text" xml:space="preserve">
+    <value>Vertrouwd</value>
+  </data>
+  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve">
+    <value>Profiel Weergave</value>
+  </data>
+  <data name="[RESX:Yes].Text" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="[RESX:Actions:DeleteComplete].Text" xml:space="preserve">
+    <value>Item is verwijderd</value>
+  </data>
+  <data name="[RESX:Actions:GenericSaved].Text" xml:space="preserve">
+    <value>Opslaan Afgerond!</value>
+  </data>
+  <data name="[RESX:Actions:MinMax].Text" xml:space="preserve">
+    <value>Minimum Punten moet kleiner zijn dan Maximum Punten</value>
+  </data>
+  <data name="[RESX:Activity].Text" xml:space="preserve">
+    <value>Activiteit</value>
+  </data>
+  <data name="[RESX:AddFilter].Text" xml:space="preserve">
+    <value>Toevoegen Filter Item</value>
+  </data>
+  <data name="[RESX:AnswerPointValue].Text" xml:space="preserve">
+    <value>Geef Antwoord Bericht</value>
+  </data>
+  <data name="[RESX:Close].Text" xml:space="preserve">
+    <value>Afsluiten</value>
+  </data>
+  <data name="[RESX:CommunitySettings].Text" xml:space="preserve">
+    <value>Community Instellingen</value>
+  </data>
+  <data name="[RESX:Delete].Text" xml:space="preserve">
+    <value>Verwijderen</value>
+  </data>
+  <data name="[RESX:Display].Text" xml:space="preserve">
+    <value>Weergave</value>
+  </data>
+  <data name="[RESX:Emoticon].Text" xml:space="preserve">
+    <value>Emoticon</value>
+  </data>
+  <data name="[RESX:FilterType].Text" xml:space="preserve">
+    <value>Type Filter</value>
+  </data>
+  <data name="[RESX:Find].Text" xml:space="preserve">
+    <value>Te zoeken tekst</value>
+  </data>
+  <data name="[RESX:MarkAnswerPointValue].Text" xml:space="preserve">
+    <value>Markeer Bericht als Antwoord</value>
+  </data>
+  <data name="[RESX:MarkUp].Text" xml:space="preserve">
+    <value>HTML/Tekst</value>
+  </data>
+  <data name="[RESX:MaxPoints].Text" xml:space="preserve">
+    <value>Max Punten</value>
+  </data>
+  <data name="[RESX:MinPoints].Text" xml:space="preserve">
+    <value>Min Punten</value>
+  </data>
+  <data name="[RESX:ModPointValue].Text" xml:space="preserve">
+    <value>Modereer een Bericht</value>
+  </data>
+  <data name="[RESX:PointValue].Text" xml:space="preserve">
+    <value>Punten</value>
+  </data>
+  <data name="[RESX:RankName].Text" xml:space="preserve">
+    <value>Naam</value>
+  </data>
+  <data name="[RESX:RanksNew].Text" xml:space="preserve">
+    <value>Nieuw Rangschikking Niveau</value>
+  </data>
+  <data name="[RESX:RanksRecognition].Text" xml:space="preserve">
+    <value>Rangschikking</value>
+  </data>
+  <data name="[RESX:RegEx].Text" xml:space="preserve">
+    <value>Reguliere Expressie</value>
+  </data>
+  <data name="[RESX:Replace].Text" xml:space="preserve">
+    <value>Vervanging</value>
+  </data>
+  <data name="[RESX:ReplyPointValue].Text" xml:space="preserve">
+    <value>Antwoord</value>
+  </data>
+  <data name="[RESX:TopicPointValue].Text" xml:space="preserve">
+    <value>Nieuw Onderwerp</value>
+  </data>
+  <data name="[RESX:Actions:RestoreConfirm].Text" xml:space="preserve">
+    <value>Weet u zeker dat u alle huidige filters wilt verwijderen en de standaard set met filters wilt laden?</value>
+  </data>
+  <data name="[RESX:ManageTags].Text" xml:space="preserve">
+    <value>Onderhoud Labels</value>
+  </data>
+  <data name="[RESX:RestoreDefaults].Text" xml:space="preserve">
+    <value>Laad Standaard Filters</value>
+  </data>
+  <data name="[RESX:TagClicks].Text" xml:space="preserve">
+    <value>Kliks</value>
+  </data>
+  <data name="[RESX:TagItems].Text" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="[RESX:TagName].Text" xml:space="preserve">
+    <value>Naam Label</value>
+  </data>
+  <data name="[RESX:EnablePoints].Text" xml:space="preserve">
+    <value>Puntensysteem</value>
+  </data>
+  <data name="[RESX:ModEmail].Text" xml:space="preserve">
+    <value>Moderatie E-mail</value>
+  </data>
+  <data name="[RESX:PostInfo].Text" xml:space="preserve">
+    <value>Berichtinfo</value>
+  </data>
+  <data name="[RESX:ProfileAdvanced].Text" xml:space="preserve">
+    <value>Geavanceerd</value>
+  </data>
+  <data name="[RESX:ProfileBasic].Text" xml:space="preserve">
+    <value>Basis</value>
+  </data>
+  <data name="[RESX:ProfileDisabled].Text" xml:space="preserve">
+    <value>Uitgeschakeld</value>
+  </data>
+  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve">
+    <value>Profiel Sjabloon</value>
+  </data>
+  <data name="[RESX:ProfileType].Text" xml:space="preserve">
+    <value>Type Profiel</value>
+  </data>
+  <data name="[RESX:Profile].Text" xml:space="preserve">
+    <value>Gebruikersprofiel</value>
+  </data>
+  <data name="[RESX:AutoSubscribe].Text" xml:space="preserve">
+    <value>Auto Abonnement</value>
+  </data>
+  <data name="[RESX:SelectRoles].Text" xml:space="preserve">
+    <value>Selecteer Rollen</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleted].Text" xml:space="preserve">
+    <value>Item is verwijderd</value>
+  </data>
+  <data name="[RESX:Exit].Text" xml:space="preserve">
+    <value>Afsluiten</value>
+  </data>
+  <data name="[RESX:InheritGroup].Text" xml:space="preserve">
+    <value>Overerf Instellingen Groep</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroup].Text" xml:space="preserve">
+    <value>Vink deze box aan om de beveiligingsinstellingen en eigenschappen van de groep te overerven.</value>
+  </data>
+  <data name="[RESX:ClickToAdd].Text" xml:space="preserve">
+    <value>Klik Voor Toevoegen</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve">
+    <value>Bepaal of het is toegestaan om avatars in te schakelen en selecteer de bijbehorende instellingen.</value>
+  </data>
+  <data name="[RESX:Tips:EnablePoints].Text" xml:space="preserve">
+    <value>In- of Uitschakelen van het puntensysteem en instellen van de punten waarden.</value>
+  </data>
+  <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve">
+    <value>Selecteer hoe profielen wilt weergeven&lt;br /&gt;Basis - Het standaard Active Forums profiel&lt;br /&gt;Geavanceerd - Toont, indien geïnstalleerd, het profiel van Active Profile.&lt;br /&gt;Uitgeschakeld - Profielen zijn uitgeschakeld.</value>
+  </data>
+  <data name="[RESX:Tips:MemberListMode].Text" xml:space="preserve">
+    <value>Bepaal wie toegang tot de ledenlijst moet krijgen.</value>
+  </data>
+  <data name="[RESX:Tips:Signatures].Text" xml:space="preserve">
+    <value>Bepaal of handtekeningen zijn toegestaan en hoe ze mogen worden getoond.</value>
+  </data>
+  <data name="[RESX:Tips:Subscriptions].Text" xml:space="preserve">
+    <value>Bepaal of gebruikers wel of niet zich kunnen abonneren op forums en wat voor type abonnementen zijn toegestaan.</value>
+  </data>
+  <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve">
+    <value>Bepaal hoe u de naam van leden wilt weergeven.</value>
+  </data>
+  <data name="[RESX:DefaultDisabled].Text" xml:space="preserve">
+    <value>-- Uitgeschakeld --</value>
+  </data>
+  <data name="[RESX:PMPage].Text" xml:space="preserve">
+    <value>Pagina Privé Berichtgeving</value>
+  </data>
+  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve">
+    <value>Selecteer de pagina waar de privé berichtgeving module staat geïnstalleerd.</value>
+  </data>
+  <data name="[RESX:AdminNotification].Text" xml:space="preserve">
+    <value>Beheer Notificatie</value>
+  </data>
+  <data name="[RESX:AlwaysApprove].Text" xml:space="preserve">
+    <value>Altijd Goedkeuren</value>
+  </data>
+  <data name="[RESX:AlwaysModerate].Text" xml:space="preserve">
+    <value>Altijd Modereren</value>
+  </data>
+  <data name="[RESX:AutoResponse].Text" xml:space="preserve">
+    <value>Auto Antwoord</value>
+  </data>
+  <data name="[RESX:CreateUsers].Text" xml:space="preserve">
+    <value>Auto Aanmaken Gebruiker</value>
+  </data>
+  <data name="[RESX:EOMTag].Text" xml:space="preserve">
+    <value>Einde Bericht Label</value>
+  </data>
+  <data name="[RESX:MailServer].Text" xml:space="preserve">
+    <value>POP3 Server</value>
+  </data>
+  <data name="[RESX:ModerateType].Text" xml:space="preserve">
+    <value>Gemodereerd</value>
+  </data>
+  <data name="[RESX:OtherOptions].Text" xml:space="preserve">
+    <value>Andere Opties</value>
+  </data>
+  <data name="[RESX:POP3Password].Text" xml:space="preserve">
+    <value>POP3 Wachtwoord</value>
+  </data>
+  <data name="[RESX:POP3UserName].Text" xml:space="preserve">
+    <value>POP3 Gebruikersnaam</value>
+  </data>
+  <data name="[RESX:RejectMessage].Text" xml:space="preserve">
+    <value>Afwijzing Notificatie</value>
+  </data>
+  <data name="[RESX:RemoveHTML].Text" xml:space="preserve">
+    <value>Verwijder HTML</value>
+  </data>
+  <data name="[RESX:RequireEOM].Text" xml:space="preserve">
+    <value>Vereist EOM Label</value>
+  </data>
+  <data name="[RESX:RestrictAlias].Text" xml:space="preserve">
+    <value>Beperk op E-mailadres</value>
+  </data>
+  <data name="[RESX:SiteAlias].Text" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="[RESX:SubscriberNotification].Text" xml:space="preserve">
+    <value>Notificatie Abonnee</value>
+  </data>
+  <data name="[RESX:Tips:AdminNotify].Text" xml:space="preserve">
+    <value>Dit is een optioneel sjabloon dat zal naar moderators van dit forum zal worden verzonden wanneer een onderwerp of antwoord is aangemaakt via e-mail. Dit sjabloon zal alleen worden gebruikt wanneer het een niet gemodereerd bericht is.</value>
+  </data>
+  <data name="[RESX:Tips:AllowHTML].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om berichten te laten maken met HTML tags. Klik op het eigenschappen icoon voor meer info.</value>
+  </data>
+  <data name="[RESX:Tips:Attachments].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om bijlagen mee sturen met hun berichten. Klik op het eigenschappen icoon voor meer info.</value>
+  </data>
+  <data name="[RESX:Tips:AutoCreateUsers].Text" xml:space="preserve">
+    <value>Schakel deze optie in om voor nieuwe gebruikers automatisch een account aan te maken wanneer deze niet kan worden gevonden op basis van hun e-mailadres.</value>
+  </data>
+  <data name="[RESX:Tips:AutoRepsonse].Text" xml:space="preserve">
+    <value>Dit is een optioneel sjabloon dat naar een gebruiker kan worden verzonden om te laten weten dat de e-mail is ontvangen.</value>
+  </data>
+  <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve">
+    <value>Selecteer de rollen welke automatisch zijn geabonneerd en welke notificatie berichten ontvangen wanneer nieuwe berichten in dit forum worden geplaatst.</value>
+  </data>
+  <data name="[RESX:Tips:EMORequired].Text" xml:space="preserve">
+    <value>Schakel deze optie in om berichten te weigeren die niet het "Einde Bericht" label, zoals hierboven gespecificeerd, hebben opgenomen.</value>
+  </data>
+  <data name="[RESX:Tips:Emoticons].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om emoticons (smileys) toe te laten voegen bij hun berichten.</value>
+  </data>
+  <data name="[RESX:Tips:EOMTag].Text" xml:space="preserve">
+    <value>Het Einde Bericht (EOM) label is een methodiek om alleen nieuwe informatie toe te voegen wanneer een gebruiker per e-mail antwoord. De gebruiker moet deze tekst invoegen naar zijn antwoord, voor de tekst van het vorige bericht.</value>
+  </data>
+  <data name="[RESX:Tips:Filters].Text" xml:space="preserve">
+    <value>Gebruik filters om tekst in de berichten van gebruikers te vervangen.</value>
+  </data>
+  <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve">
+    <value>Toestaan dat de inhoud van dit forum wordt opgenomen in de DotNetNuke website zoek functionaliteit. Dit kan gebruikers toegang geven tot beveiligde content.</value>
+  </data>
+  <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om een bericht te plaatsen via e-mail. Klik op het eigenschappen icoon voor verder informatie.</value>
+  </data>
+  <data name="[RESX:Tips:ModType].Text" xml:space="preserve">
+    <value>Stelt u in staat om de standaard moderatie instellingen voor het forum te overrulen.</value>
+  </data>
+  <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve">
+    <value>Specificeer het e-mailadres voor het forum. Dit overstemt het website e-mailadres en het e-mailadres wat is ingegeven on de forum instellingen.</value>
+  </data>
+  <data name="[RESX:Tips:POPMailServer].Text" xml:space="preserve">
+    <value>Geef het domein, of ip-nummer, op voor uw POP3 server.  B.v mail.mijnbedrijf.nl</value>
+  </data>
+  <data name="[RESX:Tips:POPPassword].Text" xml:space="preserve">
+    <value>Geef het wachtwoord op voor het hierboven gespecificeerde account.</value>
+  </data>
+  <data name="[RESX:Tips:POPUserName].Text" xml:space="preserve">
+    <value>Geef de gebruikersnaam op die gebruikt wordt om verbinding te maken met de POP3 mail server.</value>
+  </data>
+  <data name="[RESX:Tips:PostIcon].Text" xml:space="preserve">
+    <value>Sta een gebruiker toe om een icoon te selecteren om bij hun bericht te plaatsen.</value>
+  </data>
+  <data name="[RESX:Tips:RejectNotify].Text" xml:space="preserve">
+    <value>Dit sjabloon wordt gebruikt om een e-mail naar de gebruiker te sturen wanneer zijn bericht is afgewezen.</value>
+  </data>
+  <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve">
+    <value>Schakel deze optie in om alleen berichten te importeren die rechtstreeks naar het hierboven gespecificeerde e-mailadres zijn verzonden. Schakel dit uit indien u alle berichten in de e-mailbox voor dit account wilt importeren.</value>
+  </data>
+  <data name="[RESX:Tips:RSS].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om zich te abonneren op dit forum middels RSS. Alleen beveiligingsrollen met Lees toegang kunnen zich abonneren.</value>
+  </data>
+  <data name="[RESX:Tips:Scripts].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om javascript in te voegen in hun berichten.  Niet Aangeraden.</value>
+  </data>
+  <data name="[RESX:Tips:SiteURL].Text" xml:space="preserve">
+    <value>Dit is het standaard website adres van uw portaal.</value>
+  </data>
+  <data name="[RESX:Tips:StripHTML].Text" xml:space="preserve">
+    <value>Selecteer deze optie om HTML te verwijderen uit e-mail berichten.</value>
+  </data>
+  <data name="[RESX:Tips:SubNotify].Text" xml:space="preserve">
+    <value>Dit stelt u in staat om een ander sjabloon dan het standaardsjabloon te selecteren om abonnementen naar uw gebruikers via e-mail te verzenden.</value>
+  </data>
+  <data name="[RESX:Tips:Tags].Text" xml:space="preserve">
+    <value>Sta gebruikers toe om labels aan te maken wanneer zij een bericht maken.</value>
+  </data>
+  <data name="[RESX:EditTimeLimit].Text" xml:space="preserve">
+    <value>Wijzig Interval</value>
+  </data>
+  <data name="[RESX:NewTopicsOnly].Text" xml:space="preserve">
+    <value>Alleen Nieuwe Berichten</value>
+  </data>
+  <data name="[RESX:Tips:AnswerPointValue].Text" xml:space="preserve">
+    <value>Aan een lid toe te kennen punten voor het beantwoorden van een bericht.</value>
+  </data>
+  <data name="[RESX:Tips:MarkAnswerPointValue].Text" xml:space="preserve">
+    <value>Aan de auteur van een onderwerp toe te kennen punten voor het selecteren van een antwoord.</value>
+  </data>
+  <data name="[RESX:Tips:ModPointValue].Text" xml:space="preserve">
+    <value>Aan een moderator toe te kennen punten voor het modereren van een bericht.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPointValue].Text" xml:space="preserve">
+    <value>Aan een lid toe te kennen punten voor het geven van een antwoord.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPointValue].Text" xml:space="preserve">
+    <value>Aan een lid toe te kennen punten voor het maken van een nieuw bericht.</value>
+  </data>
+  <data name="[RESX:EOMALL].Text">
+    <value>ALLE - Verplicht</value>
+  </data>
+  <data name="[RESX:EOMOptional].Text">
+    <value>Optioneel</value>
+  </data>
+  <data name="[RESX:EOMReplies].Text">
+    <value>Antwoorden - Verplicht</value>
+  </data>
+  <data name="[RESX:MC:AuthFailed].Text">
+    <value>Authenticatie Mislukt - Ongeldige gebruikersnaam of wachtwoord</value>
+  </data>
+  <data name="[RESX:MC:CheckInProgess].Text">
+    <value>Controleer al in bewerking</value>
+  </data>
+  <data name="[RESX:MC:CheckMessages].Text">
+    <value>Controleer op Berichten</value>
+  </data>
+  <data name="[RESX:MC:ConnFailed].Text">
+    <value>Verbinding Mislukt</value>
+  </data>
+  <data name="[RESX:MC:GenFail].Text">
+    <value>POP3 Mislukt - Kijk in het logboek voor detail informatie.</value>
+  </data>
+  <data name="[RESX:MC:NoMessages].Text">
+    <value>Geen Berichten</value>
+  </data>
+  <data name="[RESX:MC:OtherFail].Text">
+    <value>Algemene Foutmelding - Kijk in het logboek voor detail informatie.</value>
+  </data>
+  <data name="[RESX:MC:Processed].Text">
+    <value>{0} van {1} berichten verwerkt</value>
+  </data>
+  <data name="[RESX:MC:ProtoFailed].Text">
+    <value>Kon geen verbinding maken middels de gespecificeerde poort</value>
+  </data>
+  <data name="[RESX:MC:Success].Text">
+    <value>Succes!</value>
+  </data>
+  <data name="[RESX:MC:TestConn].Text">
+    <value>Test Verbinding Mail Server</value>
+  </data>
+  <data name="[RESX:Administrators].Text">
+    <value>Beheerders</value>
+  </data>
+  <data name="[RESX:AllUsers].Text">
+    <value>Alle Gebruikers</value>
+  </data>
+  <data name="[RESX:Moderators].Text">
+    <value>Moderators</value>
+  </data>
+  <data name="[RESX:PermittedRoles].Text">
+    <value>Toegestane Gebruikers</value>
+  </data>
+  <data name="[RESX:RegisteredUsers].Text">
+    <value>Geregistreerde Gebruikers</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDimensions].Text">
+    <value> Kies de maximum hoogte en breedte voor de avatars</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatarLinks].Text">
+    <value>Sta gebruikers toe om links te maken naar avatars die op een andere server worden gehost.</value>
+  </data>
+  <data name="[RESX:Tips:SubscriptionOptions].Text">
+    <value>Selecteer welke vormen van abonnementen beschikbaar zijn voor uw gebruikers.</value>
+  </data>
+  <data name="[RESX:TrustedUsers].Text">
+    <value>Vertrouwde Gebruikers</value>
+  </data>
+  <data name="[RESX:AddThisIntegration].Text">
+    <value>AddThis Integratie</value>
+  </data>
+  <data name="[RESX:AddRole].Text">
+    <value>Rol Toevoegen</value>
+  </data>
+  <data name="[RESX:AddUserName].Text">
+    <value>Gebruiker Toevoegen</value>
+  </data>
+  <data name="[RESX:AvatarDefault].Text">
+    <value>Standaard Avatar Ingeschakeld</value>
+  </data>
+  <data name="[RESX:ForumsGroups].Text">
+    <value>Forum Lijst</value>
+  </data>
+  <data name="[RESX:MailConnectorEnabled].Text">
+    <value>Mail Verbinding Ingeschakeld</value>
+  </data>
+  <data name="[RESX:Maint:Days].Text">
+    <value>dagen</value>
+  </data>
+  <data name="[RESX:Maint:DryRunResults].Text">
+    <value>{0} onderwerp(en) zullen worden verwijderd.</value>
+  </data>
+  <data name="[RESX:Maint:Execute].Text">
+    <value>Uitvoeren</value>
+  </data>
+  <data name="[RESX:Maint:NoActivityPast].Text">
+    <value>Onderwerpen Laatste Activiteit Gedurende</value>
+  </data>
+  <data name="[RESX:Maint:RequiredCriteria].Text">
+    <value>Controleer uw criteria en probeer opnieuw.</value>
+  </data>
+  <data name="[RESX:Maint:TestRun].Text">
+    <value>Test Run</value>
+  </data>
+  <data name="[RESX:Maint:TopicsByUser].Text">
+    <value>Onderwerpen op Gebruiker</value>
+  </data>
+  <data name="[RESX:Maint:TopicsOlderThan].Text">
+    <value>Onderwerpen ouder dan</value>
+  </data>
+  <data name="[RESX:Maint:WithoutReplies].Text">
+    <value>Onderwerpen zonder antwoord</value>
+  </data>
+  <data name="[RESX:Maintenance].Text">
+    <value>Onderhoud</value>
+  </data>
+  <data name="[RESX:MaintenanceInstruct].Text">
+    <value>Specificeer hieronder de criteria om berichten uit uw forums te verwijderen.  Klik op de "Test Run" knop om het aantal geselecteerde berichten te tellen. Klik op de "Uitvoeren" knop om het onderhoud te starten. Dit proces kan enkele minuten duren voordat het is uitgevoerd. Wacht s.v.p. tot het proces is afgelopen voordat u deze pagina verlaat.</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle:Desc].Text">
+    <value>Markeer als verwijderd</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle].Text">
+    <value>Recyclen</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove:Desc].Text">
+    <value>permanent verwijderd</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove].Text">
+    <value>Verwijder</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning].Text">
+    <value>Controleer of u een back-up van de database heeft gemaakt. Onderwerpen worden verwijderd op basis van de verwijder methode die u in de hoofd instellingen tab heeft geselecteerd.&lt;br /&gt;&lt;br /&gt;
+Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worden {1} gebaseerd op de criteria die u hieronder instelt.</value>
+  </data>
+  <data name="[RESX:MoveDown].Text">
+    <value>Verplaats omlaag</value>
+  </data>
+  <data name="[RESX:MoveUp].Text">
+    <value>Verplaats omhoog</value>
+  </data>
+  <data name="[RESX:ProcessComplete].Text">
+    <value>Proces succesvol afgerond!</value>
+  </data>
+  <data name="[RESX:Roles].Text">
+    <value>Rollen</value>
+  </data>
+  <data name="[RESX:Save].Text">
+    <value>Bewaren</value>
+  </data>
+  <data name="[RESX:Tips:AddRoles].Text">
+    <value>Selecteer de rol die u wilt toevoegen aan het beveiligingsschema en klik vervolgens op het plus icoon.  </value>
+  </data>
+  <data name="[RESX:Tips:AddUser].Text">
+    <value>Voer de gebruikersnaam van de persoon in die u wilt toevoegen aan het beveilingsschema en klik vervolgens op het plus icoon.</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDefault].Text">
+    <value>Schakel deze optie in om de standaard avatar vanuit de thema directory weer te geven indien een gebruiker geen avatar heeft gespecificeerd.</value>
+  </data>
+  <data name="[RESX:Tips:MaintActivityOlderThan].Text">
+    <value>Geef het aantal dagen op.  Dit zal alleen effect hebben op de onderwerpen die ouder zijn dan het aantal opgegeven dagen waarop geen antwoord is ontvangen.</value>
+  </data>
+  <data name="[RESX:Tips:MaintOlderThan].Text">
+    <value>Geef het aantal dagen op. Dit zal alleen effect hebben op de onderwerpen die ouder zijn dan het aantal opgegeven dagen.</value>
+  </data>
+  <data name="[RESX:Tips:MaintTopicsByUser].Text">
+    <value>Geef de gebruikers Id in. Dit zal het proces beperken tot alleen de onderwerpen van de opgegeven gebruiker.</value>
+  </data>
+  <data name="[RESX:Tips:MaintWithOutReplies].Text">
+    <value>Schakel deze optie in om simpelweg alle onderwerpen waar nooit op is gereageerd te verwijderen.</value>
+  </data>
+  <data name="[RESX:Tips:UsersOnlineEnabled].Text">
+    <value>Schakel deze optie aan om aan te geven of de gebruiker online is en de forums bezoekt.</value>
+  </data>
+  <data name="[RESX:UserNameNotFound].Text">
+    <value>De door u opgegeven gebruikersnaam is niet gevonden.</value>
+  </data>
+  <data name="[RESX:Warning:Maint].Text">
+    <value>Weet u zeker dat u dit proces wilt starten?</value>
+  </data>
+  <data name="[RESX:Actions:FinalConfirm].Text">
+    <value>Weet u zeker dat u dit item en alle gerelateerde data wilt verwijderen?</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleteConfirm].Text">
+    <value>WAARSCHUWING! - Als u dit item verwijderd zal alle gerelateerde content PERMANENT worden verwijderd. Ga niet verder, tenzij u een back-up heeft.\n Klik op OK om alle gerelateerde content te verwijderen. Klik op annuleren om af te sluiten.</value>
+  </data>
+  <data name="[RESX:Actions:GroupDeleted].Text">
+    <value>De groep en alle gerelateerde content zijn verwijderd.</value>
+  </data>
+  <data name="[RESX:RequireCaptcha].Text">
+    <value>Captcha voor Anonieme Gebruikers</value>
+  </data>
+  <data name="[RESX:Tips:EnableShortUrls].Text">
+    <value>Deze optie inschakelen om Active Forums een minimum aantal noodzakelijk aantal parameters te laten gebruiken.</value>
+  </data>
+  <data name="[RESX:Tips:UseSkinBreadcrumb].Text">
+    <value>Deze optie inschakelen om Active Forums het broodkruimel navigatie element uit uw skin bij te werken. Dit wordt alleen ondersteund met het standaard DotNetNuke broodkruimel skin object.</value>
+  </data>
+  <data name="[RESX:UseSkinBreadcrumb].Text">
+    <value>Skin Breadcrumb Bijwerken</value>
+  </data>
+  <data name="[RESX:EnableAutoLink].Text">
+    <value>Automatische Links Inschakelen</value>
+  </data>
+  <data name="[RESX:ActiveSocialIntegration].Text">
+    <value>Active Social Integratie</value>
+  </data>
+  <data name="[RESX:ActiveSocialTip].Text">
+    <value>Voer de sleutels in die in het Active Social regelpaneel heeft gemaakt in het gedeelte van het dagboek.</value>
+  </data>
+  <data name="[RESX:AddProperty].Text">
+    <value>Nieuw Veld Toevoegen</value>
+  </data>
+  <data name="[RESX:AddThis:Intro].Text">
+    <value>Voeg eenvoudig social bookmarking mogelijkheden toe aan uw website. Bezoek www.addthis.com om een account aan te maken om deze naam in het tekstbox in te voeren.</value>
+  </data>
+  <data name="[RESX:AddThisUsername].Text">
+    <value>AddThis Account Naam</value>
+  </data>
+  <data name="[RESX:AutoLink:Intro].Text">
+    <value>Deze optie inschakelen zodat Active Forums website adressen automatisch kan omzetten in hyperlinks.</value>
+  </data>
+  <data name="[RESX:AutoLink].Text">
+    <value>Automatische Hyperlinks</value>
+  </data>
+  <data name="[RESX:AvatarOptions].Text">
+    <value>Avatar Opties</value>
+  </data>
+  <data name="[RESX:Captcha:Intro].Text">
+    <value>Deze optie aanvinken om anonieme gebruikers te verplichten om een willekeurige beveiligingscode in te voeren om spam content te voorkomen</value>
+  </data>
+  <data name="[RESX:Captcha].Text">
+    <value>Captcha (Spam Preventie)</value>
+  </data>
+  <data name="[RESX:CategoryName].Text">
+    <value>Naam Categorie</value>
+  </data>
+  <data name="[RESX:Community].Text">
+    <value>Community</value>
+  </data>
+  <data name="[RESX:CommunityOptions:Intro].Text">
+    <value>De hieronder staande instellingen stellen u in staat om de community opties voor uw forums in te schakelen</value>
+  </data>
+  <data name="[RESX:CommunityOptions].Text">
+    <value>Community Opties</value>
+  </data>
+  <data name="[RESX:DataType].Text">
+    <value>Data Type</value>
+  </data>
+  <data name="[RESX:DeleteAction:Intro].Text">
+    <value>Bepaal wat er moet gebeuren als content wordt verwijderd. &lt;b&gt;Verwijder&lt;/b&gt; - Verwijder de conetent uit de database.  &lt;b&gt;Recycle&lt;/b&gt; - De content wordt aangemerkt als verwijderd en blijft in de database.</value>
+  </data>
+  <data name="[RESX:DeleteActionSelect].Text">
+    <value>Selecteer Actie</value>
+  </data>
+  <data name="[RESX:DesignAndTemplates:Intro].Text">
+    <value>De hieronder staande instellingen helpen u om het voorkomen van de forums te beïnvloeden.</value>
+  </data>
+  <data name="[RESX:DesignAndTemplates].Text">
+    <value>Ontwerp en Layout</value>
+  </data>
+  <data name="[RESX:EditControl:Intro].Text">
+    <value>Sta gebruikers gedurende een aantal minuten toe, nadat het bericht is geplaatst, om het te wijzigen. De gebruiker moet wijzig machtigingen hebben. Dit kenmerk kan worden uitgeschakeld door de waarde op 0 te zetten.</value>
+  </data>
+  <data name="[RESX:EditControl].Text">
+    <value>Content Wijzig Control</value>
+  </data>
+  <data name="[RESX:EnableMailQueue].Text">
+    <value>Mail Queue Inschakelen</value>
+  </data>
+  <data name="[RESX:EnableURLRewriter].Text">
+    <value>Vriendelijke URLs Inschakelen</value>
+  </data>
+  <data name="[RESX:EnterpriseFeatures:Intro].Text">
+    <value>Kenmerken voor Active Forums Enterprise.</value>
+  </data>
+  <data name="[RESX:EnterpriseFeatures].Text">
+    <value>Enterprise Kenmerken</value>
+  </data>
+  <data name="[RESX:Everyone].Text">
+    <value>Iedereen</value>
+  </data>
+  <data name="[RESX:FloodControl:Intro].Text">
+    <value>Het aantal seconden dat een gebruiker moet wachten voordat deze een nieuw bericht kan plaatsen.</value>
+  </data>
+  <data name="[RESX:FloodControl].Text">
+    <value>Dubbele berichten en misbruik preventie</value>
+  </data>
+  <data name="[RESX:FriendlyURLOptions].Text">
+    <value>Vriendelijke URL Opties</value>
+  </data>
+  <data name="[RESX:FriendsOnly].Text">
+    <value>Alleen vrienden</value>
+  </data>
+  <data name="[RESX:FullTextSearch:Intro].Text">
+    <value>Volledige-Tekst zoeken geeft betere resultaten en een hogere accuratesse bij zoekresultaten.</value>
+  </data>
+  <data name="[RESX:FullTextSearch].Text">
+    <value>Volledige-Tekst Zoeken</value>
+  </data>
+  <data name="[RESX:IsHidden].Text">
+    <value>Verborgen</value>
+  </data>
+  <data name="[RESX:IsReadOnly].Text">
+    <value>Alleen lezen</value>
+  </data>
+  <data name="[RESX:IsRequired].Text">
+    <value>Verplicht</value>
+  </data>
+  <data name="[RESX:Label].Text">
+    <value>Label</value>
+  </data>
+  <data name="[RESX:List].Text">
+    <value>Lijst</value>
+  </data>
+  <data name="[RESX:ListName].Text">
+    <value>Kies lijst</value>
+  </data>
+  <data name="[RESX:MailQueue:Intro].Text">
+    <value>Aanbevolen voor grote sites met een groot aantal abonnees. Vereist de DotNetNuke taakplanner. Zie de documentatie voor verdere details.</value>
+  </data>
+  <data name="[RESX:MainFeatures:Intro].Text">
+    <value>De hieronder staande kenmerken hebben effect op alle forums. U kunt sommige kenmerken hieronder in- en/of uitschakelen.</value>
+  </data>
+  <data name="[RESX:MainFeatures].Text">
+    <value>Belangrijkste Kenmerken</value>
+  </data>
+  <data name="[RESX:MainSettings:Intro].Text">
+    <value>
+    </value>
+  </data>
+  <data name="[RESX:Members:Intro].Text">
+    <value>De onderstaande instellingen stellen bepalen hoe uw leden interactie hebben met uw forums.</value>
+  </data>
+  <data name="[RESX:PleaseWait].Text">
+    <value>Laden...  Ogenblik s.v.p.</value>
+  </data>
+  <data name="[RESX:PointsOptions].Text">
+    <value>Opties voor Punten systeem</value>
+  </data>
+  <data name="[RESX:PostingOptions:Intro].Text">
+    <value>De onderstaande instellingen stellen u in staat om verschillende aspecten van het aanmaken van content in uw forum te beïnvloeden.</value>
+  </data>
+  <data name="[RESX:PostingOptions].Text">
+    <value>Content Opties</value>
+  </data>
+  <data name="[RESX:Properties].Text">
+    <value>Properties</value>
+  </data>
+  <data name="[RESX:PropertyName].Text">
+    <value>Naam Veld</value>
+  </data>
+  <data name="[RESX:RepliesAccessKey].Text">
+    <value>Toegangsleutel voor Antwoorden</value>
+  </data>
+  <data name="[RESX:SecurityOption].Text">
+    <value>Logboek Beveiliging</value>
+  </data>
+  <data name="[RESX:Text].Text">
+    <value>Tekst</value>
+  </data>
+  <data name="[RESX:Tips:ActiveSocial].Text">
+    <value>Active Forums zal updates naar het Active Social logboek verzenden.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPriority].Text">
+    <value>Onderwerp prioriteit maakt het mogelijk om onderwerpen hoger in de lijst te laten verschijnen i.p.v. sortering op datum. De standaard waarde voor onderwerp prioriteit is 0. Hoe hoger de prioriteit hoe hoger het onderwerp in de lijst zal verschijnen.</value>
+  </data>
+  <data name="[RESX:Tips:VanityName].Text">
+    <value>Geef de naam op die u wenst te gebruiken voor het url wanneer dit forum wordt aangeroepen.</value>
+  </data>
+  <data name="[RESX:TopicPriority].Text">
+    <value>Onderwerp Prioriteit Toestaan</value>
+  </data>
+  <data name="[RESX:TopicProperties:Intro].Text">
+    <value>Meer over Onderwerp Eigenschappen</value>
+  </data>
+  <data name="[RESX:TopicProperties].Text">
+    <value>Onderwerp Eigenschappen</value>
+  </data>
+  <data name="[RESX:TopicsAccessKey].Text">
+    <value>Toegangssleutel voor Onderwerpen</value>
+  </data>
+  <data name="[RESX:URLPrefixBase].Text">
+    <value>Basis Pad</value>
+  </data>
+  <data name="[RESX:URLPrefixCategory].Text">
+    <value>Categorie Pad</value>
+  </data>
+  <data name="[RESX:URLPrefixOther].Text">
+    <value>Weergave Pad</value>
+  </data>
+  <data name="[RESX:URLPrefixTag].Text">
+    <value>Label Pad</value>
+  </data>
+  <data name="[RESX:ValidationExpression].Text">
+    <value>Input Validatie</value>
+  </data>
+  <data name="[RESX:VanityName].Text">
+    <value>Vanity Naam</value>
+  </data>
+  <data name="[RESX:ViewRoles].Text">
+    <value>Lezen Rol</value>
+  </data>
+  <data name="[RESX:Visibility].Text">
+    <value>Zichtbaarheid</value>
+  </data>
+  <data name="[RESX:WARN:DeleteProperty].Text">
+    <value>Weet u zeker dat u dit veld wilt verwijderen?</value>
+  </data>
+  <data name="[RESX:YesNo].Text">
+    <value>Ja/Nee</value>
+  </data>
+  <data name="[RESX:ListCheckBoxes].Text">
+    <value>Lijst - Selecteer Meerdere</value>
+  </data>
+  <data name="[RESX:ListDropDown].Text">
+    <value>Lijst - Selecteer Eén</value>
+  </data>
+  <data name="[RESX:Confirm:URLToggle].Text">
+    <value>Waarschuwing: Installeren, fog het ongedaan maken hiervan, van de Active Forums URL Handler vereist een wijziging in uw web.config.  \n\nWeet u zeker dat u deze wijzing nu wilt aanbrengen?</value>
+  </data>
+</root>
