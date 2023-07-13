@@ -1,0 +1,4 @@
+﻿DesktopModules/ActiveForums/ForumEditor.ascx
+DesktopModules/ActiveForums/scripts/telerik_editor.js
+DesktopModules/ActiveForums/UpgradeLog.htm
+DesktopModules/ActiveForums/UpgradeLog2.htm
