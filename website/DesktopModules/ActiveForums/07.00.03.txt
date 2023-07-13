@@ -1,2 +1,0 @@
-﻿DesktopModules/ActiveForums/sql/sql/*
-DesktopModules/ActiveForums/sql/sql
