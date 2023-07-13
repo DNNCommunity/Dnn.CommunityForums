@@ -882,7 +882,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Subscribe Option
             if (_bSubscribe)
             {
-                var subControl = new ToggleSubscribe(1, ForumId, TopicId);
+                var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
                 subControl.Checked = _isSubscribedTopic;
                 subControl.Text = "[RESX:TopicSubscribe:" + _isSubscribedTopic.ToString().ToUpper() + "]";
                 sbOutput.Replace("[TOPICSUBSCRIBE]", subControl.Render());
