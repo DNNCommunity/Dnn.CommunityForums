@@ -12,7 +12,7 @@
 			<div class="aftopicsum">[RESX:LastPost] [AF:LABEL:LastPostDate] [RESX:BY] <strong><i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[AF:LABEL:LastPostAuthor]</strong></div>
 			<div class="aftitlelg">[SUBJECT]</div>
 			<div class="aftopicreplies"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
-		    <div class="afsubscribercount"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[TOPICSUBSCRIBERCOUNT] [RESX:TOPICSUBSCRIBERCOUNT]</div>
+		    <div class="afsubscribercount"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[TOPICSUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
 		    <div class="afsubscribercount"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT] [RESX:FORUMSUBSCRIBERCOUNT]</div>
 		    <div class="afprop-list">
 				<ul>

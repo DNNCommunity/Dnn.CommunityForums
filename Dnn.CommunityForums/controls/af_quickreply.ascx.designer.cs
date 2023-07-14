@@ -123,6 +123,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trSubscribe;
 
         /// <summary>
+        /// tdSubscribe control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableCell tdSubscribe;
+
+        /// <summary>
         /// btnSubmitLink control.
         /// </summary>
         /// <remarks>
