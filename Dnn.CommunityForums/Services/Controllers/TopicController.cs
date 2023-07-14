@@ -109,14 +109,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
-
-        /// <summary>
-        /// Pins a Topic
-        /// </summary>
-        /// <param name="dto"></param>
-        /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
-        [HttpPost]
+          
+    /// <summary>
+    /// Pins a Topic
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
+    [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModPin)]
         [ForumsAuthorize(SecureActions.Pin)]
@@ -133,10 +133,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     tc.TopicSave(PortalSettings.PortalId, t);
                     return Request.CreateResponse(HttpStatusCode.OK, value: t.IsPinned);
                 }
-
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
-
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -163,9 +161,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     tc.TopicSave(PortalSettings.PortalId, t);
                     return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
                 }
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
-
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }
