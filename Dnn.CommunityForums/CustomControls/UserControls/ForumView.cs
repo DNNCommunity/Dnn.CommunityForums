@@ -573,16 +573,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sImg = ThemePath + "images/email_checked.png";
                     }
-                    var subControl = new ToggleSubscribe(0, fi.ForumID, -1);
+                    var subControl = new ToggleSubscribe(ForumModuleId, fi.ForumID, -1, 0);
                     subControl.Checked = IsSubscribed;
                     subControl.DisplayMode = 1;
                     subControl.UserId = CurrentUserId;
                     subControl.ImageURL = sImg;
                     subControl.Text = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
-                    string subOption = subControl.Render();
 
-                    //Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", "<a href=""javascript:af_toggleSubscribe(" & .ForumID & ",'" & PortalId & "|" & ModuleId & "|" & .ForumID & "|" & CurrentUserId & "');""><img id=""toggleSub" & .ForumID & """ src=""" & sImg & """ border=""0"" alt=""" & sAlt & """ /></a>")
-                    Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subOption);
+                    Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subControl.Render());
                 }
                 else
                 {

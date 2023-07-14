@@ -23,6 +23,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -43,31 +44,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #endregion
         #region Private Members
         private string _Subject = string.Empty;
-        private string _topicSubject = string.Empty;
         private string _Summary = string.Empty;
         private string _Body = string.Empty;
-        private string _Template = string.Empty;
-        private ImageButton _PostButton = new ImageButton();
-        private ImageButton _CancelButton = new ImageButton();
         private string _clientId;
         private string _topicIcon;
         private bool _locked;
         private bool _checked;
         private bool _pinned;
-        private bool _subscribed;
         private DateTime _announceStart = DateTime.MinValue;
         private DateTime _announceEnd = DateTime.MinValue;
-        private string _categories = string.Empty;
         private string _pollQuestion;
         private string _pollType;
         private string _pollOptions;
         private int _statusId = -1;
         private string _AuthorName = string.Empty;
-        private string _postbackScript = string.Empty;
         private string _topicReviewTemplate = string.Empty;
-        private int _contentId = -1;
-        private int _authorId = -1;
-        private bool _requireCaptcha = true;
         private int _topicPriority;
         private bool canModEdit;
         private bool canModApprove;
@@ -83,23 +74,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Public Properties
-        public string Template
-        {
-            get
-            {
-                return _Template;
-            }
-            set
-            {
-                _Template = value;
-            }
-        }
+        public string Template { get; set; } = string.Empty;
         public string AuthorName
         {
             get
-            {
-                return txtUsername.Text;
-            }
+            => txtUsername.Text;
             set
             {
                 _AuthorName = value;
@@ -108,33 +87,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public string Subject
         {
-            get
-            {
-                return txtSubject.Text;
-            }
+            get => txtSubject.Text;
             set
             {
                 _Subject = value;
                 txtSubject.Text = value;
             }
         }
-        public string TopicSubject
-        {
-            get
-            {
-                return _topicSubject;
-            }
-            set
-            {
-                _topicSubject = value;
-            }
-        }
+        public string TopicSubject { get; set; } = string.Empty;
         public string Summary
         {
-            get
-            {
-                return txtSummary.Text;
-            }
+            get => txtSummary.Text;
             set
             {
                 _Summary = value;
@@ -165,60 +128,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     return _Body;
-                }
-                //Return String.Empty
+                } 
                 return tempBody;
             }
             set
             {
                 _Body = value;
-                //txtBody.Text = value
             }
         }
-        public ImageButton PostButton
-        {
-            get
-            {
-                return _PostButton;
-            }
-            set
-            {
-                _PostButton = value;
-            }
-        }
-        public ImageButton CancelButton
-        {
-            get
-            {
-                return _CancelButton;
-            }
-            set
-            {
-                _CancelButton = value;
-            }
-        }
-
+        public ImageButton PostButton { get; set; } = new ImageButton();
+        public ImageButton CancelButton { get; set; } = new ImageButton();
         public EditorTypes EditorType { get; set; }
-
         public Forum ForumInfo { get; set; }
-
-        //Public Property TopicInfo() As TopicInfo
-        //    Get
-        //        Return _topicInfo
-        //    End Get
-        //    Set(ByVal value As TopicInfo)
-        //        _topicInfo = value
-        //    End Set
-        //End Property
         public string TopicIcon
         {
-            get
-            {
-                string tempTopicIcon = string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
-
-                //Return _topicIcon
-                return tempTopicIcon;
-            }
+            get => string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
             set
             {
                 _topicIcon = value;
@@ -227,10 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public bool Locked
         {
-            get
-            {
-                return chkLocked.Checked;
-            }
+            get => chkLocked.Checked;
             set
             {
                 _locked = value;
@@ -239,34 +160,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public bool Pinned
         {
-            get
-            {
-                return chkPinned.Checked;
-            }
+            get => chkPinned.Checked;
             set
             {
                 _pinned = value;
                 chkPinned.Checked = value;
             }
         }
-        public bool Subscribe
-        {
-            get
-            {
-                return chkSubscribe.Checked;
-            }
-            set
-            {
-                _subscribed = value;
-                chkSubscribe.Checked = value;
-            }
-        }
         public bool IsApproved
         {
-            get
-            {
-                return chkApproved.Checked;
-            }
+            get => chkApproved.Checked;
             set
             {
                 _checked = value;
@@ -275,21 +178,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public bool IsAnnounce
         {
-            get
-            {
-                return chkAnnounce.Checked;
-            }
-            set
-            {
-                chkAnnounce.Checked = value;
-            }
+            get => chkAnnounce.Checked;
+            set => chkAnnounce.Checked = value;
         }
         public int TopicPriority
         {
-            get
-            {
-                return int.Parse(txtTopicPriority.Text);
-            }
+            get => int.Parse(txtTopicPriority.Text);
             set
             {
                 txtTopicPriority.Text = value.ToString();
@@ -340,9 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string EditorClientId
         {
             get
-            {
-                return _clientId;
-            }
+            => _clientId;
         }
 
         public string AttachmentsClientId { get; set; }
@@ -351,24 +243,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Tags { get; set; }
 
-        public string Categories
-        {
-            get
-            {
-                return _categories;
-            }
-            set
-            {
-                _categories = value;
-            }
-        }
+        public string Categories { get; set; } = string.Empty;
 
         public string PollQuestion
         {
-            get
-            {
-                return afpolledit.PollQuestion;
-            }
+            get => afpolledit.PollQuestion;
             set
             {
                 _pollQuestion = value;
@@ -378,9 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string PollType
         {
             get
-            {
-                return afpolledit.PollType;
-            }
+            => afpolledit.PollType;
             set
             {
                 _pollType = value;
@@ -390,9 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string PollOptions
         {
             get
-            {
-                return afpolledit.PollOptions;
-            }
+            => afpolledit.PollOptions;
             set
             {
                 _pollOptions = value;
@@ -405,58 +280,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int StatusId
         {
             get
-            {
-                return aftopicstatus.Status;
-            }
+            => aftopicstatus.Status;
             set
             {
                 _statusId = value;
                 aftopicstatus.Status = value;
             }
         }
-        public string PostBackScript
-        {
-            get
-            {
-                return _postbackScript;
-            }
-        }
-        public int ContentId
-        {
-            get
-            {
-                return _contentId;
-            }
-            set
-            {
-                _contentId = value;
-            }
-        }
-        public int AuthorId
-        {
-            get
-            {
-                return _authorId;
-            }
-            set
-            {
-                _authorId = value;
-            }
-        }
-
+        public string PostBackScript { get; } = string.Empty;
+        public int ContentId { get; set; } = -1;
+        public int AuthorId { get; set; } = -1;
         public bool AllowHTML { get; set; }
-
-        public bool RequireCaptcha
-        {
-            get
-            {
-                return _requireCaptcha;
-            }
-            set
-            {
-                _requireCaptcha = value;
-            }
-        }
+        public bool RequireCaptcha { get; set; } = true;
         public List<PropertiesInfo> TopicProperties { get; set; }
         #endregion
         #region Protected Controls
@@ -478,8 +313,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_topicstatus aftopicstatus = new af_topicstatus();
         protected CheckBox chkLocked = new CheckBox();
         protected CheckBox chkPinned = new CheckBox();
-        protected CheckBox chkSubscribe = new CheckBox();
-        protected CheckBox chkAnnounce = new CheckBox();
+        protected CheckBox chkAnnounce = new CheckBox(); 
         protected CheckBox chkApproved = new CheckBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqSubject = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected Label reqCustomBody = new Label();
@@ -879,10 +713,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<td><asp:checkbox id=\"chkPinned\" Text=\"[RESX:Pinned:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
                 bHasOptions = true;
             }
+
             if (canSubscribe)
             {
-                sb.Append("<tr><td>[RESX:Subscribe]:</td>");
-                sb.Append("<td><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:Subscribe:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
+                var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
+                subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
+                subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
                 bHasOptions = true;
             }
             if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && Permissions.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
@@ -1111,7 +948,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             chkLocked.Checked = _locked;
             chkPinned.Checked = _pinned;
             chkApproved.Checked = _checked;
-            chkSubscribe.Checked = _subscribed;
+
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
@@ -1255,9 +1092,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     case "chkPinned":
                         chkPinned = (CheckBox)ctrl;
-                        break;
-                    case "chkSubscribe":
-                        chkSubscribe = (CheckBox)ctrl;
                         break;
                     case "txtTopicPriority":
                         txtTopicPriority = (TextBox)ctrl;
