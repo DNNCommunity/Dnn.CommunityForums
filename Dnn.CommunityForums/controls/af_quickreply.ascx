@@ -99,11 +99,8 @@ function afQuickSubmit() {
 					</td>
 					<td></td>
 				</tr>
-				 <tr id="trSubscribe" runat="server">
-					<td></td>
-					<td class="NormalBold">[RESX:Subscribe]:</td>
-					<td class="afcheckbox"><input type="checkbox" id="chkSubscribe" name="chkSubscribe" value="1" <%=SubscribedChecked%> />[RESX:Subscribe:Note]</td>
-					<td></td>
+				<tr id="trSubscribe" runat="server">
+					<td align="right" colspan="4" id="tdSubscribe" runat="server"></td>
 				</tr>
 				<tr>
 					<td align="center" colspan="3">

@@ -42,134 +42,24 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Members
         private bool _CanReply = false;
         private string _ThemePath = string.Empty;
-        private bool _UseFilter = true;
-        private string _Subject = string.Empty;
-        private bool _ModAppove = false;
-        private bool _CanTrust = false;
-        private bool _IsTrusted = false;
-        private bool _TrustDefault = false;
-        private bool _AllowHTML = false;
-        private bool _AllowScripts = false;
-        private bool _AllowSubscribe = false;
         private int _ForumId = -1;
-        private bool _CanSubscribe = false;
 
         #endregion
-        #region Public Members
-        public string SubscribedChecked = string.Empty;
-        //public IClientCapability device = ClientCapabilityProvider.CurrentClientCapability;
-        #endregion
+        //#region Public Members
+        //public string SubscribedChecked = string.Empty;
+        ////public IClientCapability device = ClientCapabilityProvider.CurrentClientCapability;
+        //#endregion
         #region Public Properties
-        public bool UseFilter
-        {
-            get
-            {
-                return _UseFilter;
-            }
-            set
-            {
-                _UseFilter = value;
-            }
-        }
-        public string Subject
-        {
-            get
-            {
-                return _Subject;
-            }
-            set
-            {
-                _Subject = value;
-            }
-        }
-        public bool ModApprove
-        {
-            get
-            {
-                return _ModAppove;
-            }
-            set
-            {
-                _ModAppove = value;
-            }
-        }
-        public bool CanTrust
-        {
-            get
-            {
-                return _CanTrust;
-            }
-            set
-            {
-                _CanTrust = value;
-            }
-        }
-        public bool IsTrusted
-        {
-            get
-            {
-                return _IsTrusted;
-            }
-            set
-            {
-                _IsTrusted = value;
-            }
-        }
-        public bool TrustDefault
-        {
-            get
-            {
-                return _TrustDefault;
-            }
-            set
-            {
-                _TrustDefault = value;
-            }
-        }
-        public bool AllowHTML
-        {
-            get
-            {
-                return _AllowHTML;
-            }
-            set
-            {
-                _AllowHTML = value;
-            }
-        }
-        public bool AllowScripts
-        {
-            get
-            {
-                return _AllowScripts;
-            }
-            set
-            {
-                _AllowScripts = value;
-            }
-        }
-        public bool AllowSubscribe
-        {
-            get
-            {
-                return _AllowSubscribe;
-            }
-            set
-            {
-                _AllowSubscribe = value;
-            }
-        }
-        public bool CanSubscribe
-        {
-            get
-            {
-                return _CanSubscribe;
-            }
-            set
-            {
-                _CanSubscribe = value;
-            }
-        }
+        public bool UseFilter { get; set; } = true;
+        public string Subject { get; set; } = string.Empty;
+        public bool ModApprove { get; set; } = false;
+        public bool CanTrust { get; set; } = false;
+        public bool IsTrusted { get; set; } = false;
+        public bool TrustDefault { get; set; } = false;
+        public bool AllowHTML { get; set; } = false;
+        public bool AllowScripts { get; set; } = false;
+        public bool AllowSubscribe { get; set; } = false;
+        public bool CanSubscribe { get; set; } = false;
         #endregion
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
@@ -226,7 +116,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     btnToolBar.Visible = false;
                 }
                 Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + Subject;
-                trSubscribe.Visible = AllowSubscribe;
+                //trSubscribe.Visible = AllowSubscribe;
+                tdSubscribe.Visible = AllowSubscribe;
+                if (AllowSubscribe)
+                {
+                    var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
+                    subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
+                    subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                    tdSubscribe.InnerHtml = subControl.Render();
+                }
                 if (!Request.IsAuthenticated && CanReply)
                 {
                     trUsername.Visible = true;
@@ -237,10 +135,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     trUsername.Visible = false;
                     trCaptcha.Visible = false;
-                    if (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
-                    {
-                        SubscribedChecked = " checked=true";
-                    }
+                    //if (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
+                    //{
+                    //    SubscribedChecked = " checked=true";
+                    //}
                 }
 
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
@@ -403,28 +301,8 @@ namespace DotNetNuke.Modules.ActiveForums
             string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
             DataCache.CacheClearPrefix(cachekey);
 
-
-            // Subscribe or unsubscribe if needed
-            if (AllowSubscribe && UserId > 0)
-            {
-                var subscribe = Request.Params["chkSubscribe"] == "1";
-                var currentlySubscribed = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, UserId);
-
-                if (subscribe != currentlySubscribed)
-                {
-                    // Will need to update this to support multiple subscrition types later
-                    // Subscription_Update works as a toggle, so you only call it if you want to change the value.
-                    var sc = new SubscriptionController();
-                    sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, UserId, ForumUser.UserRoles);
-                }
-            }
-
-
-
-            ControlUtils ctlUtils = new ControlUtils();
-            TopicsController tc = new TopicsController();
-            TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-            string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
+            TopicInfo ti = new TopicsController().Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
+            string fullURL = new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
 
             if (fullURL.Contains("~/"))
             {

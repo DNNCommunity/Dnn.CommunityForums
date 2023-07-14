@@ -525,7 +525,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Forum Subscription Control
             if (bSubscribe)
             {
-                Controls.ToggleSubscribe subControl = new Controls.ToggleSubscribe(0, ForumId, -1);
+                Controls.ToggleSubscribe subControl = new Controls.ToggleSubscribe(ForumModuleId, ForumId, -1, 0);
                 subControl.Checked = IsSubscribedForum;
                 subControl.Text = "[RESX:ForumSubscribe:" + IsSubscribedForum.ToString().ToUpper() + "]";
                 sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", subControl.Render());
