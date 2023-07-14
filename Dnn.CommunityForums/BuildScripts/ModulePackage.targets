@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+The MIT License (MIT)
+Copyright (c) Upendo Ventures, LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="MSBuild.Community.Tasks.Targets" />
+  <Target Name="PackageModule" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <XmlRead Prefix="n"
+                    Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
+                    XPath="dotnetnuke/packages/package[1]/@version"
+                    XmlFileName="$(DNNFileName).dnn">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </XmlRead>
+
+    <ItemGroup>
+      <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;WhatsNew.ascx;WhatsNewOptions.ascx;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ashx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.css" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.html" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.htm" Exclude="packages\**;node_modules\**;clientApp\**;UpgradeLog*.htm;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.resx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.aspx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.js" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.js.map" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;node_modules\**;clientApp\**;readme.txt;.git\**;.vs\**" />
+      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.eot" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.svg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ttf" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.woff" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**v" />
+      <InstallInclude Include="**\*.woff2" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.swf" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ico" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.json" Exclude="packages\**;node_modules\**;clientApp\**;obj\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.scss" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.cshtml" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.png" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.gif" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.jpeg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.jpg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.bmp" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.xml" Exclude="packages\**;node_modules\**;clientApp\**;bin\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.config" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+    </ItemGroup>
+
+    <CreateItem Include="$(DNNFileName).dnn">
+      <Output TaskParameter="Include" ItemName="PackageManifestFiles" />
+    </CreateItem>
+
+    <CreateItem Include="*.txt" Exclude="**\License.txt;**\ReleaseNotes.txt">
+      <Output TaskParameter="Include" ItemName="CleanUpTxtFiles" />
+    </CreateItem>
+
+    <CreateItem Include="**\License.txt">
+      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
+    </CreateItem>
+
+    <CreateItem Include="**\ReleaseNotes.txt">
+      <Output TaskParameter="Include" ItemName="PackageTxtFiles" />
+    </CreateItem>
+
+    <CreateItem Include="**\*.sqldataprovider">
+      <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
+    </CreateItem>
+
+	  <CreateItem Include="**\WhatsNew.ascx">
+		  <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
+	  </CreateItem>
+
+	  <CreateItem Include="**\WhatsNewOptions.ascx">
+		  <Output TaskParameter="Include" ItemName="WhatsNewFiles" />
+	  </CreateItem>
+
+
+	  <ItemGroup>
+      <BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
+      <!--BinInstallInclude Include="$(MSBuildProjectDirectory)\bin\*.dll" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
+    </ItemGroup>
+
+    <ItemGroup>
+      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.pdb" />
+      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.xml" />
+      <!--SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\*.pdb" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" />
+      <SymbolsBinInclude Include="$(MSBuildProjectDirectory)\bin\*.xml" Exclude="$(MSBuildProjectDirectory)\bin\DotNetNuke*;$(MSBuildProjectDirectory)\bin\Dnn*;$(MSBuildProjectDirectory)\bin\Telerik*;$(MSBuildProjectDirectory)\bin\System.*;$(MSBuildProjectDirectory)\bin\Microsoft.*;$(MSBuildProjectDirectory)\bin\Newtonsoft.Json.*;$(MSBuildProjectDirectory)\bin\WebMatrix.*;" /-->
+    </ItemGroup>
+
+    <Copy SourceFiles="@(BinInstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\Package\bin"/>
+    <Copy SourceFiles="@(PackageManifestFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(CleanUpTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(PackageTxtFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(RecursiveDir)" />
+
+	  <!-- create the INSTALL ActiveForumViewerResources.ZIP file -->
+
+
+	  <CreateItem Include="**\ActiveForumViewer.ascx">
+		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerFiles" />
+	  </CreateItem>
+
+	  <CreateItem Include="**\ActiveForumViewerSettings.ascx">
+		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerFiles" />
+	  </CreateItem>
+	  <Copy SourceFiles="@(ActiveForumsViewerFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" />
+
+	  <CreateItem Include="$(MSBuildProjectDirectory)\PackageActiveForumsViewer\**\*.*">
+		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerResourcesContent" />
+	  </CreateItem>
+
+	  <Zip Files="@(ActiveForumsViewerResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" ZipFileName="ActiveForumsViewerResources.$(Extension)" />
+	  <Copy SourceFiles="$(MSBuildProjectDirectory)\ActiveForumsViewerResources.$(Extension)" DestinationFolder="Package\" />
+
+	  <RemoveDir Directories="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" />
+
+
+	  <!-- create the INSTALL WHATSNEWRESOURCES.ZIP file -->
+    <Copy SourceFiles="@(WhatsNewFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageWhatsNew" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\PackageWhatsNew\**\*.*">
+      <Output TaskParameter="Include" ItemName="WhatsNewResourcesContent" />
+    </CreateItem>
+
+    <Zip Files="@(WhatsNewResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageWhatsNew" ZipFileName="WhatsNewResources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\WhatsNewResources.$(Extension)" DestinationFolder="Package\" />
+    
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\PackageWhatsNew" />
+
+    <!-- create the INSTALL RESOURCES.ZIP file -->
+    <Copy SourceFiles="@(InstallInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\%(RecursiveDir)" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
+      <Output TaskParameter="Include" ItemName="ResourcesContent" />
+    </CreateItem>
+
+    <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="Package\" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputContent" />
+    </CreateItem>
+
+    <!-- Create the Install package -->
+    <Zip Files="@(OutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
+
+    <!-- Copy the Install package to the Packages folder -->
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(WebsiteInstallPath)" />
+
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip" />
+
+    <!-- Symbols Package -->
+    <Copy SourceFiles="@(SymbolsInclude)" DestinationFolder="$(MSBuildProjectDirectory)\Package"/>
+    <Copy SourceFiles="@(SymbolsBinInclude)" DestinationFolder="$(MSBuildProjectDirectory)\ResourcesZip\bin"/>
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\ResourcesZip\**\*.*">
+      <Output TaskParameter="Include" ItemName="ResourcesContent" />
+    </CreateItem>
+
+    <Zip Files="@(ResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\ResourcesZip" ZipFileName="Resources.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\Resources.$(Extension)" DestinationFolder="Package\" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
+      <Output TaskParameter="Include" ItemName="OutputSource" />
+    </CreateItem>
+
+    <Zip Files="@(OutputSource)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Symbols.$(Extension)" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Symbols.$(Extension)" DestinationFolder="$(WebsiteInstallPath)" />
+
+    <!-- Clean Up -->
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip\bin" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\ResourcesZip" />
+
+    <Delete Files="$(MSBuildProjectDirectory)\Resources.Zip" />
+	  <Delete Files="$(MSBuildProjectDirectory)\WhatsNewResources.Zip" />
+	  <Delete Files="$(MSBuildProjectDirectory)\ActiveForumsViewerResources.Zip" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
+    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Symbols.$(Extension)" />
+  </Target>
+</Project>
