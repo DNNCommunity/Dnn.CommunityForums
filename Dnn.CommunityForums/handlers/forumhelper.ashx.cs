@@ -40,8 +40,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			None,
 			UserPing, /* no longer used */
 			GetUsersOnline,/* no longer used */
-            TopicSubscribe,
-			ForumSubscribe,
+            TopicSubscribe,/* no longer used */
+            ForumSubscribe,
 			RateTopic,
 			DeleteTopic,
 			MoveTopic,
@@ -88,8 +88,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					////sOut = GetUserOnlineList();
 					////break;
 				case Actions.TopicSubscribe:
-					sOut = SubscribeTopic();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = SubscribeTopic();
+					//break;
 				case Actions.ForumSubscribe:
 					sOut = SubscribeForum();
 					break;
@@ -138,34 +139,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		{
 			ForumController fc = new ForumController();
 			return fc.GetForumsHtmlOption(PortalId, ModuleId, ForumUser);
-		}
-		private string SubscribeTopic()
-		{
-			if (UserId <= 0)
-			{
-				return BuildOutput(string.Empty, OutputCodes.AuthenticationFailed, true);
-			}
-			int iStatus = 0;
-			SubscriptionController sc = new SubscriptionController();
-			int forumId = -1;
-			int topicId = -1;
-			if (Params.ContainsKey("forumid") && SimulateIsNumeric.IsNumeric(Params["forumid"]))
-			{
-				forumId = int.Parse(Params["forumid"].ToString());
-			}
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			iStatus = sc.Subscription_Update(PortalId, ModuleId, forumId, topicId, 1, this.UserId, ForumUser.UserRoles);
-			if (iStatus == 1)
-			{
-				return BuildOutput("{\"subscribed\":true,\"text\":\"" + Utilities.JSON.EscapeJsonString(Utilities.GetSharedResource("[RESX:TopicSubscribe:TRUE]")) + "\"}", OutputCodes.Success, true, true);
-			}
-			else
-			{
-				return BuildOutput("{\"subscribed\":false,\"text\":\"" + Utilities.JSON.EscapeJsonString(Utilities.GetSharedResource("[RESX:TopicSubscribe:FALSE]")) + "\"}", OutputCodes.Success, true, true);
-			}
 		}
 		private string SubscribeForum()
 		{

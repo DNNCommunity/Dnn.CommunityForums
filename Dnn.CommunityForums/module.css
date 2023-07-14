@@ -1,6 +1,10 @@
-﻿/* TEMP until all image icons are taken out for responsive optimizations!*/
+﻿.DotNetNuke-ActiveForums input[type=checkbox], .DotNetNuke-ActiveForums input[type=radio] {
+    cursor: pointer;
+}
 
-.fa-grey {
+
+/* TEMP until all image icons are taken out for responsive optimizations!*/
+    .fa-grey {
     color:#555555;
 }
 
