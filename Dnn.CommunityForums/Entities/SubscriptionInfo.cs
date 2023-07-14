@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("Id", AutoIncrement = true)]
     [Scope("Id")]
     [Cacheable("activeforums_Subscriptions", CacheItemPriority.Normal)]
-    class SubscriptionInfo
+    public class SubscriptionInfo
     {
         public int Id { get; set; }
         public int PortalId { get; set; }
