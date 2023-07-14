@@ -79,45 +79,88 @@ function amaf_uo(mid) {
             alert('error getting users online');
     });
 };
-function amaf_topicSubscribe(fid, tid) {
-    var d = {};
-    d.action = 3;
-    d.forumid = fid;
-    d.topicid = tid;
-    amaf.callback(d, amaf_topicSubscribeComplete);
-};
-function amaf_topicSubscribeComplete(result) {
-    var r = result[0].result;
-    if (!r) return;
-    $('input[type=checkbox]#amaf-chk-subs')
-        .prop('checked', r.subscribed)
-        .siblings('label[for=amaf-chk-subs]').html(r.text);
-};
-function amaf_forumSubscribe(fid, uid) {
-    var d = {};
-    d.action = 4;
-    d.forumid = fid;
-    if (typeof (uid) != 'undefined') {
-        d.userid = uid;
+function amaf_topicSubscribe(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
-    amaf.callback(d, amaf_forumSubscribeComplete);
-};
-function amaf_forumSubscribeComplete(result) {
-    var r = result[0].result;
-    if (!r) return;
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Topic/Subscribe',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_UpdateTopicSubscriberCount(mid, fid, tid);
+        $('input[type=checkbox].amaf-chk-subs')
+            .prop('checked', data)
+            .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.TopicSubscribeTrue : amaf.resx.TopicSubscribeFalse);
 
-    // Checkbox
-    $('input[type=checkbox]#amaf-chk-subs')
-        .prop('checked', r.subscribed)
-        .siblings('label[for=amaf-chk-subs]').html(r.text);
-
-    $('img#amaf-sub-' + r.forumid).each(function () {
-        var imgSrc = $(this).attr('src');
-        if (r.subscribed)
-            $(this).attr('src', imgSrc.replace(/email_unchecked/, 'email_checked'));
-        else
-            $(this).attr('src', imgSrc.replace(/email_checked/, 'email_unchecked'));
+    }).fail(function (xhr, status) {
+        alert('error subscribing to topic');
     });
+};
+function amaf_UpdateTopicSubscriberCount(mid, fid, tid) {
+    var u = document.getElementById('af-topicview-topicsubscribercount');
+    if (u != null) {
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "GET",
+            url: '/API/ActiveForums/Topic/SubscriberCount?forumId=' + fid + '&topicId=' + tid,
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            u.innerHTML = data;
+        }).fail(function (xhr, status) {
+            alert('error updating topic subscriber count');
+        });
+    }
+};
+function amaf_forumSubscribe(mid, fid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Forum/Subscribe',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_UpdateForumSubscriberCount(mid, fid);
+        $('input[type=checkbox].amaf-chk-subs')
+            .prop('checked', data)
+            .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.ForumSubscribeTrue : amaf.resx.ForumSubscribeFalse);
+        $('img#amaf-sub-' + fid).each(function () {
+            var imgSrc = $(this).attr('src');
+            if (data) {
+                $(this).attr('src', imgSrc.replace(/email_unchecked/, 'email_checked'));
+            }
+            else {
+                $(this).attr('src', imgSrc.replace(/email_checked/, 'email_unchecked'));
+            }
+        });
+    }).fail(function (xhr, status) {
+        alert('error subscribing to forum');
+    });
+};
+function amaf_UpdateForumSubscriberCount(mid, fid) {
+    var u = document.getElementById('af-topicsview-forumsubscribercount');
+    if (u != null) {
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "GET",
+            url: '/API/ActiveForums/Forum/SubscriberCount?forumId=' + fid,
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            u.innerHTML = data;
+        }).fail(function (xhr, status) {
+            alert('error updating forum subscriber count');
+        });
+    }
 };
 function amaf_changeRate(r, t) {
     var d = {};

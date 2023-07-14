@@ -20,10 +20,12 @@
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Web.Http;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.UI.UserControls;
@@ -43,12 +45,67 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             public int TopicId { get; set; }
         }
         /// <summary>
-        /// Pins a Topic
+        /// Subscribes to a Topic
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Subscribe</remarks>
         [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Subscribe)]
+        public HttpResponseMessage Subscribe(TopicDto dto)
+        {
+            if (dto.TopicId > 0 && dto.ForumId > 0)
+            {
+
+                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(ActiveModule.PortalID, ActiveModule.ModuleID, UserInfo.UserID).Roles;
+                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ActiveModule.ModuleID, dto.ForumId, dto.TopicId, 1, UserInfo.UserID, userRoles);
+                return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+        /// <summary>
+        /// Gets Subscriber count for a Topic
+        /// </summary>
+        /// <param name="ForumId" type="int"></param>
+        /// <param name="TopicId" type="int"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/SubscriberCount?ForumId=xxx&TopicId=xxx</remarks>
+        [HttpGet]
+        [DnnAuthorize]
+        public HttpResponseMessage SubscriberCount(int ForumId, int TopicId)
+        {
+            if (ForumId > 0 && TopicId > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId));
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+        /// <summary>
+        /// Gets Subscriber count string for a Topic
+        /// </summary>
+        /// <param name="ForumId" type="int"></param>
+        /// <param name="TopicId" type="int"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx&TopicId=xxx</remarks>
+        [HttpGet]
+        [DnnAuthorize]
+        public HttpResponseMessage SubscriberCountString(int ForumId, int TopicId)
+        {
+            if (ForumId > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+    }
+    /// <summary>
+    /// Pins a Topic
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
+    [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModPin)]
         [ForumsAuthorize(SecureActions.Pin)]
@@ -64,8 +121,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     t.IsPinned = !t.IsPinned;
                     tc.TopicSave(PortalSettings.PortalId, t);
                     return Request.CreateResponse(HttpStatusCode.OK, value: t.IsPinned);
-                }
             }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
         /// <summary>
@@ -82,15 +140,29 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             int topicId = dto.TopicId;
             if (topicId > 0)
-            {
+        {
                 TopicsController tc = new TopicsController();
                 TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
                 if (t != null)
-                {
+            {
                     t.IsLocked = !t.IsLocked;
                     tc.TopicSave(PortalSettings.PortalId, t);
                     return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
-                }
+        }
+        /// <summary>
+        /// Gets Subscriber count string for a Topic
+        /// </summary>
+        /// <param name="ForumId" type="int"></param>
+        /// <param name="TopicId" type="int"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx&TopicId=xxx</remarks>
+        [HttpGet]
+        [DnnAuthorize]
+        public HttpResponseMessage SubscriberCountString(int ForumId, int TopicId)
+        {
+            if (ForumId > 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
