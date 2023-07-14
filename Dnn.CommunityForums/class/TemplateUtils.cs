@@ -146,10 +146,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: topicSubscriber);
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
         { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCultureInfo, timeZoneOffset, topicSubscriber, null); }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager)
         {
             var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             var ms = DataCache.MainSettings(moduleID);
