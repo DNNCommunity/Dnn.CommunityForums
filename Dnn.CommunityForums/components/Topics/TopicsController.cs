@@ -585,7 +585,21 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
-                default:
+                case "08.00.00":
+                    try
+                    {
+                        var fc = new ForumsConfig();
+                        fc.Install_Or_Upgrade_RenameThemeCssFiles();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+                   
+                    break;
+            default:
                     break;
             }
             return Version;
