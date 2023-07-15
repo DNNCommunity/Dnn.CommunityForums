@@ -203,6 +203,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Concat(Globals.ModulePath, "/config/templates");
             }
         }
+        public string ThemesBasePath
+        {
+            get
+            {
+                return Globals.ModulePath + "themes/";
+            }
+        }
+        public string ModuleInstanceThemePath
+        {
+            get
+            {
+                return ThemesBasePath + Theme + "/";
+            }
+        }
+        public string TemplatePath
+        {
+            get
+            {
+                return ModuleInstanceThemePath + "templates/";
+            }
+        }
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }

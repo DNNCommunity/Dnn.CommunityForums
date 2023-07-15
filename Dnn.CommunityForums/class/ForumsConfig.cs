@@ -444,6 +444,31 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 dr.Close();
             } 
+				using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
+				{
+					while (dr.Read())
+					{
+						databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
+					}
+					dr.Close();
+				}
+			}
+		}
+        internal void Install_Or_Upgrade_RenameThemeCssFiles()
+        {
+            try
+            {
+                SettingsInfo MainSettings = DataCache.MainSettings(-1);
+                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+                {
+                    System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+                    System.IO.File.Delete(fullFilePathName);
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
         }
     }
 }

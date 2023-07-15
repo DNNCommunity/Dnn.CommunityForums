@@ -317,14 +317,20 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SetupPage()
         {
-
-            //Register theme
-            if (InheritModuleCSS == false)
+            //register style sheets
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesBasePath + "theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/module.css");
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/jquery-ui.min.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesBasePath + "theme.css");
             }
-
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ModuleInstanceThemePath + "theme.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ModuleInstanceThemePath + "theme.css");
+            }
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ModuleInstanceThemePath + "custom/theme.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ModuleInstanceThemePath + "custom/theme.css");
+            }
+            
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
             {

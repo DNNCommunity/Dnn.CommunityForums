@@ -87,13 +87,7 @@
 			<li>BUG: Copies Missing Moderator Controls to Posts View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/153">Issue 153</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
-		<h3>08.00.00</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
-			<li>NEW: Change templates from database to file storage (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/93">Issue 93</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-		</ul>
-
-		<h3>07.00.04</h3>
+	<h3>07.00.04</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
 			<li>NEW: Added IUpgradeable for Future Code-Based Upgrade Tasks (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/186">Issue 186</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
