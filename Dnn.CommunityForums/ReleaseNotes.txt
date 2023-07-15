@@ -87,12 +87,6 @@
 			<li>BUG: Copies Missing Moderator Controls to Posts View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/153">Issue 153</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
 
-		<h3>08.00.00</h3>
-		<h4>Features, Enhancements, and Bug Fixes</h4>
-		<ul>
-			<li>NEW: Updated CSS Loading (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/228">Issue 228</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-		</ul>
-
 	<h3>07.00.04</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
 		<ul>
