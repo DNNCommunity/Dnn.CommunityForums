@@ -45,9 +45,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			RateTopic,
 			DeleteTopic,
 			MoveTopic,
-			PinTopic,
-			LockTopic,
-			MarkAnswer,
+			PinTopic,/* no longer used */
+            LockTopic,/* no longer used */
+            MarkAnswer,
 			TagsAutoComplete,
 			DeletePost,
 			LoadTopic,
@@ -104,11 +104,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					sOut = MoveTopic();
 					break;
 				case Actions.PinTopic:
-					sOut = PinTopic();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = PinTopic();
+					//break;
 				case Actions.LockTopic:
-					sOut = LockTopic();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = LockTopic();
+					//break;
 				case Actions.MarkAnswer:
 					sOut = MarkAnswer();
 					break;
@@ -255,76 +257,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					}
 				}
 
-			}
-			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-		}
-		private string PinTopic()
-		{
-			int topicId = -1;
-			int forumId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (topicId > 0)
-			{
-				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-				Data.ForumsDB db = new Data.ForumsDB();
-				forumId = db.Forum_GetByTopicId(topicId);
-				ForumController fc = new ForumController();
-				Forum f = fc.Forums_Get(forumId, this.UserId, true);
-				if (f != null)
-				{
-					if (Permissions.HasPerm(f.Security.ModPin, ForumUser.UserRoles) || (t.Author.AuthorId == this.UserId && Permissions.HasAccess(f.Security.Pin, ForumUser.UserRoles)))
-					{
-						if (t.IsPinned)
-						{
-							t.IsPinned = false;
-						}
-						else
-						{
-							t.IsPinned = true;
-						}
-						tc.TopicSave(PortalId, t);
-						return BuildOutput(string.Empty, OutputCodes.Success, true);
-					}
-				}
-			}
-			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-		}
-		private string LockTopic()
-		{
-			int topicId = -1;
-			int forumId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (topicId > 0)
-			{
-				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-				Data.ForumsDB db = new Data.ForumsDB();
-				forumId = db.Forum_GetByTopicId(topicId);
-				ForumController fc = new ForumController();
-				Forum f = fc.Forums_Get(forumId, this.UserId, true);
-				if (f != null)
-				{
-					if (Permissions.HasPerm(f.Security.ModLock, ForumUser.UserRoles) || (t.Author.AuthorId == this.UserId && Permissions.HasAccess(f.Security.Lock, ForumUser.UserRoles)))
-					{
-						if (t.IsLocked)
-						{
-							t.IsLocked = false;
-						}
-						else
-						{
-							t.IsLocked = true;
-						}
-						tc.TopicSave(PortalId, t);
-						return BuildOutput(string.Empty, OutputCodes.Success, true);
-					}
-				}
 			}
 			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
 		}
