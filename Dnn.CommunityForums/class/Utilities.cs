@@ -35,7 +35,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
-using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -921,16 +920,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static bool IsRewriteLoaded()
         {
-            try
-            {
-                /* handle situations where this code is called without an HttpContext */
-                var sConfig = GetFile((HttpContext.Current != null) ? HttpContext.Current.Server.MapPath("~/web.config") : System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
-                return sConfig.Contains("DotNetNuke.Modules.ActiveForums.ForumsReWriter");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return ConfigUtils.IsRewriterInstalled(System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
         }
         internal static bool UseFriendlyURLs(int ModuleId)
         {
