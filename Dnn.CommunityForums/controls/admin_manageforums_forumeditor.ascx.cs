@@ -21,6 +21,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Web.UI.WebControls;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Roles;
 
 using AFSettings = DotNetNuke.Modules.ActiveForums.Settings;
@@ -704,9 +705,8 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("<table id=\"tblRoles\" cellpadding=\"0\" cellspacing=\"0\" width=\"99%\">");
             sb.Append("<tr><td width=\"99%\"></td><td></td></tr>");
             if (roles != null)
-            {
-                var rc = new RoleController();
-                var arr = rc.GetPortalRoles(PortalId);
+            { 
+                var arr = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
                 foreach (RoleInfo ri in from RoleInfo ri in arr let sRoles = roles.Split(';') from role in sRoles.Where(role => role == ri.RoleID.ToString()) select ri)
                 {
                     sb.Append("<tr><td class=\"amcpnormal\">" + ri.RoleName + "</td><td><img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" onclick=\"removeRole(this," + ri.RoleID + ");\" /></td></tr>");
@@ -774,7 +774,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var rc = new RoleController();
             drpRoles.DataTextField = "RoleName";
             drpRoles.DataValueField = "RoleId";
-            drpRoles.DataSource = rc.GetPortalRoles(PortalId);
+            drpRoles.DataSource = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
             drpRoles.DataBind();
             drpRoles.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", string.Empty));
         }

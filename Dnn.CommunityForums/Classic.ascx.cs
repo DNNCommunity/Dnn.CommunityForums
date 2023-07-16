@@ -237,10 +237,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
-                    {
-                        RoleController rc = new RoleController();
-                        RoleInfo role = rc.GetRole(SocialGroupId, PortalId);
-                        //Create new forum
+                    { 
+                        RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: SocialGroupId);
+                        //Create new foportalId: rum
                         bool isPrivate = false;
                         if (!role.IsPublic)
                         {

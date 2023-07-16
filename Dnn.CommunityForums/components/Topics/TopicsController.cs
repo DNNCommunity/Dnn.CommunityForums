@@ -363,7 +363,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				ControlUtils ctlUtils = new ControlUtils();
 				string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
 				Social amas = new Social();
-				amas.AddTopicToJournal(PortalId, ModuleId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body,  fi.Security.Read, fi.SocialGroupId);
+				amas.AddTopicToJournal(PortalId, ModuleId,TabId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body,  fi.Security.Read, fi.SocialGroupId);
 			}
 			catch (Exception ex)
 			{
@@ -413,10 +413,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 			Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
-
-			DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
+			 
 			List<string> roles = new List<string>();
-			foreach (DotNetNuke.Security.Roles.RoleInfo r in rc.GetPortalRoles(moduleInfo.PortalID))
+			foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))
 			{
 				roles.Add(r.RoleName);
 			}

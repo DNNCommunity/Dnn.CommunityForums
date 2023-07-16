@@ -25,6 +25,7 @@ using System.IO;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Security.Roles;
+using System.Text.RegularExpressions;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -427,15 +428,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			try
 			{
-				var rc = new RoleController();
 				var forumsDb = new Data.Common();
 			    var fgc = new ForumGroupController();
 				var gi = fgc.Groups_Get(moduleId, forumGroupId);
-				var socialGroup = rc.GetRole(socialGroupId, portalId);
+				var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
 				var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
 				var groupMember = socialGroupId.ToString();
 
-			    var ri = rc.GetRoleByName(portalId, "Administrators");
+			    var ri = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleByName(portalId: portalId, roleName: "Administrators");
 				var permissionsId = forumsDb.CreatePermSet(ri.RoleID.ToString());
 
 				moduleId = gi.ModuleId;
@@ -502,7 +502,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			        if (socialGroup.IsPublic)
 			        {
 			            xSecList = xRoot.SelectSingleNode("//security[@type='registereduser']");
-			            ri = rc.GetRoleByName(portalId, "Registered Users");
+			            ri = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleByName(portalId: portalId, roleName: "Registered Users");
 			            if (xSecList != null)
 			            {
 			                foreach (XmlNode n in xSecList.ChildNodes)
