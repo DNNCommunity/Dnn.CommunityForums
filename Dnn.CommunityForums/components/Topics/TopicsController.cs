@@ -589,6 +589,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         var fc = new ForumsConfig();
+                        fc.Install_Or_Upgrade_MoveTemplates();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles();
                     }
                     catch (Exception ex)
@@ -597,9 +598,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
-                   
+
                     break;
-            default:
+                default:
                     break;
             }
             return Version;

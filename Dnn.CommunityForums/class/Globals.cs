@@ -317,12 +317,13 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string Rewards = "afrwd{0}";
 		public const string PostInfo = "afpi{0}";
 		public const string ForumInfo = "affi{0}";
-		public const string ForumInfoWithUser = "affi{0}-{1}"; // KR
-		public const string AllSettings = "afset{0}"; // KR
+		public const string ForumInfoWithUser = "affi{0}-{1}"; 
+		public const string AllSettings = "afset{0}";
 		public const string MainSettings = "afms{0}";
 		public const string GroupInfo = "afgi{0}";
 		public const string ProfileTemplate = "afpit{0}";
 		public const string ForumList = "affl{0}";
+		public const string Toolbar = "aftb{0}";
         public const string Tokens = "aftk{0}";
     }
 

@@ -414,14 +414,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 if (ShowToolbar == true)
                 {
-                    LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);
-                    if (sToolbar == null)
-                    {
-                        sToolbar = Utilities.GetFileContent(Globals.DefaultTemplatePath + "ToolBar.txt");
-                        DataCache.CacheStore("aftb" + ForumModuleId, sToolbar);
+                    var lit = new LiteralControl();
+                    string sToolbar = string.Empty;
+                    SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+                    sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                    if (string.IsNullOrEmpty(sToolbar))
+                    {                            
+                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                            if (!System.IO.File.Exists(templateFilePathFileName))
+                            {
+                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                            }
+                        }
+                        sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                        sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                        DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                     }
-                    lit.Text = sToolbar.ToString();
+                    sToolbar = Utilities.ParseToolBar(sToolbar, TabId, ModuleId, UserId, CurrentUserType);
+                    lit.Text = sToolbar;
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }

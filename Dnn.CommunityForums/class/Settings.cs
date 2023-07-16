@@ -157,7 +157,28 @@ namespace DotNetNuke.Modules.ActiveForums
 			    var result = MainSettings.GetString(SettingKeys.Theme);
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
-		}
+        }
+        public string ThemesBasePath
+        {
+            get
+            {
+                return Globals.ModulePath + "themes/";
+            }
+        }
+        public string ModuleInstanceThemePath
+        {
+            get
+            {
+                return ThemesBasePath + Theme + "/";
+            }
+        }
+        public string TemplatePath
+        {
+            get
+            {
+                return ModuleInstanceThemePath + "templates/";
+            }
+        }
 
         public string ThemesLocation
         {

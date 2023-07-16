@@ -489,6 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\TopicEditor.txt";
                 template = File.ReadAllText(myFile);
+                template = template.Replace("[TRESX:", "[RESX:");
             }
             else
             {

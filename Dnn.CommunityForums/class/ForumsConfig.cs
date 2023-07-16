@@ -27,7 +27,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Net.Mail;
 using System.Web;
 using System.Web.Http.Results;
 using System.Web.Profile;
@@ -51,8 +50,12 @@ namespace DotNetNuke.Modules.ActiveForums
 				LoadRanks(PortalId, ModuleId);
 				//Add Default Forums
 				LoadDefaultForums(PortalId, ModuleId);
-				// templates are loaded; map new forumview template id
-				UpdateForumViewTemplateId(PortalId, ModuleId);
+
+				Install_Or_Upgrade_MoveTemplates();
+
+                // templates are loaded; map new forumview template id
+                UpdateForumViewTemplateId(PortalId, ModuleId);
+
                 return true;
 			}
 			catch (Exception ex)
@@ -119,21 +122,21 @@ namespace DotNetNuke.Modules.ActiveForums
 						for (i = 0; i < xNodeList.Count; i++)
 						{
 							var ti = new TemplateInfo
-							             {
-							                 TemplateId = -1,
-							                 TemplateType =
-							                     (Templates.TemplateTypes)
-							                     Enum.Parse(typeof (Templates.TemplateTypes), xNodeList[i].Attributes["templatetype"].Value),
-							                 IsSystem = true,
-							                 PortalId = PortalId,
-							                 ModuleId = ModuleId,
-							                 Title = xNodeList[i].Attributes["templatetitle"].Value,
-							                 Subject = xNodeList[i].Attributes["templatesubject"].Value
-							             };
-						    string sHTML;
-							sHTML = GetFileContent(xNodeList[i].Attributes["importfilehtml"].Value);
+							{
+								TemplateId = -1,
+								TemplateType =
+												 (Templates.TemplateTypes)
+												 Enum.Parse(typeof(Templates.TemplateTypes), xNodeList[i].Attributes["templatetype"].Value),
+								IsSystem = true,
+								PortalId = PortalId,
+								ModuleId = ModuleId,
+								Title = xNodeList[i].Attributes["templatetitle"].Value,
+								Subject = xNodeList[i].Attributes["templatesubject"].Value
+							};
+							string sHTML;
+							sHTML = Utilities.GetFileContent(xNodeList[i].Attributes["importfilehtml"].Value);
 							string sText;
-							sText = GetFileContent(xNodeList[i].Attributes["importfiletext"].Value);
+							sText = Utilities.GetFileContent(xNodeList[i].Attributes["importfiletext"].Value);
 							string sTemplate = sText;
 							if (sHTML != string.Empty)
 							{
@@ -242,17 +245,17 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowHTML, sAllowHTML);
 						if (sAllowHTML.ToLowerInvariant() == "true")
 						{
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
 						}
-                        else
+						else
 						{
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.TEXTBOX).ToString());
 							Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.TEXTBOX).ToString());
@@ -301,43 +304,78 @@ namespace DotNetNuke.Modules.ActiveForums
 							}
 						}
 					}
-                }
-            }
-		}
-        private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
-        {
-            try
-            {
-				var tc = new TemplateController();
-                int ForumViewTemplateId = tc.Template_Get(TemplateName: "ForumView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                var objModules = new DotNetNuke.Entities.Modules.ModuleController();
-				objModules.UpdateModuleSetting(ModuleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId)); 
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        private string GetFileContent(string FilePath)
-		{
-			string sPath = HttpContext.Current.Server.MapPath(FilePath);
-			string sContents = string.Empty;
-			System.IO.StreamReader objStreamReader;
-			if (System.IO.File.Exists(sPath))
-			{
-				try
-				{
-					objStreamReader = new System.IO.StreamReader(sPath, System.Text.Encoding.ASCII);
-					sContents = objStreamReader.ReadToEnd();
-					objStreamReader.Close();
-				}
-				catch (Exception exc)
-				{
-					sContents = exc.Message;
 				}
 			}
-			return sContents;
 		}
+		public void CreateForumForGroup(int PortalId, int ModuleId, int SocialGroupId, string Config)
+		{
+			var xDoc = new System.Xml.XmlDocument();
+			xDoc.LoadXml(Config);
+			{
+				System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+				System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
+			}
+		}
+		private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
+		{
+			try
+			{
+				var tc = new TemplateController();
+				int ForumViewTemplateId = tc.Template_Get(TemplateName: "ForumView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+				var objModules = new DotNetNuke.Entities.Modules.ModuleController();
+				objModules.UpdateModuleSetting(ModuleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId));
+			}
+			catch (Exception ex)
+			{
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+			}
+		}
+		internal void Install_Or_Upgrade_RenameThemeCssFiles()
+		{
+			try
+			{
+				SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
+				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+				{
+					System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+					System.IO.File.Delete(fullFilePathName);
+				}
+			}
+			catch (Exception ex)
+			{
+				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+			}
+		}
+		internal void Install_Or_Upgrade_MoveTemplates()
+		{
+			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+			{
+				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+			}
+			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
+			{
+				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
+			}
+
+			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+			System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+			{
+				if (!System.IO.Directory.Exists(themeFolder.FullName + "/templates"))
+				{
+					System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
+				}
+			}
+			TemplateController tc = new TemplateController();
+			foreach (TemplateInfo template in tc.Template_List(-1, -1))
+			{
+				tc.Template_Save(template);
+			}
+		}
+		internal void ArchiveOrphanedAttachments()
+		{
+			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
+			System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
 
 		public void CreateForumForGroup(int PortalId, int ModuleId, int SocialGroupId, string Config)
 		{

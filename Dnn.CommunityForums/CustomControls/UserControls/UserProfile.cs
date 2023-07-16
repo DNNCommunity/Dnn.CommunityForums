@@ -128,16 +128,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			base.OnLoad(e);
 
             string sTemplate = string.Empty;
-            if (System.IO.File.Exists(Server.MapPath(ImagePath + "/_userprofile.txt")))
-            {
-                sTemplate = Utilities.GetFileContent(Server.MapPath(ImagePath + "/_userprofile.txt"));
-            }
-            else
-            {
-                sTemplate = Utilities.GetFileContent(Server.MapPath("~/DesktopModules/ActiveForums/config/templates/_userprofile.txt"));
-            }
-            sTemplate = Utilities.ParseSpacer(sTemplate);
 
+            SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+            string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_userprofile.txt");
+            if (!System.IO.File.Exists(templateFilePathFileName))
+            {
+                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "_userprofile.txt");
+                if (!System.IO.File.Exists(templateFilePathFileName))
+                {
+                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "_userprofile.txt");
+                }
+            }
+            sTemplate = Utilities.GetFileContent(templateFilePathFileName);
+            sTemplate = Utilities.ParseSpacer(sTemplate);
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
             if (ProfileMode == ProfileModes.Edit)
             {

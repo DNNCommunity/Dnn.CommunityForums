@@ -65,7 +65,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				txtTitle.Text = ti.Title;
 				txtSubject.Text = ti.Subject;
-				txtPlainText.Text = ti.TemplateText;
+
+                SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+                txtFileName.Text = Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                txtPlainText.Text = ti.TemplateText;
 				txtEditor.Text = Server.HtmlDecode(ti.TemplateHTML.Replace("[RESX:", "[TRESX:"));
 				drpTemplateType.SelectedIndex = drpTemplateType.Items.IndexOf(drpTemplateType.Items.FindByValue(Convert.ToString(Convert.ToInt32(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString())))));
 				hidTemplateId.Value = Convert.ToString(ti.TemplateId);

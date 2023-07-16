@@ -185,7 +185,8 @@
     <Content Include="Classic.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="config\templates\AdminWatchEmail_text.txt" />
+    <Content Include="config\templates\AdminWatchEmail.txt" />
+    <Content Include="config\templates\AdminWatchEmail_plaintext.txt" />
     <None Include="ActiveForums_Symbols.dnn">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -201,21 +202,28 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="config\templates\TopicsView.txt" />
+    <Content Include="config\templates\DailyDigest.txt" />
     <Content Include="config\templates\ForumView.txt" />
+    <Content Include="config\templates\ModAlert.txt" />
+    <Content Include="config\templates\ModAlert_plaintext.txt" />
+    <Content Include="config\templates\ModEmail.txt" />
+    <Content Include="config\templates\ModEmail_plaintext.txt" />
+    <Content Include="config\templates\PostApproved.txt" />
+    <Content Include="config\templates\PostApproved_plaintext.txt" />
+    <Content Include="config\templates\PostDeleted.txt" />
+    <Content Include="config\templates\PostDeleted_plaintext.txt" />
+    <Content Include="config\templates\PostMoved.txt" />
+    <Content Include="config\templates\PostMoved_plaintext.txt" />
+    <Content Include="config\templates\PostRejected.txt" />
+    <Content Include="config\templates\PostRejected_plaintext.txt" />
+    <Content Include="config\templates\SubscribedEmail.txt" />
+    <Content Include="config\templates\SubscribedEmail_plaintext.txt" />
     <Content Include="config\templates\TopicView.txt" />
-    <Content Include="config\templates\DailyDigest_html.txt" />
     <Content Include="config\templates\ForumDirectory.txt" />
     <Content Include="config\templates\_MemberList.txt" />
     <None Include="config\templates\TopicsView-4.3.txt" />
     <Content Include="config\templates\TopicView-4.3.txt" />
     <Content Include="config\templates\ForumTracking.txt" />
-    <Content Include="config\templates\PostApproved_html.txt" />
-    <Content Include="config\templates\PostDeleted_html.txt" />
-    <Content Include="config\templates\PostMoved_html.txt" />
-    <Content Include="config\templates\PostRejected_html.txt" />
-    <Content Include="config\templates\SubscribedEmail_html.txt" />
-    <Content Include="config\templates\ModEmail_html.txt" />
-    <Content Include="config\templates\ModAlert_html.txt" />
     <Content Include="config\templates\ToolBar.txt" />
     <Content Include="config\templates\_UserProfile.txt" />
     <Content Include="controls\admin_properties.ascx">
@@ -633,9 +641,6 @@
     <Content Include="themes\_default\images\yellow_star_03.gif" />
     <Content Include="themes\_default\images\yellow_star_04.gif" />
     <Content Include="themes\_default\images\yellow_star_05.gif" />
-    <Content Include="config\templates\PostDeleted_text.txt" />
-    <Content Include="config\templates\PostMoved_text.txt" />
-    <Content Include="config\templates\PostRejected_text.txt" />
     <Content Include="config\tokens.config" />
     <Content Include="handlers\forumhelper.ashx" />
     <None Include="sql\04.00.00.SqlDataProvider" />
@@ -769,7 +774,6 @@
     <Content Include="images\tree\tree_forum.png" />
     <Content Include="images\tree\tree_group.png" />
     <Content Include="images\warning.gif" />
-    <Content Include="config\templates\AdminWatchEmail_html.txt" />
     <Content Include="config\templates\Filters.txt" />
     <Content Include="App_LocalResources\ControlPanel.ascx.resx">
       <SubType>Designer</SubType>
@@ -794,6 +798,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
     <None Include="sql\07.00.07.SqlDataProvider" />
@@ -806,11 +811,7 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
-    <Content Include="config\templates\ModAlert_text.txt" />
-    <Content Include="config\templates\ModEmail_text.txt" />
-    <Content Include="config\templates\PostApproved_text.txt" />
     <Content Include="config\templates\StatsTemplate.txt" />
-    <Content Include="config\templates\SubscribedEmail_text.txt" />
     <Content Include="config\defaultsetup.config">
       <SubType>Designer</SubType>
     </Content>

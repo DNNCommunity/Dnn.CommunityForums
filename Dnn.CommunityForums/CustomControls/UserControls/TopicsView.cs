@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    TopicsTemplate = TemplateCache.GetCachedTemplate( ModuleId, "TopicsView", defaultTemplateId);
+                    TopicsTemplate = TemplateCache.GetCachedTemplate(ModuleId, "TopicsView", defaultTemplateId);
                 }
                 bool loadComplete = false;
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))

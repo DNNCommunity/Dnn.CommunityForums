@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(ControlConfig.InstanceId + "aftb");
+                object obj = DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.InstanceId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
             //TODO: Check for moderator
             tb = tb.Replace("[AF:TB:ModList]", string.Empty);
-            DataCache.CacheStore(ControlConfig.InstanceId + "aftb", tb);
+            DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), tb);
             return tb;
         }
     }
