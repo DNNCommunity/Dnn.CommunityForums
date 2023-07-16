@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme));
+                return Page.ResolveUrl(MainSettings.ThemeLocation);
             }
         }
 

@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme, "/images"));
+                return Page.ResolveUrl(string.Concat(MainSettings.ThemeLocation, "/images"));
             }
         }
 

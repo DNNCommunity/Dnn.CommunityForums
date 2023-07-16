@@ -307,15 +307,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
-		public void CreateForumForGroup(int PortalId, int ModuleId, int SocialGroupId, string Config)
-		{
-			var xDoc = new System.Xml.XmlDocument();
-			xDoc.LoadXml(Config);
-			{
-				System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-				System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
-			}
-		}
 		private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
 		{
 			try
@@ -335,7 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			try
 			{
 				SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
-				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
+				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(Globals.ThemesPath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
 				{
 					System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
 					System.IO.File.Delete(fullFilePathName);
@@ -373,21 +364,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 		internal void ArchiveOrphanedAttachments()
-		{
-			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
-			System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
-
-		public void CreateForumForGroup(int PortalId, int ModuleId, int SocialGroupId, string Config)
-		{
-			var xDoc = new System.Xml.XmlDocument();
-			xDoc.LoadXml(Config);
-		    {
-		        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-		        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//defaultforums/groups/group");
-		    }
-		}
-
-        internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
             System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
@@ -453,31 +429,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 dr.Close();
             } 
-				using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT FileName FROM {dbPrefix}Attachments ORDER BY FileName"))
-				{
-					while (dr.Read())
-					{
-						databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
-					}
-					dr.Close();
-				}
-			}
 		}
-        internal void Install_Or_Upgrade_RenameThemeCssFiles()
-        {
-            try
-            {
-                SettingsInfo MainSettings = DataCache.MainSettings(-1);
-                foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(MainSettings.ThemesBasePath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
-                {
-                    System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
-                    System.IO.File.Delete(fullFilePathName);
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
     }
 }

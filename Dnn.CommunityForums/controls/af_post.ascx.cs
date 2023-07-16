@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             _userIsTrusted = Utilities.IsTrusted((int)_fi.DefaultTrustValue, _ui.TrustLevel, _canTrust, _fi.AutoTrustLevel, _ui.PostCount);
-            _themePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
+            _themePath = Page.ResolveUrl(MainSettings.ThemeLocation);
             Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
 

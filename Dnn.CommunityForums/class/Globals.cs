@@ -134,6 +134,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
+        public const string TemplatesPath = Globals.ModulePath + "templates/";
+        public const string ThemesPath = Globals.ModulePath + "themes/";
 
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";

@@ -158,70 +158,18 @@ namespace DotNetNuke.Modules.ActiveForums
 			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
 			}
         }
-        public string ThemesBasePath
-        {
-            get
-            {
-                return Globals.ModulePath + "themes/";
-            }
-        }
-        public string ModuleInstanceThemePath
-        {
-            get
-            {
-                return ThemesBasePath + Theme + "/";
-            }
-        }
-        public string TemplatePath
-        {
-            get
-            {
-                return ModuleInstanceThemePath + "templates/";
-            }
-        }
-
-        public string ThemesLocation
-        {
-            get
-            {
-                return string.Concat(Globals.ModulePath, "/themes");
-            }
-        }
-
         public string ThemeLocation
         {
             get
             {
-                return string.Concat(ThemesLocation, "/", Theme);
-            }
-        }
-
-        public string TemplatesLocation
-        {
-            get
-            {
-                return string.Concat(Globals.ModulePath, "/config/templates");
-            }
-        }
-        public string ThemesBasePath
-        {
-            get
-            {
-                return Globals.ModulePath + "themes/";
-            }
-        }
-        public string ModuleInstanceThemePath
-        {
-            get
-            {
-                return ThemesBasePath + Theme + "/";
+                return string.Concat(Globals.ThemesPath, "/", Theme);
             }
         }
         public string TemplatePath
         {
             get
             {
-                return ModuleInstanceThemePath + "templates/";
+                return ThemeLocation + "templates/";
             }
         }
         public bool FullText
