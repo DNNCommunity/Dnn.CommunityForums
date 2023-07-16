@@ -262,8 +262,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
-                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
-                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
+                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+                cc.TemplatePath = Page.ResolveUrl(Globals.DefaultTemplatePath);
                 cc.SiteId = PortalId;
                 cc.PageId = TabId;
                 cc.InstanceId = ModuleId;
@@ -317,17 +317,17 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemesBasePath + "theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesBasePath + "theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "theme.css");
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ModuleInstanceThemePath + "theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ModuleInstanceThemePath + "theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css");
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ModuleInstanceThemePath + "custom/theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ModuleInstanceThemePath + "custom/theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css");
             }
             
             string lang = "en-US";
@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
                         DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                     }
-                    sToolbar = Utilities.ParseToolBar(sToolbar, TabId, ModuleId, UserId, CurrentUserType);
+                    sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
                     lit.Text = sToolbar;
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);

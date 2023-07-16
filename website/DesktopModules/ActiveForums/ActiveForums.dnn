@@ -73,7 +73,7 @@
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.00.07,07.00.11,07.00.12</upgradeVersionsList>
+              <upgradeVersionsList>07.00.07,07.00.11,08.00.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>
@@ -384,10 +384,15 @@
               <name>07.00.12.SqlDataProvider</name>
               <version>07.00.12</version>
             </script>
+             <script type="Install">
+              <path>sql</path>
+              <name>08.00.00.SqlDataProvider</name>
+              <version>08.00.00</version>
+            </script>
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>07.00.12</version>
+              <version>08.00.00</version>
             </script>
           </scripts>
         </component>

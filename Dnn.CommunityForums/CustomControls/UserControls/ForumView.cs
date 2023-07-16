@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                             sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
                             lit.Text = sToolbar;
-                            sOutput = sOutput.Replace("[TOOLBAR]", sToolbar.ToString());
+                            template = template.Replace("[TOOLBAR]", sToolbar.ToString());
                         }
                         Control tmpCtl = null;
                         try
