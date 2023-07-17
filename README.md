@@ -10,6 +10,22 @@ The Community Forums module plans to help you and your fellow community members 
 
 There are no steps unique to this module to install it.  You're able to install this module the same way you'd install any other module in DNN.  
 
+### Gettting Started  
+
+When using this module, it's important to know that it can be set-up in numerous ways.  To make your initial experience easier, there is a wizard that will pre-configure the module for you with the most common settings, as well as adding some starter modules for you to use (or not).  
+
+1. There are 3 modules that you'll find installed.  The primary one that you should be using is simply named `Active Forums`.  The other two modules are companion modules that server other complimentary purposes.  
+
+2. When you add the `Active Forums` module to the page, it will show you a welcome message.  Click the `Continue` button to proceed.  
+
+3. After just a moment, the page will reload and you'll be looking at the Control Panel for the module.  You can either begin configuring things now, or choose `Exit` to go back to the main view.  
+
+You're technically already ready to use the module...  Have fun! 
+
+#### Configuration Views  
+
+There is the Control Panel that you will hopefully find to be obvious.  This is where you'll perform the majority of your configuration time.  However, if you enter into Edit Mode, you'll also find a large number of other high-level configuration options in the module settings.  Use the actions menu to go to the module settings, like you would for any other module.  
+
 ## Documentation  
 
 We don't have every single feature documented, but what we have is [currently maintained in the project wiki](https://github.com/DNNCommunity/Dnn.CommunityForums/wiki).  
