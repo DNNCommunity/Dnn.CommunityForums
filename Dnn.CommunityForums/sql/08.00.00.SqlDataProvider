@@ -175,3 +175,95 @@ GO
 /*activeforums_Templates_List*/
 
 /* issue 93 - move templates to file-based */
+
+
+
+/* begin - issue #165 - ban user feature  */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Delete_For_User]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Delete_For_User];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_Delete_For_User]
+@ModuleId int,
+@UserId int,
+@DelBehavior int 
+AS
+
+BEGIN
+
+SET NOCOUNT ON
+
+IF @DelBehavior = 1
+	BEGIN
+		UPDATE t SET t.IsDeleted = 1
+		FROM {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId and c.IsDeleted = 0
+		UPDATE r SET r.IsDeleted = 1
+		FROM {databaseOwner}[{objectQualifier}activeforums_Replies] r 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = r.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId and c.IsDeleted = 0
+		UPDATE c SET c.IsDeleted = 1, c.DateUpdated = GETUTCDATE() 
+		FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId and c.IsDeleted = 0
+	END
+ELSE
+	BEGIN
+		DELETE tr
+		FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings] tr
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = tr.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId
+		DELETE tt
+		FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] tt
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = tt.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId
+		DELETE ft
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = ft.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId
+		DELETE t
+		FROM {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId
+		DELETE r
+		FROM {databaseOwner}[{objectQualifier}activeforums_Replies] r 
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = r.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId
+		DELETE c
+		FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId
+	END
+END
+
+DECLARE @ForumId INT
+		 
+BEGIN
+	DECLARE forums_cursor CURSOR FOR SELECT ForumId FROM {databaseOwner}[{objectQualifier}activeforums_Forums] WHERE ModuleId = @ModuleId 
+	OPEN forums_cursor
+		FETCH NEXT FROM forums_cursor into @ForumId
+			WHILE (@@fetch_status = 0)
+			BEGIN
+				EXEC {databaseOwner}[{objectQualifier}activeforums_Forums_LastUpdates] @ForumId
+				EXEC {databaseOwner}[{objectQualifier}activeforums_SaveTopicNextPrev] @ForumId
+			FETCH NEXT FROM forums_cursor INTO @ForumId
+			END
+	CLOSE forums_cursor
+	DEALLOCATE forums_cursor
+END
+GO
+
+/* end - issue #165 -  ban user feature  */ 
