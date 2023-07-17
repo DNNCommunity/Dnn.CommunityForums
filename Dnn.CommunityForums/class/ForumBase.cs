@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 if(_forumData == null)
-                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.SiteId, ControlConfig.InstanceId) : ForumsDB.ForumListXML(PortalId, ModuleId); 
+                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : ForumsDB.ForumListXML(PortalId, ModuleId); 
 
                 return _forumData;
             }
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme));
+                return Page.ResolveUrl(MainSettings.ThemeLocation);
             }
         }
 
@@ -155,8 +155,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 _defaultView = value;
             }
         }
-
-        public bool InheritModuleCSS { get; set; }
 
         public bool JumpToLastPost
         {

@@ -148,9 +148,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //    ? rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("True"))
                 //    : rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("False"));
 
-					Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
-					Utilities.SelectListItemByValue(rdMailQueue, MailQueue);
-                    Utilities.SelectListItemByValue(rdPoints, EnablePoints);
+                Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
+                Utilities.SelectListItemByValue(rdMailQueue, MailQueue);
+                Utilities.SelectListItemByValue(rdPoints, EnablePoints);
                     Utilities.SelectListItemByValue(rdUsersOnline, EnableUsersOnline);
                     Utilities.SelectListItemByValue(rdUseSkinBreadCrumb, UseSkinBreadCrumb);
 

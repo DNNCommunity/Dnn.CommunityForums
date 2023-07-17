@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class LikeController : ControllerBase<LikeController>
     {
-        public class LikeDto
+        public struct LikeDto
         {
             public int ForumId { get; set; }
             public int ContentId { get; set; }

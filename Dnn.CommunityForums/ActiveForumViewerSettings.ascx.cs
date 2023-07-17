@@ -111,9 +111,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				string sID = ForumGroup.Substring(@int);
 				//ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
 				objModules.UpdateModuleSetting(ModuleId, "AFForumGroupID", sID);
-				DataCache.CacheClear(drpForumInstance.SelectedItem.Value + TabId + sID + "TopicTemplate");
-				DataCache.CacheClear(drpForumInstance.SelectedItem.Value + TabId + sID + "TopicsTemplate");
-				DataCache.CacheClear(drpForumInstance.SelectedItem.Value + TabId + "ForumTemplate");
 				// Redirect back to the portal home page
 				Response.Redirect(Utilities.NavigateUrl(TabId), true);
 			}

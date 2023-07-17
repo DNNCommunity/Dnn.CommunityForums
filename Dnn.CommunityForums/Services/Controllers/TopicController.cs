@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             public int ForumId { get; set; }
             public int TopicId { get; set; }
         }
+
         /// <summary>
         /// Subscribes to a Topic
         /// </summary>
@@ -58,12 +59,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (dto.TopicId > 0 && dto.ForumId > 0)
             {
 
-                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(ActiveModule.PortalID, ActiveModule.ModuleID, UserInfo.UserID).Roles;
-                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ActiveModule.ModuleID, dto.ForumId, dto.TopicId, 1, UserInfo.UserID, userRoles);
-                return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);                
+                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController()
+                    .Profiles_Get(ActiveModule.PortalID, ActiveModule.ModuleID, UserInfo.UserID).Roles;
+                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID,
+                    ActiveModule.ModuleID, dto.ForumId, dto.TopicId, 1, UserInfo.UserID, userRoles);
+                return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
         /// <summary>
         /// Gets Subscriber count for a Topic
         /// </summary>
@@ -77,10 +82,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (ForumId > 0 && TopicId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId));
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(
+                        ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId));
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
         /// <summary>
         /// Gets Subscriber count string for a Topic
         /// </summary>
@@ -94,9 +103,67 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (ForumId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
+                return Request.CreateResponse(HttpStatusCode.OK,
+                    $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+          
+    /// <summary>
+    /// Pins a Topic
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
+    [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.ModPin)]
+        [ForumsAuthorize(SecureActions.Pin)]
+        public HttpResponseMessage Pin(TopicDto dto)
+        {
+            int topicId = dto.TopicId;
+            if (topicId > 0)
+            {
+                TopicsController tc = new TopicsController();
+                TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                if (t != null)
+                {
+                    t.IsPinned = !t.IsPinned;
+                    tc.TopicSave(PortalSettings.PortalId, t);
+                    return Request.CreateResponse(HttpStatusCode.OK, value: t.IsPinned);
+                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+
+        /// <summary>
+        /// Locks a Topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Lock</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.ModLock)]
+        [ForumsAuthorize(SecureActions.Lock)]
+        public HttpResponseMessage Lock(TopicDto dto)
+        {
+            int topicId = dto.TopicId;
+            if (topicId > 0)
+            {
+                TopicsController tc = new TopicsController();
+                TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                if (t != null)
+                {
+                    t.IsLocked = !t.IsLocked;
+                    tc.TopicSave(PortalSettings.PortalId, t);
+                    return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
+                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }

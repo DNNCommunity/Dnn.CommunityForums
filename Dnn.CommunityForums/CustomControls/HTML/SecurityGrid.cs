@@ -21,11 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	public class SecurityGrid
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+    public class SecurityGrid
 	{
 		public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
 		public int PortalId
@@ -34,11 +36,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				return PortalSettings.PortalId;
 			}
-		}
-		public bool ReadOnly {get; set;}
-		public string ImagePath {get; set;}
-		public PermissionInfo Security {get; set;}
-		public int PermissionsId {get; set;}
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        public bool ReadOnly {get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        public string ImagePath {get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        public PermissionInfo Security {get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        public int PermissionsId {get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
         public SecurityGrid(DotNetNuke.Entities.Portals.PortalSettings ps, bool isReadOnly, string imgPath, PermissionInfo sec, int permId)
 		{
 			PortalSettings = ps;
@@ -46,8 +53,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			ImagePath = imgPath;
 			Security = sec;
 			PermissionsId = permId;
-		}
-		public string GetNewGrid()
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        public string GetNewGrid()
 		{
 			//Roles
 			string[] roles = GetSecureObjectList(Security, 0).Split(';');
@@ -71,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(tmp, PortalId);
+			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, ModuleId: -1, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
@@ -85,13 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string users = GetSecureObjectList(Security, 1);
 			string userNames = string.Empty;
 			if (! (string.IsNullOrEmpty(users)))
-			{
-				DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
+			{ 
 				foreach (string uid in users.Split(';'))
 				{
 					if (! (string.IsNullOrEmpty(uid)))
 					{
-						DotNetNuke.Entities.Users.UserInfo u = uc.GetUser(PortalId, Convert.ToInt32(uid));
+						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
 						if (u != null)
 						{
 							PermissionInfo pi = new PermissionInfo();

@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
         {
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var @params = new List<string>();
 
@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TopicURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)
         {
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var sURL = string.Empty;
 
@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string ForumURL(string groupPrefix, string forumPrefix, int forumId, int tabId, int moduleId, int pageId = 1)
         {
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var sURL = string.Empty;
 
