@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme));
+                return Page.ResolveUrl(MainSettings.ThemeLocation);
             }
         }
 
@@ -155,8 +155,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 _defaultView = value;
             }
         }
-
-        public bool InheritModuleCSS { get; set; }
 
         public bool JumpToLastPost
         {

@@ -6,7 +6,8 @@ function saveTemplate(){
 	currAction = 'save';
 	var templateid = document.getElementById("<%=hidTemplateId.ClientID%>").value;
 	var title = document.getElementById("<%=txtTitle.ClientID%>").value;
-	var subject = document.getElementById("<%=txtSubject.ClientID%>").value;
+    var subject = document.getElementById("<%=txtSubject.ClientID%>").value;
+    var filename = document.getElementById("<%=txtFileName.ClientID%>").value;
 	var plaintext = document.getElementById("<%=txtPlainText.ClientID%>").value;
 	var htmltext = document.getElementById("<%=txtEditor.ClientID%>").value;
 	var templatetype = document.getElementById("<%=drpTemplateType.ClientID%>");
@@ -69,6 +70,9 @@ function actionComplete(){
 	</tr>
 	<tr>
 		<td><asp:TextBox ID="txtTitle" runat="server" CssClass="amcptxtbx" /></td><td><asp:TextBox ID="txtSubject" runat="server" CssClass="amcptxtbx" /></td><td><asp:DropDownList ID="drpTemplateType" runat="server" CssClass="amcptxtbx" /></td>
+	</tr>
+	<tr>
+		<td class="amcpbold">[RESX:FileName]:&nbsp;<asp:Label ID="txtFileName" runat="server" CssClass="amcplabel" /></td>
 	</tr>
 </table>
 <div id="divHTML" onclick="toggleTab(this);" class="amtabsel" style="margin-left:10px;"><div id="divHTML_text" class="amtabseltext">[RESX:HTML]</div></div><div id="divTEXT" onclick="toggleTab(this);" class="amtab" style="display:none;"><div id="divTEXT_text" class="amtabtext">[RESX:PlainText]</div></div>

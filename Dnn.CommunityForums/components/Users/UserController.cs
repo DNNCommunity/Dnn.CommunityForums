@@ -160,7 +160,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
-        // KR - added caching to profiles to skip the DB hit
         public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
 
@@ -175,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             // see if it's in cache already
-            object data = DataCache.CacheRetrieve(cachekey);
+            object data = DataCache.SettingsCacheRetrieve(ModuleId,cachekey);
 
             if (data != null)
             {
@@ -184,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(PortalId, -1, UserId));
-                DataCache.CacheStore(cachekey, dt);
+                DataCache.SettingsCacheStore(ModuleId,cachekey, dt);
             }
 
             foreach (DataRow row in dt.Rows)
@@ -273,8 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string GetRoleIds(UserInfo u, int PortalId)
         {
             string RoleIds = string.Empty;
-            DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in rc.GetPortalRoles(PortalId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
             {
                 string roleName = r.RoleName;
                 foreach (string role in u.Roles)

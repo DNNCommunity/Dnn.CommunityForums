@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
 
             objModules.DeleteModuleSetting(tabModuleId, "NeedsConvert");
 			objModules.UpdateModuleSetting(tabModuleId, "AFINSTALLED", "True");
-			DataCache.CacheClear(string.Format(CacheKeys.MainSettings, forumModuleId));
+			DataCache.SettingsCacheClear(forumModuleId,string.Format(CacheKeys.MainSettings, forumModuleId));
 
 		}
 	}

@@ -27,8 +27,6 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Security.Policy;
-using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -74,14 +72,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ForumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
             }
 
-            SettingsInfo MainSettings = DataCache.MainSettings(ControlConfig.ModuleId);
             string sTemp = string.Empty;
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(ModuleId + "qr");
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.QuickReply, ModuleId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
+                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.QuickReply, ModuleId), sTemp);
                 }
                 else
                 {
@@ -182,8 +180,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
-                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
-                return;
+                UserProfileController upc = new UserProfileController();
+                UserProfileInfo upi = upc.Profiles_Get(PortalId, ModuleId, this.UserId);
+                if (upi != null)
+                {
+                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < MainSettings.FloodInterval)
+                    {
+                        Controls.InfoMessage im = new Controls.InfoMessage();
+                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>";
+                        plhMessage.Controls.Add(im);
+                        return;
+                    }
+                }
             }
             //TODO: Fix for anon
             //If Not Current.Request.IsAuthenticated Then
@@ -267,8 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                     Subscriptions.SendSubscriptions(PortalId, ModuleId, PageId, ForumId, TopicId, ReplyId, UserId);
-                    Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody,ForumInfo.Security.Read, SocialGroupId);
+                    new Social().AddReplyToJournal(PortalId, ForumModuleId, TabModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody, forumInfo.Security.Read, forumInfo.SocialGroupId); 
                 }
                 catch (Exception ex)
                 {
@@ -287,10 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         private string ParseTemplate()
         {
-            string sOut = DisplayTemplate;
-
-            DataCache.CacheStore(ModuleId + "qr", sOut);
-            return sOut;
+            return DisplayTemplate;
         }
         private void LinkControls(ControlCollection ctrls)
         {

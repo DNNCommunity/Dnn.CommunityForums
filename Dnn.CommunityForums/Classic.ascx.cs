@@ -237,10 +237,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
-                    {
-                        RoleController rc = new RoleController();
-                        RoleInfo role = rc.GetRole(SocialGroupId, PortalId);
-                        //Create new forum
+                    { 
+                        RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: SocialGroupId);
+                        //Create new foportalId: rum
                         bool isPrivate = false;
                         if (!role.IsPublic)
                         {
@@ -263,8 +262,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
-                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
-                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
+                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatePath + "/");
                 cc.PortalId = PortalId;
                 cc.PageId = TabId;
                 cc.ModuleId = ModuleId;
@@ -317,14 +316,20 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SetupPage()
         {
-
-            //Register theme
-            if (InheritModuleCSS == false)
+            //register style sheets
+            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "theme.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/module.css");
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/jquery-ui.min.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "theme.css");
             }
-
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css");
+            }
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css");
+            }
+            
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
             {
@@ -409,13 +414,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);
-                    if (sToolbar == null)
-                    {
-                        sToolbar = Utilities.GetFileContent(Globals.DefaultTemplatePath + "ToolBar.txt");
-                        DataCache.CacheStore("aftb" + ForumModuleId, sToolbar);
+                    string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                    if (string.IsNullOrEmpty(sToolbar))
+                    {                            
+                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                            if (!System.IO.File.Exists(templateFilePathFileName))
+                            {
+                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                            }
+                        }
+                        sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                        sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
+                        DataCache.SettingsCacheStore(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                     }
-                    lit.Text = sToolbar.ToString();
+                    lit.Text = sToolbar;
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }

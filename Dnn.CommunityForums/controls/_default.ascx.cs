@@ -42,10 +42,11 @@ namespace DotNetNuke.Modules.ActiveForums
 			init = fc.ForumsInit(PortalId, ModuleId);
 			if (init == true)
 			{
-				DotNetNuke.Entities.Modules.ModuleController objModules = new DotNetNuke.Entities.Modules.ModuleController();
-				objModules.UpdateModuleSetting(ModuleId, "AFINSTALLED", init.ToString());
-				DataCache.ClearAllCache(ModuleId, TabId);
-				Response.Redirect(EditUrl());
+
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", init.ToString());
+                DataCache.ClearAllCache(ModuleId);
+				DataCache.ClearAllCacheForTabId(TabId);
+                Response.Redirect(EditUrl());
 			}
 		}
 	}

@@ -346,7 +346,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForm(string template)
         {
-            bool hasOptions = false;
             template = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
             template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox\" runat=\"server\" />");
@@ -362,15 +361,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[TOOLBAR"))
             {
                 var lit = new LiteralControl();
-                object sToolbar = DataCache.CacheRetrieve("aftb" + ModuleId);
-                if (sToolbar == null)
+                string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                if (string.IsNullOrEmpty(sToolbar))
                 {
-                    sToolbar = Utilities.GetFileContent(DotNetNuke.Modules.ActiveForums.Utilities.MapPath(MainSettings.TemplatesLocation + "\\ToolBar.txt"));
-                    sToolbar = Utilities.ParseToolBar(sToolbar.ToString(), TabId, ModuleId, UserId, CurrentUserType);
-                    DataCache.CacheStore("aftb" + ModuleId, sToolbar);
+                    string templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                        }
+                    }
+                    sToolbar = Utilities.GetFileContent(templateFilePathFileName); 
+                    
+                    sToolbar = sToolbar.Replace("[TRESX:", "[RESX:"); 
+                    sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
+                    DataCache.SettingsCacheStore(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                 }
-                lit.Text = sToolbar.ToString();
-                template = template.Replace("[TOOLBAR]", sToolbar.ToString());
+                
+                lit.Text = sToolbar;
+                template = template.Replace("[TOOLBAR]", sToolbar);
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");

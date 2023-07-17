@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ForumIds = forumUser.UserForums;
                 }
             }
-            SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
             Data.Common db = new Data.Common();
             IDataReader dr = db.TagCloud_Get(PortalId, ModuleId, ForumIds, TagCount);
             ControlUtils ctlUtils = new ControlUtils();

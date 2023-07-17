@@ -84,7 +84,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.UseTemplatePath = UseTemplatePath;
                         objModule.ParentForumId = ParentForumId;
                         objModule.ForumIds = ForumIds;
-                        objModule.InheritModuleCSS = InheritModuleCSS;
                         //objModule.LoadGroupForumID = CType(Settings["AFForumGroupID"], Integer)
                         objModule.DefaultView = DefaultView; //CType(Settings["AFViewType"], String)
                         this.Controls.Add(objModule);

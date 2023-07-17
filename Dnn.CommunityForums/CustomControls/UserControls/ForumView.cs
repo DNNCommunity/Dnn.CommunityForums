@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     CurrentUserId = UserId;
                 }
-                string sOutput = string.Empty;
+                string template = string.Empty;
                 try
                 {
                     int defaultTemplateId = MainSettings.ForumTemplateID;
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         defaultTemplateId = DefaultForumViewTemplateId;
                     }
-                    sOutput = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/"));
+                    template = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/"));
                 }
                 catch (Exception ex)
                 {
@@ -106,25 +106,41 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     //DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(Me, ex)
                 }
 
-                if (sOutput != string.Empty)
+                if (template != string.Empty)
                 {
                     try
                     {
-                        if (sOutput.Contains("[TOOLBAR"))
+                        if (template.Contains("[TOOLBAR"))
                         {
                             var lit = new LiteralControl();
-                            object sToolbar = null; //DataCache.CacheRetrieve("aftb" & ModuleId)
-                            sToolbar = Utilities.GetFileContent(DotNetNuke.Modules.ActiveForums.Utilities.MapPath(TemplatePath + "\\ToolBar.txt"));
-                            DataCache.CacheStore("aftb" + ModuleId, sToolbar);
+                            string sToolbar = string.Empty;
+                            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
+                            sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
+
+                            if (string.IsNullOrEmpty(sToolbar))
+                            {
+                                string templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
+                                if (!System.IO.File.Exists(templateFilePathFileName))
+                                {
+                                    templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                                    if (!System.IO.File.Exists(templateFilePathFileName))
+                                    {
+                                        templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                                    }
+                                }
+                                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                                DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
+                            }
                             sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                            lit.Text = sToolbar.ToString();
-                            sOutput = sOutput.Replace("[TOOLBAR]", sToolbar.ToString());
+                            lit.Text = sToolbar;
+                            template = template.Replace("[TOOLBAR]", sToolbar.ToString());
                         }
                         Control tmpCtl = null;
                         try
                         {
 
-                            tmpCtl = ParseControl(sOutput);
+                            tmpCtl = ParseControl(template);
 
                         }
                         catch (Exception ex)
@@ -180,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+                SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 string sOutput = string.Empty;
                 string sTemplate;
                 if (UseTemplatePath && TemplatePath != string.Empty)
@@ -194,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
                 }
 
-                sTemplate = DisplayTemplate == string.Empty ? DotNetNuke.Modules.ActiveForums.TemplateCache.GetCachedTemplate( ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate; 
+                sTemplate = DisplayTemplate == string.Empty ? DotNetNuke.Modules.ActiveForums.TemplateCache.GetCachedTemplate( ModuleId, "ForumView", ForumTemplateId) : DisplayTemplate;
                 try
                 {
                     sTemplate = ParseControls(sTemplate);
