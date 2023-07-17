@@ -189,9 +189,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    TopicsTemplate = TemplateCache.GetCachedTemplate( ModuleId, "TopicsView", defaultTemplateId);
+                    TopicsTemplate = TemplateCache.GetCachedTemplate(ModuleId, "TopicsView", defaultTemplateId);
                 }
-                bool loadComplete = false;
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -240,7 +239,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 TopicsTemplate = TopicsTemplate.Replace("[AF:SORT:REPLYCREATED]", string.Empty);
                 if (TopicsTemplate.Contains("[TOPICS]"))
                 {
-                    DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
+                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId));
+                    if (ds == null)
+                    {
+                        ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
+                        DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId,ForumId, UserId), ds); 
+                    }
                     if (ds.Tables.Count > 0)
                     {
                         drForum = ds.Tables[0].Rows[0];
@@ -645,7 +649,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (bModLock)
             {
-                sOutput = sOutput.Replace("[ACTIONS:LOCK]", "<a href=\"javascript:void(0)\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock([TOPICID]);};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-lock fa-fw fa-blue\"></i></a>");
+                sOutput = sOutput.Replace("[ACTIONS:LOCK]", "<a id=\"af-topic-lock-a-[TOPICID]\" href=\"javascript:void(0)\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock(" + ModuleId + "," +ForumId + ",[TOPICID]);};\" title=\"[RESX:LockTopic]\" style=\"vertical-align:middle;\"><i id=\"af-topic-lock-[TOPICID]\" class=\"fa fa-lock fa-fw fa-blue\"></i></a>");
             }
             else
             {
@@ -653,7 +657,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (bModPin)
             {
-                sOutput = sOutput.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin([TOPICID]);};\" title=\"[RESX:Pin]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue\"></i></a>");
+                sOutput = sOutput.Replace("[ACTIONS:PIN]", "<a id=\"af-topic-pin-a-[TOPICID]\" href=\"javascript:void(0)\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:PinTopic]\" style=\"vertical-align:middle;\"><i id=\"af-topic-pin-[TOPICID]\" class=\"fa fa-thumb-tack fa-fw fa-blue\"></i></a>");
             }
             else
             {
@@ -744,22 +748,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sTopicsTemplate = sTopicsTemplate.Replace("[RESX:LockTopic]", "[RESX:UnLockTopic]");
                         sTopicsTemplate = sTopicsTemplate.Replace("[RESX:Confirm:Lock]", "[RESX:Confirm:UnLock]");
-                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i class=\"fa fa-lock fa-fw fa-red\"></i>");
+                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + TopicId.ToString() + "\" class=\"fa fa-lock fa-fw fa-red\"></i>");
                     }
                     else
                     {
-                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONLOCK]", "");
+                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONLOCK]", "&nbsp;&nbsp;<i id=\"af-topicsview-lock-" + TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
                     }
 
                     if (isPinned)
                     {
-                        //sTopicsTemplate = sTopicsTemplate.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
+                        sTopicsTemplate = sTopicsTemplate.Replace("[RESX:PinTopic]", "[RESX:UnPinTopic]");
                         sTopicsTemplate = sTopicsTemplate.Replace("[RESX:Confirm:Pin]", "[RESX:Confirm:UnPin]");
-                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i class=\"fa fa-thumb-tack fa-fw fa-red\"></i>");
+                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + TopicId.ToString() + "\" class=\"fa fa-thumb-tack fa-fw fa-red\"></i>");
                     }
                     else
                     {
-                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONPIN]", "");
+                        sTopicsTemplate = sTopicsTemplate.Replace("[ICONPIN]", "&nbsp;&nbsp;<i id=\"af-topicsview-pin-" + TopicId.ToString() + "\" class=\"fa fa-fw fa-red\"></i>");
                     }
 
                     if (string.IsNullOrEmpty(topicData))

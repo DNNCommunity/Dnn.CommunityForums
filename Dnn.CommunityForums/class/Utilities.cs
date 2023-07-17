@@ -35,7 +35,6 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
-using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -112,8 +111,10 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[VIEWS:TOPICS]", Views.Topics);
             template = template.Replace("[VIEWS:TOPIC]", Views.Topic);
             template = template.Replace("[PAGEID]", config.PageId.ToString());
-            template = template.Replace("[PortalId]", config.PortalId.ToString());
-            template = template.Replace("[ModuleId]", config.ModuleId.ToString());
+            template = template.Replace("[SITEID]", config.PortalId.ToString());
+            template = template.Replace("[INSTANCEID]", config.ModuleId.ToString());
+            template = template.Replace("[PORTALID]", config.PortalId.ToString());
+            template = template.Replace("[MODULEID]", config.ModuleId.ToString());
 
             return template;
         }
@@ -921,16 +922,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         internal static bool IsRewriteLoaded()
         {
-            try
-            {
-                /* handle situations where this code is called without an HttpContext */
-                var sConfig = GetFile((HttpContext.Current != null) ? HttpContext.Current.Server.MapPath("~/web.config") : System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
-                return sConfig.Contains("DotNetNuke.Modules.ActiveForums.ForumsReWriter");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return ConfigUtils.IsRewriterInstalled(System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
         }
         internal static bool UseFriendlyURLs(int ModuleId)
         {
@@ -990,8 +982,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sHTML;
         }
-
-        internal static string GetFileContent(string filePath)
+		internal static string GetFileContent(string filePath)
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
@@ -1020,7 +1011,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var mUserOffSet = 0;
-                var mainSettings = DataCache.MainSettings(mid);
+                var mainSettings = SettingsBase.GetModuleSettings(mid);
                 var mServerOffSet = mainSettings.TimeZoneOffset;
                 var newDate = displayDate.AddMinutes(-mServerOffSet);
 
@@ -1050,7 +1041,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
         {
-            var mainSettings = DataCache.MainSettings(mid);
+            var mainSettings = SettingsBase.GetModuleSettings(mid);
             var mServerOffSet = mainSettings.TimeZoneOffset;
             var newDate = displayDate.AddMinutes(-mServerOffSet);
 
@@ -1405,7 +1396,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
         {
-            var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
             var fc = new ForumController();
@@ -1424,7 +1414,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     continue;
 
                 var rid = Convert.ToInt32(r);
-                var rName = rc.GetRole(rid, portalId).RoleName;
+                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
                 foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);

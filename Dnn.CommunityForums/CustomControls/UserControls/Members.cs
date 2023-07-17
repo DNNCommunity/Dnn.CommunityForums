@@ -98,16 +98,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
-            string sTemplate = string.Empty;
-            if (System.IO.File.Exists(Server.MapPath(ImagePath + "/_memberlist.txt")))
+            SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+            string sTemplate = string.Empty; 
+            string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_memberlist.txt");
+            if (!System.IO.File.Exists(templateFilePathFileName))
             {
-                sTemplate = Utilities.GetFileContent(Server.MapPath(ImagePath + "/_memberlist.txt"));
+                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "_memberlist.txt");
+                if (!System.IO.File.Exists(templateFilePathFileName))
+                {
+                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "_memberlist.txt");
+                }
             }
-            else
-            {
-                sTemplate = Utilities.GetFileContent(Server.MapPath("~/DesktopModules/ActiveForums/config/templates/_memberlist.txt"));
-            }
-
+            sTemplate = Utilities.GetFileContent(templateFilePathFileName);
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
             if (!(sTemplate == string.Empty))
             {

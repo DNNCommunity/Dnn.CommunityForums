@@ -1,0 +1,177 @@
+﻿/* issue 93 - move templates to file-based */
+
+SET NOCOUNT ON
+
+/* remove unused cache setting -- may not exist in some installations */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TEMPLATECACHE'
+/* remove unused cache setting */
+
+/* add FileName column to activeforums_Templates */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'FileName' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Templates] 
+		ADD FileName nvarchar(255) NULL
+END
+GO
+/* add FileName column to activeforums_Templates */
+
+/* Populate FileNames for existing templates */
+SET NOCOUNT ON
+DECLARE @ModuleId int
+DECLARE @TemplateId int
+DECLARE @Title nvarchar(150)
+DECLARE modulecursor CURSOR FOR
+	SELECT DISTINCT ModuleId from {databaseOwner}{objectQualifier}activeforums_Templates WHERE FileName IS NULL
+OPEN modulecursor
+	FETCH NEXT FROM modulecursor INTO @ModuleId
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DECLARE templatecursor CURSOR FOR
+			SELECT TemplateId, Title from {databaseOwner}{objectQualifier}activeforums_Templates WHERE ModuleId = @ModuleId AND FileName IS NULL 
+		OPEN templatecursor
+		FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
+		WHILE @@FETCH_STATUS = 0
+		BEGIN
+			DECLARE @TemplateTitleCount int
+			SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title AND ModuleId = @ModuleId)
+			IF @TemplateTitleCount <> 1 
+				BEGIN 
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(@ModuleId)),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId
+				END
+			ELSE
+				BEGIN
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId 
+				END
+			FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
+		END
+		CLOSE templatecursor
+		DEALLOCATE templatecursor
+		FETCH NEXT FROM modulecursor INTO @ModuleId	
+	END
+CLOSE modulecursor
+DEALLOCATE modulecursor
+GO 
+/* Populate FileNames for existing templates */
+
+
+SET NOCOUNT ON
+DECLARE @TemplateId int
+DECLARE @Title nvarchar(150)
+DECLARE templatecursor CURSOR FOR
+SELECT TemplateId, Title from {databaseOwner}{objectQualifier}activeforums_Templates WHERE FileName IS NULL
+OPEN templatecursor
+FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
+WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DECLARE @TemplateTitleCount int
+		SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title)
+		IF @TemplateTitleCount <> 1 
+			BEGIN 
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+			END
+		ELSE
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+			END
+		FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
+	END
+CLOSE templatecursor
+DEALLOCATE templatecursor
+GO
+/* Populate FileNames for existing templates */
+
+/*activeforums_Templates_Save*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+	@TemplateId int,
+	@PortalId int,
+	@ModuleId int,
+	@TemplateType int,
+	@IsSystem bit,
+	@Title nvarchar(150),
+	@Subject nvarchar(200),
+	@Template ntext	
+AS
+BEGIN
+IF EXISTS (Select TemplateId FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE TemplateId = @TemplateID AND PortalId = @PortalId AND ModuleId = @ModuleID) 
+	--UPDATE
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Templates
+			SET
+				TemplateType = @TemplateType,
+				IsSystem = @IsSystem,
+				Title = @Title,
+				Subject = @Subject,
+				Template = @Template,
+				DateUpdated = GETUTCDATE()
+			WHERE
+				TemplateId = @TemplateId AND PortalId = @PortalId AND ModuleId = @ModuleId
+	END
+ELSE
+	--INSERT
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Templates
+			(PortalId, ModuleId, TemplateType, Title, Subject, Template, DateCreated)
+			VALUES
+			(@PortalId, @ModuleId, @TemplateType,@Title,@Subject,@Template, GETUTCDATE())
+		SET @TemplateId = SCOPE_IDENTITY()
+		DECLARE @TemplateTitleCount int
+		SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title) 
+		IF @TemplateTitleCount <> 1 
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+			END
+			ELSE
+				BEGIN
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+				END 
+	END
+END
+
+SELECT @TemplateId
+GO
+/*activeforums_Templates_Save*/
+
+
+/*activeforums_Templates_List*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates_List]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_List]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_List]
+@PortalId int,
+	@ModuleId int,
+	@TemplateType int = 0,
+	@RowIndex int = 0, 
+	@MaxRows int = 100000
+AS
+If @TemplateType = 0 OR @TemplateType = -1
+	BEGIN
+		BEGIN 
+			SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE (ModuleId = @ModuleId OR @ModuleId = -1)
+		END
+		BEGIN
+			SELECT TemplateId, PortalId, ModuleId, TemplateType, IsSystem,Title,FileName,Subject,Template,DateCreated,DateUpdated,RowRank
+			 FROM
+				(
+					SELECT TemplateId, PortalId, ModuleId, TemplateType, IsSystem,Title,FileName,Subject,Template,DateCreated,DateUpdated,
+					ROW_NUMBER() OVER (ORDER BY TemplateType, Title) as RowRank FROM {databaseOwner}{objectQualifier}activeforums_Templates 
+					WHERE (ModuleId = @ModuleId OR @ModuleId = -1)
+				) as T WHERE RowRank > @RowIndex AND RowRank <= (@RowIndex + @MaxRows)
+		END
+	END
+ELSE
+	BEGIN
+		BEGIN 
+			SELECT Count(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE (ModuleId = @ModuleId OR @ModuleId = -1) AND TemplateType = @TemplateType
+		END
+		BEGIN
+			SELECT * FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE (ModuleId = @ModuleId OR @ModuleId = -1) AND TemplateType = @TemplateType
+			ORDER BY Title
+		END
+	END
+GO
+/*activeforums_Templates_List*/
+
+/* issue 93 - move templates to file-based */

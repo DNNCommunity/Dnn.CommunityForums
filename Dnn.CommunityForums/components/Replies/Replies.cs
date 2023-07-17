@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Reflection;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Modules.ActiveForums.Entities;
@@ -200,14 +201,19 @@ namespace DotNetNuke.Modules.ActiveForums
 			ri.ReplyToId = ReplyToId;
 			ri.StatusId = -1;
 			ri.TopicId = TopicId;
-			replyId = Reply_Save(PortalId, ri);
+			replyId = Reply_Save(PortalId, ModuleId, ri);
             UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
 		}
-		public int Reply_Save(int PortalId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
-		{
-			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-			UserProfileController.Profiles_ClearCache(ri.Content.AuthorId);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
+        public int Reply_Save(int PortalId, ReplyInfo ri)
+        {
+            return Reply_Save(PortalId, -1, ri);
+		}
+		public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
+        {
+            // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
+            UserProfileController.Profiles_ClearCache(ModuleId,ri.Content.AuthorId);
 
             return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 		}
@@ -248,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
 		{
-			SettingsInfo ms = DataCache.MainSettings(ModuleId);
+			SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
 			ForumController fc = new ForumController();
 			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
 
@@ -259,7 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				return null;
 			}
 			reply.IsApproved = true;
-			rc.Reply_Save(PortalId, reply);
+			rc.Reply_Save(PortalId, ModuleId, reply);
 			TopicsController tc = new TopicsController();
 			tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
 			TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
@@ -285,7 +291,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
                 }
 				Social amas = new Social();
-				amas.AddReplyToJournal(PortalId, ModuleId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body,fi.Security.Read, fi.SocialGroupId);
+				amas.AddReplyToJournal(PortalId, ModuleId,TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body,fi.Security.Read, fi.SocialGroupId);
 			}
 			catch (Exception ex)
 			{

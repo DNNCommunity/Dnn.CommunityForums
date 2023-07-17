@@ -54,13 +54,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return "folder.png";
         }
 
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
         public static void LoadTemplateCache(int moduleID)
         {
             var tc = new TemplateController();
             foreach (var ti in tc.Template_List(-1, moduleID))
             {
-                DataCache.CacheStore(ti.Title + moduleID, ti.Template);
-                DataCache.CacheStore(string.Concat(ti.Subject, "_Subject_", moduleID), ti.Subject);
+                DataCache.SettingsCacheStore(moduleID, ti.Title + moduleID, ti.Template);
+                DataCache.SettingsCacheStore(moduleID, ti.Subject + "_Subject_" + moduleID, ti.Subject);
             }
         }
 
@@ -148,7 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
             var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-            var ms = DataCache.MainSettings(moduleID);
+            var ms = SettingsBase.GetModuleSettings(moduleID);
             var sOut = template;
 
             // If we have a template name, load the template into sOut
@@ -421,16 +422,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseProfileInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
-            var cacheKey = string.Format(CacheKeys.PostInfo, moduleId);
-            var myTemplate = Convert.ToString(DataCache.CacheRetrieve(cacheKey));
+            var cacheKey = string.Format(CacheKeys.ProfileInfo, moduleId);
+            var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId,cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
                 var objTemplateInfo = GetTemplateByName("ProfileInfo", moduleId, portalId);
                 myTemplate = objTemplateInfo.TemplateHTML;
                 if (cacheKey != string.Empty)
-                    DataCache.CacheStore(cacheKey, myTemplate);
+                    DataCache.SettingsCacheStore(moduleId,cacheKey, myTemplate);
             }
 
             myTemplate = ParseProfileTemplate(myTemplate, up, portalId, moduleId, imagePath, currentUserType, true, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);
@@ -508,7 +509,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     profileTemplate = profileTemplate.Replace("[POSTINFO]", sPostInfo);
                 }
 
-                var mainSettings = DataCache.MainSettings(moduleId);
+                var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
                 // Parse DNN profile fields if needed
                 var pt = profileTemplate;
@@ -860,7 +861,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static string GetTopicTemplate(int topicTemplateId, int moduleId)
         {
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             return TemplateCache.GetCachedTemplate(moduleId, "TopicView", topicTemplateId);
         }
@@ -873,7 +874,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sTemplate = GetTopicTemplate(topicTemplateID, moduleId);
             try
             {
-                var mainSettings = DataCache.MainSettings(moduleId);
+                var mainSettings = SettingsBase.GetModuleSettings(moduleId);
                 var sTopic = GetTemplateSection(sTemplate, "[TOPIC]", "[/TOPIC]");
                 sTopic = sTopic.Replace("[ACTIONS:ALERT]", string.Empty);
                 sTopic = sTopic.Replace("[ACTIONS:EDIT]", string.Empty);

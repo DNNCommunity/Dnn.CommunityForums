@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
 		{
 			var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-			var mainSettings = DataCache.MainSettings(moduleId);
+			var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 		    var sTemplate = string.Empty;
 			var tc = new TemplateController();
 			var ti = tc.Template_Get(templateId, portalId, moduleId);
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (string.IsNullOrEmpty(r)) continue;
                 var rid = Convert.ToInt32(r);
-                var rName = rc.GetRole(rid, portalId).RoleName;
+                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
                 foreach (UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
 		{
 			PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
-			SettingsInfo mainSettings = DataCache.MainSettings(moduleID);
+			SettingsInfo mainSettings = SettingsBase.GetModuleSettings(moduleID);
 
 			TemplateController tc = new TemplateController();
 			TemplateUtils.lstSubscriptionInfo = subs;
