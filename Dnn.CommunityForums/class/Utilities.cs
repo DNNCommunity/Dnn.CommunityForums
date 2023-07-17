@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        internal static string ParseTokenConfig(string template, string group, ControlsConfig config)
+        internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
                 return string.Empty;
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             template = ParseSpacer(template);
 
-            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.List(group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId,group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -167,7 +167,8 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
+            CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 

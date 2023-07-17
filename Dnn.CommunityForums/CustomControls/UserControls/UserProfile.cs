@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             string sTemplate = string.Empty;
 
-            SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
             string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_userprofile.txt");
             if (!System.IO.File.Exists(templateFilePathFileName))
             {

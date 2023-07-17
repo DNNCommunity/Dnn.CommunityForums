@@ -112,29 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (template.Contains("[TOOLBAR"))
                         {
-                            var lit = new LiteralControl();
-                            string sToolbar = string.Empty;
-                            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-                            sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
-
-                            if (string.IsNullOrEmpty(sToolbar))
-                            {
-                                string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
-                                if (!System.IO.File.Exists(templateFilePathFileName))
-                                {
-                                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                                    if (!System.IO.File.Exists(templateFilePathFileName))
-                                    {
-                                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                                    }
-                                }
-                                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                                DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
-                            }
-                            sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                            lit.Text = sToolbar;
-                            template = template.Replace("[TOOLBAR]", sToolbar.ToString());
+                            template = template.Replace("[TOOLBAR]", BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
                         }
                         Control tmpCtl = null;
                         try
@@ -927,6 +905,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOut = Name;
             }
             return sOut;
+        }
+
+        internal string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        {
+            string sToolbar =
+                Convert.ToString(
+                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId)));
+            if (string.IsNullOrEmpty(sToolbar))
+            {
+                string templateFilePathFileName =
+                    HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
+                if (!System.IO.File.Exists(templateFilePathFileName))
+                {
+                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName =
+                            HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                    }
+                }
+                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
+                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId), sToolbar);
+            }
+
+            return sToolbar;
         }
         #endregion
     }

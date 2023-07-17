@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return string.Concat(Globals.ThemesPath, "/", Theme);
+                return string.Concat(Globals.ThemesPath, "/", Theme, "/");
             }
         }
         public string TemplatePath

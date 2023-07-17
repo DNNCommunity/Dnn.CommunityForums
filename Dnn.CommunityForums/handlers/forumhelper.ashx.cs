@@ -30,6 +30,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
@@ -210,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (topicId > 0)
 			{
 				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
 				Data.ForumsDB db = new Data.ForumsDB();
 				forumId = db.Forum_GetByTopicId(topicId);
 				ForumController fc = new ForumController();
@@ -242,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (topicId > 0)
 			{
 				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
 				Data.ForumsDB db = new Data.ForumsDB();
 				forumId = db.Forum_GetByTopicId(topicId);
 				ForumController fc = new ForumController();
@@ -276,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (topicId > 0 & UserId > 0)
 			{
 				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
 				Data.ForumsDB db = new Data.ForumsDB();
 				forumId = db.Forum_GetByTopicId(topicId);
 				ForumController fc = new ForumController();
@@ -360,7 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (TopicId > 0 & replyId < 1)
 			{
 				TopicsController tc = new TopicsController();
-				TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId);
 
 				if (Permissions.HasAccess(f.Security.ModDelete, ForumUser.UserRoles) || (Permissions.HasAccess(f.Security.Delete, ForumUser.UserRoles) && ti.Content.AuthorId == UserId && ti.IsLocked == false))
 				{
@@ -428,7 +429,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (topicId > 0)
 			{
 				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
 				Data.ForumsDB db = new Data.ForumsDB();
 				forumId = db.Forum_GetByTopicId(topicId);
 				ForumController fc = new ForumController();
@@ -588,7 +589,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (topicId > 0)
 			{
 				TopicsController tc = new TopicsController();
-				TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
 				Data.ForumsDB db = new Data.ForumsDB();
 				forumId = db.Forum_GetByTopicId(topicId);
 				ForumController fc = new ForumController();

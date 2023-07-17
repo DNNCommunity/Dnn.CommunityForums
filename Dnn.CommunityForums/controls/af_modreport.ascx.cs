@@ -30,6 +30,7 @@ using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -144,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ContentAlert");
                 TopicsController topicController = new TopicsController();
-                TopicInfo topic = topicController.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = topicController.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;

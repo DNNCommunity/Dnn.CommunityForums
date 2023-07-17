@@ -28,6 +28,7 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -205,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
 		}
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
         public int Reply_Save(int PortalId, ReplyInfo ri)
         {
             return Reply_Save(PortalId, -1, ri);
@@ -268,7 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			rc.Reply_Save(PortalId, ModuleId, reply);
 			TopicsController tc = new TopicsController();
 			tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
-			TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
 
 			if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
 			{

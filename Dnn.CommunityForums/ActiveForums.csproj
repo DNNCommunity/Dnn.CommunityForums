@@ -922,11 +922,11 @@
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" /> 
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
-    <Compile Include="Entities\Token.cs" />  
+    <Compile Include="Entities\Token.cs" />
     <Compile Include="Services\Controllers\ForumController.cs" />
-    <Compile Include="Services\Controllers\TopicController.cs" /> 
+    <Compile Include="Services\Controllers\TopicController.cs" />
     <Compile Include="Services\Controllers\UserController.cs" />
     <Compile Include="Services\Controllers\LikeController.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
