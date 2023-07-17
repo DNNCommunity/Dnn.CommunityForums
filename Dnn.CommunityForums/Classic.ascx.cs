@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
                 cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
-                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatePath + "/");
                 cc.PortalId = PortalId;
                 cc.PageId = TabId;
                 cc.ModuleId = ModuleId;
@@ -414,12 +414,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)); 
-                    SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
-                    sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                    string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId)));
                     if (string.IsNullOrEmpty(sToolbar))
                     {                            
-                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
+                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
                         if (!System.IO.File.Exists(templateFilePathFileName))
                         {
                             templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
@@ -429,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                         sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                        object sToolbar = DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar,ForumModuleId));
+                        DataCache.SettingsCacheStore(ModuleId: ForumModuleId, cacheKey: string.Format(CacheKeys.Toolbar,ForumModuleId), sToolbar);
                     }
                     lit.Text = sToolbar;
                     plhToolbar.Controls.Clear();

@@ -361,12 +361,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[TOOLBAR"))
             {
                 var lit = new LiteralControl();
-                string sToolbar = string.Empty;
-                SettingsInfo moduleSettings = DataCache.SettingsCacheRetrieve(ForumModuleId);
-                sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId)));
                 if (string.IsNullOrEmpty(sToolbar))
                 {
-                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
+                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
                     if (!System.IO.File.Exists(templateFilePathFileName))
                     {
                         templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
