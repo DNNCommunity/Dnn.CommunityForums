@@ -486,22 +486,22 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			return GetRoles(PortalId, ModuleId).ToArray().Where(r => r.RoleName == role).Select(r=> r.RoleName).FirstOrDefault();
 		}
-		private static ArrayList GetRoles(int PortalId, int ModuleId)
+        private static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int ModuleId, int PortalId)
         {
-            ArrayList roleNames;
-            object obj = (ArrayList)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.RoleNames, PortalId)); 
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId: ModuleId, cacheKey: string.Format(CacheKeys.RoleNames, PortalId));
+            System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> roleNames;
             if (obj == null)
             {
-                roleNames = new Security.Roles.RoleController().GetPortalRoles(PortalId);
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.RoleNames, PortalId), roleNames);
+                roleNames = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
+                DataCache.SettingsCacheStore(ModuleId: ModuleId, cacheKey: string.Format(CacheKeys.RoleNames,PortalId), cacheObj: roleNames);
             }
-			else
-			{
-                roleNames = (ArrayList)obj;
-			}
-
-			return roleNames;
-		}
+            else
+            {
+                roleNames = (System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo>)obj;
+            }
+            return roleNames;
+        }
+        
 
 		public static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles)
 		{
