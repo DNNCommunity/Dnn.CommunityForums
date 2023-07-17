@@ -1,6 +1,6 @@
 # Community Forums Module  
 
-This is the official forums module for the [DNN CMS](https://dnncommunity.org/About-DNN) Community.  You'll find it in use on the [Official DNN Website](https://dnncommunity.org/Forums).  The forums module has been built and continued to be maintained with the goal of providing as many contemporary tools a forum-based community might need.  
+This is the official forums module for the [DNN CMS](https://dnncommunity.org/About-DNN) Community.  You'll find it in use on the [Official DNN Website](https://dnncommunity.org/Forums).  The forums module has been built and continues to be maintained with the goal of providing the many contemporary tools a forum-based community might need.  
 
 This module was originally released as a commercial module many years ago, known as Active Forums.  Years after, the Active Modules company was acquired by DNN Corp, and much of the Intellectual Property (IP) was integrated into the DNN Platform and Evoq solutions.  However, extensions like this one were donated to the community as an open-source extension.  
 
@@ -33,7 +33,7 @@ You can contact any of the current maintainer(s) at the end of [this README](htt
 
 ## Get Help  
 
-There are two places to get help at this time.  They are listed below in their order of preference.  :)  
+There are several places to get help at this time.  They are listed below in their order of preference.  :)  
 
 - [DNN Community Forums - Using this Module](https://dnncommunity.org/forums/using-dnn/extensions/)  
 - [DNN Community Forums - Building this Module](https://dnncommunity.org/forums/development-and-extensions/building-extensions/)  
