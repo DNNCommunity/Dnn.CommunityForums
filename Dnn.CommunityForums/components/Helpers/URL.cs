@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public static string ForumLink(int tabId, Forum fi)
 		{
-			var mainSettings = DataCache.MainSettings(fi.ModuleId);
+			var mainSettings = SettingsBase.GetModuleSettings(fi.ModuleId);
 			
             var sURL = string.Empty;
 
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public static string TopicLink(int tabId, int moduleId, TopicInfo ti)
 		{	
 			string sURL;
-			var mainSettings = DataCache.MainSettings(moduleId);
+			var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
 			if (string.IsNullOrEmpty(ti.URL) || !mainSettings.URLRewriteEnabled)
 			{

@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var fc = new ForumsConfig();
                     bool configComplete = fc.ForumsInit(PortalId, ModuleId);
-                    new DotNetNuke.Entities.Modules.ModuleController().UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString()); 
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
                 }
                 catch (Exception ex)
                 {

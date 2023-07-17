@@ -33,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
         string sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
         sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
         sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
         return sTemplate;
     }
@@ -50,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
+                        string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;
@@ -66,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         objStreamReader.Close();
                         sTemplate = Utilities.ParseSpacer(sTemplate);
                         DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                        //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath("~/DesktopModules/ActiveForums/config/Templates/" & TemplateType & ".txt")))
+                            //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath(Globals.ModulePath + "config/Templates/" & TemplateType & ".txt")))
                     }
                 }
                 catch (Exception ex)
@@ -96,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
+                        string myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;
@@ -145,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateFileName);
+                    myFile = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + TemplateFileName);
                 if (System.IO.File.Exists(myFile))
                 {
                     System.IO.StreamReader objStreamReader = null;

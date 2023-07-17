@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using static DotNetNuke.Modules.ActiveForums.Templates;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -65,7 +66,10 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				txtTitle.Text = ti.Title;
 				txtSubject.Text = ti.Subject;
-				txtPlainText.Text = ti.TemplateText;
+
+                SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+                txtFileName.Text = Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                txtPlainText.Text = ti.TemplateText;
 				txtEditor.Text = Server.HtmlDecode(ti.TemplateHTML.Replace("[RESX:", "[TRESX:"));
 				drpTemplateType.SelectedIndex = drpTemplateType.Items.IndexOf(drpTemplateType.Items.FindByValue(Convert.ToString(Convert.ToInt32(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString())))));
 				hidTemplateId.Value = Convert.ToString(ti.TemplateId);
@@ -116,9 +120,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						}
 
 						ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-						templateId = tc.Template_Save(ti);
-						string ckey = ModuleId + templateId + Convert.ToString(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString()));
-						DataCache.CacheClear(ckey);
+                            templateId = tc.Template_Save(ti);
+						DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.Template, ModuleId, templateId, ti.TemplateType));
 						sMsg = "Template saved successfully!";
 					}
 					catch (Exception ex)
@@ -150,8 +153,9 @@ namespace DotNetNuke.Modules.ActiveForums
 							{
 								sMsg = "Enable to delete system templates";
 							}
-						}
-					}
+                            }
+                            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TemplatePrefix, ModuleId));
+                        }
 					catch (Exception ex)
 					{
 						sMsg = "Error deleting template.";

@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Reflection;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -150,18 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private bool _ShowToolbar = true;
-        public bool ShowToolbar
-        {
-            get
-            {
-                return _ShowToolbar;
-            }
-            set
-            {
-                _ShowToolbar = value;
-            }
-        }
+        public bool ShowToolbar { get; set; } = true;
         #endregion
 
         public UserController UserController
@@ -363,14 +353,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static SettingsInfo GetModuleSettings(int ModuleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
-            if (objSettings == null)
+            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
+            if (objSettings == null && ModuleId > 0)
             {
                 objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
             return objSettings;
-
+            
         }
         public SettingsInfo MainSettings
         {
@@ -380,12 +370,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 return GetModuleSettings(ForumModuleId);
             }
         }
-        
+
         public string ImagePath
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme, "/images"));
+                return Page.ResolveUrl(string.Concat(MainSettings.ThemeLocation, "/images"));
             }
         }
 

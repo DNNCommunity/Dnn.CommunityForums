@@ -22,6 +22,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.Linq;
 
@@ -100,22 +101,20 @@ namespace DotNetNuke.Modules.ActiveForums
                         TopicSubscriber = Utilities.SafeConvertBool(dr["TopicSubscriber"])
                     };
 
-                    if (!(sl.Contains(si)))
-                    {
-                        if (Permissions.HasPerm(CanSubscribe, si.UserId, PortalId))
-                        {
-                            sl.Add(si);
-                        }
-                    }
-                }
-            }
-            dr.Close();
-
-            return sl;
-        }
-    }
-
-    public abstract class Subscriptions
+				    if (! (sl.Contains(si)))
+					{
+						if (Permissions.HasPerm(CanSubscribe, si.UserId, PortalId))
+						{
+							sl.Add(si);
+						}
+					}
+				}
+			}
+			dr.Close();
+			return sl;
+		}
+	}
+	public abstract class Subscriptions
     {
         public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int AuthorId)
         {
