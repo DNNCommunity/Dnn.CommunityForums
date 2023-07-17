@@ -787,7 +787,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.TopicData = tData.ToString();
             }
 
-            TopicId = tc.TopicSave(PortalId, ti);
+            TopicId = tc.TopicSave(PortalId, ModuleId, ti);
             ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
             if (ti != null)
             {
@@ -857,14 +857,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                 ti.TopicType = TopicTypes.Poll;
-                tc.TopicSave(PortalId, ti);
+                tc.TopicSave(PortalId, ModuleId, ti);
                 tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             }
 
             try
             {
-                var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                DataCache.CacheClearPrefix(cachekey);
+                DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, authorId));
+                DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
                 if (bSend && !_isEdit)
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, _fi, TopicId, 0, ti.Content.AuthorId);
@@ -1023,13 +1023,12 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsDeleted = false;
             ri.StatusId = ctlForm.StatusId;
             ri.TopicId = TopicId;
-            var tmpReplyId = rc.Reply_Save(PortalId, ri);
+            var tmpReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
-            SaveAttachments(ri.ContentId);
-             
-            var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-            DataCache.CacheClearPrefix(cachekey);
+            SaveAttachments(ri.ContentId); 
+            DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
+            DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             try
             {
                if (bSend && !_isEdit)

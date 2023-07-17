@@ -252,7 +252,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					if (Permissions.HasPerm(f.Security.ModMove, ForumUser.UserRoles))
 					{
 						tc.Topics_Move(PortalId, ModuleId, targetForumId, topicId);
-                        DataCache.CacheClearPrefix(string.Format("AF-FV-{0}-{1}", PortalId, ModuleId));
+                        DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 						return BuildOutput(string.Empty, OutputCodes.Success, true);
 					}
 				}
@@ -414,8 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			}
 
 			// Return the result
-			string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-			DataCache.CacheClearPrefix(cachekey);
+			DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 			return BuildOutput(TopicId + "|" + replyId, OutputCodes.Success, true);
 		}
 		private string LoadTopic()
@@ -635,7 +634,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 						t.TopicData = tData.ToString();
 					}
 				}
-				tc.TopicSave(PortalId, t);
+				tc.TopicSave(PortalId, ModuleId, t);
                 tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 if (Params["tags"] != null)
 				{

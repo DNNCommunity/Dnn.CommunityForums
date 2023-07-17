@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            SettingsInfo ms = DataCache.MainSettings(ForumModuleId);
+            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
             Forum fi = null;
             if (e.Parameters.Length > 0)
             {
@@ -151,9 +151,8 @@ namespace DotNetNuke.Modules.ActiveForums
                             ModController mc = new ModController();
                             mc.Mod_Reject(PortalId, ForumModuleId, UserId, tmpForumId, tmpTopicId, tmpReplyId);
                             if (fi.ModRejectTemplateId > 0 & tmpAuthorId > 0)
-                            {
-                                DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-                                DotNetNuke.Entities.Users.UserInfo ui = uc.GetUser(PortalId, tmpAuthorId);
+                            { 
+                                DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tmpAuthorId);
                                 if (ui != null)
                                 {
                                     Author au = new Author();
@@ -189,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     sSubject = ti.Content.Subject;
                                     sBody = ti.Content.Body;
                                     ti.IsApproved = true;
-                                    tc.TopicSave(PortalId, ti);
+                                    tc.TopicSave(PortalId, ModuleId, ti);
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
@@ -225,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ri.IsApproved = true;
                                     sSubject = ri.Content.Subject;
                                     sBody = ri.Content.Body;
-                                    rc.Reply_Save(PortalId, ri);
+                                    rc.Reply_Save(PortalId,ForumModuleId, ri);
                                     TopicsController tc = new TopicsController();
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId, tmpReplyId);
                                     TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
@@ -260,9 +259,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             break;
                         }
-                }
-                string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                DataCache.CacheClearPrefix(cachekey);
+                } 
+                DataCache.CacheClearPrefix(ModuleId,  string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             }
             BuildModList();
             litTopics.RenderControl(e.Output);

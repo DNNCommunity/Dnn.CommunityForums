@@ -263,10 +263,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
                 cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
-                cc.TemplatePath = Page.ResolveUrl(Globals.DefaultTemplatePath);
-                cc.SiteId = PortalId;
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
+                cc.PortalId = PortalId;
                 cc.PageId = TabId;
-                cc.InstanceId = ModuleId;
+                cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
                 cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
@@ -413,8 +413,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 if (ShowToolbar == true)
                 {
-                    var lit = new LiteralControl();
-                    string sToolbar = string.Empty;
+                    LiteralControl lit = new LiteralControl();
+                    object sToolbar = DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)); 
                     SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
                     sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
                     if (string.IsNullOrEmpty(sToolbar))
@@ -428,11 +428,9 @@ namespace DotNetNuke.Modules.ActiveForums
                                 templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
                             }
                         }
-                        sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                        sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                        DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
+                        sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
+                        object sToolbar = DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar,ForumModuleId));
                     }
-                    sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
                     lit.Text = sToolbar;
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);

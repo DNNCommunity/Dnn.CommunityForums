@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			ti.TopicIcon = string.Empty;
 			ti.TopicType = TopicTypes.Topic;
 			ti.ViewCount = 0;
-			topicId = TopicSave(PortalId, ti);
+			topicId = TopicSave(PortalId, ModuleId, ti);
 
 			UpdateModuleLastContentModifiedOnDate(ModuleId);
 
@@ -102,16 +102,20 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use TopicsController.TopicSave(int PortalId, int ModuleId, TopicInfo ti)")]
+        public int TopicSave(int PortalId, TopicInfo ti)
+        {
+			return TopicSave(PortalId, -1, ti);          
+        }
+        public int TopicSave(int PortalId, int ModuleId, TopicInfo ti)
+        {
+            // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
+            UserProfileController.Profiles_ClearCache(ModuleId , ti.Content.AuthorId);
 
-		public int TopicSave(int PortalId, TopicInfo ti)
-		{
-			// Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-			UserProfileController.Profiles_ClearCache(ti.Content.AuthorId);
-            
-			return Convert.ToInt32(DataProvider.Instance().Topics_Save(PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
+            return Convert.ToInt32(DataProvider.Instance().Topics_Save(PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
 
-		}
-		public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId)
+        }
+        public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId)
 		{
 			int id = Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, -1);
 			return id;
@@ -206,8 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UpdateModuleLastContentModifiedOnDate(ModuleId);
 
             DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
-			var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-			DataCache.CacheClearPrefix(cachekey);
+			DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 			try
 			{
 				var objectKey = string.Format("{0}:{1}", ForumId, TopicId);
@@ -241,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId)
 		{
-			SettingsInfo settings = DataCache.MainSettings(ModuleId);
+			SettingsInfo settings = SettingsBase.GetModuleSettings(ModuleId);
 			if (settings.URLRewriteEnabled)
 			{
 				try
@@ -337,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
 		{
-			SettingsInfo ms = DataCache.MainSettings(ModuleId);
+			SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
 			ForumController fc = new ForumController();
 			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
 
@@ -348,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				return null;
 			}
 			topic.IsApproved = true;
-			tc.TopicSave(PortalId, topic);
+			tc.TopicSave(PortalId, ModuleId, topic);
 			tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId);
             
             if (fi.ModApproveTemplateId > 0 & topic.Author.AuthorId > 0)
@@ -406,10 +409,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
 			/* since this code runs without HttpContext, get https:// by looking at page settings */
-			bool isHttps = new DotNetNuke.Entities.Tabs.TabController().GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
-			bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
-			string primaryPortalAlias = new DotNetNuke.Entities.Portals.PortalAliasController().GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
-
+			bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
+            bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
+            string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+			
 			ForumController fc = new ForumController();
 			Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 			Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
@@ -494,8 +497,8 @@ namespace DotNetNuke.Modules.ActiveForums
 					string permittedRolesCanView = string.Empty;
 					if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
 					{
-						var canView = new Data.Common().WhichRolesCanViewForum(forumid, roleIds);
-						permittedRolesCanView = Permissions.GetRoleNames(string.Join(";", canView.Split(":".ToCharArray())), moduleInfo.PortalID);
+						var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
+						permittedRolesCanView = Permissions.GetRoleNames(moduleInfo.PortalID, moduleInfo.ModuleID, string.Join(";", canView.Split(":".ToCharArray())));
 						AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
 					}
 					var searchDoc = new SearchDocument

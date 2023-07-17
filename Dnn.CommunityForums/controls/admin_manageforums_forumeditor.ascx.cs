@@ -263,15 +263,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var forumId = fc.Forums_Save(PortalId, fi, bIsNew, Utilities.SafeConvertBool(e.Parameters[8]));
                     recordId = forumId;
-                    var securityKey = string.Empty;
-                        
-                    DataCache.ClearForumGroupsCache(ModuleId);
-                        
-                    var cachekey = string.Format("AF-FI-{0}-{1}-{2}", PortalId, ModuleId, forumId);
-                    DataCache.CacheClear(cachekey);
-                        
-                    cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                    DataCache.CacheClearPrefix(cachekey);
 
                     hidEditorResult.Value = forumId.ToString();
                     break;
@@ -310,10 +301,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     var gc = new ForumGroupController();
                     groupId = gc.Groups_Save(PortalId, gi, bIsNew);
                     recordId = groupId;
-
-                    DataCache.ClearForumGroupsCache(ModuleId);
-                    var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                    DataCache.CacheClearPrefix(cachekey);
                     hidEditorResult.Value = groupId.ToString();
 
                     break;
@@ -326,11 +313,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     SaveSettings(sKey, e.Parameters);
 
                     hidEditorResult.Value = forumId.ToString();
-                    DataCache.CacheClear(forumId.ToString() + "ForumSettings");
-                    DataCache.CacheClear(string.Format(CacheKeys.ForumInfo, forumId));
-                    DataCache.CacheClear(string.Format(CacheKeys.ForumInfo, forumId) + "st");
-                    var cachekey = string.Format("AF-FI-{0}-{1}-{2}", PortalId, ModuleId, forumId);
-                    DataCache.CacheClear(cachekey);
+
                     break;
                 }
 
@@ -341,10 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     SaveSettings(sKey, e.Parameters);
 
                     hidEditorResult.Value = forumId.ToString();
-                    DataCache.CacheClear(forumId.ToString() + "GroupSettings");
-                    DataCache.CacheClear(string.Format(CacheKeys.GroupInfo, forumId));
-                    DataCache.CacheClear(string.Format(CacheKeys.GroupInfo, forumId) + "st");
-
+                
                     break;
                 }
 
@@ -352,8 +332,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
                     DataProvider.Instance().Forums_Delete(PortalId, ModuleId, forumId);
-                    var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                    DataCache.CacheClearPrefix(cachekey);
                     break;
                 }
 
@@ -361,15 +339,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
                     DataProvider.Instance().Groups_Delete(ModuleId, groupId);
-                    var cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-                    DataCache.CacheClearPrefix(cachekey);
                     break;
                 }
             }
-
-            DataCache.CacheClear(string.Format(CacheKeys.ForumList, ModuleId));
-            DataCache.ClearAllForumSettingsCache(ModuleId);
-            DataCache.CacheClear(ModuleId + "fv");
+            DataCache.ClearAllCache(ModuleId);
+            DataCache.ClearAllCacheForTabId(TabId);
 
             hidEditorResult.RenderControl(e.Output);
         }

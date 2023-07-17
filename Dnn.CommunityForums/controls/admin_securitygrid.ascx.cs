@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(tmp, PortalId);
+            NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, ModuleId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
@@ -163,12 +163,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string userNames = string.Empty;
 			if (! (string.IsNullOrEmpty(users)))
 			{
-				DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
 				foreach (string uid in users.Split(';'))
 				{
 					if (! (string.IsNullOrEmpty(uid)))
 					{
-						DotNetNuke.Entities.Users.UserInfo u = uc.GetUser(PortalId, Convert.ToInt32(uid));
+						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
 						if (u != null)
 						{
 							PermissionInfo pi = new PermissionInfo();

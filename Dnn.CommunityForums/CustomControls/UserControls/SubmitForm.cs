@@ -346,7 +346,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForm(string template)
         {
-            bool hasOptions = false;
             template = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
             template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox\" runat=\"server\" />");
@@ -363,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var lit = new LiteralControl();
                 string sToolbar = string.Empty;
-                SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+                SettingsInfo moduleSettings = DataCache.SettingsCacheRetrieve(ForumModuleId);
                 sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
                 if (string.IsNullOrEmpty(sToolbar))
                 {
@@ -376,11 +375,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
                         }
                     }
-                    sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                    sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                    DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
+                    sToolbar = Utilities.GetFileContent(templateFilePathFileName); 
+                    
+                    sToolbar = sToolbar.Replace("[TRESX:", "[RESX:"); 
+                    sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
+                    DataCache.SettingsCacheStore(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
                 }
-                sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
+                
                 lit.Text = sToolbar;
                 template = template.Replace("[TOOLBAR]", sToolbar);
             }

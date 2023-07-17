@@ -35,6 +35,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Instrumentation;
+using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
+using System.Drawing.Printing;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -298,9 +300,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
-
-            var ds = DataProvider.Instance().UI_TopicView(PortalId, ModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort);
-
+            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId));
+            if (ds == null)
+            {
+                ds = DataProvider.Instance().UI_TopicView(PortalId, ModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
+                DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId), ds); ;
+            }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
                 Response.Redirect(Utilities.NavigateUrl(TabId));
@@ -1244,9 +1249,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var rewardPoints = dr.GetInt("RewardPoints");
             var dateLastActivity = dr.GetDateTime("DateLastActivity");
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
-
-            DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-            DotNetNuke.Entities.Users.UserInfo author = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
+             
+            DotNetNuke.Entities.Users.UserInfo author = DotNetNuke.Entities.Users.UserController.Instance.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
 
             // Populate the user object with the post author info.  
             var up = new User

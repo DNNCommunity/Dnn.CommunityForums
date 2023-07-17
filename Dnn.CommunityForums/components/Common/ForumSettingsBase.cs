@@ -23,8 +23,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumSettingsBase : ModuleSettingsBase
 	{
-		private readonly ModuleController _objModules = new ModuleController();
-
         /// <summary>
         /// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
         /// </summary>
@@ -38,7 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // changed but case-insensitive identical: empty the setting first
                 UpdateTabModuleSettingCaseSensitive(key, "");
             }
-            _objModules.UpdateTabModuleSetting(TabModuleId, key, newValue);
+            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, key, newValue);
         }
 
         /// <summary>
@@ -52,9 +50,9 @@ namespace DotNetNuke.Modules.ActiveForums
             if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
             {
                 // changed but case-insensitive identical: empty the setting first
-                _objModules.UpdateModuleSetting(ModuleId, key, "");
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, "");
             }
-            _objModules.UpdateModuleSetting(ModuleId, key, newValue);
+            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, newValue);
         }
 
 		public string Mode
@@ -313,17 +311,17 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 		}
 
-		public bool MailQueue
-		{
-			get
-			{
-				return Settings.GetBoolean(SettingKeys.MailQueue);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
-			}
-		}
+        public bool MailQueue
+        {
+            get
+            {
+                return Settings.GetBoolean(SettingKeys.MailQueue);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
+            }
+        }
         public bool CacheTemplates
         {
             get
@@ -335,6 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
             }
         }
+
 
         public bool EnablePoints
 		{

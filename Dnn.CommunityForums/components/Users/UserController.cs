@@ -133,14 +133,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
-        public User GetUser(int SiteId, int ModuleId, string userName)
+        public User GetUser(int PortalId, int ModuleId, string userName)
         {
-            User u = GetDNNUser(SiteId, ModuleId, userName);
+            User u = GetDNNUser(PortalId, ModuleId, userName);
             if (u != null)
             {
-                u = FillProfile(SiteId, ModuleId, u);
+                u = FillProfile(PortalId, ModuleId, u);
                 ForumController fc = new ForumController();
-                string fs = fc.GetForumsForUser(u.UserRoles, SiteId, ModuleId, "CanApprove");
+                string fs = fc.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
                 if (!(string.IsNullOrEmpty(fs)) || u.IsSuperUser || u.IsAdmin)
                 {
                     u.Profile.IsMod = true;
@@ -152,30 +152,29 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
-        public User FillProfile(int SiteId, int ModuleId, User u)
+        public User FillProfile(int PortalId, int ModuleId, User u)
         {
             if (u != null && u.UserId > 0)
             {
-                u.Profile = Profiles_Get(SiteId, ModuleId, u.UserId);
+                u.Profile = Profiles_Get(PortalId, ModuleId, u.UserId);
             }
             return u;
         }
-        // KR - added caching to profiles to skip the DB hit
-        public UserProfileInfo Profiles_Get(int SiteId, int InstanceId, int UserId)
+        public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
 
-            string cachekey = string.Format("AF-prof-{0}-{1}-{2}", UserId, SiteId, InstanceId);
+            string cachekey = string.Format("AF-prof-{0}-{1}-{2}", UserId, PortalId, ModuleId);
             DataTable dt = null;
             UserProfileInfo upi = null;
             Data.Profiles db = new Data.Profiles();
-            PortalSettings _portalSettings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-            if (SiteId == -1)
+            PortalSettings _portalSettings = PortalController.GetCurrentPortalSettings();
+            if (PortalId == -1)
             {
-                SiteId = _portalSettings.PortalId;
+                PortalId = _portalSettings.PortalId;
             }
 
             // see if it's in cache already
-            object data = DataCache.CacheRetrieve(cachekey);
+            object data = DataCache.SettingsCacheRetrieve(ModuleId,cachekey);
 
             if (data != null)
             {
@@ -183,14 +182,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(SiteId, -1, UserId));
-                DataCache.CacheStore(cachekey, dt);
+                dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(PortalId, -1, UserId));
+                DataCache.SettingsCacheStore(ModuleId,cachekey, dt);
             }
 
             foreach (DataRow row in dt.Rows)
             {
                 upi = new UserProfileInfo();
-                upi.PortalId = SiteId;
+                upi.PortalId = PortalId;
                 upi.UserID = UserId;
                 upi.ModuleId = -1;
                 upi.AdminWatch = bool.Parse(row["AdminWatch"].ToString());

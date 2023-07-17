@@ -29,7 +29,7 @@
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Active Forums</friendlyName>
-                <defaultCacheTime>-1</defaultCacheTime>
+				  <defaultCacheTime>-1</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
                     <controlKey />

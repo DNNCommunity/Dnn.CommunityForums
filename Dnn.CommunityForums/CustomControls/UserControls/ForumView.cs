@@ -114,8 +114,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             var lit = new LiteralControl();
                             string sToolbar = string.Empty;
-                            SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
-                            sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
+                            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
+                            sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
+
                             if (string.IsNullOrEmpty(sToolbar))
                             {
                                 string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
@@ -195,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                SettingsInfo MainSettings = DataCache.MainSettings(ModuleId);
+                SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 string sOutput = string.Empty;
                 string sTemplate;
                 if (UseTemplatePath && TemplatePath != string.Empty)
