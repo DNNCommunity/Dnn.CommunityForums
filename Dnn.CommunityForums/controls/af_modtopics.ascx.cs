@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -116,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                                 {
                                     TopicsController tc = new TopicsController();
-                                    TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId);
                                     if (ti != null)
                                     {
                                         auth = ti.Author;
@@ -182,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                             {
                                 TopicsController tc = new TopicsController();
-                                TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
+                                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
                                 if (ti != null)
                                 {
                                     sSubject = ti.Content.Subject;
@@ -227,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     rc.Reply_Save(PortalId,ForumModuleId, ri);
                                     TopicsController tc = new TopicsController();
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId, tmpReplyId);
-                                    TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
+                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {

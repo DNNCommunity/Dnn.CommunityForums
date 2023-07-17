@@ -20,8 +20,10 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -384,9 +386,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			string RoleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, PortalId));
 			if (string.IsNullOrEmpty(RoleIds))
 			{ 
-				var rc = new Security.Roles.RoleController();
-				foreach (Security.Roles.RoleInfo ri in rc.GetPortalRoles(PortalId))
-				{
+                foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+                {
 					string roleName = ri.RoleName;
 					foreach (string role in Roles)
 					{
