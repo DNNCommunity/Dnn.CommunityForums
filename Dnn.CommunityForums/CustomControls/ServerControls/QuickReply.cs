@@ -27,8 +27,6 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Security.Policy;
-using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -52,8 +50,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Private Members
-        private int InstanceId = -1;
-        private int SiteId = -1;
+        private int ModuleId = -1;
+        private int PortalId = -1;
+        private string _Subject = string.Empty;
         #endregion
         #region Public Properties
         public string Subject { get; set; } = string.Empty;
@@ -65,22 +64,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             ambtnSubmit.Click += new System.EventHandler(ambtnSubmit_Click);
 
-            InstanceId = ControlConfig.InstanceId;
-            SiteId = ControlConfig.SiteId;
+            ModuleId = ControlConfig.ModuleId;
+            PortalId = ControlConfig.PortalId;
             ForumController fc = new ForumController();
             if (ForumInfo == null)
             {
-                ForumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+                ForumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
             }
 
-            SettingsInfo MainSettings = DataCache.MainSettings(ControlConfig.InstanceId);
             string sTemp = string.Empty;
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(InstanceId + "qr");
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.QuickReply, ModuleId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
+                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.QuickReply, ModuleId), sTemp);
                 }
                 else
                 {
@@ -88,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 sTemp = Utilities.LocalizeControl(sTemp);
                 string SubscribedChecked = string.Empty;
-                if (ControlConfig.User.PrefTopicSubscribe || Subscriptions.IsSubscribed(SiteId, InstanceId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
+                if (ControlConfig.User.PrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
                 {
                     SubscribedChecked = " checked=true";
                 }
@@ -178,11 +177,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void SaveQuickReply()
         {
             ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(SiteId, InstanceId, ForumId, this.UserId, true, false, TopicId);
+            Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
-                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
-                return;
+                UserProfileController upc = new UserProfileController();
+                UserProfileInfo upi = upc.Profiles_Get(PortalId, ModuleId, this.UserId);
+                if (upi != null)
+                {
+                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < MainSettings.FloodInterval)
+                    {
+                        Controls.InfoMessage im = new Controls.InfoMessage();
+                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>";
+                        plhMessage.Controls.Add(im);
+                        return;
+                    }
+                }
             }
             //TODO: Fix for anon
             //If Not Current.Request.IsAuthenticated Then
@@ -221,7 +230,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sUsername = Utilities.CleanString(SiteId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, InstanceId, ThemePath, false);
+                sUsername = Utilities.CleanString(PortalId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, ModuleId, ThemePath, false);
             }
 
             string sBody = string.Empty;
@@ -230,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //If forumInfo.AllowHTML Then
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
             //End If
-            sBody = Utilities.CleanString(SiteId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, InstanceId, ThemePath, forumInfo.AllowEmoticons);
+            sBody = Utilities.CleanString(PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, ModuleId, ThemePath, forumInfo.AllowEmoticons);
             DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
@@ -251,11 +260,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (HttpContext.Current.Request.Params["chkSubscribe"] == "1" && UserId > 0)
                 {
-                    if (!(Subscriptions.IsSubscribed(SiteId, InstanceId, ForumId, TopicId, SubscriptionTypes.Instant, UserId)))
+                    if (!(Subscriptions.IsSubscribed(PortalId, ModuleId, ForumId, TopicId, SubscriptionTypes.Instant, UserId)))
                     {
                         //TODO: Fix Subscriptions
                         //Dim sc As New Data.Tracking
-                        //sc.Subscription_Update(SiteId, InstanceId, ForumId, TopicId, 1, UserId)
+                        //sc.Subscription_Update(PortalId, ModuleId, ForumId, TopicId, 1, UserId)
                     }
                 }
             }
@@ -265,9 +274,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 try
                 {
                     string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
-                    Subscriptions.SendSubscriptions(SiteId, InstanceId, PageId, ForumId, TopicId, ReplyId, UserId);
-                    Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody,ForumInfo.Security.Read, SocialGroupId);
+                    Subscriptions.SendSubscriptions(PortalId, ModuleId, PageId, ForumId, TopicId, ReplyId, UserId);
+                    new Social().AddReplyToJournal(PortalId, ForumModuleId, TabModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody, forumInfo.Security.Read, forumInfo.SocialGroupId); 
                 }
                 catch (Exception ex)
                 {
@@ -279,17 +287,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                Email.SendEmailToModerators(forumInfo.ModNotifyTemplateId, SiteId, ForumId, ri.TopicId, ReplyId, InstanceId, PageId, string.Empty);
+                Email.SendEmailToModerators(forumInfo.ModNotifyTemplateId, PortalId, ForumId, ri.TopicId, ReplyId, ModuleId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
             }
         }
         private string ParseTemplate()
         {
-            string sOut = DisplayTemplate;
-
-            DataCache.CacheStore(InstanceId + "qr", sOut);
-            return sOut;
+            return DisplayTemplate;
         }
         private void LinkControls(ControlCollection ctrls)
         {

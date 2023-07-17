@@ -42,14 +42,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public HttpResponseMessage ToggleURLHandler(ToggleUrlHandlerDTO dto)
         {
-            var cfg = new ConfigUtils();
             if (Utilities.IsRewriteLoaded())
             {
-                cfg.DisableRewriter(HttpContext.Current.Server.MapPath("~/web.config"));
+                ConfigUtils.UninstallRewriter(HttpContext.Current.Server.MapPath("~/web.config"));
                 return Request.CreateResponse(HttpStatusCode.OK, "disabled");
             }
 
-            cfg.EnableRewriter(HttpContext.Current.Server.MapPath("~/web.config"));
+            ConfigUtils.InstallRewriter(HttpContext.Current.Server.MapPath("~/web.config"));
             return Request.CreateResponse(HttpStatusCode.OK, "enabled");
         }
 

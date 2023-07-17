@@ -44,10 +44,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(ControlConfig.InstanceId + "aftb");
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
+                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Toolbar, ModuleId), sTemp);
                 }
                 else
                 {
@@ -94,10 +95,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb = tb.Replace("[AF:TB:MyProfile]", string.Empty);
             tb = tb.Replace("[AF:TB:MemberList]", string.Empty);
             tb = tb.Replace("[AF:TB:MySettings]", string.Empty);
-            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.InstanceId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.ModuleId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
             //TODO: Check for moderator
             tb = tb.Replace("[AF:TB:ModList]", string.Empty);
-            DataCache.CacheStore(ControlConfig.InstanceId + "aftb", tb);
             return tb;
         }
     }

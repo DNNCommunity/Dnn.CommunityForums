@@ -104,8 +104,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			sb.Append("<select id=\"drpSecRoles\" class=\"amcptxtbx\" style=\"width:150px;\">");
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
 			sb.Append("<option value=\"-1\">All Users</option>");
-			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId))
+			sb.Append("<option value=\"-3\">Unauthenticated Users</option>"); 
+			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
 			}
@@ -144,8 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(tmp, PortalId);
-			RoleController rc = new RoleController();
+            NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, ModuleId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
@@ -153,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				pi.ObjectName = nvc[key];
 				if (string.IsNullOrEmpty(pi.ObjectName))
 				{
-					pi.ObjectName = rc.GetRole(Convert.ToInt32(key), PortalId).RoleName;
+					pi.ObjectName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: Convert.ToInt32(key)).RoleName;
 				}
 				pi.Type = ObjectType.RoleId;
 				pl.Add(pi);
@@ -192,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 						string gType = g.Split(':')[1];
 						int groupId = Convert.ToInt32(g.Split(':')[0]);
-						RoleInfo role = rc.GetRole(groupId, PortalId);
+						RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: groupId);
 						string groupName = role.RoleName;
 						if (! (string.IsNullOrEmpty(groupName)))
 						{

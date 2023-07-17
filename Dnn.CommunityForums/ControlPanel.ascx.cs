@@ -56,10 +56,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     var fc = new ForumsConfig();
                     bool configComplete = fc.ForumsInit(PortalId, ModuleId);
                     DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
-                    if (System.IO.File.Exists(upFilePath))
-                    {
-                        System.IO.File.Delete(upFilePath);
-                    }
                 }
                 catch (Exception ex)
                 {

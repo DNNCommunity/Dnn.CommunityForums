@@ -80,8 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		public string BindRolesForSecurityGrid(string rootPath)
 		{
 			StringBuilder sb = new StringBuilder();
-
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(PortalId))
+			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }

@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		public int InstanceId
+		public int ModuleId
 		{
 			get
 			{
@@ -151,7 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		public int SiteId
+		public int PortalId
 		{
 			get
 			{
