@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return "folder.png";
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public static void LoadTemplateCache(int moduleID)
         {
             var tc = new TemplateController();

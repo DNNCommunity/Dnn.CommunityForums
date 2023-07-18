@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 						_template = TemplateFile;
 					}
 					_template = Utilities.GetTemplate(Page.ResolveUrl(_template));
-					_template = Utilities.ParseTokenConfig(_template, "default", ControlConfig);
+					_template = Utilities.ParseTokenConfig(ForumModuleId,_template, "default", ControlConfig);
 				}
 				return _template;
 			}

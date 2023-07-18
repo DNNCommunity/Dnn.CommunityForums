@@ -231,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DataCache.SettingsCacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
         public static void Profiles_ClearCache(int UserID)
         {
             DataCache.CacheClearPrefix(-1, CacheKeys.CachePrefix);

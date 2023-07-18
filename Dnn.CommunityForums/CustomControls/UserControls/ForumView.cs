@@ -112,29 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (template.Contains("[TOOLBAR"))
                         {
-                            var lit = new LiteralControl();
-                            string sToolbar = string.Empty;
-                            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-                            sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
-
-                            if (string.IsNullOrEmpty(sToolbar))
-                            {
-                                string templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
-                                if (!System.IO.File.Exists(templateFilePathFileName))
-                                {
-                                    templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                                    if (!System.IO.File.Exists(templateFilePathFileName))
-                                    {
-                                        templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                                    }
-                                }
-                                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                                DataCache.CacheStore(string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
-                            }
-                            sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                            lit.Text = sToolbar;
-                            template = template.Replace("[TOOLBAR]", sToolbar.ToString());
+                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
                         }
                         Control tmpCtl = null;
                         try

@@ -26,6 +26,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.UI.UserControls;
@@ -126,11 +127,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
                 if (t != null)
                 {
                     t.IsPinned = !t.IsPinned;
-                    tc.TopicSave(PortalSettings.PortalId, t);
+                    tc.TopicSave(PortalSettings.PortalId, ActiveModule.ModuleID, t);
                     return Request.CreateResponse(HttpStatusCode.OK, value: t.IsPinned);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -154,11 +155,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
                 if (t != null)
                 {
                     t.IsLocked = !t.IsLocked;
-                    tc.TopicSave(PortalSettings.PortalId, t);
+                    tc.TopicSave(PortalSettings.PortalId, ActiveModule.ModuleID, t);
                     return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);

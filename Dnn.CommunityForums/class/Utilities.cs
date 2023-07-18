@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        internal static string ParseTokenConfig(string template, string group, ControlsConfig config)
+        internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
                 return string.Empty;
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             template = ParseSpacer(template);
 
-            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.List(group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId,group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -168,8 +168,35 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sContents;
         }
+        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        {
+            string sToolbar =
+                Convert.ToString(
+                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId)));
+            if (string.IsNullOrEmpty(sToolbar))
+            {
 
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
+                string templateFilePathFileName =
+                    DotNetNuke.Modules.ActiveForums.Utilities.MapPath(path: SettingsBase.GetModuleSettings(forumModuleId).TemplatePath + "ToolBar.txt");
+                if (!System.IO.File.Exists(templateFilePathFileName))
+                {
+                    templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName =
+                            DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                    }
+                }
+                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
+                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId), sToolbar);
+            }
+
+            return sToolbar;
+        }
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
+            CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 

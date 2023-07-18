@@ -22,7 +22,7 @@ using System;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums
 {
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
     class Likes : DotNetNuke.Modules.ActiveForums.Entities.Like { }
 }
 namespace DotNetNuke.Modules.ActiveForums.Entities

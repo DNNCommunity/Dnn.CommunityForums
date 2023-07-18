@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)")]
         public static bool CacheStore(string cacheKey, object cacheObj)
         {
             SettingsCacheStore(-1, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheTime));
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(ContentCachingTime(ModuleId)));
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
         public static bool CacheStore(string cacheKey, object cacheObj, DateTime Expiration)
         {
             SettingsCacheStore(-1, cacheKey, cacheObj, Expiration);
@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SettingsCacheRetrieve(int ModuleId, string cacheKey) or ContentCacheRetrieve(int ModuleId, string cacheKey)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SettingsCacheRetrieve(int ModuleId, string cacheKey) or ContentCacheRetrieve(int ModuleId, string cacheKey)")]
         public static object CacheRetrieve(string cacheKey)
         {
             return SettingsCacheRetrieve(ModuleId: -1, cacheKey: cacheKey);
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheClear(int ModuleId, string cacheKey)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use CacheClear(int ModuleId, string cacheKey)")]
         public static bool CacheClear(string cacheKey)
         {
             SettingsCacheClear(ModuleId: -1, cacheKey: cacheKey);
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use CacheClearPrefix(int ModuleId, string cacheKeyPrefix)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use CacheClearPrefix(int ModuleId, string cacheKeyPrefix)")]
         public static bool CacheClearPrefix(string cacheKeyPrefix)
         {
             CacheClearPrefix(ModuleId: -1, cacheKeyPrefix);
@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use ClearAllCache(int ModuleId).")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ClearAllCache(int ModuleId).")]
         public static void ClearAllCache(int ModuleId, int TabId)
         {
             ClearAllCache(ModuleId);
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static void ClearForumsByGroupCache(int ModuleID, int GroupID)
         {
             object obj = SettingsCacheRetrieve(ModuleID, ModuleID + GroupID + "ForumsByGroup");
@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 SettingsCacheClear(ModuleID, ModuleID + GroupID + "ForumsByGroup");
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Only Cleared but never Set so not needed.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Only Cleared but never Set so not needed.")]
         public static void ClearForumGroupsCache(int ModuleID)
         {
             SettingsCacheClear(ModuleID, ModuleID + "ForumGroups");
@@ -231,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             rd.Close();
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public static void ClearForumSettingsCache(int ForumID)
         {
             SettingsCacheClear(-1, string.Format(CacheKeys.ForumSettings, -1, ForumID));
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public static void ClearFilterCache(int ModuleID)
         {
             object obj = SettingsCacheRetrieve(ModuleID, ModuleID + "FilterList");
@@ -306,276 +306,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return ht;
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings")]
         public static SettingsInfo MainSettings(int ModuleId)
         {
             return SettingsBase.GetModuleSettings(ModuleId);
         }
-        #region "code will be removed after templates storage changed from database to files in 08.00.00"
-
-        #region Cache Storage
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v8.0.0.0. Template Storage/Retrieval/Caching Rewritten and Template cache moved to TemplateCache.cs")]
-        private static void CacheTemplateToDisk(int ModuleId, int TemplateId, string TemplateType, string Template)
-        {
-            string myFile;
-            string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
-            string strPath;
-            strPath = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\");
-            if (!(System.IO.Directory.Exists(strPath)))
-            {
-                try
-                {
-                    System.IO.Directory.CreateDirectory(strPath);
-                }
-                catch (Exception ex)
-                {
-                    //   DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-                    return;
-                }
-
-            }
-            try
-            {
-                myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
-                if (System.IO.File.Exists(myFile))
-                {
-                    try
-                    {
-                        System.IO.File.Delete(myFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                try
-                {
-                    System.IO.File.AppendAllText(myFile, Template);
-                }
-                catch (Exception ex)
-                {
-                    // DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-                }
-            }
-            catch (Exception ex)
-            {
-                //DotNetNuke.Services.Exceptions.Exceptions.LogException(ex)
-            }
-        }
-        #endregion
-
-        #region Cache Retrieval
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v8.0.0.0. Template Storage/Retrieval/Caching Rewritten and Template cache moved to TemplateCache.cs")]
-        public static string GetCachedTemplate(int TemplateStore, int ModuleId, string TemplateType, int TemplateId)
-        {
-            string sTemplate;
-            switch (TemplateStore)
-            {
-                case 0:
-                    //Get From Memory
-                    sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
-                    break;
-                case 1:
-                    //Get From Disk
-                    sTemplate = GetTemplateFromDisk(ModuleId, TemplateType, TemplateId);
-                    break;
-                default:
-                    //Get From DB
-                    sTemplate = GetTemplate(TemplateId, TemplateType);
-                    break;
-            }
-            sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
-            sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
-
-            return sTemplate;
-        }
-        private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
-        {
-            string sTemplate = string.Empty;
-
-            string myFile;
-            object obj = CacheRetrieve(ModuleId + TemplateId + TemplateType);
-            if (!IsContentCachingEnabledForModule(ModuleId))
-            {
-                obj = null;
-            }
-            if (obj == null)
-            {
-                if (TemplateId == 0)
-                {
-                    try
-                    {
-                        myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
-                        if (System.IO.File.Exists(myFile))
-                        {
-                            System.IO.StreamReader objStreamReader = null;
-                            try
-                            {
-                                objStreamReader = System.IO.File.OpenText(myFile);
-                            }
-                            catch (Exception ex)
-                            {
-                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                            }
-                            sTemplate = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                            sTemplate = Utilities.ParseSpacer(sTemplate);
-                            CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                            //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath("~/DesktopModules/ActiveForums/config/Templates/" & TemplateType & ".txt")))
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                else
-                {
-                    sTemplate = GetTemplate(TemplateId, TemplateType);
-                    CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                }
-            }
-            else
-            {
-                sTemplate = Convert.ToString(obj);
-            }
-            return sTemplate;
-        }
-        private static string GetTemplateFromDisk(int ModuleId, string TemplateType, int TemplateId)
-        {
-            string sTemplate;
-            string myFile;
-            string FileName = ModuleId + "_" + TemplateId + TemplateType + ".resources";
-            System.IO.StreamReader objStreamReader;
-            if (!IsContentCachingEnabledForModule(ModuleId))
-            {
-                sTemplate = GetTemplate(TemplateId, TemplateType);
-            }
-            else
-            {
-                try
-                {
-                    myFile = HttpContext.Current.Request.MapPath(Globals.ModulePath + "cache\\") + FileName;
-                    if (System.IO.File.Exists(myFile))
-                    {
-                        try
-                        {
-                            objStreamReader = System.IO.File.OpenText(myFile);
-
-                            sTemplate = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                        }
-                        catch (Exception exc)
-                        {
-                            sTemplate = GetTemplate(TemplateId, TemplateType);
-                        }
-                    }
-                    else
-                    {
-                        sTemplate = GetTemplate(TemplateId, TemplateType);
-                        CacheTemplateToDisk(ModuleId, TemplateId, TemplateType, sTemplate);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    sTemplate = "ERROR: Loading template failed";
-                }
-            }
-
-
-			return sTemplate;
-		}
-		private static string GetTemplate(int TemplateId, string TemplateType)
-		{
-			string sOut = string.Empty;
-		    try
-			{
-				if (TemplateId == 0)
-				{
-					try
-					{
-					    string myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, TemplateType, ".txt"));
-					    if (System.IO.File.Exists(myFile))
-						{
-							System.IO.StreamReader objStreamReader = null;
-							try
-							{
-								objStreamReader = System.IO.File.OpenText(myFile);
-							}
-							catch (Exception ex)
-							{
-                                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                            }
-                            sOut = objStreamReader.ReadToEnd();
-                            objStreamReader.Close();
-                            sOut = Utilities.ParseSpacer(sOut);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                else
-                {
-                    var objTemplates = new TemplateController();
-                    TemplateInfo objTempInfo = objTemplates.Template_Get(TemplateId);
-                    if (objTempInfo != null)
-                    {
-                        sOut = objTempInfo.TemplateHTML;
-                        sOut = Utilities.ParseSpacer(sOut);
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                sOut = "ERROR: Loading template failed";
-            }
-            return sOut;
-        }
-        internal static string GetTemplate(string TemplateFileName)
-        {
-            string sOut = string.Empty;
-            string myFile;
-            try
-            {
-                try
-                {
-                    myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + TemplateFileName);
-                    if (System.IO.File.Exists(myFile))
-                    {
-                        System.IO.StreamReader objStreamReader = null;
-                        try
-                        {
-                            objStreamReader = System.IO.File.OpenText(myFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-                        sOut = objStreamReader.ReadToEnd();
-                        objStreamReader.Close();
-                        sOut = Utilities.ParseSpacer(sOut);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                sOut = "ERROR: Loading template failed";
-            }
-            return sOut;
-        }
-        #endregion
-
-        #endregion
     }
 }

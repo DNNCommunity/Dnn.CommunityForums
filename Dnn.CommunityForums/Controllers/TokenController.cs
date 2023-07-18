@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Web;
+using System.Web.Hosting;
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -32,17 +33,13 @@ namespace DotNetNuke.Modules.ActiveForums
 }
     namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    internal static class TokenController
+    public class TokenController
     {
-        internal static List<Token> List()
-        {
-            return List(string.Empty);
-        }
-        internal static List<Token> List(string group)
+        internal static List<Token> TokensList(int ModuleId, string group)
         {
             try
             {
-                List<Token> li = (List<Token>)DataCache.CacheRetrieve(string.Format(CacheKeys.Tokens, group));
+                List<Token> li = (List<Token>)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.Tokens, ModuleId, group));
                 if (li == null)
                 {
                     li = new List<Token>();
@@ -80,19 +77,20 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    DataCache.CacheStore(string.Format(CacheKeys.Tokens, group), li);
+                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Tokens, ModuleId, group), li);
                 }
                 return li;
             }
             catch (Exception ex)
             {
+                Exceptions.LogException(ex);
                 return null;
             }
         }
-        internal static string Get(string group, string TokenName)
+        internal static string TokenGet(int ModuleId, string group, string TokenName)
         {
             string sOut = string.Empty;
-            List<Token> tl = List(group);
+            List<Token> tl = TokensList(ModuleId, group);
             foreach (Token t in tl)
             {
                 if (t.TokenTag == TokenName)

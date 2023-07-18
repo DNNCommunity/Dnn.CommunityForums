@@ -33,6 +33,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -272,10 +273,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 sUsername = Utilities.CleanString(PortalId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, ForumModuleId, ThemePath, false);
             }
 
-            //Dim sSubject As String = Server.HtmlEncode(Request.Form("txtSubject"))
-            //If (UseFilter) Then
-            //    sSubject = Utilities.FilterWords(PortalId,  ForumModuleId, ThemePath, sSubject)
-            //End If
             string sBody = string.Empty;
             if (AllowHTML)
             {
@@ -300,11 +297,9 @@ namespace DotNetNuke.Modules.ActiveForums
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));
-            //Check if is subscribed
-            string cachekey = string.Format("AF-FV-{0}-{1}", PortalId, ModuleId);
-            DataCache.CacheClearPrefix(cachekey);
 
-            TopicInfo ti = new TopicsController().Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
+
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new TopicsController().Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
             string fullURL = new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
 
             if (fullURL.Contains("~/"))

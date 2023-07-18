@@ -390,52 +390,39 @@ namespace DotNetNuke.Modules.ActiveForums
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType, forumId: ForumId);
+            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, currentUserType: CurrentUserType, forumId: ForumId);
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
 
 
         protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        {
+            base.OnPreRender(e);
 
 
             if (SocialGroupId > 0)
             {
                 ShowToolbar = false;
             }
+
             if (Request.QueryString["dnnprintmode"] == null)
             {
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {
                     ShowToolbar = bool.Parse(HttpContext.Current.Items["ShowToolbar"].ToString());
                 }
+
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)));
-                    if (string.IsNullOrEmpty(sToolbar))
-                    {                            
-                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                            if (!System.IO.File.Exists(templateFilePathFileName))
-                            {
-                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                            }
-                        }
-                        sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                        sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                        DataCache.SettingsCacheStore(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
-                    }
-                    lit.Text = sToolbar;
+                    lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }
 
             }
+
             if (ForumId > 0 && UserIsMod)
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();

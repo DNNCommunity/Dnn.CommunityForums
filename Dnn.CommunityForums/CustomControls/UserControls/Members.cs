@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
-            SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
             string sTemplate = string.Empty; 
             string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_memberlist.txt");
             if (!System.IO.File.Exists(templateFilePathFileName))
