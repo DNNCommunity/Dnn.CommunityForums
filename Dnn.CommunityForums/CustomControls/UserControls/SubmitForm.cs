@@ -360,7 +360,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (template.Contains("[TOOLBAR"))
             { 
-                template = template.Replace("[TOOLBAR]", BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
+                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");
@@ -1139,33 +1139,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("var afeditor = '" + _clientId + "';");
             Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "emot", sb.ToString(), true);
-        }
-
-        internal string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
-        {
-            string sToolbar =
-                Convert.ToString(
-                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId)));
-            if (string.IsNullOrEmpty(sToolbar))
-            {
-                string templateFilePathFileName =
-                    HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName =
-                            HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                    }
-                }
-                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
-                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId), sToolbar);
-            }
-
-            return sToolbar;
         }
     }
 }

@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     li = new List<Token>();
                     Token tk = null;
                     System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
-                    string sPath = HostingEnvironment.MapPath(Globals.ModulePath + "config/tokens.config");
+                    string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.ModulePath + "config/tokens.config");
                     xDoc.Load(sPath);
                     if (xDoc != null)
                     {

@@ -397,29 +397,32 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
         protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        {
+            base.OnPreRender(e);
 
 
             if (SocialGroupId > 0)
             {
                 ShowToolbar = false;
             }
+
             if (Request.QueryString["dnnprintmode"] == null)
             {
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {
                     ShowToolbar = bool.Parse(HttpContext.Current.Items["ShowToolbar"].ToString());
                 }
+
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    lit.Text = BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
+                    lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }
 
             }
+
             if (ForumId > 0 && UserIsMod)
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();
@@ -438,33 +441,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/movetopic.ascx";
                 this.Controls.Add(ctl);
             }
-        }
-
-        internal string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
-        {
-            string sToolbar =
-                Convert.ToString(
-                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId)));
-            if (string.IsNullOrEmpty(sToolbar))
-            {
-                string templateFilePathFileName =
-                    HttpContext.Current.Server.MapPath(path: MainSettings.TemplatePath + "ToolBar.txt");
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName =
-                            HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                    }
-                }
-                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
-                sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
-                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId), sToolbar);
-            }
-
-            return sToolbar;
         }
     }
 }

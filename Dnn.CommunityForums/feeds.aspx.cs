@@ -28,6 +28,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using System.Text.RegularExpressions;
 using System.Web;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -108,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string BuildRSS(int PortalId, int TabId, int ModuleId, int intPosts, int ForumID, bool IngnoreSecurity, bool IncludeBody)
         {
-            DotNetNuke.Entities.Portals.PortalSettings ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
             UserController uc = new UserController();
             User u = uc.GetUser(PortalId, ModuleId);
