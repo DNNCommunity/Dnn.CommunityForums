@@ -74,11 +74,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (Utilities.IsRewriteLoaded())
 				{
-					litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configdisable',this); return false;\">Uninstall Active Forums URL Handler</a>";
+					litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configdisable',this); return false;\">Uninstall DNN Community Forums URL Handler</a>";
 				}
 				else
 				{
-					litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install Active Forums URL Handler</a>";
+					litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install DNN Community Forums URL Handler</a>";
 				}
 
 			}
