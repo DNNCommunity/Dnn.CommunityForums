@@ -56,16 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return "folder.png";
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public static void LoadTemplateCache(int moduleID)
-        {
-            var tc = new TemplateController();
-            foreach (var ti in tc.Template_List(-1, moduleID))
-            {
-                DataCache.SettingsCacheStore(moduleID, ti.Title + moduleID, ti.Template);
-                DataCache.SettingsCacheStore(moduleID, ti.Subject + "_Subject_" + moduleID, ti.Subject);
-            }
-        }
+       
 
         private static TemplateInfo GetTemplateByName(string templateName, int moduleId, int portalId)
         {

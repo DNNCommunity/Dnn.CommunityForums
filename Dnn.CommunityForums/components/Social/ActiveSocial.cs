@@ -93,11 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId,TabId, true));
         }
-        [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
-        public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
-        {
-            AddReplyToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, ReplyId: ReplyId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
-        }
+        
         internal void AddReplyToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
         {
             //make sure that this is a User before trying to create a journal item, you can't post a JI without

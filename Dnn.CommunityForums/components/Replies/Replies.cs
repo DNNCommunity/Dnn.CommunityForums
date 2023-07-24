@@ -206,11 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
 		}
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
-        public int Reply_Save(int PortalId, ReplyInfo ri)
-        {
-            return Reply_Save(PortalId, -1, ri);
-		}
+        
 		public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
         {
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
