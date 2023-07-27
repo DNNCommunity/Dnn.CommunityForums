@@ -89,9 +89,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dnn.CommunityForums\ActiveForums.csproj">
+    <ProjectReference Include="..\Dnn.CommunityForums\DnnCommunityForums.csproj">
       <Project>{2d42bccc-d1b2-4831-b80c-41199de25798}</Project>
-      <Name>ActiveForums</Name>
+      <Name>DnnCommunityForums</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

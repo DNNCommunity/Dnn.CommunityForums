@@ -306,7 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
             {
                 // This Try with empty catch is introduced here because this code section is for Email Connector functionality only and this section should not 
-                // cause any issue to Active Forums functionality in case it does not run successfully.
+                // cause any issue to DNN Community Forums functionality in case it does not run successfully.
                 try
                 {
                     long itemID = GetEmailInfo(portalID, moduleID, forumID, topicId, HttpContext.Current.Request.UserHostAddress);
