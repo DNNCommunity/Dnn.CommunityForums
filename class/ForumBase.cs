@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 if(_forumData == null)
-                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.SiteId, ControlConfig.InstanceId) : ForumsDB.ForumListXML(PortalId, ModuleId); 
+                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.SiteId, ControlConfig.InstanceId) : ForumsDB.ForumListXML(PortalId, ForumModuleId); 
 
                 return _forumData;
             }

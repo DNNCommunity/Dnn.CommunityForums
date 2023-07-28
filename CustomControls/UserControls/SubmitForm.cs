@@ -711,7 +711,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Categories');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionCategories\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:CATEGORIES]", "<fieldset class=\"affieldset\"><legend>[RESX:Categories]</legend><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 string sCatOut;
-                var cc = new CategoriesList(PortalId, ModuleId, ForumInfo.ForumID, ForumInfo.ForumGroupId);
+                var cc = new CategoriesList(PortalId, ForumModuleId, ForumInfo.ForumID, ForumInfo.ForumGroupId);
                 if (TopicId > 0)
                 {
                     cc.SelectedValues = Categories;
@@ -809,7 +809,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //If obj Is Nothing Then
                 //    DataCache.CacheStore(ForumModuleId & "Emoticons" & EditorType.ToString) = objUtils.LoadEmoticons(EditorType, ForumModuleId, ImagePath)
                 //End If
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
             }
             else
             {

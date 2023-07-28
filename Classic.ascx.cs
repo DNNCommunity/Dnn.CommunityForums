@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
                 cc.SiteId = PortalId;
                 cc.PageId = TabId;
-                cc.InstanceId = ModuleId;
+                cc.InstanceId = ForumModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
                 cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
@@ -359,7 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_updateuseronline(" + ForumModuleId.ToString() + ")',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup

@@ -77,7 +77,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return _forumModuleId;
                 }
-                return ModuleId;
+                int moduleId = ModuleId;
+                if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                {
+                    moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings["AFForumModuleID"]);
+                }
+                return moduleId;
             }
             set
             {
@@ -419,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Protected Methods
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return Utilities.GetUserDate(displayDate, ModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
+            return Utilities.GetUserDate(displayDate, ForumModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
         }
 
         protected string GetServerDateTime(DateTime DisplayDate)

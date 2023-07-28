@@ -103,20 +103,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return u;
         }
-        private User GetDNNUser(int SiteId, int ModuleId, int userId)
+        private User GetDNNUser(int userId)
         {
             DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
             DotNetNuke.Entities.Users.UserInfo dnnUser = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userId);
             return LoadUser(dnnUser);
         }
-        public User GetDNNUser(int SiteId, int ModuleId, string userName)
+        public User GetDNNUser(string userName)
         {
             DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
             return LoadUser(dnnUser);
         }
         public User GetUser(int SiteId, int ModuleId, int userId)
         {
-            User u = GetDNNUser(SiteId, ModuleId, userId);
+            User u = GetDNNUser(userId);
             if (u != null)
             {
                 u = FillProfile(SiteId, ModuleId, u);
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public User GetUser(int SiteId, int ModuleId, string userName)
         {
-            User u = GetDNNUser(SiteId, ModuleId, userName);
+            User u = GetDNNUser(userName);
             if (u != null)
             {
                 u = FillProfile(SiteId, ModuleId, u);

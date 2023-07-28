@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 if (UserInfo.UserID > 0)
                 {
-                    DataProvider.Instance().Profiles_UpdateActivity(PortalSettings.PortalId,                     ForumModuleId, UserInfo.UserID);
+                    DataProvider.Instance().Profiles_UpdateActivity(PortalSettings.PortalId, ForumModuleId, UserInfo.UserID);
                 }
             }
             catch (Exception ex)
@@ -59,11 +59,24 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+        /// <summary>
+        /// Fired by UI to get users online
+        /// </summary>
+        /// <param>none</param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/User/GetUsersOnline</remarks>
         [HttpGet]
         [AllowAnonymous]
         public HttpResponseMessage GetUsersOnline()
         {
             {
+                // if running from Forums Viewer module, need to get the module for the Forums instance
+                int moduleId = ActiveModule.ModuleID;
+                if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ActiveModule.ModuleID, tabId: ActiveModule.TabID, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                {
+                    moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ActiveModule.ModuleID, ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
+                }
+
                 UsersOnline uo = new UsersOnline();
                 string sOnlineList = uo.GetUsersOnline(PortalSettings.PortalId, ForumModuleId, UserInfo);
                 IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalSettings.PortalId, ForumModuleId, 2);

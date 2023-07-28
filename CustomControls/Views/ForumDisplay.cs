@@ -38,24 +38,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Event Handlers
-        //Dim sb As New StringBuilder
-        //Dim fl As New ForumCollection
-        //Dim db As New Data.Forums
-        //    fl = db.Forums_List(PortalId, ModuleId, UserId, String.Empty)
-
-        //    For Each f As Forum In fl
-        //        sb.Append(f.ForumName)
-        //        sb.Append("<br />")
-        //    Next
-        //    writer.Write(sb.ToString)
-        protected override void OnInit(EventArgs e)
+         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             string sTemp;
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
 
-            object obj = DataCache.CacheRetrieve(ModuleId + ForumGroupId + "fvt");
+            object obj = DataCache.CacheRetrieve(ForumModuleId + ForumGroupId + "fvt");
             sTemp = obj == null ? ParseTemplate() : Convert.ToString(obj);
             sTemp = Utilities.LocalizeControl(sTemp);
             if (!(sTemp.Contains(Globals.ControlRegisterAFTag)))
@@ -160,12 +150,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOut = TemplateUtils.ReplaceSubSection(DisplayTemplate, sb.ToString(), "[GROUPSECTION]", "[/GROUPSECTION]");
             }
 
-            //sOut = sOut.Replace("[BREADCRUMB]", String.Empty)
-            //sOut = sOut.Replace("[WHOSONLINE]", "<af:usersonline id=""ctlUsersOnline"" templatefile=""usersonline.htm"" runat=""server"" />")
-            //sOut = sOut.Replace("[JUMPTO]", String.Empty)
-            //sOut = sOut.Replace("[TEMPLATE:TOOLBAR]", "<af:toolbar id=""ctlToolbar"" templatefile=""toolbar.htm"" runat=""server"" />")
-
-            //DataCache.CacheStore(ModuleId & "fvt", sOut)
             return sOut;
         }
         private string ParseForumRow(XmlNode fNode, string Template, string GroupName)

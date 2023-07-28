@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BtnMarkReadClick(object sender, EventArgs e)
         {
             if(UserId >= 0)
-                DataProvider.Instance().Utility_MarkAllRead(ModuleId, UserId, 0);
+                DataProvider.Instance().Utility_MarkAllRead(ForumModuleId, UserId, 0);
 
             Response.Redirect(NavigateUrl(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=notread" }));
         }
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var db = new Data.Common();
             var fc = new ForumController();
-            var forumIds = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead");
+            var forumIds = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanRead");
             
             var sCrumb = "<a href=\"" + Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ViewType + "=grid", "afgt=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (UserId != -1)
                         {
                             lblHeader.Text = GetSharedResource("[RESX:NotRead]");
-                            _dtResults = db.UI_NotReadView(PortalId, ModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                            _dtResults = db.UI_NotReadView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                             if (_dtResults.Rows.Count > 0)
                             {
                                 _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "unanswered":
 
                         lblHeader.Text = GetSharedResource("[RESX:Unanswered]");
-                        _dtResults = db.UI_UnansweredView(PortalId, ModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                        _dtResults = db.UI_UnansweredView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                             _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
 
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             tagId = int.Parse(Request.QueryString["aftg"]);
 
                         lblHeader.Text = GetSharedResource("[RESX:Tags]");
-                        _dtResults = db.UI_TagsView(PortalId, ModuleId, UserId, _rowIndex, _pageSize, sort, forumIds, tagId).Tables[0];
+                        _dtResults = db.UI_TagsView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds, tagId).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                             _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (UserId != -1)
                         {
                             lblHeader.Text = GetSharedResource("[RESX:MyTopics]");
-                            _dtResults = db.UI_MyTopicsView(PortalId, ModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                            _dtResults = db.UI_MyTopicsView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                             if (_dtResults.Rows.Count > 0)
                                 _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         drpTimeFrame.Visible = true;
                         drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        _dtResults = db.UI_ActiveView(PortalId, ModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
+                        _dtResults = db.UI_ActiveView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                             _rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
 
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
             int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
             Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
-            return new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
+            return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
         }
 
         public string GetThreadUrl()
@@ -303,7 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
             int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
             Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
-            return new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, SocialGroupId);
+            return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, SocialGroupId);
 
         }
 
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
             int userLastRead = Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"].ToString());
             Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
-            return new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, SocialGroupId);
+            return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, SocialGroupId);
              
         }
 
@@ -354,7 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var lastName = _currentRow["AuthorLastName"].ToString();
             var displayName = _currentRow["AuthorDisplayName"].ToString();
 
-            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            return UserProfiles.GetDisplayName(ForumModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostAuthor()
@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var lastName = _currentRow["LastReplyLastName"].ToString();
             var displayName = _currentRow["LastReplyDisplayName"].ToString();
 
-            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            return UserProfiles.GetDisplayName(ForumModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostTime()
