@@ -591,8 +591,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fc = new ForumsConfig();
                         fc.Install_Or_Upgrade_MoveTemplates();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles();
-
-                        fc.UpdateExtensionBranding();
                     }
                     catch (Exception ex)
                     {

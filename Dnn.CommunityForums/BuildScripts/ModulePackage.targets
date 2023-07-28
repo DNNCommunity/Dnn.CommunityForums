@@ -31,6 +31,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     </XmlRead>
 
     <ItemGroup>
+      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
       <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;WhatsNew.ascx;WhatsNewOptions.ascx;.git\**;.vs\**" />
       <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.ashx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
@@ -58,7 +59,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <InstallInclude Include="**\*.jpeg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.jpg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.bmp" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.xml" Exclude="packages\**;node_modules\**;clientApp\**;bin\**;.git\**;.vs\**" />
+		<InstallInclude Include="**\*.xml" Exclude="packages\**;node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*" />
       <InstallInclude Include="**\*.config" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
     </ItemGroup>
 
@@ -113,22 +114,22 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 	  <CreateItem Include="**\ActiveForumViewer.ascx">
-		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerFiles" />
+		  <Output TaskParameter="Include" ItemName="ForumsViewerFiles" />
 	  </CreateItem>
 
 	  <CreateItem Include="**\ActiveForumViewerSettings.ascx">
-		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerFiles" />
+		  <Output TaskParameter="Include" ItemName="ForumsViewerFiles" />
 	  </CreateItem>
-	  <Copy SourceFiles="@(ActiveForumsViewerFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" />
+	  <Copy SourceFiles="@(ForumsViewerFiles)" DestinationFolder="$(MSBuildProjectDirectory)\PackageForumsViewer" />
 
-	  <CreateItem Include="$(MSBuildProjectDirectory)\PackageActiveForumsViewer\**\*.*">
-		  <Output TaskParameter="Include" ItemName="ActiveForumsViewerResourcesContent" />
+	  <CreateItem Include="$(MSBuildProjectDirectory)\PackageForumsViewer\**\*.*">
+		  <Output TaskParameter="Include" ItemName="ViewerResourcesContent" />
 	  </CreateItem>
 
-	  <Zip Files="@(ActiveForumsViewerResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" ZipFileName="ActiveForumsViewerResources.$(Extension)" />
-	  <Copy SourceFiles="$(MSBuildProjectDirectory)\ActiveForumsViewerResources.$(Extension)" DestinationFolder="Package\" />
+	  <Zip Files="@(ForumsViewerResourcesContent)" WorkingDirectory="$(MSBuildProjectDirectory)\PackageForumsViewer" ZipFileName="ForumsViewerResources.$(Extension)" />
+	  <Copy SourceFiles="$(MSBuildProjectDirectory)\ForumsViewerResources.$(Extension)" DestinationFolder="Package\" />
 
-	  <RemoveDir Directories="$(MSBuildProjectDirectory)\PackageActiveForumsViewer" />
+	  <RemoveDir Directories="$(MSBuildProjectDirectory)\PackageForumsViewer" />
 
 
 	  <!-- create the INSTALL WHATSNEWRESOURCES.ZIP file -->

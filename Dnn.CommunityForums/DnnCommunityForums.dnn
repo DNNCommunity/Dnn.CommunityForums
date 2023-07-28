@@ -1,9 +1,9 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="Active Forums" type="Module" version="08.00.00">
-      <friendlyName>Active Forums</friendlyName>
-      <description>Community Forums: The official online forums module for the DNN Community.</description>
-      <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
+      <friendlyName>DNN Community Forums</friendlyName>
+      <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
@@ -14,7 +14,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.04.00</dependency>
+        <dependency type="CoreVersion">09.09.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -28,7 +28,7 @@
             </supportedFeatures>
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>Active Forums</friendlyName>
+                <friendlyName>DNN Community Forums</friendlyName>
 				  <defaultCacheTime>-1</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
@@ -425,16 +425,17 @@
         </component>
         <component type="Cleanup" version="06.04.00" fileName="06.04.00.txt" />
         <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
-        <component type="Cleanup" version="07.00.11" fileName="07.00.11.txt" />
+		  <component type="Cleanup" version="07.00.11" fileName="07.00.11.txt" />
+		  <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
       </components>
     </package>
 
     <package name="Active Forums What's New" type="Module" version="08.00.00">
 
-      <friendlyName>Active Forums What's New</friendlyName>
+      <friendlyName>DNN Community Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
-      <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
-      <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
+      <description>DNN Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
@@ -445,7 +446,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.04.00</dependency>
+        <dependency type="CoreVersion">09.09.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -500,10 +501,10 @@
     </package>
 
     <package name="Active Forums Viewer" type="Module" version="08.00.00">
-      <friendlyName>Active Forums Viewer</friendlyName>
+      <friendlyName>DNN Community Forums Forums Viewer</friendlyName>
       <foldername>ActiveForumsViewer</foldername>
-      <description>Community Forums: Display any forum topic view on any page within your site.</description>
-      <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
+      <description>DNN Community Forums: Display any forum topic view on any page within your site.</description>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
@@ -514,7 +515,7 @@
       <releaseNotes src="ReleaseNotes.txt" />
       <azureCompatible>true</azureCompatible>
       <dependencies>
-        <dependency type="CoreVersion">09.04.00</dependency>
+        <dependency type="CoreVersion">09.09.00</dependency>
       </dependencies>
       <components>
         <component type="Module">
@@ -525,7 +526,7 @@
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>Active Forums Viewer</friendlyName>
+                <friendlyName>DNN Community Forums Viewer</friendlyName>
                 <definitionName>Active Forums Viewer</definitionName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
@@ -559,8 +560,8 @@
           <resourceFiles>
             <basePath>DesktopModules\ActiveForumsViewer</basePath>
             <resourceFile>
-              <name>ActiveForumsViewerResources.zip</name>
-              <sourceFileName>ActiveForumsViewerResources.zip</sourceFileName>
+              <name>ForumsViewerResources.zip</name>
+              <sourceFileName>ForumsViewerResources.zip</sourceFileName>
             </resourceFile>
           </resourceFiles>
         </component>
