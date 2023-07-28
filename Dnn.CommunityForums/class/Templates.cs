@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // now save to the template file
             try
             {
-                SettingsInfo moduleSettings = DataCache.MainSettings(templateInfo.ModuleId); 
+                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId); 
 				if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath)))
                 {
                     System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath));
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 
             TemplateInfo templateInfo = Template_Get(TemplateId);
-            SettingsInfo moduleSettings = DataCache.MainSettings(templateInfo.ModuleId);
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
             string templateFile = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + templateInfo.FileName);
             try
             {
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				ti = tiWithinLoop;
 				if (TemplateName.ToUpperInvariant() == tiWithinLoop.Title.ToUpperInvariant())
                 {
-                    SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
                     string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
                     if (!System.IO.File.Exists(templateFilePathFileName))
                     {
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					ti.Title = Convert.ToString(dr["Title"]);
                     ti.FileName = Convert.ToString(dr["FileName"]);
                     ti.Subject = Convert.ToString(dr["Subject"]); 
-					SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+					SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
                     string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
                     if (!System.IO.File.Exists(templateFilePathFileName))
                     {
@@ -291,7 +291,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         FileName = Convert.ToString(dr["FileName"]),
                         TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
                     }; 
-					SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+					SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
 					string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
 					if (!System.IO.File.Exists(templateFilePathFileName))
                     {

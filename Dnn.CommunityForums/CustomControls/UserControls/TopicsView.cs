@@ -29,6 +29,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -317,7 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", ForumName);
                                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", GroupName);
-                                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                                PortalSettings settings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                                 string pageName = settings.ActiveTab.Title.Length == 0
                                     ? Server.HtmlEncode(settings.ActiveTab.TabName)
                                     : Server.HtmlEncode(settings.ActiveTab.Title);
@@ -522,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Forum Drop Downlist
             sOutput = sOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
             //Tag Cloud
-            sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud instanceid=\"" + ModuleId + "\" siteid=\"" + PortalId + "\" tabid=\"" + TabId + "\" runat=\"server\" />");
+            sOutput = sOutput.Replace("[AF:CONTROLS:TAGCLOUD]", "<ac:tagcloud ModuleId=\"" + ModuleId + "\" PortalId=\"" + PortalId + "\" tabid=\"" + TabId + "\" runat=\"server\" />");
 
             sOutput = sOutput.Replace("[FORUMSUBSCRIBERCOUNT]", ForumSubscriberCount.ToString());
            

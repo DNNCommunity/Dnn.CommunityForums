@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Portals;
 using System.Data.SqlTypes;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -43,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			int topicId = -1;
-			TopicInfo ti = new TopicInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
 			ti.AnnounceEnd = Utilities.NullDate();
 			ti.AnnounceStart = Utilities.NullDate();
 			ti.Content.AuthorId = UserId;
@@ -102,12 +103,12 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use TopicsController.TopicSave(int PortalId, int ModuleId, TopicInfo ti)")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use TopicsController.TopicSave(int PortalId, int ModuleId, TopicInfo ti)")]
         public int TopicSave(int PortalId, TopicInfo ti)
         {
 			return TopicSave(PortalId, -1, ti);          
         }
-        public int TopicSave(int PortalId, int ModuleId, TopicInfo ti)
+        public int TopicSave(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
             UserProfileController.Profiles_ClearCache(ModuleId , ti.Content.AuthorId);
@@ -127,17 +128,17 @@ namespace DotNetNuke.Modules.ActiveForums
             
 			return id;
 		}
-		public TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId)
+		public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId)
 		{
 			return Topics_Get(PortalId, ModuleId, TopicId, -1, -1, false);
 		}
-		public TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity)
+		public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity)
 		{
 			IDataReader dr = DataProvider.Instance().Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, WithSecurity);
-			TopicInfo ti = null;
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = null;
 			while (dr.Read())
 			{
-				ti = new TopicInfo();
+				ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
 
 				if (!(dr["AnnounceEnd"] == DBNull.Value))
 				{
@@ -338,14 +339,14 @@ namespace DotNetNuke.Modules.ActiveForums
 		*/
 		#endregion "Obsolete ISearchable replaced by DotNetNuke.Entities.Modules.ModuleSearchBase.GetModifiedSearchDocuments "
 
-		public TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
+		public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
 		{
 			SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
 			ForumController fc = new ForumController();
 			Forum fi = fc.Forums_Get(ForumId, -1, false, true);
 
 			TopicsController tc = new TopicsController();
-			TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
 			if (topic == null)
 			{
 				return null;
@@ -467,11 +468,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
 					}
 					else
-					{
-						//NOTE: indexer is called from scheduler and has no httpcontext, so must load and pass portalSettings
-						PortalSettings portalSettings = new PortalSettings(moduleInfo.PortalID);
-						PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
-						psc.LoadPortalSettings(portalSettings);
+                    {
+                        PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 						string[] additionalParameters;
 						try
                         {
@@ -593,6 +591,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fc = new ForumsConfig();
                         fc.Install_Or_Upgrade_MoveTemplates();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles();
+
+                        fc.UpdateExtensionBranding();
                     }
                     catch (Exception ex)
                     {

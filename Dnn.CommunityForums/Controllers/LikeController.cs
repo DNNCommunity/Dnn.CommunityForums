@@ -24,10 +24,10 @@ using System.Collections.Generic;
 using System.Linq;
 namespace DotNetNuke.Modules.ActiveForums
 {
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController")]
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController")]
     class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
     {
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController.GetForPost()")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController.GetForPost()")]
         public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId)
         {
             IDataContext ctx = DataContext.Instance();
@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return likes; 
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController.Like()")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikesController.Like()")]
         public new void Like(int contentId, int userId)
         {
             base.Like(contentId, userId);

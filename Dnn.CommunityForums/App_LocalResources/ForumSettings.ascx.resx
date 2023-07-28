@@ -124,7 +124,7 @@
     <value>Provide Answer</value>
   </data>
   <data name="AutoLink.Help" xml:space="preserve">
-    <value>Enable this option for Active Forums to convert website addresses automatically into hyperlinks.</value>
+    <value>Enable this option for DNN Community Forums to convert website addresses automatically into hyperlinks.</value>
   </data>
   <data name="AutoLink.Text" xml:space="preserve">
     <value>Automatic Hyperlinks</value>
@@ -421,7 +421,7 @@
     <value>Select a private messaging system.</value>
   </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
-    <value>Active Forums Settings</value>
+    <value>DNN Community Forums Settings</value>
   </data>
   <data name="UsersOnline.Help" xml:space="preserve">
     <value>Enable or disable the display of users currently using the forum module.</value>

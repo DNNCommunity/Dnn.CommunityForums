@@ -359,31 +359,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:BODY:TEMPLATE]", "[/AF:BODY:TEMPLATE]");
             }
             if (template.Contains("[TOOLBAR"))
-            {
-                var lit = new LiteralControl();
-                string sToolbar = string.Empty;
-                SettingsInfo moduleSettings = DataCache.SettingsCacheRetrieve(ForumModuleId);
-                sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
-                if (string.IsNullOrEmpty(sToolbar))
-                {
-                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                        }
-                    }
-                    sToolbar = Utilities.GetFileContent(templateFilePathFileName); 
-                    
-                    sToolbar = sToolbar.Replace("[TRESX:", "[RESX:"); 
-                    sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                    DataCache.SettingsCacheStore(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId), sToolbar);
-                }
-                
-                lit.Text = sToolbar;
-                template = template.Replace("[TOOLBAR]", sToolbar);
+            { 
+                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");
@@ -423,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Tags');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTags\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:TAGS]", "<fieldset class=\"affieldset\"><legend>[RESX:Tags]</legend><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
-                string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.Get("editor", "[AF:CONTROL:TAGS]");
+                string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(ForumModuleId, "editor", "[AF:CONTROL:TAGS]");
                 if (string.IsNullOrEmpty(sTagOut))
                 {
                     //sTagOut = "<am:textsuggest id=""tsTags"" runat=""server"" DataTextField=""TagName"" DataValueField=""TagName"" CssResults=""aftsresults"" CssResultItems=""aftsresultsitems"" CssResultItemsSelected=""aftsresultsel""  CssClass=""aftagstxt"" Width=""99%"" />"

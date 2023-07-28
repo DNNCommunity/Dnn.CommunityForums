@@ -30,12 +30,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.Results;
 using System.Web.Profile;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Data;
+using System.Reflection;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumsConfig
 	{
-		public string sPath = HttpContext.Current.Server.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsConfig));
+
+        public string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
 		public bool ForumsInit(int PortalId, int ModuleId)
 		{
 			try
@@ -365,8 +372,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		internal void ArchiveOrphanedAttachments()
         {
-            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
-            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
+            var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
+            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
 
             foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
             {
@@ -430,5 +437,72 @@ namespace DotNetNuke.Modules.ActiveForums
                 dr.Close();
             } 
 		}
-    }
+
+		#region Update Extension Branding 
+
+		internal void UpdateExtensionBranding()
+        {
+            try
+            {
+                var oModuleIds = GetCurrentModuleInfo("Active Forums");
+
+                if (oModuleIds != null && (oModuleIds.DesktopModuleId > -1 && oModuleIds.ModuleDefId > -1 && oModuleIds.PackageID > -1))
+                {
+                    using (IDataContext ctx = DataContext.Instance())
+                    {
+                        ctx.Execute(System.Data.CommandType.StoredProcedure, 
+                            "{databaseOwner}{objectQualifier}activeforums_UpdateModuleMetaDataNames", new object[] { oModuleIds.PackageID, oModuleIds.ModuleDefId, oModuleIds.DesktopModuleId });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                LogError(e);
+                throw;
+            }
+        }
+
+        internal CurrentModuleInfo GetCurrentModuleInfo(string ModuleName)
+        {
+            try
+            {
+                var currModule = new CurrentModuleInfo();
+
+                DesktopModuleInfo desktopInfo = DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalController.GetCurrentPortalSettings().PortalId);
+                ModuleDefinitionInfo modDefInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(ModuleName, desktopInfo.DesktopModuleID);
+
+				currModule.DesktopModuleId = desktopInfo.DesktopModuleID;
+				currModule.PackageID = desktopInfo.PackageID;
+                currModule.ModuleDefId = modDefInfo.ModuleDefID;
+
+                return currModule;
+            }
+            catch
+            {
+                // should only throw an exception is the module name is not found
+                return null;
+            }
+        }
+
+		public class CurrentModuleInfo
+        {
+            public int PackageID { get; set; }
+			public int ModuleDefId { get; set; }
+			public int DesktopModuleId { get; set; }
+        }
+
+        #endregion
+
+        private void LogError(Exception e)
+        {
+            if (e != null)
+            {
+				Logger.Error(e.ToString(), e);
+                if (e.InnerException != null)
+                {
+					LogError(e.InnerException);
+                }
+            }
+        }
+	}
 }

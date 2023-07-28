@@ -30,6 +30,8 @@ using Microsoft.ApplicationBlocks.Data;
 using System.Data;
 using System.Collections.Generic;
 using System.Globalization;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -54,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return "folder.png";
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public static void LoadTemplateCache(int moduleID)
         {
             var tc = new TemplateController();
@@ -148,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             var ms = SettingsBase.GetModuleSettings(moduleID);
             var sOut = template;
 
@@ -304,7 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
             {
                 // This Try with empty catch is introduced here because this code section is for Email Connector functionality only and this section should not 
-                // cause any issue to Active Forums functionality in case it does not run successfully.
+                // cause any issue to DNN Community Forums functionality in case it does not run successfully.
                 try
                 {
                     long itemID = GetEmailInfo(portalID, moduleID, forumID, topicId, HttpContext.Current.Request.UserHostAddress);
@@ -337,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return result.ToString();
         }
 
-        private static long GetEmailInfo(int siteID, int instanceID, int forumID, int topicID, string ipAddress)
+        private static long GetEmailInfo(int PortalId, int ModuleId, int forumID, int topicID, string ipAddress)
         {
             long ItemID = -1;
 
@@ -378,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             //dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
-            IDataReader dataReader = (IDataReader)(SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", siteID, instanceID, forumID, topicID, ipAddress, userIds.ToString()));
+            IDataReader dataReader = (IDataReader)(SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", PortalId, ModuleId, forumID, topicID, ipAddress, userIds.ToString()));
             if (dataReader.Read())
             {
                 ItemID = Convert.ToInt32(dataReader["RecordID"]);

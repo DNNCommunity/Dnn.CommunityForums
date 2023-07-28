@@ -2,16 +2,16 @@
 <div style="margin-left: auto; margin-right: auto; width: 460px; height: auto; text-align: left; padding: 20px 0px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif; font-size: 14px; color: rgba(0, 0, 0, 0.44); border: 0 none; line-height: 1.5;">
 
     <div style="margin-left: auto; margin-right: auto; max-width: 130px; height: 100%; text-align: left; margin-bottom: 20px; margin-top: 2px; float: left; margin-right: 20px;">
-        <img runat="server" src="~/DesktopModules/ActiveForums/images/af-logo.png" alt="Active Forums" />
+        <img runat="server" src="~/DesktopModules/ActiveForums/images/af-logo.png" alt="DNN Community Forums" />
     </div>
 
     <p style="font-weight: 300; font-size: 22px; letter-spacing: -0.02em; color: rgba(0, 0, 0, 0.6);">
-        Thank you for choosing Community Forums as your method of easily building a complete online community.
+        Thank you for choosing DNN Community Forums as your method of easily building a complete online community.
     </p>
-    <p style="border-top: 1px solid rgba(0, 0, 0, 0.1); padding-top: 15px;">Community Forums allows you to quickly setup a feature-rich discussion forum for your website.</p>
+    <p style="border-top: 1px solid rgba(0, 0, 0, 0.1); padding-top: 15px;">DNN Community Forums allows you to quickly setup a feature-rich discussion forum for your website.</p>
     <p>
-        Whether you are a hobbyist who just needs a single forum or you are building an on-line community for your enterprise, 
-        Community Forums is the leading solution. As you will soon see, no other forum package for DNN has as many features or the flexibility of Community Forums.
+        Whether you are a hobbyist who just needs a single forum or you are building an on-line community for your enterprise, DNN 
+        Community Forums is the leading solution. As you will soon see, no other forum package for DNN has as many features or the flexibility of DNN Community Forums.
     </p>
     <p>
         Click the continue button to get started.<br />

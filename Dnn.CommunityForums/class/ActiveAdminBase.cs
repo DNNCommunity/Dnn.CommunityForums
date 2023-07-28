@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Convert.ToString(obj);
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public string GetWarningImage(string ImageId, string WarningMessage)
         {
             return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Utilities.GetSharedResource(key, true);
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Hashtable ActiveSettings
         {
             get
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: ModuleId).ModuleSettings };
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public DateTime CacheUpdatedTime
         {
             get
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
             LocalResourceFile = Globals.ControlPanelResourceFile;
         }
 
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         internal string ScriptEscape(string escape)
         {
             escape = escape.Replace("'", "\\'");
@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Utilities.LocalizeControl(controlText, true);
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         protected override void Render(HtmlTextWriter writer)
         {
             var stringWriter = new System.IO.StringWriter();
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
             html = LocalizeControl(html);
             writer.Write(html);
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Controls.ClientTemplate GetLoadingTemplate()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 _currentView = value;
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public string ProductEditon
         {
             get

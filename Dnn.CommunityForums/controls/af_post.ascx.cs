@@ -35,6 +35,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -703,7 +704,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var tc = new TopicsController();
-            TopicInfo ti;
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti;
 
             if (TopicId > 0)
             {
@@ -713,7 +714,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                ti = new TopicInfo();
+                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
                 var dt = DateTime.UtcNow;
                 ti.Content.DateCreated = dt;
                 ti.Content.DateUpdated = dt;

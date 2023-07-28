@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				txtTitle.Text = ti.Title;
 				txtSubject.Text = ti.Subject;
 
-                SettingsInfo moduleSettings = DataCache.MainSettings(ti.ModuleId);
+                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
                 txtFileName.Text = Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
                 txtPlainText.Text = ti.TemplateText;
 				txtEditor.Text = Server.HtmlDecode(ti.TemplateHTML.Replace("[RESX:", "[TRESX:"));
