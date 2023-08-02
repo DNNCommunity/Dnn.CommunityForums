@@ -103,11 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 		}
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use TopicsController.TopicSave(int PortalId, int ModuleId, TopicInfo ti)")]
-        public int TopicSave(int PortalId, TopicInfo ti)
-        {
-			return TopicSave(PortalId, -1, ti);          
-        }
+       
         public int TopicSave(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control

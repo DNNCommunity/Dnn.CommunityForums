@@ -26,11 +26,7 @@ using System.Web;
 using System.Web.Hosting;
 using DotNetNuke.Modules.ActiveForums.Entities;
 
-namespace DotNetNuke.Modules.ActiveForums
-{
-    [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
-    public class TokensController { TokensController() { throw new NotImplementedException(); } }    
-}
+
     namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     public class TokenController

@@ -37,15 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Text { get; set; } = string.Empty;
         public int UserId { get; set; } = -1;
         public string ImageURL { get; set; } = string.Empty;
-		[Obsolete("Deprecated in Community Forums. Removing in 09.00.00. Use ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)")]
-        public ToggleSubscribe(int m, int f, int t)
-		{
-            ModuleId = -1; 
-			ToggleMode = m;
-			ForumId = f;
-            TopicId = t;    
-
-        }
+		
 
         public ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)
         {

@@ -23,11 +23,7 @@ using System.Xml;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 
-namespace DotNetNuke.Modules.ActiveForums
-{
-    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.TopicInfo")]
-    public class TopicInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicInfo { }
-}
+
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
