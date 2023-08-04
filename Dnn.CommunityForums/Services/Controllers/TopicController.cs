@@ -25,6 +25,7 @@ using System.Web.Http;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Security;
@@ -161,6 +162,33 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     t.IsLocked = !t.IsLocked;
                     tc.TopicSave(PortalSettings.PortalId, ActiveModule.ModuleID, t);
                     return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
+                }
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+            return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+        /// <summary>
+        /// Moves a Topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Move</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.ModMove)]
+        public HttpResponseMessage Move(TopicDto dto)
+        {
+            int topicId = dto.TopicId;
+            int forumId = dto.ForumId;
+            if (topicId > 0 && forumId > 0)
+            {
+                TopicsController tc = new TopicsController();
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ActiveModule.ModuleID, topicId);
+                if (t != null)
+                {
+                    tc.Topics_Move(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, topicId);
+                    DataCache.CacheClearPrefix(ActiveModule.ModuleID, string.Format(CacheKeys.ForumViewPrefix, ActiveModule.ModuleID));
+                    return Request.CreateResponse(HttpStatusCode.OK);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }

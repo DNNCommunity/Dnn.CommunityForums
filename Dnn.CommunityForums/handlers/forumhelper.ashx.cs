@@ -45,8 +45,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             ForumSubscribe,
 			RateTopic,
 			DeleteTopic,
-			MoveTopic,
-			PinTopic,/* no longer used */
+			MoveTopic,/* no longer used */
+            PinTopic,/* no longer used */
             LockTopic,/* no longer used */
             MarkAnswer,
 			TagsAutoComplete,
@@ -102,8 +102,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					sOut = DeleteTopic();
 					break;
 				case Actions.MoveTopic:
-					sOut = MoveTopic();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = MoveTopic();
+					//break;
 				case Actions.PinTopic:
                     throw new NotImplementedException();
      //               sOut = PinTopic();

@@ -34,17 +34,24 @@ function amaf_bindLoadMoveTopic(result) {
         $('#aftopicmove-currentforum').val(t.forumname);
     };
 }
-function amaf_modMove(tid, fid) {
-    var d = {};
-    d.action = 7;
-    d.topicid = tid;
-    d.forumid = fid;
-    amaf.callback(d, amaf_modMoveComplete);
-};
-function amaf_modMoveComplete(result) {
-    if (result[0].success == true) {
-        afreload();
+function amaf_modMove(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Topic/Move',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        afreload();
+    }).fail(function (xhr, status) {
+        alert('error moving post');
+    });
 };
 function amaf_modPin(mid, fid, tid) {
     var sf = $.ServicesFramework(mid);
