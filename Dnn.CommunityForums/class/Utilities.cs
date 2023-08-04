@@ -1700,7 +1700,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int moduleId = ModuleId;
             if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
             {
-                moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings["AFForumModuleID"]);
+                moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
             }
 
             return moduleId;

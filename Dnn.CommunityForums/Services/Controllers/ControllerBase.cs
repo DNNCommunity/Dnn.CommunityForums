@@ -26,10 +26,10 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
-/// <summary>
-/// <inheritdoc/>
-/// </summary>
-/// <typeparam name="T"></typeparam>
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [SupportedModules(Globals.ModuleName + "," + Globals.ModuleName + " Viewer")] /* this MUST match DesktopModule.ModuleName so use new constant */
     public class ControllerBase<T> : DnnApiController
     {
@@ -45,18 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             Logger.Info("Hello World!");
             return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
         }
-        internal int ForumModuleId
-        {
-            get
-            {
-                // if running from Forums Viewer module, need to get the module for the Forums instance
-                int moduleId = ActiveModule.ModuleID;
-                if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ActiveModule.ModuleID, tabId: ActiveModule.TabID, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
-                {
-                    moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ActiveModule.ModuleID, ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
-                }
-                return moduleId;
-            }
-        }
+        internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ActiveModule.ModuleID, ActiveModule.TabID);
     }
 }
