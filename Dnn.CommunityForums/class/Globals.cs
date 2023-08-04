@@ -368,4 +368,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";
 	}
+
+	public class ForumViewerSettingsKeys
+	{
+        public const string AFForumModuleId = "AFForumModuleID";
+    }
 }

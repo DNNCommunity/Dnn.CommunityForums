@@ -1695,5 +1695,15 @@ namespace DotNetNuke.Modules.ActiveForums
             if (selectedItem != null)
                 selectedItem.Selected = true;
         }
+        internal static int GetForumModuleId(int ModuleId, int TabId)
+        {
+            int moduleId = ModuleId;
+            if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+            {
+                moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings[Globals.AFForumModuleId]);
+            }
+
+            return moduleId;
+        }
     }
 }
