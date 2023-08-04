@@ -369,8 +369,19 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string TopicCreated = "TopicCreated";
 	}
 
-	public class ForumViewerSettingsKeys
-	{
+    public class ForumViewerSettingsKeys
+    {
         public const string AFForumModuleId = "AFForumModuleID";
+        public const string AFForumGroupId = "AFForumGroupID";
+        public const string AFForumGroup = "AFForumGroup";
+        public const string AFViewType = "AFViewType";
+        public const string AFTopicsTemplate = "AFTopicsTemplate";
+        public const string AFForumViewTemplate = "AFForumViewTemplate";
+        public const string AFTopicTemplate = "AFTopicTemplate";
+    }
+    public class ForumViewerViewType
+    {
+        public const string GROUP = "AFGROUP";
+        public const string TOPICS = "TOPICS";
     }
 }
