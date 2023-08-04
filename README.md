@@ -1,24 +1,66 @@
-# Dnn.CommunityForums  
-===================  
+# Community Forums Module  
 
-Forums Module for DNN Platform  
+This is the official forums module for the [DNN CMS](https://dnncommunity.org/About-DNN) Community.  You'll find it in use on the [Official DNN Website](https://dnncommunity.org/Forums).  The forums module has been built and continues to be maintained with the goal of providing the many contemporary tools a forum-based community might need.  
 
-## What is the Community Forums Module?  
+This module was originally released as a commercial module many years ago, known as DNN Community Forums.  Years after, the Active Modules company was acquired by DNN Corp, and much of the Intellectual Property (IP) was integrated into the DNN Platform and Evoq solutions.  However, extensions like this one were donated to the community as an open-source extension.  
 
-The Community Forums Module installs an online discussion forum that is tightly integrated with the DNN CMS platform. Previously offered as a commercial module from Active Modules, Inc., the codebase has been converted to an open-source project after the acquisition of Active Modules by DNN Corp.  
+The Community Forums module plans to help you and your fellow community members to have a productive, safe, and fun time communicating on your respective community website based on DNN.  
 
-## Requirements  
+## How to Install  
 
-* DNN Platform v9.4 and newer (aka DotNetNuke)  
+There are no steps unique to this module to install it.  You're able to install this module the same way you'd install any other module in DNN.  
 
-## Getting Started  
+### Gettting Started  
 
-* Download and install [the latest release](https://github.com/DNNCommunity/Dnn.CommunityForums/releases/latest) of the module install package.  
-* Login as a superuser and install the module via the Extensions view in the persona bar.  
-* Add an instance of the module to a page in your site.  
+When using this module, it's important to know that it can be set-up in numerous ways.  To make your initial experience easier, there is a wizard that will pre-configure the module for you with the most common settings, as well as adding some starter modules for you to use (or not).  
 
-Module settings can be accessed by placing the page in edit mode and then clicking on the 'settings' button in the modules edit menu. Community Forum settings will appear in their own tab.  
+1. There are 3 modules that you'll find installed.  The primary one that you should be using is simply named `Community Forums`.  The other two modules are companion modules that server other complimentary purposes.  
 
-When first added to a page, the forum module will create a set of sample forums.  Forum can be added, removed or changed using the "Control Panel" link visible to administrators.  
+2. When you add the `Community Forums` module to the page, it will show you a welcome message.  Click the `Continue` button to proceed.  
 
-Proudly maintained by the [DNN Community](https://dnncommunity.org).  
+3. After just a moment, the page will reload and you'll be looking at the Control Panel for the module.  You can either begin configuring things now, or choose `Exit` to go back to the main view.  
+
+You're technically already ready to use the module...  Have fun! 
+
+#### Configuration Views  
+
+There is the Control Panel that you will hopefully find to be obvious.  This is where you'll perform the majority of your configuration time.  However, if you enter into Edit Mode, you'll also find a large number of other high-level configuration options in the module settings.  Use the actions menu to go to the module settings, like you would for any other module.  
+
+## Documentation  
+
+We don't have every single feature documented, but what we have is [currently maintained in the project wiki](https://github.com/DNNCommunity/Dnn.CommunityForums/wiki).  
+
+## Minimum DNN Version  
+
+- DNN Platform 9.9 or newer  
+
+## Get Involved  
+
+We're always looking for people to help us.  Any kinds of updates you're passionate about are welcome.  Right now, we can certainly enjoy help with:  
+
+- Generating/updating [documentation in the wiki](https://github.com/DNNCommunity/Dnn.CommunityForums/wiki)  
+- Developing new features  
+- Fixing bugs  
+- Designing the user interface   
+- Designing the email notification emails  
+- Testing  
+
+You can contact any of the current maintainer(s) at the end of [this README](https://github.com/DNNCommunity/Dnn.CommunityForums#readme) to find out more information.  We're excited to have your help!  
+
+## Get Help  
+
+There are several places to get help at this time.  They are listed below in their order of preference.  :)  
+
+- [DNN Community Forums - Using this Module](https://dnncommunity.org/forums/using-dnn/extensions/)  
+- [DNN Community Forums - Building this Module](https://dnncommunity.org/forums/development-and-extensions/building-extensions/)  
+- [GitHub Discussions - Any Topic](https://github.com/DNNCommunity/Dnn.CommunityForums/discussions)  
+
+## Maintainers  
+
+This module is currently maintained by the DNN Community, led by the following people:  
+
+- @WillStrohl  
+- @johnhenley  
+- @Timo-Breumelhof  
+
+Please coordinate with any of the people above before publishing any new release and ask their review on any pull request.  

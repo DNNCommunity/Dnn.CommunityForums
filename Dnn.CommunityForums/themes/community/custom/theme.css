@@ -1,0 +1,18 @@
+/* 
+	Placeholder for overriding theme-based CSS 
+    
+	This file is delivered for the "community" theme during installation of DNN Community Forums, 
+	will not be overwritten during upgrades, and can be freely edited by site administrators.
+    Community Forums's CSS Load order: 
+
+    Community Forums's CSS Load order: 
+    1) ~/DesktopModules/ActiveForums/module.css
+    2) ~/DesktopModules/ActiveForums/themes/theme.css
+    3) ~/DesktopModules/ActiveForums/themes/currenttheme>/theme.css
+    4) ~/DesktopModules/ActiveForums/themes/<currenttheme>/custom/theme.css 
+*/
+
+
+/*.activeForums .af-crumb {
+    line-height: 2.5em
+}*/

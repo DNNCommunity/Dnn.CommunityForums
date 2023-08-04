@@ -1,0 +1,52 @@
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ModulePath>ActiveForums</ModulePath>
+    <DNNFileName>DnnCommunityForums</DNNFileName>
+    <PackageName>DnnCommunityForums</PackageName>
+    <Extension>zip</Extension>
+    <BuildScriptsPath>$(MSBuildProjectDirectory)\BuildScripts</BuildScriptsPath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\website</WebsitePath>
+    <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
+    <FullModulePath>$(WebsitePath)\DesktopModules\$(ModulePath)</FullModulePath>
+  </PropertyGroup>
+  <Import Project="$(BuildScriptsPath)\ModulePackage.Targets" />
+  <Target Name="AfterBuild" DependsOnTargets="CopyBin;GetFiles;DebugProject;PackageModule">
+  </Target>
+  <Target Name="GetFiles">
+    <ItemGroup>
+      <Manifest Include="*.dnn;*.dnn5;*.dnn6" Exclude="*_Symbols.dnn" />
+      <TextFiles Include="*.txt" Exclude="releasenotes.txt;license.txt" />
+      <SourceFiles Include="*.css;*.htm;*.html" />
+      <Views Include="*.ascx;*.ashx;" />
+      <ResourceFiles Include="App_LocalResources/*.resx" />
+      <Images Include="Images/**/*.*" />
+      <JsFiles Include="js/**/*.*" />
+      <Styles Include="Styles/**/*.*" />
+      <DataProvider Include="Providers/DataProviders/SqlDataProvider/*.SqlDataProvider" />
+      <Resources Include="@(Manifest);@(TextFiles);@(SourceFiles);@(Views);@(ResourceFiles);@(Images);@(JsFiles);@(Styles);@(DataProvider)" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+	<SymbolsInclude Include="$(DNNFileName)_Symbols.dnn" />
+    <SymbolsInclude Include="License.txt" />
+    <SymbolsInclude Include="ReleaseNotes.txt" />
+  </ItemGroup>
+  <Target Name="CopyBin">
+    <ItemGroup>
+      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.dll" />
+      <BinSourceInclude Include="$(MSBuildProjectDirectory)\bin\DotNetNuke.Modules.ActiveForums.pdb" />
+    </ItemGroup>
+    <Copy SourceFiles="@(BinSourceInclude)" DestinationFolder="$(WebsitePath)\bin" />
+  </Target>
+  <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Copy SourceFiles="@(Manifest)" DestinationFolder="$(FullModulePath)" />
+    <Copy SourceFiles="@(TextFiles)" DestinationFolder="$(FullModulePath)" />
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(FullModulePath)" />
+    <Copy SourceFiles="@(Views)" DestinationFolder="$(FullModulePath)" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(FullModulePath)\App_LocalResources" />
+    <Copy SourceFiles="@(Images)" DestinationFolder="$(FullModulePath)\Images\%(RecursiveDir)" />
+    <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(FullModulePath)\Scripts\%(RecursiveDir)" />
+    <Copy SourceFiles="@(Styles)" DestinationFolder="$(FullModulePath)\Styles\%(RecursiveDir)" />
+    <Copy SourceFiles="@(DataProvider)" DestinationFolder="$(FullModulePath)\Providers\DataProviders\SqlDataProvider" />
+  </Target>
+</Project>
