@@ -78,18 +78,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return _forumModuleId;
                 }
-                int moduleId = ModuleId;
-                if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
-                {
-                    moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings["AFForumModuleID"]);
-                }
-                return moduleId;
+                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ModuleId, TabId);
             }
             set
             {
                 _forumModuleId = value;
             }
         }
+
+        
 
         public int ForumTabId
         {
