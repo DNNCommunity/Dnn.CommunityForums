@@ -78,13 +78,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return _forumModuleId;
                 }
-                return ModuleId;
+                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ModuleId, TabId);
             }
             set
             {
                 _forumModuleId = value;
             }
         }
+
+        
 
         public int ForumTabId
         {

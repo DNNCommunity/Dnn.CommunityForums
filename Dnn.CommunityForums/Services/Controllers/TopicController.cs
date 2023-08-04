@@ -62,9 +62,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
 
                 string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController()
-                    .Profiles_Get(ActiveModule.PortalID, ActiveModule.ModuleID, UserInfo.UserID).Roles;
+                    .Profiles_Get(ActiveModule.PortalID, ForumModuleId, UserInfo.UserID).Roles;
                 int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID,
-                    ActiveModule.ModuleID, dto.ForumId, dto.TopicId, 1, UserInfo.UserID, userRoles);
+                    ForumModuleId, dto.ForumId, dto.TopicId, 1, UserInfo.UserID, userRoles);
                 return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
             }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK,
                     new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(
-                        ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId));
+                        ActiveModule.PortalID, ForumModuleId, ForumId, TopicId));
             }
 
             return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (ForumId > 0)
             {
                 return Request.CreateResponse(HttpStatusCode.OK,
-                    $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
+                    $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
             }
 
             return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -128,11 +128,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ForumModuleId, topicId);
                 if (t != null)
                 {
                     t.IsPinned = !t.IsPinned;
-                    tc.TopicSave(PortalSettings.PortalId, ActiveModule.ModuleID, t);
+                    tc.TopicSave(PortalSettings.PortalId, ForumModuleId, t);
                     return Request.CreateResponse(HttpStatusCode.OK, value: t.IsPinned);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -156,11 +156,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ActiveModule.ModuleID, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalSettings.PortalId, ForumModuleId, topicId);
                 if (t != null)
                 {
                     t.IsLocked = !t.IsLocked;
-                    tc.TopicSave(PortalSettings.PortalId, ActiveModule.ModuleID, t);
+                    tc.TopicSave(PortalSettings.PortalId, ForumModuleId, t);
                     return Request.CreateResponse(HttpStatusCode.OK, t.IsLocked);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -183,12 +183,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0 && forumId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ActiveModule.ModuleID, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ForumModuleId, topicId);
                 if (t != null)
                 {
-                    tc.Topics_Move(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, topicId);
-                    DataCache.CacheClearPrefix(ActiveModule.ModuleID, string.Format(CacheKeys.ForumViewPrefix, ActiveModule.ModuleID));
-                    return Request.CreateResponse(HttpStatusCode.OK);
+                    tc.Topics_Move(ActiveModule.PortalID, ForumModuleId, forumId, topicId);
+                    DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
+                    return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }

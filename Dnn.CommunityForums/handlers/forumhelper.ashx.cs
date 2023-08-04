@@ -228,40 +228,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			}
 			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
 		}
-		private string MoveTopic()
-		{
-			int topicId = -1;
-			int forumId = -1;
-			int targetForumId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (Params.ContainsKey("forumid") && SimulateIsNumeric.IsNumeric(Params["forumid"]))
-			{
-				targetForumId = int.Parse(Params["forumid"].ToString());
-			}
-			if (topicId > 0)
-			{
-				TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-				Data.ForumsDB db = new Data.ForumsDB();
-				forumId = db.Forum_GetByTopicId(topicId);
-				ForumController fc = new ForumController();
-				Forum f = fc.Forums_Get(forumId, this.UserId, true);
-				if (f != null)
-				{
-					if (Permissions.HasPerm(f.Security.ModMove, ForumUser.UserRoles))
-					{
-						tc.Topics_Move(PortalId, ModuleId, targetForumId, topicId);
-                        DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
-						return BuildOutput(string.Empty, OutputCodes.Success, true);
-					}
-				}
-
-			}
-			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-		}
 		private string MarkAnswer()
 		{
 			int topicId = -1;

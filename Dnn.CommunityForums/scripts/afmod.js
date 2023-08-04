@@ -11,10 +11,11 @@ function amaf_modDelComplete(result) {
         afreload();
     };
 };
-function amaf_openMove(tid) {
+function amaf_openMove(mid,tid) {
     var d = {};
     d.action = 15;
     $('#aftopicmove-topicid').val(tid);
+    $('#aftopicmove-moduleid').val(mid);
     amaf.callback(d, amaf_loadMoveTopic);
 };
 function amaf_loadMoveTopic(result) {
@@ -39,6 +40,19 @@ function amaf_modMove(mid, fid, tid) {
     var params = {
         forumId: fid,
         topicId: tid
+<<<<<<< Updated upstream
+=======
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Topic/Move',
+        beforeSend: sf.setModuleHeaders
+    }).done(function () {
+        afreload();
+>>>>>>> Stashed changes
     };
     $.ajax({
         type: "POST",
