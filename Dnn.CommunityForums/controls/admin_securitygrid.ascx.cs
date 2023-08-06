@@ -104,8 +104,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			sb.Append("<select id=\"drpSecRoles\" class=\"amcptxtbx\" style=\"width:150px;\">");
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
 			sb.Append("<option value=\"-1\">All Users</option>");
-			sb.Append("<option value=\"-3\">Unauthenticated Users</option>"); 
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
+			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Permissions.GetRoles(PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
 			}
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-            NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, ModuleId, tmp);
+            NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
