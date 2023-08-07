@@ -42,14 +42,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			UserPing, /* no longer used */
 			GetUsersOnline,/* no longer used */
             TopicSubscribe,/* no longer used */
-            ForumSubscribe,
-			RateTopic,
-			DeleteTopic,
-			MoveTopic,
-			PinTopic,/* no longer used */
+            ForumSubscribe,/* no longer used */
+            RateTopic,/* no longer used */
+            DeleteTopic,
+			MoveTopic,/* no longer used */
+            PinTopic,/* no longer used */
             LockTopic,/* no longer used */
             MarkAnswer,
-			TagsAutoComplete,
+            TagsAutoComplete,
 			DeletePost,
 			LoadTopic,
 			SaveTopic,
@@ -93,12 +93,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
      //               sOut = SubscribeTopic();
 					//break;
 				case Actions.ForumSubscribe:
-					sOut = SubscribeForum();
-					break;
-				case Actions.RateTopic:
-					sOut = RateTopic();
-					break;
-				case Actions.DeleteTopic:
+                    throw new NotImplementedException();
+                //	sOut = SubscribeForum();
+                //	break;
+                case Actions.RateTopic:
+                    throw new NotImplementedException();
+                //sOut = RateTopic();
+                //break;
+                case Actions.DeleteTopic:
 					sOut = DeleteTopic();
 					break;
 				case Actions.MoveTopic:
@@ -180,25 +182,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			}
 
 
-		}
-		private string RateTopic()
-		{
-			int r = 0;
-			int topicId = -1;
-			if (Params.ContainsKey("rate") && SimulateIsNumeric.IsNumeric(Params["rate"]))
-			{
-				r = int.Parse(Params["rate"].ToString());
-			}
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (r >= 1 && r <= 5 && topicId > 0)
-			{
-				DataProvider.Instance().Topics_AddRating(topicId, UserId, r, string.Empty, HttpContext.Current.Request.UserHostAddress.ToString());
-			}
-			r = DataProvider.Instance().Topics_GetRating(topicId);
-			return BuildOutput(r.ToString(), OutputCodes.Success, true, false);
 		}
 		private string DeleteTopic()
 		{

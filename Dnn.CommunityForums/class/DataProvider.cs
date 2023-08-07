@@ -163,9 +163,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Topics
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
         public abstract int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress);
         public abstract void Topics_Delete(int ForumId, int TopicId, int DelBehavior);
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
         public abstract int Topics_GetRating(int TopicId);
         public abstract IDataReader Topics_List(int ForumId, int PortalId, int ModuleId);
         public abstract void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId);

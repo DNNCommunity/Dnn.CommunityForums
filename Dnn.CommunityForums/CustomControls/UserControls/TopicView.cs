@@ -1061,8 +1061,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Sort
             sbOutput.Replace("[SORTDROPDOWN]", "<asp:placeholder id=\"plhTopicSort\" runat=\"server\" />");
-            var rateControl = new Ratings(TopicId, true, _topicRating);
-            sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
+            if (sOutput.Contains("[POSTRATINGBUTTON]"))
+            {
+                var rateControl = new Ratings(ModuleId,ForumId, TopicId, true, _topicRating);
+                sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
+            }
 
             // Jump To
             sbOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
