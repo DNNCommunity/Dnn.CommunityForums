@@ -186,15 +186,25 @@ function amaf_hoverRate(obj, r) {
     };
     p.className = 'fa-rater fa-rate' + r;
 };
-function amaf_markAnswer(tid, rid) {
-    var d = {};
-    d.action = 10;
-    d.topicid = tid;
-    d.replyid = rid;
-    amaf.callback(d, amaf_markAnswerComplete);
-};
-function amaf_markAnswerComplete() {
-    afreload();
+function amaf_MarkAsAnswer(mid, fid, tid, rid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid,
+        replyId: rid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Reply/MarkAsAnswer',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        afreload();
+    }).fail(function (xhr, status) {
+        alert('error marking as answer');
+    });
 };
 function amaf_loadSuggest(field, prepop, type) {
     if (typeof (type) == 'undefined') {

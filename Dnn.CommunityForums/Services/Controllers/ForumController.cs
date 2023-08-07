@@ -81,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <summary>
          /// Gets Subscriber count string for a Forum
          /// </summary>
-         /// <param name="ForumId" type="int"></param>
          /// <returns></returns>
          /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx</remarks>
         [HttpGet]

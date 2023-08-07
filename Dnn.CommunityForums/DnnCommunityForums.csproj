@@ -938,6 +938,7 @@
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
     <Compile Include="Services\Controllers\ForumController.cs" />
+    <Compile Include="Services\Controllers\ReplyController.cs" />
     <Compile Include="Services\Controllers\TopicController.cs" />
     <Compile Include="Services\Controllers\UserController.cs" />
     <Compile Include="Services\Controllers\LikeController.cs" />

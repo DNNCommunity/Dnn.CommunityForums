@@ -42,14 +42,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			UserPing, /* no longer used */
 			GetUsersOnline,/* no longer used */
             TopicSubscribe,/* no longer used */
-            ForumSubscribe,
-			RateTopic,
+            ForumSubscribe,/* no longer used */
+            RateTopic,
 			DeleteTopic,
 			MoveTopic,/* no longer used */
             PinTopic,/* no longer used */
             LockTopic,/* no longer used */
-            MarkAnswer,
-			TagsAutoComplete,
+            MarkAnswer,/* no longer used */
+            TagsAutoComplete,
 			DeletePost,
 			LoadTopic,
 			SaveTopic,
@@ -93,8 +93,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
      //               sOut = SubscribeTopic();
 					//break;
 				case Actions.ForumSubscribe:
-					sOut = SubscribeForum();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = SubscribeForum();
+					//break;
 				case Actions.RateTopic:
 					sOut = RateTopic();
 					break;
@@ -114,8 +115,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
      //               sOut = LockTopic();
 					//break;
 				case Actions.MarkAnswer:
-					sOut = MarkAnswer();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = MarkAnswer();
+					//break;
 				case Actions.TagsAutoComplete:
 					sOut = TagsAutoComplete();
 					break;
@@ -143,44 +145,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		{
 			ForumController fc = new ForumController();
 			return fc.GetForumsHtmlOption(PortalId, ModuleId, ForumUser);
-		}
-		private string SubscribeForum()
-		{
-			if (UserId <= 0)
-			{
-				return BuildOutput(string.Empty, OutputCodes.AuthenticationFailed, true);
-			}
-			int rUserId = -1;
-
-			if (Params.ContainsKey("userid") && SimulateIsNumeric.IsNumeric(Params["userid"]))
-			{
-				rUserId = int.Parse(Params["userid"].ToString());
-
-			}
-			if (rUserId > 0 & rUserId != ForumUser.UserId & ! ForumUser.IsAdmin)
-			{
-				return BuildOutput(string.Empty, OutputCodes.AuthenticationFailed, true);
-			}
-			rUserId = UserId;
-			int iStatus = 0;
-			SubscriptionController sc = new SubscriptionController();
-			int forumId = -1;
-			if (Params.ContainsKey("forumid") && SimulateIsNumeric.IsNumeric(Params["forumid"]))
-			{
-				forumId = int.Parse(Params["forumid"].ToString());
-			}
-			iStatus = sc.Subscription_Update(PortalId, ModuleId, forumId, -1, 1, rUserId, ForumUser.UserRoles);
-
-			if (iStatus == 1)
-			{
-				return BuildOutput("{\"subscribed\":true,\"text\":\"" + Utilities.JSON.EscapeJsonString(Utilities.GetSharedResource("[RESX:ForumSubscribe:TRUE]")) + "\",\"forumid\":" + forumId.ToString() + "}", OutputCodes.Success, true, true);
-			}
-			else
-			{
-				return BuildOutput("{\"subscribed\":false,\"text\":\"" + Utilities.JSON.EscapeJsonString(Utilities.GetSharedResource("[RESX:ForumSubscribe:FALSE]")) + "\",\"forumid\":" + forumId.ToString() + "}", OutputCodes.Success, true, true);
-			}
-
-
 		}
 		private string RateTopic()
 		{
