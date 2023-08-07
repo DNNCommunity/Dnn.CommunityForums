@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-				return URL.ForumLink(TabId, this);
+				return (TabId > 0 ? URL.ForumLink(TabId, this) : string.Empty);
 			}
 		}
 

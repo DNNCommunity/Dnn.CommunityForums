@@ -11,48 +11,75 @@ function amaf_modDelComplete(result) {
         afreload();
     };
 };
-function amaf_openMove(mid,tid) {
-    var d = {};
-    d.action = 15;
+function amaf_openMove(mid, fid, tid) {
     $('#aftopicmove-topicid').val(tid);
     $('#aftopicmove-moduleid').val(mid);
-    amaf.callback(d, amaf_loadMoveTopic);
-};
-function amaf_loadMoveTopic(result) {
-    am.UI.LoadDiv('aftopicmove');
-    $('#drpForums').append($(result));
-    var d = {};
-    d.action = 13;
-    d.topicid = $('#aftopicmove-topicid').val();
-    amaf.callback(d, amaf_bindLoadMoveTopic);
-
-};
-function amaf_bindLoadMoveTopic(result) {
-    if (result[0].success == true) {
-        var t = result[0].result;
-        $('#aftopicmove-topicid').val(t.topicid);
-        $('#aftopicmove-subject').val(t.subject);
-        $('#aftopicmove-currentforum').val(t.forumname);
-    };
-}
-function amaf_modMove(mid, fid, tid) {
     var sf = $.ServicesFramework(mid);
     var params = {
-        forumId: fid,
-        topicId: tid
-<<<<<<< Updated upstream
-=======
+        forumId: fid
     };
     $.ajax({
         type: "POST",
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Topic/Move',
+        url: '/API/ActiveForums/Forum/ListForHtml',
         beforeSend: sf.setModuleHeaders
-    }).done(function () {
-        afreload();
->>>>>>> Stashed changes
+    }).done(function (data) {
+        am.UI.LoadDiv('aftopicmove');
+        $('#drpForums').empty().append($(data));
+        amaf_loadForMove(mid, fid, tid);
+    }).fail(function (xhr, status) {
+        alert('error moving post');
+    });
+};
+function amaf_loadForMove(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: '/API/ActiveForums/Topic/Load',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_bindLoadMoveTopic(data);
+    }).fail(function (xhr, status) {
+        alert('error moving post');
+    });
+};
+//};
+//function amaf_openMove(mid,tid) {
+//    var d = {};
+//    d.action = 15;
+//    $('#aftopicmove-topicid').val(tid);
+//    $('#aftopicmove-moduleid').val(mid);
+//    amaf.callback(d, amaf_loadMoveTopic);
+//};
+//function amaf_loadMoveTopic(result) {
+//    am.UI.LoadDiv('aftopicmove');
+//    $('#drpForums').append($(result));
+//    var d = {};
+//    d.action = 13;
+//    d.topicid = $('#aftopicmove-topicid').val();
+//    amaf.callback(d, amaf_bindLoadMoveTopic);
+
+function amaf_bindLoadMoveTopic(result) { 
+    var t = data[0].Item1;
+    var f = data[1].Item2;
+    $('#aftopicmove-topicid').val(t.TopicId);
+    $('#aftopicmove-subject').val(t.Content.Subject);
+    $('#aftopicmove-currentforum').val(f.ForumName);
+};
+function amaf_modMove(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
     $.ajax({
         type: "POST",
