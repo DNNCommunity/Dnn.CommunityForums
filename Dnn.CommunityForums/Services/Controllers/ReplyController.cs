@@ -37,6 +37,7 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
 using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
+using static DotNetNuke.Modules.ActiveForums.Services.Controllers.TopicController;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
@@ -69,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             int replyId = dto.ReplyId; 
             if (forumId > 0 && topicId > 0 && replyId > 0)
             {
-                TopicsController tc = new TopicsController();
+                TopicsController tc = new DotNetNuke.Modules.ActiveForums.TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ForumModuleId, topicId);
                 if (t != null)
                 {
@@ -85,6 +86,33 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+        /// <summary>
+        /// Deletes a Reply
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/Delete</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Delete)]
+        [ForumsAuthorize(SecureActions.ModDelete)]
+        public HttpResponseMessage Delete(ReplyDto dto)
+        {
+            int forumId = dto.ForumId;
+            int topicId = dto.TopicId;
+            int replyId = dto.ReplyId;
+            if (forumId > 0 && topicId > 0 && replyId > 0)
+            {
+                var rc = new DotNetNuke.Modules.ActiveForums.ReplyController();
+                var r = rc.Reply_Get(ActiveModule.PortalID, ForumModuleId, topicId, replyId);
+                if (r != null)
+                {
+                    rc.Reply_Delete(ActiveModule.PortalID, forumId, topicId,replyId, SettingsBase.GetModuleSettings(ForumModuleId).DeleteBehavior);
+                    return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }
 }

@@ -60,22 +60,6 @@ function amaf_loadForMove(mid, fid, tid) {
         alert('error moving post');
     });
 };
-//};
-//function amaf_openMove(mid,tid) {
-//    var d = {};
-//    d.action = 15;
-//    $('#aftopicmove-topicid').val(tid);
-//    $('#aftopicmove-moduleid').val(mid);
-//    amaf.callback(d, amaf_loadMoveTopic);
-//};
-//function amaf_loadMoveTopic(result) {
-//    am.UI.LoadDiv('aftopicmove');
-//    $('#drpForums').append($(result));
-//    var d = {};
-//    d.action = 13;
-//    d.topicid = $('#aftopicmove-topicid').val();
-//    amaf.callback(d, amaf_bindLoadMoveTopic);
-
 function amaf_bindLoadMoveTopic(result) { 
     var t = data[0].Item1;
     var f = data[1].Item2;

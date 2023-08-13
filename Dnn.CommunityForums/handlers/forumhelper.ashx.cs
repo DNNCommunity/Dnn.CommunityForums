@@ -50,8 +50,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             LockTopic,/* no longer used */
             MarkAnswer,/* no longer used */
             TagsAutoComplete,
-			DeletePost,
-			LoadTopic,/* no longer used */
+			DeletePost,/* no longer used */
+            LoadTopic,/* no longer used */
             SaveTopic,
 			ForumList,/* no longer used */
             LikePost /*no longer used*/
@@ -123,8 +123,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					sOut = TagsAutoComplete();
 					break;
 				case Actions.DeletePost:
-					sOut = DeletePost();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = DeletePost();
+					//break;
 				case Actions.LoadTopic:
                     throw new NotImplementedException();
      //               sOut = LoadTopic();
@@ -202,92 +203,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			@out += "]";
 			return @out;
 		}
-		private string DeletePost()
-		{
-			int replyId = -1;
-			int TopicId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				TopicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (Params.ContainsKey("replyid") && SimulateIsNumeric.IsNumeric(Params["replyid"]))
-			{
-				replyId = int.Parse(Params["replyid"].ToString());
-			}
-			int forumId = -1;
-			Data.ForumsDB db = new Data.ForumsDB();
-			forumId = db.Forum_GetByTopicId(TopicId);
-			ForumController fc = new ForumController();
-			Forum f = fc.Forums_Get(forumId, this.UserId, true);
-
-			// Need to get the list of attachments BEFORE we remove the post recods
-			var attachmentController = new Data.AttachController();
-			var attachmentList = (MainSettings.DeleteBehavior == 0)
-									 ? attachmentController.ListForPost(TopicId, replyId)
-									 : null;
-
-
-			if (TopicId > 0 & replyId < 1)
-			{
-				TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId);
-
-				if (Permissions.HasAccess(f.Security.ModDelete, ForumUser.UserRoles) || (Permissions.HasAccess(f.Security.Delete, ForumUser.UserRoles) && ti.Content.AuthorId == UserId && ti.IsLocked == false))
-				{
-					DataProvider.Instance().Topics_Delete(forumId, TopicId, MainSettings.DeleteBehavior);
-					string journalKey = string.Format("{0}:{1}", forumId.ToString(), TopicId.ToString());
-					JournalController.Instance.DeleteJournalItemByKey(PortalId, journalKey);
-				}
-				else
-				{
-					return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-				}
-			}
-			else
-			{
-				ReplyController rc = new ReplyController();
-				DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ModuleId, TopicId, replyId);
-				if (Permissions.HasAccess(f.Security.ModDelete, ForumUser.UserRoles) || (Permissions.HasAccess(f.Security.Delete, ForumUser.UserRoles) && ri.Content.AuthorId == UserId))
-				{
-					DataProvider.Instance().Reply_Delete(forumId, TopicId, replyId, MainSettings.DeleteBehavior);
-					string journalKey = string.Format("{0}:{1}:{2}", forumId.ToString(), TopicId.ToString(), replyId.ToString());
-					JournalController.Instance.DeleteJournalItemByKey(PortalId, journalKey);
-
-				}
-				else
-				{
-					return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-				}
-
-			}
-
-			// If it's a hard delete, delete associated attachments
-			// attachmentList will only be populated if the DeleteBehavior is 0
-			if (attachmentList != null)
-			{      
-				var fileManager = FileManager.Instance;
-				var folderManager = FolderManager.Instance;
-				var attachmentFolder = folderManager.GetFolder(PortalId, "activeforums_Attach");
-
-				foreach (var attachment in attachmentList)
-				{
-					attachmentController.Delete(attachment.AttachmentId);
-
-					var file = attachment.FileId.HasValue
-								   ? fileManager.GetFile(attachment.FileId.Value)
-								   : fileManager.GetFile(attachmentFolder, attachment.FileName);
-
-					// Only delete the file if it exists in the attachment folder
-					if (file != null && file.FolderId == attachmentFolder.FolderID)
-						fileManager.DeleteFile(file);
-				}
-			}
-
-			// Return the result
-			DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
-			return BuildOutput(TopicId + "|" + replyId, OutputCodes.Success, true);
-		}
-		
 		private string SaveTopic()
 		{
 			int topicId = -1;
