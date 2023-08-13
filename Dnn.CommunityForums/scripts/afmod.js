@@ -1,14 +1,22 @@
-﻿function amaf_modDel(tid) {
+﻿function amaf_modDel(mid, fid, tid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
-        var d = {};
-        d.action = 6;
-        d.topicid = tid;
-        amaf.callback(d, amaf_modDelComplete);
-    };
-};
-function amaf_modDelComplete(result) {
-    if (result[0].success == true) {
-        afreload();
+        var sf = $.ServicesFramework(mid);
+        var params = {
+            forumId: fid,
+            topicId: tid
+        };
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: "json",
+            url: '/API/ActiveForums/Topic/Delete',
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error deleting topic');
+        });
     };
 };
 function amaf_openMove(mid, fid, tid) {

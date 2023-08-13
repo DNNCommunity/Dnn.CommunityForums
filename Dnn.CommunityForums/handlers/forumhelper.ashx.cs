@@ -44,8 +44,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             TopicSubscribe,/* no longer used */
             ForumSubscribe,/* no longer used */
             RateTopic,
-			DeleteTopic,
-			MoveTopic,/* no longer used */
+			DeleteTopic,/* no longer used */
+            MoveTopic,/* no longer used */
             PinTopic,/* no longer used */
             LockTopic,/* no longer used */
             MarkAnswer,/* no longer used */
@@ -100,8 +100,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					sOut = RateTopic();
 					break;
 				case Actions.DeleteTopic:
-					sOut = DeleteTopic();
-					break;
+                    throw new NotImplementedException();
+     //               sOut = DeleteTopic();
+					//break;
 				case Actions.MoveTopic:
                     throw new NotImplementedException();
      //               sOut = MoveTopic();
@@ -161,33 +162,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			}
 			r = DataProvider.Instance().Topics_GetRating(topicId);
 			return BuildOutput(r.ToString(), OutputCodes.Success, true, false);
-		}
-		private string DeleteTopic()
-		{
-			int topicId = -1;
-			int forumId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (topicId > 0)
-			{
-				TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-				Data.ForumsDB db = new Data.ForumsDB();
-				forumId = db.Forum_GetByTopicId(topicId);
-				ForumController fc = new ForumController();
-				Forum f = fc.Forums_Get(forumId, this.UserId, true);
-				if (f != null)
-				{
-					if (Permissions.HasPerm(f.Security.ModDelete, ForumUser.UserRoles) || (t.Author.AuthorId == this.UserId && Permissions.HasAccess(f.Security.Delete, ForumUser.UserRoles)))
-					{
-						tc.Topics_Delete(PortalId, ModuleId, forumId, topicId, MainSettings.DeleteBehavior);
-                        return BuildOutput(string.Empty, OutputCodes.Success, true);
-					}
-				}
-			}
-			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
 		}
 		private string TagsAutoComplete()
 		{
@@ -313,166 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 			return BuildOutput(TopicId + "|" + replyId, OutputCodes.Success, true);
 		}
-		//private string LoadTopic()
-		//{
-		//	int topicId = -1;
-		//	int forumId = -1;
-		//	if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-		//	{
-		//		topicId = int.Parse(Params["topicid"].ToString());
-		//	}
-		//	if (topicId > 0)
-		//	{
-		//		TopicsController tc = new TopicsController();
-  //              DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-		//		Data.ForumsDB db = new Data.ForumsDB();
-		//		forumId = db.Forum_GetByTopicId(topicId);
-		//		ForumController fc = new ForumController();
-		//		Forum f = fc.Forums_Get(PortalId, -1, forumId, this.UserId, true, false, -1);
-		//		if (f != null)
-		//		{
-		//			if (Permissions.HasPerm(f.Security.ModEdit, ForumUser.UserRoles))
-		//			{
-		//				StringBuilder sb = new StringBuilder();
-		//				sb.Append("{");
-		//				sb.Append(Utilities.JSON.Pair("topicid", t.TopicId.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("subject", t.Content.Subject));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("authorid", t.Content.AuthorId.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("locked", t.IsLocked.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("pinned", t.IsPinned.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("priority", t.Priority.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("status", t.StatusId.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("forumid", forumId.ToString()));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("forumname", f.ForumName));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("tags", t.Tags));
-		//				sb.Append(",");
-		//				sb.Append(Utilities.JSON.Pair("categories", t.Categories));
-		//				sb.Append(",");
-		//				sb.Append("\"properties\":[");
-		//				string sCats = string.Empty;
-		//				if (f.Properties != null)
-		//				{
-		//					int i = 0;
-		//					foreach (PropertiesInfo p in f.Properties)
-		//					{
-		//						sb.Append("{");
-		//						sb.Append(Utilities.JSON.Pair("propertyid", p.PropertyId.ToString()));
-		//						sb.Append(",");
-		//						sb.Append(Utilities.JSON.Pair("datatype", p.DataType));
-		//						sb.Append(",");
-		//						sb.Append(Utilities.JSON.Pair("propertyname", p.Name));
-		//						sb.Append(",");
-		//						string pvalue = p.DefaultValue;
-		//						foreach (PropertiesInfo tp in t.TopicProperties)
-		//						{
-		//							if (tp.PropertyId == p.PropertyId)
-		//							{
-		//								pvalue = tp.DefaultValue;
-		//							}
-		//						}
-
-		//						sb.Append(Utilities.JSON.Pair("propertyvalue", pvalue));
-		//						if (p.DataType.Contains("list"))
-		//						{
-		//							sb.Append(",\"listdata\":[");
-		//							if (p.DataType.Contains("list|categories"))
-		//							{
-		//								using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, f.ModuleId, true, 0, 200, "ASC", "TagName", forumId, f.ForumGroupId))
-		//								{
-		//									dr.NextResult();
-		//									while (dr.Read())
-		//									{
-		//										sCats += "{";
-		//										sCats += Utilities.JSON.Pair("id", dr["TagId"].ToString());
-		//										sCats += ",";
-		//										sCats += Utilities.JSON.Pair("name", dr["TagName"].ToString());
-		//										sCats += ",";
-		//										sCats += Utilities.JSON.Pair("selected", IsSelected(dr["TagName"].ToString(), t.Categories).ToString());
-		//										sCats += "},";
-		//									}
-		//									dr.Close();
-		//								}
-		//								if (! (string.IsNullOrEmpty(sCats)))
-		//								{
-		//									sCats = sCats.Substring(0, sCats.Length - 1);
-		//								}
-		//								sb.Append(sCats);
-		//							}
-		//							else
-		//							{
-		//								DotNetNuke.Common.Lists.ListController lists = new DotNetNuke.Common.Lists.ListController();
-		//								string lName = p.DataType.Substring(p.DataType.IndexOf("|") + 1);
-		//								DotNetNuke.Common.Lists.ListEntryInfoCollection lc = lists.GetListEntryInfoCollection(lName, string.Empty);
-		//								int il = 0;
-		//								foreach (DotNetNuke.Common.Lists.ListEntryInfo l in lc)
-		//								{
-		//									sb.Append("{");
-		//									sb.Append(Utilities.JSON.Pair("itemId", l.Value));
-		//									sb.Append(",");
-		//									sb.Append(Utilities.JSON.Pair("itemName", l.Text));
-		//									sb.Append("}");
-		//									il += 1;
-		//									if (il < lc.Count)
-		//									{
-		//										sb.Append(",");
-		//									}
-		//								}
-		//							}
-		//							sb.Append("]");
-		//						}
-		//						sb.Append("}");
-		//						i += 1;
-		//						if (i < f.Properties.Count)
-		//						{
-		//							sb.Append(",");
-		//						}
-
-		//					}
-		//				}
-
-
-
-
-		//				sb.Append("],\"categories\":[");
-		//				sCats = string.Empty;
-		//				using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, f.ModuleId, true, 0, 200, "ASC", "TagName", forumId, f.ForumGroupId))
-		//				{
-		//					dr.NextResult();
-		//					while (dr.Read())
-		//					{
-		//						sCats += "{";
-		//						sCats += Utilities.JSON.Pair("id", dr["TagId"].ToString());
-		//						sCats += ",";
-		//						sCats += Utilities.JSON.Pair("name", dr["TagName"].ToString());
-		//						sCats += ",";
-		//						sCats += Utilities.JSON.Pair("selected", IsSelected(dr["TagName"].ToString(), t.Categories).ToString());
-		//						sCats += "},";
-		//					}
-		//					dr.Close();
-		//				}
-		//				if (! (string.IsNullOrEmpty(sCats)))
-		//				{
-		//					sCats = sCats.Substring(0, sCats.Length - 1);
-		//				}
-		//				sb.Append(sCats);
-		//				sb.Append("]");
-		//				sb.Append("}");
-		//				return BuildOutput(sb.ToString(), OutputCodes.Success, true, true);
-		//			}
-		//		}
-
-		//	}
-		//	return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-		//}
+		
 		private string SaveTopic()
 		{
 			int topicId = -1;
@@ -573,27 +388,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
 		}
-		//private bool IsSelected(string TagName, string selectedValues)
-		//{
-		//	if (string.IsNullOrEmpty(selectedValues))
-		//	{
-		//		return false;
-		//	}
-		//	else
-		//	{
-		//		foreach (string s in selectedValues.Split('|'))
-		//		{
-		//			if (! (string.IsNullOrEmpty(s)))
-		//			{
-		//				if (s.ToLowerInvariant().Trim() == TagName.ToLowerInvariant().Trim())
-		//				{
-		//					return true;
-		//				}
-		//			}
-		//		}
-		//	}
-
-		//	return false;
-		//}
+		
 	}
 }

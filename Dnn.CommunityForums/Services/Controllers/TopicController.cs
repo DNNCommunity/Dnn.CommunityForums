@@ -25,11 +25,13 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
 using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -202,12 +204,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
-         /// <summary>
-         /// Loads a Topic
-         /// </summary>
-         /// <param name="dto"></param>
-         /// <returns></returns>
-         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load</remarks>
+        /// <summary>
+        /// Loads a Topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load</remarks>
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.View)]
@@ -224,12 +226,38 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ForumModuleId, topicId);
                 if (t != null)
-            {
+                {
                     Forum f = new DotNetNuke.Modules.ActiveForums.ForumController().Forums_Get(ActiveModule.PortalID, ForumModuleId, forumId, user.UserId, true, false, -1);
                     if (f != null)
                     {
                         return Request.CreateResponse(HttpStatusCode.OK, new object[1] { (t, f) });
-                    }                         
+                    }
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        } 
+        /// <summary>
+        /// Deletes a Topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Delete</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Delete)]
+        [ForumsAuthorize(SecureActions.ModDelete)]
+        public HttpResponseMessage Delete(TopicDto dto)
+        {
+            int topicId = dto.TopicId;
+            int forumId = dto.ForumId;
+            if (topicId > 0 && forumId > 0)
+            {
+                TopicsController tc = new TopicsController();
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ForumModuleId, topicId);
+                if (t != null)
+                {
+                    tc.Topics_Delete(ActiveModule.PortalID, ForumModuleId, forumId, topicId, SettingsBase.GetModuleSettings(ForumModuleId).DeleteBehavior);
+                    return Request.CreateResponse(HttpStatusCode.OK, string.Empty);                   
                 }
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
