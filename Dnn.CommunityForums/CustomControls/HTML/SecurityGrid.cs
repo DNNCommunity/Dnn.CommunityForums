@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, ModuleId: -1, tmp);
+			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
