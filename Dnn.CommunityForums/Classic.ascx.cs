@@ -416,6 +416,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
+                    if (ForumTabId <= 0)
+                    {
+                        ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
+                    }
                     lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
