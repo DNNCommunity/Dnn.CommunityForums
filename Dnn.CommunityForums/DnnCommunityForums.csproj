@@ -772,8 +772,6 @@
     <Content Include="controls\_default.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="images\AF_logo.gif" />
-    <Content Include="images\ambuttonback.gif" />
     <Content Include="images\attach.gif" />
     <Content Include="images\close.gif" />
     <Content Include="images\dashHeaderBg.gif" />

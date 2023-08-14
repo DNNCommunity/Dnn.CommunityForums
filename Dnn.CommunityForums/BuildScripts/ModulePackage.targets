@@ -43,7 +43,6 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <InstallInclude Include="**\*.js" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.js.map" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;node_modules\**;clientApp\**;readme.txt;.git\**;.vs\**" />
-      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.eot" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.svg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.ttf" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
