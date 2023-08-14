@@ -62,7 +62,7 @@ function amaf_updateuseronline(mid) {
     var sf = $.ServicesFramework(mid);
     $.ajax({
         type: "POST",
-        url: '/API/ActiveForums/User/UpdateUserIsOnline',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/User/UpdateUserIsOnline',
         beforeSend: sf.setModuleHeaders
     })
 };
@@ -70,7 +70,7 @@ function amaf_uo(mid) {
     var sf = $.ServicesFramework(mid);
     $.ajax({
         type: "GET",
-        url: '/API/ActiveForums/User/GetUsersOnline',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/User/GetUsersOnline',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
             var u = document.getElementById('af-usersonline');
@@ -90,7 +90,7 @@ function amaf_topicSubscribe(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Topic/Subscribe',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Subscribe',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         amaf_UpdateTopicSubscriberCount(mid, fid, tid);
@@ -108,7 +108,7 @@ function amaf_UpdateTopicSubscriberCount(mid, fid, tid) {
         var sf = $.ServicesFramework(mid);
         $.ajax({
             type: "GET",
-            url: '/API/ActiveForums/Topic/SubscriberCount?forumId=' + fid + '&topicId=' + tid,
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/SubscriberCount?forumId=' + fid + '&topicId=' + tid,
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             u.innerHTML = data;
@@ -127,7 +127,7 @@ function amaf_forumSubscribe(mid, fid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Forum/Subscribe',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Forum/Subscribe',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         amaf_UpdateForumSubscriberCount(mid, fid);
@@ -153,7 +153,7 @@ function amaf_UpdateForumSubscriberCount(mid, fid) {
         var sf = $.ServicesFramework(mid);
         $.ajax({
             type: "GET",
-            url: '/API/ActiveForums/Forum/SubscriberCount?forumId=' + fid,
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Forum/SubscriberCount?forumId=' + fid,
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             u.innerHTML = data;
@@ -329,7 +329,7 @@ function amaf_likePost(mid, fid, cid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Like/Like',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Like/Like',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicview-likes1-' + cid).toggleClass('fa-thumbs-up').toggleClass('fa-thumbs-o-up').text(" " + data);
