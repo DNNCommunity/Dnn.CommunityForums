@@ -496,7 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
 					{
 						var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
-						permittedRolesCanView = Permissions.GetRoleNames(moduleInfo.PortalID, moduleInfo.ModuleID, string.Join(";", canView.Split(":".ToCharArray())));
+						permittedRolesCanView = Permissions.GetRoleNames(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
 						AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
 					}
 					var searchDoc = new SearchDocument

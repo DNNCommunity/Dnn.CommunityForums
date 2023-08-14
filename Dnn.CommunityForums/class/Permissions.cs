@@ -406,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		    return RoleIds;
 		}
-		internal static NameValueCollection GetRolesNVC(int PortalId, int ModuleId, string Roles)
+		internal static NameValueCollection GetRolesNVC(int PortalId, string Roles)
         {
 			try
 			{
@@ -425,7 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								nvc.Add("-3", Common.Globals.glbRoleUnauthUserName);
 								break;
 							default:
-								roleName = GetRole(PortalId, ModuleId: ModuleId, role);
+								roleName = GetRoleName(PortalId, role);
 								if (roleName != null)
 								{
 									nvc.Add(role, roleName);
@@ -444,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		internal static string GetRoleNames(int PortalId, int ModuleId, string Roles)
+		internal static string GetRoleNames(int PortalId, string Roles)
         {
 			try
 			{
@@ -464,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								RoleNames = string.Concat(RoleNames + Common.Globals.glbRoleUnauthUserName, ";");
 								break;
 							default:
-								roleName = GetRole(PortalId: PortalId, ModuleId: ModuleId, role: role);
+								roleName = GetRoleName(PortalId: PortalId, role: role);
 								if (roleName != null)
 								{
 									RoleNames = string.Concat(RoleNames + roleName, ";");
@@ -483,24 +483,24 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		private static string GetRole(int PortalId, int ModuleId, string role)
-		{
-			return GetRoles(PortalId, ModuleId).ToArray().Where(r => r.RoleName == role).Select(r=> r.RoleName).FirstOrDefault();
-		}
-        private static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int ModuleId, int PortalId)
+		private static string GetRoleName(int PortalId, string role)
         {
-            object obj = DataCache.SettingsCacheRetrieve(ModuleId: ModuleId, cacheKey: string.Format(CacheKeys.RoleNames, PortalId));
-            System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> roleNames;
+			return GetRoles(PortalId).ToArray().Where(r => r.RoleID == Utilities.SafeConvertInt( role)).Select(r=> r.RoleName).FirstOrDefault();
+		}
+        internal static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int PortalId)
+        {
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey: string.Format(CacheKeys.RoleNames, PortalId));
+            System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> roles;
             if (obj == null)
             {
-                roleNames = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
-                DataCache.SettingsCacheStore(ModuleId: ModuleId, cacheKey: string.Format(CacheKeys.RoleNames,PortalId), cacheObj: roleNames);
+                roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
+                DataCache.SettingsCacheStore(ModuleId: -1, cacheKey: string.Format(CacheKeys.RoleNames,PortalId), cacheObj: roles);
             }
             else
             {
-                roleNames = (System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo>)obj;
+                roles = (System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo>)obj;
             }
-            return roleNames;
+            return roles;
         }
         
 

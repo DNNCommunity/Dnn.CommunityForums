@@ -26,11 +26,11 @@ using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
-/// <summary>
-/// <inheritdoc/>
-/// </summary>
-/// <typeparam name="T"></typeparam>
-    [SupportedModules(Globals.ModuleName)] /* this MUST match DesktopModule.ModuleName so use new constant */
+    /// <summary>
+    /// <inheritdoc/>
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    [SupportedModules(Globals.ModuleName + "," + Globals.ModuleName + " Viewer")] /* this MUST match DesktopModule.ModuleName so use new constant */
     public class ControllerBase<T> : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(T));
@@ -45,5 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             Logger.Info("Hello World!");
             return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
         }
+        internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ActiveModule.ModuleID, ActiveModule.TabID);
     }
 }

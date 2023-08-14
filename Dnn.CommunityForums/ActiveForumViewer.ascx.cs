@@ -32,11 +32,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                if (Settings["AFForumModuleID"] != null)
+                if (Settings[ForumViewerSettingsKeys.AFForumModuleId] != null)
                 {
-                    string viewType = Convert.ToString(Settings["AFViewType"]);
-                    int tmpModuleId = Convert.ToInt32(Settings["AFForumModuleID"]);
-                    int tmpForumId = Convert.ToInt32(Settings["AFForumGroupID"]);
+                    string viewType = Convert.ToString(Settings[ForumViewerSettingsKeys.AFViewType]);
+                    int tmpModuleId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumModuleId]);
+                    int tmpForumId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumGroupId]);
                     if (viewType.ToLowerInvariant() == "topics")
                     {
                         viewType = Views.Topics;
@@ -49,21 +49,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     ctlForumLoader.DefaultView = viewType;
                     ctlForumLoader.ForumModuleId = tmpModuleId;
-                    int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(tmpModuleId).FirstOrDefault().TabID;
-                    if (tmpForumTabId <= 0) { tmpForumTabId = TabId; }
-                    ctlForumLoader.ForumTabId = tmpForumTabId; 
+                    ctlForumLoader.ForumTabId = ForumTabId; 
                     ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
-                    if (!(Convert.ToString(Settings["AFTopicsTemplate"]) == null))
+                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
                     {
-                        ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(Settings["AFTopicsTemplate"]);
+                        ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]);
                     }
-                    if (!(Convert.ToString(Settings["AFForumViewTemplate"]) == null))
+                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
                     {
-                        ctlForumLoader.DefaultForumViewTemplateId = Convert.ToInt32(Settings["AFForumViewTemplate"]);
+                        ctlForumLoader.DefaultForumViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]);
                     }
-                    if (!(Convert.ToString(Settings["AFTopicTemplate"]) == null))
+                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
                     {
-                        ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(Settings["AFTopicTemplate"]);
+                        ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFTopicTemplate]);
                     }
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";

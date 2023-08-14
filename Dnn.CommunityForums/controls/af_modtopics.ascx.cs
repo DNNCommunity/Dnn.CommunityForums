@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                Response.Redirect(NavigateUrl(ForumTabId));
+                Response.Redirect(NavigateUrl(TabId));
             }
 
         }
@@ -105,8 +105,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     try
                                     {
-                                        //Email.SendEmail(fi.ModDeleteTemplateId, PortalId, ForumModuleId, ForumTabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, auth);
-                                        Email.SendEmailToModerators(fi.ModDeleteTemplateId, PortalId, tmpForumId, tmpTopicId, tmpReplyId, ForumModuleId, ForumTabId, string.Empty);
+                                        //Email.SendEmail(fi.ModDeleteTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, auth);
+                                        Email.SendEmailToModerators(fi.ModDeleteTemplateId, PortalId, tmpForumId, tmpTopicId, tmpReplyId, ForumModuleId, TabId, string.Empty);
                                     }
                                     catch (Exception ex)
                                     {
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     au.FirstName = ui.FirstName;
                                     au.LastName = ui.LastName;
                                     au.Username = ui.Username;
-                                    Email.SendEmail(fi.ModRejectTemplateId, PortalId, ForumModuleId, ForumTabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, au);
+                                    Email.SendEmail(fi.ModRejectTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, au);
                                 }
 
                             }
@@ -194,18 +194,18 @@ namespace DotNetNuke.Modules.ActiveForums
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
                                     {
-                                        Email.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, ForumTabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
+                                        Email.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
                                     }
 
-                                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, tmpForumId, tmpTopicId, 0, ti.Content.AuthorId);
+                                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, 0, ti.Content.AuthorId);
 
                                     try
                                     {
                                         ControlUtils ctlUtils = new ControlUtils();
-                                        string sUrl = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId); // Utilities.NavigateUrl(ForumTabId, "", ParamKeys.ViewType & "=" & Views.Topic & "&" & ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId)
+                                        string sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId); // Utilities.NavigateUrl(TabId, "", ParamKeys.ViewType & "=" & Views.Topic & "&" & ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId)
                                         if (sUrl.Contains("~/"))
                                         {
-                                            sUrl = Utilities.NavigateUrl(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
+                                            sUrl = Utilities.NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId);
                                         }
                                         Social amas = new Social();
                                         amas.AddTopicToJournal(PortalId, ForumModuleId ,TabId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
@@ -232,18 +232,18 @@ namespace DotNetNuke.Modules.ActiveForums
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {
-                                        Email.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, ForumTabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
+                                        Email.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
                                     }
 
-                                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, ForumTabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Content.AuthorId);
+                                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Content.AuthorId);
 
                                     try
                                     {
                                         ControlUtils ctlUtils = new ControlUtils();
-                                        string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
+                                        string fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
                                         if (fullURL.Contains("~/"))
                                         {
-                                            fullURL = Utilities.NavigateUrl(ForumTabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
+                                            fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                                         }
                                         Social amas = new Social();
                                         amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, sBody, fi.Security.Read, fi.SocialGroupId);
