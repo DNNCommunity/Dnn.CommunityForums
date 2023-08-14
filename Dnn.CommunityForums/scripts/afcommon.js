@@ -173,7 +173,7 @@ function amaf_ChangeTopicRating(mid, fid, tid, rating) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Topic/Rate?rating=' + rating,
+        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Rate?rating=' + rating,
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         var r = document.getElementById('af-rater');
