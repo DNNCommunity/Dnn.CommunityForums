@@ -10,7 +10,7 @@
             data: JSON.stringify(params),
             contentType: "application/json",
             dataType: "json",
-            url: '/API/ActiveForums/Topic/Delete',
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete',
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             afreload();
@@ -31,7 +31,7 @@ function amaf_openMove(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Forum/ListForHtml',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Forum/ListForHtml',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         am.UI.LoadDiv('aftopicmove');
@@ -52,7 +52,7 @@ function amaf_loadForMove(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Topic/Load',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         amaf_bindLoadMoveTopic(data);
@@ -78,7 +78,7 @@ function amaf_modMove(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: '/API/ActiveForums/Topic/Move',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Move',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         afreload();
@@ -97,7 +97,7 @@ function amaf_modPin(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Pin',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Pin',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicsview-pin-' + tid).toggleClass('fa-thumb-tack');
@@ -128,7 +128,7 @@ function amaf_modLock(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Lock',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Lock',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicsview-lock-' + tid).toggleClass('fa-lock');
