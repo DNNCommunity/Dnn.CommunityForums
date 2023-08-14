@@ -28,7 +28,6 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class af_quickjump : ForumBase
     {
-        public int MOID;
         private DataTable _dtForums = null;
         protected DropDownList drpForums = new DropDownList();
         public DataTable dtForums
@@ -67,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindForums()
         {
             ForumController fc = new ForumController();
-            dtForums = fc.GetForumView(PortalId, MOID, UserId, UserInfo.IsSuperUser, UserForumsList);
+            dtForums = fc.GetForumView(PortalId, ForumModuleId, UserId, UserInfo.IsSuperUser, UserForumsList);
 
             drpForums.Items.Clear();
             drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));

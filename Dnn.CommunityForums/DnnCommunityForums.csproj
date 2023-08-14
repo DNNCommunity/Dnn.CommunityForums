@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
     <Content Include="07.00.03.txt" />
     <Content Include="ActiveForums.ascx">

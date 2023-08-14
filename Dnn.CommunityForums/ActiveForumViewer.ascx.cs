@@ -49,9 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     ctlForumLoader.DefaultView = viewType;
                     ctlForumLoader.ForumModuleId = tmpModuleId;
-                    int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(tmpModuleId).FirstOrDefault().TabID;
-                    if (tmpForumTabId <= 0) { tmpForumTabId = TabId; }
-                    ctlForumLoader.ForumTabId = tmpForumTabId; 
+                    ctlForumLoader.ForumTabId = ForumTabId; 
                     ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
                     if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
                     {
