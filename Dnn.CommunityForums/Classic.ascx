@@ -7,7 +7,7 @@
 // of our responsive w/o a framework.
  -->
 
-<dnn:DnnCssInclude runat="server" FilePath="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" Priority="10" Name="fontawesome" Version="4.7.0" />
+<dnn:DnnCssInclude runat="server" FilePath="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" Priority="10" Name="fontawesome" Version="4.7.0" />
 
 <asp:placeholder ID="plhToolbar" runat="server" />
 <div class="afcontainer" id="afcontainer">
