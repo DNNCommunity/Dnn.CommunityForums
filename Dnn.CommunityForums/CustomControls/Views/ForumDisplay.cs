@@ -38,17 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Event Handlers
-        //Dim sb As New StringBuilder
-        //Dim fl As New ForumCollection
-        //Dim db As New Data.Forums
-        //    fl = db.Forums_List(PortalId, ModuleId, UserId, String.Empty)
-
-        //    For Each f As Forum In fl
-        //        sb.Append(f.ForumName)
-        //        sb.Append("<br />")
-        //    Next
-        //    writer.Write(sb.ToString)
-        protected override void OnInit(EventArgs e)
+         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
