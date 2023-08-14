@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_updateuseronline(" + ForumModuleId.ToString() + ")',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup
@@ -416,6 +416,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
+                    if (ForumTabId <= 0)
+                    {
+                        ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
+                    }
                     lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
