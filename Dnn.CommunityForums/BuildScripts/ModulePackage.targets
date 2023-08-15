@@ -31,7 +31,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     </XmlRead>
 
     <ItemGroup>
-      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\**" />
+      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
       <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;WhatsNew.ascx;WhatsNewOptions.ascx;.git\**;.vs\**" />
       <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.ashx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
