@@ -1,1 +1,6 @@
 ﻿DesktopModules/ActiveForumsViewer/ActiveForumsViewerResources.zip.manifest
+DesktopModules/ActiveForums/images/afbuttonback.gif
+DesktopModules/ActiveForums/images/af-logo.png
+DesktopModules/ActiveForums/images/af_logo.gif
+DesktopModules/ActiveForums/images/af16icon_over.png
+DesktopModules/ActiveForums/images/af6_icon.jpg

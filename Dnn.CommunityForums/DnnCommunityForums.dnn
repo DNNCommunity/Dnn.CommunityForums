@@ -1,9 +1,15 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
     <package name="Active Forums" type="Module" version="08.00.00">
+      <friendlyName>DNN Community Forums</friendlyName>
+      <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
+      <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
+=========
       <friendlyName>Active Forums</friendlyName>
       <description>Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/Branding/Logo/DNN-Community-Forums-Icon-64px.png</iconFile>
+>>>>>>>>> Temporary merge branch 2
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
@@ -434,8 +440,8 @@
 
       <friendlyName>DNN Community Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
-      <description>Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
-      <iconFile>DesktopModules/ActiveForums/images/Branding/Logo/DNN-Community-Forums-Icon-64px.png</iconFile>
+      <description>DNN Community Forums: Display the most recent topics or replies from selected forums on any page within your site.</description>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
@@ -457,7 +463,7 @@
             <supportedFeatures />
             <moduleDefinitions>
               <moduleDefinition>
-                <friendlyName>Active Forums What's New</friendlyName>
+                <friendlyName>DNN Community Forums What's New</friendlyName>
                 <definitionName>Active Forums What's New</definitionName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
@@ -503,8 +509,8 @@
     <package name="Active Forums Viewer" type="Module" version="08.00.00">
       <friendlyName>DNN Community Forums Forums Viewer</friendlyName>
       <foldername>ActiveForumsViewer</foldername>
-      <description>Community Forums: Display any forum topic view on any page within your site.</description>
-      <iconFile>DesktopModules/ActiveForums/images/Branding/Logo/DNN-Community-Forums-Icon-64px.png</iconFile>
+      <description>DNN Community Forums: Display any forum topic view on any page within your site.</description>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
