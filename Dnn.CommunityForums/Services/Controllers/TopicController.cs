@@ -230,6 +230,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     Forum f = new DotNetNuke.Modules.ActiveForums.ForumController().Forums_Get(ActiveModule.PortalID, ForumModuleId, forumId, user.UserId, true, false, -1);
                     if (f != null)
                     {
+                        //t.TopicProperties =
+                        //    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicProperties(forum: f, topic: t);
                         return Request.CreateResponse(HttpStatusCode.OK, new object[1] { (t, f) });
                     }
                 }

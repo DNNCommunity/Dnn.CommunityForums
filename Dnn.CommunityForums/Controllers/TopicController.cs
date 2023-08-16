@@ -50,5 +50,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             repo.Insert(topicInfo);
         }
+        //internal static List<DotNetNuke.Modules.ActiveForums.PropertiesInfo> GetTopicProperties(Forum forum, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic)
+        //{
+        //    List<DotNetNuke.Modules.ActiveForums.PropertiesInfo> tp =
+        //        new List<DotNetNuke.Modules.ActiveForums.PropertiesInfo>();
+
+        //    foreach (PropertiesInfo p in forum.Properties)
+        //    {
+        //        foreach (PropertiesInfo topicProperty in topic.TopicProperties)
+        //        {
+        //            if (topicProperty.PropertyId == p.PropertyId)
+        //            {
+        //                p.DefaultValue = topicProperty.DefaultValue;
+        //            }
+        //        }
+        //        tp.Add((p));
+        //    }
+        //    return tp;
+        //}
     }
 }

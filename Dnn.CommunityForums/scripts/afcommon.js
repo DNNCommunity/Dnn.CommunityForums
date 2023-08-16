@@ -233,15 +233,15 @@ function amaf_loadSuggest(field, prepop, type) {
 function amaf_postDel(mid, fid, tid, rid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
         var sf = $.ServicesFramework(mid);
+        var params;
         if (rid > 0) {
-            var params = {
+            params = {
                 forumId: fid,
                 topicId: tid,
                 replyId: rid
             };
-        }
-        else {
-            var params = {
+        } else {
+            params = {
                 forumId: fid,
                 topicId: tid
             };
