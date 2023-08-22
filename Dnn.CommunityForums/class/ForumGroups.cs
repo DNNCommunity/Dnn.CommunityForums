@@ -437,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var groupId = DataProvider.Instance().Groups_Save(portalId, fg.ModuleId, fg.ForumGroupId, fg.GroupName, fg.SortOrder, fg.Active, fg.Hidden, fg.PermissionsId, fg.PrefixURL);
 			if (isNew)
 			{
-				Permissions.CreateDefaultSets(portalId, permissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.CreateDefaultSets(portalId, permissionsId);
 				var sKey = "G:" + groupId.ToString();
 				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
 				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");

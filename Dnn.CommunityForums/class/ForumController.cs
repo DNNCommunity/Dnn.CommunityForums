@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (isNew && useGroup == false)
             {
-                Permissions.CreateDefaultSets(portalId, permissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.CreateDefaultSets(portalId, permissionsId);
 
                 var sKey = "F:" + forumId.ToString();
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");

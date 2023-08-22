@@ -815,6 +815,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\08.01.00.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
@@ -906,6 +907,8 @@
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\PermissionsController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
@@ -944,9 +947,12 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Entities\PermissionsInfo.cs" />
+    <Compile Include="Entities\TopicInfo.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="handlers\HandlerBase.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
     <Compile Include="Services\Controllers\ForumController.cs" />
@@ -990,7 +996,6 @@
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="components\Common\HandlerBase.cs" />
     <Compile Include="components\Common\UserPermDictionary.cs" />
     <Compile Include="class\Data\AttachmentsDB.cs" />
     <Compile Include="class\Data\CommonDB.cs" />
@@ -1442,7 +1447,7 @@
     <Compile Include="class\Utilities.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="class\Permissions.cs">
+    <Compile Include="Deprecated\Permissions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Polls.cs">
@@ -1533,6 +1538,7 @@
   <ItemGroup>
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
+    <Folder Include="config\templates\community\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup>

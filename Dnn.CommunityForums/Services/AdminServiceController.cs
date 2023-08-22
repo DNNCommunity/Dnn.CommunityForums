@@ -24,6 +24,7 @@ using System.Web;
 using System.Web.Http;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Web.Api;
 
 
@@ -155,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "delete":
                     {
-                        Permissions.RemoveObjectFromAll(dto.SecurityId, dto.SecurityType, dto.PermissionsId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.RemoveObjectFromAll(dto.SecurityId, dto.SecurityType, dto.PermissionsId);
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 case "addobject":
@@ -174,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (!(string.IsNullOrEmpty(dto.SecurityId)))
                         {
                             var permSet = db.GetPermSet(dto.PermissionsId, "View");
-                            permSet = Permissions.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
                             db.SavePermSet(dto.PermissionsId, "View", permSet);
                         }
 
@@ -184,9 +185,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var permSet = db.GetPermSet(dto.PermissionsId, dto.SecurityKey);
                         if (dto.Action == "remove")
-                            permSet = Permissions.RemovePermFromSet(dto.SecurityId, dto.SecurityType, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.RemovePermFromSet(dto.SecurityId, dto.SecurityType, permSet);
                         else
-                            permSet = Permissions.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
 
                         db.SavePermSet(dto.PermissionsId, dto.SecurityKey, permSet);
                         return Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);

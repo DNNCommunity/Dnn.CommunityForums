@@ -355,6 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 
+        public const string Roles = "AF-roles-{0}";
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
         public const string UserRoles  = "AF-userroles-{0}";

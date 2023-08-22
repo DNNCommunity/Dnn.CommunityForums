@@ -23,6 +23,7 @@ using System.Collections.Specialized;
 using System.Text;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -76,11 +77,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			List<PermissionInfo> pl = new List<PermissionInfo>();
 
-			//litNewGrid.Text = "Roles:" & tmp
+            //litNewGrid.Text = "Roles:" & tmp
 
-			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
-			foreach (string key in nvc.AllKeys)
+            //litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
+            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.GetRolesNVC(PortalId, tmp);
+            foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
 				pi.ObjectId = key;
