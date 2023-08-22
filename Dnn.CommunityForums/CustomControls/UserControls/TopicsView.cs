@@ -1079,15 +1079,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     intPages = Convert.ToInt32(System.Math.Ceiling(TopicRowCount / (double)PageSize));
                     Pager1.PageCount = intPages;
                     Pager1.PageMode = PagerNav.Mode.Links;
-                    if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)) && MainSettings.URLRewriteEnabled)
-                    {
-                        if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                        {
-                            Pager1.BaseURL = "/" + MainSettings.PrefixURLBase;
-                        }
-                        Pager1.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL + "/" + ForumInfo.PrefixURL + "/";
-                        Pager1.PageMode = PagerNav.Mode.Links;
-                    }
+                    Pager1.BaseURL = URL.ForumLink(TabId, ForumInfo);
                     Pager1.CurrentPage = PageId;
                     Pager1.TabID = Convert.ToInt32(Request.Params["TabId"]);
                     Pager1.ForumID = ForumId;
@@ -1110,16 +1102,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (Pager2 != null)
                 {
-                    Pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links; // DotNetNuke.Modules.ActiveForums.Controls.Pager.Mode.CallBack
-                    if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)) && MainSettings.URLRewriteEnabled)
-                    {
-                        if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                        {
-                            Pager2.BaseURL = "/" + MainSettings.PrefixURLBase;
-                        }
-                        Pager2.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL + "/" + ForumInfo.PrefixURL + "/";
-                        Pager2.PageMode = PagerNav.Mode.Links;
-                    }
+                    Pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
+                    Pager2.BaseURL = URL.ForumLink(TabId, ForumInfo);
                     Pager2.UseShortUrls = MainSettings.UseShortUrls;
                     Pager2.PageCount = intPages;
                     Pager2.CurrentPage = PageId;
