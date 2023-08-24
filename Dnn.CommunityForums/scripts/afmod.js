@@ -57,7 +57,7 @@ function amaf_modPin(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Pin',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Pin',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicsview-pin-' + tid).toggleClass('fa-thumb-tack');
@@ -88,7 +88,7 @@ function amaf_modLock(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Lock',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Lock',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         $('#af-topicsview-lock-' + tid).toggleClass('fa-lock');
