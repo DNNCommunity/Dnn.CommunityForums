@@ -23,19 +23,17 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
-using System.Web.UI.WebControls;
-using System.Text.RegularExpressions;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Web.UI.WebControls;
 using System.Xml;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Modules.ActiveForums.Extensions;
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Framework;
 using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
+using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -68,16 +66,16 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            
+
             var oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
             oLink.Attributes["rel"] = "stylesheet";
             oLink.Attributes["type"] = "text/css";
             oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "scripts/calendar.css");
-            
+
             var oCSS = Page.FindControl("CSS");
             if (oCSS != null)
                 oCSS.Controls.Add(oLink);
@@ -266,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void ctlForm_Click(object sender, EventArgs e)
         {
-            Page.Validate(); 
+            Page.Validate();
             if (ContactByFaxOnlyCheckBox.Checked)
             {
                 // if someone activates this checkbox send him home :-)
@@ -277,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
             }
-            if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject)) 
+            if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject))
                 return;
 
             if (TopicId == -1 || (TopicId > 0 && Request.Params["action"] == "te"))
@@ -330,12 +328,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     message = Utilities.ManageImagePath(message);
                     var uc = new UserController();
                     var up = uc.GetUser(PortalId, ForumModuleId, UserId) ?? new User
-                                                                                {
-                                                                                    UserId = -1,
-                                                                                    UserName = "guest",
-                                                                                    Profile = {TopicCount = 0, ReplyCount = 0},
-                                                                                    DateCreated = DateTime.UtcNow
-                                                                                };
+                    {
+                        UserId = -1,
+                        UserName = "guest",
+                        Profile = { TopicCount = 0, ReplyCount = 0 },
+                        DateCreated = DateTime.UtcNow
+                    };
                     message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, TabId, ForumInfo, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
                     hidPreviewText.Value = message;
                     break;
@@ -363,9 +361,9 @@ namespace DotNetNuke.Modules.ActiveForums
             else if (!_canModEdit && (ti.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval))
             {
                 var im = new InfoMessage
-                                        {
-                                            Message =  "<div class=\"afmessage\">" +  string.Format(GetSharedResource("[RESX:Message:EditIntervalReached]"),  MainSettings.EditInterval) + "</div>"
-                                        };
+                {
+                    Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Message:EditIntervalReached]"), MainSettings.EditInterval) + "</div>"
+                };
                 plhMessage.Controls.Add(im);
                 plhContent.Controls.Clear();
             }
@@ -401,7 +399,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var pl = new List<PropertiesInfo>();
                     var xDoc = new XmlDocument();
                     xDoc.LoadXml(ti.TopicData);
- 
+
                     XmlNode xRoot = xDoc.DocumentElement;
                     if (xRoot != null)
                     {
@@ -413,10 +411,10 @@ namespace DotNetNuke.Modules.ActiveForums
                                 var pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
                                 var pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
                                 var xmlAttributeCollection = xNodeList[i].Attributes;
-                                if (xmlAttributeCollection == null) 
+                                if (xmlAttributeCollection == null)
                                     continue;
                                 var pId = Convert.ToInt32(xmlAttributeCollection["id"].Value);
-                                var p = new PropertiesInfo {Name = pName, DefaultValue = pValue, PropertyId = pId};
+                                var p = new PropertiesInfo { Name = pName, DefaultValue = pValue, PropertyId = pId };
                                 pl.Add(p);
                             }
                         }
@@ -449,10 +447,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             //Edit a Reply
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.EditReply;
-            
+
             var rc = new ReplyController();
             var ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
-            
+
             if (ri == null)
                 Response.Redirect(NavigateUrl(TabId));
             else if ((ri.Content.AuthorId != UserId && _canModEdit == false) | (ri.Content.AuthorId == UserId && _canEdit == false) | (_canEdit == false && _canModEdit))
@@ -461,9 +459,9 @@ namespace DotNetNuke.Modules.ActiveForums
             else if (!_canModEdit && (ri.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval))
             {
                 var im = new Controls.InfoMessage
-                             {
-                                 Message = "<div class=\"afmessage\">" +  string.Format(GetSharedResource("[RESX:Message:EditIntervalReached]"), MainSettings.EditInterval.ToString()) + "</div>"
-                             };
+                {
+                    Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Message:EditIntervalReached]"), MainSettings.EditInterval.ToString()) + "</div>"
+                };
                 plhMessage.Controls.Add(im);
                 plhContent.Controls.Clear();
             }
@@ -560,7 +558,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tc = new TopicsController();
                 var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, UserId, true);
 
-                if(ti == null)
+                if (ti == null)
                     Response.Redirect(NavigateUrl(TabId));
 
                 ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + ti.Content.Subject;
@@ -605,14 +603,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
                             ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated,PortalId, UserId));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
                         }
                         else
                         {
                             var rc = new ReplyController();
                             var ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, postId);
                             ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated,PortalId,UserId));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, PortalId, UserId));
                         }
 
                         if (ci != null)
@@ -737,9 +735,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     body = body.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
             }
 
-            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ForumModuleId, TopicId:TopicId, subject:subject, forumInfo: ForumInfo);
+            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ForumModuleId, TopicId: TopicId, subject: subject, forumInfo: ForumInfo);
 
-            ti.Content.Body = body; 
+            ti.Content.Body = body;
             ti.Content.Subject = subject;
             ti.Content.Summary = summary;
             ti.IsAnnounce = ti.AnnounceEnd != Utilities.NullDate() && ti.AnnounceStart != Utilities.NullDate();
@@ -872,7 +870,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (ti.IsApproved == false)
                 {
-                    var mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                    var mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
                     var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
 
                     var notifySubject = Utilities.GetSharedResource("NotificationSubjectTopic");
@@ -907,7 +905,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var ctlUtils = new ControlUtils();
 
                     var sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
-                    
+
                     if (sUrl.Contains("~/"))
                         sUrl = Utilities.NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId);
 
@@ -916,7 +914,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         try
                         {
                             var amas = new Social();
-                            amas.AddTopicToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, UserId, sUrl, subject, summary, body,ForumInfo.Security.Read, SocialGroupId);
+                            amas.AddTopicToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, UserId, sUrl, subject, summary, body, ForumInfo.Security.Read, SocialGroupId);
                         }
                         catch (Exception ex)
                         {
@@ -933,7 +931,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        
+
 
         private void SaveReply()
         {
@@ -941,7 +939,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var body = ctlForm.Body;
             subject = Utilities.CleanString(PortalId, subject, false, EditorTypes.TEXTBOX, _fi.UseFilter, false, ForumModuleId, _themePath, false);
             body = Utilities.CleanString(PortalId, body, _allowHTML, _editorType, _fi.UseFilter, _fi.AllowScript, ForumModuleId, _themePath, _fi.AllowEmoticons);
-			// This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
+            // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (Request.Params[ParamKeys.QuoteId] != null)
             {
                 body = Utilities.HTMLDecode(body);
@@ -984,7 +982,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var tc = new TopicsController();
             var rc = new ReplyController();
             DotNetNuke.Modules.ActiveForums.ReplyInfo ri;
-            
+
             if (PostId > 0)
             {
                 ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
@@ -1027,12 +1025,12 @@ namespace DotNetNuke.Modules.ActiveForums
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
-            SaveAttachments(ri.ContentId); 
+            SaveAttachments(ri.ContentId);
             DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
             try
             {
-               if (bSend && !_isEdit)
+                if (bSend && !_isEdit)
                 {
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
@@ -1040,7 +1038,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
 
-                    var mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                    var mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
                     var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
                     var notifySubject = Utilities.GetSharedResource("NotificationSubjectReply");
                     notifySubject = notifySubject.Replace("[DisplayName]", UserInfo.DisplayName);
@@ -1050,14 +1048,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     var notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ri.ReplyId);
 
                     var notification = new Notification
-                                           {
-                                               NotificationTypeID = notificationType.NotificationTypeId,
-                                               Subject = notifySubject,
-                                               Body = notifyBody,
-                                               IncludeDismissAction = false,
-                                               SenderUserID = UserInfo.UserID,
-                                               Context = notificationKey
-                                           };
+                    {
+                        NotificationTypeID = notificationType.NotificationTypeId,
+                        Subject = notifySubject,
+                        Body = notifyBody,
+                        IncludeDismissAction = false,
+                        SenderUserID = UserInfo.UserID,
+                        Context = notificationKey
+                    };
 
                     NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
 
@@ -1069,11 +1067,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     var ctlUtils = new ControlUtils();
                     var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                     var fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
-                    
+
                     if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
-                    
-                    if (fullURL.EndsWith("/")) 
+
+                    if (fullURL.EndsWith("/"))
                         fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
 
                     if (!_isEdit)
@@ -1116,7 +1114,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Read the attachment list sent in the hidden field as json
             var attachmentsJson = hidAttachments.Value;
-            var serializer = new DataContractJsonSerializer(typeof (List<ClientAttachment>));
+            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));
             var ms = new MemoryStream(Encoding.UTF8.GetBytes(attachmentsJson));
             var attachmentsNew = (List<ClientAttachment>)serializer.ReadObject(ms);
             ms.Close();
@@ -1126,22 +1124,22 @@ namespace DotNetNuke.Modules.ActiveForums
             var attachmentsOld = adb.ListForContent(contentId).Where(o => !o.AllowDownload.HasValue || o.AllowDownload.Value);
 
             // Save all of the new attachments
-            foreach(var attachment in attachmentsNew)
+            foreach (var attachment in attachmentsNew)
             {
                 // Don't need to do anything with existing attachments
-                if(attachment.AttachmentId.HasValue && attachment.AttachmentId.Value > 0)
+                if (attachment.AttachmentId.HasValue && attachment.AttachmentId.Value > 0)
                     continue;
 
                 IFileInfo file = null;
-                
+
                 var fileId = attachment.FileId.GetValueOrDefault();
-                if(fileId > 0 && userFolder != null)
+                if (fileId > 0 && userFolder != null)
                 {
                     // Make sure that the file exists and it actually belongs to the user who is trying to attach it
                     file = fileManager.GetFile(fileId);
-                    if(file == null || file.FolderId != userFolder.FolderID) continue;
+                    if (file == null || file.FolderId != userFolder.FolderID) continue;
                 }
-                else if(!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
+                else if (!string.IsNullOrWhiteSpace(attachment.UploadId) && !string.IsNullOrWhiteSpace(attachment.FileName))
                 {
                     if (!Regex.IsMatch(attachment.UploadId, @"^[\w\-. ]+$")) // Check for shenanigans.
                         continue;
@@ -1154,7 +1152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     // Store the files with a filename format that prevents overwrites.
                     var index = 0;
                     var fileName = string.Format(fileNameTemplate, contentId, index, Regex.Replace(attachment.FileName, @"[^\w\-. ]+", string.Empty));
-                    while(fileManager.FileExists(attachmentFolder, fileName))
+                    while (fileManager.FileExists(attachmentFolder, fileName))
                     {
                         index++;
                         fileName = string.Format(fileNameTemplate, contentId, index, Regex.Replace(attachment.FileName, @"[^\w\-. ]+", string.Empty));
@@ -1165,11 +1163,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         file = fileManager.AddFile(attachmentFolder, fileName, fileStream);
                     }
-                    
+
                     File.Delete(uploadFilePath);
                 }
-                
-                if(file == null)
+
+                if (file == null)
                     continue;
 
                 adb.Save(contentId, UserId, file.FileName, file.ContentType, file.Size, file.FileId);
@@ -1177,14 +1175,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Remove any attachments that are no longer in the list of attachments
             var attachmentsToRemove = attachmentsOld.Where(a1 => attachmentsNew.All(a2 => a2.AttachmentId != a1.AttachmentId));
-            foreach(var attachment in attachmentsToRemove)
+            foreach (var attachment in attachmentsToRemove)
             {
                 adb.Delete(attachment.AttachmentId);
 
                 var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
 
                 // Only delete the file if it exists in the attachment folder
-                if(file != null && file.FolderId == attachmentFolder.FolderID)
+                if (file != null && file.FolderId == attachmentFolder.FolderID)
                     fileManager.DeleteFile(file);
             }
         }
@@ -1192,7 +1190,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void PrepareAttachments(int? contentId = null)
         {
             // Handle the case where we don't yet have a topic id (new posts)
-            if(!contentId.HasValue || contentId.Value <= 0)
+            if (!contentId.HasValue || contentId.Value <= 0)
             {
                 hidAttachments.Value = "[]"; // JSON for an empty array
                 return;
@@ -1203,24 +1201,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var clientAttachments = attachments.Select(attachment => new ClientAttachment
             {
-                AttachmentId = attachment.AttachmentId, 
-                ContentType = attachment.ContentType, 
-                FileId = attachment.FileId, 
+                AttachmentId = attachment.AttachmentId,
+                ContentType = attachment.ContentType,
+                FileId = attachment.FileId,
                 FileName = Regex.Replace(attachment.FileName.TextOrEmpty(), @"^__\d+__\d+__", string.Empty), // Remove our unique file prefix before sending to the client.
                 FileSize = attachment.FileSize
             }).ToList();
 
-            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>)); 
-            
-            using(var ms = new MemoryStream())
+            var serializer = new DataContractJsonSerializer(typeof(List<ClientAttachment>));
+
+            using (var ms = new MemoryStream())
             {
                 serializer.WriteObject(ms, clientAttachments);
                 ms.Seek(0, 0);
-                using(var sr = new StreamReader(ms, Encoding.UTF8))
+                using (var sr = new StreamReader(ms, Encoding.UTF8))
                 {
                     hidAttachments.Value = sr.ReadToEnd();
                 }
-            } 
+            }
         }
 
         #endregion

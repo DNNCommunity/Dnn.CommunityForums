@@ -18,11 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -81,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     SetPermissions(Convert.ToInt32(e.Parameters[1]));
                     ForumController fc = new ForumController();
-                    fi = fc.Forums_Get(Convert.ToInt32(e.Parameters[1]), -1, false, true);
+                    fi = fc.Forums_Get(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
                 }
                 else
                 {
@@ -123,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         auth = ti.Author;
                                     }
                                     tc.Topics_Delete(PortalId, ModuleId, tmpForumId, tmpTopicId, delAction);
-                                    
+
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
@@ -152,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             ModController mc = new ModController();
                             mc.Mod_Reject(PortalId, ForumModuleId, UserId, tmpForumId, tmpTopicId, tmpReplyId);
                             if (fi.ModRejectTemplateId > 0 & tmpAuthorId > 0)
-                            { 
+                            {
                                 DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tmpAuthorId);
                                 if (ui != null)
                                 {
@@ -208,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                             sUrl = Utilities.NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId);
                                         }
                                         Social amas = new Social();
-                                        amas.AddTopicToJournal(PortalId, ForumModuleId ,TabId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
+                                        amas.AddTopicToJournal(PortalId, ForumModuleId, TabId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
                                     }
                                     catch (Exception ex)
                                     {
@@ -225,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ri.IsApproved = true;
                                     sSubject = ri.Content.Subject;
                                     sBody = ri.Content.Body;
-                                    rc.Reply_Save(PortalId,ForumModuleId, ri);
+                                    rc.Reply_Save(PortalId, ForumModuleId, ri);
                                     TopicsController tc = new TopicsController();
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId, tmpReplyId);
                                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
@@ -260,8 +256,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             break;
                         }
-                } 
-                DataCache.CacheClearPrefix(ModuleId,  string.Format(CacheKeys.ForumViewPrefix, ModuleId));
+                }
+                DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             }
             BuildModList();
             litTopics.RenderControl(e.Output);
@@ -315,7 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sb.Append("<div class=\"afmodrow\">");
                     sb.Append("<table width=\"99%\">");
-                    sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]),PortalId,UserId) + "</td>");
+                    sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
                     sb.Append("<td align=\"right\">");
                     if (bModApprove)
                     {
