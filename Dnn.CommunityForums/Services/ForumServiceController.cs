@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Make sure that we can find the forum and that attachments are allowed
                 var fc = new ForumController();
-                var forum = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, userInfo.UserID, true, true, -1);
+                var forum = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, true, -1);
 
                 if (forum == null || !forum.AllowAttach)
                 {
@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var fc = new ForumController();
 
-            var forum_out = fc.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, forumUser.UserId, false, true, dto.OldTopicId);
+            var forum_out = fc.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
             var forum_in = fc.GetForum(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId);
             if (forum_out != null && forum_in != null)
             {
