@@ -17,12 +17,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Data;
-using System.Text;
-using System.Web;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
