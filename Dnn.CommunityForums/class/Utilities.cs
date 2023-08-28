@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             string sToolbar =
                 Convert.ToString(
-                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId)));
+                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId, currentUserType)));
             if (string.IsNullOrEmpty(sToolbar))
             {
 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sToolbar = Utilities.GetFileContent(templateFilePathFileName);
                 sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
-                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId), sToolbar);
+                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId ,currentUserType), sToolbar);
             }
 
             return sToolbar;
