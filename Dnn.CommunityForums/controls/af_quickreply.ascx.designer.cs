@@ -13,32 +13,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_quickreplyform
     {
-
-        /// <summary>
-        /// ContactByFaxOnly control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ContactByFaxOnly;
-
-        /// <summary>
-        /// ContactByFaxOnlyCheckBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox ContactByFaxOnlyCheckBox;
-
-        /// <summary>
-        /// QR control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl QR;
     }
 }

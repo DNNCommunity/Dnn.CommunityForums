@@ -27,40 +27,44 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Modules.ActiveForums.Controls;
 using System.IO;
+using System.Web.UI.WebControls;
+using System.Web;
+using System.Web.UI.HtmlControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 
     public partial class af_quickreplyform : ForumBase
     {
-        #region Private Members
+
+        protected System.Web.UI.HtmlControls.HtmlGenericControl ContactByFaxOnly = new HtmlGenericControl();
+        protected System.Web.UI.WebControls.CheckBox ContactByFaxOnlyCheckBox = new CheckBox();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl QR = new HtmlGenericControl();
+        protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl divUsername = new HtmlGenericControl();
+        protected System.Web.UI.HtmlControls.HtmlTableRow trUsername = new HtmlTableRow();
+        protected System.Web.UI.WebControls.RequiredFieldValidator reqUserName = new System.Web.UI.WebControls.RequiredFieldValidator();
+        protected System.Web.UI.HtmlControls.HtmlInputText txtUserName = new HtmlInputText();
+        protected System.Web.UI.WebControls.Label reqBody = new Label();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl btnToolBar = new HtmlGenericControl();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl divCaptcha = new HtmlGenericControl();
+        protected System.Web.UI.HtmlControls.HtmlTableRow trCaptcha = new HtmlTableRow();
+        protected System.Web.UI.WebControls.Label reqSecurityCode = new System.Web.UI.WebControls.RequiredFieldValidator();
+        protected DotNetNuke.UI.WebControls.CaptchaControl ctlCaptcha = new DotNetNuke.UI.WebControls.CaptchaControl();
+        protected System.Web.UI.HtmlControls.HtmlTableRow trSubscribe = new HtmlTableRow();
+        protected System.Web.UI.HtmlControls.HtmlTableCell tdSubscribe = new HtmlTableCell();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribeOuter = new HtmlGenericControl();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribeInner = new HtmlGenericControl();
+        protected System.Web.UI.WebControls.LinkButton btnSubmitLink = new LinkButton();
+
         private bool bolIsAnon = false;
         private bool _CanReply = false;
-        private string _ThemePath = string.Empty;
-        private int _ForumId = -1;
-        private Forum _fi;
+        private string _ThemePath = string.Empty; 
 
-        #endregion
-        #region Public Members
-        public string SubscribedChecked = string.Empty;
-        public string txtBodyID;
-        public string DisplayMode;
-        public string BoldText;
-        public string ItalicsText;
-        public string UnderlineText;
-        public string QuoteText;
-        public string BoldDesc;
-        public string ItalicsDesc;
-        public string UnderlineDesc;
-        public string QuoteDesc;
-        public string CodeText;
-        public string CodeDesc;
-        public string ImageText;
-        public string ImageDesc;
+        public string SubscribedChecked = string.Empty; 
+
         public string SubmitText = Utilities.GetSharedResource("Submit.Text");
 
-        #endregion
-        #region Public Properties
         public bool UseFilter { get; set; } = true;
         public string Subject { get; set; } = string.Empty;
         public bool ModApprove { get; set; } = false;
@@ -71,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool AllowScripts { get; set; } = false;
         public bool AllowSubscribe { get; set; } = false;
         public bool CanSubscribe { get; set; } = false;
-        #endregion
+
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
         {
@@ -105,44 +109,31 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
 
-                BoldText = Utilities.GetSharedResource("[RESX:Bold]");
-                ItalicsText = Utilities.GetSharedResource("[RESX:Italics]");
-                UnderlineText = Utilities.GetSharedResource("[RESX:Underline]");
-                QuoteText = Utilities.GetSharedResource("[RESX:Quote]");
-                BoldDesc = Utilities.GetSharedResource("[RESX:BoldDesc]");
-                ItalicsDesc = Utilities.GetSharedResource("[RESX:ItalicsDesc]");
-                UnderlineDesc = Utilities.GetSharedResource("[RESX:UnderlineDesc]");
-                QuoteDesc = Utilities.GetSharedResource("[RESX:QuoteDesc]");
-                CodeText = Utilities.GetSharedResource("[RESX:Code]");
-                CodeDesc = Utilities.GetSharedResource("[RESX:CodeDesc]");
-                ImageText = Utilities.GetSharedResource("[RESX:Image]");
-                ImageDesc = Utilities.GetSharedResource("[RESX:ImageDesc]");
-
                 btnToolBar.Visible = UseFilter;
-                Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + Subject;
-                //trSubscribe.Visible = AllowSubscribe;
-                tdSubscribe.Visible = AllowSubscribe;
+                trSubscribe.Visible = AllowSubscribe;
+                divSubscribeOuter.Visible = AllowSubscribe;
                 if (AllowSubscribe)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
                     subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
                     subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
                     tdSubscribe.InnerHtml = subControl.Render();
+                    divSubscribeInner.InnerHtml = subControl.Render();
                 }
                 if (!Request.IsAuthenticated && CanReply)
                 {
                     trUsername.Visible = true;
+                    divUsername.Visible = true;
                     bolIsAnon = true;
                     trCaptcha.Visible = true;
+                    divCaptcha.Visible = true;
                 }
                 else
                 {
                     trUsername.Visible = false;
+                    divUsername.Visible = false;
                     trCaptcha.Visible = false;
-                    //if (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
-                    //{
-                    //    SubscribedChecked = " checked=true";
-                    //}
+                    divCaptcha.Visible = false;
                 }
 
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
@@ -159,13 +150,6 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
          
 
-        //This call is required by the Web Form Designer.
-        [System.Diagnostics.DebuggerStepThrough()]
-        private void InitializeComponent()
-        {
-
-        }
-
 
         //NOTE: The following placeholder declaration is required by the Web Form Designer.
         //Do not delete or move it.
@@ -174,26 +158,99 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
-            _fi = ForumInfo;
-            string template;
-            if (_fi.QuickReplyFormId == 0)
+            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "QuickReply", ForumInfo.QuickReplyFormId);
+
+            try
             {
-                var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\QuickReply.txt";
-                template = File.ReadAllText(myFile);
+                template = Globals.ControlRegisterTag + template;
+                template = Globals.DnnControlsRegisterTag + template;
+                if (template.Contains("[SUBJECT]"))
+                {
+                    template = template.Replace("[SUBJECT]", Subject);
+                }
+                if (template.Contains("[AF:CONTROLS:GROUPTOGGLE]"))
+                {
+                    template = template.Replace("[AF:CONTROLS:GROUPTOGGLE]", "<img align=\"right\" class=\"afarrow\" id=\"imgGroupQR\" onclick=\"toggleGroup('QR');\" src=\"" + ImagePath + "/arrows_down.png\" />");
+                }
+                template = Utilities.LocalizeControl(template);
+                Control ctl = this.ParseControl(template);
+                LinkControls(ctl.Controls);
+                QR.Controls.Add(ctl);
             }
-            else
+            catch (Exception)
             {
-                var tc = new TemplateController();
-                var ti = tc.Template_Get(_fi.QuickReplyFormId, PortalId, ForumModuleId);
-                template = ti.TemplateHTML;
+
+                throw;
             }
+            
 
 
-            //CODEGEN: This method call is required by the Web Form Designer
-            //Do not modify it using the code editor.
-            InitializeComponent();
         }
-         
+        private void LinkControls(ControlCollection ctrls)
+        {
+            foreach (Control ctrl in ctrls)
+            {
+                switch (ctrl.ID)
+                {
+                    case "plhMessage":
+                        plhMessage = (PlaceHolder)ctrl;
+                        break;
+                    case "trUsername":
+                        trUsername = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        break;
+                    case "divUsername":
+                        divUsername = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
+                        break;
+                    case "reqUserName":
+                        reqUserName = (System.Web.UI.WebControls.RequiredFieldValidator)ctrl;
+                        break;
+                    case "txtUserName":
+                        txtUserName = (System.Web.UI.HtmlControls.HtmlInputText)ctrl;
+                        break;
+                    case "reqBody":
+                        reqBody = (Label)ctrl;
+                        break;
+                    case "btnToolBar":
+                        btnToolBar = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
+                        break; 
+                    case "trCaptcha":
+                        trCaptcha = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        break;
+                    case "divCaptcha": 
+                        divCaptcha = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
+                        break;
+                    case "reqSecurityCode":
+                        reqSecurityCode = (Label)ctrl;
+                        break;
+                    case "ctlCaptcha":
+                        ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;
+                        break; 
+                    case "trSubscribe":
+                        trSubscribe = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        break;
+                    case "divSubscribeOuter": 
+                        divSubscribeOuter = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
+                        break; 
+                    case "tdSubscribe":
+                        tdSubscribe = (System.Web.UI.HtmlControls.HtmlTableCell)ctrl;
+                        break;
+                    case "divSubscribeInner": 
+                        divSubscribeInner = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
+                        break;
+                    case "btnSubmitLink":
+                        btnSubmitLink = (System.Web.UI.WebControls.LinkButton)ctrl;
+                        break;
+                }
+                if (ctrl is Controls.ControlsBase)
+                {
+                    ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
+                }
+                if (ctrl.Controls.Count > 0)
+                {
+                    LinkControls(ctrl.Controls);
+                }
+            }
+        }
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // if someone activates this checkbox send him home :-)
@@ -319,7 +376,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         Social amas = new Social();
-                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
+                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, ri.Content.Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                     }
                     catch (Exception ex)
                     {
@@ -364,11 +421,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                //Dim fullURL As String = Utilities.NavigateUrl(TabId, "", New String() {ParamKeys.ForumId & "=" & ForumId, ParamKeys.ViewType & "=" & Views.Topic, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ContentJumpId & "=" & ReplyId})
-                //If MainSettings.UseShortUrls Then
-                //    fullURL = Utilities.NavigateUrl(TabId, "", New String() {ParamKeys.TopicId & "=" & TopicId, ParamKeys.ContentJumpId & "=" & ReplyId})
-                //End If
-
                 try
                 {
                     Social amas = new Social();
@@ -380,8 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 Response.Redirect(fullURL, false);
             }
-
-            //End If
+             
 
 
         }

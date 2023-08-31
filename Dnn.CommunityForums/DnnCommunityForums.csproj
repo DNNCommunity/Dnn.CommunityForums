@@ -503,6 +503,7 @@
     <Content Include="themes\community\images\yellow_star_05.gif" />
     <Content Include="themes\community\templates\ForumView.txt" />
     <Content Include="themes\community\templates\ProfileInfo.txt" />
+    <Content Include="themes\community\templates\QuickReply.txt" />
     <Content Include="themes\community\templates\ReplyEditor.txt" />
     <Content Include="themes\community\templates\TopicEditor.txt" />
     <Content Include="themes\community\templates\TopicsView.txt" />

@@ -394,6 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums
             AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModDeleteTemplateId, parameters[40]);
             AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModNotifyTemplateId, parameters[41]);
             AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[42]);
+            AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, parameters[43]);
         }
 
         private void LoadForum(int forumId)
@@ -574,6 +575,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Utilities.SelectListItemByValue(drpTopicTemplate, gi.TopicTemplateId);
             Utilities.SelectListItemByValue(drpTopicForm, gi.TopicFormId);
             Utilities.SelectListItemByValue(drpReplyForm, gi.ReplyFormId);
+            Utilities.SelectListItemByValue(drpQuickReplyForm, gi.QuickReplyFormId);
             Utilities.SelectListItemByValue(drpProfileDisplay, gi.ProfileTemplateId);
             Utilities.SelectListItemByValue(drpModApprovedTemplateId, gi.ModApproveTemplateId);
             Utilities.SelectListItemByValue(drpModRejectTemplateId, gi.ModRejectTemplateId);
