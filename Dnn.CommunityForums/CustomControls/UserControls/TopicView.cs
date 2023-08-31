@@ -748,7 +748,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.CanTrust = _bTrust;
                     ctlQuickReply.ModApprove = _bModApprove;
                     ctlQuickReply.IsTrusted = _isTrusted;
-                    ctlQuickReply.Subject = _topicSubject;
+                    ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + _topicSubject;
                     ctlQuickReply.AllowSubscribe = _allowSubscribe;
                     ctlQuickReply.AllowHTML = _allowHTML;
                     ctlQuickReply.AllowScripts = _allowScript;

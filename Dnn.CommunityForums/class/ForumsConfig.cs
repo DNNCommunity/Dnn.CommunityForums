@@ -206,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var tc = new TemplateController();
                     int ProfileInfoTemplateId = tc.Template_Get(TemplateName: "ProfileInfo", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int ReplyEditorTemplateId = tc.Template_Get(TemplateName: "ReplyEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+                    int QuickReplyTemplateId = tc.Template_Get(TemplateName: "QuickReply", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicEditorTemplateId = tc.Template_Get(TemplateName: "TopicEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicsViewTemplateId = tc.Template_Get(TemplateName: "TopicsView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicViewTemplateId = tc.Template_Get(TemplateName: "TopicView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
@@ -274,8 +275,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorStyle, "2");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(TopicEditorTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(ReplyEditorTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, "0");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(QuickReplyTemplateId));
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IsModerated, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
