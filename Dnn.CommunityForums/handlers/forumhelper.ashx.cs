@@ -18,6 +18,19 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+
+using System.Web;
+using System.Web.Services;
+using System.Text;
+using System.Xml;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Journal;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     public class forumhelper : HandlerBase
