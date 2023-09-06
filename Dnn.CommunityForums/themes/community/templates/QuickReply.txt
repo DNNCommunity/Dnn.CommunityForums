@@ -7,19 +7,12 @@
 		<div class="afgrouprow">
 			<div id="groupQR" style="background-color:white;"><asp:PlaceHolder ID="plhMessage" runat="server" />
 				<div>
-					<div class="afgrouprow" id="divUsername" runat="server">
-						<div><asp:RequiredFieldValidator ID="reqUserName" runat="server" ControlToValidate="txtUserName" Enabled="false" /></div>
-						<div class="NormalBold">[RESX:Username]:</div>
-						<div>
-							<input type="text" id="txtUserName" class="aftextbox" maxlength="25" runat="server" /></div>
-						<div></div>
-					</div>
 					<div class="afgrouprow"> 
 						<div class="NormalBold">[RESX:Subject]:</div> 
 						<br />
 						<div><input type="text" id="txtSubject" class="aftextbox" readonly="readonly" value="[SUBJECT]" /></div>
 						 <br />
-=					</div> <br /> <br />
+					</div> <br /> <br />
 					<div class="afgrouprow">
 						<div><asp:Label ID="reqBody" runat="server" Visible="false" /></div>
 						<div class="NormalBold">[RESX:Body]:</div>
@@ -47,15 +40,17 @@
 							<textarea id="txtBody" name="txtBody" class="aftextbox" style="height:120px;width:1000px;" rows="5" cols="250"></textarea>
 						</div>
 					</div> <br />
-					<div class="afgrouprow" id="divCaptcha" runat="server">
-						<div>
-							<asp:Label ID="reqSecurityCode" runat="server" Visible="false" />
+					[AF:UI:ANON]
+						<div class="afgrouprow">
+							<div class="NormalBold">[RESX:Username]:[AF:REQ:USERNAME]</div>
+							<div style="width:150px;">[AF:INPUT:USERNAME]</div>
+							<div></div>
 						</div>
-						<div class="NormalBold">[RESX:SecurityCode]:</div>
-						<div>
-							<dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" cssclass="Normal" runat="server" errorstyle-cssclass="NormalRed"  />
-						</div> 
-					</div> <br />
+						<div class="afgrouprow">
+							<div class="NormalBold">[RESX:SecurityCode]:[AF:REQ:SECURITYCODE]</div>
+							<div>[AF:INPUT:CAPTCHA]</div> 
+						</div> <br />
+					[/AF:UI:ANON]
 					<div class="afgrouprow">
 						<div id="divSubscribe" runat="server" />
 					</div> 
@@ -64,7 +59,7 @@
 						<div>
 							<div class="amtbwrapper" style="text-align:center;">
 								<div style="margin:0px auto;min-width:50px;max-width:60px;">
-									<asp:linkbutton ID="btnSubmitLink" runat="server" CssClass="dnnPrimaryAction">[RESX:Submit]</asp:linkbutton>
+									[AF:BUTTON:SUBMIT]
 								</div>   
 							</div>
 						</div>

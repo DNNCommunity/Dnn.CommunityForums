@@ -6,17 +6,6 @@
 	<tr>
 		<td colspan="2" class="afborder">
 			<div id="groupQR"><asp:PlaceHolder ID="plhMessage" runat="server" />
-				<div id="divUsername" runat="server">
-					<table width="100%" cellspacing="0" cellpadding="4">
-						<tr>
-							<td><asp:RequiredFieldValidator ID="reqUserName" runat="server" ControlToValidate="txtUserName" Enabled="false" /></td>
-							<td class="NormalBold" style="white-space:nowrap">[RESX:Username]:</td>
-							<td>
-								<input type="text" id="txtUserName" class="aftextbox" maxlength="25" runat="server" width="200" /></td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
 				<table width="100%" cellspacing="0" cellpadding="4">	
 					<tr>
 						<td></td>
@@ -40,18 +29,26 @@
 						</td>
 					</tr>
 				</table>
-				<div id="divCaptcha" runat="server">
-					<table width="100%" cellspacing="0" cellpadding="4">	
-						<tr>
-							<td valign="top"><asp:Label ID="reqSecurityCode" runat="server" Visible="false" /></td>
-							<td class="NormalBold" valign="top" style="white-space:nowrap">[RESX:SecurityCode]:</td>
-							<td>
-							<dnn:captchacontrol id="ctlCaptcha" captchawidth="130" captchaheight="40" cssclass="Normal" runat="server" errorstyle-cssclass="NormalRed"  />
-							</td>
-							<td></td>
-						</tr>
-					</table>
-				</div>
+				<table width="100%" cellspacing="0" cellpadding="4">	
+				[AF:UI:ANON]
+				<tr>
+					<td style="text-align:left;">[RESX:Username]:[AF:REQ:USERNAME]</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td style="text-align:left;"><div style="width:150px;">[AF:INPUT:USERNAME]</div></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td style="text-align:left;">[RESX:SecurityCode]:[AF:REQ:SECURITYCODE]</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td style="text-align:left;"><div style="width:150px;">[AF:INPUT:CAPTCHA]</div></td>
+					<td></td>
+				</tr>
+				[/AF:UI:ANON]
+				</table>
 				<table width="100%" cellspacing="0" cellpadding="4">	
 					<tr>
 						<td align="right" colspan="4"><div id="divSubscribe" runat="server"></td>
@@ -62,7 +59,7 @@
 						<td align="center" colspan="3">
 							<div class="amtbwrapper" style="text-align:center;">
 								<div style="margin:0px auto;min-width:50px;max-width:60px;">
-									<asp:linkbutton ID="btnSubmitLink" runat="server" CssClass="dnnPrimaryAction">[RESX:Submit]</asp:linkbutton>
+									[AF:BUTTON:SUBMIT]
 								</div>   
 							</div>
 						</td>
