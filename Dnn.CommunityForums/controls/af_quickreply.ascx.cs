@@ -42,19 +42,14 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.HtmlControls.HtmlGenericControl QR = new HtmlGenericControl();
         protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
         protected System.Web.UI.HtmlControls.HtmlGenericControl divUsername = new HtmlGenericControl();
-        protected System.Web.UI.HtmlControls.HtmlTableRow trUsername = new HtmlTableRow();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqUserName = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected System.Web.UI.HtmlControls.HtmlInputText txtUserName = new HtmlInputText();
         protected System.Web.UI.WebControls.Label reqBody = new Label();
         protected System.Web.UI.HtmlControls.HtmlGenericControl btnToolBar = new HtmlGenericControl();
         protected System.Web.UI.HtmlControls.HtmlGenericControl divCaptcha = new HtmlGenericControl();
-        protected System.Web.UI.HtmlControls.HtmlTableRow trCaptcha = new HtmlTableRow();
         protected System.Web.UI.WebControls.Label reqSecurityCode = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected DotNetNuke.UI.WebControls.CaptchaControl ctlCaptcha = new DotNetNuke.UI.WebControls.CaptchaControl();
-        protected System.Web.UI.HtmlControls.HtmlTableRow trSubscribe = new HtmlTableRow();
-        protected System.Web.UI.HtmlControls.HtmlTableCell tdSubscribe = new HtmlTableCell();
-        protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribeOuter = new HtmlGenericControl();
-        protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribeInner = new HtmlGenericControl();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl divSubscribe = new HtmlGenericControl();
         protected System.Web.UI.WebControls.LinkButton btnSubmitLink = new LinkButton();
 
         private bool bolIsAnon = false;
@@ -106,33 +101,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     AllowSubscribe = false;
                 }
-
-
-
                 btnToolBar.Visible = UseFilter;
-                trSubscribe.Visible = AllowSubscribe;
-                divSubscribeOuter.Visible = AllowSubscribe;
+                divSubscribe.Visible = AllowSubscribe;
                 if (AllowSubscribe)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
                     subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
                     subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
-                    tdSubscribe.InnerHtml = subControl.Render();
-                    divSubscribeInner.InnerHtml = subControl.Render();
+                    divSubscribe.InnerHtml = subControl.Render();
                 }
                 if (!Request.IsAuthenticated && CanReply)
                 {
-                    trUsername.Visible = true;
                     divUsername.Visible = true;
                     bolIsAnon = true;
-                    trCaptcha.Visible = true;
                     divCaptcha.Visible = true;
                 }
                 else
                 {
-                    trUsername.Visible = false;
                     divUsername.Visible = false;
-                    trCaptcha.Visible = false;
                     divCaptcha.Visible = false;
                 }
 
@@ -149,12 +135,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
          
-
-
-        //NOTE: The following placeholder declaration is required by the Web Form Designer.
-        //Do not delete or move it.
-        private object designerPlaceholderDeclaration;
-
         protected override void OnInit(EventArgs e)
 		{
 			base.OnInit(e);
@@ -195,9 +175,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "plhMessage":
                         plhMessage = (PlaceHolder)ctrl;
                         break;
-                    case "trUsername":
-                        trUsername = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
-                        break;
                     case "divUsername":
                         divUsername = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
                         break;
@@ -213,9 +190,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "btnToolBar":
                         btnToolBar = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
                         break; 
-                    case "trCaptcha":
-                        trCaptcha = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
-                        break;
                     case "divCaptcha": 
                         divCaptcha = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
                         break;
@@ -225,18 +199,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     case "ctlCaptcha":
                         ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;
                         break; 
-                    case "trSubscribe":
-                        trSubscribe = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
-                        break;
-                    case "divSubscribeOuter": 
-                        divSubscribeOuter = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
+                    case "divSubscribe": 
+                        divSubscribe = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
                         break; 
-                    case "tdSubscribe":
-                        tdSubscribe = (System.Web.UI.HtmlControls.HtmlTableCell)ctrl;
-                        break;
-                    case "divSubscribeInner": 
-                        divSubscribeInner = (System.Web.UI.HtmlControls.HtmlGenericControl)ctrl;
-                        break;
                     case "btnSubmitLink":
                         btnSubmitLink = (System.Web.UI.WebControls.LinkButton)ctrl;
                         break;
