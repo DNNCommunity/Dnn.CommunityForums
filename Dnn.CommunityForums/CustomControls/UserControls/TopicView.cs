@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             if (ForumInfo == null)
-                ForumInfo = new ForumController().Forums_Get(PortalId, ForumModuleId, ForumId, UserId, true, false, TopicId);
+                ForumInfo = new ForumController().Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -1675,9 +1675,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var intPages = Convert.ToInt32(Math.Ceiling(_rowCount / (double)_pageSize));
 
-            if (!(_topicURL.Contains(ForumInfo.PrefixURL)))
-                _topicURL = "/" + ForumInfo.PrefixURL + "/" + _topicURL;
-
             var @params = new List<string>();
             if (!string.IsNullOrWhiteSpace(Request.Params[ParamKeys.Sort]))
                 @params.Add(ParamKeys.Sort + "=" + Request.Params[ParamKeys.Sort]);
@@ -1694,19 +1691,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager1.View = Views.Topic;
                 pager1.TopicId = TopicId;
                 pager1.PageMode = PagerNav.Mode.Links;
-                if (MainSettings.URLRewriteEnabled && !string.IsNullOrWhiteSpace(_topicURL))
-                {
-                    if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                    {
-                        pager1.BaseURL = "/" + MainSettings.PrefixURLBase;
-                    }
-                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
-                    {
-                        pager1.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
-                    }
-                    pager1.BaseURL += _topicURL;
-                }
-
+                pager1.BaseURL = URL.ForumLink(TabId, ForumInfo) + _topicURL;
                 pager1.Params = @params.ToArray();
             }
 
@@ -1722,19 +1707,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pager2.View = Views.Topic;
                 pager2.TopicId = TopicId;
                 pager2.PageMode = PagerNav.Mode.Links;
-                if (MainSettings.URLRewriteEnabled && !string.IsNullOrWhiteSpace(_topicURL))
-                {
-                    if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                    {
-                        pager2.BaseURL = "/" + MainSettings.PrefixURLBase;
-                    }
-                    if (!(string.IsNullOrEmpty(ForumInfo.ForumGroup.PrefixURL)))
-                    {
-                        pager2.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL;
-                    }
-                    pager2.BaseURL += _topicURL;
-                }
-
+                pager2.BaseURL = URL.ForumLink(TabId, ForumInfo) + _topicURL;
                 pager2.Params = @params.ToArray();
             }
 

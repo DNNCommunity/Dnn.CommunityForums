@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ForumController fc = new ForumController();
             if (ForumInfo == null)
             {
-                ForumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
+                ForumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
             }
 
             string sTemp = string.Empty;
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void SaveQuickReply()
         {
             ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, this.UserId, true, false, TopicId);
+            Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
                 UserProfileController upc = new UserProfileController();
