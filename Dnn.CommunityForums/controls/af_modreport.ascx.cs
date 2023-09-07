@@ -18,19 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -53,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (Request.IsAuthenticated)
                 {
 
-                    string strReasons = GetSharedResource("[RESX:ReasonOptions]"); 
+                    string strReasons = GetSharedResource("[RESX:ReasonOptions]");
                     int i = 0;
                     foreach (string strReason in strReasons.Split(new char[] { ';' }))
                     {
@@ -178,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 body = body.Replace("[Comment]", Comments);
                 body = body.Replace("[URL]", fullURL);
                 body = body.Replace("[Reason]", drpReasons.SelectedItem.Value);
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
 
 
                 string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);

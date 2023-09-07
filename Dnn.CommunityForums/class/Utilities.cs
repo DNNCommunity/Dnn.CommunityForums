@@ -22,19 +22,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.IO;
 using System.Web;
-using System.Reflection;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -98,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             template = ParseSpacer(template);
 
-            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId,group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId, group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -172,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             string sToolbar =
                 Convert.ToString(
-                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId)));
+                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId, currentUserType)));
             if (string.IsNullOrEmpty(sToolbar))
             {
 
@@ -190,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sToolbar = Utilities.GetFileContent(templateFilePathFileName);
                 sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
-                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId), sToolbar);
+                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId ,currentUserType), sToolbar);
             }
 
             return sToolbar;
@@ -315,8 +314,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                Exceptions.LogException(ex); 
-                return null; 
+                Exceptions.LogException(ex);
+                return null;
             }
         }
         public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId)
@@ -346,7 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
-       public static string GetHost()
+        public static string GetHost()
         {
             string strHost;
             if (HttpContext.Current.Request.IsSecureConnection)
@@ -386,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
-            var currParams = additionalParameters.ToList(); 
+            var currParams = additionalParameters.ToList();
             string s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
@@ -1059,7 +1058,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return ManageImagePath(sHTML, new Uri(hostWithScheme));
         }
-        
+
         public static string ManageImagePath(string sHTML, Uri hostUri)
         {
             string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
@@ -1080,7 +1079,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sHTML;
         }
-		internal static string GetFileContent(string filePath)
+        internal static string GetFileContent(string filePath)
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
@@ -1145,12 +1144,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return newDate.AddMinutes(offset);
         }
-        
+
         public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
         {
             return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
         }
-        
+
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
@@ -1186,7 +1185,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
         }
-        
+
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
@@ -1239,13 +1238,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
         {
-            return GetTimeZoneOffsetForUser( new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,UserId));
+            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, UserId));
         }
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
             return displayDate.AddMinutes(offset.TotalMinutes);
         }
-        
+
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
         {
             var sb = new StringBuilder();
@@ -1491,13 +1490,17 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return contents;
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetListOfModerators(int portalId, int ModuleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
+        {
+            return GetListOfModerators(portalId, -1, forumId);
+        }
+        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
             var fc = new ForumController();
-            var fi = fc.Forums_Get(forumId, -1, false, true);
+            var fi = fc.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
             if (fi == null)
                 return null;
 

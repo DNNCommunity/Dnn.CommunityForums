@@ -337,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicsViewPrefix = "AF-{0}-TVS-";
         public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}";
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
-        public const string Toolbar = "AF-{0}-tb";
+        public const string Toolbar = "AF-{0}-tb-{1}";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
         public const string Template = "AF-{0}-tmpl-{1}-{2}";
         public const string QuickReply = "AF-{0}-qr";
