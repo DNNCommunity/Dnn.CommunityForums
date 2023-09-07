@@ -44,11 +44,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (Utilities.IsRewriteLoaded())
             {
-                ConfigUtils.UninstallRewriter(HttpContext.Current.Server.MapPath("~/web.config"));
+                ConfigUtils.UninstallRewriter(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/web.config"));
                 return Request.CreateResponse(HttpStatusCode.OK, "disabled");
             }
 
-            ConfigUtils.InstallRewriter(HttpContext.Current.Server.MapPath("~/web.config"));
+            ConfigUtils.InstallRewriter(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/web.config"));
             return Request.CreateResponse(HttpStatusCode.OK, "enabled");
         }
 

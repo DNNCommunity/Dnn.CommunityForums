@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33712.159
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnnCommunityForumsTests", "Dnn.CommunityForumsTests\DnnCommunityForumsTests.csproj", "{B268075A-B369-4B84-8AB9-D338AD41C6D6}"
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{EB06303A-600A-440A-90AE-CB5595B24B68}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
@@ -11,9 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configurat
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveForumsTests", "Dnn.CommunityForumsTests\ActiveForumsTests.csproj", "{B268075A-B369-4B84-8AB9-D338AD41C6D6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActiveForums", "Dnn.CommunityForums\ActiveForums.csproj", "{2D42BCCC-D1B2-4831-B80C-41199DE25798}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnnCommunityForums", "Dnn.CommunityForums\DnnCommunityForums.csproj", "{2D42BCCC-D1B2-4831-B80C-41199DE25798}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

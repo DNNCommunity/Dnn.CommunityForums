@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
                 cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
-                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatePath + "/");
                 cc.PortalId = PortalId;
                 cc.PageId = TabId;
                 cc.ModuleId = ModuleId;
@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_updateuseronline(" + ForumModuleId.ToString() + ")',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup
@@ -390,53 +390,43 @@ namespace DotNetNuke.Modules.ActiveForums
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType, forumId: ForumId);
+            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, currentUserType: CurrentUserType, forumId: ForumId);
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
 
 
         protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        {
+            base.OnPreRender(e);
 
 
             if (SocialGroupId > 0)
             {
                 ShowToolbar = false;
             }
+
             if (Request.QueryString["dnnprintmode"] == null)
             {
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {
                     ShowToolbar = bool.Parse(HttpContext.Current.Items["ShowToolbar"].ToString());
                 }
+
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar, ForumModuleId)); 
-                    SettingsInfo moduleSettings = DataCache.MainSettings(ForumModuleId);
-                    sToolbar = Convert.ToString(DataCache.CacheRetrieve(string.Format(CacheKeys.Toolbar, ForumModuleId)));
-                    if (string.IsNullOrEmpty(sToolbar))
-                    {                            
-                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(path: moduleSettings.TemplatePath + "ToolBar.txt");
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                            if (!System.IO.File.Exists(templateFilePathFileName))
-                            {
-                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                            }
-                        }
-                        sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                        object sToolbar = DataCache.SettingsCacheRetrieve(ForumModuleId, string.Format(CacheKeys.Toolbar,ForumModuleId));
+                    if (ForumTabId <= 0)
+                    {
+                        ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
                     }
-                    lit.Text = sToolbar;
+                    lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }
 
             }
+
             if (ForumId > 0 && UserIsMod)
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();

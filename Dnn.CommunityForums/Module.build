@@ -1,11 +1,11 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ModulePath>ActiveForums</ModulePath>
-    <DNNFileName>ActiveForums</DNNFileName>
-    <PackageName>ActiveForums</PackageName>
+    <DNNFileName>DnnCommunityForums</DNNFileName>
+    <PackageName>DnnCommunityForums</PackageName>
     <Extension>zip</Extension>
     <BuildScriptsPath>$(MSBuildProjectDirectory)\BuildScripts</BuildScriptsPath>
-    <WebsitePath>$(MSBuildProjectDirectory)\..\website</WebsitePath>
+    <WebsitePath>$(MSBuildProjectDirectory)\..\..\website</WebsitePath>
     <WebsiteInstallPath>$(WebsitePath)\Install\Module</WebsiteInstallPath>
     <FullModulePath>$(WebsitePath)\DesktopModules\$(ModulePath)</FullModulePath>
   </PropertyGroup>

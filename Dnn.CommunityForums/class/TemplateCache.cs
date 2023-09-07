@@ -33,17 +33,18 @@ namespace DotNetNuke.Modules.ActiveForums
         string sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
         sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
         sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
-            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
+        sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
 
         return sTemplate;
     }
     private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
     {
         string sTemplate = string.Empty;
+        string cacheKey = string.Format(CacheKeys.Template, ModuleId, TemplateId, TemplateType);
         object obj = null;
         if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
         {
-            obj = DataCache.CacheRetrieve(ModuleId + TemplateId + TemplateType);
+            obj = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
         }
         if (obj == null)
         {
@@ -51,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                        string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
+                    string myFile = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + TemplateType + ".txt");
                     if (System.IO.File.Exists(myFile))
                     {
                         System.IO.StreamReader objStreamReader = null;
@@ -66,8 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sTemplate = objStreamReader.ReadToEnd();
                         objStreamReader.Close();
                         sTemplate = Utilities.ParseSpacer(sTemplate);
-                        DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                            //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath(Globals.ModulePath + "config/Templates/" & TemplateType & ".txt")))
+                        DataCache.SettingsCacheStore(ModuleId, cacheKey: cacheKey, cacheObj: sTemplate);
                     }
                 }
                 catch (Exception ex)
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 sTemplate = GetTemplate(TemplateId, TemplateType);
-                DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
+                DataCache.ContentCacheStore(ModuleId, cacheKey, sTemplate);
             }
         }
         else
@@ -87,8 +87,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         return sTemplate;
     }
-   
-    private static string GetTemplate(int TemplateId, string TemplateType)
+
+        private static string GetTemplate(int TemplateId, string TemplateType)
     {
         string sOut = string.Empty;
         try

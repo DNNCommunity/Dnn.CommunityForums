@@ -22,19 +22,18 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.IO;
 using System.Web;
-using System.Reflection;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -46,9 +45,9 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, int timeZoneOffset)
+        public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
         {
-            var newDate = DateTime.Parse(GetDate(displayDate, instanceId, timeZoneOffset));
+            var newDate = DateTime.Parse(GetDate(displayDate, ModuleId, timeZoneOffset));
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
@@ -88,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        internal static string ParseTokenConfig(string template, string group, ControlsConfig config)
+        internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
                 return string.Empty;
@@ -98,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             template = ParseSpacer(template);
 
-            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.List(group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId, group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -113,6 +112,8 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[PAGEID]", config.PageId.ToString());
             template = template.Replace("[SITEID]", config.PortalId.ToString());
             template = template.Replace("[INSTANCEID]", config.ModuleId.ToString());
+            template = template.Replace("[PORTALID]", config.PortalId.ToString());
+            template = template.Replace("[MODULEID]", config.ModuleId.ToString());
 
             return template;
         }
@@ -147,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sPath = filePath;
 
             if (!(sPath.Contains(@"\\")) && !(sPath.Contains(@":\")))
-                sPath = HttpContext.Current.Server.MapPath(filePath);
+                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(filePath);
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -166,12 +167,39 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sContents;
         }
+        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        {
+            string sToolbar =
+                Convert.ToString(
+                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId, currentUserType)));
+            if (string.IsNullOrEmpty(sToolbar))
+            {
 
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
+                string templateFilePathFileName =
+                    DotNetNuke.Modules.ActiveForums.Utilities.MapPath(path: SettingsBase.GetModuleSettings(forumModuleId).TemplatePath + "ToolBar.txt");
+                if (!System.IO.File.Exists(templateFilePathFileName))
+                {
+                    templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.TemplatesPath + "ToolBar.txt");
+                    if (!System.IO.File.Exists(templateFilePathFileName))
+                    {
+                        templateFilePathFileName =
+                            DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
+                    }
+                }
+                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
+                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
+                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId ,currentUserType), sToolbar);
+            }
+
+            return sToolbar;
+        }
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
+            CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 
-            if (HttpContext.Current.Request.IsAuthenticated)
+            if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
             {
                 template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-file fa-fw fa-grey\"></i>&nbsp;[RESX:NotRead]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
                 template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-files-o fa-fw fa-grey\"></i>&nbsp;[RESX:MyTopics]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
@@ -269,7 +297,52 @@ namespace DotNetNuke.Modules.ActiveForums
             var nfi = new CultureInfo("en-US", false).DateTimeFormat;
             return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
         }
-
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings()
+        {
+            try
+            {
+                if (HttpContext.Current?.Items["PortalSettings"] != null)
+                {
+                    return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                }
+                else
+                {
+                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return null;
+            }
+        }
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId)
+        {
+            try
+            {
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current?.Items["PortalSettings"] != null)
+                {
+                    portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                    if (portalSettings.PortalId != portalId)
+                    {
+                        portalSettings = null;
+                    }
+                }
+                if (portalSettings == null)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                    PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
+                    psc.LoadPortalSettings(portalSettings);
+                }
+                return portalSettings;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return null;
+            }
+        }
         public static string GetHost()
         {
             string strHost;
@@ -289,14 +362,17 @@ namespace DotNetNuke.Modules.ActiveForums
             return Common.Globals.NavigateURL(tabId);
         }
 
+        public static string NavigateUrl(int tabId, int portalId, string controlKey, params string[] additionalParameters)
+        {
+            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
+        }
         public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
         {
-            return NavigateUrl(tabId, controlKey, string.Empty, -1, additionalParameters);
+            int portalId = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, DotNetNuke.Common.Utilities.Null.NullInteger).PortalID;
+            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
         }
-
         public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
         {
-
             string[] parameters = new string[additionalParameters.Count];
             for (int i = 0; i < additionalParameters.Count; i++)
             {
@@ -308,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-            var s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
+            string s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
 
@@ -316,8 +392,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             pageName = CleanStringForUrl(pageName);
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
@@ -673,7 +749,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string @out;
             try
             {
-                var myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
+                var myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;
@@ -917,7 +993,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return name.Length > 0 ? name : currentName;
         }
-
         internal static bool IsRewriteLoaded()
         {
             return ConfigUtils.IsRewriterInstalled(System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
@@ -953,38 +1028,60 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sContents;
         }
-
-        public static string ManageImagePath(string sHTML)
+        internal static string MapPath(string path)
         {
-            var strHost = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host);
-            return ManageImagePath(sHTML, strHost);
+            try
+            {
+                /* handle situations where method is called without an HttpContext */
+                return (HttpContext.Current != null) ? HttpContext.Current.Server.MapPath(path) : System.Web.Hosting.HostingEnvironment.MapPath(path);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return path;
+            }
         }
 
-        public static string ManageImagePath(string sHTML, string hostURL)
+
+
+
+
+        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. ManageImagePath(string sHTML, Uri hostUri)")]
+        public static string ManageImagePath(string sHTML)
         {
-            var strHost = hostURL.ToLower();
+            return ManageImagePath(sHTML, HttpContext.Current.Request.Url);
+        }
+        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. ManageImagePath(string sHTML, Uri hostUri)")]
+        public static string ManageImagePath(string sHTML, string hostWithScheme)
+        {
+            return ManageImagePath(sHTML, new Uri(hostWithScheme));
+        }
+
+        public static string ManageImagePath(string sHTML, Uri hostUri)
+        {
+            string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
 
             var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
             while (iStart != -1)
             {
-                sHTML = sHTML.Insert(iStart + 5, strHost);
+                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
                 iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
             }
 
             iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
             while (iStart != -1)
             {
-                sHTML = sHTML.Insert(iStart + 5, strHost);
+                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
                 iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
             }
 
             return sHTML;
         }
-		internal static string GetFileContent(string filePath)
+        internal static string GetFileContent(string filePath)
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
-                sPath = HttpContext.Current.Server.MapPath(sPath);
+                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -1045,12 +1142,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return newDate.AddMinutes(offset);
         }
-        
+
         public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
         {
             return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
         }
-        
+
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
@@ -1086,7 +1183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
         }
-        
+
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
@@ -1139,13 +1236,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
         {
-            return GetTimeZoneOffsetForUser( new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,UserId));
+            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, UserId));
         }
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
             return displayDate.AddMinutes(offset.TotalMinutes);
         }
-        
+
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
         {
             var sb = new StringBuilder();
@@ -1391,13 +1488,17 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return contents;
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetListOfModerators(int portalId, int ModuleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
+        {
+            return GetListOfModerators(portalId, -1, forumId);
+        }
+        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
             var fc = new ForumController();
-            var fi = fc.Forums_Get(forumId, -1, false, true);
+            var fi = fc.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
             if (fi == null)
                 return null;
 
@@ -1596,6 +1697,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (selectedItem != null)
                 selectedItem.Selected = true;
+        }
+        internal static int GetForumModuleId(int ModuleId, int TabId)
+        {
+            int moduleId = ModuleId;
+            if (ModuleId > 0)
+            {
+                if (TabId > 0)
+                {
+                    if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                    {
+                        moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                    }
+                }
+            }
+            return moduleId;
         }
     }
 }

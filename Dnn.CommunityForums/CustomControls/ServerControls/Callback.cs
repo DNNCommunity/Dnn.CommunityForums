@@ -600,7 +600,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public override string GetDesignTimeHtml()
         {
-            return "<div style=\"font-family:tahoma;font-size:11px;\">Active Forums Callback Control</div>";
+            return "<div style=\"font-family:tahoma;font-size:11px;\">DNN Community Forums Callback Control</div>";
         }
 
     }

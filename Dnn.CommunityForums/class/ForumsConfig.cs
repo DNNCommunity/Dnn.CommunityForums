@@ -30,12 +30,19 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.Results;
 using System.Web.Profile;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Entities.Modules.Definitions;
+using DotNetNuke.Data;
+using System.Reflection;
+using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumsConfig
 	{
-		public string sPath = HttpContext.Current.Server.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsConfig));
+
+        public string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
 		public bool ForumsInit(int PortalId, int ModuleId)
 		{
 			try
@@ -365,8 +372,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		internal void ArchiveOrphanedAttachments()
         {
-            var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath("~/portals"));
-            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach", System.IO.SearchOption.AllDirectories);
+            var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
+            System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);
 
             foreach (System.IO.DirectoryInfo attachmentFolder in attachmentFolders)
             {
@@ -430,5 +437,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 dr.Close();
             } 
 		}
-    }
+	}
 }

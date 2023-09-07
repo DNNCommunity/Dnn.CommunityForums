@@ -22,12 +22,12 @@ using System;
 using System.Web;
 namespace DotNetNuke.Modules.ActiveForums
 {
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
     public class AMPageBase : Framework.PageBase
     {
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int _AFModId;
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int AFModID
 		{
 			get
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         //        Return CInt(Request.QueryString["pid"])
         //    End Get
         //End Property
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static SettingsInfo MainSettings
 		{
 			get
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings(AFModID);
 			}
 		}
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int TabId
 		{
 			get

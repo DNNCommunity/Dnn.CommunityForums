@@ -20,8 +20,10 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -384,9 +386,8 @@ namespace DotNetNuke.Modules.ActiveForums
 			string RoleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, PortalId));
 			if (string.IsNullOrEmpty(RoleIds))
 			{ 
-				var rc = new Security.Roles.RoleController();
-				foreach (Security.Roles.RoleInfo ri in rc.GetPortalRoles(PortalId))
-				{
+                foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+                {
 					string roleName = ri.RoleName;
 					foreach (string role in Roles)
 					{
@@ -405,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		    return RoleIds;
 		}
-		internal static NameValueCollection GetRolesNVC(int PortalId, int ModuleId, string Roles)
+		internal static NameValueCollection GetRolesNVC(int PortalId, string Roles)
         {
 			try
 			{
@@ -424,7 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								nvc.Add("-3", Common.Globals.glbRoleUnauthUserName);
 								break;
 							default:
-								roleName = GetRole(PortalId, ModuleId: ModuleId, role);
+								roleName = GetRoleName(PortalId, role);
 								if (roleName != null)
 								{
 									nvc.Add(role, roleName);
@@ -443,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		internal static string GetRoleNames(int PortalId, int ModuleId, string Roles)
+		internal static string GetRoleNames(int PortalId, string Roles)
         {
 			try
 			{
@@ -463,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								RoleNames = string.Concat(RoleNames + Common.Globals.glbRoleUnauthUserName, ";");
 								break;
 							default:
-								roleName = GetRole(PortalId: PortalId, ModuleId: ModuleId, role: role);
+								roleName = GetRoleName(PortalId: PortalId, role: role);
 								if (roleName != null)
 								{
 									RoleNames = string.Concat(RoleNames + roleName, ";");
@@ -482,26 +483,26 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		private static string GetRole(int PortalId, int ModuleId, string role)
-		{
-			return GetRoles(PortalId, ModuleId).ToArray().Where(r => r.RoleName == role).Select(r=> r.RoleName).FirstOrDefault();
-		}
-		private static ArrayList GetRoles(int PortalId, int ModuleId)
+		private static string GetRoleName(int PortalId, string role)
         {
-            ArrayList roleNames;
-            object obj = (ArrayList)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.RoleNames, PortalId)); 
+			return GetRoles(PortalId).ToArray().Where(r => r.RoleID == Utilities.SafeConvertInt( role)).Select(r=> r.RoleName).FirstOrDefault();
+		}
+        internal static System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> GetRoles(int PortalId)
+        {
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey: string.Format(CacheKeys.RoleNames, PortalId));
+            System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo> roles;
             if (obj == null)
             {
-                roleNames = new Security.Roles.RoleController().GetPortalRoles(PortalId);
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.RoleNames, PortalId), roleNames);
+                roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
+                DataCache.SettingsCacheStore(ModuleId: -1, cacheKey: string.Format(CacheKeys.RoleNames,PortalId), cacheObj: roles);
             }
-			else
-			{
-                roleNames = (ArrayList)obj;
-			}
-
-			return roleNames;
-		}
+            else
+            {
+                roles = (System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo>)obj;
+            }
+            return roles;
+        }
+        
 
 		public static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles)
 		{

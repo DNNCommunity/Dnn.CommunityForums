@@ -26,7 +26,7 @@ using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
     public class SecurityGrid
 	{
 		public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
@@ -37,15 +37,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				return PortalSettings.PortalId;
 			}
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public bool ReadOnly {get; set; }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public string ImagePath {get; set; }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public PermissionInfo Security {get; set; }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public int PermissionsId {get; set; }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public SecurityGrid(DotNetNuke.Entities.Portals.PortalSettings ps, bool isReadOnly, string imgPath, PermissionInfo sec, int permId)
 		{
 			PortalSettings = ps;
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			Security = sec;
 			PermissionsId = permId;
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public string GetNewGrid()
 		{
 			//Roles
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, ModuleId: -1, tmp);
+			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();

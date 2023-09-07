@@ -56,8 +56,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (dto.ForumId > 0)
             {
 
-                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(ActiveModule.PortalID, ActiveModule.ModuleID, UserInfo.UserID).Roles;
-                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ActiveModule.ModuleID, dto.ForumId, -1, 1, UserInfo.UserID, userRoles);
+                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(ActiveModule.PortalID, ForumModuleId, UserInfo.UserID).Roles;
+                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ForumModuleId, dto.ForumId, -1, 1, UserInfo.UserID, userRoles);
                 return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (ForumId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId));
+                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId));
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (ForumId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ActiveModule.ModuleID, ForumId)} {Utilities.GetSharedResource("[RESX:FORUMSUBSCRIBERCOUNT]", false)}");
+                return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId)} {Utilities.GetSharedResource("[RESX:FORUMSUBSCRIBERCOUNT]", false)}");
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
