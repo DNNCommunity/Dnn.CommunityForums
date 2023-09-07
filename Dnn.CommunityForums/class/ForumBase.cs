@@ -425,7 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get 
             {
-                return _foruminfo ?? (_foruminfo = ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, UserId, true, true, TopicId));
+                return _foruminfo ?? (_foruminfo = ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
             }
             set
             {

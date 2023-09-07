@@ -19,21 +19,11 @@
 //
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using DotNetNuke;
-using System.Text.RegularExpressions;
+using DotNetNuke.Modules.ActiveForums.Controls;
 //using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Modules.ActiveForums.Controls;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -64,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {
@@ -187,8 +177,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
@@ -296,11 +286,11 @@ namespace DotNetNuke.Modules.ActiveForums
             ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
-            DataCache.CacheClearPrefix(ModuleId,string.Format(CacheKeys.ForumViewPrefix, ModuleId));
+            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
 
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new TopicsController().Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-            string fullURL = new ControlUtils().BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
+            string fullURL = new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
 
             if (fullURL.Contains("~/"))
             {
@@ -308,7 +298,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (fullURL.EndsWith("/"))
             {
-                fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);            }
+                fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
+            }
             if (isApproved)
             {
 
@@ -337,7 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else if (isApproved == false)
             {
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
                 string subject = Utilities.GetSharedResource("NotificationSubjectReply");
                 subject = subject.Replace("[DisplayName]", UserInfo.DisplayName);
@@ -373,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId,TabId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                 }
                 catch (Exception ex)
                 {

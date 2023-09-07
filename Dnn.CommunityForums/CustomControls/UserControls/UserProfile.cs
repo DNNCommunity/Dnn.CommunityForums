@@ -149,10 +149,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             Literal lit = new Literal();
             UserController upc = new UserController();
-            User up = upc.GetUser(PortalId, ModuleId, UID);
+            User up = upc.GetUser(PortalId, ForumModuleId, UID);
             ForumController fc = new ForumController();
             up.UserForums = fc.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
-            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ModuleId, ImagePath, CurrentUserType, UserInfo.UserID, TimeZoneOffset);
+            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
@@ -393,7 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DotNetNuke.Entities.Users.UserInfo objuser = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UID);
                 UserProfileController upc = new UserProfileController();
                 UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(PortalId, ModuleId, UID).Profile;
+                UserProfileInfo upi = uc.GetUser(PortalId, ForumModuleId, UID).Profile;
                 if (upi != null)
                 {
                     upi.WebSite = Utilities.XSSFilter(txtWebSite.Text, true);
