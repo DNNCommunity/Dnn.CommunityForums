@@ -179,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
     <Content Include="07.00.03.txt" />
     <Content Include="ActiveForums.ascx">
@@ -294,6 +295,12 @@
     <Content Include="images\arrows_left.png" />
     <Content Include="images\arrow_down.png" />
     <Content Include="images\arrow_up.png" />
+    <Content Include="images\branding\logo\DNN-Community-Forums-Icon-128px.png" />
+    <Content Include="images\branding\logo\DNN-Community-Forums-Icon-256px.png" />
+    <Content Include="images\branding\logo\DNN-Community-Forums-Icon-32px.png" />
+    <Content Include="images\branding\logo\DNN-Community-Forums-Icon-64px.png" />
+    <Content Include="images\branding\logo\DNN-Community-Forums-Logo-Block.png" />
+    <Content Include="images\branding\logo\DNN-Community-Forums-Logo-Horizontal.png" />
     <Content Include="images\cancel32.png" />
     <Content Include="images\check32.png" />
     <Content Include="images\checkbox.png" />
@@ -765,8 +772,6 @@
     <Content Include="controls\_default.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="images\AF_logo.gif" />
-    <Content Include="images\ambuttonback.gif" />
     <Content Include="images\attach.gif" />
     <Content Include="images\close.gif" />
     <Content Include="images\dashHeaderBg.gif" />

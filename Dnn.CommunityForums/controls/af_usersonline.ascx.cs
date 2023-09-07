@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ForumModuleId.ToString() + ")',50000);", true);
+                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ModuleId.ToString() + ")',50000);", true);
                 bool bolShow = true;
                 if (Request.Cookies["WHOSShow"] != null)
                 {

@@ -22,16 +22,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Drawing.Printing;
 using System.Globalization;
-using System.Linq;
-
-using System.Web;
-using DotNetNuke.Entities.Controllers;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Scheduling;
-using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -67,18 +59,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 User uu = uc.GetUser(PortalId, ModuleId, UserId);
                 UserRoles = uu.UserRoles;
             }
-            
+
             var fc = new ForumController();
-            Forum fi = fc.Forums_Get(PortalId, ModuleId, ForumId, UserId, true, false, -1);
-            
+            Forum fi = fc.Forums_Get(PortalId, ModuleId, ForumId, false, -1);
+
             if (Permissions.HasPerm(fi.Security.Subscribe, UserRoles))
             {
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
             }
-            
+
             return -1;
         }
-        
+
         public List<SubscriptionInfo> Subscription_GetSubscribers(int PortalId, int ForumId, int TopicId, SubscriptionTypes Mode, int AuthorId, string CanSubscribe)
         {
             SubscriptionInfo si;
@@ -101,20 +93,20 @@ namespace DotNetNuke.Modules.ActiveForums
                         TopicSubscriber = Utilities.SafeConvertBool(dr["TopicSubscriber"])
                     };
 
-				    if (! (sl.Contains(si)))
-					{
-						if (Permissions.HasPerm(CanSubscribe, si.UserId, PortalId))
-						{
-							sl.Add(si);
-						}
-					}
-				}
-			}
-			dr.Close();
-			return sl;
-		}
-	}
-	public abstract class Subscriptions
+                    if (!(sl.Contains(si)))
+                    {
+                        if (Permissions.HasPerm(CanSubscribe, si.UserId, PortalId))
+                        {
+                            sl.Add(si);
+                        }
+                    }
+                }
+            }
+            dr.Close();
+            return sl;
+        }
+    }
+    public abstract class Subscriptions
     {
         public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int AuthorId)
         {
@@ -124,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
             var fc = new ForumController();
-            Forum fi = fc.Forums_Get(ForumId, -1, false);
+            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
             SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
         }
 
@@ -132,12 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
         }
-        
+
         public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, Forum fi, int TopicId, int ReplyId, int AuthorId)
         {
             var sc = new SubscriptionController();
             List<SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
-            
+
             if (subs.Count > 0)
             {
                 Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
@@ -151,10 +143,10 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sysTemplateName = "WeeklyDigest";
             }
-            
+
             var objRecipients = new ArrayList();
             IDataReader dr = DataProvider.Instance().Subscriptions_GetDigest(Convert.ToString(SubscriptionType), StartDate);
-            
+
             string tmpEmail = string.Empty;
             string tmpFG = string.Empty;
             string sBody = string.Empty;
@@ -191,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 SubscriberFirstName = dr["SubscriberFirstName"].ToString();
                 SubscriberLastName = dr["SubscriberLastName"].ToString();
                 SubscriberEmail = dr["Email"].ToString();
-                
+
                 string newEmail = dr["Email"].ToString();
                 if (i > 0)
                 {
@@ -236,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         Items += ItemsFooter;
                     }
-                    
+
                     string sTmpBody = TemplateGroupSection;
 
                     sTmpBody = sTmpBody.Replace("[TABID]", dr["TabId"].ToString());
@@ -260,9 +252,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     string sLength = sTemp.Substring(inStart, inEnd - inStart);
                     intLength = Convert.ToInt32(sLength);
                 }
-                
+
                 string body = dr["Body"].ToString();
-                
+
                 if (intLength > 0)
                 {
                     if (body.Length > intLength)
@@ -295,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             dr.Close();
             dr = null;
-            
+
             if (Items != string.Empty)
             {
                 sMessageBody = TemplateHeader;

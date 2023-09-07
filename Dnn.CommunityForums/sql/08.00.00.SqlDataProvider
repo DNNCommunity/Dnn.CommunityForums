@@ -176,30 +176,3 @@ GO
 
 /* issue 93 - move templates to file-based */
 
-/* issue 280 - rebrand from Active Forums to Community Forums */
-
-IF NOT OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UpdateModuleMetaDataNames') IS NULL
-	DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UpdateModuleMetaDataNames]; 
-GO
-
-SET QUOTED_IDENTIFIER ON 
-GO
-SET ANSI_NULLS ON 
-GO
-
-CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UpdateModuleMetaDataNames] 
-	@PackageId INT, @ModuleDefId INT, @DesktopModuleId INT 
-AS 
-BEGIN 
-	SET NOCOUNT ON; 
-
-	DECLARE @FriendlyName NVARCHAR(128), @ModuleName NVARCHAR(128); 
-
-	SET @FriendlyName = N'Community Forums'; -- previously 'Active Forums' 
-	SET @ModuleName = N'DNN Community Forums'; -- previously 'Active Forums' 
-	
-	UPDATE [dbo].[Packages] SET [Name] = @ModuleName, [FriendlyName] = @FriendlyName WHERE [PackageID] = @PackageId;
-	UPDATE [dbo].[ModuleDefinitions] SET [FriendlyName] = @FriendlyName WHERE [ModuleDefID] = @ModuleDefId; 
-	UPDATE [dbo].[DesktopModules] SET [FriendlyName] = @FriendlyName, [ModuleName] = @ModuleName WHERE [DesktopModuleID] = @DesktopModuleId; 
-END
-GO
