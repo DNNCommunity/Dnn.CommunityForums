@@ -394,6 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums
             AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModDeleteTemplateId, parameters[40]);
             AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModNotifyTemplateId, parameters[41]);
             AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AutoSubscribeEnabled, parameters[42]);
+            AFSettings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, parameters[43]);
         }
 
         private void LoadForum(int forumId)
@@ -406,7 +407,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var newForum = fc.GetForum(PortalId, ModuleId, forumId, true);
 
-            ctlSecurityGrid = LoadControl(Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
+            ctlSecurityGrid = LoadControl(virtualPath: Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if (ctlSecurityGrid != null)
             {
                 ctlSecurityGrid.Perms = newForum.Security;
@@ -440,7 +441,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Utilities.SelectListItemByValue(drpTopicTemplate, fi.TopicTemplateId);
             Utilities.SelectListItemByValue(drpTopicForm, fi.TopicFormId);
             Utilities.SelectListItemByValue(drpReplyForm, fi.ReplyFormId);
-            //Utilities.SelectListItemByValue(drpQuickReplyForm, fi.QuickReplyFormId);
+            Utilities.SelectListItemByValue(drpQuickReplyForm, fi.QuickReplyFormId);
             Utilities.SelectListItemByValue(drpProfileDisplay, fi.ProfileTemplateId);
             Utilities.SelectListItemByValue(drpModApprovedTemplateId, fi.ModApproveTemplateId);
             Utilities.SelectListItemByValue(drpModRejectTemplateId, fi.ModRejectTemplateId);
@@ -574,6 +575,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Utilities.SelectListItemByValue(drpTopicTemplate, gi.TopicTemplateId);
             Utilities.SelectListItemByValue(drpTopicForm, gi.TopicFormId);
             Utilities.SelectListItemByValue(drpReplyForm, gi.ReplyFormId);
+            Utilities.SelectListItemByValue(drpQuickReplyForm, gi.QuickReplyFormId);
             Utilities.SelectListItemByValue(drpProfileDisplay, gi.ProfileTemplateId);
             Utilities.SelectListItemByValue(drpModApprovedTemplateId, gi.ModApproveTemplateId);
             Utilities.SelectListItemByValue(drpModRejectTemplateId, gi.ModRejectTemplateId);
@@ -758,8 +760,8 @@ namespace DotNetNuke.Modules.ActiveForums
             BindTemplateDropDown(drpTopicTemplate, Templates.TemplateTypes.TopicView, "[RESX:Default]", "0");
             BindTemplateDropDown(drpTopicForm, Templates.TemplateTypes.TopicForm, "[RESX:Default]", "0");
             BindTemplateDropDown(drpReplyForm, Templates.TemplateTypes.ReplyForm, "[RESX:Default]", "0");
-            //BindTemplateDropDown(drpQuickReplyForm, Templates.TemplateTypes.QuickReplyForm, "[RESX:Default]", "0")
-
+            BindTemplateDropDown(drpQuickReplyForm, Templates.TemplateTypes.QuickReplyForm, "[RESX:Default]", "0");
+            
             BindTemplateDropDown(drpProfileDisplay, Templates.TemplateTypes.PostInfo, "[RESX:Default]", "0");
             BindTemplateDropDown(drpModApprovedTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
             BindTemplateDropDown(drpModDeleteTemplateId, Templates.TemplateTypes.ModEmail, "[RESX:DropDownDisabled]", "0");
