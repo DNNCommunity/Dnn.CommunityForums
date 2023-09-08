@@ -333,12 +333,16 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
-				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(Globals.ThemesPath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
-				{
-					System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
-					System.IO.File.Delete(fullFilePathName);
-				}
+                var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+                System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+                foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+                {
+                    foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path:themeFolder.FullName, searchPattern: "module.css", searchOption: System.IO.SearchOption.TopDirectoryOnly))
+                    {
+						System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+                        System.IO.File.Delete(fullFilePathName);
+                    }
+                }				
 			}
 			catch (Exception ex)
 			{
