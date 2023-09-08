@@ -149,11 +149,17 @@ function saveSettings(gs){
         } else {
             var TopicFormId = 0;
         };
-	    var tt4 = document.getElementById("<%=drpReplyForm.ClientID%>");
+        var tt4 = document.getElementById("<%=drpReplyForm.ClientID%>");
         if (tt4.selectedIndex > 0) {
             var ReplyFormId = tt4.options[tt4.selectedIndex].value;
         } else {
             var ReplyFormId = 0;
+        };
+        var tt5 = document.getElementById("<%=drpQuickReplyForm.ClientID%>");
+        if (tt5.selectedIndex > 0) {
+            var QuickReplyFormId = tt5.options[tt5.selectedIndex].value;
+        } else {
+            var QuickReplyFormId = 0;
         };
 	    var tt6 = document.getElementById("<%=drpProfileDisplay.ClientID%>");
         if (tt6.selectedIndex > 0) {
@@ -162,8 +168,8 @@ function saveSettings(gs){
             var ProfileTemplateId = 0;
         };
 	    var EmailAddress = document.getElementById("<%=txtEmailAddress.ClientID%>").value;
-	    var CreatePostCount = document.getElementById("<%=txtCreatePostCount.ClientID%>").value;
-	    var ReplyPostCount = document.getElementById("<%=txtReplyPostCount.ClientID%>").value;
+        var CreatePostCount = document.getElementById("<%=txtCreatePostCount.ClientID%>").value;
+        var ReplyPostCount = document.getElementById("<%=txtReplyPostCount.ClientID%>").value;
 	    var UseFilter = document.getElementById("<%=rdFilterOn.ClientID%>").checked;
 		var AllowPostIcon = document.getElementById("<%=rdPostIconOn.ClientID%>").checked;
 		var AllowEmoticons = document.getElementById("<%=rdEmotOn.ClientID%>").checked;
@@ -265,7 +271,7 @@ function saveSettings(gs){
 		IndexContent, AllowRSS, AllowAttach, AttachCount, AttachMaxSize, AttachTypeAllowed, EditorMobile, AllowLikes, ReplyPostCount, AttachAllowBrowseSite, AttachInsertAllowed, MaxAttachWidth,
 		MaxAttachHeight, AttachConvertToJGPAllowed, AllowHtml, EditorType, EditorHeight, EditorWidth, CreatePostCount, AutoSubscribeNewTopicsOnly, EditorPermittedRoles, TopicFormId, ReplyFormId,
 		AutoSubscribeRoles, ProfileTemplateId, IsModerated, DefaultTrustLevel, AutoTrustLevel, ModApproveTemplateId, ModRejectTemplateId, ModMoveTemplateId, ModDeleteTemplateId,
-		ModNotifyTemplateId, AutoSubscribeEnabled);
+        ModNotifyTemplateId, AutoSubscribeEnabled, QuickReplyFormId);
 
 
 };
@@ -935,12 +941,12 @@ function afadmin_getProperties() {
 							<asp:DropDownList ID="drpReplyForm" runat="server" CssClass="amcptxtbx" /></td>
 						<td></td>
 					</tr>
-					<%-- <tr>
+					 <tr>
 					<td><img id="Img24" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:QuickReplyForm]');" onmouseout="amHideTip(this);" /></td>
 					<td class="amcpbold" style="white-space:nowrap">[RESX:QuickReplyForm]:</td>
 					<td width="100%"><asp:DropDownList ID="drpQuickReplyForm" runat="server" CssClass="amcptxtbx" /></td>
 					<td></td>
-				</tr>--%>
+				</tr>
 					<tr>
 						<td>
 							<img id="Img16" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:UserProfileTemplate]');" onmouseout="amHideTip(this);" /></td>
