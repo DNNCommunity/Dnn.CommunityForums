@@ -217,6 +217,8 @@
     <None Include="config\templates\TopicsView.txt" />
     <Content Include="config\templates\DailyDigest.txt" />
     <Content Include="config\templates\ForumView.txt" />
+    <Content Include="config\templates\QuickReply.txt" />
+    <Content Include="config\templates\ReplyEditor.txt" />
     <Content Include="config\templates\ModAlert.txt" />
     <Content Include="config\templates\ModAlert_plaintext.txt" />
     <Content Include="config\templates\ModEmail.txt" />
@@ -504,6 +506,7 @@
     <Content Include="themes\community\images\yellow_star_05.gif" />
     <Content Include="themes\community\templates\ForumView.txt" />
     <Content Include="themes\community\templates\ProfileInfo.txt" />
+    <Content Include="themes\community\templates\QuickReply.txt" />
     <Content Include="themes\community\templates\ReplyEditor.txt" />
     <Content Include="themes\community\templates\TopicEditor.txt" />
     <Content Include="themes\community\templates\TopicsView.txt" />
@@ -894,7 +897,6 @@
     <Content Include="images\ranks\yellow_star_06.gif" />
     <Content Include="scripts\afadmin.js" />
     <Content Include="scripts\afutils.js" />
-    <Content Include="config\templates\ReplyEditor.txt" />
     <Content Include="config\templates\TopicEditor.txt" />
     <Content Include="config\templates\ProfileInfo.txt" />
     <Content Include="config\templates\BlogView.txt" />

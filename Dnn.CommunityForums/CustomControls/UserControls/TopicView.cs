@@ -37,6 +37,7 @@ using System.Xml;
 using DotNetNuke.Instrumentation;
 using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
 using System.Drawing.Printing;
+using System.Runtime.InteropServices;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -748,7 +749,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.CanTrust = _bTrust;
                     ctlQuickReply.ModApprove = _bModApprove;
                     ctlQuickReply.IsTrusted = _isTrusted;
-                    ctlQuickReply.Subject = _topicSubject;
+                    ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + _topicSubject;
                     ctlQuickReply.AllowSubscribe = _allowSubscribe;
                     ctlQuickReply.AllowHTML = _allowHTML;
                     ctlQuickReply.AllowScripts = _allowScript;
@@ -756,6 +757,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.SocialGroupId = SocialGroupId;
                     ctlQuickReply.ForumModuleId = ForumModuleId;
                     ctlQuickReply.ForumTabId = ForumTabId;
+                    ctlQuickReply.RequireCaptcha = true;
 
                     if (ForumId > 0)
                         ctlQuickReply.ForumInfo = ForumInfo;
