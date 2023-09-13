@@ -619,13 +619,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
 
             if(pinned && locked)
-                return MainSettings.ThemeLocation + theme + "/images/topic_pinlocked.png";
+                return MainSettings.ThemeLocation + "/images/topic_pinlocked.png";
 
             if(pinned)
-                return MainSettings.ThemeLocation + theme + "/images/topic_pin.png";
+                return MainSettings.ThemeLocation + "/images/topic_pin.png";
 
             if(locked)
-                return MainSettings.ThemeLocation + theme + "/images/topic_lock.png";
+                return MainSettings.ThemeLocation + "/images/topic_lock.png";
 
             // Unread has to be calculated based on a few fields
             var topicId = Convert.ToInt32(_currentRow["TopicId"]);
@@ -636,9 +636,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
 
             if(unread)
-                return MainSettings.ThemeLocation + theme + "/images/topic.png";
+                return MainSettings.ThemeLocation + "/images/topic.png";
 
-            return MainSettings.ThemeLocation + theme + "/images/topic_new.png";
+            return MainSettings.ThemeLocation + "/images/topic_new.png";
         }
 
         public string GetMiniPager()
