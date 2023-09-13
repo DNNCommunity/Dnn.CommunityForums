@@ -509,6 +509,7 @@
     <Content Include="themes\community\templates\TopicsView.txt" />
     <Content Include="themes\community\templates\TopicView.txt" />
     <Content Include="themes\community\theme.css" />
+    <Content Include="themes\themes.css" />
     <Content Include="themes\_default\custom\theme.css" />
     <Content Include="themes\_default\emoticons\angry.gif" />
     <Content Include="themes\_default\emoticons\arrow.gif" />

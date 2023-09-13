@@ -12,13 +12,13 @@
 		<br />
 	~/DesktopModules/ActiveForums/module.css (already existing)
 		<br />
-	~/DesktopModules/ActiveForums/themes/theme.css (already existing / new name / to be used across all themes)
+	~/DesktopModules/ActiveForums/themes/themes.css (new name and CSS content / used to be named module.css / to be used across all themes)
 		<br />
 	~/DesktopModules/ActiveForums/themes/_currenttheme_/theme.css (already existing / new name)
 		<br />
 	~/DesktopModules/ActiveForums/themes/_currenttheme_/custom/theme.css (new)has been updated.  
 	</p>
-	<p>If you are upgrading the Community Forums module and you have an <strong>existing</strong> ~/DesktopModules/ActiveForums/themes/module.css, it will be retained, but will no longer be loaded. You can move any relevant CSS to ~/DesktopModules/ActiveForums/themes/theme.css.
+	<p>If you are upgrading the Community Forums module and you have an <strong>existing</strong> ~/DesktopModules/ActiveForums/themes/module.css, it will be retained, but will no longer be loaded. You can move any relevant CSS to ~/DesktopModules/ActiveForums/themes/themes.css.
 	</p>
 		</div><hr/>
 	<div class="dnnClear"><hr/>
