@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private const string _attribute_name = "name";
         private const string _attribute_type = "type";
         private const string _attribute_precondition = "preCondition";
-        private const string _attribute_runAllManagedModulesForAllRequests = "runAllManagedModulesForAllRequests";
         public static bool IsRewriterInstalled(string configPath)
         {
             bool isInstalled = false;
@@ -90,12 +89,6 @@ namespace DotNetNuke.Modules.ActiveForums
 					System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
 					if (xNode != null)
 					{
-						if (xNode.Attributes[_attribute_runAllManagedModulesForAllRequests] == null)
-						{
-							XmlAttribute attribute_runAllManagedModulesForAllRequests = xDoc.CreateAttribute(_attribute_runAllManagedModulesForAllRequests);
-                            attribute_runAllManagedModulesForAllRequests.Value = "true";
-							xNode.Attributes.Append(attribute_runAllManagedModulesForAllRequests);
-						}						
 						XmlElement xNewNode = xDoc.CreateElement("add");
 						XmlAttribute xAttrib = xDoc.CreateAttribute(_attribute_name);
 						xAttrib.Value = _ForumsRewriterTypeNameShort;

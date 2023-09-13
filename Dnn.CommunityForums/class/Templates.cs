@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Private Methods
-        private string GetHTML(string Template)
+        internal static string GetHTML(string Template)
         {
             try
             {
@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private string GetText(string Template)
+        internal static string GetText(string Template)
         {
             try
             {
