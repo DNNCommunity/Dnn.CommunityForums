@@ -21,6 +21,15 @@
 	<p>If you are upgrading the Community Forums module and you have an <strong>existing</strong> ~/DesktopModules/ActiveForums/themes/module.css, it will be retained, but will no longer be loaded. You can move any relevant CSS to ~/DesktopModules/ActiveForums/themes/theme.css.
 	</p>
 		</div><hr/>
+	<div class="dnnClear"><hr/>
+	<h3>Important Note</h3>
+	<p>
+	If you have previously installed the Community Forums module--and its URL rewriter in order to use friendly URLs--that process inserted the attribute <em>runAllManagedModulesForAllRequests="true"</em> into the &lt;configuration&gt;&lt;system.webServer&gt;&lt;modules&gt; tag in web.config. 
+	Per <a href="https://learn.microsoft.com/en-us/iis/configuration/system.webserver/modules/" target="_blank">Microsoft documentation</a>, this attribute is obsolete if you are running IIS 7 (plus a patch), or IIS 8+. 
+	Since you <em>may</em> have other modules that require it, we have chosen to <strong>NOT</strong> remove it automatically. 
+	If you have no other modules that require it, you many remove it manually.
+	</p>
+	</div><hr/>
 	<div class="dnnClear">
 		<h3>07.00.12</h3>
 		<h4>Features, Enhancements, and Bug Fixes</h4>
