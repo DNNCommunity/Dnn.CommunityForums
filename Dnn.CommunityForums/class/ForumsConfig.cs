@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Data;
 using System.Reflection;
 using DotNetNuke.Instrumentation;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -206,6 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var tc = new TemplateController();
                     int ProfileInfoTemplateId = tc.Template_Get(TemplateName: "ProfileInfo", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int ReplyEditorTemplateId = tc.Template_Get(TemplateName: "ReplyEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+                    int QuickReplyTemplateId = tc.Template_Get(TemplateName: "QuickReply", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicEditorTemplateId = tc.Template_Get(TemplateName: "TopicEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicsViewTemplateId = tc.Template_Get(TemplateName: "TopicsView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicViewTemplateId = tc.Template_Get(TemplateName: "TopicView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
@@ -274,8 +276,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorStyle, "2");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(TopicEditorTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(ReplyEditorTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, "0");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(QuickReplyTemplateId));
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IsModerated, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
@@ -332,12 +334,16 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			try
 			{
-				SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
-				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(Globals.ThemesPath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
-				{
-					System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
-					System.IO.File.Delete(fullFilePathName);
-				}
+                var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+                System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+                foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+                {
+                    foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path:themeFolder.FullName, searchPattern: "module.css", searchOption: System.IO.SearchOption.TopDirectoryOnly))
+                    {
+						System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+                        System.IO.File.Delete(fullFilePathName);
+                    }
+                }				
 			}
 			catch (Exception ex)
 			{
@@ -365,9 +371,35 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 			TemplateController tc = new TemplateController();
-			foreach (TemplateInfo template in tc.Template_List(-1, -1))
-			{
-				tc.Template_Save(template);
+			foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
+            {
+                /* during upgrade, explicitly (re-)load template text from database rather than Template_List  API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
+                IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
+                while (dr.Read())
+                {
+                    try
+                    {
+                        string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
+						string templateHtml = System.Web.HttpUtility.HtmlDecode(DotNetNuke.Modules.ActiveForums.TemplateController.GetHTML(template));
+                        /* for email templates, store text + html version; other templates, just store html without encoding */
+                        if (templateInfo.TemplateType == Templates.TemplateTypes.Email || templateInfo.TemplateType == Templates.TemplateTypes.ModEmail)
+						{
+							string templateText = DotNetNuke.Modules.ActiveForums.TemplateController.GetText(template); 
+							template = "<template><html>" + System.Web.HttpUtility.HtmlEncode(templateHtml) + "</html><plaintext>" + Utilities.StripHTMLTag(templateText) + "</plaintext></template>";
+                        }
+						else
+						{
+                            template = templateHtml;
+                        }
+                        /* override the template text with what needs to be converted */
+                        templateInfo.Template = template;
+                        tc.Template_Save(templateInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
 			}
 		}
 		internal void ArchiveOrphanedAttachments()
