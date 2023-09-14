@@ -199,7 +199,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Content Include="config\templates\AdminWatchEmail.txt" />
-    <Content Include="config\templates\AdminWatchEmail_plaintext.txt" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -220,24 +219,15 @@
     <Content Include="config\templates\QuickReply.txt" />
     <Content Include="config\templates\ReplyEditor.txt" />
     <Content Include="config\templates\ModAlert.txt" />
-    <Content Include="config\templates\ModAlert_plaintext.txt" />
     <Content Include="config\templates\ModEmail.txt" />
-    <Content Include="config\templates\ModEmail_plaintext.txt" />
     <Content Include="config\templates\PostApproved.txt" />
-    <Content Include="config\templates\PostApproved_plaintext.txt" />
     <Content Include="config\templates\PostDeleted.txt" />
-    <Content Include="config\templates\PostDeleted_plaintext.txt" />
     <Content Include="config\templates\PostMoved.txt" />
-    <Content Include="config\templates\PostMoved_plaintext.txt" />
     <Content Include="config\templates\PostRejected.txt" />
-    <Content Include="config\templates\PostRejected_plaintext.txt" />
     <Content Include="config\templates\SubscribedEmail.txt" />
-    <Content Include="config\templates\SubscribedEmail_plaintext.txt" />
     <Content Include="config\templates\TopicView.txt" />
     <Content Include="config\templates\ForumDirectory.txt" />
     <Content Include="config\templates\_MemberList.txt" />
-    <None Include="config\templates\TopicsView-4.3.txt" />
-    <Content Include="config\templates\TopicView-4.3.txt" />
     <Content Include="config\templates\ForumTracking.txt" />
     <Content Include="config\templates\ToolBar.txt" />
     <Content Include="config\templates\_UserProfile.txt" />
@@ -902,7 +892,6 @@
     <Content Include="feeds.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="config\templates\ForumView-4.3.txt" />
     <Content Include="viewer.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
