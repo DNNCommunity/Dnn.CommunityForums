@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Data;
 using System.Reflection;
 using DotNetNuke.Instrumentation;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -370,9 +371,35 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 			TemplateController tc = new TemplateController();
-			foreach (TemplateInfo template in tc.Template_List(-1, -1))
-			{
-				tc.Template_Save(template);
+			foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
+            {
+                /* during upgrade, explicitly (re-)load template text from database rather than Template_List  API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
+                IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
+                while (dr.Read())
+                {
+                    try
+                    {
+                        string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
+						string templateHtml = System.Web.HttpUtility.HtmlDecode(DotNetNuke.Modules.ActiveForums.TemplateController.GetHTML(template));
+                        /* for email templates, store text + html version; other templates, just store html without encoding */
+                        if (templateInfo.TemplateType == Templates.TemplateTypes.Email || templateInfo.TemplateType == Templates.TemplateTypes.ModEmail)
+						{
+							string templateText = DotNetNuke.Modules.ActiveForums.TemplateController.GetText(template); 
+							template = "<template><html>" + System.Web.HttpUtility.HtmlEncode(templateHtml) + "</html><plaintext>" + Utilities.StripHTMLTag(templateText) + "</plaintext></template>";
+                        }
+						else
+						{
+                            template = templateHtml;
+                        }
+                        /* override the template text with what needs to be converted */
+                        templateInfo.Template = template;
+                        tc.Template_Save(templateInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
 			}
 		}
 		internal void ArchiveOrphanedAttachments()

@@ -317,9 +317,9 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css");
             }
             if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
             {
