@@ -1,7 +1,7 @@
 <%@ Control Language="C#" AutoEventWireup="false" Codebehind="af_modreport.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.af_modreport" %>
 <%@ Register TagPrefix="am" Namespace="DotNetNuke.Modules.ActiveForums.Controls" assembly="DotNetNuke.Modules.ActiveForums" %>
 <div class="afcrumb">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>
-<div class="aftitlelg">[RESX:ReportContent]</div>
+<h3 class="aftitlelg">[RESX:ReportContent]</h3>
 <div style="text-align:center;padding-top:10px;">
 	<div style="width:450px;margin-left:auto;margin-right:auto;padding-top:5px;">
 		 <div class="afeditor">

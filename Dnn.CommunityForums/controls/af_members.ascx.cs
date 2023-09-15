@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
+            lblHeader.InnerText = Utilities.GetSharedResource("[RESX:MemberDirectory]");
             bool bCanLoad = false;
             string sMode = MainSettings.MemberListMode;
             if (!UserInfo.IsSuperUser)
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.Params = this.Params;
             }
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
+            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.InnerText, "[VALUE]", "[VALUE]");
             plhMembers.Controls.Add(ctl);
 
 

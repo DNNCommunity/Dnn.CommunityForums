@@ -24,7 +24,7 @@ function cbModComplete(){
 
 };
 </script>
-<asp:Label ID="lblHeader" CssClass="aftitlelg" runat="server" />
+<h3 ID="lblHeader" CssClass="aftitlelg" runat="server" />
 <am:Callback ID="cbMod" runat="server" OnCallbackComplete="cbModComplete">
 	<Content><asp:Literal ID="litTopics" runat="server" /></Content>
 </am:Callback>
