@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!cbMod.IsCallback)
                 {
-                    lblHeader.Text = Utilities.GetSharedResource("[RESX:PendingPosts]");
+                    lblHeader.InnerText = Utilities.GetSharedResource("[RESX:PendingPosts]");
                     BuildModList();
                 }
 

@@ -52,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 tUid = UserId;
                 sDisplayName = UserProfiles.GetDisplayName(ModuleId, UserId, UserInfo.Username, UserInfo.FirstName, UserInfo.LastName, UserInfo.DisplayName);
             }
-            lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
+            lblHeader.InnerText = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
             if (MainSettings.UseSkinBreadCrumb)
             {
-                Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + Utilities.NavigateUrl(TabId, "", new string[] { "afv=profile", "uid=" + tUid.ToString() }) + "\">" + lblHeader.Text + "</a>");
+                Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + Utilities.NavigateUrl(TabId, "", new string[] { "afv=profile", "uid=" + tUid.ToString() }) + "\">" + lblHeader.InnerText + "</a>");
             }
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
+            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.InnerText, "[VALUE]", "[VALUE]");
             SettingsBase ctl = null;
             ctl = (SettingsBase)(new DotNetNuke.Modules.ActiveForums.Controls.UserProfile());
             ctl.ModuleConfiguration = this.ModuleConfiguration;
