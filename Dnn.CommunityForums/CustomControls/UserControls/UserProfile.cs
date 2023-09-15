@@ -130,13 +130,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sTemplate = string.Empty;
 
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-            string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_userprofile.txt");
+            string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_userprofile.ascx");
             if (!System.IO.File.Exists(templateFilePathFileName))
             {
-                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "_userprofile.txt");
+                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "_userprofile.ascx");
                 if (!System.IO.File.Exists(templateFilePathFileName))
                 {
-                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "_userprofile.txt");
+                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "_userprofile.ascx");
                 }
             }
             sTemplate = Utilities.GetFileContent(templateFilePathFileName);
@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = TemplateCache.GetTemplate("ForumTracking.txt");
+                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(ForumModuleId,"ForumTracking", 0);
                 ctlForums.CurrentUserId = UID;
                 ctlForums.ForumIds = up.UserForums;
                 plhTracker.Controls.Add(ctlForums);

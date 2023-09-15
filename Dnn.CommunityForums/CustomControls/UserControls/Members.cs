@@ -99,19 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-            string sTemplate = string.Empty; 
-            string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_memberlist.txt");
-            if (!System.IO.File.Exists(templateFilePathFileName))
-            {
-                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "_memberlist.txt");
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "_memberlist.txt");
-                }
-            }
-            sTemplate = Utilities.GetFileContent(templateFilePathFileName);
-            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
-
+            string sTemplate = TemplateCache.GetCachedTemplate(ForumModuleId, "_memberlist", 0);
             if (!(sTemplate == string.Empty))
             {
                 string sGrid = TemplateUtils.GetTemplateSection(sTemplate, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
