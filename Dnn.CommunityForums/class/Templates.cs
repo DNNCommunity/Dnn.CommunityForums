@@ -69,10 +69,10 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public string Title { get; set; }
 
 	    public string Template { get; set; }
-
-	    public string TemplateHTML { get; set; }
-
-	    public string TemplateText { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
+        public string TemplateHTML { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
+        public string TemplateText { get; set; }
 
 	    public DateTime DateCreated { get; set; }
 
@@ -160,10 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
                         }
                     }
-                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
-                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    tiWithinLoop.TemplateHTML = GetHTML(tiWithinLoop.Template);
-					tiWithinLoop.TemplateText = GetText(tiWithinLoop.Template);
+                    ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
 					return tiWithinLoop;
 				}
 			}
@@ -205,8 +202,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         ti.Template = Convert.ToString(dr["Template"]);
                     }
                     ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    ti.TemplateHTML = GetHTML(ti.Template);
-                    ti.TemplateText = GetText(ti.Template);
                     ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
                     ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
 
@@ -222,53 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Private Methods
-        internal static string GetHTML(string Template)
-        {
-            try
-            {
-                if (Template.Contains("<html>"))
-                {
-                    string sHTML;
-                    var xDoc = new System.Xml.XmlDocument();
-                    xDoc.LoadXml(Template);
-                    System.Xml.XmlNode xNode;
-                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    xNode = xRoot.SelectSingleNode("/template/html");
-                    sHTML = xNode.InnerText;
-                    return sHTML;
-                }
-                return Template;
-            }
-            catch (Exception ex)
-            {
-                return Template;
-            }
-        }
-
-        internal static string GetText(string Template)
-        {
-            try
-            {
-                if (Template.Contains("<plaintext>"))
-                {
-                    string sText;
-                    var xDoc = new System.Xml.XmlDocument();
-                    xDoc.LoadXml(Template);
-                    System.Xml.XmlNode xNode;
-                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    xNode = xRoot.SelectSingleNode("/template/plaintext");
-                    sText = xNode.InnerText;
-                    return sText;
-                }
-                return Template;
-            }
-            catch (Exception ex)
-            {
-                return Template;
-            }
-
-		}
-		private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
+        private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
 		{
             try
             {
@@ -307,8 +256,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         ti.Template = Convert.ToString(dr["Template"]);
                     }
                     ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    ti.TemplateHTML = GetHTML(ti.Template);
-					ti.TemplateText = GetText(ti.Template);
 					tl.Add(ti);
 				}
 				dr.Close();

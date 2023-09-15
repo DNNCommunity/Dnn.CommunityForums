@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 TemplateInfo objTempInfo = objTemplates.Template_Get(TemplateId);
                 if (objTempInfo != null)
                 {
-                    sOut = objTempInfo.TemplateHTML;
+                    sOut = objTempInfo.Template;
                     sOut = Utilities.ParseSpacer(sOut);
                 }
             }

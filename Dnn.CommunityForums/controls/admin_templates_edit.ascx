@@ -8,7 +8,6 @@ function saveTemplate(){
 	var title = document.getElementById("<%=txtTitle.ClientID%>").value;
     var subject = document.getElementById("<%=txtSubject.ClientID%>").value;
     var filename = document.getElementById("<%=txtFileName.ClientID%>").value;
-	var plaintext = document.getElementById("<%=txtPlainText.ClientID%>").value;
 	var htmltext = document.getElementById("<%=txtEditor.ClientID%>").value;
 	var templatetype = document.getElementById("<%=drpTemplateType.ClientID%>");
 	templatetype = templatetype.options[templatetype.selectedIndex].value;
@@ -16,22 +15,13 @@ function saveTemplate(){
 		amcp.UI.ShowWarn('[RESX:Actions:RequiredFields]');
 		return false;
 	};
-	<%=cbAction.ClientID%>.Callback('save',templateid,title,subject,escape(htmltext),plaintext,templatetype);
+	<%=cbAction.ClientID%>.Callback('save',templateid,title,subject,escape(htmltext),templatetype);
 };
 function deleteTemplate(){
 	currAction = 'delete';
 	var templateid = document.getElementById("<%=hidTemplateId.ClientID%>").value;
 	if (templateid != ''){
 		<%=cbAction.ClientID%>.Callback('delete', templateid);
-	};
-};
-function toggleTextTab(){
-	var templatetype = document.getElementById("<%=drpTemplateType.ClientID%>");
-	templatetype = templatetype.options[templatetype.selectedIndex].text;
-	if (templatetype == 'Email' || templatetype == 'ModEmail' || templatetype=='Mail Connector'){
-		document.getElementById('divTEXT').style.display = '';
-	}else{
-	   document.getElementById('divTEXT').style.display = 'none';
 	};
 };
 function actionComplete(){
@@ -75,13 +65,9 @@ function actionComplete(){
 		<td class="amcpbold">[RESX:FileName]:&nbsp;<asp:Label ID="txtFileName" runat="server" CssClass="amcplabel" /></td>
 	</tr>
 </table>
-<div id="divHTML" onclick="toggleTab(this);" class="amtabsel" style="margin-left:10px;"><div id="divHTML_text" class="amtabseltext">[RESX:HTML]</div></div><div id="divTEXT" onclick="toggleTab(this);" class="amtab" style="display:none;"><div id="divTEXT_text" class="amtabtext">[RESX:PlainText]</div></div>
-	<div class="amtabcontent" id="amTabContent" style="height:auto;">
+<div class="amtabcontent" id="amTabContent" style="height:auto;">
 		<div id="divHTML_afcontent" style="display:block;width:98%">
 			<asp:TextBox ID="txtEditor" runat="server" CssClass="amcptxtbx" Width="99%" Height="340" TextMode="MultiLine" />
-		</div>
-		<div id="divTEXT_afcontent" style="display:none;width:98%">
-			<asp:TextBox ID="txtPlainText" runat="server" CssClass="amcptxtbx" Width="99%" Height="340" TextMode="MultiLine" />
 		</div>
 	</div>
 	<asp:HiddenField ID="hidTemplateId" runat="server" />
@@ -97,5 +83,3 @@ function actionComplete(){
 		</div>
 	</div>
 </div>
-
-<script>toggleTextTab();</script>
