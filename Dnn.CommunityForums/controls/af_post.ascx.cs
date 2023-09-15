@@ -483,18 +483,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void PrepareTopic()
         {
-            string template;
-            if (_fi.TopicFormId == 0)
-            {
-                var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\TopicEditor.txt";
-                template = File.ReadAllText(myFile);
-                template = template.Replace("[TRESX:", "[RESX:");
-            }
-            else
-            {
-                template = new TemplateController().Template_Get(_fi.TopicFormId, PortalId, ForumModuleId).Template;
-            }
 
+            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicEditor", _fi.TopicFormId);
+            
             if (MainSettings.UseSkinBreadCrumb)
             {
                 var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId.ToString()) + "\">" + ForumInfo.GroupName + "</a>|";
@@ -522,17 +513,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
-            string template;
-            if (_fi.ReplyFormId == 0)
-            {
-                var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\ReplyEditor.txt";
-                template = File.ReadAllText(myFile);
-            }
-            else
-            {
-                template = new TemplateController().Template_Get(_fi.ReplyFormId, PortalId, ForumModuleId).Template;
-            }
-
+            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
+            
             if (MainSettings.UseSkinBreadCrumb)
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
 
