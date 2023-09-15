@@ -76,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		Topic,
 		Poll
 	}
-
-	public enum EmailFormats
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+    public enum EmailFormats
 	{
 		HTML,
 		PlainText

@@ -492,9 +492,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TemplateController();
-                var ti = tc.Template_Get(_fi.TopicFormId, PortalId, ForumModuleId);
-                template = ti.TemplateHTML;
+                template = new TemplateController().Template_Get(_fi.TopicFormId, PortalId, ForumModuleId).Template;
             }
 
             if (MainSettings.UseSkinBreadCrumb)
@@ -532,9 +530,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TemplateController();
-                var ti = tc.Template_Get(_fi.ReplyFormId, PortalId, ForumModuleId);
-                template = ti.TemplateHTML;
+                template = new TemplateController().Template_Get(_fi.ReplyFormId, PortalId, ForumModuleId).Template;
             }
 
             if (MainSettings.UseSkinBreadCrumb)
