@@ -248,3 +248,16 @@ BEGIN
 END
 GO
 /* issues 254 -- end -- Unable to move forums / forum groups up/down when forums or groups have been deleted */
+
+/* issues 462 -- begin -- change theme called "_default" to "legacy" */
+
+SET NOCOUNT ON 
+UPDATE ms SET SettingValue = 'legacy' 
+FROM {databaseOwner}{objectQualifier}ModuleSettings ms 
+INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID = ms.ModuleID 
+INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID 
+INNER JOIN {databaseOwner}{objectQualifier}DesktopModules dm on dm.DesktopModuleID = md.DesktopModuleID 
+WHERE dm.ModuleName = 'Active Forums' AND ms.SettingName = 'THEME' AND ms.SettingValue = '_default'
+GO
+
+/* issues 462 -- end -- change theme called "_default" to "legacy" */
