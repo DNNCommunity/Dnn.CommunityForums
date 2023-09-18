@@ -76,8 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                ti = new TemplateInfo { TemplateHTML = string.Concat("Error loading ", templateName, " template.") };
-                ti.TemplateText = ti.TemplateHTML;
+                ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
             }
 
             return ti;
@@ -159,13 +158,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (templateName.Contains("_Subject_"))
                 {
                     templateName = templateName.Replace(string.Concat("_Subject_", moduleID), string.Empty);
-                    var objTemplate = GetTemplateByName(templateName, moduleID, portalID);
-                    sOut = objTemplate.Subject;
+                    sOut = GetTemplateByName(templateName, moduleID, portalID).Subject;
                 }
                 else
                 {
-                    var objTemplate = GetTemplateByName(templateName, moduleID, portalID);
-                    sOut = objTemplate.TemplateHTML;
+                    sOut = GetTemplateByName(templateName, moduleID, portalID).Template;
                 }
             }
 
@@ -429,8 +426,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var myTemplate = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(myTemplate))
             {
-                var objTemplateInfo = GetTemplateByName("ProfileInfo", moduleId, portalId);
-                myTemplate = objTemplateInfo.TemplateHTML;
+                myTemplate = GetTemplateByName("ProfileInfo", moduleId, portalId).Template;
                 if (cacheKey != string.Empty)
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
             }
