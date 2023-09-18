@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			get
 			{
 			    var result = MainSettings.GetString(SettingKeys.Theme);
-			    return string.IsNullOrWhiteSpace(result) ? "_default" : result; 
+			    return string.IsNullOrWhiteSpace(result) ? "_legacy" : result; 
 			}
         }
         public string ThemeLocation

@@ -101,12 +101,24 @@ namespace DotNetNuke.Modules.ActiveForums
             // now save to the template file
             try
             {
-                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId); 
-				if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath)))
+                string templatePathFileName = Globals.TemplatesPath + TemplateInfo.FileName;
+                if (templateInfo.ModuleId > 0)
                 {
-                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath));
+                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
+                    templatePathFileName = moduleSettings.TemplatePath + TemplateInfo.FileName;
+                    if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath)))
+                    {
+                        System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath));
+                    }
                 }
-                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath( moduleSettings.TemplatePath + TemplateInfo.FileName), TemplateInfo.Template);
+                else
+                { 
+                    if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+                    {
+                        System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+                    }
+                }
+                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath(templatePathFileName), TemplateInfo.Template);
             }
             catch (Exception exc)
             {
@@ -157,8 +169,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
                         {
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                        }
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
+                    }
                     }
                     ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
 					return tiWithinLoop;
@@ -242,13 +254,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     }; 
 					SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
 					string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
-					if (!System.IO.File.Exists(templateFilePathFileName))
+                    if (!System.IO.File.Exists(templateFilePathFileName))
                     {
                         templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
 						{
-							templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                        }							
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
+                    }
 					}
                     ti.Template = Utilities.GetFileContent(templateFilePathFileName);
                     if (string.IsNullOrEmpty(ti.Template))

@@ -23,7 +23,7 @@ using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    internal class TemplateCache
+    internal static class TemplateCache
     {
         public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
         {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
                         string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + fileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
+                        {                            
                             templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + fileName);
                             if (!System.IO.File.Exists(templateFilePathFileName))
                             {
@@ -80,6 +80,19 @@ namespace DotNetNuke.Modules.ActiveForums
                         sTemplate = Utilities.ParseSpacer(sTemplate);
                     }
                 }
+            }
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
+            if (sTemplate.ToLowerInvariant().Contains("<dnn:"))
+            {
+                sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
+            }
+            if (sTemplate.ToLowerInvariant().Contains("<am:"))
+            {
+                sTemplate = Globals.ControlRegisterTag + sTemplate;
+            }
+            if (sTemplate.ToLowerInvariant().Contains("<af:"))
+            {
+                sTemplate = Globals.ControlRegisterAFTag + sTemplate;
             }
             if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
             {
