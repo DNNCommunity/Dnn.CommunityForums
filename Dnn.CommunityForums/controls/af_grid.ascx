@@ -21,7 +21,7 @@
 	</asp:DropDownList>  
 </div>
 <div class="af-search-bar">
-    <span class="af-search-title"><%= GetSharedResource("[RESX:SearchByTopics]") %></span>
+    <span class="af-search-title"><asp:Literal runat="server" Text="<%= GetSharedResource("[RESX:SearchByTopics]") %>" /></span>
 </div>
 <asp:Panel ID="pnlMessage" runat="server" Visible="false" CssClass="af-search-noresults">
     <asp:Literal ID="litMessage" runat="server" />
