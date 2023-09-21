@@ -261,7 +261,6 @@ WHERE dm.ModuleName = 'Active Forums' AND ms.SettingName = 'THEME' AND ms.Settin
 GO
 
 /* issues 462 -- end -- change theme called "_default" to "_legacy" */
-/* issues 254 -- end -- Unable to move forums / forum groups up/down when forums or groups have been deleted */
 
 
 /* issue 420 - new topic views */
@@ -285,9 +284,6 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_MostReplies]
 AS
 
 	SET NOCOUNT ON;
-	
-	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-
 
 	-- Populate our active topics table
 	
@@ -400,9 +396,6 @@ AS
 
 	SET NOCOUNT ON;
 	
-	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
-
-
 	-- Populate our active topics table
 	
 	CREATE TABLE #MostLiked(RowRank int NOT NULL, TopicId int NOT NULL)
