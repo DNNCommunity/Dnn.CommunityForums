@@ -36,11 +36,11 @@ OPEN modulecursor
 			SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title AND ModuleId = @ModuleId)
 			IF @TemplateTitleCount <> 1 
 				BEGIN 
-					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(@ModuleId)),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(@ModuleId)),'-',LTRIM(STR(TemplateId)),'.ascx') WHERE TemplateId = @TemplateId
 				END
 			ELSE
 				BEGIN
-					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId 
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.ascx') WHERE TemplateId = @TemplateId 
 				END
 			FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
 		END
@@ -67,11 +67,11 @@ WHILE @@FETCH_STATUS = 0
 		SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title)
 		IF @TemplateTitleCount <> 1 
 			BEGIN 
-				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
 			END
 		ELSE
 			BEGIN
-				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
 			END
 		FETCH NEXT FROM templatecursor INTO @TemplateId,@Title
 	END
@@ -121,11 +121,11 @@ ELSE
 		SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title) 
 		IF @TemplateTitleCount <> 1 
 			BEGIN
-				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
 			END
 			ELSE
 				BEGIN
-					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.txt') WHERE TemplateId = @TemplateId AND FileName IS NULL
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
 				END 
 	END
 END
@@ -247,6 +247,20 @@ BEGIN
 	END
 END
 GO
+/* issues 254 -- end -- Unable to move forums / forum groups up/down when forums or groups have been deleted */
+
+/* issues 462 -- begin -- change theme called "_default" to "_legacy" */
+
+SET NOCOUNT ON 
+UPDATE ms SET SettingValue = '_legacy' 
+FROM {databaseOwner}{objectQualifier}ModuleSettings ms 
+INNER JOIN {databaseOwner}{objectQualifier}Modules m ON m.ModuleID = ms.ModuleID 
+INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID 
+INNER JOIN {databaseOwner}{objectQualifier}DesktopModules dm on dm.DesktopModuleID = md.DesktopModuleID 
+WHERE dm.ModuleName = 'Active Forums' AND ms.SettingName = 'THEME' AND ms.SettingValue = '_default'
+GO
+
+/* issues 462 -- end -- change theme called "_default" to "_legacy" */
 /* issues 254 -- end -- Unable to move forums / forum groups up/down when forums or groups have been deleted */
 
 

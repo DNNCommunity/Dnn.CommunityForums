@@ -69,10 +69,10 @@ namespace DotNetNuke.Modules.ActiveForums
 	    public string Title { get; set; }
 
 	    public string Template { get; set; }
-
-	    public string TemplateHTML { get; set; }
-
-	    public string TemplateText { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
+        public string TemplateHTML { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
+        public string TemplateText { get; set; }
 
 	    public DateTime DateCreated { get; set; }
 
@@ -101,12 +101,24 @@ namespace DotNetNuke.Modules.ActiveForums
             // now save to the template file
             try
             {
-                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId); 
-				if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath)))
+                string templatePathFileName = Globals.TemplatesPath + TemplateInfo.FileName;
+                if (templateInfo.ModuleId > 0)
                 {
-                    System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath));
+                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
+                    templatePathFileName = moduleSettings.TemplatePath + TemplateInfo.FileName;
+                    if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath)))
+                    {
+                        System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath));
+                    }
                 }
-                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath( moduleSettings.TemplatePath + TemplateInfo.FileName), TemplateInfo.Template);
+                else
+                { 
+                    if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+                    {
+                        System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+                    }
+                }
+                System.IO.File.WriteAllText(HttpContext.Current.Server.MapPath(templatePathFileName), TemplateInfo.Template);
             }
             catch (Exception exc)
             {
@@ -157,13 +169,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
                         {
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                        }
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
                     }
-                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
-                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    tiWithinLoop.TemplateHTML = GetHTML(tiWithinLoop.Template);
-					tiWithinLoop.TemplateText = GetText(tiWithinLoop.Template);
+                    }
+                    ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
 					return tiWithinLoop;
 				}
 			}
@@ -205,8 +214,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         ti.Template = Convert.ToString(dr["Template"]);
                     }
                     ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    ti.TemplateHTML = GetHTML(ti.Template);
-                    ti.TemplateText = GetText(ti.Template);
                     ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
                     ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
 
@@ -222,53 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Private Methods
-        internal static string GetHTML(string Template)
-        {
-            try
-            {
-                if (Template.Contains("<html>"))
-                {
-                    string sHTML;
-                    var xDoc = new System.Xml.XmlDocument();
-                    xDoc.LoadXml(Template);
-                    System.Xml.XmlNode xNode;
-                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    xNode = xRoot.SelectSingleNode("/template/html");
-                    sHTML = xNode.InnerText;
-                    return sHTML;
-                }
-                return Template;
-            }
-            catch (Exception ex)
-            {
-                return Template;
-            }
-        }
-
-        internal static string GetText(string Template)
-        {
-            try
-            {
-                if (Template.Contains("<plaintext>"))
-                {
-                    string sText;
-                    var xDoc = new System.Xml.XmlDocument();
-                    xDoc.LoadXml(Template);
-                    System.Xml.XmlNode xNode;
-                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    xNode = xRoot.SelectSingleNode("/template/plaintext");
-                    sText = xNode.InnerText;
-                    return sText;
-                }
-                return Template;
-            }
-            catch (Exception ex)
-            {
-                return Template;
-            }
-
-		}
-		private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
+        private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
 		{
             try
             {
@@ -293,13 +254,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     }; 
 					SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
 					string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
-					if (!System.IO.File.Exists(templateFilePathFileName))
+                    if (!System.IO.File.Exists(templateFilePathFileName))
                     {
                         templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
 						{
-							templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                        }							
+                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
+                    }
 					}
                     ti.Template = Utilities.GetFileContent(templateFilePathFileName);
                     if (string.IsNullOrEmpty(ti.Template))
@@ -307,8 +268,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         ti.Template = Convert.ToString(dr["Template"]);
                     }
                     ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    ti.TemplateHTML = GetHTML(ti.Template);
-					ti.TemplateText = GetText(ti.Template);
 					tl.Add(ti);
 				}
 				dr.Close();

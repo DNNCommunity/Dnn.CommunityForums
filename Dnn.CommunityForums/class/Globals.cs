@@ -76,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		Topic,
 		Poll
 	}
-
-	public enum EmailFormats
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+    public enum EmailFormats
 	{
 		HTML,
 		PlainText
@@ -146,7 +146,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string ControlRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
-        public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
         public const string DnnControlsRegisterTag = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
 
