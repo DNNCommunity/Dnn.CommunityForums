@@ -198,8 +198,7 @@
     <Content Include="Classic.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="config\templates\AdminWatchEmail.txt" />
-    <Content Include="config\templates\AdminWatchEmail_plaintext.txt" />
+    <Content Include="config\templates\AdminWatchEmail.ascx" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -214,33 +213,25 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="config\templates\TopicsView.txt" />
-    <Content Include="config\templates\DailyDigest.txt" />
-    <Content Include="config\templates\ForumView.txt" />
-    <Content Include="config\templates\QuickReply.txt" />
-    <Content Include="config\templates\ReplyEditor.txt" />
-    <Content Include="config\templates\ModAlert.txt" />
-    <Content Include="config\templates\ModAlert_plaintext.txt" />
-    <Content Include="config\templates\ModEmail.txt" />
-    <Content Include="config\templates\ModEmail_plaintext.txt" />
-    <Content Include="config\templates\PostApproved.txt" />
-    <Content Include="config\templates\PostApproved_plaintext.txt" />
-    <Content Include="config\templates\PostDeleted.txt" />
-    <Content Include="config\templates\PostDeleted_plaintext.txt" />
-    <Content Include="config\templates\PostMoved.txt" />
-    <Content Include="config\templates\PostMoved_plaintext.txt" />
-    <Content Include="config\templates\PostRejected.txt" />
-    <Content Include="config\templates\PostRejected_plaintext.txt" />
-    <Content Include="config\templates\SubscribedEmail.txt" />
-    <Content Include="config\templates\SubscribedEmail_plaintext.txt" />
-    <Content Include="config\templates\TopicView.txt" />
-    <Content Include="config\templates\ForumDirectory.txt" />
-    <Content Include="config\templates\_MemberList.txt" />
-    <None Include="config\templates\TopicsView-4.3.txt" />
-    <Content Include="config\templates\TopicView-4.3.txt" />
-    <Content Include="config\templates\ForumTracking.txt" />
-    <Content Include="config\templates\ToolBar.txt" />
-    <Content Include="config\templates\_UserProfile.txt" />
+    <Content Include="config\templates\TopicsView.ascx" />
+    <Content Include="config\templates\BlogList.ascx" />
+    <Content Include="config\templates\DailyDigest.ascx" />
+    <Content Include="config\templates\ForumView.ascx" />
+    <Content Include="config\templates\QuickReply.ascx" />
+    <Content Include="config\templates\ReplyEditor.ascx" />
+    <Content Include="config\templates\ModAlert.ascx" />
+    <Content Include="config\templates\ModEmail.ascx" />
+    <Content Include="config\templates\PostApproved.ascx" />
+    <Content Include="config\templates\PostDeleted.ascx" />
+    <Content Include="config\templates\PostMoved.ascx" />
+    <Content Include="config\templates\PostRejected.ascx" />
+    <Content Include="config\templates\SubscribedEmail.ascx" />
+    <Content Include="config\templates\TopicView.ascx" />
+    <Content Include="config\templates\ForumDirectory.ascx" />
+    <Content Include="config\templates\_MemberList.ascx" />
+    <Content Include="config\templates\ForumTracking.ascx" />
+    <Content Include="config\templates\ToolBar.ascx" />
+    <Content Include="config\templates\_UserProfile.ascx" />
     <Content Include="controls\admin_properties.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -504,13 +495,13 @@
     <Content Include="themes\community\images\yellow_star_03.gif" />
     <Content Include="themes\community\images\yellow_star_04.gif" />
     <Content Include="themes\community\images\yellow_star_05.gif" />
-    <Content Include="themes\community\templates\ForumView.txt" />
-    <Content Include="themes\community\templates\ProfileInfo.txt" />
-    <Content Include="themes\community\templates\QuickReply.txt" />
-    <Content Include="themes\community\templates\ReplyEditor.txt" />
-    <Content Include="themes\community\templates\TopicEditor.txt" />
-    <Content Include="themes\community\templates\TopicsView.txt" />
-    <Content Include="themes\community\templates\TopicView.txt" />
+    <Content Include="themes\community\templates\ForumView.ascx" />
+    <Content Include="themes\community\templates\ProfileInfo.ascx" />
+    <Content Include="themes\community\templates\QuickReply.ascx" />
+    <Content Include="themes\community\templates\ReplyEditor.ascx" />
+    <Content Include="themes\community\templates\TopicEditor.ascx" />
+    <Content Include="themes\community\templates\TopicsView.ascx" />
+    <Content Include="themes\community\templates\TopicView.ascx" />
     <Content Include="themes\community\theme.css" />
     <Content Include="themes\themes.css" />
     <Content Include="themes\_default\custom\theme.css" />
@@ -798,7 +789,7 @@
     <Content Include="images\tree\tree_forum.png" />
     <Content Include="images\tree\tree_group.png" />
     <Content Include="images\warning.gif" />
-    <Content Include="config\templates\Filters.txt" />
+    <Content Include="config\Filters.txt" />
     <Content Include="App_LocalResources\ControlPanel.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
@@ -835,7 +826,7 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
-    <Content Include="config\templates\StatsTemplate.txt" />
+    <Content Include="config\templates\StatsTemplate.ascx" />
     <Content Include="config\defaultsetup.config">
       <SubType>Designer</SubType>
     </Content>
@@ -897,15 +888,14 @@
     <Content Include="images\ranks\yellow_star_06.gif" />
     <Content Include="scripts\afadmin.js" />
     <Content Include="scripts\afutils.js" />
-    <Content Include="config\templates\TopicEditor.txt" />
-    <Content Include="config\templates\ProfileInfo.txt" />
-    <Content Include="config\templates\BlogView.txt" />
-    <Content Include="config\templates\UsersOnline.txt" />
+    <Content Include="config\templates\TopicEditor.ascx" />
+    <Content Include="config\templates\ProfileInfo.ascx" />
+    <Content Include="config\templates\BlogView.ascx" />
+    <Content Include="config\templates\UsersOnline.ascx" />
     <Content Include="themes\_default\theme.css" />
     <Content Include="feeds.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="config\templates\ForumView-4.3.txt" />
     <Content Include="viewer.aspx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1532,14 +1522,13 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="config\templates\BlogsView.txt" />
+    <Content Include="config\templates\BlogsView.ascx" />
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
-    <Folder Include="config\templates\community\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup>

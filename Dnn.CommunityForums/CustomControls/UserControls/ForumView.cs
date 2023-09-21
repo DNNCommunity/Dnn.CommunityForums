@@ -174,21 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-                string sOutput = string.Empty;
-                string sTemplate;
-                if (UseTemplatePath && TemplatePath != string.Empty)
-                {
-                    DisplayTemplate = Utilities.GetFileContent(TemplatePath + "ForumView.htm");
-                    DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
-                }
-                else if (DisplayTemplate == string.Empty)
-                {
-                    DisplayTemplate = Utilities.GetFileContent(Server.MapPath(ThemePath) + "templates/ForumView.ascx");
-                    DisplayTemplate = Utilities.ParseSpacer(DisplayTemplate);
-                }
-
-                sTemplate = DisplayTemplate == string.Empty ? DotNetNuke.Modules.ActiveForums.TemplateCache.GetCachedTemplate(ForumModuleId, "ForumView", ForumTemplateId) : DisplayTemplate;
+                string sTemplate = TemplateCache.GetCachedTemplate(ForumModuleId, "ForumView", 0);
                 try
                 {
                     sTemplate = ParseControls(sTemplate);

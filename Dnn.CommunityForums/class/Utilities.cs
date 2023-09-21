@@ -33,6 +33,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
+using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -170,29 +171,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
         {
-            string sToolbar =
-                Convert.ToString(
-                    DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId, currentUserType)));
+            string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId, currentUserType)));
             if (string.IsNullOrEmpty(sToolbar))
             {
-
-                string templateFilePathFileName =
-                    DotNetNuke.Modules.ActiveForums.Utilities.MapPath(path: SettingsBase.GetModuleSettings(forumModuleId).TemplatePath + "ToolBar.txt");
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.TemplatesPath + "ToolBar.txt");
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName =
-                            DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.DefaultTemplatePath + "ToolBar.txt");
-                    }
-                }
-                sToolbar = Utilities.GetFileContent(templateFilePathFileName);
-                sToolbar = sToolbar.Replace("[TRESX:", "[RESX:");
+                sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
                 DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId ,currentUserType), sToolbar);
             }
-
             return sToolbar;
         }
         internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
