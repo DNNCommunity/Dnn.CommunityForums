@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="af_searchadvanced.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.af_searchadvanced" %>
 <div class="af-adv-search">
     <div class="af-adv-search-box">
-        <div class='af-adv-search-header'><asp:Literal runat="server" ID="litOptions" /></div>
+        <span class='af-adv-search-header'><asp:Literal runat="server" ID="litOptions" /></span>
         <div class="af-adv-search-row">
             <asp:Label runat="server" ID="lblSearch" AssociatedControlID="txtSearch" />
             <asp:TextBox runat="server" ID="txtSearch" />
