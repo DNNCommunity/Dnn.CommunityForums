@@ -28,6 +28,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -137,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             User up = upc.GetUser(PortalId, ForumModuleId, UID);
             ForumController fc = new ForumController();
             up.UserForums = fc.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
-            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, UserInfo.UserID, TimeZoneOffset);
+            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, false, false, false, string.Empty, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
