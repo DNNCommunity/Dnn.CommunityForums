@@ -77,12 +77,6 @@
 		border-spacing: 0;
 	}
 
-	.dnn-community-forums td,
-	.dnn-community-forums th {
-		padding: 0;
-	}
-	
-	
 	.afcontainer .ComposeMessage {
 		cursor: pointer;
 	}
@@ -117,6 +111,8 @@
 
 	.afclear {
 		overflow: auto;
+		display: table;
+		clear: both;
 	}
 
 	.afclear::after{
@@ -589,31 +585,7 @@
 
 
 
-/* 30 clean up or move to theme? */
-/* Toolbar Panel */
-
-	.aftoolbarpanel {
-		border-bottom: solid 1px #dcdcdc;
-		background-color: transparent;
-		margin-bottom: 15px;
-		width: 100%;
-		margin-top: 15px;
-	}
-
-	.aftoolbarpanel ul.af-list-flat {
-		padding: 10px 0;
-	}
-
-	.aftoolbarpanel ul.af-list-flat li a,
-	.aftoolbarpanel ul.af-list-flat li a:link,
-	.aftoolbarpanel ul.af-list-flat li a:visited,
-	.aftoolbarpanel ul.af-list-flat li a:active,
-	.aftoolbarpanel ul.af-list-flat li a:hover {
-		color: #888;
-		padding-left: 0;
-		padding-right: 5px;
-	}
-/* /30 */
+/* 30 -> */
 
 /* 31 notifications created from code*/
 	.amnotify {
