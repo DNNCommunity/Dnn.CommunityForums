@@ -16,7 +16,9 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-// 
+//
+
+// TODO: Orphan Control??  Not Currently used - JB
 
 using System;
 using System.Web;
@@ -29,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public int MID;
         public int FID;
-        public int TID;
 
 
         #region Event Handlers
@@ -45,10 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ForumId = FID;
                 }
-                if (ForumTabId < 1)
-                {
-                    ForumTabId = TID;
-                }
+
                 if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
                 {
                     SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
@@ -85,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (SocialGroupId > 0)
                     @params.Add("GroupId=" + SocialGroupId.ToString());
 
-                Response.Redirect(NavigateUrl(ForumTabId, "", @params.ToArray()));
+                Response.Redirect(NavigateUrl(TabId, "", @params.ToArray()));
             }
 
         }
