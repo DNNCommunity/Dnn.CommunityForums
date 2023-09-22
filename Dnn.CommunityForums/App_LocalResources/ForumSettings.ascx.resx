@@ -372,10 +372,13 @@
   <data name="SecGrid:subscribe.Text" xml:space="preserve">
     <value>Subscribe</value>
   </data>
+  <data name="SecGrid:user.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="SecGrid:view.Text" xml:space="preserve">
     <value>View</value>
   </data>
-  <data name="String1" xml:space="preserve">
+	<data name="String1" xml:space="preserve">
     <value />
   </data>
   <data name="UserPermissions.Text" xml:space="preserve">
