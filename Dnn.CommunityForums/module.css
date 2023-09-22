@@ -1259,9 +1259,9 @@
 
 /* 42 moderator is editor wrapper */
 div.dcf-mod-edit-wrap {
-	background-color: red;
+	background-color: salmon;
 	color: white;
-	padding: 20px;
+	padding: 10px;
 	text-align: center;
 	font-weight: bold;
 }
