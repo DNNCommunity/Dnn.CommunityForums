@@ -162,8 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
-
-            string cachekey = string.Format("AF-prof-{0}-{1}-{2}", UserId, PortalId, ModuleId);
+            string cachekey = string.Format(CacheKeys.UserProfile, ModuleId, UserId);
             DataTable dt = null;
             UserProfileInfo upi = null;
             Data.Profiles db = new Data.Profiles();
@@ -172,10 +171,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 PortalId = _portalSettings.PortalId;
             }
-
-            // see if it's in cache already
+             
             object data = DataCache.SettingsCacheRetrieve(ModuleId,cachekey);
-
             if (data != null)
             {
                 dt = (DataTable)data;

@@ -177,13 +177,13 @@
   <data name="Lock.Text" xml:space="preserve">
     <value>Lock</value>
   </data>
-	<data name="[RESX:Pin].Text" xml:space="preserve">
+  <data name="[RESX:Pin].Text" xml:space="preserve">
     <value>Pin</value>
   </data>
-	<data name="[RESX:UnPin].Text" xml:space="preserve">
+  <data name="[RESX:UnPin].Text" xml:space="preserve">
     <value>Un-Pin</value>
   </data>
-	<data name="[RESX:Alert].Text" xml:space="preserve">
+  <data name="[RESX:Alert].Text" xml:space="preserve">
     <value>Alert</value>
   </data>
   <data name="Subscribe.Text" xml:space="preserve">
@@ -1666,13 +1666,16 @@ From,
   <data name="[RESX:SubscribedForumTopicForumName].Text" xml:space="preserve">
     <value>Topic {0} on Subscribed Forum {1}</value>
   </data>
-	<data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve">
-        <value>Subscribed to this topic</value>
+  <data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve">
+    <value>Subscribed to this topic</value>
   </data>
-	<data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve">
-        <value>Subscribed to this forum</value>
-   </data>
-	<data name="[RESX:SUBSCRIBERS].Text" xml:space="preserve">
-        <value>Subscribers</value>
-   </data>
+  <data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve">
+    <value>Subscribed to this forum</value>
+  </data>
+  <data name="[RESX:SUBSCRIBERS].Text" xml:space="preserve">
+    <value>Subscribers</value>
+  </data>
+  <data name="[RESX:Rating].Text" xml:space="preserve">
+    <value>Rating</value>
+  </data>
 </root>

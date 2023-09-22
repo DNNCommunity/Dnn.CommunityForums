@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
-                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType, TimeZoneOffset);
+                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType,false,false,false,string.Empty,-1, TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }
