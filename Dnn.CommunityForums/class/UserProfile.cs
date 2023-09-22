@@ -147,16 +147,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     IDataReader dr;
                     dr = ds.CreateDataReader();
-                    upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo)));
+                    upi = CBO.FillObject<UserProfileInfo>(dr);
                     DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId), upi);
                 }
             }
             return upi;
         }
-        public void Profiles_Save(UserProfileInfo ui)
+        public void Profiles_Save(UserProfileInfo upi)
         {
-            DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
-            UserProfileController.Profiles_ClearCache(ui.ModuleId, ui.UserID);
+            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.ModuleId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefUseAjax, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize, upi.Yahoo, upi.MSN, upi.ICQ, upi.AOL, upi.Occupation, upi.Location, upi.Interests, upi.WebSite, upi.Badges);
+            DataCache.SettingsCacheStore(upi.ModuleId, string.Format(CacheKeys.UserProfile, upi.ModuleId, upi.UserID), upi);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
