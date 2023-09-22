@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _topicId; // = -1;
         private int? _replyId;
         private int? _quoteId;
+        private int? _userId;
         private bool? _jumpToLastPost;
         private string _defaultView = Views.ForumView;
         private int _defaultForumViewTemplateId = -1;
@@ -361,6 +362,45 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 _forumId = value;
+            }
+        }
+        public int UserId
+        {
+            get
+            {
+                // If the id has already been set, return it.
+                if (_userId.HasValue)
+                    return _userId.Value;
+
+                // Set out default value
+                _userId = -1;
+
+                // If there is an id in the query string, parse it
+                var queryUserId = Request.QueryString[ParamKeys.UserId];
+                if (!string.IsNullOrWhiteSpace(queryUserId))
+                {
+                    // Try to parse the id, if it doesn't work, return the default value.
+                    int parsedUserId;
+                    _userId = int.TryParse(queryUserId, out parsedUserId) ? parsedUserId : 0;
+                }
+
+                // If we don't have a user id at this point, try and pull it from "userid" in the query string
+                if (_userId < 1)
+                {
+                    queryUserId = Request.QueryString["userid"];
+                    if (!string.IsNullOrWhiteSpace(queryUserId))
+                    {
+                        // Try to parse the id, if it doesn't work, return the default value.
+                        int parsedUserId;
+                        _userId = int.TryParse(queryUserId, out parsedUserId) ? parsedUserId : 0;
+                    }
+                }
+
+               return _userId.Value;
+            }
+            set
+            {
+                _userId = value;
             }
         }
 
