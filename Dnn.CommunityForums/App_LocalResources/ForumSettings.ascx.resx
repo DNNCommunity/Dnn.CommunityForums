@@ -375,6 +375,9 @@
   <data name="SecGrid:subscribe.Text" xml:space="preserve">
     <value>Subscribe</value>
   </data>
+  <data name="SecGrid:user.Text" xml:space="preserve">
+    <value>View</value>
+  </data>
   <data name="SecGrid:view.Text" xml:space="preserve">
     <value>View</value>
   </data>
