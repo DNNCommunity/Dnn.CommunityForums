@@ -1144,8 +1144,122 @@
 /* 37 -> */
 
 
-/* 38 Security Grid -> Moved to Controlpanel.css */
+/* 38 Security Grid -> used in module settings when mode is Social Group */
 
+.afSecGrid {
+	margin-left: 150px;
+}
+
+.afSecGrid {
+	border: solid 0px #aaa;
+}
+
+	.afSecGrid table td {
+		padding: 2px;
+	}
+
+	.afSecGrid .rowhd {
+		text-align: right;
+	}
+
+.afgridhd {
+	font-weight: bold;
+	text-align: center !important;
+	background-color: #666;
+	color: #fff !important;
+}
+
+.afSecGrid #hd1 .sec1 {
+	background-color: #FFFF99;
+	color: #666 !important;
+	border: solid 1px #aaa;
+	padding: 0px
+}
+
+.afSecGrid #hd2 .afgridhdsub {
+	background-color: #f5f5f5;
+	color: #666 !important;
+	text-align: center;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.afSecGrid #hd2 .colstart {
+	border-left: solid 1px #aaa;
+}
+
+.afSecGrid #hd2 .colend {
+	border-right: solid 1px #aaa;
+}
+
+.gridsep {
+	border-right: solid 1px #aaa
+}
+
+.afSecGrid #row1 td {
+	border-left: solid 1px #aaa;
+	border-top: solid 1px #aaa;
+}
+
+.afSecGrid #row2 td {
+	border-left: solid 1px #aaa;
+	border-top: solid 1px #aaa;
+}
+
+.afSecGrid #row3 td {
+	border-left: solid 1px #aaa;
+	border-top: solid 1px #aaa;
+}
+
+.afSecGrid #row4 td {
+	border-left: solid 1px #aaa;
+	border-top: solid 1px #aaa;
+	border-bottom: solid 1px #aaa;
+}
+
+.afSecGrid #row1 .colend {
+	border-right: solid 1px #aaa;
+}
+
+.afSecGrid #row2 .colend {
+	border-right: solid 1px #aaa;
+}
+
+.afSecGrid #row3 .colend {
+	border-right: solid 1px #aaa;
+}
+
+.afSecGrid #row4 .colend {
+	border-right: solid 1px #aaa;
+}
+
+.afSecGrid .gridcheck {
+	text-align: center !important;
+}
+
+	.afSecGrid .gridcheck input {
+		padding: 0;
+		margin: 0;
+		margin: 4px;
+	}
+
+.afSecGrid .rowhd {
+	font-weight: bold;
+	padding-right: 4px;
+	background-color: #f5f5f5;
+}
+
+
+/* quick fix for secuirty width */
+.afsecgrid > div > table {
+	table-layout: fixed;
+	width: 100%;
+}
+
+	.afsecgrid > div > table > tbody > tr > td:first-child {
+		width: 200px;
+	}
+/* /38 */
 
 
 /* 39 Avatar form in Forum Settings*/
