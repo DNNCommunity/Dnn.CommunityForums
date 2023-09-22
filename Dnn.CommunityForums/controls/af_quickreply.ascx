@@ -36,6 +36,14 @@ function afQuickSubmit() {
 		document.forms[0].submit();
 	}
 };
+
+$(document).on("keydown", "#txtBody", function (e) {
+    if ((e.ctrlKey || e.metaKey) && (e.keyCode == 13 || e.keyCode == 13)) {
+        // Ctrl + Enter pressed
+        afQuickSubmit();
+    }
+});
+
 //-->
 </script>
 
