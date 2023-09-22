@@ -708,7 +708,7 @@
   <data name="[RESX:Attachments:Error].Text" xml:space="preserve">
     <value>A server error has occured.</value>
   </data>
-	<data name="[RESX:Confirm:Delete].Text" xml:space="preserve">
+  <data name="[RESX:Confirm:Delete].Text" xml:space="preserve">
     <value>Are you sure you wish to delete this item?</value>
   </data>
   <data name="[RESX:Locked:Note].Text" xml:space="preserve">
@@ -846,10 +846,10 @@
   <data name="[RESX:Approve].Text" xml:space="preserve">
     <value>Approve</value>
   </data>
-	<data name="[RESX:Delete].Text" xml:space="preserve">
+  <data name="[RESX:Delete].Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-	<data name="[RESX:Ban].Text" xml:space="preserve">
+  <data name="[RESX:Ban].Text" xml:space="preserve">
     <value>Ban</value>
   </data>
   <data name="[RESX:Edit].Text" xml:space="preserve">
@@ -1045,10 +1045,10 @@ From,
   <data name="[RESX:Reason].Text" xml:space="preserve">
     <value>Reason</value>
   </data>
-	<data name="[RESX:ReportContent].Text" xml:space="preserve">
+  <data name="[RESX:ReportContent].Text" xml:space="preserve">
     <value>Report Content</value>
   </data>
-	<data name="[RESX:BanUser].Text" xml:space="preserve">
+  <data name="[RESX:BanUser].Text" xml:space="preserve">
     <value>Ban User (Remove Content and Unauthorize User)</value>
   </data>
   <data name="[RESX:Error:FloodControl].Text" xml:space="preserve">
@@ -1677,5 +1677,8 @@ From,
   </data>
   <data name="[RESX:Rating].Text" xml:space="preserve">
     <value>Rating</value>
+  </data>
+  <data name="[RESX:Moderator-Editor].Text" xml:space="preserve">
+    <value>You are editing as a moderator </value>
   </data>
 </root>
