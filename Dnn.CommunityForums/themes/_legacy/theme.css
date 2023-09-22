@@ -1,3 +1,6 @@
+@import url(../_legacy-module.csss);
+@import url(../_legacy-theme-module.css);
+
 .afnormal {
 	font-size: 13px;
 color: #666;

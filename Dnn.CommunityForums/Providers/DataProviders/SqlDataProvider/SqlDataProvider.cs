@@ -573,6 +573,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Delete", ForumId, TopicId, DelBehavior, true);
         }
+        public override void Topics_Delete_For_User(int ModuleId, int UserId, int DelBehavior)
+        {
+            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Delete_For_User", ModuleId, UserId, DelBehavior);
+        }
         public override IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Get", PortalId, ModuleId, TopicId, ForumId, UserId, WithSecurity));

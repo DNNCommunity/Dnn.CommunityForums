@@ -108,6 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[PARAMKEYS:VIEWTYPE]", ParamKeys.ViewType);
             template = template.Replace("[PARAMKEYS:QUOTEID]", ParamKeys.QuoteId);
             template = template.Replace("[PARAMKEYS:REPLYID]", ParamKeys.ReplyId);
+            template = template.Replace("[PARAMKEYS:USERID]", ParamKeys.UserId);
             template = template.Replace("[VIEWS:TOPICS]", Views.Topics);
             template = template.Replace("[VIEWS:TOPIC]", Views.Topic);
             template = template.Replace("[PAGEID]", config.PageId.ToString());

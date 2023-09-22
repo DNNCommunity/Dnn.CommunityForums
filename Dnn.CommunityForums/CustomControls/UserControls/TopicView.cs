@@ -70,6 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _bModDelete;
         private bool _bModEdit;
         private bool _bModMove;
+        private bool _bModUser;
         private bool _bModLock = false;
         private bool _bModPin = false;
         private bool _bAllowRSS;
@@ -365,6 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bModMove = Permissions.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
             _bModPin = Permissions.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
             _bModLock = Permissions.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
+            _bModUser = Permissions.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
 
             _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
@@ -878,6 +880,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:REPLY]", string.Empty);
                 sbOutput.Replace("[ACTIONS:ANSWER]", string.Empty);
                 sbOutput.Replace("[ACTIONS:ALERT]", string.Empty);
+                sbOutput.Replace("[ACTIONS:BAN]", string.Empty);
                 sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
                 sbOutput.Replace("[RESX:SortPosts]:", string.Empty);
                 sbOutput.Append("<img src=\""+Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"spacer.gif")+"\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
@@ -1370,6 +1373,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:DELETE]", string.Empty);
             }
 
+            if ((ForumUser.IsAdmin || ForumUser.IsSuperUser || _bModUser) && (authorId != UserId) && (!author.IsSuperUser) && (!author.IsAdmin))
+            {
+                var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.UserId + "=" + authorId };
+                if (_useListActions)
+                {
+                    sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", banParams) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i>&nbsp;[RESX:Ban]</li>");
+                }
+                else
+                {
+                    sbOutput.Replace("[ACTIONS:BAN]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", banParams) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i>&nbsp;[RESX:Ban]</a>");
+                }
+            }
+            else
+            {
+                sbOutput.Replace("[ACTIONS:BAN]", string.Empty);
+            }
             // Edit Action
             if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
             {
@@ -1538,7 +1557,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sbOutput.Replace("[POLLRESULTS]", string.Empty);
                 }
             }
-
             // Mod Alert
             //var alertParams = new[] { ParamKeys.ViewType + "=modreport", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
             var alertParams = new List<string> { ParamKeys.ViewType + "=modreport", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
