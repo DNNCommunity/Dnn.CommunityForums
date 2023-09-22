@@ -774,8 +774,14 @@
   <data name="[RESX:NotRead].Text" xml:space="preserve">
     <value>Not Read</value>
   </data>
-  <data name="[RESX:Unanswered].Text" xml:space="preserve">
+	<data name="[RESX:Unanswered].Text" xml:space="preserve">
     <value>Unanswered</value>
+  </data>
+	<data name="[RESX:MostLiked].Text" xml:space="preserve">
+  <value>Most Liked</value>
+  </data>
+  <data name="[RESX:MostReplies].Text" xml:space="preserve">
+    <value>Most Replies</value>
   </data>
   <data name="[RESX:ControlPanel].Text" xml:space="preserve">
     <value>Control Panel</value>
