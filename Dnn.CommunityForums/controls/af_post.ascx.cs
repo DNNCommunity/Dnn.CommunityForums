@@ -25,6 +25,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
@@ -441,6 +442,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ti.Content.AuthorId != UserId && _canModApprove)
                     ctlForm.ShowModOptions = true;
             }
+            if (_authorId != UserId)
+            {
+                ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
+            }
         }
 
         private void LoadReply()
@@ -479,8 +484,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ri.Content.AuthorId != UserId && _canModApprove)
                     ctlForm.ShowModOptions = true;
             }
+            if (_authorId != UserId)
+            {
+                ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
+            }
         }
-
         private void PrepareTopic()
         {
 
@@ -496,11 +504,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.NewTopic;
 
-            if (Permissions.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles))
+            if (_canModApprove)
             {
                 ctlForm.ShowModOptions = true;
             }
-
+           
             ctlForm.Template = template;
             ctlForm.IsApproved = _isApproved;
 
@@ -516,9 +524,11 @@ namespace DotNetNuke.Modules.ActiveForums
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
             
             if (MainSettings.UseSkinBreadCrumb)
+            {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
+            }
 
-            ctlForm.Template = template;
+           ctlForm.Template = template;
             if (!(TopicId > 0))
             {
                 //Can't Find Topic
