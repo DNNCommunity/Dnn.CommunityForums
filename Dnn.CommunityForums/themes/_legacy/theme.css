@@ -1,5 +1,6 @@
-@import url(../_legacy-module.csss);
-@import url(../_legacy-theme-module.css);
+/* Only needed for pre v7 legacy Themes:  */
+@import url(../_legacy-module.css);
+
 
 .afnormal {
 	font-size: 13px;
