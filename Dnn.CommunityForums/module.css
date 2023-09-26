@@ -109,12 +109,6 @@
 
 /* 15 Modernize */
 
-	.afclear {
-		overflow: auto;
-		display: table;
-		clear: both;
-	}
-
 	.afclear::after{
 		content: " ";
 		display: table;
