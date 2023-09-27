@@ -457,7 +457,7 @@ AS
 		LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Replies as r on r.ReplyId = ftt.LastReplyId 
 		LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Content as rc on rc.ContentId = r.ContentId 
 		LEFT OUTER JOIN {databaseOwner}{objectQualifier}Users as ru on ru.UserId = rc.AuthorId 
-		LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics_Tracking AS tt ON tt.TopicId = t.TopicId AND t.UserId = @UserId 
+		LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics_Tracking AS tt ON tt.TopicId = t.TopicId AND tt.UserId = @UserId 
 		LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Forums_Tracking as ft ON ft.ForumId = f.ForumId AND ft.UserId = @UserId 
 		LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S ON S.ForumId = f.ForumId AND S.TopicId = T.TopicId and S.UserId = @UserId
 				
