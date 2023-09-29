@@ -1,3 +1,20 @@
+/* Module Branding on Top #490 */	
+.dcf-community-msg{
+		border: solid 1px #ddd;
+		padding: 1em;
+		margin: 0 0 1em;
+		display:flex;
+		flex-wrap: wrap;
+		gap: 1em 2em ;
+		align-items: center;
+	}
+	.dcf-community-msg .dcf-community-msg-logo{
+		width: 300px;
+	}
+	.dcf-community-msg-text{
+		min-width: 300px;
+	}
+	
 .cpshell{margin-top:8px;border:1px solid #375162;background-color:#A1B3C1;}
 .cpvshim{height:450px;width:1px;float:right;}
 .cpnav{width:180px;float:left;margin-top:12px;}

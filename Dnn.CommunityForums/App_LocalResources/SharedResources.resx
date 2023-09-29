@@ -1687,4 +1687,13 @@ From,
   <data name="[RESX:Moderator-Editor].Text" xml:space="preserve">
     <value>Currently Editing the Content of Another Community Member</value>
   </data>
+  <data name="[RESX:Community-Message-Intro].Text" xml:space="preserve">
+    <value>We would love to get in touch with you!</value>
+  </data>  
+  <data name="[RESX:Community-Message-Connect].Text" xml:space="preserve">
+    <value>How to provide feedback / stay up to date</value>
+  </data>  
+  <data name="[RESX:Community-Message-Help].Text" xml:space="preserve">
+    <value>Module manual / wiki</value>
+  </data>
 </root>
