@@ -1364,9 +1364,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (_bModDelete || ((_bDelete && authorId == UserId && !_bLocked) && ((replyId == 0 && _replyCount == 0) || replyId > 0)))
             {
                 if (_useListActions)
-                    sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i>&nbsp;[RESX:Delete]</li>");
+                    sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
                 else
-                    sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i>&nbsp;[RESX:Delete]</a>");
+                    sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
             }
             else
             {
@@ -1378,11 +1378,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.UserId + "=" + authorId };
                 if (_useListActions)
                 {
-                    sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", banParams) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i>&nbsp;[RESX:Ban]</li>");
+                    sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", banParams) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></li>");
                 }
                 else
                 {
-                    sbOutput.Replace("[ACTIONS:BAN]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", banParams) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i>&nbsp;[RESX:Ban]</a>");
+                    sbOutput.Replace("[ACTIONS:BAN]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", banParams) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></a>");
                 }
             }
             else
@@ -1400,9 +1400,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var editParams = new List<string>() { ParamKeys.ViewType + "=post", "action=" + sAction, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, "postid=" + postId };
                 if (SocialGroupId > 0) editParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
                 if (_useListActions)
-                    sbOutput.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", editParams) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i>&nbsp;[RESX:Edit]</li>");
+                    sbOutput.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", editParams) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></li>");
                 else
-                    sbOutput.Replace("[ACTIONS:EDIT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", editParams) + "\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i>&nbsp;[RESX:Edit]</a>");
+                    sbOutput.Replace("[ACTIONS:EDIT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", editParams) + "\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></a>");
             }
             else
             {
@@ -1421,13 +1421,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 if (_useListActions)
                 {
-                    sbOutput.Replace("[ACTIONS:QUOTE]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", quoteParams) + "';\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i>&nbsp;[RESX:Quote]</li>");
-                    sbOutput.Replace("[ACTIONS:REPLY]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", replyParams) + "';\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i>&nbsp;[RESX:Reply]</li>");
+                    sbOutput.Replace("[ACTIONS:QUOTE]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", quoteParams) + "';\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></li>");
+                    sbOutput.Replace("[ACTIONS:REPLY]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", replyParams) + "';\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></li>");
                 }
                 else
                 {
-                    sbOutput.Replace("[ACTIONS:QUOTE]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", quoteParams) + "\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i>&nbsp;[RESX:Quote]</a>");
-                    sbOutput.Replace("[ACTIONS:REPLY]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", replyParams) + "\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i>&nbsp;[RESX:Reply]</a>");
+                    sbOutput.Replace("[ACTIONS:QUOTE]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", quoteParams) + "\" title=\"[RESX:Quote]\"><i class=\"fa fa-quote-left fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Quote]</span></a>");
+                    sbOutput.Replace("[ACTIONS:REPLY]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", replyParams) + "\" title=\"[RESX:Reply]\"><i class=\"fa fa-reply fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Reply]</span></a>");
                 }
             }
             else
@@ -1438,7 +1438,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModMove)
             {
-                sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove([TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i>&nbsp;[RESX:Move]</li>");
+                sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove([TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
             }
             else
             {
@@ -1447,7 +1447,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModLock)
             {
-                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock(" + ModuleId + "," + ForumId +",[TOPICID]);};\" title=\"[RESX:Lock]\"><i id=\"af-topic-lock-" + contentId.ToString() + "\"class=\"fa fa-lock fa-fm fa-blue\"></i>&nbsp;[RESX:Lock]</li>");
+                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock(" + ModuleId + "," + ForumId +",[TOPICID]);};\" title=\"[RESX:Lock]\"><i id=\"af-topic-lock-" + contentId.ToString() + "\"class=\"fa fa-lock fa-fm fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Lock]</span></li>");
 
             }
             else
@@ -1456,7 +1456,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (_bModPin)
             {
-                sbOutput.Replace("[ACTIONS:PIN]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:Pin]\"><i id=\"af-topic-pin-" + contentId.ToString() + "\" class=\"fa fa-thumb-tack fa-fm fa-blue\"></i>&nbsp;[RESX:Pin]</li>");
+                sbOutput.Replace("[ACTIONS:PIN]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:Pin]\"><i id=\"af-topic-pin-" + contentId.ToString() + "\" class=\"fa fa-thumb-tack fa-fm fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Pin]</span></li>");
 
             }
             else
@@ -1564,9 +1564,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (Request.IsAuthenticated)
             {
                 if (_useListActions)
-                    sbOutput.Replace("[ACTIONS:ALERT]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", alertParams) + "';\" title=\"[RESX:Alert]\"><i class=\"fa fa-bell-o fa-fw fa-blue\"></i>&nbsp;[RESX:Alert]</li>");
+                    sbOutput.Replace("[ACTIONS:ALERT]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", alertParams) + "';\" title=\"[RESX:Alert]\"><i class=\"fa fa-bell-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Alert]</span></li>");
                 else
-                    sbOutput.Replace("[ACTIONS:ALERT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", alertParams) + "\" title=\"[RESX:Alert]\"><i class=\"fa fa-bell-o fa-fw fa-blue\"></i>&nbsp;[RESX:Alert]</a>");
+                    sbOutput.Replace("[ACTIONS:ALERT]", "<a class=\"af-actions\" href=\"" + Utilities.NavigateUrl(TabId, "", alertParams) + "\" title=\"[RESX:Alert]\"><i class=\"fa fa-bell-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Alert]</span></a>");
             }
             else
             {
