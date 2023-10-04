@@ -26,6 +26,7 @@
               <supportedFeature type="Searchable" />
               <supportedFeature type="Upgradeable" />
             </supportedFeatures>
+			<shareable>Unsupported</shareable>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>DNN Community Forums</friendlyName>
@@ -66,7 +67,8 @@
                 </moduleControls>
               </moduleDefinition>
             </moduleDefinitions>
-          </desktopModule>
+          
+	</desktopModule>
           <eventMessage>
             <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
             <processorCommand>UpgradeModule</processorCommand>
