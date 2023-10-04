@@ -472,11 +472,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = TopicTemplate;
                 sOutput = Utilities.ParseSpacer(sOutput);
             }
-            else if (UseTemplatePath && TemplatePath != string.Empty)
-            {
-                sOutput = Utilities.GetFileContent(TemplatePath + "TopicView.htm");
-                sOutput = Utilities.ParseSpacer(sOutput);
-            }
             else
             {
                 sOutput = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicView", _topicTemplateId);

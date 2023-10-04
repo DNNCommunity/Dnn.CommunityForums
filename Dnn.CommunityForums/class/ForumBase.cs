@@ -104,21 +104,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 _defaultForumViewTemplateId = value;
             }
         }
-
-        public string TemplatePath
-        {
-            get
-            {
-                return _templatePath;
-            }
-            set
-            {
-                _templatePath = value;
-            }
-        }
-
-        public bool UseTemplatePath { get; set; }
-
         public int DefaultTopicsViewTemplateId
         {
             get
