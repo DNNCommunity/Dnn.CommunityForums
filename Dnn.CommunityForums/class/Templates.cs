@@ -21,6 +21,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -155,75 +157,49 @@ namespace DotNetNuke.Modules.ActiveForums
             DataProvider.Instance().Templates_Delete(TemplateId, PortalId, ModuleId);
         }
         public TemplateInfo Template_Get(string TemplateName, int PortalId, int ModuleId)
-		{
-            TemplateInfo ti = null;
-			foreach (TemplateInfo tiWithinLoop in Template_List(PortalId, ModuleId))
-			{
-				ti = tiWithinLoop;
-				if (TemplateName.ToUpperInvariant() == tiWithinLoop.Title.ToUpperInvariant())
+        {
+            string templateFileName = string.Empty;
+            string templateFilePathFileName = string.Empty;
+            TemplateInfo ti = Template_List(PortalId, ModuleId).Where(t => t.Title.ToUpperInvariant() == TemplateName.ToUpperInvariant() && t.ModuleId == ModuleId).FirstOrDefault();
+            
+            if (ti != null && !string.IsNullOrEmpty(ti.FileName))
+            {
+                templateFileName = ti.FileName;
+            }
+            else
+            {
+                templateFileName = TemplateName;
+                ti = new TemplateInfo { PortalId = PortalId, ModuleId = ModuleId, FileName = TemplateName, Template = string.Empty };
+            }
+            templateFilePathFileName = HttpContext.Current.Server.MapPath(SettingsBase.GetModuleSettings(ModuleId).TemplatePath + templateFileName);
+            if (!System.IO.File.Exists(templateFilePathFileName))
+            {
+                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + templateFileName);
+                if (!System.IO.File.Exists(templateFilePathFileName))
                 {
-                    SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
-                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                    }
-                    }
-                    ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
-					return tiWithinLoop;
-				}
-			}
-			return ti;
-		}
-		public TemplateInfo Template_Get(int TemplateId)
-		{
-			return Template_Get(TemplateId, -1, -1);
-		}
-		public TemplateInfo Template_Get(int TemplateId, int PortalId, int ModuleId)
-		{
-            var ti = new TemplateInfo();
-			IDataReader dr = DataProvider.Instance().Templates_Get(TemplateId, PortalId, ModuleId);
-			while (dr.Read())
-			{
-				try
-				{
-					ti.TemplateId = Convert.ToInt32(dr["TemplateId"]);
-					ti.PortalId = Convert.ToInt32(dr["PortalId"]);
-					ti.ModuleId = Convert.ToInt32(dr["ModuleId"]);
-                    ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(dr["TemplateType"]));
-					ti.IsSystem = Convert.ToBoolean(dr["IsSystem"]);
-					ti.Title = Convert.ToString(dr["Title"]);
-                    ti.FileName = Convert.ToString(dr["FileName"]);
-                    ti.Subject = Convert.ToString(dr["Subject"]); 
-					SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
-                    string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
-                    if (!System.IO.File.Exists(templateFilePathFileName))
-                    {
-                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-                        {
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
-                        }
-                    }
-                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
-                    if (string.IsNullOrEmpty(ti.Template))
-                    {
-                        ti.Template = Convert.ToString(dr["Template"]);
-                    }
-                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                    ti.DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]);
-                    ti.DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]);
-
-                }
-                catch (Exception ex)
-                {
-                    return null;
+                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + templateFileName);
                 }
             }
-
+            ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
+			return ti;
+        }
+        public TemplateInfo Template_Get(int TemplateId)
+        {
+            var ti = new TemplateInfo();
+            try
+            {
+                using (IDataReader dr = DataProvider.Instance().Templates_Get(TemplateId, -1, -1))
+                {
+                    while (dr.Read())
+                    {
+                        ti = FillTemplateInfo(dr);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
             return ti;
         }
         #endregion
@@ -231,53 +207,67 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Methods
         private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
 		{
+            var tl = new List<TemplateInfo>();
             try
             {
-				var tl = new List<TemplateInfo>();
-			    IDataReader dr = TemplateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(PortalId, ModuleId, -1) : DataProvider.Instance().Templates_List(PortalId, ModuleId, (int)TemplateType);
-				dr.Read();
-				dr.NextResult();
-			    while (dr.Read())
-				{
-					var ti = new TemplateInfo
-					{
-                        TemplateId = Convert.ToInt32(dr["TemplateId"]),
-                        DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]),
-                        DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]),
-                        IsSystem = Convert.ToBoolean(dr["IsSystem"]),
-                        ModuleId = Convert.ToInt32(dr["ModuleID"]),
-                        PortalId = Convert.ToInt32(dr["PortalId"]),
-                        Subject = Convert.ToString(dr["Subject"]),
-                        Title = Convert.ToString(dr["Title"]),
-                        FileName = Convert.ToString(dr["FileName"]),
-                        TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
-                    }; 
-					SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
-					string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                using (IDataReader dr = TemplateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(PortalId, ModuleId, -1) : DataProvider.Instance().Templates_List(PortalId, ModuleId, (int)TemplateType))
+                {
+                    while (dr.Read())
+                    {
+                        TemplateInfo ti = FillTemplateInfo(dr);
+                        tl.Add(ti);
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+			{
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+            return tl;
+        }
+
+        private static TemplateInfo FillTemplateInfo(IDataReader dr)
+        {
+            try
+            {
+                var ti = new TemplateInfo
+                {
+                    TemplateId = Convert.ToInt32(dr["TemplateId"]),
+                    DateCreated = Utilities.SafeConvertDateTime(dr["DateCreated"]),
+                    DateUpdated = Utilities.SafeConvertDateTime(dr["DateUpdated"]),
+                    IsSystem = Convert.ToBoolean(dr["IsSystem"]),
+                    ModuleId = Convert.ToInt32(dr["ModuleID"]),
+                    PortalId = Convert.ToInt32(dr["PortalId"]),
+                    Subject = Convert.ToString(dr["Subject"]),
+                    Title = Convert.ToString(dr["Title"]),
+                    FileName = Convert.ToString(dr["FileName"]),
+                    TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
+                };
+                SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
+                string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                if (!System.IO.File.Exists(templateFilePathFileName))
+                {
+                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
                     if (!System.IO.File.Exists(templateFilePathFileName))
                     {
-                        templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + ti.FileName);
-                        if (!System.IO.File.Exists(templateFilePathFileName))
-						{
                         templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + ti.FileName);
                     }
-					}
-                    ti.Template = Utilities.GetFileContent(templateFilePathFileName);
-                    if (string.IsNullOrEmpty(ti.Template))
-                    {
-                        ti.Template = Convert.ToString(dr["Template"]);
-                    }
-                    ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-					tl.Add(ti);
-				}
-				dr.Close();
-				return tl;
-			}
-			catch (Exception ex)
-			{
-				return null;
-			}
-		}
+                }
+                ti.Template = Utilities.GetFileContent(templateFilePathFileName);
+                if (string.IsNullOrEmpty(ti.Template))
+                {
+                    ti.Template = Convert.ToString(dr["Template"]);
+                }
+                ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
+                return ti;
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return null;
+            }
+        }
         #endregion
     }
     #endregion

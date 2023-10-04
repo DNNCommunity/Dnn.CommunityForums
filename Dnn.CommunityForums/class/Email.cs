@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
             var sTemplate = string.Empty;
             var tc = new TemplateController();
-            var ti = tc.Template_Get(templateId, portalId, moduleId);
+            var ti = tc.Template_Get(templateId);
             string subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
             string body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
             body = body.Replace("[REASON]", comments);

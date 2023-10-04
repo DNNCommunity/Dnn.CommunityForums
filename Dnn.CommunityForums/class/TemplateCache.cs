@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                if (TemplateId == 0)
+                if (TemplateId < 1)
                 {
                     try
                     {
@@ -72,7 +72,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    var objTemplates = new TemplateController();
                     TemplateInfo templateInfo = new TemplateController().Template_Get(TemplateId);
                     if (templateInfo != null)
                     {
