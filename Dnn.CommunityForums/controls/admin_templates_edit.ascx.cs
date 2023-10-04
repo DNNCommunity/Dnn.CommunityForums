@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			TemplateInfo ti = null;
 			TemplateController tc = new TemplateController();
-			ti = tc.Template_Get(TemplateId, PortalId, ModuleId);
+			ti = tc.Template_Get(TemplateId);
 			if (ti != null)
 			{
 				txtTitle.Text = ti.Title;
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						if (e.Parameters[1].ToString() != "")
 						{
 							templateId = Convert.ToInt32(e.Parameters[1]);
-							ti = tc.Template_Get(templateId, PortalId, ModuleId);
+							ti = tc.Template_Get(templateId);
 						}
 						else
 						{
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						if (e.Parameters[1].ToString() != "")
 						{
 							templateid = Convert.ToInt32(e.Parameters[1]);
-							ti = tc.Template_Get(templateid, PortalId, ModuleId);
+							ti = tc.Template_Get(templateid);
 							if (! (ti.IsSystem == true))
 							{
 								tc.Template_Delete(templateid, PortalId, ModuleId);

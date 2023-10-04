@@ -127,16 +127,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 string Comments = null;
                 Comments = drpReasons.SelectedItem.Value + "<br>";
                 Comments += Utilities.CleanString(PortalId, txtComments.Text, false, EditorTypes.TEXTBOX, false, false, ModuleId, string.Empty, false);
-                int templateId = 0;
-                TemplateController tc = new TemplateController();
-                TemplateInfo ti = tc.Template_Get("ModAlert", PortalId, ModuleId);
                 string sUrl;
-                if (SocialGroupId > 0) sUrl = NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId });
-                else sUrl = NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
+                if (SocialGroupId > 0)
+                {
+                    sUrl = NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId });
+                }
+                else
+                {
+                    sUrl = NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
+                }
 
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ContentAlert");
-                TopicsController topicController = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = topicController.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new TopicsController().Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;
