@@ -362,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 notification.Subject = subject;
                 notification.Body = body;
                 notification.IncludeDismissAction = false;
-                notification.SenderUserID = UserInfo.UserID;
+                notification.SenderUserID = UserId;
                 notification.Context = notificationKey;
 
                 NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
