@@ -93,8 +93,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (AllowSubscribe)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
-                    subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserInfo.UserID));
-                    subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserInfo.UserID)).ToString().ToUpper() + "]";
+                    subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
+                    subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
             UserProfileInfo ui = new UserProfileInfo();
-            if (UserInfo.UserID > 0)
+            if (UserId > 0)
             {
                 ui = ForumUser.Profile;
             }
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
-            ri.Content.AuthorId = UserInfo.UserID;
+            ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
             ri.Content.DateCreated = createDate;
@@ -327,11 +327,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 try
                 {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserInfo.UserID);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId);
                     try
                     {
                         Social amas = new Social();
-                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserInfo.UserID, fullURL, ri.Content.Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
+                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, ri.Content.Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                     }
                     catch (Exception ex)
                     {
@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserInfo.UserID, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                 }
                 catch (Exception ex)
                 {
