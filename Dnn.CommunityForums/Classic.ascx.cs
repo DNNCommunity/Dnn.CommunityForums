@@ -224,8 +224,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                 ctl.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
                 ctl.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                ctl.UseTemplatePath = UseTemplatePath;
-                ctl.TemplatePath = TemplatePath;
                 ctl.ParentForumId = ParentForumId;
                 if (string.IsNullOrEmpty(ForumIds))
                 {

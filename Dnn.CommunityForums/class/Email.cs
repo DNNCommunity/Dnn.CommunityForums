@@ -69,12 +69,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var subs = new List<SubscriptionInfo>();
             var si = new SubscriptionInfo
             {
-                DisplayName = author.DisplayName,
-                Email = author.Email,
-                FirstName = author.FirstName,
-                LastName = author.LastName,
                 UserId = author.AuthorId,
-                Username = author.Username
+                Email = author.Email,
             };
 
             subs.Add(si);
@@ -117,10 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var si = new SubscriptionInfo
                     {
                         UserId = ui.UserID,
-                        DisplayName = ui.DisplayName,
                         Email = ui.Email,
-                        FirstName = ui.FirstName,
-                        LastName = ui.LastName,
                         TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID),
                         UserCulture = Utilities.GetCultureInfoForUser(portalId, ui.UserID),
                         TopicSubscriber = false

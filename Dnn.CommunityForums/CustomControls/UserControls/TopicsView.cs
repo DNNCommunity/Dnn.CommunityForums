@@ -183,15 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     defaultTemplateId = DefaultTopicsViewTemplateId;
                 }
                 string TopicsTemplate = string.Empty;
-                if (UseTemplatePath && !(TemplatePath == string.Empty))
-                {
-                    TopicsTemplate = Utilities.GetFileContent(TemplatePath + "TopicsView.htm");
-                    TopicsTemplate = Utilities.ParseSpacer(TopicsTemplate);
-                }
-                else
-                {
-                    TopicsTemplate = TemplateCache.GetCachedTemplate( ForumModuleId, "TopicsView", defaultTemplateId);
-                }
+                TopicsTemplate = TemplateCache.GetCachedTemplate( ForumModuleId, "TopicsView", defaultTemplateId);
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))

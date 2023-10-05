@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 			try
 			{
 				var subs = new List<SubscriptionInfo>();
-				var si = new SubscriptionInfo { Email = SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
+				var si = new SubscriptionInfo { Email = SendTo };
 			    subs.Add(si);
 				var oEmail = new Email
 				{
