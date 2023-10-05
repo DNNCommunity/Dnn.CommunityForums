@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
             UserProfileInfo ui = new UserProfileInfo();
-            if (UserInfo.UserID > 0)
+            if (UserId > 0)
             {
                 ui = ForumUser.Profile;
             }
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
-            ri.Content.AuthorId = UserInfo.UserID;
+            ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
             ri.Content.DateCreated = createDate;
@@ -327,11 +327,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 try
                 {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserInfo.UserID);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId);
                     try
                     {
                         Social amas = new Social();
-                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserInfo.UserID, fullURL, ri.Content.Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
+                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, ri.Content.Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                     }
                     catch (Exception ex)
                     {
@@ -362,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 notification.Subject = subject;
                 notification.Body = body;
                 notification.IncludeDismissAction = false;
-                notification.SenderUserID = UserInfo.UserID;
+                notification.SenderUserID = UserId;
                 notification.Context = notificationKey;
 
                 NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 try
                 {
                     Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserInfo.UserID, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
+                    amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
                 }
                 catch (Exception ex)
                 {
