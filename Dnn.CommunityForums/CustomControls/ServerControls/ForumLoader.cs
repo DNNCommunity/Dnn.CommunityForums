@@ -81,8 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                         objModule.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
                         objModule.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                        objModule.TemplatePath = TemplatePath;
-                        objModule.UseTemplatePath = UseTemplatePath;
                         objModule.ParentForumId = ParentForumId;
                         objModule.ForumIds = ForumIds;
                         this.Controls.Add(objModule);
