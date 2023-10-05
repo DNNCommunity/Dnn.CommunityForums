@@ -32,11 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Public Properties
         public int UserId { get; set; }
-        public string Username { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string Email { get; set; }
-        public string DisplayName { get; set; }
         public TimeSpan TimeZoneOffSet { get; set; }
         public CultureInfo UserCulture { get; set; }
         public bool TopicSubscriber { get; set; }
@@ -82,12 +78,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     si = new SubscriptionInfo
                     {
-                        DisplayName = dr["DisplayName"].ToString(),
-                        Email = dr["Email"].ToString(),
-                        FirstName = dr["FirstName"].ToString(),
-                        LastName = dr["LastName"].ToString(),
                         UserId = Convert.ToInt32(dr["UserId"]),
-                        Username = dr["Username"].ToString(),
+                        Email = dr["Email"].ToString(),
                         TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"])),
                         UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"])),
                         TopicSubscriber = Utilities.SafeConvertBool(dr["TopicSubscriber"])
