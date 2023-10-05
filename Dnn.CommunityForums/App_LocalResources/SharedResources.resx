@@ -661,16 +661,16 @@
     <value>Preview</value>
   </data>
   <data name="[RESX:ForumSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Click to subscribe to this forum.</value>
+    <value>Subscribe to this forum</value>
   </data>
   <data name="[RESX:ForumSubscribe:TRUE].Text" xml:space="preserve">
-    <value>You are subscribed to this forum. Click to unsubscribe.</value>
+    <value>Unsubscribe from forum</value>
   </data>
   <data name="[RESX:TopicSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Check this box to subscribe to this topic</value>
+    <value>Subscribe to this topic</value>
   </data>
   <data name="[RESX:TopicSubscribe:TRUE].Text" xml:space="preserve">
-    <value>You are subscribed to this topic</value>
+    <value>Unsubscribe from topic</value>
   </data>
   <data name="[RESX:Avatar].Text" xml:space="preserve">
     <value>Avatar</value>
@@ -774,11 +774,11 @@
   <data name="[RESX:NotRead].Text" xml:space="preserve">
     <value>Not Read</value>
   </data>
-	<data name="[RESX:Unanswered].Text" xml:space="preserve">
+  <data name="[RESX:Unanswered].Text" xml:space="preserve">
     <value>Unanswered</value>
   </data>
-	<data name="[RESX:MostLiked].Text" xml:space="preserve">
-  <value>Most Liked</value>
+  <data name="[RESX:MostLiked].Text" xml:space="preserve">
+    <value>Most Liked</value>
   </data>
   <data name="[RESX:MostReplies].Text" xml:space="preserve">
     <value>Most Replies</value>
