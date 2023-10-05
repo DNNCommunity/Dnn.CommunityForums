@@ -681,89 +681,157 @@ GO
 
 /* begin -  issue #419 - prevent duplicate emails to users subscribed to both a forum and a specific topic */
 
+/* create forum / topic based indexes */
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Subscriptions') AND name = N'IX_{objectQualifier}activeforums_Subscriptions_Opt1')
+DROP INDEX [IX_{objectQualifier}activeforums_Subscriptions_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Subscriptions 
+GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Subscriptions') AND name = N'IX_{objectQualifier}activeforums_Subscriptions_Opt2')
+DROP INDEX [IX_{objectQualifier}activeforums_Subscriptions_Opt2] ON {databaseOwner}{objectQualifier}activeforums_Subscriptions 
+GO
+
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Subscriptions_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Subscriptions
+(
+	[ForumId] ASC,
+	[TopicId] ASC, 
+	[Mode] ASC, 
+	[UserId] ASC 
+)
+GO
+CREATE NONCLUSTERED INDEX [IX_{objectQualifier}activeforums_Subscriptions_Opt2] ON {databaseOwner}{objectQualifier}activeforums_Subscriptions
+(	[TopicId] ASC, 
+	[Mode] ASC, 
+	[UserId] ASC,
+	[ForumId] ASC
+)
+GO
+
+
+/* updated subscribers procedure */
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]
 GO
 
 CREATE PROCEDURE  {databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers](@PortalId int, @ForumId int, @TopicId int, @SubType int)
 AS
-DECLARE @CanSubscribe nvarchar(255)
+
+DECLARE @CanSubscribe nvarchar(256)
 SET @CanSubscribe = (
-					SELECT SUBSTRING(p.CanSubscribe,1,CHARINDEX('|',p.CanSubscribe)-1) as CanSubscribe FROM
-					{databaseOwner}{objectQualifier}activeforums_Forums as f INNER JOIN 
-					{databaseOwner}{objectQualifier}activeforums_Permissions as p on p.PermissionsId = f.PermissionsId
+					SELECT SUBSTRING(p.CanSubscribe,1,CHARINDEX('|',p.CanSubscribe)-1) as CanSubscribe 
+					FROM {databaseOwner}{objectQualifier}activeforums_Forums as f 
+					INNER JOIN {databaseOwner}{objectQualifier}activeforums_Permissions as p 
+					ON p.PermissionsId = f.PermissionsId
 					WHERE f.ForumId = @ForumId
 					)
-DECLARE @subs TABLE (userid int, username nvarchar(255), firstname nvarchar(255), lastname nvarchar(255), email nvarchar(255), displayname nvarchar(255), topicsubscriber bit)
+					
+DECLARE @subs TABLE (userid int, email nvarchar(255), topicsubscriber bit)
 
+/* get topic subscribers who are not superusers so need to check against roles allowed to be subscribers */
 INSERT INTO @subs 
-	(userid, username, firstname, lastname, email, displayname, topicsubscriber)
-	(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName, 1 AS topicsubscriber  
-FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
-			{databaseOwner}{objectQualifier}activeforums_Forums as F on s.ForumId = f.ForumId INNER JOIN
-                     {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-                      {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
-                      {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
-					  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';')  AS r ON ur.RoleId = r.ID 
-WHERE     (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0 AND s.Mode = @SubType AND u.IsSuperUser = 0) 
-			AND 
-				(
-						(UR.EffectiveDate IS NULL AND UR.ExpiryDate >= GETDATE()) 
-						OR (UR.EffectiveDate IS NULL AND UR.ExpiryDate IS NULL)
-						OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate IS NULL)
-						OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate >= GETDATE())
-				)
-		
-			AND ((S.TopicId = @TopicId))
-			AND (U.UserID NOT IN (SELECT userid FROM @subs))
-)
+	(userid, email, topicsubscriber)
+	(SELECT s.UserId, u.Email, 1 AS topicsubscriber  
+		FROM {databaseOwner}{objectQualifier}activeforums_Subscriptions AS s 		
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums AS f 
+		ON f.ForumId = s.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}Users AS u 
+		ON  u.UserID = s.UserId 
+		AND u.IsSuperUser = 0 
+		AND u.IsDeleted = 0
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals AS up 
+		ON  up.UserId = u.UserID
+		AND up.PortalId = @PortalId
+		AND up.IsDeleted = 0
+		AND up.Authorised = 1
+		INNER JOIN {databaseOwner}{objectQualifier}UserRoles AS ur 
+		ON ur.UserID = u.UserID 
+		AND (
+					(ur.EffectiveDate IS NULL AND ur.ExpiryDate >= GETDATE()) /* DNN platform user roles still use native GETDATE() not GETUTCDATE() */
+				OR (ur.EffectiveDate IS NULL AND ur.ExpiryDate IS NULL)
+				OR (ur.EffectiveDate <= GETDATE() AND ur.ExpiryDate IS NULL)
+				OR (ur.EffectiveDate <= GETDATE() AND ur.ExpiryDate >= GETDATE())
+			)
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';') AS r 
+		ON r.ID = ur.RoleId
+		WHERE 	(s.Mode = @SubType)
+		AND 	(s.TopicId = @TopicId)
+		AND (NOT EXISTS (SELECT * FROM @subs WHERE userid = s.UserId))
+	)
 
+/* get forum subscribers who are not superusers so need to check against roles allowed to be subscribers */
 INSERT INTO @subs 
-	(userid, username, firstname, lastname, email, displayname, topicsubscriber)
-	(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName, 0 AS topicsubscriber  
-FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
-			{databaseOwner}{objectQualifier}activeforums_Forums as F on s.ForumId = f.ForumId INNER JOIN
-                     {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-                      {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
-                      {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
-					  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';')  AS r ON ur.RoleId = r.ID 
-WHERE     (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0 AND s.Mode = @SubType AND u.IsSuperUser = 0) 
-			AND 
-				(
-						(UR.EffectiveDate IS NULL AND UR.ExpiryDate >= GETDATE()) 
-						OR (UR.EffectiveDate IS NULL AND UR.ExpiryDate IS NULL)
-						OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate IS NULL)
-						OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate >= GETDATE())
-				)
-		
-			AND ((S.ForumId = @ForumId AND S.TopicId = 0))
-			AND (U.UserID NOT IN (SELECT userid FROM @subs))
-)
+	(userid, email, topicsubscriber)
+	(SELECT s.UserId, u.Email, 0 AS topicsubscriber  
+		FROM {databaseOwner}{objectQualifier}activeforums_Subscriptions AS s 		
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums AS f 
+		ON f.ForumId = s.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}Users AS u 
+		ON  u.UserID = s.UserId 
+		AND u.IsSuperUser = 0
+		AND u.IsDeleted = 0
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals AS up 
+		ON  up.UserId = u.UserID
+		AND up.PortalId = @PortalId
+		AND up.IsDeleted = 0
+		AND up.Authorised = 1
+		INNER JOIN {databaseOwner}{objectQualifier}UserRoles AS ur 
+		ON ur.UserID = u.UserID 
+		AND (
+					(ur.EffectiveDate IS NULL AND ur.ExpiryDate >= GETDATE()) /* DNN platform user roles still use native GETDATE() not GETUTCDATE() */
+				OR (ur.EffectiveDate IS NULL AND ur.ExpiryDate IS NULL)
+				OR (ur.EffectiveDate <= GETDATE() AND ur.ExpiryDate IS NULL)
+				OR (ur.EffectiveDate <= GETDATE() AND ur.ExpiryDate >= GETDATE())
+			)
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@CanSubscribe,';') AS r 
+		ON r.ID = ur.RoleId
+		WHERE (s.Mode = @SubType)
+		AND (S.ForumId = @ForumId AND S.TopicId = 0)
+		AND (NOT EXISTS (SELECT * FROM @subs WHERE userid = s.UserId))
+	)
 
+
+/* get topic subscribers who are superusers  */
 INSERT INTO @subs 
-	(userid, username, firstname, lastname, email, displayname, topicsubscriber)
-	(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName, 1 AS topicsubscriber  
-FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
-             {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-             {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId
-WHERE s.Mode = @SubType AND u.IsSuperUser = 1
-	AND (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0 AND (S.TopicId = @TopicId))
-			AND (U.UserID NOT IN (SELECT userid FROM @subs))
-	
-)
+	(userid, email, topicsubscriber)
+	(SELECT s.UserId, u.Email, 1 AS topicsubscriber  
+		FROM {databaseOwner}{objectQualifier}activeforums_Subscriptions AS s 		
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums AS f 
+		ON f.ForumId = s.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}Users AS u 
+		ON  u.UserID = s.UserId 
+		AND u.IsSuperUser = 1 
+		AND u.IsDeleted = 0
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals AS up 
+		ON  up.UserId = u.UserID
+		AND up.PortalId = @PortalId
+		AND up.IsDeleted = 0
+		AND up.Authorised = 1
+		WHERE 	(s.Mode = @SubType)
+		AND 	(s.TopicId = @TopicId)
+		AND (NOT EXISTS (SELECT * FROM @subs WHERE userid = s.UserId))
+	)
 
+/* get forum subscribers who are superusers  */
 INSERT INTO @subs 
-	(userid, username, firstname, lastname, email, displayname, topicsubscriber)
-	(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName,0 AS topicsubscriber  
-FROM         {databaseOwner}{objectQualifier}activeforums_Subscriptions AS S INNER JOIN
-             {databaseOwner}{objectQualifier}Users AS U ON S.UserId = U.UserID INNER JOIN
-             {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId
-WHERE s.Mode = @SubType AND u.IsSuperUser = 1
-	AND (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0 AND (S.ForumId = @ForumId AND S.TopicId = 0))
-			AND (U.UserID NOT IN (SELECT userid FROM @subs))
-	
-)
+	(userid, email, topicsubscriber)
+	(SELECT s.UserId, u.Email, 0 AS topicsubscriber  
+		FROM {databaseOwner}{objectQualifier}activeforums_Subscriptions AS s 		
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums AS f 
+		ON f.ForumId = s.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}Users AS u 
+		ON  u.UserID = s.UserId 
+		AND u.IsSuperUser = 1 
+		AND u.IsDeleted = 0
+		INNER JOIN {databaseOwner}{objectQualifier}UserPortals AS up 
+		ON  up.UserId = u.UserID
+		AND up.PortalId = @PortalId
+		AND up.IsDeleted = 0
+		AND up.Authorised = 1
+		WHERE (s.Mode = @SubType)
+		AND (S.ForumId = @ForumId AND S.TopicId = 0)
+		AND (NOT EXISTS (SELECT * FROM @subs WHERE userid = s.UserId))
+	)
 
+/* get auto subscriptions based on roles */
 DECLARE @AutoSubscribe bit
 DECLARE @AutoSubscribeRoles nvarchar(255)
 DECLARE @TopicsOnly bit
@@ -779,28 +847,35 @@ If (@TopicsOnly = 1 AND @IsNewTopic = 0) OR (@TopicsOnly = 0)
 	BEGIN
 	IF @AutoSubscribe = 1 AND @AutoSubscribeRoles <> ''
 		BEGIN
-		INSERT INTO @subs 
-		(userid, username, firstname, lastname, email, displayname, topicsubscriber)
-		(SELECT  U.UserID, U.Username, U.FirstName, U.LastName, U.Email, U.DisplayName, 0 /*auto subscribers are never topic-specific subscribers */
-		FROM                 {databaseOwner}{objectQualifier}Users AS U INNER JOIN
-						  {databaseOwner}{objectQualifier}UserPortals AS P ON U.UserID = P.UserId INNER JOIN
-						  {databaseOwner}{objectQualifier}UserRoles AS ur ON U.UserID = ur.UserID INNER JOIN
-						  {databaseOwner}{objectQualifier}activeforums_Functions_Split(@AutoSubscribeRoles,';')  AS r ON ur.RoleId = r.ID 
-		WHERE     (P.PortalId = @PortalId AND P.Authorised = 1 AND P.IsDeleted = 0 AND U.IsDeleted = 0) 
 		
-		AND (
-				(
-					(UR.EffectiveDate IS NULL AND UR.ExpiryDate >= GETDATE()) 
-				 OR (UR.EffectiveDate IS NULL AND UR.ExpiryDate IS NULL)
-				 OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate IS NULL)
-				 OR (UR.EffectiveDate <= GETDATE() AND UR.ExpiryDate >= GETDATE())
-				)
-			AND (U.UserID NOT IN (SELECT userid FROM @subs))
-		
-			))
+			INSERT INTO @subs 
+			(userid, email, topicsubscriber)
+			(SELECT u.UserID, u.Email, 0 AS topicsubscriber  /*auto subscribers are never topic-specific subscribers */
+				FROM {databaseOwner}{objectQualifier}Users AS u 
+				INNER JOIN {databaseOwner}{objectQualifier}UserPortals AS up 
+				ON  up.UserId = u.UserID
+				AND up.PortalId = @PortalId
+				AND up.IsDeleted = 0
+				AND up.Authorised = 1
+				INNER JOIN {databaseOwner}{objectQualifier}UserRoles AS ur 
+				ON ur.UserID = u.UserID 
+				AND (
+							(ur.EffectiveDate IS NULL AND ur.ExpiryDate >= GETDATE()) /* DNN platform user roles still use native GETDATE() not GETUTCDATE() */
+						OR (ur.EffectiveDate IS NULL AND ur.ExpiryDate IS NULL)
+						OR (ur.EffectiveDate <= GETDATE() AND ur.ExpiryDate IS NULL)
+						OR (ur.EffectiveDate <= GETDATE() AND ur.ExpiryDate >= GETDATE())
+					)
+				INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@AutoSubscribeRoles,';') AS r 
+				ON r.ID = ur.RoleId
+				WHERE (u.IsDeleted = 0)
+				AND (NOT EXISTS (SELECT * FROM @subs WHERE userid = u.UserID))
+			)
+
 		END
 	END
-SELECT DISTINCT * FROM @subs
+	
+/* return the results */	
+SELECT DISTINCT userid, email, topicsubscriber FROM @subs
 GO
 
 /* end -  issue #419 - prevent duplicate emails to users subscribed to both a forum and a specific topic */
