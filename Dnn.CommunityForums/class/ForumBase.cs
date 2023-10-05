@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _topicId; // = -1;
         private int? _replyId;
         private int? _quoteId;
-        private int? _userId;
+        private int? _authorid;
         private bool? _jumpToLastPost;
         private string _defaultView = Views.ForumView;
         private int _defaultForumViewTemplateId = -1;
@@ -349,43 +349,43 @@ namespace DotNetNuke.Modules.ActiveForums
                 _forumId = value;
             }
         }
-        public int UserId
+        public int AuthorId
         {
             get
             {
                 // If the id has already been set, return it.
-                if (_userId.HasValue)
-                    return _userId.Value;
+                if (_authorid.HasValue)
+                    return _authorid.Value;
 
                 // Set out default value
-                _userId = -1;
+                _authorid = -1;
 
                 // If there is an id in the query string, parse it
-                var queryUserId = Request.QueryString[ParamKeys.UserId];
-                if (!string.IsNullOrWhiteSpace(queryUserId))
+                var queryAuthorId = Request.QueryString[ParamKeys.AuthorId];
+                if (!string.IsNullOrWhiteSpace(queryAuthorId))
                 {
                     // Try to parse the id, if it doesn't work, return the default value.
-                    int parsedUserId;
-                    _userId = int.TryParse(queryUserId, out parsedUserId) ? parsedUserId : 0;
+                    int parsedAuthorId;
+                    _authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
                 }
 
-                // If we don't have a user id at this point, try and pull it from "userid" in the query string
-                if (_userId < 1)
+                // If we don't have a user id at this point, try and pull it from "authorid" in the query string
+                if (_authorid < 1)
                 {
-                    queryUserId = Request.QueryString["userid"];
-                    if (!string.IsNullOrWhiteSpace(queryUserId))
+                    queryAuthorId = Request.QueryString["authorid"];
+                    if (!string.IsNullOrWhiteSpace(queryAuthorId))
                     {
                         // Try to parse the id, if it doesn't work, return the default value.
-                        int parsedUserId;
-                        _userId = int.TryParse(queryUserId, out parsedUserId) ? parsedUserId : 0;
+                        int parsedAuthorId;
+                        _authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
                     }
                 }
 
-               return _userId.Value;
+               return _authorid.Value;
             }
             set
             {
-                _userId = value;
+                _authorid = value;
             }
         }
 

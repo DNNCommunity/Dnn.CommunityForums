@@ -1368,9 +1368,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:DELETE]", string.Empty);
             }
 
-            if ((ForumUser.IsAdmin || ForumUser.IsSuperUser || _bModUser) && (authorId != UserId) && (!author.IsSuperUser) && (!author.IsAdmin))
+            if ((ForumUser.IsAdmin || ForumUser.IsSuperUser || _bModUser) && (authorId != -1) && (authorId != UserId) && (author != null) && (!author.IsSuperUser) && (!author.IsAdmin))
             {
-                var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.UserId + "=" + authorId };
+                var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.AuthorId + "=" + authorId };
                 if (_useListActions)
                 {
                     sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateUrl(TabId, "", banParams) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></li>");
