@@ -1,33 +1,6 @@
 ﻿var amaf_selectedTab;
 
 
-function amaf_getSelectedTab() {
-    return amaf_selectedTab;
-};
-function amaf_toggleTab(tab) {
-    if (amaf_selectedTab != tab.id) {
-        amaf_selectedTab = tab.id;
-        var obj = document.getElementsByTagName("div");
-        for (var i = 0; i < obj.length; i++) {
-            var el = obj[i];
-            if (el.id.indexOf('amafcontent') > 1) {
-                el.style.display = 'none';
-            };
-            if (el.id.indexOf('_text') > 1) {
-                el.className = 'amtabtext';
-            };
-            if (el.className == 'amtabsel') {
-                el.className = 'amtab';
-            };
-        };
-        var tabContent = document.getElementById(tab.id + '_amafcontent');
-        var tabtext = document.getElementById(tab.id + '_text');
-        var tab = document.getElementById(tab.id);
-        tab.className = 'amtabsel';
-        tabtext.className = 'amtabseltext';
-        tabContent.style.display = 'block';
-    };
-};
 
 function toggleGroup(whichgroup, cssOn, cssOff) {
     var myDate = new Date();
