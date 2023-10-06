@@ -212,6 +212,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 using (IDataReader dr = TemplateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(PortalId, ModuleId, -1) : DataProvider.Instance().Templates_List(PortalId, ModuleId, (int)TemplateType))
                 {
+                    dr.Read();
+                    dr.NextResult();
                     while (dr.Read())
                     {
                         TemplateInfo ti = FillTemplateInfo(dr);
