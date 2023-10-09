@@ -44,20 +44,6 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ModuleId.ToString() + ")',50000);", true);
-                bool bolShow = true;
-                if (Request.Cookies["WHOSShow"] != null)
-                {
-                    bolShow = Convert.ToBoolean(Request.Cookies["WHOSShow"].Value);
-                }
-
-                if (bolShow)
-                {
-                    DisplayMode = " style=\"display:block;\"";
-                }
-                else
-                {
-                    DisplayMode = " style=\"display:none;\"";
-                }
                 BindUsersOnline();
             }
             catch (Exception ex)

@@ -1374,3 +1374,22 @@ div.dcf-mod-edit-wrap {
 	font-weight: bold;
 }
 /* /42 */
+
+ 
+/* 43 collapsible */
+.dcf-collapsible {
+	text-align: right;
+	padding-right: 2px;
+	cursor: pointer;
+	float: right;
+	padding-top: 3px;
+	font-size: 1.5em !important;
+}
+
+/* not sure these are needed but put them here to use if desired */
+.dcf-collapsible-opened {
+}
+/* not sure these are needed but put them here to use if desired */
+.dcf-collapsible-closed {
+}
+/* /43 */
