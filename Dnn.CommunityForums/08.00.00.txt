@@ -9,3 +9,4 @@ DesktopModules/ActiveForums/images/af_logo.gif
 DesktopModules/ActiveForums/images/af16icon_over.png
 DesktopModules/ActiveForums/images/af6_icon.jpg
 DesktopModules/ActiveForums/config/templates/*.txt
+DesktopModules/ActiveForums/ActiveForums.sln.GhostDoc.xml
