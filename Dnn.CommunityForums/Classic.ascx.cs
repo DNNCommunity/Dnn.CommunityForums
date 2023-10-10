@@ -328,7 +328,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css");
             }
-            
+            ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
+
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
             {
