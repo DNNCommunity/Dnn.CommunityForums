@@ -3,6 +3,7 @@ DesktopModules/ActiveForums/WhatsNewOptions.ascx
 DesktopModules/ActiveForums/ActiveForumViewer.ascx
 DesktopModules/ActiveForums/ActiveForumViewerSettings.ascx
 DesktopModules/ActiveForumsViewer/ActiveForumsViewerResources.zip.manifest
+DesktopModules/ActiveForums/images/ambuttonback.gif
 DesktopModules/ActiveForums/images/afbuttonback.gif
 DesktopModules/ActiveForums/images/af-logo.png
 DesktopModules/ActiveForums/images/af_logo.gif
