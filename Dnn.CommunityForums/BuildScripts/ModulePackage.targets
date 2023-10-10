@@ -44,6 +44,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <InstallInclude Include="**\*.js.map" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;node_modules\**;clientApp\**;readme.txt;.git\**;.vs\**" />
       <InstallInclude Include="**\*.eot" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+		<InstallInclude Include="**\*.md" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
       <InstallInclude Include="**\*.svg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.ttf" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.woff" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**v" />
@@ -59,7 +60,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <InstallInclude Include="**\*.jpg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.bmp" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
 		<InstallInclude Include="**\*.xml" Exclude="packages\**;node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*" />
-      <InstallInclude Include="**\*.config" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+		<InstallInclude Include="**\*.config" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
     </ItemGroup>
 
     <CreateItem Include="$(DNNFileName).dnn">
