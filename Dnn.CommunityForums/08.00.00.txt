@@ -3,11 +3,14 @@ DesktopModules/ActiveForums/WhatsNewOptions.ascx
 DesktopModules/ActiveForums/ActiveForumViewer.ascx
 DesktopModules/ActiveForums/ActiveForumViewerSettings.ascx
 DesktopModules/ActiveForumsViewer/ActiveForumsViewerResources.zip.manifest
+DesktopModules/ActiveForums/images/ambuttonback.gif
 DesktopModules/ActiveForums/images/afbuttonback.gif
 DesktopModules/ActiveForums/images/af-logo.png
 DesktopModules/ActiveForums/images/af_logo.gif
 DesktopModules/ActiveForums/images/af16icon_over.png
 DesktopModules/ActiveForums/images/af6_icon.jpg
+DesktopModules/ActiveForums/ActiveForums.sln.GhostDoc.xml
+DesktopModules/ActiveForums/themes/module.css
 DesktopModules/ActiveForums/config/templates/AdminWatchEmail_html.txt
 DesktopModules/ActiveForums/config/templates/AdminWatchEmail_text.txt
 DesktopModules/ActiveForums/config/templates/BlogList.txt
