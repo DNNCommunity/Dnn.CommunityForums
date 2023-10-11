@@ -586,7 +586,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fc = new ForumsConfig();
                         fc.Install_Or_Upgrade_MoveTemplates();
                         fc.Install_Or_Upgrade_RenameThemeCssFiles();
-                        fc.Install_Or_Upgrade_RenameDefaultThemeToLegacy();
+                        fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy();
                         ForumsConfig.FillMissingTopicUrls(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
                     }
                     catch (Exception ex)

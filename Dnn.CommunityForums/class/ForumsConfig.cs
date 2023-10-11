@@ -321,14 +321,12 @@ namespace DotNetNuke.Modules.ActiveForums
 				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
-        internal void Install_Or_Upgrade_RenameDefaultThemeToLegacy()
+        internal void Install_Or_Upgrade_RelocateDefaultThemeToLegacy()
         {
             try
-			{ 
-				if (System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")))
-				{
-					System.IO.Directory.Move(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default"), HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_legacy"));
-                }
+			{
+				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_legacy")));
+				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")));
             }
             catch (Exception ex)
             {
