@@ -32,7 +32,7 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
     <ItemGroup>
       <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
-      <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;**\WhatsNew.ascx;**\WhatsNewOptions.ascx;**\ActiveForumViewer.ascx;**\ActiveForumViewerSettings.ascx;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;**\WhatsNew.ascx;**\WhatsNewOptions.ascx;**\ActiveForumViewer.ascx;.git\**;.vs\**;**\ActiveForumViewerSettings.ascx;themes\_legacy\templates\_Master.ascx" />
       <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.ashx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
       <InstallInclude Include="**\*.css" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
