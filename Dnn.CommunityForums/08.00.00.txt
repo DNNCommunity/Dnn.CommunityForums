@@ -12,3 +12,5 @@ DesktopModules/ActiveForums/images/af6_icon.jpg
 DesktopModules/ActiveForums/config/templates/*.txt
 DesktopModules/ActiveForums/ActiveForums.sln.GhostDoc.xml
 DesktopModules/ActiveForums/themes/module.css
+DesktopModules/ActiveForums/themes/_default/templates/_Master.ascx
+DesktopModules/ActiveForums/themes/_legacy/templates/_Master.ascx
