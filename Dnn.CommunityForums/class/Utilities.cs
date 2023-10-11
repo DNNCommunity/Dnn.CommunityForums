@@ -1711,7 +1711,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 foreach (var file in source.GetFiles())
                 {
-                    file.CopyTo(System.IO.Path.Combine(target.FullName, file.Name));
+                    file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name),overwrite: true);
                 }
                 foreach (var subDir in source.GetDirectories()) 
                 { 
