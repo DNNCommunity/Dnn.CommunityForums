@@ -1393,3 +1393,20 @@ div.dcf-mod-edit-wrap {
 .dcf-collapsible-closed {
 }
 /* /43 */
+
+
+/* Post preview Div, shown by adding element Styling using JS */
+.dcf-preview{
+	display:none;
+	border: solid 1px #eee;
+}
+
+.dcf-preview .dcf-preview-bar{
+	background: #eee;
+	text-align: right;
+	padding: 0.2em;
+}
+
+.dcf-preview .dcf-preview-bar a{
+	cursor: pointer;
+}
