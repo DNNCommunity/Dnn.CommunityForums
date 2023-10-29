@@ -1701,5 +1701,50 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return moduleId;
         }
+        internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
+        {
+            try
+            {
+                if (!target.Exists)
+                {
+                    target.Create();
+                }
+                foreach (var file in source.GetFiles())
+                {
+                    file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name),overwrite: true);
+                }
+                foreach (var subDir in source.GetDirectories()) 
+                { 
+                    CopyFolder(subDir, new DirectoryInfo( System.IO.Path.Combine(target.FullName, subDir.Name)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+        }
+        internal static void DeleteFolder(DirectoryInfo dir)
+        {
+            try
+            {
+                if (dir.Exists)
+                {  
+                    foreach (var file in dir.GetFiles())
+                    {
+                            file.Delete();
+                    }
+                    foreach (var subDir in dir.GetDirectories())
+                    {
+                        DeleteFolder(subDir);
+                    }
+                    dir.Delete();
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+        }
     }
 }

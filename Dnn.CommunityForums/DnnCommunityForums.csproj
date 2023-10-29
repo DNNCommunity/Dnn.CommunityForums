@@ -391,6 +391,7 @@
     <None Include="Resources\font-awesome-4.7.0\scss\_screen-reader.scss" />
     <None Include="Resources\font-awesome-4.7.0\scss\_stacked.scss" />
     <None Include="Resources\font-awesome-4.7.0\scss\_variables.scss" />
+    <None Include="README.md" />
     <None Include="sql\04.01.17.SqlDataProvider" />
     <None Include="sql\04.01.18.SqlDataProvider" />
     <None Include="sql\04.02.06.SqlDataProvider" />
@@ -541,6 +542,7 @@
     <Content Include="themes\community\templates\TopicView.ascx" />
     <Content Include="themes\community\theme.css" />
     <Content Include="themes\themes.css" />
+    <Content Include="themes\_legacy-module.css" />
     <Content Include="themes\_legacy\custom\theme.css" />
     <Content Include="themes\_legacy\emoticons\angry.gif" />
     <Content Include="themes\_legacy\emoticons\arrow.gif" />
@@ -1563,6 +1565,7 @@
     <Content Include="config\templates\BlogsView.ascx" />
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
+    <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="class\API\" />
