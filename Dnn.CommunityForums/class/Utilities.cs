@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
     </span>
     <div class='dcf-search-popup aftb-search-popup'>
         <div class='dcf-search-input'>
-            <input type='text' placeholder='Search for...' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
+            <input class='dcf-search-input' type='text' placeholder='Search for...' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
         </div>
         <div class='dcf-search-options'>
             <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
