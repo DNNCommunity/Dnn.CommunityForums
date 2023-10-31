@@ -220,7 +220,32 @@ namespace DotNetNuke.Modules.ActiveForums
             var advancedSearchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
             var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
-            template = template.Replace("[AF:TB:Search]", string.Format(@"<span class='aftb-search' data-searchUrl='{0}'><span class='aftb-search-link'><span><i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}</span><span class='ui-icon ui-icon-triangle-1-s'></span></span><span class='aftb-search-popup'><input type='text' placeholder='Search for...' maxlength='50'><button>[RESX:Search]</button><br /><a href='{1}'>[RESX:SearchAdvanced]</a><input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]<input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]</span></span>", HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
+
+            template = template.Replace("[AF:TB:Search]", string.Format(@"
+<div class='dcf-quick-search aftb-search' data-searchUrl='{0}'>
+    <span class='dcf-search-link aftb-search-link'>
+        <span>
+            <i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}
+        </span>
+        <span class='ui-icon ui-icon-triangle-1-s'>
+        </span>
+    </span>
+    <div class='dcf-search-popup aftb-search-popup'>
+        <div class='dcf-search-input'>
+            <input type='text' placeholder='Search for...' maxlength='50'><button>[RESX:Search]</button>
+        </div>
+        <div class='dcf-search-options'>
+            <a href='{1}'>[RESX:SearchAdvanced]</a>
+            <span class='dcf-search-option'>
+                <input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]
+            </span>
+            <span class='dcf-search-option'>
+                <input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]
+            </span>
+        </div>
+    </div>
+</div>", 
+HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);
