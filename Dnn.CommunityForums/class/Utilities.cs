@@ -235,11 +235,11 @@ namespace DotNetNuke.Modules.ActiveForums
             <input type='text' placeholder='Search for...' maxlength='50'><button>[RESX:Search]</button>
         </div>
         <div class='dcf-search-options'>
-            <a href='{1}'>[RESX:SearchAdvanced]</a>
-            <span class='dcf-search-option'>
+            <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
+            <span class='dcf-search-option-topics'>
                 <input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]
             </span>
-            <span class='dcf-search-option'>
+            <span class='dcf-search-option-posts'>
                 <input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]
             </span>
         </div>
