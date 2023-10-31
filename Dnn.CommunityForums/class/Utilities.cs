@@ -237,10 +237,10 @@ namespace DotNetNuke.Modules.ActiveForums
         <div class='dcf-search-options'>
             <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
             <span class='dcf-search-option-topics'>
-                <input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]
+                <input type='radio' name='afsrt' value='0' checked='checked' /><span class='dcf-search-option-text'>[RESX:SearchByTopics]</span>
             </span>
             <span class='dcf-search-option-posts'>
-                <input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]
+                <input type='radio' name='afsrt' value='1' /><span class='dcf-search-option-text'>[RESX:SearchByPosts]</span>
             </span>
         </div>
     </div>
