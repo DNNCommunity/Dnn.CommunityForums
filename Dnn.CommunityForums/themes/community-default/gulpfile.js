@@ -4,6 +4,9 @@ const cleanCSS = require('gulp-clean-css');
 const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
 
+const zip = require('gulp-zip');
+
+
 
 // LESS ----------------------
 
@@ -29,7 +32,7 @@ function buildLess() { // Parse only the Skin.less file
     .pipe(cleanCSS({ inline: ['none'] }))
 
     // 4. CreateSource maps
-    .pipe(sourcemaps.write('../'))
+    .pipe(sourcemaps.write('../../'))
 
   // Loop over destinations to copy the css to
   cssCopyTo.forEach(function (d) {
@@ -42,23 +45,31 @@ function buildLess() { // Parse only the Skin.less file
 
 
 
-
-
 function styleTask() {
   buildLess();
+}
 
+function packageSource(cb) {
+  var srcPipe = gulp.src(['./_less**/**/*.*', "gulpfile.js", "*.json"])
+	.pipe(zip('theme-source.zip.resources'))
+	.pipe(gulp.dest('./'))
+
+  cb();
+  
 }
 
 
-// Watch task: watch SCSS and JS files for changes
-// If any change, run scss and js tasks simultaneously
+// Watch task: watch LESS files for changes
+// If any change, run LESS tasks
 function watchTask() {
-  gulp.watch(lessWatchPath, buildLess);
+  gulp.watch(lessWatchPath, buildLess, packageSource);
+
 
 }
 
 exports.buildLess = buildLess;
 exports.style = styleTask;
+exports.source = packageSource;
 
 exports.default = watchTask;
 
