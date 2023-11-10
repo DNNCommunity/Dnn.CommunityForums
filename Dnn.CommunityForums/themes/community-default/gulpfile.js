@@ -50,7 +50,7 @@ function styleTask() {
 }
 
 function packageSource(cb) {
-  var srcPipe = gulp.src(['./_less**/**/*.*', "gulpfile.js", "*.json"])
+  var srcPipe = gulp.src(['./**/*.*', "!./theme-source.zip.resources", "!./node_modules/**"])
 	.pipe(zip('theme-source.zip.resources'))
 	.pipe(gulp.dest('./'))
 
