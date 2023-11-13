@@ -3,13 +3,25 @@
 <%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 <div class="dcf-topics-view">
 	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]</div>
-	<div class="dcf-actions dcf-actions-top">
+	<div class="dcf-actions dcf-actions-top dcf-cols">
+		
 		<h2 class="dcf-forum-title">[TRESX:Forum]: [FORUMLINK]</h2>
-		<div class="dcf-forum-search">[MINISEARCH]</div>
+		
+		
+		<div class="dcf-forum-search-subscribe">
+			<div class="dcf-forum-search">[MINISEARCH]</div>
+			<div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i> [FORUMSUBSCRIBERCOUNT] [RESX:FORUMSUBSCRIBERCOUNT]</div>
+			<div class="dcf-forum-subscribe">[FORUMSUBSCRIBE]</div>
+		</div>
+		
+		
+		
+
 	</div>
 
+[ANNOUNCEMENTS]
 	<div class="dcf-topics dcf-announcements">
-		[ANNOUNCEMENTS]
+		
 			<!-- Render the sub Announcements -->
 				<table class="dcf-table dcf-table-100">
 					<thead>
@@ -63,12 +75,8 @@
 					</tbody>
 					[/ANNOUNCEMENT]
 				</table>
-
-		[/ANNOUNCEMENTS]
-
-
-
 	</div>
+[/ANNOUNCEMENTS]
 
 	<!-- Render regular Forum post -->
 	<div class="dcf-topics">
