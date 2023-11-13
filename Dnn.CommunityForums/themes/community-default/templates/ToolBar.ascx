@@ -6,6 +6,8 @@
             <li>[AF:TB:NotRead]</li>
             <li>[AF:TB:MyTopics]</li>
             <li>[AF:TB:ActiveTopics]</li>
+		    <li>[AF:TB:MostLiked]</li>
+		    <li>[AF:TB:MostReplies]</li>
         </ul>
     </div>
     <div class="dcf-toolbar dcf-toolbar-manage">
