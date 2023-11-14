@@ -3,8 +3,8 @@
 <div class="afeditor">
 	<table cellpadding="10" cellspacing="0" width="100%">
 		<tr>
-			<td style="border-bottom:solid 1px #cdcdcd;text-align:left;"><span class="aftitle">[TRESX:CreateNewTopic]</span></td>
-			<td style="border-bottom:solid 1px #cdcdcd;text-align:right;"><span style="font-weight:bold;">[TRESX:Forum]</span>:[AF:LINK:FORUMNAME]</td>
+			<td style="border-bottom:solid 1px #cdcdcd;text-align:left;"><span class="aftitle">[RESX:CreateNewTopic]</span></td>
+			<td style="border-bottom:solid 1px #cdcdcd;text-align:right;"><span style="font-weight:bold;">[RESX:Forum]</span>:[AF:LINK:FORUMNAME]</td>
 		</tr>
 		<tr>
 			<td colspan="2" align="center">			
@@ -14,7 +14,7 @@
 							[AF:UI:ANON]
 							<table cellpadding="0" cellspacing="4" border="0" width="99%">
 								<tr>
-									<td style="text-align:left;">[TRESX:Username]:[AF:REQ:USERNAME]</td>
+									<td style="text-align:left;">[RESX:Username]:[AF:REQ:USERNAME]</td>
 									<td></td>
 								</tr>
 								<tr>
@@ -22,7 +22,7 @@
 									<td></td>
 								</tr>
 								<tr>
-									<td style="text-align:left;">[TRESX:SecurityCode]:[AF:REQ:SECURITYCODE]</td>
+									<td style="text-align:left;">[RESX:SecurityCode]:[AF:REQ:SECURITYCODE]</td>
 									<td></td>
 								</tr>
 								<tr>
@@ -33,8 +33,8 @@
 							[/AF:UI:ANON]
 							<table cellpadding="0" cellspacing="4" border="0" width="99%">
 								<tr>
-									<td style="text-align:left;">[TRESX:Subject]:[AF:REQ:SUBJECT]</td>
-									<td style="text-align:left;">[TRESX:TopicStatus]:</td>
+									<td style="text-align:left;">[RESX:Subject]:[AF:REQ:SUBJECT]</td>
+									<td style="text-align:left;">[RESX:TopicStatus]:</td>
 								</tr>
 								<tr>
 									<td style="text-align:left;"><div style="width:300px;">[AF:INPUT:SUBJECT]</div></td>
@@ -67,7 +67,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="text-align:left;">[TRESX:Summary]:</td>
+						<td style="text-align:left;">[RESX:Summary]:</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -75,7 +75,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td style="text-align:left;">[TRESX:Message]:[AF:REQ:BODY]</td>
+						<td style="text-align:left;">[RESX:Message]:[AF:REQ:BODY]</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -83,20 +83,6 @@
 						
 						</td>
 						<td style="width:70px;">[AF:CONTROL:EMOTICONS]</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="amtbwrapper">
-								<div class="amtbwrapper" style="text-align:center;">
-									<div style="margin-left:0 auto;margin-right:0 auto;min-width:50px;max-width:160px;">
-										[AF:BUTTON:SUBMIT][AF:BUTTON:CANCEL][AF:BUTTON:PREVIEW]
-									</div>
-								</div>
-								
-							</div>
-							
-						</td>
-						<td></td>
 					</tr>
 					<tr>
 						<td style="text-align:left;">
@@ -119,6 +105,20 @@
 						</td>
 						<td></td>
 					</tr>		
+					<tr>
+						<td>
+							<div class="amtbwrapper">
+								<div class="amtbwrapper" style="text-align:center;">
+									<div style="margin-left:0 auto;margin-right:0 auto;min-width:50px;max-width:160px;">
+										[AF:BUTTON:SUBMIT][AF:BUTTON:CANCEL][AF:BUTTON:PREVIEW]
+									</div>
+								</div>
+								
+							</div>
+							
+						</td>
+						<td></td>
+					</tr>
 					<tr>
 						<td colspan="2">
 						

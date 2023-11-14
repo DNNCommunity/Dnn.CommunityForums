@@ -187,8 +187,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
             {
-                template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-file fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:NotRead]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
-                template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-files-o fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MyTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
+                template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-eye-slash fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:NotRead]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
+                template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-user fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MyTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
                 template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySettings]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "afprofile", 1, -1, -1)));
 
                 if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
@@ -209,18 +209,43 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
             }
 
-            template = template.Replace("[AF:TB:Unanswered]", string.Format("<a href=\"{0}\"><i class=\"fa fa-file fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unanswered]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "unanswered", 1, -1, -1)));
+            template = template.Replace("[AF:TB:Unanswered]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unanswered]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "unanswered", 1, -1, -1)));
             template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:ActiveTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "activetopics", 1, -1, -1)));
             template = template.Replace("[AF:TB:MostLiked]", string.Format("<a href=\"{0}\"><i class=\"fa fa-thumbs-o-up fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostLiked]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mostliked", 1, -1, -1)));
             template = template.Replace("[AF:TB:MostReplies]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comments fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostReplies]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mostreplies", 1, -1, -1)));
-            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:FORUMS]</span></a>", NavigateUrl(tabId)));
+            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-home fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:FORUMS]</span></a>", NavigateUrl(tabId)));
 
             // Search popup
             var searchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
             var advancedSearchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
             var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
-            template = template.Replace("[AF:TB:Search]", string.Format(@"<span class='aftb-search' data-searchUrl='{0}'><span class='aftb-search-link'><span><i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}</span><span class='ui-icon ui-icon-triangle-1-s'></span></span><span class='aftb-search-popup'><input type='text' placeholder='Search for...' maxlength='50'><button>[RESX:Search]</button><br /><a href='{1}'>[RESX:SearchAdvanced]</a><input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]<input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]</span></span>", HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
+
+            template = template.Replace("[AF:TB:Search]", string.Format(@"
+<div class='dcf-quick-search aftb-search' data-searchUrl='{0}'>
+    <span class='dcf-search-link aftb-search-link'>
+        <span>
+            <i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}
+        </span>
+        <span class='ui-icon ui-icon-triangle-1-s'>
+        </span>
+    </span>
+    <div class='dcf-search-popup aftb-search-popup'>
+        <div class='dcf-search-input'>
+            <input class='dcf-search-input' type='text' placeholder='Search for...' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
+        </div>
+        <div class='dcf-search-options'>
+            <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
+            <span class='dcf-search-option-topics'>
+                <input type='radio' name='afsrt' value='0' checked='checked' /><span class='dcf-search-option-text'>[RESX:SearchByTopics]</span>
+            </span>
+            <span class='dcf-search-option-posts'>
+                <input type='radio' name='afsrt' value='1' /><span class='dcf-search-option-text'>[RESX:SearchByPosts]</span>
+            </span>
+        </div>
+    </div>
+</div>", 
+HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);

@@ -1,0 +1,67 @@
+// Mixins
+.dcf-center-vertically {
+
+    display: flex;
+    align-items: center;
+
+}
+
+
+#titles(){
+
+    padding: @dist-sm 0;
+    margin:0;
+
+}
+
+#title-1(){
+
+    font-size: @title-1-size;
+    #titles;
+
+}
+
+#title-2(){
+
+    font-size: @title-2-size;
+    #titles;
+
+}
+
+
+#title-1-block(){
+
+    display:block; 
+    #title-1;
+
+}
+
+// Separator borders
+#sep-border-top(){
+    border-top: @separator-border;
+}
+
+#sep-border-bottom(){
+    border-bottom: @separator-border;
+}
+
+#sep-border-top-bottom(){
+    #sep-border-top;
+    #sep-border-bottom
+}
+
+#input-border(){
+    border: @separator-border;
+}
+
+// Padding of block, mobile vs normal
+
+#block-responsive-pad-md(){
+
+    padding: @dist-sm;
+
+    @media screen and (min-width: @break-desktop){
+        padding: @dist-md;
+    }
+
+}
