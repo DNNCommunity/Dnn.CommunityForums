@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         pendingCount = dtContent.DefaultView.ToTable().Rows.Count;
                         dtContent.DefaultView.RowFilter = "";
                         sb.Append("<tr><td class=\"afgrouprow\" style=\"padding-left:10px;\">" + dr["GroupName"].ToString() + " > " + dr["ForumName"].ToString() + " [RESX:Pending]: (" + pendingCount + ")</td><td class=\"afgrouprow\" align=\"right\" style=\"padding-right:5px;\">");
-                        sb.Append(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsible(target: "section" + dr["ForumId"].ToString(), title: string.Empty));
+                        sb.Append(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: "section" + dr["ForumId"].ToString(), title: string.Empty));
                         sb.Append("</td></tr>");
                         sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\"><td colspan=\"2\">");
                     }
