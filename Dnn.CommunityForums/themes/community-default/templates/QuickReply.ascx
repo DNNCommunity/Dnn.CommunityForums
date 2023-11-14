@@ -1,10 +1,14 @@
 <div class="dcf-quick-reply">
-	<header>
-		<h3 class="dcf-title dcf-title-3">[RESX:QuickReply]</h3>
-		<!--<div class="dcf-collapse">[AF:CONTROLS:GROUPTOGGLE]</div> -->
+	<header class="dcf-quick-reply-header dcf-cols">
+		<div class="dcf-col-50">
+			<h3 class="dcf-title dcf-title-3">[RESX:QuickReply]</h3>
+		</div>
+		<div class="dcf-col-50">
+			<div class="dcf-collapse">[AF:CONTROLS:GROUPTOGGLE]</div>
+		</div>
 	</header>
-	<section class="dcf-section">
-			<div class="dcf-group" id="groupQR">
+	<section class="dcf-section" id="groupQR">
+			<div class="dcf-group">
 				<asp:PlaceHolder ID="plhMessage" runat="server" />
 				<div>
 					<div class="dcf-qr-subject"> 
@@ -57,11 +61,10 @@
 					
 				</div>
 			</div>
+			<div class="dcf-buttons">
+				[AF:BUTTON:SUBMIT]
+			</div>
 
 	</section>
-	<footer "dcf-footer">
-	<div class="dcf-buttons">
-		[AF:BUTTON:SUBMIT]
-	</div>
-	</footer>
+
 </div>

@@ -3,8 +3,24 @@
 
     .dcf-forum-title {
 
-        margin: 0;
+        margin-top: 0;
         font-size: @title-2-size;
+        flex-grow: 1;
+        width: 100%;
+        @media screen and (min-width: @break-tablet){
+            width: auto;
+        }
+    }
+
+    .dcf-forum-search-subscribe{
+        .dcf-forum-search{
+            padding-bottom: @dist-md;
+        }
+        .dcf-forum-subscribe{
+            .amaf-chk-subs{
+                margin: 0 @dist-sm 0 @dist-xs ;
+            }
+        }
     }
 
     .dcf-topic-title {
@@ -32,11 +48,18 @@
     // Topics 
     .dcf-topics {
 
+
+
+        padding-bottom: 3em;
+
+        &:empty{
+
+            padding-bottom: 0;
+        }
+
         .dcf-col-icon {
             padding-top: 1.9em;
         }
-
-        padding-bottom: 3em;
 
         .dcf-col-subject{
 

@@ -7,8 +7,9 @@
 			<h3 class="dcf-group-title">[RESX:Group]: [GROUPNAME]</h3>
 			<span class="dcf-group-collapse">[GROUPCOLLAPSE]</span>
 		</div>
-		<div class="dcf-forums-group">
+		
 			[GROUP]
+			<div class="dcf-forums-group">
 				<table class="dcf-table dcf-table-100">
 					<thead>
 						<tr class="dcf-table-head-row">
@@ -72,8 +73,9 @@
 				</tbody>
 				[/FORUMS]
 			</table>
+			</div>
 		[/GROUP]
-		</div>
+		
 
 </div>
 [/GROUPSECTION]
