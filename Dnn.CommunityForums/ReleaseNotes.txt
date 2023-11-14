@@ -14,9 +14,9 @@
 			<br />
 		~/DesktopModules/ActiveForums/themes/themes.css (new name and CSS content / used across all themes)
 			<br />
-		~/DesktopModules/ActiveForums/themes/_currenttheme_/theme.css (already existing / new name)
+		~/DesktopModules/ActiveForums/themes/_currenttheme_/theme{.min}.css (already existing / new name). Can now have a .min.css variant.
 			<br />
-		~/DesktopModules/ActiveForums/themes/_currenttheme_/custom/theme.css (new)has been updated.  
+		~/DesktopModules/ActiveForums/themes/_currenttheme_/custom/theme{.min}.css (new)has been updated. Can now have a .min.css variant.
 		</p>
 	</div>
 	<hr/>

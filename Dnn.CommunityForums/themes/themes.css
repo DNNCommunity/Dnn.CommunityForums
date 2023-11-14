@@ -7,8 +7,8 @@
 	
     Community Forums's CSS Load order: 
     1) ~/DesktopModules/ActiveForums/module.css
-    2) ~/DesktopModules/ActiveForums/themes/themes.css
-    3) ~/DesktopModules/ActiveForums/themes/<currenttheme>/theme.css
-    4) ~/DesktopModules/ActiveForums/themes/<currenttheme>/custom/theme.css 
+    2) ~/DesktopModules/ActiveForums/themes/themes{.min}.css
+    3) ~/DesktopModules/ActiveForums/themes/<currenttheme>/theme{.min}.css
+    4) ~/DesktopModules/ActiveForums/themes/<currenttheme>/custom/theme{.min}.css 
 
 */
