@@ -316,19 +316,39 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.css")))
+            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.min.css");
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+            else
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css");
+                if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css");
+                }
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.min.css");
             }
-            
+            else
+            {
+                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css");
+                }
+            }
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.min.css");
+            }
+            else
+            {
+                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css");
+                }
+            }
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
             {
