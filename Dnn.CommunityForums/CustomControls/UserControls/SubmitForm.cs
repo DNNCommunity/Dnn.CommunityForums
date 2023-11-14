@@ -391,14 +391,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (EditorMode != EditorModes.NewTopic || EditorMode != EditorModes.EditTopic)
             {
-                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('TopicReview');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTopicReview\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
+                DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTopicReview", title: string.Empty) +
+                "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
                 _topicReviewTemplate = TemplateUtils.GetTemplateSection(template, "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTopicReview\" runat=\"server\" />", "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = template.Replace("[/AF:UI:SECTION:TOPICREVIEW]", "</td></tr></table>");
             }
             if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Tags');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTags\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTags", title: string.Empty) +
+                    "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:TAGS]", "<fieldset class=\"affieldset\"><legend>[RESX:Tags]</legend><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(ForumModuleId, "editor", "[AF:CONTROL:TAGS]");
                 if (string.IsNullOrEmpty(sTagOut))
@@ -532,7 +536,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Categories');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionCategories\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionCategories", title: string.Empty) +
+                    "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:CATEGORIES]", "<fieldset class=\"affieldset\"><legend>[RESX:Categories]</legend><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 string sCatOut;
                 var cc = new CategoriesList(PortalId, ForumModuleId, ForumInfo.ForumID, ForumInfo.ForumGroupId);
@@ -548,12 +554,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
             {
                 template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_polledit.ascx\" tagprefix=\"af\" tagname=\"polledit\" %>" + template;
-                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Poll');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\"><img id=\"imgSectionPoll\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td>"+
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionPoll", title: string.Empty) +
+                    "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[/AF:UI:SECTION:POLL]", "</td></tr></table>");
                 template = template.Replace("[AF:UI:FIELDSET:POLL]", "<fieldset class=\"affieldset\"><legend>[RESX:Polls]</legend><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POLL]", "<af:polledit id=\"afpolledit\" runat=\"server\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POLL]", "</fieldset>");
-                template = template.Replace("[AF:CONTROLS:SECTIONTOGGLE]", "<img id=\"imgSectionPoll\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" onclick=\"aftoggleSection('Poll');\" />");
+                template = template.Replace("[AF:CONTROLS:SECTIONTOGGLE]",string.Empty);
             }
             else
             {
@@ -588,7 +597,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Options');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\"><img id=\"imgSectionOptions\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
+                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                        "<tr>"+"<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td>"+
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+ 
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionOptions", title: string.Empty)+
+                    "</td></tr>" + 
+                    "<tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
                     template = template.Replace("[/AF:UI:SECTION:OPTIONS]", "</td></tr></table>");
                 }
 
@@ -629,11 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
             {
                 var objUtils = new emoticons();
-                //Dim obj As Object = DataCache.CacheRetrieve(ForumModuleId & "Emoticons" & EditorType.ToString)
-                //If obj Is Nothing Then
-                //    DataCache.CacheStore(ForumModuleId & "Emoticons" & EditorType.ToString) = objUtils.LoadEmoticons(EditorType, ForumModuleId, ImagePath)
-                //End If
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
+               template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
             }
             else
             {
@@ -645,7 +655,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_attach.ascx\" tagprefix=\"af\" tagname=\"attach\" %>" + template;
                     template = template.Replace("[AF:UI:FIELDSET:ATTACH]", "<fieldset class=\"affieldset\"><legend>[RESX:Attachments]</legend><div class=\"affieldsetnote\">[RESX:Attacments:Note]</div>");
-                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Attach');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionAttach\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\"/></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
+                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                        "<tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
+                        DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionAttach", title: string.Empty) +
+                        "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
                     template = template.Replace("[AF:CONTROL:UPLOAD]", "<af:attach id=\"ctlAttach\" runat=\"server\" />");
                     template = template.Replace("[/AF:UI:FIELDSET:ATTACH]", "</fieldset>");
                     template = template.Replace("[/AF:UI:SECTION:ATTACH]", "</td></tr></table>");

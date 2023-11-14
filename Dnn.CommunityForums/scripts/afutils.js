@@ -20,17 +20,6 @@ function toggleGroup(whichgroup, cssOn, cssOff) {
 
     };
 };
-function aftoggleSection(whichgroup) {
-    var oGroup = eval(document.getElementById('section' + whichgroup));
-    var oImage = eval(document.getElementById('imgSection' + whichgroup));
-    if (oGroup.style.display == 'none') {
-        oGroup.style.display = '';
-        oImage.src = af_imgPath + '/arrows_down.png';
-    } else {
-        oGroup.style.display = 'none';
-        oImage.src = af_imgPath + '/arrows_left.png';
-    };
-};
 function af_showLoad() {
     var afdiv = document.getElementById('afgrid');
     if (afdiv.style.position == '' || afdiv.style.position == 'static') {
