@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
             ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/themes/", MainSettings.Theme, "/jquery-ui.min.css"));
+            ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
 
 
             lblProd.Visible = true;
