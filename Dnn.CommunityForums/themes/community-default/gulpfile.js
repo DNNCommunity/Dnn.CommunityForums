@@ -3,6 +3,7 @@ const less = require('gulp-less');
 const cleanCSS = require('gulp-clean-css');
 const sourcemaps = require('gulp-sourcemaps');
 const rename = require('gulp-rename');
+const  merge = require('merge-stream');
 
 const zip = require('gulp-zip');
 
@@ -12,34 +13,30 @@ const zip = require('gulp-zip');
 
 const lessWatchPath = ['./_less/**/*.less'];
 
-const cssCopyTo = [
-  "./"
-
-]
+const cssCopyTo = "./";
 
 function buildLess() { // Parse only the Skin.less file
   // 1. What less files to parse?
-  var lessPipe = gulp.src('./_less/theme.less')
+  var lessCss = gulp.src('./_less/theme.less')
 
-
-    // 2. Init Source maps
     .pipe(sourcemaps.init())
-
-    // 3. Parse Less
     .pipe(less())
+    .pipe(sourcemaps.write(cssCopyTo))
+    .pipe(gulp.dest(cssCopyTo));
 
-    // 4. Compress CSS
+
+    var lessCssMin = gulp.src('./_less/theme.less')
+
+
+    .pipe(less())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.write(cssCopyTo))
     .pipe(cleanCSS({ inline: ['none'] }))
+    .pipe(gulp.dest(cssCopyTo));
 
-    // 4. CreateSource maps
-    .pipe(sourcemaps.write('../../'))
 
-  // Loop over destinations to copy the css to
-  cssCopyTo.forEach(function (d) {
-    lessPipe = lessPipe.pipe(gulp.dest(d));
-  });
-
-  return lessPipe;
+  return merge(lessCss, lessCssMin);
 
 }
 
@@ -51,11 +48,11 @@ function styleTask() {
 
 function packageSource(cb) {
   var srcPipe = gulp.src(['./**/*.*', "!./theme-source.zip.resources", "!./node_modules/**"])
-	.pipe(zip('theme-source.zip.resources'))
-	.pipe(gulp.dest('./'))
+    .pipe(zip('theme-source.zip.resources'))
+    .pipe(gulp.dest('./'))
 
   cb();
-  
+
 }
 
 
