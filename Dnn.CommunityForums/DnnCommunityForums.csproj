@@ -246,6 +246,7 @@
     </Content>
     <Content Include="controls\af_polls.ascx" />
     <Content Include="controls\af_pollvote.ascx" />
+    <Content Include="controls\profile_mysubscriptions.ascx" />
     <Content Include="controls\af_sendto.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1107,6 +1108,13 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="controls\profile_mysubscriptions.ascx.cs">
+      <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\profile_mysubscriptions.ascx.designer.cs">
+      <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />

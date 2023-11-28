@@ -3,6 +3,7 @@
 		<li>[AF:TB:ModList]</li>
 		<li>[AF:TB:Forums]</li>
 		<li>[AF:TB:MySettings]</li>
+		<li>[AF:TB:MySubscriptions]</li>
 		<li>[AF:TB:Search]</li>
 		<li>[AF:TB:ControlPanel]</li>
 	</ul>
@@ -10,6 +11,7 @@
 		<li>[AF:TB:Unanswered]</li>
 		<li>[AF:TB:NotRead]</li>
 		<li>[AF:TB:MyTopics]</li>
+		<li>[AF:TB:MySubscriptions]</li>
 		<li>[AF:TB:ActiveTopics]</li>
 		<li>[AF:TB:MostLiked]</li>
 		<li>[AF:TB:MostReplies]</li>

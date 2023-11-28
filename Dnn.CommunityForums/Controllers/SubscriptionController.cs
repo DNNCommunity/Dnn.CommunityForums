@@ -1,4 +1,23 @@
-﻿using DotNetNuke.Data;
+﻿//
+// Community Forums
+// Copyright (c) 2013-2021
+// by DNN Community
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// DEALINGS IN THE SOFTWARE.
+//
+using DotNetNuke.Data;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using System;
@@ -7,7 +26,7 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class SubscriptionController
+    class SubscriptionController 
     {
         readonly IDataContext ctx;
         IRepository<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> repo;
@@ -43,6 +62,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 DeleteForUser(portalId, moduleId, userId, forumId, topicId);
             }
+        }
+        public void Delete(int Id)
+        {
+            repo.Delete("WHERE Id = @0", Id);
         }
         public void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
         {
@@ -91,6 +114,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public int Count(int portalId, int moduleId, int forumId, int topicId)
         {
             return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId).Count();
+        }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
+        {
+            return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId = 0", portalId, moduleId, userId).ToList();
+        }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
+        {
+            return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId <> 0", portalId, moduleId, userId).ToList();
         }
     }
 }
