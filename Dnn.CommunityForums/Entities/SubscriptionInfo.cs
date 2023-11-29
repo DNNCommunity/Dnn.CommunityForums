@@ -28,6 +28,33 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Subscriptions", CacheItemPriority.Normal)]
     class SubscriptionInfo
     {
+        public SubscriptionInfo()
+        {
+        }
+        public SubscriptionInfo(int portalId, int moduleId, int forumId, int topicId, int mode, int userId)
+        {
+            PortalId = portalId;
+            ModuleId = moduleId;
+            ForumId = forumId;
+            TopicId = topicId;
+            Mode = mode;
+            UserId = userId;
+        }
+        public SubscriptionInfo(int id, int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string forumGroupName, string forumName, string subject, DateTime lastPostDate, bool subscribed)
+        {
+            Id = id;
+            PortalId = portalId;
+            ModuleId = moduleId;
+            ForumId = forumId;
+            TopicId = topicId;
+            Mode = mode;
+            UserId = userId;
+            ForumGroupName = forumGroupName;
+            ForumName = forumName;
+            Subject = subject;
+            LastPostDate = lastPostDate;
+            Subscribed = subscribed;
+        }
         public int Id { get; set; }
         public int PortalId { get; set; }
         public int ModuleId { get; set; }
@@ -35,5 +62,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TopicId { get; set; }
         public int Mode { get; set; }
         public int UserId { get; set; }
+        [IgnoreColumn()]
+        public string ForumGroupName { get; set; }
+        [IgnoreColumn()]
+        public string ForumName { get; set; }
+        [IgnoreColumn()]
+        public string Subject { get; set; }
+        [IgnoreColumn()]
+        public DateTime LastPostDate { get; set; }
+        [IgnoreColumn()]
+        public bool Subscribed { get; set; }
     }
 }

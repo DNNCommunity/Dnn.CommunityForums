@@ -33,13 +33,22 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.Label Label27;
 
         /// <summary>
-        /// dgrdSubs control.
+        /// upOptions1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgrdSubs;
+        protected global::System.Web.UI.UpdatePanel upOptions1;
+
+        /// <summary>
+        /// dgrdTopicSubs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView dgrdTopicSubs;
 
         /// <summary>
         /// Label28 control.
@@ -51,39 +60,21 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.Label Label28;
 
         /// <summary>
+        /// UpdatePanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+
+        /// <summary>
         /// dgrdForumSubs control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnGrid dgrdForumSubs;
-
-        /// <summary>
-        /// imgForumSubscriptionDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnImage imgForumSubscriptionDelete;
-
-        /// <summary>
-        /// btnForumSubscriptionDelete control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.DnnImageButton btnForumSubscriptionDelete;
-
-        /// <summary>
-        /// Label1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
+        protected global::System.Web.UI.WebControls.GridView dgrdForumSubs;
     }
 }

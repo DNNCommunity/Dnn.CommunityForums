@@ -23,6 +23,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Modules.ActiveForums.Constants;
+using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -95,6 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Users can only view thier own settings unless they are admin.
                 if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
                 {
+                    ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afcommon.js");
                     var userPrefsCtl = (SettingsBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx")));
                     userPrefsCtl.ModuleConfiguration = ModuleConfiguration;
                     userPrefsCtl.LocalResourceFile = Page.ResolveUrl(Globals.SharedResourceFile);

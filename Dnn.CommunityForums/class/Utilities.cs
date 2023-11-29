@@ -206,6 +206,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 template = template.Replace("[AF:TB:NotRead]", string.Empty);
                 template = template.Replace("[AF:TB:MyTopics]", string.Empty);
+                template = template.Replace("[AF:TB:MySettings]", string.Empty);
+                template = template.Replace("[AF:TB:MySubscriptions]", string.Empty);
                 template = template.Replace("[AF:TB:ModList]", string.Empty);
                 template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
             }
@@ -250,7 +252,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);
-            template = template.Replace("[AF:TB:MySettings]", string.Empty);
             template = template.Replace("[AF:TB:MemberList]", string.Empty);
 
             return template;

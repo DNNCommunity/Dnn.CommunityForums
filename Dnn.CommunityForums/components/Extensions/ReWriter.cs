@@ -447,6 +447,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 7:
                             v = "mostreplies";
                             break;
+                        case 8:
+                            v = "afsubscriptions";
+                            break;
 
                     }
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=" + v + sPage + qs);

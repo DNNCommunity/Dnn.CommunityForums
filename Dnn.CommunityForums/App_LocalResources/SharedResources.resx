@@ -388,10 +388,10 @@
     <value>Subscriptions</value>
   </data>
   <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Threads you are tracking: </value>
+    <value>Topics you are subscribed to:</value>
   </data>
   <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Forums you are tracking:</value>
+    <value>Forums you are subscribed to:</value>
   </data>
   <data name="Banned.Text" xml:space="preserve">
     <value>Banned:</value>
@@ -1689,11 +1689,14 @@ From,
   </data>
   <data name="[RESX:Community-Message-Intro].Text" xml:space="preserve">
     <value>We would love to get in touch with you!</value>
-  </data>  
+  </data>
   <data name="[RESX:Community-Message-Connect].Text" xml:space="preserve">
     <value>How to provide feedback / stay up to date</value>
-  </data>  
+  </data>
   <data name="[RESX:Community-Message-Help].Text" xml:space="preserve">
     <value>Module manual / wiki</value>
+  </data>
+  <data name="[RESX:NoSubscriptions].Text" xml:space="preserve">
+    <value>No Subscriptions</value>
   </data>
 </root>
