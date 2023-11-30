@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
-            Forum fi = null;
+            ForumInfo fi = null;
             if (e.Parameters.Length > 0)
             {
                 if (ForumId < 1)
@@ -353,7 +353,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetPermissions(int fId)
         {
             ForumController fc = new ForumController();
-            Forum f = fc.GetForum(PortalId, ModuleId, fId);
+            ForumInfo f = fc.GetForum(PortalId, ModuleId, fId);
             bModDelete = false;
             bModApprove = false;
             bModEdit = false;

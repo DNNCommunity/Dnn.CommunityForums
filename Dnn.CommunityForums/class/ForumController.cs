@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var forumIds = string.Empty;
             var fc = ForumsDB.Forums_List(portalId, moduleId);
-            foreach (Forum f in fc)
+            foreach (ForumInfo f in fc)
             {
                 string roles;
                 switch (permissionType)
@@ -78,16 +78,16 @@ namespace DotNetNuke.Modules.ActiveForums
             return forumIds;
         }
 
-        public Forum GetForum(int portalId, int moduleId, int forumId)
+        public ForumInfo GetForum(int portalId, int moduleId, int forumId)
         {
             return GetForum(portalId, moduleId, forumId, false);
         }
 
-        public Forum GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
+        public ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
         {
 
             var cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-            var forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as Forum;
+            var forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as ForumInfo;
             if (forum == null || ignoreCache)
             {
                 using (var dr = ForumsDB.Forums_Get(portalId, moduleId, forumId))
@@ -113,9 +113,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return forum;
         }
 
-        private static Forum FillForum(IDataRecord dr)
+        private static ForumInfo FillForum(IDataRecord dr)
         {
-            var fi = new Forum
+            var fi = new ForumInfo
             {
                 ForumGroup = new ForumGroupInfo(),
                 ForumID = Convert.ToInt32(dr["ForumId"].ToString()),
@@ -185,11 +185,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return forumIds;
         }
-        internal Forum Forums_Get(int portalId, int moduleId, int forumId, bool useCache)
+        internal ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache)
         {
             return Forums_Get(portalId, moduleId, forumId, useCache, -1);
         }
-        internal Forum Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
+        internal ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
         {
             if (forumId <= 0 && topicId <= 0)
             {
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return forumId <= 0 ? null : GetForum(portalId, moduleId, forumId, !useCache);
         }
-        public int Forums_Save(int portalId, Forum fi, bool isNew, bool useGroup)
+        public int Forums_Save(int portalId, ForumInfo fi, bool isNew, bool useGroup)
         {
             var rc = new RoleController();
             var db = new Data.Common();
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 moduleId = gi.ModuleId;
 
-                var fi = new Forum
+                var fi = new ForumInfo
                 {
                     ForumDesc = forumDescription,
                     Active = true,

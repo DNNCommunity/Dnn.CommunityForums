@@ -373,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyPostCount]); }
         }
 
-        public static explicit operator ForumInfo(Modules.ActiveForums.Forum v)
+        public static explicit operator ForumInfo(Modules.ActiveForums.ForumInfo v)
         {
             throw new NotImplementedException();
         }

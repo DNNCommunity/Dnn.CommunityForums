@@ -866,11 +866,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return TemplateCache.GetCachedTemplate(moduleId, "TopicView", topicTemplateId);
         }
-        public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, Forum forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, int timeZoneOffset)
+        public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, ForumInfo forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, int timeZoneOffset)
         {
             return PreviewTopic(topicTemplateID, portalId, moduleId, tabId, forumInfo, userId, body, imagePath, up, postDate, currentUserType, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
-        public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, Forum forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
+        public static string PreviewTopic(int topicTemplateID, int portalId, int moduleId, int tabId, ForumInfo forumInfo, int userId, string body, string imagePath, User up, DateTime postDate, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
         {
             var sTemplate = GetTopicTemplate(topicTemplateID, moduleId);
             try

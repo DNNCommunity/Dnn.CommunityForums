@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool _isApproved;
         public string PreviewText = string.Empty;
         private bool _isEdit;
-        private Forum _fi;
+        private ForumInfo _fi;
         private UserProfileInfo _ui = new UserProfileInfo();
         private string _themePath = string.Empty;
         private bool _userIsTrusted;

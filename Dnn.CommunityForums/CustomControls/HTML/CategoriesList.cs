@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		public string RenderView()
 		{
 			StringBuilder sb = new StringBuilder();
-			Forum forumInfo = null;
+			ForumInfo forumInfo = null;
 			string groupPrefix = string.Empty;
 			string forumPrefix = string.Empty;
 			if (ForumId > 0)

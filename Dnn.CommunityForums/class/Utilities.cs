@@ -266,7 +266,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             return text;
         }
-        internal static bool HasFloodIntervalPassed(int floodInterval, User user, Forum forumInfo)
+        internal static bool HasFloodIntervalPassed(int floodInterval, User user, ForumInfo forumInfo)
         {
             /* flood interval check passes if
             1) flood interval <= 0 (disabled)

@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class Classic : ForumBase
     {
 
-        private Forum fi;
+        private ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members

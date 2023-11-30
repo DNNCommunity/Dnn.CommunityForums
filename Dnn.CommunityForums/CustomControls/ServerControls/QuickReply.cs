@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void SaveQuickReply()
         {
             ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
+            ForumInfo forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
                 UserProfileController upc = new UserProfileController();

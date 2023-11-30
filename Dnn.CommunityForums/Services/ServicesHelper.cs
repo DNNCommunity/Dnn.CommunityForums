@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     {
         internal static bool IsAuthorized(int portalId, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
         {
-            Forum fi = new ForumController().GetForum(portalId, moduleId, forumId);
+            ForumInfo fi = new ForumController().GetForum(portalId, moduleId, forumId);
             string roles;
             switch (permissionRequired)
             {

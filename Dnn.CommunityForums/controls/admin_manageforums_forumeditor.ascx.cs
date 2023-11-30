@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "forumsave":
                     {
-                        var fi = new Forum();
+                        var fi = new ForumInfo();
                         var fc = new ForumController();
                         var bIsNew = false;
                         int forumGroupId;

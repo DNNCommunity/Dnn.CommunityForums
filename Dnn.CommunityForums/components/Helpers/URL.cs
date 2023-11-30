@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return sURL;
 		}
-        public static string ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.Forum fi)
+        public static string ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.ForumInfo fi)
         {
 			return ForumLink(tabId, (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)fi );
         }

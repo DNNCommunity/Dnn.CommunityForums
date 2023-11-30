@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             mockUser.Object.IsAdmin = isAdmin;
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             mockUser.Object.Profile.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
-            var mockForum = new Mock<Forum>();
+            var mockForum = new Mock<ForumInfo>();
             //Act
             bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
             //Assert

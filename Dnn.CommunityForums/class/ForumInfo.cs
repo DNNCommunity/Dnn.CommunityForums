@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public partial class Forum
+	public partial class ForumInfo
 	{
 		#region AF Forums DB Fields
         public int ForumID { get; set; }
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 		
 		// initialization
-		public Forum()
+		public ForumInfo()
 		{
 			PortalId = -1;
 			TabId = -1;

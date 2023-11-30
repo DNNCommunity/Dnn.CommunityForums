@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int _defaultTopicViewTemplateId = -1;
         private string _templatePath = string.Empty;
         private string _templateFile = string.Empty;
-        private Forum _foruminfo;
+        private ForumInfo _foruminfo;
         private XmlDocument _forumData;
 
         private bool? _canRead;
@@ -446,7 +446,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public Forum ForumInfo
+        public ForumInfo ForumInfo
         {
             get 
             {

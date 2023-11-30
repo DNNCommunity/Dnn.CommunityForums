@@ -1634,7 +1634,7 @@
     <Compile Include="class\ForumGroups.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="class\Forum.cs">
+    <Compile Include="class\ForumInfo.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Images.cs">

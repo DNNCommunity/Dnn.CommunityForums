@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int oldForumId = -1;
                     oldForumId = db.Forum_GetByTopicId(TopicId);
                     ForumController fc = new ForumController();
-                    Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
+                    ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
 
                     if (!(string.IsNullOrEmpty(fi.PrefixURL)))
                     {
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
             ForumController fc = new ForumController();
-            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
 
             TopicsController tc = new TopicsController();
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
