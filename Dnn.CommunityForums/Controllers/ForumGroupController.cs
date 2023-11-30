@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = Repo.GetById(forumGroupId);
             if (forumGroupInfo != null)
             {
-                forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController().GetById(forumGroupInfo.PermissionsId);
+                forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
             }
             return forumGroupInfo;
         }
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var ri = rc.GetRoleByName(portalId, "Administrators");
                 if (ri != null)
                 {
-                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController().CreateAdminPermissions(ri.RoleID.ToString()).PermissionsId;
+                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(ri.RoleID.ToString()).PermissionsId;
                     permissionsId = forumGroupInfo.PermissionsId;
                 }
             }
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             Repo.Update(forumGroupInfo);
             if (isNew)
             {
-                PermissionsController.CreateDefaultSets(portalId, permissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
@@ -83,6 +83,4 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             Repo.Delete(Repo.GetById(id: forumGroupId));
         }
     }
-}
-
 }
