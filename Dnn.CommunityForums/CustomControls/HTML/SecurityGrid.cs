@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
+			NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				for (int r = 3; r <= 27; r++)
 				{
 					keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-					bool bState = Convert.ToBoolean(grid[x, r]); //Permissions.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
+					bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
 					string sState = "<img src=\"" + ImagePath + "admin_stop.png\" alt=\"Disabled\" />";
 					if (bState)
 					{
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			else
 			{
-				return Permissions.HasAccess(permSet.Split('|')[objectType], objectId + ";");
+				return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(permSet.Split('|')[objectType], objectId + ";");
 			}
 
 		}
