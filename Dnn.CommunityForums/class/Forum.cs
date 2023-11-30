@@ -25,7 +25,7 @@ using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class Forum
+	public partial class Forum
 	{
 		#region AF Forums DB Fields
         public int ForumID { get; set; }

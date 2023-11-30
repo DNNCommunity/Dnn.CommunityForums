@@ -1107,6 +1107,10 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Deprecated\ForumGroupInfo.cs" />
+    <Compile Include="Deprecated\ForumInfo.cs" />
+    <Compile Include="Entities\ForumGroupInfo.cs" />
+    <Compile Include="Entities\ForumInfo.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
@@ -1630,7 +1634,7 @@
     <Compile Include="class\ForumGroups.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="class\ForumInfo.cs">
+    <Compile Include="class\Forum.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Images.cs">

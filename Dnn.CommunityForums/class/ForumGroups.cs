@@ -26,7 +26,7 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Modules.ActiveForums
 {
 
-	public class ForumGroupInfo
+	public partial class ForumGroupInfo
 	{
 		public ForumGroupInfo()
 		{
