@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (!(string.IsNullOrEmpty(dto.SecurityId)))
                         {
                             var permSet = db.GetPermSet(dto.PermissionsId, "View");
-                            permSet = Permissions.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
                             db.SavePermSet(dto.PermissionsId, "View", permSet);
                         }
 
@@ -184,9 +184,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var permSet = db.GetPermSet(dto.PermissionsId, dto.SecurityKey);
                         if (dto.Action == "remove")
-                            permSet = Permissions.RemovePermFromSet(dto.SecurityId, dto.SecurityType, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(dto.SecurityId, dto.SecurityType, permSet);
                         else
-                            permSet = Permissions.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
 
                         db.SavePermSet(dto.PermissionsId, dto.SecurityKey, permSet);
                         return Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);

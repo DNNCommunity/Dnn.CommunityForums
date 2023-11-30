@@ -212,10 +212,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             //End If
              bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
+            UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
-            if (UserIsTrusted || Permissions.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
