@@ -1104,10 +1104,13 @@
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\ForumController.cs" />
+    <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Deprecated\ForumGroupController.cs" />
     <Compile Include="Deprecated\ForumGroupInfo.cs" />
     <Compile Include="Deprecated\ForumInfo.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
