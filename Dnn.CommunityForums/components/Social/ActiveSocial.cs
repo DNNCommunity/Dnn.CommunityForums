@@ -18,13 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Data;
-
-using System.Web;
 using DotNetNuke.Modules.ActiveForums.Data;
-using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Services.Journal;
-using DotNetNuke.Web.Models;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -35,15 +30,15 @@ namespace DotNetNuke.Modules.ActiveForums
             AddTopicToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
         }
         internal void AddTopicToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
+        {
+            var ji = new JournalItem
             {
-                var ji = new JournalItem
-                         {
-                             PortalId = PortalId,
-                             ProfileId = UserId,
-                             UserId = UserId,
-                             Title = Subject,
-                             ItemData = new ItemData { Url = URL }
-                         };
+                PortalId = PortalId,
+                ProfileId = UserId,
+                UserId = UserId,
+                Title = Subject,
+                ItemData = new ItemData { Url = URL }
+            };
             if (string.IsNullOrEmpty(Summary))
             {
                 Summary = Utilities.StripHTMLTag(Body);
@@ -71,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             foreach (string s in roles.Split(';'))
             {
-                if ((s == "-1") | (s == "-3"))
+                if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                 {
                     /* cjh - securityset was null and throwing an error, thus journal items weren't added */
                     if ((ji.SecuritySet != null) && !(ji.SecuritySet.Contains("E,")))
@@ -91,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ji.SocialGroupId = SocialGroupId;
 
             }
-            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId,TabId, true));
+            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, true));
         }
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
         public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
@@ -104,13 +99,13 @@ namespace DotNetNuke.Modules.ActiveForums
             if (UserId > 0)
             {
                 var ji = new JournalItem
-                             {
-                                 PortalId = PortalId,
-                                 ProfileId = UserId,
-                                 UserId = UserId,
-                                 Title = Subject,
-                                 ItemData = new ItemData { Url = URL }
-                             };
+                {
+                    PortalId = PortalId,
+                    ProfileId = UserId,
+                    UserId = UserId,
+                    Title = Subject,
+                    ItemData = new ItemData { Url = URL }
+                };
                 if (string.IsNullOrEmpty(Summary))
                 {
                     Summary = Utilities.StripHTMLTag(Body);
@@ -138,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 foreach (string s in roles.Split(';'))
                 {
-                    if ((s == "-1") | (s == "-3"))
+                    if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                     {
                         /* cjh - securityset was null and throwing an error, thus journal items weren't added */
                         if ((ji.SecuritySet != null) && (!(ji.SecuritySet.Contains("E,"))))
