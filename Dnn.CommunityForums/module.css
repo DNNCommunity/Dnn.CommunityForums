@@ -4,7 +4,7 @@
 	
 	Split up in numbered blocks with comments about what has changed and why.
 	#nr -> means something was moved to the _legacy-module.css file unless the comment states otherwise.
-	This was done so legacy Themes can @import that file in their Theme.css in case of rendering issues
+	This was done so legacy Themes can import that file in their Theme.css in case of rendering issues
 
 
 ------------ */
