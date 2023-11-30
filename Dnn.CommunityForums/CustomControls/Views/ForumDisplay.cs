@@ -56,9 +56,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = Convert.ToString(obj);
             }
             sTemp = Utilities.LocalizeControl(sTemp);
-            if (!(sTemp.Contains(Globals.ControlRegisterAFTag)))
+            if (!(sTemp.Contains(Globals.ForumsControlsRegisterAFTag)))
             {
-                sTemp = Globals.ControlRegisterAFTag + sTemp;
+                sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
             }
             Control ctl = Page.ParseControl(sTemp);
             LinkControls(ctl.Controls);

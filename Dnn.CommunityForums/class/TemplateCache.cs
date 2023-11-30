@@ -87,11 +87,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (sTemplate.ToLowerInvariant().Contains("<am:"))
             {
-                sTemplate = Globals.ControlRegisterTag + sTemplate;
+                sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             }
             if (sTemplate.ToLowerInvariant().Contains("<af:"))
             {
-                sTemplate = Globals.ControlRegisterAFTag + sTemplate;
+                sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
             }
             if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
             {
