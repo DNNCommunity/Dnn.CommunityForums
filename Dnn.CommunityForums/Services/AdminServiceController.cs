@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "delete":
                     {
-                        Permissions.RemoveObjectFromAll(dto.SecurityId, dto.SecurityType, dto.PermissionsId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.SecurityId, dto.SecurityType, dto.PermissionsId);
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 case "addobject":

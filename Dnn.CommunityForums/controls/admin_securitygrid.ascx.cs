@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string sOut = string.Empty;
 			if (action == "delete")
 			{
-                Permissions.RemoveObjectFromAll(secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(secId, secType, pId);
 
 			}
 			else if (action == "addobject")

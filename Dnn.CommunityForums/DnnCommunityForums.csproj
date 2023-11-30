@@ -1650,9 +1650,6 @@
     <Compile Include="class\Utilities.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="class\Permissions.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="class\Polls.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -125,8 +125,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.Security.Reply = dr["CanReply"].ToString();
 						fi.Security.Subscribe = dr["CanSubscribe"].ToString();
 						fi.Security.Trust = dr["CanTrust"].ToString();
-						fi.Security.View = dr["CanView"].ToString();
-						fi.ForumSettings = LoadSettings(dr);
+						fi.Security.View = dr["CanView"].ToString(); 
+						fi.Security.Tag = dr["CanTag"].ToString();
+                        fi.Security.Prioritize = dr["CanPrioritize"].ToString();
+                        fi.Security.Categorize = dr["CanCategorize"].ToString();
+                        fi.ForumSettings = LoadSettings(dr);
 						fi.PrefixURL = dr["PrefixURL"].ToString();
 							//.SEO = dr("ForumSEO").ToString
 						fi.TotalTopics = int.Parse(dr["TotalTopics"].ToString());
