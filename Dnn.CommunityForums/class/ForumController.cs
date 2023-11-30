@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                 }
 
-                var hasPermissions = Permissions.HasPerm(roles, userRoles);
+                var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userRoles);
 
                 if ((hasPermissions || (!strict && !f.Hidden && (permissionType == "CanView" || permissionType == "CanRead"))) && f.Active)
                 {
@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (isNew && useGroup == false)
             {
-                Permissions.CreateDefaultSets(portalId, permissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
 
                 var sKey = "F:" + forumId.ToString();
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sb = new StringBuilder();
             foreach (DataRow dr in dt.Rows)
             {
-                var bView = Permissions.HasPerm(dr["CanView"].ToString(), currentUser.UserRoles);
+                var bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanView"].ToString(), currentUser.UserRoles);
                 var groupName = Convert.ToString(dr["GroupName"]);
                 var groupId = Convert.ToInt32(dr["ForumGroupId"]);
                 var groupKey = groupName + groupId.ToString();
@@ -421,7 +421,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
                             permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                            permSet = Permissions.AddPermToSet(groupAdmin, 2, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(groupAdmin, 2, permSet);
                             forumsDb.SavePermSet(permissionsId, secKey, permSet);
                         }
                     }
@@ -437,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 continue;
 
                             permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                            permSet = Permissions.AddPermToSet(groupMember, 0, permSet);
+                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(groupMember, 0, permSet);
                             forumsDb.SavePermSet(permissionsId, secKey, permSet);
                         }
                     }
@@ -456,7 +456,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     continue;
 
                                 permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = Permissions.AddPermToSet(ri.RoleID.ToString(), 0, permSet);
+                                permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(ri.RoleID.ToString(), 0, permSet);
                                 forumsDb.SavePermSet(permissionsId, secKey, permSet);
                             }
                         }
@@ -472,7 +472,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     continue;
 
                                 permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = Permissions.AddPermToSet("-1", 0, permSet);
+                                permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet("-1", 0, permSet);
                                 forumsDb.SavePermSet(permissionsId, secKey, permSet);
                             }
                         }

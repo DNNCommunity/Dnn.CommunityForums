@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var fc = new ForumController();
             ForumInfo fi = fc.Forums_Get(PortalId, ModuleId, ForumId, false, -1);
 
-            if (Permissions.HasPerm(fi.Security.Subscribe, UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, UserRoles))
             {
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
             }
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!(sl.Contains(si)))
                     {
-                        if (Permissions.HasPerm(CanSubscribe, si.UserId, PortalId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(CanSubscribe, si.UserId, PortalId))
                         {
                             sl.Add(si);
                         }

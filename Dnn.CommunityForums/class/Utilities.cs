@@ -93,8 +93,8 @@ namespace DotNetNuke.Modules.ActiveForums
             if (string.IsNullOrEmpty(template))
                 return string.Empty;
 
-            if (!(template.Contains(Globals.ControlRegisterTag)))
-                template = Globals.ControlRegisterTag + template;
+            if (!(template.Contains(Globals.ForumsControlsRegisterAMTag)))
+                template = Globals.ForumsControlsRegisterAMTag + template;
 
             template = ParseSpacer(template);
 
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (Match match in matches)
             {
                 var sRoles = match.Groups[3].Value;
-                if (Permissions.HasAccess(sRoles, userRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(sRoles, userRoles))
                 {
                     template = template.Replace(match.Groups[1].Value, string.Empty);
                     template = template.Replace(match.Groups[5].Value, string.Empty);
@@ -280,10 +280,10 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                    || user == null
                    || user.IsAdmin
                    || user.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
-                   || Permissions.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
-                   || Permissions.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
-                   || Permissions.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
+                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
                    || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval
                    || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastReply, DateTime.UtcNow) > floodInterval;
         }

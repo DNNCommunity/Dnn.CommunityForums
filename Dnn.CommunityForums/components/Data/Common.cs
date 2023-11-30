@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			foreach (DataRow row in dt.Rows)
 			{
 				string canView = row["CanView"].ToString();
-				if (Permissions.HasPerm(canView, UserRoles))
+				if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canView, UserRoles))
 				{
 					sForums += row["ForumId"].ToString() + ":";
 				}
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				string canView = dt.Rows[0]["CanView"].ToString();
 				foreach (string role in UserRoles.Split(";".ToCharArray()))
 				{
-					if (Permissions.HasPerm(canView, string.Concat(role, ";||")))
+					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canView, string.Concat(role, ";||")))
 					{
 						sRoles += role + ":";
 					}

@@ -249,23 +249,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             dtAnnounce = ds.Tables[4];
                         }
 
-                        bView = Permissions.HasPerm(drSecurity["CanView"].ToString(), ForumUser.UserRoles);
-                        bRead = Permissions.HasPerm(drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
-                        //bCreate = Permissions.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
-                        bEdit = Permissions.HasPerm(drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
-                        bDelete = Permissions.HasPerm(drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
-                        //bReply = Permissions.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
-                        bPoll = Permissions.HasPerm(drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
+                        bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanView"].ToString(), ForumUser.UserRoles);
+                        bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
+                        //bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
+                        bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
+                        bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
+                        //bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
+                        bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
 
-                        bSubscribe = Permissions.HasPerm(drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
-                        bModMove = Permissions.HasPerm(drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-                        bModSplit = Permissions.HasPerm(drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
-                        bModDelete = Permissions.HasPerm(drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
-                        bModApprove = Permissions.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
-                        bModEdit = Permissions.HasPerm(drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
-                        bModPin = Permissions.HasPerm(drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
-                        bModLock = Permissions.HasPerm(drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
-                        bModApprove = Permissions.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+                        bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
+                        bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+                        bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
+                        bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
+                        bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+                        bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
+                        bModPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
+                        bModLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
+                        bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
 
                         ControlUtils ctlUtils = new ControlUtils();
                         sGroupURL = ctlUtils.BuildUrl(TabId, ModuleId, ForumInfo.ForumGroup.PrefixURL, string.Empty, ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
