@@ -1,3 +1,20 @@
+/* Module Branding on Top #490 */	
+.dcf-community-msg{
+		border: solid 1px #ddd;
+		padding: 1em;
+		margin: 0 0 1em;
+		display:flex;
+		flex-wrap: wrap;
+		gap: 1em 2em ;
+		align-items: center;
+	}
+	.dcf-community-msg .dcf-community-msg-logo{
+		width: 300px;
+	}
+	.dcf-community-msg-text{
+		min-width: 300px;
+	}
+	
 .cpshell{margin-top:8px;border:1px solid #375162;background-color:#A1B3C1;}
 .cpvshim{height:450px;width:1px;float:right;}
 .cpnav{width:180px;float:left;margin-top:12px;}
@@ -54,7 +71,7 @@ border-bottom-left-radius: 4px;}
 .amcpwarn{border-color:#ffcc00;background-color:#ffffcc;}
 .amcpwarn i{background-image:url(images/warn32.png);}
 
-.amcplnkbtn{text-align:left;font-family:Tahoma;font-size:11px;font-weight:bold; color:#666666;cursor:hand;cursor:pointer;display:inline;padding-right:15px;}
+.amcplnkbtn{text-align:left;font-family:Tahoma;font-size:11px;font-weight:bold; color:#000000;cursor:hand;cursor:pointer;display:inline;padding-right:15px;}
 .amcpcontainer{display:block;border: solid 1px #aaaaaa;min-width: 650px;background-color: #f5f5f5;margin-left:auto;margin-right:auto;}
 .amcpcontainer td {font-family:Tahoma;font-size:12px; color:#666666; text-align:left;}
 .afloader{background-color:#f5f5f5;opacity: 0.5;-ms-opacity: 0.5;-moz-opacity: 0.5;filter: alpha(opacity=50);}
@@ -64,7 +81,7 @@ border-bottom-left-radius: 4px;}
 .aflistflat a,.aflistflat a:link,.aflistflat a:visited,.aflistflat a:active, .aflistflat a:hover{font-size:12px; cursor:pointer;}
 .amtabdisplay{width:auto;min-height:400px;}
 .amcpsubnav{padding-left:10px;padding-top:3px;padding-bottom:3px;background:#ddd;text-align:left;}
-.amcpsubnav .amcplnkbtn{color:#f5f5f5;}
+.amcpsubnav .amcplnkbtn{color:#000000;}
 .amcpbrdnav{font-family:Tahoma;font-size:12px;color:#666; background-color:#ebf2ff;text-align:left;padding-top:4px;padding-left:4px;padding-bottom:4px}
 .amcpbrdnavitem{cursor:pointer;}
 .amcpcontrols{min-height:490px;font-family:Tahoma;font-size:11px; padding-top:5px;padding-left:10px;padding-right:10px;text-align:left;border-top:solid 1px #aaa;}
@@ -89,16 +106,6 @@ border-bottom-left-radius: 4px;}
 .agrowedit, .afrowedit{cursor:pointer;font-weight:bold;text-decoration:underline;}
 .amsmallbtn,.amsmallbtn_over{width:50px;min-height:20px;padding-right:2px;padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;margin-left:0px;margin-right:5px;font-size: 11px;font-family: Tahoma;color: #666;height: 22px;border:solid 1px #666;background-image: url(images/buttonback.png);cursor:pointer;position: static;text-decoration:none;display:block;clear:right;}
 
-
-/* quick fix for secuirty width */
-	.afsecgrid > div > table{
-		table-layout:fixed;
-		width:100%;
-	}
-
-.afsecgrid > div > table > tbody > tr > td:first-child {
-	width:200px;
-}
 	.amsmallbtn img, .amsmallbtn_over img {
 		margin-left: 2px;
 		margin-right: 1px;

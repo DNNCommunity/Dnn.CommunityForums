@@ -44,10 +44,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (ControlConfig != null)
             {
-                object obj = DataCache.CacheRetrieve(ControlConfig.InstanceId + "aftb");
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();
+                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Toolbar, ModuleId), sTemp);
                 }
                 else
                 {
@@ -83,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         private string ParseTemplate()
         {
-            string tb = DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, InstanceId, UserId, CurrentUserTypes.Admin)
+            string tb = DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, ModuleId, UserId, CurrentUserTypes.Admin)
             //tb = tb.Replace
             tb = tb.Replace("[AF:TB:Unanswered]", "<af:link id=\"lnkUnanswered\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=unanswered" }) + "\" text=\"[RESX:Unanswered]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:ActiveTopics]", "<af:link id=\"lnkActive\" NavigateURL=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=activetopics" }) + "\" text=\"[RESX:ActiveTopics]\" runat=\"server\" />");
@@ -91,13 +92,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb = tb.Replace("[AF:TB:Forums]", "<af:link id=\"lnkForums\" navigateUrl=\"" + Utilities.NavigateUrl(PageId) + "\" text=\"[RESX:FORUMS]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:NotRead]", "<af:link id=\"lnkNotRead\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=notread" }) + "\" text=\"[RESX:NotRead]\" AuthRequired=\"True\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:MyTopics]", "<af:link id=\"lnkMyTopics\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=mytopics" }) + "\" text=\"[RESX:MyTopics]\" AuthRequired=\"True\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:MostLiked]", "<af:link id=\"lnkMostLiked\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=mostliked" }) + "\" text=\"[RESX:MostLiked]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:MostReplies]", "<af:link id=\"lnkMostReplies\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=mostreplies" }) + "\" text=\"[RESX:MostReplies]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:MyProfile]", string.Empty);
             tb = tb.Replace("[AF:TB:MemberList]", string.Empty);
             tb = tb.Replace("[AF:TB:MySettings]", string.Empty);
-            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.InstanceId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateUrl(PageId, "EDIT", "mid=" + ControlConfig.ModuleId) + "\" EnabledRoles=\"" + ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
             //TODO: Check for moderator
             tb = tb.Replace("[AF:TB:ModList]", string.Empty);
-            DataCache.CacheStore(ControlConfig.InstanceId + "aftb", tb);
             return tb;
         }
     }

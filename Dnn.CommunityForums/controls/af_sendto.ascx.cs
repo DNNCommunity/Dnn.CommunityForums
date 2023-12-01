@@ -24,6 +24,7 @@ using System.Data;
 
 using System.Web.UI;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -47,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (TopicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, true);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, true);
                 if (ti != null)
                 {
                     if (Permissions.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
@@ -141,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!(sMessage == string.Empty) && !(sSubject == string.Empty))
                     {
-                        Email.SendNotification(PortalId, UserInfo.Email, sEmail, sSubject, sMessage, sMessage.Replace(System.Environment.NewLine, "<br />"));
+                        Email.SendNotification(PortalId, UserInfo.Email, sEmail, sSubject, sMessage.Replace(System.Environment.NewLine, "<br />"));
                     }
 
 

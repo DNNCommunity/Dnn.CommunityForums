@@ -28,6 +28,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -88,8 +89,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			try
 			{
 				string output = string.Empty;
-				DotNetNuke.Entities.Portals.PortalSettings ps = (DotNetNuke.Entities.Portals.PortalSettings)(Context.Items["PortalSettings"]);
-				DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
+                PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+
+                DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
 				string imagePath = string.Empty;
 				int portalId = ps.PortalId;
 				string tmp = string.Empty;
@@ -103,10 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				if (ModuleId == -1)
 				{
-					DotNetNuke.Entities.Modules.ModuleController mc = new DotNetNuke.Entities.Modules.ModuleController();
-					DotNetNuke.Entities.Tabs.TabController tc = new DotNetNuke.Entities.Tabs.TabController();
-					DotNetNuke.Entities.Tabs.TabInfo ti = null;
-					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(portalId))
+					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId))
 					{
 						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
 						{

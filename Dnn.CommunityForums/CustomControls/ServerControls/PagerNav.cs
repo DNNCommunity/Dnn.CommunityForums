@@ -109,10 +109,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     BaseURL += "/";
                 }
-                if (!(BaseURL.StartsWith("/")))
-                {
-                    BaseURL = "/" + BaseURL;
-                }
             }
 
             var qs = string.Empty;

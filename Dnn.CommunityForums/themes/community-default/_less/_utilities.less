@@ -1,0 +1,27 @@
+
+// Utility Classes
+
+    // Table
+    .dcf-table-100 {
+        width: 100%;
+    }
+
+    .dcf-d-none {
+        display: none;
+    }
+
+    .dcf-invisible {
+        // Hide, but not for screen readers
+
+        position: absolute !important;
+        clip: rect(1px, 1px, 1px, 1px);
+
+    }
+
+    .dcf-d-none-mob {
+        display: none;
+
+        @media screen and (min-width: @break-tablet) {
+            display: initial;
+        }
+    }

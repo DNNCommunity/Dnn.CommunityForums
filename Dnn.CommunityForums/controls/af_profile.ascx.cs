@@ -37,9 +37,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (SimulateIsNumeric.IsNumeric(Request.Params["UID"]))
                 {
-                    tUid = Convert.ToInt32(Request.Params["UID"]);
-                    DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-                    DotNetNuke.Entities.Users.UserInfo ui = uc.GetUser(PortalId, tUid);
+                    tUid = Convert.ToInt32(Request.Params["UID"]); 
+                    DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tUid);
                     if (ui != null)
                     {
                         sDisplayName = UserProfiles.GetDisplayName(ModuleId, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);

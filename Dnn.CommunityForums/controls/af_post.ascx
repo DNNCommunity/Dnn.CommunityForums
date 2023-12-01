@@ -163,9 +163,10 @@
     <asp:PlaceHolder ID="plhMessage" runat="server" />
     <asp:PlaceHolder ID="plhContent" runat="server" />
 
-    <div id="divPreviewWindow" class="afpreview">
-        <div class="afpreviewbar">
-            <img src="<%=ImagePath%>/delete_new.gif")%>" align="right" onclick="closePreview();" /><%=PreviewText%></div>
+    <div id="divPreviewWindow" class="dcf-preview afpreview">
+        <div class="dcf-preview-bar afpreviewbar">
+             <a class="dcf-close-preview-button" onclick="closePreview(); return(false)"><i class="fa fa-times-circle" aria-hidden="true"></i></a><%=PreviewText%>
+        </div>
         <div id="divPreviewText" class="afpreviewtext"></div>
     </div>
     <am:Callback ID="cbPreview" runat="server" OnCallbackComplete="cbPreview_render">

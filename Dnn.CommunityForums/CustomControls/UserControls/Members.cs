@@ -98,17 +98,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
-            string sTemplate = string.Empty;
-            if (System.IO.File.Exists(Server.MapPath(ImagePath + "/_memberlist.txt")))
-            {
-                sTemplate = Utilities.GetFileContent(Server.MapPath(ImagePath + "/_memberlist.txt"));
-            }
-            else
-            {
-                sTemplate = Utilities.GetFileContent(Server.MapPath("~/DesktopModules/ActiveForums/config/templates/_memberlist.txt"));
-            }
-
-
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
+            string sTemplate = TemplateCache.GetCachedTemplate(ForumModuleId, "_memberlist", 0);
             if (!(sTemplate == string.Empty))
             {
                 string sGrid = TemplateUtils.GetTemplateSection(sTemplate, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
@@ -134,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
-                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType, TimeZoneOffset);
+                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType,false,false,false,string.Empty,-1, TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }

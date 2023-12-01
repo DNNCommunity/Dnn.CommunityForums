@@ -165,6 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Topics
         public abstract int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress);
         public abstract void Topics_Delete(int ForumId, int TopicId, int DelBehavior);
+        public abstract void Topics_Delete_For_User(int ModuleId, int UserId, int DelBehavior);
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);
         public abstract int Topics_GetRating(int TopicId);
         public abstract IDataReader Topics_List(int ForumId, int PortalId, int ModuleId);
@@ -183,8 +184,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #region MailQueue
         public abstract IDataReader Queue_List();
         public abstract void Queue_Delete(int EmailId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC).")]
         public abstract void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC).")]
         public abstract void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC);
+        public abstract void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC);
         #endregion
 
         #region Maintenance
@@ -203,6 +207,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet UI_UnansweredView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper);
         public abstract DataSet UI_MyTopicsView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper);
         public abstract DataSet UI_ActiveView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
+        public abstract DataSet UI_MostLiked(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
+        public abstract DataSet UI_MostReplies(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
         #endregion
 
         #region Utility Items

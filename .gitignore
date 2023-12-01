@@ -158,3 +158,8 @@ $tf/
 sql/Копия 05.02.02.SqlDataProvider
 .vs/
 themes/.gitignore
+
+# Ignore DNN artifacts  
+[Ww]ebsite/
+/BuildScripts/ICSharpCode.SharpZipLib.dll
+/BuildScripts/MSBuild.Community.Tasks.dll

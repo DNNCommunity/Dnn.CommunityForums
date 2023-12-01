@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		protected override void Render(HtmlTextWriter writer)
 		{
 			this.EnableViewState = false;
-			FilePath = HttpContext.Current.Server.MapPath(FilePath);
+			FilePath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(FilePath);
 			string sControl = Utilities.GetFile(FilePath);
 			sControl = sControl.Replace("{id}", ControlId);
 			sControl = sControl.Replace("{height}", Height);

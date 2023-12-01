@@ -1,0 +1,14 @@
+/* 
+	CSS that is applied prior to any theme.
+	This file is delivered during installation of DNN Community Forums, 
+	may be overwritten during upgrades, and should not be updated by site administrators.
+
+	It can be overridden by declaring CSS in the theme.css located in a theme-specific folder and the /custom/theme.css.
+	
+    Community Forums's CSS Load order: 
+    1) ~/DesktopModules/ActiveForums/module.css
+    2) ~/DesktopModules/ActiveForums/themes/themes{.min}.css
+    3) ~/DesktopModules/ActiveForums/themes/<currenttheme>/theme{.min}.css
+    4) ~/DesktopModules/ActiveForums/themes/<currenttheme>/custom/theme{.min}.css 
+
+*/

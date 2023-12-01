@@ -38,25 +38,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Event Handlers
-        //Dim sb As New StringBuilder
-        //Dim fl As New ForumCollection
-        //Dim db As New Data.Forums
-        //    fl = db.Forums_List(PortalId, ModuleId, UserId, String.Empty)
-
-        //    For Each f As Forum In fl
-        //        sb.Append(f.ForumName)
-        //        sb.Append("<br />")
-        //    Next
-        //    writer.Write(sb.ToString)
-        protected override void OnInit(EventArgs e)
+         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             string sTemp;
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
 
-            object obj = DataCache.CacheRetrieve(ModuleId + ForumGroupId + "fvt");
-            sTemp = obj == null ? ParseTemplate() : Convert.ToString(obj);
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumViewTemplate,ModuleId,ForumGroupId));
+            if (obj == null)
+            {
+                sTemp = ParseTemplate(); 
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumViewTemplate, ModuleId, ForumGroupId),sTemp);
+            }
+            else
+            {
+                sTemp = Convert.ToString(obj);
+            }
             sTemp = Utilities.LocalizeControl(sTemp);
             if (!(sTemp.Contains(Globals.ControlRegisterAFTag)))
             {
@@ -109,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 groupTemplate = TemplateUtils.GetTemplateSection(DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
             var db = new Data.ForumsDB();
-            ForumData = db.ForumListXML(ControlConfig.SiteId, ControlConfig.InstanceId);
+            ForumData = db.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
             if (ForumData != null)
             {
                 XmlNodeList xGroups;
@@ -165,7 +163,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //sOut = sOut.Replace("[JUMPTO]", String.Empty)
             //sOut = sOut.Replace("[TEMPLATE:TOOLBAR]", "<af:toolbar id=""ctlToolbar"" templatefile=""toolbar.htm"" runat=""server"" />")
 
-            //DataCache.CacheStore(ModuleId & "fvt", sOut)
             return sOut;
         }
         private string ParseForumRow(XmlNode fNode, string Template, string GroupName)

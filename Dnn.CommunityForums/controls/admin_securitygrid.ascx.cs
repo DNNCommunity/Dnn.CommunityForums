@@ -105,8 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
 			sb.Append("<option value=\"-1\">All Users</option>");
 			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
-			DotNetNuke.Security.Roles.RoleController rc = new DotNetNuke.Security.Roles.RoleController();
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in rc.GetPortalRoles(PortalId))
+			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Permissions.GetRoles(PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
 			}
@@ -145,8 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(tmp, PortalId);
-			RoleController rc = new RoleController();
+            NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
@@ -154,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				pi.ObjectName = nvc[key];
 				if (string.IsNullOrEmpty(pi.ObjectName))
 				{
-					pi.ObjectName = rc.GetRole(Convert.ToInt32(key), PortalId).RoleName;
+					pi.ObjectName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: Convert.ToInt32(key)).RoleName;
 				}
 				pi.Type = ObjectType.RoleId;
 				pl.Add(pi);
@@ -165,12 +163,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string userNames = string.Empty;
 			if (! (string.IsNullOrEmpty(users)))
 			{
-				DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
 				foreach (string uid in users.Split(';'))
 				{
 					if (! (string.IsNullOrEmpty(uid)))
 					{
-						DotNetNuke.Entities.Users.UserInfo u = uc.GetUser(PortalId, Convert.ToInt32(uid));
+						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
 						if (u != null)
 						{
 							PermissionInfo pi = new PermissionInfo();
@@ -194,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 						string gType = g.Split(':')[1];
 						int groupId = Convert.ToInt32(g.Split(':')[0]);
-						RoleInfo role = rc.GetRole(groupId, PortalId);
+						RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: groupId);
 						string groupName = role.RoleName;
 						if (! (string.IsNullOrEmpty(groupName)))
 						{

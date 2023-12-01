@@ -23,6 +23,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -43,31 +44,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #endregion
         #region Private Members
         private string _Subject = string.Empty;
-        private string _topicSubject = string.Empty;
         private string _Summary = string.Empty;
         private string _Body = string.Empty;
-        private string _Template = string.Empty;
-        private ImageButton _PostButton = new ImageButton();
-        private ImageButton _CancelButton = new ImageButton();
         private string _clientId;
         private string _topicIcon;
         private bool _locked;
         private bool _checked;
         private bool _pinned;
-        private bool _subscribed;
         private DateTime _announceStart = DateTime.MinValue;
         private DateTime _announceEnd = DateTime.MinValue;
-        private string _categories = string.Empty;
         private string _pollQuestion;
         private string _pollType;
         private string _pollOptions;
         private int _statusId = -1;
         private string _AuthorName = string.Empty;
-        private string _postbackScript = string.Empty;
         private string _topicReviewTemplate = string.Empty;
-        private int _contentId = -1;
-        private int _authorId = -1;
-        private bool _requireCaptcha = true;
         private int _topicPriority;
         private bool canModEdit;
         private bool canModApprove;
@@ -83,23 +74,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Public Properties
-        public string Template
-        {
-            get
-            {
-                return _Template;
-            }
-            set
-            {
-                _Template = value;
-            }
-        }
+        public string Template { get; set; } = string.Empty;
         public string AuthorName
         {
             get
-            {
-                return txtUsername.Text;
-            }
+            => txtUsername.Text;
             set
             {
                 _AuthorName = value;
@@ -108,33 +87,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public string Subject
         {
-            get
-            {
-                return txtSubject.Text;
-            }
+            get => txtSubject.Text;
             set
             {
                 _Subject = value;
                 txtSubject.Text = value;
             }
         }
-        public string TopicSubject
-        {
-            get
-            {
-                return _topicSubject;
-            }
-            set
-            {
-                _topicSubject = value;
-            }
-        }
+        public string TopicSubject { get; set; } = string.Empty;
         public string Summary
         {
-            get
-            {
-                return txtSummary.Text;
-            }
+            get => txtSummary.Text;
             set
             {
                 _Summary = value;
@@ -165,60 +128,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     return _Body;
-                }
-                //Return String.Empty
+                } 
                 return tempBody;
             }
             set
             {
                 _Body = value;
-                //txtBody.Text = value
             }
         }
-        public ImageButton PostButton
-        {
-            get
-            {
-                return _PostButton;
-            }
-            set
-            {
-                _PostButton = value;
-            }
-        }
-        public ImageButton CancelButton
-        {
-            get
-            {
-                return _CancelButton;
-            }
-            set
-            {
-                _CancelButton = value;
-            }
-        }
-
+        public ImageButton PostButton { get; set; } = new ImageButton();
+        public ImageButton CancelButton { get; set; } = new ImageButton();
         public EditorTypes EditorType { get; set; }
-
         public Forum ForumInfo { get; set; }
-
-        //Public Property TopicInfo() As TopicInfo
-        //    Get
-        //        Return _topicInfo
-        //    End Get
-        //    Set(ByVal value As TopicInfo)
-        //        _topicInfo = value
-        //    End Set
-        //End Property
         public string TopicIcon
         {
-            get
-            {
-                string tempTopicIcon = string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
-
-                //Return _topicIcon
-                return tempTopicIcon;
-            }
+            get => string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
             set
             {
                 _topicIcon = value;
@@ -227,10 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public bool Locked
         {
-            get
-            {
-                return chkLocked.Checked;
-            }
+            get => chkLocked.Checked;
             set
             {
                 _locked = value;
@@ -239,34 +160,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public bool Pinned
         {
-            get
-            {
-                return chkPinned.Checked;
-            }
+            get => chkPinned.Checked;
             set
             {
                 _pinned = value;
                 chkPinned.Checked = value;
             }
         }
-        public bool Subscribe
-        {
-            get
-            {
-                return chkSubscribe.Checked;
-            }
-            set
-            {
-                _subscribed = value;
-                chkSubscribe.Checked = value;
-            }
-        }
         public bool IsApproved
         {
-            get
-            {
-                return chkApproved.Checked;
-            }
+            get => chkApproved.Checked;
             set
             {
                 _checked = value;
@@ -275,21 +178,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public bool IsAnnounce
         {
-            get
-            {
-                return chkAnnounce.Checked;
-            }
-            set
-            {
-                chkAnnounce.Checked = value;
-            }
+            get => chkAnnounce.Checked;
+            set => chkAnnounce.Checked = value;
         }
         public int TopicPriority
         {
-            get
-            {
-                return int.Parse(txtTopicPriority.Text);
-            }
+            get => int.Parse(txtTopicPriority.Text);
             set
             {
                 txtTopicPriority.Text = value.ToString();
@@ -340,9 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string EditorClientId
         {
             get
-            {
-                return _clientId;
-            }
+            => _clientId;
         }
 
         public string AttachmentsClientId { get; set; }
@@ -351,24 +243,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Tags { get; set; }
 
-        public string Categories
-        {
-            get
-            {
-                return _categories;
-            }
-            set
-            {
-                _categories = value;
-            }
-        }
+        public string Categories { get; set; } = string.Empty;
 
         public string PollQuestion
         {
-            get
-            {
-                return afpolledit.PollQuestion;
-            }
+            get => afpolledit.PollQuestion;
             set
             {
                 _pollQuestion = value;
@@ -378,9 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string PollType
         {
             get
-            {
-                return afpolledit.PollType;
-            }
+            => afpolledit.PollType;
             set
             {
                 _pollType = value;
@@ -390,9 +267,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string PollOptions
         {
             get
-            {
-                return afpolledit.PollOptions;
-            }
+            => afpolledit.PollOptions;
             set
             {
                 _pollOptions = value;
@@ -405,58 +280,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int StatusId
         {
             get
-            {
-                return aftopicstatus.Status;
-            }
+            => aftopicstatus.Status;
             set
             {
                 _statusId = value;
                 aftopicstatus.Status = value;
             }
         }
-        public string PostBackScript
-        {
-            get
-            {
-                return _postbackScript;
-            }
-        }
-        public int ContentId
-        {
-            get
-            {
-                return _contentId;
-            }
-            set
-            {
-                _contentId = value;
-            }
-        }
-        public int AuthorId
-        {
-            get
-            {
-                return _authorId;
-            }
-            set
-            {
-                _authorId = value;
-            }
-        }
-
+        public string PostBackScript { get; } = string.Empty;
+        public int ContentId { get; set; } = -1;
+        public int AuthorId { get; set; } = -1;
         public bool AllowHTML { get; set; }
-
-        public bool RequireCaptcha
-        {
-            get
-            {
-                return _requireCaptcha;
-            }
-            set
-            {
-                _requireCaptcha = value;
-            }
-        }
+        public bool RequireCaptcha { get; set; } = true;
         public List<PropertiesInfo> TopicProperties { get; set; }
         #endregion
         #region Protected Controls
@@ -478,8 +313,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_topicstatus aftopicstatus = new af_topicstatus();
         protected CheckBox chkLocked = new CheckBox();
         protected CheckBox chkPinned = new CheckBox();
-        protected CheckBox chkSubscribe = new CheckBox();
-        protected CheckBox chkAnnounce = new CheckBox();
+        protected CheckBox chkAnnounce = new CheckBox(); 
         protected CheckBox chkApproved = new CheckBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqSubject = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected Label reqCustomBody = new Label();
@@ -512,8 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForm(string template)
         {
-            bool hasOptions = false;
-            template = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + template;
+            template = Globals.ControlRegisterTag + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
             template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:SUBJECT]", "<asp:requiredfieldvalidator id=\"reqSubject\" validationgroup=\"afform\" ControlToValidate=\"txtSubject\" runat=\"server\" />");
@@ -526,17 +359,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:BODY:TEMPLATE]", "[/AF:BODY:TEMPLATE]");
             }
             if (template.Contains("[TOOLBAR"))
-            {
-                var lit = new LiteralControl();
-                object sToolbar = DataCache.CacheRetrieve("aftb" + ModuleId);
-                if (sToolbar == null)
-                {
-                    sToolbar = Utilities.GetFileContent(HttpContext.Current.Server.MapPath(MainSettings.TemplatesLocation + "\\ToolBar.txt"));
-                    sToolbar = Utilities.ParseToolBar(template: sToolbar.ToString(), forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType);
-                    DataCache.CacheStore("aftb" + ModuleId, sToolbar);
-                }
-                lit.Text = sToolbar.ToString();
-                template = template.Replace("[TOOLBAR]", sToolbar.ToString());
+            { 
+                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");
@@ -546,9 +370,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (template.Contains("[AF:UI:ANON]"))
                 {
+                    template = Globals.DnnControlsRegisterTag + template;
                     template = template.Replace("[AF:INPUT:USERNAME]", "<asp:textbox id=\"txtUsername\" cssclass=\"aftextbox\" runat=\"server\" />");
                     template = template.Replace("[AF:REQ:USERNAME]", "<asp:requiredfieldvalidator id=\"reqUsername\" validationgroup=\"afform\" ControlToValidate=\"txtUsername\" runat=\"server\" />");
-                    template = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + template;
                     template = template.Replace("[AF:INPUT:CAPTCHA]", "<dnn:captchacontrol  id=\"ctlCaptcha\" captchawidth=\"130\" captchaheight=\"40\" cssclass=\"Normal\" runat=\"server\" errorstyle-cssclass=\"NormalRed\"  />");
                     if (!RequireCaptcha)
                     {
@@ -567,16 +391,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (EditorMode != EditorModes.NewTopic || EditorMode != EditorModes.EditTopic)
             {
-                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('TopicReview');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTopicReview\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:TOPICREVIEW]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:TopicReview]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
+                DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTopicReview", title: string.Empty) +
+                "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTopicReview\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:TopicReview:Note]</div>");
                 _topicReviewTemplate = TemplateUtils.GetTemplateSection(template, "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTopicReview\" runat=\"server\" />", "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = template.Replace("[/AF:UI:SECTION:TOPICREVIEW]", "</td></tr></table>");
             }
             if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Tags');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionTags\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTags", title: string.Empty) +
+                    "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionTags\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:TAGS]", "<fieldset class=\"affieldset\"><legend>[RESX:Tags]</legend><div class=\"affieldsetnote\">[RESX:Tags:Note]</div>");
-                string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.Get("editor", "[AF:CONTROL:TAGS]");
+                string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(ForumModuleId, "editor", "[AF:CONTROL:TAGS]");
                 if (string.IsNullOrEmpty(sTagOut))
                 {
                     //sTagOut = "<am:textsuggest id=""tsTags"" runat=""server"" DataTextField=""TagName"" DataValueField=""TagName"" CssResults=""aftsresults"" CssResultItems=""aftsresultsitems"" CssResultItemsSelected=""aftsresultsel""  CssClass=""aftagstxt"" Width=""99%"" />"
@@ -708,10 +536,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
-                template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Categories');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionCategories\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionCategories", title: string.Empty) +
+                    "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionCategories\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 template = template.Replace("[AF:UI:FIELDSET:CATEGORIES]", "<fieldset class=\"affieldset\"><legend>[RESX:Categories]</legend><div class=\"affieldsetnote\">[RESX:Categories:Note]</div>");
                 string sCatOut;
-                var cc = new CategoriesList(PortalId, ModuleId, ForumInfo.ForumID, ForumInfo.ForumGroupId);
+                var cc = new CategoriesList(PortalId, ForumModuleId, ForumInfo.ForumID, ForumInfo.ForumGroupId);
                 if (TopicId > 0)
                 {
                     cc.SelectedValues = Categories;
@@ -724,12 +554,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
             {
                 template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_polledit.ascx\" tagprefix=\"af\" tagname=\"polledit\" %>" + template;
-                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Poll');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\"><img id=\"imgSectionPoll\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
+                template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td>"+
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionPoll", title: string.Empty) +
+                    "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionPoll\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[/AF:UI:SECTION:POLL]", "</td></tr></table>");
                 template = template.Replace("[AF:UI:FIELDSET:POLL]", "<fieldset class=\"affieldset\"><legend>[RESX:Polls]</legend><div class=\"affieldsetnote\">[RESX:Poll:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POLL]", "<af:polledit id=\"afpolledit\" runat=\"server\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POLL]", "</fieldset>");
-                template = template.Replace("[AF:CONTROLS:SECTIONTOGGLE]", "<img id=\"imgSectionPoll\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\" onclick=\"aftoggleSection('Poll');\" />");
+                template = template.Replace("[AF:CONTROLS:SECTIONTOGGLE]",string.Empty);
             }
             else
             {
@@ -764,7 +597,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Options');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\"><img id=\"imgSectionOptions\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" /></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
+                    template = template.Replace("[AF:UI:SECTION:OPTIONS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                        "<tr>"+"<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:AdditionalOptions]</td>"+
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\" class=\"afarrow\">"+ 
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionOptions", title: string.Empty)+
+                    "</td></tr>" + 
+                    "<tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionOptions\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Options:Note]</div>");
                     template = template.Replace("[/AF:UI:SECTION:OPTIONS]", "</td></tr></table>");
                 }
 
@@ -805,11 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
             {
                 var objUtils = new emoticons();
-                //Dim obj As Object = DataCache.CacheRetrieve(ForumModuleId & "Emoticons" & EditorType.ToString)
-                //If obj Is Nothing Then
-                //    DataCache.CacheStore(ForumModuleId & "Emoticons" & EditorType.ToString) = objUtils.LoadEmoticons(EditorType, ForumModuleId, ImagePath)
-                //End If
-                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
+               template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
             }
             else
             {
@@ -821,7 +655,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_attach.ascx\" tagprefix=\"af\" tagname=\"attach\" %>" + template;
                     template = template.Replace("[AF:UI:FIELDSET:ATTACH]", "<fieldset class=\"affieldset\"><legend>[RESX:Attachments]</legend><div class=\"affieldsetnote\">[RESX:Attacments:Note]</div>");
-                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr onclick=\"aftoggleSection('Attach');\"><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\"><img id=\"imgSectionAttach\" src=\"" + ImagePath + "/arrows_left.png\" border=\"0\" class=\"afarrow\"/></td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
+                    template = template.Replace("[AF:UI:SECTION:ATTACH]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                        "<tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Attachments]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
+                        DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionAttach", title: string.Empty) +
+                        "</td></tr><tr><td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionAttach\" style=\"display:none;\"><div class=\"affieldsetnote\">[RESX:Attachments:Note]</div>");
                     template = template.Replace("[AF:CONTROL:UPLOAD]", "<af:attach id=\"ctlAttach\" runat=\"server\" />");
                     template = template.Replace("[/AF:UI:FIELDSET:ATTACH]", "</fieldset>");
                     template = template.Replace("[/AF:UI:SECTION:ATTACH]", "</td></tr></table>");
@@ -867,10 +704,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<td><asp:checkbox id=\"chkPinned\" Text=\"[RESX:Pinned:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
                 bHasOptions = true;
             }
+
             if (canSubscribe)
             {
-                sb.Append("<tr><td>[RESX:Subscribe]:</td>");
-                sb.Append("<td><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:Subscribe:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
+                var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
+                subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
+                subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
                 bHasOptions = true;
             }
             if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && Permissions.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
@@ -1099,7 +939,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             chkLocked.Checked = _locked;
             chkPinned.Checked = _pinned;
             chkApproved.Checked = _checked;
-            chkSubscribe.Checked = _subscribed;
+
             txtTopicPriority.Text = _topicPriority.ToString();
             if (AnnounceEnd > Utilities.NullDate())
             {
@@ -1243,9 +1083,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     case "chkPinned":
                         chkPinned = (CheckBox)ctrl;
-                        break;
-                    case "chkSubscribe":
-                        chkSubscribe = (CheckBox)ctrl;
                         break;
                     case "txtTopicPriority":
                         txtTopicPriority = (TextBox)ctrl;
