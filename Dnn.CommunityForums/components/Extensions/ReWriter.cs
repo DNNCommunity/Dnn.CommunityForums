@@ -441,8 +441,14 @@ namespace DotNetNuke.Modules.ActiveForums
 						case 5:
 							v = "afprofile";
 							break;
+                        case 6:
+                            v = "mostliked";
+                            break;
+                        case 7:
+                            v = "mostreplies";
+                            break;
 
-					}
+                    }
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=" + v + sPage + qs);
 				}
 				else if (_tabId > 0)

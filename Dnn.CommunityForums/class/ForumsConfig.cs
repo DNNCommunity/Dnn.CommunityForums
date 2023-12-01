@@ -35,6 +35,7 @@ using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Data;
 using System.Reflection;
 using DotNetNuke.Instrumentation;
+using System.Web.UI;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -138,18 +139,9 @@ namespace DotNetNuke.Modules.ActiveForums
 								PortalId = PortalId,
 								ModuleId = ModuleId,
 								Title = xNodeList[i].Attributes["templatetitle"].Value,
-								Subject = xNodeList[i].Attributes["templatesubject"].Value
-							};
-							string sHTML;
-							sHTML = Utilities.GetFileContent(xNodeList[i].Attributes["importfilehtml"].Value);
-							string sText;
-							sText = Utilities.GetFileContent(xNodeList[i].Attributes["importfiletext"].Value);
-							string sTemplate = sText;
-							if (sHTML != string.Empty)
-							{
-								sTemplate = string.Concat("<template><html>", HttpContext.Current.Server.HtmlEncode(sHTML), "</html><plaintext>", sText, "</plaintext></template>");
-							}
-							ti.Template = sTemplate;
+								Subject = xNodeList[i].Attributes["templatesubject"].Value,
+								Template = Utilities.GetFileContent(xNodeList[i].Attributes["templatefile"].Value)
+	                        };
 							tc.Template_Save(ti);
 						}
 					}
@@ -206,6 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var tc = new TemplateController();
                     int ProfileInfoTemplateId = tc.Template_Get(TemplateName: "ProfileInfo", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int ReplyEditorTemplateId = tc.Template_Get(TemplateName: "ReplyEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+                    int QuickReplyTemplateId = tc.Template_Get(TemplateName: "QuickReply", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicEditorTemplateId = tc.Template_Get(TemplateName: "TopicEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicsViewTemplateId = tc.Template_Get(TemplateName: "TopicsView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
                     int TopicViewTemplateId = tc.Template_Get(TemplateName: "TopicView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
@@ -274,8 +267,8 @@ namespace DotNetNuke.Modules.ActiveForums
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorStyle, "2");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(TopicEditorTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(ReplyEditorTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, "0");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(QuickReplyTemplateId));
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IsModerated, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
@@ -328,23 +321,40 @@ namespace DotNetNuke.Modules.ActiveForums
 				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 			}
 		}
-		internal void Install_Or_Upgrade_RenameThemeCssFiles()
-		{
-			try
+        internal void Install_Or_Upgrade_RelocateDefaultThemeToLegacy()
+        {
+            try
 			{
-				SettingsInfo MainSettings = SettingsBase.GetModuleSettings(-1);
-				foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: HttpContext.Current.Server.MapPath(Globals.ThemesPath), searchPattern: "module.css", searchOption: System.IO.SearchOption.AllDirectories))
-				{
-					System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
-					System.IO.File.Delete(fullFilePathName);
-				}
-			}
-			catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
-		}
-		internal void Install_Or_Upgrade_MoveTemplates()
+				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_legacy")));
+				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")));
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+
+        internal void Install_Or_Upgrade_RenameThemeCssFiles()
+        {
+            try
+            {
+                var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+                System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
+                foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
+                {
+                    foreach (var fullFilePathName in System.IO.Directory.EnumerateFiles(path: themeFolder.FullName, searchPattern: "module.css", searchOption: System.IO.SearchOption.TopDirectoryOnly))
+                    {
+                        System.IO.File.Copy(fullFilePathName, fullFilePathName.Replace("module.css", "theme.css"), true);
+                        System.IO.File.Delete(fullFilePathName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+        }
+        internal void Install_Or_Upgrade_MoveTemplates()
 		{
 			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
 			{
@@ -365,12 +375,38 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 			TemplateController tc = new TemplateController();
-			foreach (TemplateInfo template in tc.Template_List(-1, -1))
-			{
-				tc.Template_Save(template);
+			foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
+            {
+                /* during upgrade, explicitly (re-)load template text from database rather than Template_List  API since API loads template using fallback/default logic and doesn't yet have the upgraded template text */
+                IDataReader dr = DataProvider.Instance().Templates_Get(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId);
+                while (dr.Read())
+                {
+                    try
+                    {
+						/* convert only legacy html portion of the template and save without encoding */
+						string template = Convert.ToString(dr["Template"]).Replace("[TRESX:", "[RESX:");
+                        if (template.Contains("<html>"))
+                        {
+                            string sHTML;
+                            var xDoc = new System.Xml.XmlDocument();
+                            xDoc.LoadXml(template);
+                            System.Xml.XmlNode xNode;
+                            System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                            xNode = xRoot.SelectSingleNode("/template/html");
+                            sHTML = xNode.InnerText;
+                            template = sHTML;
+                        }
+                        templateInfo.Template = System.Web.HttpUtility.HtmlDecode(template);
+                        tc.Template_Save(templateInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    }
+                }
 			}
 		}
-		internal void ArchiveOrphanedAttachments()
+        internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
             System.IO.DirectoryInfo[] attachmentFolders = di.GetDirectories("activeforums_Attach",System.IO.SearchOption.AllDirectories);

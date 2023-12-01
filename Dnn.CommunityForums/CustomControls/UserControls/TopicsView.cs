@@ -183,15 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     defaultTemplateId = DefaultTopicsViewTemplateId;
                 }
                 string TopicsTemplate = string.Empty;
-                if (UseTemplatePath && !(TemplatePath == string.Empty))
-                {
-                    TopicsTemplate = Utilities.GetFileContent(TemplatePath + "TopicsView.htm");
-                    TopicsTemplate = Utilities.ParseSpacer(TopicsTemplate);
-                }
-                else
-                {
-                    TopicsTemplate = TemplateCache.GetCachedTemplate( ForumModuleId, "TopicsView", defaultTemplateId);
-                }
+                TopicsTemplate = TemplateCache.GetCachedTemplate( ForumModuleId, "TopicsView", defaultTemplateId);
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -596,7 +588,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
                 sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
-            sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
+            sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" TID=\"" + TabId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\"  EnableViewState=\"False\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER2]", "<am:pagernav id=\"Pager2\" runat=\"server\" EnableViewState=\"False\" />");
             if (sOutput.Contains("[PARENTFORUMLINK]"))
@@ -1079,15 +1071,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     intPages = Convert.ToInt32(System.Math.Ceiling(TopicRowCount / (double)PageSize));
                     Pager1.PageCount = intPages;
                     Pager1.PageMode = PagerNav.Mode.Links;
-                    if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)) && MainSettings.URLRewriteEnabled)
-                    {
-                        if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                        {
-                            Pager1.BaseURL = "/" + MainSettings.PrefixURLBase;
-                        }
-                        Pager1.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL + "/" + ForumInfo.PrefixURL + "/";
-                        Pager1.PageMode = PagerNav.Mode.Links;
-                    }
+                    Pager1.BaseURL = URL.ForumLink(TabId, ForumInfo);
                     Pager1.CurrentPage = PageId;
                     Pager1.TabID = Convert.ToInt32(Request.Params["TabId"]);
                     Pager1.ForumID = ForumId;
@@ -1110,16 +1094,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (Pager2 != null)
                 {
-                    Pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links; // DotNetNuke.Modules.ActiveForums.Controls.Pager.Mode.CallBack
-                    if (!(string.IsNullOrEmpty(ForumInfo.PrefixURL)) && MainSettings.URLRewriteEnabled)
-                    {
-                        if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
-                        {
-                            Pager2.BaseURL = "/" + MainSettings.PrefixURLBase;
-                        }
-                        Pager2.BaseURL += "/" + ForumInfo.ForumGroup.PrefixURL + "/" + ForumInfo.PrefixURL + "/";
-                        Pager2.PageMode = PagerNav.Mode.Links;
-                    }
+                    Pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
+                    Pager2.BaseURL = URL.ForumLink(TabId, ForumInfo);
                     Pager2.UseShortUrls = MainSettings.UseShortUrls;
                     Pager2.PageCount = intPages;
                     Pager2.CurrentPage = PageId;

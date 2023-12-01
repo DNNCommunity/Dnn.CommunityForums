@@ -28,30 +28,20 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     #region UserProfileInfo
     public class UserProfileInfo
-    {
-        #region Private Members
-        private int _ProfileId = -1;
-        private int _UserId = -1;
-        private string _PrefDefaultSort = "ASC";
-        private bool _PrefUseAjax = true;
-        private EmailFormats _PrefEmailFormat;
-        private int _PrefPageSize = 20;
-        private string _Bio = string.Empty;
-        #endregion
-
+    { 
         #region Constructors
         public UserProfileInfo()
         {
             IsUserOnline = false;
             IsMod = false;
 
-            _PrefDefaultSort = "ASC";
-            _PrefPageSize = 20;
+            PrefDefaultSort = "ASC";
+            PrefPageSize = 20;
             PrefBlockSignatures = false;
             PrefBlockAvatars = false;
             PrefJumpLastPost = false;
             PrefDefaultShowReplies = false;
-            _PrefUseAjax = false;
+            PrefUseAjax = false;
             PrefTopicSubscribe = false;
         }
 
@@ -68,29 +58,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Public Properties
-        public int ProfileId
-        {
-            get
-            {
-                return _ProfileId;
-            }
-            set
-            {
-                _ProfileId = value;
-            }
-        }
-        public int UserID
-        {
-            get
-            {
-                return _UserId;
-            }
-            set
-            {
-                _UserId = value;
-            }
-        }
-
+        public int ProfileId { get; set; } = -1;
+        public int UserID { get; set; } = -1;
         public int PortalId { get; set; }
         public int ModuleId { get; set; }
         public int TopicCount { get; set; }
@@ -113,49 +82,19 @@ namespace DotNetNuke.Modules.ActiveForums
         public AvatarTypes AvatarType { get; set; }
         public bool AvatarDisabled { get; set; }
 
-        public string PrefDefaultSort
-        {
-            get
-            {
-                return _PrefDefaultSort;
-            }
-            set
-            {
-                _PrefDefaultSort = value;
-            }
-        }
+        public string PrefDefaultSort { get; set; } = "ASC";
 
         public bool PrefDefaultShowReplies { get; set; }
         public bool PrefJumpLastPost { get; set; }
         public bool PrefTopicSubscribe { get; set; }
         public SubscriptionTypes PrefSubscriptionType { get; set; }
 
-        public bool PrefUseAjax
-        {
-            get
-            {
-                return _PrefUseAjax;
-            }
-            set
-            {
-                _PrefUseAjax = value;
-            }
-        }
+        public bool PrefUseAjax { get; set; } = true;
 
         public bool PrefBlockAvatars { get; set; }
         public bool PrefBlockSignatures { get; set; }
 
-        public int PrefPageSize
-        {
-            get
-            {
-                return _PrefPageSize;
-            }
-            set
-            {
-                _PrefPageSize = value;
-            }
-        }
+        public int PrefPageSize { get; set; } = 20;
 
         public string Yahoo { get; set; }
         public string MSN { get; set; }
@@ -174,17 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string Email { get; set; }
         public bool IsMod { get; set; }
 
-        public string Bio
-        {
-            get
-            {
-                return _Bio;
-            }
-            set
-            {
-                _Bio = value;
-            }
-        }
+        public string Bio { get; set; } = string.Empty;
 
         public bool IsUserOnline { get; set; }
         public Hashtable ProfileProperties { get; set; }
@@ -218,17 +147,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     IDataReader dr;
                     dr = ds.CreateDataReader();
-                    upi = (UserProfileInfo)(CBO.FillObject(dr, typeof(UserProfileInfo)));
+                    upi = CBO.FillObject<UserProfileInfo>(dr);
                     DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId), upi);
                 }
             }
             return upi;
         }
-        public void Profiles_Save(UserProfileInfo ui)
+        public void Profiles_Save(UserProfileInfo upi)
         {
-            DataProvider.Instance().Profiles_Save(ui.PortalId, ui.ModuleId, ui.UserID, ui.TopicCount, ui.ReplyCount, ui.ViewCount, ui.AnswerCount, ui.RewardPoints, ui.UserCaption, ui.Signature, ui.SignatureDisabled, ui.TrustLevel, ui.AdminWatch, ui.AttachDisabled, ui.Avatar, (int)ui.AvatarType, ui.AvatarDisabled, ui.PrefDefaultSort, ui.PrefDefaultShowReplies, ui.PrefJumpLastPost, ui.PrefTopicSubscribe, (int)ui.PrefSubscriptionType, ui.PrefUseAjax, ui.PrefBlockAvatars, ui.PrefBlockSignatures, ui.PrefPageSize, ui.Yahoo, ui.MSN, ui.ICQ, ui.AOL, ui.Occupation, ui.Location, ui.Interests, ui.WebSite, ui.Badges);
-            // KR - clear cache when updated
-            DataCache.SettingsCacheClear(ui.ModuleId, string.Format(CacheKeys.UserProfile, ui.ModuleId, ui.UserID));
+            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.ModuleId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefUseAjax, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize, upi.Yahoo, upi.MSN, upi.ICQ, upi.AOL, upi.Occupation, upi.Location, upi.Interests, upi.WebSite, upi.Badges);
+            DataCache.SettingsCacheStore(upi.ModuleId, string.Format(CacheKeys.UserProfile, upi.ModuleId, upi.UserID), upi);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]

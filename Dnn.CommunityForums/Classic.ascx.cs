@@ -33,6 +33,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Utilities;
 using System.Linq;
 using DotNetNuke.Entities.Modules;
+using System.Reflection;
 
 //using DotNetNuke.Framework.JavaScriptLibraries;
 
@@ -223,8 +224,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                 ctl.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
                 ctl.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                ctl.UseTemplatePath = UseTemplatePath;
-                ctl.TemplatePath = TemplatePath;
                 ctl.ParentForumId = ParentForumId;
                 if (string.IsNullOrEmpty(ForumIds))
                 {
@@ -282,8 +281,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 string sOut = null;
                 //TODO: this should be resources instead of harcoded text?
-               sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
-                sOut +=  string.Concat("<!-- DNN Community Forums", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
+                sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
+                sOut +=  string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;
@@ -317,19 +316,42 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.min.css", priority: 11);
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+            else
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css");
+                if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css", priority: 11);
+                }
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.min.css", priority: 12);
             }
-            
+            else
+            {
+                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css", priority: 12);
+                }
+            }
+            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
+            }
+            else
+            {
+                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css", priority: 13);
+                }
+            }
+
+            ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
+
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
             {

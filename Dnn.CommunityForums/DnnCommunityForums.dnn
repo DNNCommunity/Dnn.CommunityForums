@@ -4,12 +4,6 @@
       <friendlyName>DNN Community Forums</friendlyName>
       <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
-      <iconFile>DesktopModules/ActiveForums/images/af6_icon.jpg</iconFile>
-=========
-      <friendlyName>Active Forums</friendlyName>
-      <description>Community Forums: The official online forums module for the DNN Community.</description>
-      <iconFile>DesktopModules/ActiveForums/images/Branding/Logo/DNN-Community-Forums-Icon-64px.png</iconFile>
->>>>>>>>> Temporary merge branch 2
       <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
@@ -32,6 +26,7 @@
               <supportedFeature type="Searchable" />
               <supportedFeature type="Upgradeable" />
             </supportedFeatures>
+			<shareable>Unsupported</shareable>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>DNN Community Forums</friendlyName>
@@ -72,14 +67,15 @@
                 </moduleControls>
               </moduleDefinition>
             </moduleDefinitions>
-          </desktopModule>
+          
+	</desktopModule>
           <eventMessage>
             <processorType>DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke</processorType>
             <processorCommand>UpgradeModule</processorCommand>
             <attributes>
               <businessControllerClass>DotNetNuke.Modules.ActiveForums.TopicsController, DotNetNuke.Modules.ActiveForums</businessControllerClass>
               <desktopModuleID>[DESKTOPMODULEID]</desktopModuleID>
-              <upgradeVersionsList>07.00.07,07.00.11,08.00.00</upgradeVersionsList>
+              <upgradeVersionsList>07.00.07,07.00.11,07.00.12,08.00.00</upgradeVersionsList>
             </attributes>
           </eventMessage>
         </component>

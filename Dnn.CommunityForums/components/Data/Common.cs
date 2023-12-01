@@ -144,12 +144,19 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
 		}
+        public DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+        }
+        public DataSet UI_MostReplies(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+        }
 
+        #endregion
 
-		#endregion
-
-		#region TagCloud
-		public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
+        #region TagCloud
+        public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
 		}

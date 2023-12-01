@@ -18,10 +18,9 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.IO;
-using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -31,8 +30,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         private Forum fi;
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {
@@ -58,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ForumId > 0 && ForumModuleId == -1)
                 {
                     ForumController fc = new ForumController();
-                    fi = fc.Forums_Get(ForumId, UserId, true, true);
+                    fi = fc.Forums_Get(PortalId, ForumModuleId, ForumId, true);
                     ForumModuleId = fi.ModuleId;
                 }
                 if (ForumModuleId > 0)
@@ -69,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     modInfo.PortalID = PortalId;
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
 
-                   ForumBase objModule = (ForumBase)(LoadControl("~/desktopmodules/ActiveForums/classic.ascx"));
+                    ForumBase objModule = (ForumBase)(LoadControl("~/desktopmodules/ActiveForums/classic.ascx"));
                     if (objModule != null)
                     {
                         objModule.ModuleConfiguration = modInfo;
@@ -77,13 +76,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         objModule.ForumModuleId = ForumModuleId;
                         objModule.ForumTabId = ForumTabId;
                         objModule.ForumInfo = fi;
-                        objModule.ForumId = ForumId; 
+                        objModule.ForumId = ForumId;
                         objModule.ForumGroupId = ForumGroupId;
                         objModule.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                         objModule.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
                         objModule.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                        objModule.TemplatePath = TemplatePath;
-                        objModule.UseTemplatePath = UseTemplatePath;
                         objModule.ParentForumId = ParentForumId;
                         objModule.ForumIds = ForumIds;
                         this.Controls.Add(objModule);

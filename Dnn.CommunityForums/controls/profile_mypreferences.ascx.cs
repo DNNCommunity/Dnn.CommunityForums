@@ -45,30 +45,21 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 UID = Convert.ToInt32(Request.QueryString["UserId"]);
             }
-            //If UID <> UserInfo.UserID And Not UserInfo.IsInRole(PortalSettings.AdministratorRoleName) Then
-
-            //End If
-            UserProfileInfo ui = null;
-            if (ui == null & UID > 0)
-            {
-                UserController up = new UserController();
-                ui = up.GetUser(PortalId, ForumModuleId, UID).Profile;
-            }
-            if (ui != null && !Page.IsPostBack )
-            {
-
+           
+            if (UID > 0 && !Page.IsPostBack)
+            {  
+                UserProfileInfo ui = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
                 drpPrefDefaultSort.SelectedIndex = drpPrefDefaultSort.Items.IndexOf(drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
                 drpPrefPageSize.SelectedIndex = drpPrefPageSize.Items.IndexOf(drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
 
                 chkPrefJumpToLastPost.Checked = ui.PrefJumpLastPost;
                 chkPrefTopicSubscribe.Checked = ui.PrefTopicSubscribe;
-                //chkPrefUseAjax.Checked = .PrefUseAjax
                 chkPrefBlockAvatars.Checked = ui.PrefBlockAvatars;
                 chkPrefBlockSignatures.Checked = ui.PrefBlockSignatures;
                 txtSignature.Text = ui.Signature;
             }
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetString(string key)
         {
             return Utilities.GetSharedResource(key);
@@ -78,9 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (UserId == UID || (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                UserProfileController upc = new UserProfileController();
-                UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(PortalId, ForumModuleId, UID).Profile;
+                UserProfileInfo upi = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
                 if (upi != null)
                 {
                     upi.PrefDefaultSort = Utilities.XSSFilter(drpPrefDefaultSort.SelectedItem.Value, true);
@@ -102,12 +91,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
                     }
-                    upc.Profiles_Save(upi);
+                    new UserProfileController().Profiles_Save(upi);
 
                     Response.Redirect(NavigateUrl(TabId));
 
                 }
-
             }
         }
     }

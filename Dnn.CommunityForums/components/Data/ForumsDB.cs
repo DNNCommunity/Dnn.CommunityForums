@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
 				ForumCollection fc = db.Forums_List(PortalId, ModuleId);
-				//Dim ds As DataSet = SqlHelper.ExecuteDataset(connectionString, databaseOwner & objectQualifier & "activeforums_UI_ForumDisplay", SiteId, InstanceId, UserId, -1, ForumIds)
+				//Dim ds As DataSet = SqlHelper.ExecuteDataset(connectionString, databaseOwner & objectQualifier & "activeforums_UI_ForumDisplay", PortalId, ModuleId, UserId, -1, ForumIds)
 				System.Text.StringBuilder sb = new System.Text.StringBuilder();
 				sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
 				sb.AppendLine();

@@ -76,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		Topic,
 		Poll
 	}
-
-	public enum EmailFormats
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+    public enum EmailFormats
 	{
 		HTML,
 		PlainText
@@ -117,7 +117,8 @@ namespace DotNetNuke.Modules.ActiveForums
         MessageDeleted,
         SendToComplete,
         SendToFailed,
-        AlertSent
+        AlertSent,
+        UserBanned
     }
 
     #endregion
@@ -146,10 +147,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string ControlRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
-		public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
+        public const string DnnControlsRegisterTag = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
 
-		public const int GroupCount = 10000000;
+        public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
     }
@@ -302,8 +303,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ContentJumpId = "afc";
 		public const string ConfirmActionId = "afca";
 		public const string Tags = "aftg";
-		public const string FirstNewPost = "afnp";
-	}
+        public const string FirstNewPost = "afnp";
+        public const string AuthorId = "authorid";
+    }
 
 	public class Views
 	{
@@ -337,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TopicsViewPrefix = "AF-{0}-TVS-";
         public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}";
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
-        public const string Toolbar = "AF-{0}-tb";
+        public const string Toolbar = "AF-{0}-tb-{1}";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
         public const string Template = "AF-{0}-tmpl-{1}-{2}";
         public const string QuickReply = "AF-{0}-qr";
