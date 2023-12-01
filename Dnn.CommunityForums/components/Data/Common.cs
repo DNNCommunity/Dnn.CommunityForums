@@ -34,9 +34,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
 		}
-		public IDataReader GetRoles(int SiteId)
+		public IDataReader GetRoles(int PortalId)
 		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", SiteId);
+			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
 		}
 		public string GetPermSet(int PermissionsId, string Key)
 		{
@@ -53,15 +53,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Permission_Create", AdminRoleId));
 		}
-		// KR - added caching
-		public string CheckForumIdsForView(string ForumIds, string UserRoles)
+		public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles)
 		{
-			string cacheKey = string.Format("AF-Perm-{0}", ForumIds);
+			string cacheKey = string.Format(CacheKeys.ViewRolesForForumList,ModuleId, ForumIds);
 			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId  INNER JOIN " + dbPrefix + "Functions_Split('" + ForumIds + "',':') as ids on ids.id = f.ForumId";
 			string sForums = string.Empty;
 			DataTable dt = null;
 
-			object data = DataCache.CacheRetrieve(cacheKey);
+			object data = DataCache.SettingsCacheRetrieve(ModuleId,cacheKey);
 
 			if (data != null)
 			{
@@ -70,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			else
 			{
 				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
-				DataCache.CacheStore(cacheKey, dt);
+				DataCache.SettingsCacheStore(ModuleId,cacheKey, dt);
 			}
 
 			foreach (DataRow row in dt.Rows)
@@ -84,14 +83,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 			return sForums;
 		}
-		public string WhichRolesCanViewForum(int ForumId, string UserRoles)
+		public string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
 		{
-			string cacheKey = string.Format("AF-CanView-{0}", ForumId.ToString());
+			string cacheKey = string.Format(CacheKeys.ViewRolesForForum,ModuleId, ForumId);
 			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId WHERE f.ForumId = " + ForumId.ToString();
 			string sRoles = string.Empty;
 			DataTable dt = null;
 
-			object data = DataCache.CacheRetrieve(cacheKey);
+			object data = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
 
 			if (data != null)
 			{
@@ -100,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			else
 			{
 				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
-				DataCache.CacheStore(cacheKey, dt);
+				DataCache.SettingsCacheStore(ModuleId, cacheKey, dt);
 			}
 			if (dt.Rows != null && dt.Rows.Count > 0)
 			{
@@ -145,12 +144,19 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
 		}
+        public DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+        }
+        public DataSet UI_MostReplies(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+        }
 
+        #endregion
 
-		#endregion
-
-		#region TagCloud
-		public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
+        #region TagCloud
+        public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
 		}
@@ -219,7 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			try
 			{
-				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				ForumGroupController fgc = new ForumGroupController();
 				ForumGroupInfo fg = fgc.GetForumGroup(ModuleId, ForumGroupId);
 				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
@@ -257,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			try
 			{
-				SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
 				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
 				{
 					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;

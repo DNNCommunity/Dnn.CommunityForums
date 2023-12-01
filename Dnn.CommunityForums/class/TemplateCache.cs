@@ -19,163 +19,85 @@
 //
 
 using System;
-using System.Collections;
-using System.Data;
-
 using System.Web;
-namespace DotNetNuke.Modules.ActiveForums 
-{
-    internal class TemplateCache
-{
-    #region Cache Retrieval
-    public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
-    {
-        string sTemplate = GetTemplateFromMemory(ModuleId, TemplateType, TemplateId);
-        sTemplate = sTemplate.Replace("[TOOLBAR]", string.Empty);
-        sTemplate = sTemplate.Replace("[TEMPLATE:TOOLBAR]", string.Empty);
 
-        return sTemplate;
-    }
-    private static string GetTemplateFromMemory(int ModuleId, string TemplateType, int TemplateId)
+namespace DotNetNuke.Modules.ActiveForums
+{
+    internal static class TemplateCache
     {
-        string sTemplate = string.Empty;
-        object obj = null;
-        if (!SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
+        public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
         {
-            obj = DataCache.CacheRetrieve(ModuleId + TemplateId + TemplateType);
-        }
-        if (obj == null)
-        {
-            if (TemplateId == 0)
+            string sTemplate = string.Empty;
+            string cacheKey = string.Format(CacheKeys.Template, ModuleId, TemplateId, TemplateType);
+            object obj = null;
+            if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
             {
-                try
-                {
-                    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
-                    if (System.IO.File.Exists(myFile))
-                    {
-                        System.IO.StreamReader objStreamReader = null;
-                        try
-                        {
-                            objStreamReader = System.IO.File.OpenText(myFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-                        sTemplate = objStreamReader.ReadToEnd();
-                        objStreamReader.Close();
-                        sTemplate = Utilities.ParseSpacer(sTemplate);
-                        DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-                        //Current.Cache.Insert(ModuleId & TemplateId & TemplateType, sTemplate, New System.Web.Caching.CacheDependency(Current.Server.MapPath("~/DesktopModules/ActiveForums/config/Templates/" & TemplateType & ".txt")))
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
+                obj = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+            }
+            if (obj != null)
+            {
+                sTemplate = Convert.ToString(obj);
             }
             else
             {
-                sTemplate = GetTemplate(TemplateId, TemplateType);
-                DataCache.CacheStore(ModuleId + TemplateId + TemplateType, sTemplate);
-            }
-        }
-        else
-        {
-            sTemplate = Convert.ToString(obj);
-        }
-        return sTemplate;
-    }
-   
-    private static string GetTemplate(int TemplateId, string TemplateType)
-    {
-        string sOut = string.Empty;
-        try
-        {
-            if (TemplateId == 0)
-            {
-                try
+                if (TemplateId < 1)
                 {
-                    string myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateType + ".txt");
-                    if (System.IO.File.Exists(myFile))
-                    {
-                        System.IO.StreamReader objStreamReader = null;
-                        try
-                        {
-                            objStreamReader = System.IO.File.OpenText(myFile);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-                        sOut = objStreamReader.ReadToEnd();
-                        objStreamReader.Close();
-                        sOut = Utilities.ParseSpacer(sOut);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-            }
-            else
-            {
-                var objTemplates = new TemplateController();
-                TemplateInfo objTempInfo = objTemplates.Template_Get(TemplateId);
-                if (objTempInfo != null)
-                {
-                    sOut = objTempInfo.TemplateHTML;
-                    sOut = Utilities.ParseSpacer(sOut);
-                }
-            }
-
-        }
-        catch (Exception ex)
-        {
-            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            sOut = "ERROR: Loading template failed";
-        }
-        return sOut;
-    }
-    internal static string GetTemplate(string TemplateFileName)
-    {
-        string sOut = string.Empty;
-        string myFile;
-        try
-        {
-            try
-            {
-                myFile = HttpContext.Current.Server.MapPath("~/DesktopModules/ActiveForums/config/templates/" + TemplateFileName);
-                if (System.IO.File.Exists(myFile))
-                {
-                    System.IO.StreamReader objStreamReader = null;
                     try
                     {
-                        objStreamReader = System.IO.File.OpenText(myFile);
+                        string fileName = $"{TemplateType}.ascx";
+                        SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
+                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + fileName);
+                        if (!System.IO.File.Exists(templateFilePathFileName))
+                        {                            
+                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + fileName);
+                            if (!System.IO.File.Exists(templateFilePathFileName))
+                            {
+                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + fileName);
+                            }
+                        }
+                        if (System.IO.File.Exists(templateFilePathFileName))
+                        {
+                            using (System.IO.StreamReader objStreamReader = System.IO.File.OpenText(templateFilePathFileName))
+                            {
+                                sTemplate = objStreamReader.ReadToEnd();
+                            }
+                            sTemplate = Utilities.ParseSpacer(sTemplate);
+                        }
                     }
                     catch (Exception ex)
                     {
                         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                        sTemplate = "ERROR: Loading template failed";
                     }
-                    sOut = objStreamReader.ReadToEnd();
-                    objStreamReader.Close();
-                    sOut = Utilities.ParseSpacer(sOut);
+                }
+                else
+                {
+                    TemplateInfo templateInfo = new TemplateController().Template_Get(TemplateId);
+                    if (templateInfo != null)
+                    {
+                        sTemplate = templateInfo.Template;
+                        sTemplate = Utilities.ParseSpacer(sTemplate);
+                    }
                 }
             }
-            catch (Exception ex)
+            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
+            if (sTemplate.ToLowerInvariant().Contains("<dnn:"))
             {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
             }
-
+            if (sTemplate.ToLowerInvariant().Contains("<am:"))
+            {
+                sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
+            }
+            if (sTemplate.ToLowerInvariant().Contains("<af:"))
+            {
+                sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
+            }
+            if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
+            {
+                DataCache.SettingsCacheStore(ModuleId, cacheKey, sTemplate);
+            }
+            return sTemplate;
         }
-        catch (Exception ex)
-        {
-            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            sOut = "ERROR: Loading template failed";
-        }
-        return sOut;
     }
-    #endregion
-
-}
 }

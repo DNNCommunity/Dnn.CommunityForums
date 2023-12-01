@@ -7,7 +7,9 @@
                 <tr>
                     <td class="afgrouprow af-groupname">
                         <div class="afgroupsectiontitle">Who's Online</div>
-                        <img class="afarrow" runat="server" id="imgGroupWHOS" onclick="toggleGroup('WHOS','afarrow','afarrow');" src='<%=Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"arrows_down.png")%>' alt="-" />
+                        <span class="dcf-collapsible" id="dcf-collapsible-groupWHOS" onclick="dcf_collapsible_toggle('groupWHOS');">
+	                        <i class="fa"></i>
+                        </span>
                     </td>
                 </tr>
                 <tr>

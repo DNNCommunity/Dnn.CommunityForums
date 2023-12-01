@@ -1,0 +1,123 @@
+// Toolbars
+
+// The module renders some toolbars as a UL without class, so I used the same in Toolbar.txt
+// This is also used in TopicView.txt
+.dcf-toolbar {
+
+    >ul {
+
+        margin: 0; // UL overrule
+        padding: 0;
+
+
+
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: @dist-md;
+
+
+    }
+
+    li {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
+    }
+}
+
+// Toolbar on top
+.dcf-toolbars {
+
+    display: flex;
+    flex-wrap: wrap;
+    padding: @dist-sm 0;
+    #sep-border-bottom;
+
+
+    .dcf-toolbar-user {
+        flex-grow: 1;
+        padding-bottom: @dist-sm;
+
+
+
+    }
+
+    .dcf-toolbar-manage {
+
+
+
+        @media screen and (min-width: @break-tablet) {
+            justify-content: end;
+        }
+
+
+    }
+
+
+    // Quick Search in toolbar
+
+    .dcf-quick-search {
+        position: relative;
+        display: block;
+
+
+        .dcf-search-link {
+            display: block;
+            text-align: right;
+            cursor: pointer;
+        }
+
+        .dcf-search-popup {
+            background: white;
+            border: solid 1px #eee;
+            padding: @dist-md;
+            display: none;
+            position: absolute;
+            min-width: 300px;
+            right: 0;
+            left: auto !important;
+            top: 2.5em;
+        }
+
+        @button-width: 4em;
+
+        .dcf-search-input {
+            display:flex;
+            .dcf-search-input {
+                border: solid 1px #bbb;
+                flex-grow: 1;
+                padding: 0 @dist-sm;
+            }
+
+            .dcf-search-button {
+                border: none;
+                margin-left: @dist-xs;
+                padding: 0 @dist-sm;
+            }
+        }
+
+        .dcf-search-options{
+            .dcf-search-option-advanced{
+                display: block;
+                width: 100%;
+                padding: @dist-sm 0;
+            }
+
+            .dcf-search-option-topics{
+                margin-right: @dist-md;
+            }
+
+            .dcf-search-option-text{
+                margin-left: @dist-xs;
+            }
+        }
+
+        
+
+
+    }
+
+}

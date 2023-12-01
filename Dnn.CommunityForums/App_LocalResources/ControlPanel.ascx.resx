@@ -853,7 +853,7 @@
     <value>Enable or disable the points systems and set appropriate point values.</value>
   </data>
   <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve">
-    <value>Select how you would like profiles to be displayed&lt;br /&gt;Basic - the default Active Forums profile&lt;br /&gt;Advanced - Displays profile from Active Profile, if installed.&lt;br /&gt;Disabled - profiles will be disabled.</value>
+    <value>Select how you would like profiles to be displayed&lt;br /&gt;Basic - the default DNN Community Forums profile&lt;br /&gt;Advanced - Displays profile from DNN Community Profile, if installed.&lt;br /&gt;Disabled - profiles will be disabled.</value>
   </data>
   <data name="[RESX:Tips:MemberListMode].Text" xml:space="preserve">
     <value>Choose who should be able to access the member list.</value>
@@ -1184,13 +1184,13 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
     <value>Captcha For Anon Users</value>
   </data>
   <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve">
-    <value>Enable this feature and Active Forums will only include the minimum parameters needed.</value>
+    <value>Enable this feature and DNN Community Forums will only include the minimum parameters needed.</value>
   </data>
   <data name="[RESX:Captcha:Intro].Text" xml:space="preserve">
     <value>Enable this feature to require anonymous users to enter a random security code to help prevent spam content.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve">
-    <value>Enable this feature and Active Forums will update the breadcrumb navigation element within your skin.  This is only supported with the DotNetNuke Breadcrumb skin object.</value>
+    <value>Enable this feature and DNN Community Forums will update the breadcrumb navigation element within your skin.  This is only supported with the DotNetNuke Breadcrumb skin object.</value>
   </data>
   <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve">
     <value>Update Skin Breadcrumb</value>
@@ -1199,7 +1199,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
     <value>Enable Auto Links</value>
   </data>
   <data name="[RESX:AutoLink:Intro].Text" xml:space="preserve">
-    <value>Enable this option for Active Forums to convert website addresses automatically into hyperlinks.</value>
+    <value>Enable this option for DNN Community Forums to convert website addresses automatically into hyperlinks.</value>
   </data>
   <data name="[RESX:CategoryName].Text" xml:space="preserve">
     <value>Category Name</value>
@@ -1367,7 +1367,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
     <value>Loading...  Please wait.</value>
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
-    <value>Caution: Installing or Uninstalling the Active Forums URL Handler will require a change to your web.config.  \n\nAre you sure you want to make this change right now?</value>
+    <value>Caution: Installing or Uninstalling the DNN Community Forums URL Handler will require a change to your web.config.  \n\nAre you sure you want to make this change right now?</value>
   </data>
   <data name="[RESX:ListCheckBoxes].Text" xml:space="preserve">
     <value>List - Multiple Select </value>
@@ -1376,7 +1376,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
     <value>List - Single Select</value>
   </data>
   <data name="[RESX:GetSupport].Text" xml:space="preserve">
-    <value>Click for Active Forums Support</value>
+    <value>Click for DNN Community Forums Support</value>
   </data>
   <data name="[RESX:GetUpdates].Text" xml:space="preserve">
     <value>Check for Product Updates</value>

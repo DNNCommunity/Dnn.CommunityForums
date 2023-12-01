@@ -135,7 +135,17 @@
 
 
 
-<div>
+<div class="dcf-controlpanel">
+
+	<div class="dcf-community-msg">
+		<img class="dcf-community-msg-logo" src="/DesktopModules/ActiveForums/Images/Branding/Logo/DNN-Community-Forums-Logo-Horizontal.png" alt="DNN Community Forums Module" />
+		<div class="dcf-community-msg-text">
+			<div class="dcf-cp-community-msg">[RESX:Community-Message-Intro]</div>
+			<div class="dcf-cp-community-msg"><a href="//github.com/DNNCommunity/Dnn.CommunityForums/wiki/Connect" target="_blank" rel="noopener noreferrer"><i class="fa fa-info-circle" aria-hidden="true"></i> [RESX:Community-Message-Connect]</a></div>
+			<div class="dcf-cp-community-msg"><a href="//github.com/DNNCommunity/Dnn.CommunityForums/wiki" target="_blank" rel="noopener noreferrer"><i class="fa fa-question-circle" aria-hidden="true"></i> [RESX:Community-Message-Help]</a></div>
+		</div>
+	</div>
+
 <div class="amcpcontainer" id="amcpcontainer">
 	<div class="amcploader" id="amcploader">
 		<span>[RESX:PleaseWait]</span>;

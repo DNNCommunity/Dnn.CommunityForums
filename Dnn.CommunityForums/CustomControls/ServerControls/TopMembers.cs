@@ -33,20 +33,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 	[ToolboxData("<{0}:TopMembers runat=server></{0}:TopMembers>")]
 	public class TopMembers : WebControl
 	{
-		private int _siteId = -1;
+		private int _PortalId = -1;
 		private int _rows = 10;
 		private DisplayTemplate _itemTemplate;
 		private DisplayTemplate _headerTemplate;
 		private DisplayTemplate _footerTemplate;
-		public int SiteId
+		public int PortalId
 		{
 			get
 			{
-				return _siteId;
+				return _PortalId;
 			}
 			set
 			{
-				_siteId = value;
+				_PortalId = value;
 			}
 		}
 		public int Rows
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			string sTemplate = "[DISPLAYNAME]";
 			Data.Common db = new Data.Common();
-			IDataReader dr = db.TopMembers_Get(SiteId, Rows);
+			IDataReader dr = db.TopMembers_Get(PortalId, Rows);
 			if (ItemTemplate != null)
 			{
 				sTemplate = ItemTemplate.Text;

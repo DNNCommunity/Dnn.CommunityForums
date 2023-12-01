@@ -18,6 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     #region Enumerations
@@ -74,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		Topic,
 		Poll
 	}
-
-	public enum EmailFormats
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+    public enum EmailFormats
 	{
 		HTML,
 		PlainText
@@ -115,7 +117,8 @@ namespace DotNetNuke.Modules.ActiveForums
         MessageDeleted,
         SendToComplete,
         SendToFailed,
-        AlertSent
+        AlertSent,
+        UserBanned
     }
 
     #endregion
@@ -134,18 +137,21 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
+        public const string TemplatesPath = Globals.ModulePath + "templates/";
+        public const string ThemesPath = Globals.ModulePath + "themes/";
 
         public const string AdminResourceFile = Globals.ModulePath + "App_LocalResources/AdminResources.resx";
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
         public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
-
-        public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
-		public const string ControlRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+		
+        public const string ForumsControlsRegisterAMTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+		public const string ForumsControlsRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
 		public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
+        public const string DnnControlsRegisterTag = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
 
-		public const int GroupCount = 10000000;
+        public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
     }
@@ -178,8 +184,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
 		public const string Theme = "THEME";
-		public const string MailQueue = "MAILQUEUE";
-		public const string FullText = "FULLTEXT";
+        public const string MailQueue = "MAILQUEUE";
+        public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
 		public const string FloodInterval = "FLOODINTERVAL";
 		public const string EditInterval = "EDITINTERVAL";
@@ -209,9 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string PrefixURLOther = "URLOTHER";
 
         public const string CacheTemplates = "CACHETEMPLATES";
-
-
-	}
+    }
 
 	public class ForumSettingKeys
 	{
@@ -300,8 +304,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ContentJumpId = "afc";
 		public const string ConfirmActionId = "afca";
 		public const string Tags = "aftg";
-		public const string FirstNewPost = "afnp";
-	}
+        public const string FirstNewPost = "afnp";
+        public const string AuthorId = "authorid";
+    }
 
 	public class Views
 	{
@@ -313,17 +318,52 @@ namespace DotNetNuke.Modules.ActiveForums
 	}
 
 	public class CacheKeys
-	{
-		public const string Rewards = "afrwd{0}";
-		public const string PostInfo = "afpi{0}";
-		public const string ForumInfo = "affi{0}";
-		public const string ForumInfoWithUser = "affi{0}-{1}"; // KR
-		public const string AllSettings = "afset{0}"; // KR
-		public const string MainSettings = "afms{0}";
-		public const string GroupInfo = "afgi{0}";
-		public const string ProfileTemplate = "afpit{0}";
-		public const string ForumList = "affl{0}";
-        public const string Tokens = "aftk{0}";
+    {
+        public const string CachePrefix = "AF-";
+        public const string CacheModulePrefix = "AF-{0}-";
+        public const string UserProfile = "AF-{0}-prof-{1}";
+        public const string Rewards = "AF-{0}-rwd";
+		public const string ProfileInfo = "AF-{0}-pi";
+		public const string ForumInfo = "AF-{0}-fi-{1}";
+        public const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";
+        public const string HostUrl = "AF-{0}-url";
+        public const string MainSettings = "AF-{0}-ms";
+        public const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
+        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}"; 
+        public const string ForumList = "AF-{0}-fl";
+        public const string ForumListXml = "AF-{0}-flx";
+        public const string Tokens = "AF-{0}-tk-{1}";
+        public const string ForumViewPrefix = "AF-{0}-FV-";
+        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}";
+        public const string TopicViewPrefix = "AF-{0}-TV-";
+        public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}";
+        public const string TopicsViewPrefix = "AF-{0}-TVS-";
+        public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}";
+        public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
+        public const string Toolbar = "AF-{0}-tb-{1}";
+        public const string TemplatePrefix = "AF-{0}-tmpl-";
+        public const string Template = "AF-{0}-tmpl-{1}-{2}";
+        public const string QuickReply = "AF-{0}-qr";
+        public const string CacheEnabled = "AF-{0}-ce";
+        public const string CachingTime = "AF-{0}-ct";
+        public const string CacheUpdate = "AF-{0}-cu";
+        public const string WhatsNew = "AF-{0}-tp";
+        public const string RssTemplate = "AF-{0}-tprss-_{1}";
+		public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
+        public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
+        public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
+        public const string ForumSettings = "AF-{0}-fs-{1}";
+
+
+
+        public const string RoleNames = "AF-rn-{0}";
+        public const string RoleIDs = "AF-rids-{0}";
+        public const string UserRoles  = "AF-userroles-{0}";
+
+        //public const string ForumView = "AF-{0}-FV-{1}";
+        //public const string AllSettings = "AF-afset{0}";
+        //public const string GroupInfo = "AF-gi{0}";
+
     }
 
     public class SortColumns
@@ -331,4 +371,20 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ReplyCreated = "ReplyCreated";
 		public const string TopicCreated = "TopicCreated";
 	}
+
+    public class ForumViewerSettingsKeys
+    {
+        public const string AFForumModuleId = "AFForumModuleID";
+        public const string AFForumGroupId = "AFForumGroupID";
+        public const string AFForumGroup = "AFForumGroup";
+        public const string AFViewType = "AFViewType";
+        public const string AFTopicsTemplate = "AFTopicsTemplate";
+        public const string AFForumViewTemplate = "AFForumViewTemplate";
+        public const string AFTopicTemplate = "AFTopicTemplate";
+    }
+    public class ForumViewerViewType
+    {
+        public const string GROUP = "AFGROUP";
+        public const string TOPICS = "TOPICS";
+    }
 }

@@ -32,10 +32,10 @@ using System.Runtime.CompilerServices;
 
 // Review the values of the assembly attributes
 [assembly: AllowPartiallyTrustedCallers()]
-[assembly: AssemblyTitle("Active Forums")]
+[assembly: AssemblyTitle("DNN Community Forums")]
 [assembly: AssemblyDescription("Discussion Forum Module for DNN")]
 [assembly: AssemblyCompany("dnncommunity.org")]
-[assembly: AssemblyProduct("Active Forums")]
+[assembly: AssemblyProduct("DNN Community Forums")]
 [assembly: AssemblyCopyright("Copyright © DNN Community")]
 [assembly: AssemblyTrademark("")]
 
@@ -53,9 +53,9 @@ using System.Runtime.CompilerServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("07.00.12")]
+[assembly: AssemblyVersion("08.00.00")]
 
-[assembly: AssemblyFileVersion("07.00.12")]
+[assembly: AssemblyFileVersion("08.00.00")]
 
 
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js", "text/javascript")]
@@ -81,5 +81,4 @@ using System.Runtime.CompilerServices;
 [assembly: ComVisibleAttribute(false)]
  
 
-[assembly: InternalsVisibleTo("ActiveForumsTests")] 
-[assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForums.Explorables")]
+[assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForumsTests")] 

@@ -250,7 +250,7 @@
 						$('#<%=rdEnableURLRewriter.ClientID%>').removeAttr('disabled');
 						$('#<%=rdEnableURLRewriter.ClientID%> span').removeAttr('disabled');
 						$('#<%=rdEnableURLRewriter.ClientID%> span input').removeAttr('disabled');
-						$('.urlToggle a').text('Uninstall Active Forums URL Handler');
+                        $('.urlToggle a').text('Uninstall DNN Community Forums URL Handler');
 						$('.urlOptions').show();
 					}else{
 						window.location.href = window.location.href;

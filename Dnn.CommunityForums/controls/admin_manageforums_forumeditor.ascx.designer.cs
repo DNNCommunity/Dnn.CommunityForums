@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.ActiveForums {
-    
-    
-    public partial class admin_manageforums_forumeditor {
-        
+namespace DotNetNuke.Modules.ActiveForums
+{
+
+
+    public partial class admin_manageforums_forumeditor
+    {
+
         /// <summary>
         /// litScripts control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litScripts;
-        
+
         /// <summary>
         /// litTabs control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litTabs;
-        
+
         /// <summary>
         /// trGroups control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trGroups;
-        
+
         /// <summary>
         /// Img13 control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img13;
-        
+
         /// <summary>
         /// drpGroups control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpGroups;
-        
+
         /// <summary>
         /// reqGroups control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.RequiredFieldValidator reqGroups;
-        
+
         /// <summary>
         /// Img14 control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img14;
-        
+
         /// <summary>
         /// lblForumGroupName control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblForumGroupName;
-        
+
         /// <summary>
         /// txtForumName control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtForumName;
-        
+
         /// <summary>
         /// reqForumName control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.RequiredFieldValidator reqForumName;
-        
+
         /// <summary>
         /// trDesc control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trDesc;
-        
+
         /// <summary>
         /// Img15 control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img15;
-        
+
         /// <summary>
         /// txtForumDesc control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtForumDesc;
-        
+
         /// <summary>
         /// trPrefix control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trPrefix;
-        
+
         /// <summary>
         /// txtPrefixURL control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPrefixURL;
-        
+
         /// <summary>
         /// Img20 control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img20;
-        
+
         /// <summary>
         /// chkActive control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkActive;
-        
+
         /// <summary>
         /// Img21 control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img21;
-        
+
         /// <summary>
         /// chkHidden control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkHidden;
-        
+
         /// <summary>
         /// trInherit control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable trInherit;
-        
+
         /// <summary>
         /// Img9 control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img9;
-        
+
         /// <summary>
         /// chkInheritGroup control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkInheritGroup;
-        
+
         /// <summary>
         /// trTemplates control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTable trTemplates;
-        
+
         /// <summary>
         /// Img17 control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img17;
-        
+
         /// <summary>
         /// drpTopicsTemplate control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpTopicsTemplate;
-        
+
         /// <summary>
         /// Img18 control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img18;
-        
+
         /// <summary>
         /// drpTopicTemplate control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpTopicTemplate;
-        
+
         /// <summary>
         /// Img22 control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img22;
-        
+
         /// <summary>
         /// drpTopicForm control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpTopicForm;
-        
+
         /// <summary>
         /// Img23 control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img23;
-        
+
         /// <summary>
         /// drpReplyForm control.
         /// </summary>
@@ -290,7 +292,25 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpReplyForm;
-        
+
+        /// <summary>
+        /// Img24 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage Img24;
+
+        /// <summary>
+        /// drpQuickReplyForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList drpQuickReplyForm;
+
         /// <summary>
         /// Img16 control.
         /// </summary>
@@ -299,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img16;
-        
+
         /// <summary>
         /// drpProfileDisplay control.
         /// </summary>
@@ -308,7 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpProfileDisplay;
-        
+
         /// <summary>
         /// Img19 control.
         /// </summary>
@@ -317,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img19;
-        
+
         /// <summary>
         /// txtEmailAddress control.
         /// </summary>
@@ -326,7 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEmailAddress;
-        
+
         /// <summary>
         /// txtCreatePostCount control.
         /// </summary>
@@ -335,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCreatePostCount;
-        
+
         /// <summary>
         /// txtReplyPostCount control.
         /// </summary>
@@ -344,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtReplyPostCount;
-        
+
         /// <summary>
         /// hidForumId control.
         /// </summary>
@@ -353,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidForumId;
-        
+
         /// <summary>
         /// hidSortOrder control.
         /// </summary>
@@ -362,7 +382,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidSortOrder;
-        
+
         /// <summary>
         /// plhGrid control.
         /// </summary>
@@ -371,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder plhGrid;
-        
+
         /// <summary>
         /// Img25 control.
         /// </summary>
@@ -380,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img25;
-        
+
         /// <summary>
         /// rdModOn control.
         /// </summary>
@@ -389,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdModOn;
-        
+
         /// <summary>
         /// rdModOff control.
         /// </summary>
@@ -398,7 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdModOff;
-        
+
         /// <summary>
         /// cfgMod control.
         /// </summary>
@@ -407,7 +427,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cfgMod;
-        
+
         /// <summary>
         /// Img1 control.
         /// </summary>
@@ -416,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img1;
-        
+
         /// <summary>
         /// rdFilterOn control.
         /// </summary>
@@ -425,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdFilterOn;
-        
+
         /// <summary>
         /// rdFilterOff control.
         /// </summary>
@@ -434,7 +454,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdFilterOff;
-        
+
         /// <summary>
         /// Img2 control.
         /// </summary>
@@ -443,7 +463,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img2;
-        
+
         /// <summary>
         /// rdPostIconOn control.
         /// </summary>
@@ -452,7 +472,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdPostIconOn;
-        
+
         /// <summary>
         /// rdPostIconOff control.
         /// </summary>
@@ -461,7 +481,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdPostIconOff;
-        
+
         /// <summary>
         /// Img3 control.
         /// </summary>
@@ -470,7 +490,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img3;
-        
+
         /// <summary>
         /// rdEmotOn control.
         /// </summary>
@@ -479,7 +499,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdEmotOn;
-        
+
         /// <summary>
         /// rdEmotOff control.
         /// </summary>
@@ -488,7 +508,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdEmotOff;
-        
+
         /// <summary>
         /// Img4 control.
         /// </summary>
@@ -497,7 +517,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img4;
-        
+
         /// <summary>
         /// rdScriptsOn control.
         /// </summary>
@@ -506,7 +526,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdScriptsOn;
-        
+
         /// <summary>
         /// rdScriptsOff control.
         /// </summary>
@@ -515,7 +535,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdScriptsOff;
-        
+
         /// <summary>
         /// Img5 control.
         /// </summary>
@@ -524,7 +544,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img5;
-        
+
         /// <summary>
         /// rdIndexOn control.
         /// </summary>
@@ -533,7 +553,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdIndexOn;
-        
+
         /// <summary>
         /// rdIndexOff control.
         /// </summary>
@@ -542,7 +562,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdIndexOff;
-        
+
         /// <summary>
         /// Img6 control.
         /// </summary>
@@ -551,7 +571,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img6;
-        
+
         /// <summary>
         /// rdRSSOn control.
         /// </summary>
@@ -560,7 +580,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdRSSOn;
-        
+
         /// <summary>
         /// rdRSSOff control.
         /// </summary>
@@ -569,7 +589,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdRSSOff;
-        
+
         /// <summary>
         /// Img7 control.
         /// </summary>
@@ -578,7 +598,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img7;
-        
+
         /// <summary>
         /// rdAttachOn control.
         /// </summary>
@@ -587,7 +607,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdAttachOn;
-        
+
         /// <summary>
         /// rdAttachOff control.
         /// </summary>
@@ -596,7 +616,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdAttachOff;
-        
+
         /// <summary>
         /// cfgAttach control.
         /// </summary>
@@ -605,7 +625,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cfgAttach;
-        
+
         /// <summary>
         /// Img8 control.
         /// </summary>
@@ -614,7 +634,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img8;
-        
+
         /// <summary>
         /// rdHTMLOn control.
         /// </summary>
@@ -623,7 +643,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdHTMLOn;
-        
+
         /// <summary>
         /// rdHTMLOff control.
         /// </summary>
@@ -632,7 +652,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdHTMLOff;
-        
+
         /// <summary>
         /// cfgHTML control.
         /// </summary>
@@ -641,7 +661,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cfgHTML;
-        
+
         /// <summary>
         /// trAutoSub control.
         /// </summary>
@@ -650,7 +670,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trAutoSub;
-        
+
         /// <summary>
         /// Img26 control.
         /// </summary>
@@ -659,7 +679,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img26;
-        
+
         /// <summary>
         /// rdAutoSubOn control.
         /// </summary>
@@ -668,7 +688,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdAutoSubOn;
-        
+
         /// <summary>
         /// rdAutoSubOff control.
         /// </summary>
@@ -677,7 +697,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdAutoSubOff;
-        
+
         /// <summary>
         /// cfgAutoSub control.
         /// </summary>
@@ -686,7 +706,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl cfgAutoSub;
-        
+
         /// <summary>
         /// trAllowLikes control.
         /// </summary>
@@ -695,7 +715,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlTableRow trAllowLikes;
-        
+
         /// <summary>
         /// rdLikesOn control.
         /// </summary>
@@ -704,7 +724,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdLikesOn;
-        
+
         /// <summary>
         /// rdLikesOff control.
         /// </summary>
@@ -713,7 +733,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdLikesOff;
-        
+
         /// <summary>
         /// lblMaintWarn control.
         /// </summary>
@@ -722,7 +742,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMaintWarn;
-        
+
         /// <summary>
         /// Img45 control.
         /// </summary>
@@ -731,7 +751,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img45;
-        
+
         /// <summary>
         /// chkTopicsOlderThan control.
         /// </summary>
@@ -740,7 +760,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkTopicsOlderThan;
-        
+
         /// <summary>
         /// txtOlderThan control.
         /// </summary>
@@ -749,7 +769,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtOlderThan;
-        
+
         /// <summary>
         /// Img46 control.
         /// </summary>
@@ -758,7 +778,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img46;
-        
+
         /// <summary>
         /// chkTopicsByUser control.
         /// </summary>
@@ -767,7 +787,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkTopicsByUser;
-        
+
         /// <summary>
         /// txtUserId control.
         /// </summary>
@@ -776,7 +796,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUserId;
-        
+
         /// <summary>
         /// Img47 control.
         /// </summary>
@@ -785,7 +805,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img47;
-        
+
         /// <summary>
         /// chkNoReplies control.
         /// </summary>
@@ -794,7 +814,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkNoReplies;
-        
+
         /// <summary>
         /// Img48 control.
         /// </summary>
@@ -803,7 +823,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img48;
-        
+
         /// <summary>
         /// chkActivityOlderThan control.
         /// </summary>
@@ -812,7 +832,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkActivityOlderThan;
-        
+
         /// <summary>
         /// txtReplyOlderThan control.
         /// </summary>
@@ -821,7 +841,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtReplyOlderThan;
-        
+
         /// <summary>
         /// imgTestRun control.
         /// </summary>
@@ -830,7 +850,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton imgTestRun;
-        
+
         /// <summary>
         /// imgExecute control.
         /// </summary>
@@ -839,7 +859,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton imgExecute;
-        
+
         /// <summary>
         /// litTopicPropButton control.
         /// </summary>
@@ -848,7 +868,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal litTopicPropButton;
-        
+
         /// <summary>
         /// btnSave control.
         /// </summary>
@@ -857,7 +877,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnSave;
-        
+
         /// <summary>
         /// btnDelete control.
         /// </summary>
@@ -866,7 +886,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnDelete;
-        
+
         /// <summary>
         /// btnClose control.
         /// </summary>
@@ -875,7 +895,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnClose;
-        
+
         /// <summary>
         /// cbEditorAction control.
         /// </summary>
@@ -884,7 +904,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DotNetNuke.Modules.ActiveForums.Controls.Callback cbEditorAction;
-        
+
         /// <summary>
         /// hidEditorResult control.
         /// </summary>
@@ -893,7 +913,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidEditorResult;
-        
+
         /// <summary>
         /// drpPermittedRoles control.
         /// </summary>
@@ -902,7 +922,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpPermittedRoles;
-        
+
         /// <summary>
         /// drpEditorTypes control.
         /// </summary>
@@ -911,7 +931,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpEditorTypes;
-        
+
         /// <summary>
         /// txtEditorHeight control.
         /// </summary>
@@ -920,7 +940,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditorHeight;
-        
+
         /// <summary>
         /// txtEditorWidth control.
         /// </summary>
@@ -929,7 +949,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEditorWidth;
-        
+
         /// <summary>
         /// drpEditorMobile control.
         /// </summary>
@@ -938,7 +958,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpEditorMobile;
-        
+
         /// <summary>
         /// drpDefaultTrust control.
         /// </summary>
@@ -947,7 +967,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpDefaultTrust;
-        
+
         /// <summary>
         /// txtAutoTrustLevel control.
         /// </summary>
@@ -956,7 +976,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAutoTrustLevel;
-        
+
         /// <summary>
         /// drpModNotifyTemplateId control.
         /// </summary>
@@ -965,7 +985,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpModNotifyTemplateId;
-        
+
         /// <summary>
         /// drpModApprovedTemplateId control.
         /// </summary>
@@ -974,7 +994,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpModApprovedTemplateId;
-        
+
         /// <summary>
         /// drpModRejectTemplateId control.
         /// </summary>
@@ -983,7 +1003,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpModRejectTemplateId;
-        
+
         /// <summary>
         /// drpModMoveTemplateId control.
         /// </summary>
@@ -992,7 +1012,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpModMoveTemplateId;
-        
+
         /// <summary>
         /// drpModDeleteTemplateId control.
         /// </summary>
@@ -1001,7 +1021,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpModDeleteTemplateId;
-        
+
         /// <summary>
         /// txtMaxAttach control.
         /// </summary>
@@ -1010,7 +1030,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMaxAttach;
-        
+
         /// <summary>
         /// txtMaxAttachSize control.
         /// </summary>
@@ -1019,7 +1039,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMaxAttachSize;
-        
+
         /// <summary>
         /// txtAllowedTypes control.
         /// </summary>
@@ -1028,7 +1048,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAllowedTypes;
-        
+
         /// <summary>
         /// ckAllowBrowseSite control.
         /// </summary>
@@ -1037,7 +1057,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ckAllowBrowseSite;
-        
+
         /// <summary>
         /// ckConvertingToJpegAllowed control.
         /// </summary>
@@ -1046,7 +1066,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ckConvertingToJpegAllowed;
-        
+
         /// <summary>
         /// ckAttachInsertAllowed control.
         /// </summary>
@@ -1055,7 +1075,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox ckAttachInsertAllowed;
-        
+
         /// <summary>
         /// txtMaxAttachWidth control.
         /// </summary>
@@ -1064,7 +1084,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMaxAttachWidth;
-        
+
         /// <summary>
         /// txtMaxAttachHeight control.
         /// </summary>
@@ -1073,7 +1093,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMaxAttachHeight;
-        
+
         /// <summary>
         /// chkAutoSubscribeNewTopicsOnly control.
         /// </summary>
@@ -1082,7 +1102,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkAutoSubscribeNewTopicsOnly;
-        
+
         /// <summary>
         /// drpRoles control.
         /// </summary>
@@ -1091,7 +1111,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpRoles;
-        
+
         /// <summary>
         /// Img40 control.
         /// </summary>
@@ -1100,7 +1120,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlImage Img40;
-        
+
         /// <summary>
         /// tbRoles control.
         /// </summary>
@@ -1109,7 +1129,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal tbRoles;
-        
+
         /// <summary>
         /// hidRoles control.
         /// </summary>
@@ -1118,7 +1138,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidRoles;
-        
+
         /// <summary>
         /// chkSocialTopicsOnly control.
         /// </summary>
@@ -1127,7 +1147,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkSocialTopicsOnly;
-        
+
         /// <summary>
         /// drpSocialSecurityOption control.
         /// </summary>
@@ -1136,7 +1156,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpSocialSecurityOption;
-        
+
         /// <summary>
         /// litPropLoad control.
         /// </summary>
