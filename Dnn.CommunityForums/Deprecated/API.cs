@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
     [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Forums
 	{
-		public int Forums_Save(int PortalId, ForumInfo fi, bool isNew, bool UseGroup)
+		public int Forums_Save(int PortalId, Forum fi, bool isNew, bool UseGroup)
 		{
 			try
 			{
