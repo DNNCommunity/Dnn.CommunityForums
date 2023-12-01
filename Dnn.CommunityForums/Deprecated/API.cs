@@ -19,7 +19,6 @@
 //
 
 using System;
-
 namespace DotNetNuke.Modules.ActiveForums.API
 {
     [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
