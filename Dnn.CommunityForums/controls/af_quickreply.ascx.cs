@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                template = Globals.ControlRegisterTag + template;
+                template = Globals.ForumsControlsRegisterAMTag + template;
                 if (template.Contains("[SUBJECT]"))
                 {
                     template = template.Replace("[SUBJECT]", Subject);

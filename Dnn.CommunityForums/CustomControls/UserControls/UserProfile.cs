@@ -632,6 +632,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             tmp =  Globals.DnnControlsRegisterTag + tmp;
                         }
+                        if (tmp.Contains("<social:"))
+                        {
+                            tmp = Globals.SocialRegisterTag + tmp;
+                        }
                         Control ctl = this.ParseControl(tmp);
                         tbc.Controls.Add(ctl);
                         tb.Content = tbc;

@@ -1183,7 +1183,7 @@
       <DependentUpon>Classic.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\API.cs" />
+    <Compile Include="Deprecated\API.cs" />
     <Compile Include="components\Common\Exceptions.cs" />
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1524,7 +1524,7 @@
     <Compile Include="class\ActiveAdminBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\AMPageBase.cs">
+    <Compile Include="Deprecated\AMPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\CodeParser.cs">
@@ -1754,7 +1754,6 @@
     <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
