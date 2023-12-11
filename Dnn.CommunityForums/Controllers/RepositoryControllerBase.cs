@@ -17,39 +17,52 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Web.UI;
+using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class TopicController : ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
+    internal partial class RepositoryControllerBase<T> where T : class
     {
-        readonly IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> repo;
-        internal TopicController()
+        internal readonly IRepository<T> Repo;
+        internal RepositoryControllerBase()
         {
-            
-            ctx = DataContext.Instance();
-            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
+            var ctx = DataContext.Instance();
+            Repo = ctx.GetRepository<T>();
         }
-        internal List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> Get()
+        internal IEnumerable<T> Get()
         {
-            return repo.Get().ToList();
+            return Repo.Get();
         }
-        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Get(int topicId)
+        internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return repo.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
+            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
-        internal void Update(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
+        internal T Get<TProperty>(TProperty id)
         {
-            repo.Update(topicInfo);
+            var content = Repo.GetById(id);
+            return content;
         }
-        internal void Insert(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
+        internal void Update(T info)
         {
-            repo.Insert(topicInfo);
+            Repo.Update(info);
+        }
+        internal void Insert(T info)
+        {
+            Repo.Insert(info);
+        }
+        internal void Delete(string sqlCondition, params object[] args)
+        {
+            Repo.Delete(sqlCondition, args);
+        }
+        internal void DeleteById<TProperty>(TProperty id)
+        {
+            Repo.Delete(Repo.GetById(id));
+        }
+        internal int Count(string sqlCondition, params object[] args)
+        {
+            return string.IsNullOrEmpty(sqlCondition) ? Repo.Get().Count() : Repo.Find(sqlCondition, args).Count(); 
         }
     }
 }
