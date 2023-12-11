@@ -17,37 +17,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public class ControllerBase<T> where T : class
+    internal partial class ControllerBase<T> where T : class
     {
-        internal readonly IRepository<T> Repo;
-
-        internal ControllerBase()
-        {
-            var ctx = DataContext.Instance();
-            Repo = ctx.GetRepository<T>();
-        }
-        public T GetById<TProperty>(TProperty id)
-        {
-            var content = Repo.GetById(id);
-            return content;
-        }
-        public T Get(int id)
-        {
-            var content = Repo.GetById(id);
-            return content;
-        }
-        internal void Update(T info)
-        {
-            Repo.Update(info);
-        }
-
-        internal void Insert(T info)
-        {
-            Repo.Insert(info);
-        }
+        internal ControllerBase() : base() { }
     }
 }
