@@ -23,7 +23,7 @@ using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.Like { }
+    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
 }
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("Id", AutoIncrement = true)]
     [Scope("PostId")]
     [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    class Like
+    class LikeInfo
     {
         public int Id { get; set; }
         public int PostId { get; set; }
