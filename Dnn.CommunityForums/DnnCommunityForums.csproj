@@ -1115,6 +1115,7 @@
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
@@ -1129,6 +1130,7 @@
     <Compile Include="Deprecated\ForumGroupController.cs" />
     <Compile Include="Deprecated\ForumGroupInfo.cs" />
     <Compile Include="Deprecated\ForumInfo.cs" />
+    <Compile Include="Entities\ContentInfo.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
     <Compile Include="Deprecated\PermissionInfo.cs" />
