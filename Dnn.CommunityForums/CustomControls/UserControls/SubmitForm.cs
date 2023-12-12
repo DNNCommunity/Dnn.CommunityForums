@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public ImageButton PostButton { get; set; } = new ImageButton();
         public ImageButton CancelButton { get; set; } = new ImageButton();
         public EditorTypes EditorType { get; set; }
-        public Forum ForumInfo { get; set; }
+        public ForumInfo ForumInfo { get; set; }
         public string TopicIcon
         {
             get => string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
@@ -398,7 +398,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTopicReview\" runat=\"server\" />", "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = template.Replace("[/AF:UI:SECTION:TOPICREVIEW]", "</td></tr></table>");
             }
-            if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
                 template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTags", title: string.Empty) +
@@ -534,7 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
             }
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
                 template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionCategories", title: string.Empty) +
@@ -551,7 +551,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:FIELDSET:CATEGORIES]", "</fieldset>");
                 template = template.Replace("[/AF:UI:SECTION:CATEGORIES]", "</td></tr></table>");
             }
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
             {
                 template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_polledit.ascx\" tagprefix=\"af\" tagname=\"polledit\" %>" + template;
                 template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td>"+
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
                 bHasOptions = true;
             }
-            if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && Permissions.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
+            if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
             {
                 sb.Append("<tr><td>[RESX:TopicPriority]:</td>");
                 sb.Append("<td><asp:textbox id=\"txtTopicPriority\" cssclass=\"aftextbox\" width=\"75\" onkeypress=\"return onlyNumbers(event);\" runat=\"server\" /></td></tr>");
@@ -899,17 +899,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            canModEdit = Permissions.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles);
-            canModApprove = Permissions.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles);
-            canEdit = Permissions.HasPerm(ForumInfo.Security.Edit, ForumUser.UserRoles);
-            canReply = Permissions.HasPerm(ForumInfo.Security.Reply, ForumUser.UserRoles);
-            canCreate = Permissions.HasPerm(ForumInfo.Security.Create, ForumUser.UserRoles);
-            canAttach = Permissions.HasPerm(ForumInfo.Security.Attach, ForumUser.UserRoles);
-            canTrust = Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles);
-            canLock = Permissions.HasPerm(ForumInfo.Security.Lock, ForumUser.UserRoles);
-            canPin = Permissions.HasPerm(ForumInfo.Security.Pin, ForumUser.UserRoles);
-            canAnnounce = Permissions.HasPerm(ForumInfo.Security.Announce, ForumUser.UserRoles);
-            canSubscribe = Permissions.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
+            canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles);
+            canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles);
+            canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Edit, ForumUser.UserRoles);
+            canReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Reply, ForumUser.UserRoles);
+            canCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Create, ForumUser.UserRoles);
+            canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Attach, ForumUser.UserRoles);
+            canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles);
+            canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Lock, ForumUser.UserRoles);
+            canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Pin, ForumUser.UserRoles);
+            canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Announce, ForumUser.UserRoles);
+            canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
 
         }
         protected override void OnLoad(EventArgs e)

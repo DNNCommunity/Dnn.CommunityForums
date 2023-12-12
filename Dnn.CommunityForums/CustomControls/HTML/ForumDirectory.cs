@@ -101,11 +101,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			Data.ForumsDB fdb = new Data.ForumsDB();
 			ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
 			ForumCollection filteredForums = new ForumCollection();
-			foreach (Forum f in allForums)
+			foreach (ForumInfo f in allForums)
 			{
 				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
 				{
-					if (Permissions.HasPerm(f.Security.View, ForumUser.UserRoles))
+					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles))
 					{
 						f.TabId = TabId;
 						f.SubForums = GetSubForums(allForums, f.ForumID);
@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string subtmp = string.Empty;
 			StringBuilder list = new StringBuilder();
 			bool inprogress = false;
-			foreach (Forum f in filteredForums)
+			foreach (ForumInfo f in filteredForums)
 			{
 				if (currGroup != f.ForumGroupId)
 				{
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				string forums = ParseForum(f, ftmp);
 				if (f.SubForums != null)
 				{
-					foreach (Forum s in f.SubForums)
+					foreach (ForumInfo s in f.SubForums)
 					{
 						forums = forums.Replace("[SUBFORUMHOLDER]", ParseForum(s, subtmp) + "[SUBFORUMHOLDER]");
 					}
@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			template = template.Replace("[AF:DIR:FORUMGROUPNAME]", f.GroupName);
 			return template;
 		}
-		private string ParseForum(Forum f, string template)
+		private string ParseForum(ForumInfo f, string template)
 		{
 			template = template.Replace("[AF:DIR:FORUMID]", f.ForumID.ToString());
 			template = template.Replace("[AF:DIR:FORUMNAME]", f.ForumName);
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		private ForumCollection GetSubForums(ForumCollection forums, int forumId)
 		{
 			ForumCollection subforums = null;
-			foreach (Forum s in forums)
+			foreach (ForumInfo s in forums)
 			{
 				if (s.ParentForumId == forumId)
 				{

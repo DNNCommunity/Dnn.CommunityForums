@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -17,80 +17,36 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
 using System;
 using System.Data;
 using System.IO;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
-
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-
-    public class ForumController
+    internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
-        private ForumsDB _forumDB;
-        internal ForumsDB ForumsDB
+        private static ForumsDB _forumDB;
+        internal static ForumsDB GetForumsDB()
         {
-            get { return _forumDB ?? (_forumDB = new ForumsDB()); }
+            return _forumDB ?? (_forumDB = new ForumsDB());
         }
-
-        public string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)
-        {
-            // Setting strict to true enforces the actual permission
-            // If strict is false, forums will show up in the list if they are not hidden for users
-            // that don't otherwise have access
-
-            var forumIds = string.Empty;
-            var fc = ForumsDB.Forums_List(portalId, moduleId);
-            foreach (ForumInfo f in fc)
-            {
-                string roles;
-                switch (permissionType)
-                {
-                    case "CanView":
-                        roles = f.Security.View;
-                        break;
-                    case "CanRead":
-                        roles = f.Security.Read;
-                        break;
-                    case "CanApprove":
-                        roles = f.Security.ModApprove;
-                        break;
-                    case "CanEdit":
-                        roles = f.Security.ModEdit;
-                        break;
-                    default:
-                        roles = f.Security.View;
-                        break;
-                }
-
-                var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userRoles);
-
-                if ((hasPermissions || (!strict && !f.Hidden && (permissionType == "CanView" || permissionType == "CanRead"))) && f.Active)
-                {
-                    forumIds += string.Concat(f.ForumID, ";");
-                }
-            }
-
-            return forumIds;
-        }
-
-        public ForumInfo GetForum(int portalId, int moduleId, int forumId)
+        public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId)
         {
             return GetForum(portalId, moduleId, forumId, false);
         }
-
-        public ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
+        public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
         {
 
             var cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-            var forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as ForumInfo;
+            var forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
             if (forum == null || ignoreCache)
             {
-                using (var dr = ForumsDB.Forums_Get(portalId, moduleId, forumId))
+                using (var dr = GetForumsDB().Forums_Get(portalId, moduleId, forumId))
                 {
                     while (dr.Read())
                     {
@@ -112,12 +68,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return forum;
         }
-
-        private static ForumInfo FillForum(IDataRecord dr)
+        private static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo FillForum(IDataRecord dr)
         {
-            var fi = new ForumInfo
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
             {
-                ForumGroup = new ForumGroupInfo(),
+                ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo(),
                 ForumID = Convert.ToInt32(dr["ForumId"].ToString()),
                 Active = Convert.ToBoolean(dr["Active"]),
                 ModuleId = Convert.ToInt32(dr["ModuleId"].ToString()),
@@ -172,10 +127,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return fi;
         }
 
-        public string GetForumIdsBySocialGroup(int portalId, int socialGroupId)
+        public static string GetForumIdsBySocialGroup(int portalId, int socialGroupId)
         {
             var forumIds = string.Empty;
-            using (var dr = ForumsDB.Forums_GetForSocialGroup(portalId, socialGroupId))
+            using (var dr = GetForumsDB().Forums_GetForSocialGroup(portalId, socialGroupId))
             {
                 while (dr.Read())
                 {
@@ -185,11 +140,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return forumIds;
         }
-        internal ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache)
+        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache)
         {
             return Forums_Get(portalId, moduleId, forumId, useCache, -1);
         }
-        internal ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
+        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
         {
             if (forumId <= 0 && topicId <= 0)
             {
@@ -199,78 +154,74 @@ namespace DotNetNuke.Modules.ActiveForums
             // Get the forum by topic id
             if (topicId > 0 & forumId <= 0)
             {
-                forumId = ForumsDB.Forum_GetByTopicId(topicId);
+                forumId = GetForumsDB().Forum_GetByTopicId(topicId);
             }
 
             return forumId <= 0 ? null : GetForum(portalId, moduleId, forumId, !useCache);
         }
-        public int Forums_Save(int portalId, ForumInfo fi, bool isNew, bool useGroup)
+        public static string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)
         {
-            var rc = new RoleController();
-            var db = new Data.Common();
-            var permissionsId = -1;
-            if (useGroup && (string.IsNullOrEmpty(fi.ForumSettingsKey) || fi.PermissionsId == -1))
+            // Setting strict to true enforces the actual permission
+            // If strict is false, forums will show up in the list if they are not hidden for users
+            // that don't otherwise have access
+
+            var forumIds = string.Empty;
+            var fc = GetForumsDB().Forums_List(portalId, moduleId);
+            foreach (ForumInfo f in fc)
             {
-                var fc = new ForumGroupController();
-                var fg = fc.Groups_Get(fi.ModuleId, fi.ForumGroupId);
-                if (fg != null)
+                string roles;
+                switch (permissionType)
                 {
-                    fi.ForumSettingsKey = fg.GroupSettingsKey;
-                    //fi.ModuleId = fg.ModuleId
-                    fi.PermissionsId = fg.PermissionsId;
+                    case "CanView":
+                        roles = f.Security.View;
+                        break;
+                    case "CanRead":
+                        roles = f.Security.Read;
+                        break;
+                    case "CanApprove":
+                        roles = f.Security.ModApprove;
+                        break;
+                    case "CanEdit":
+                        roles = f.Security.ModEdit;
+                        break;
+                    default:
+                        roles = f.Security.View;
+                        break;
+                }
+
+                var hasPermissions = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userRoles);
+
+                if ((hasPermissions || (!strict && !f.Hidden && (permissionType == "CanView" || permissionType == "CanRead"))) && f.Active)
+                {
+                    forumIds += string.Concat(f.ForumID, ";");
                 }
             }
-            else if (fi.PermissionsId <= 0 && useGroup == false)
-            {
-                var ri = rc.GetRoleByName(portalId, "Administrators");
-                if (ri != null)
-                {
-                    fi.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
-                    permissionsId = fi.PermissionsId;
-                    isNew = true;
-                }
-                if (fi.ForumID > 0 & !(string.IsNullOrEmpty(fi.ForumSettingsKey)))
-                {
-                    if (fi.ForumSettingsKey.Contains("G:"))
-                        fi.ForumSettingsKey = string.Empty;
-                }
-                if (fi.ForumSettingsKey == "" && fi.ForumID > 0)
-                {
-                    fi.ForumSettingsKey = string.Concat("F:", fi.ForumID);
-                }
-            }
-            else if (useGroup == false && string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
-            {
-                fi.ForumSettingsKey = string.Concat("F:", fi.ForumID);
-            }
-
-            var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
-            if (String.IsNullOrEmpty(fi.ForumSettingsKey))
-                fi.ForumSettingsKey = string.Concat("F:", forumId);
-
-            if (fi.ForumSettingsKey.Contains("G:"))
-                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID), string.Concat("F:", fi.ForumID));
-
-            if (isNew && useGroup == false)
-            {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
-
-                var sKey = "F:" + forumId.ToString();
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.ReplyFormId, "0");
-                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.AllowRSS, "false");
-            }
-
-            // Clear the caches
-            DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumList, fi.ModuleId));
-            DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumInfo, fi.ModuleId, forumId));
-
-            return forumId;
+            return forumIds;
         }
+        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, int userId, bool withSecurity, bool useCache, int topicId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = null;
 
-        public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
+            if (forumId <= 0 && topicId <= 0)
+                return null;
+
+            // Get the forum by topic id
+            if (topicId > 0 & forumId <= 0)
+                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsDB().Forum_GetByTopicId(topicId);
+
+            if (forumId <= 0)
+                return null;
+
+            fi = (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId));
+            if (fi == null)
+            {
+                fi = GetForum(portalId, moduleId, forumId, !useCache);
+
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId), fi);
+            }
+            return fi;
+        }
+        public static string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
         {
             var userForums = GetForumsForUser(currentUser.UserRoles, portalId, moduleId, "CanView");
             var dt = DataProvider.Instance().UI_ForumView(portalId, moduleId, currentUser.UserId, currentUser.IsSuperUser, userForums).Tables[0];
@@ -315,23 +266,72 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sb.ToString();
         }
-        private static string GetSubForums(int itemCount, int parentForumId, DataTable dtForums, ref int n)
+        public static int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup)
         {
-            var sb = new StringBuilder();
-            dtForums.DefaultView.RowFilter = string.Concat("ParentForumId = ", parentForumId);
-            if (dtForums.DefaultView.Count > 0)
+            var rc = new RoleController();
+            var db = new Data.Common();
+            var permissionsId = -1;
+            if (useGroup && (string.IsNullOrEmpty(fi.ForumSettingsKey) || fi.PermissionsId == -1))
             {
-                foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
+                var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Get(fi.ModuleId, fi.ForumGroupId);
+                if (fg != null)
                 {
-                    sb.AppendFormat("<option value=\"{0}\">----{1}</option>", dr["ForumID"], dr["ForumName"]);
-                    itemCount += 1;
+                    fi.ForumSettingsKey = fg.GroupSettingsKey;
+                    fi.PermissionsId = fg.PermissionsId;
                 }
             }
-            n = itemCount;
-            return sb.ToString();
-        }
+            else if (fi.PermissionsId <= 0 && useGroup == false)
+            {
+                var ri = rc.GetRoleByName(portalId, "Administrators");
+                if (ri != null)
+                {
+                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(ri.RoleID.ToString()).PermissionsId;
+                    permissionsId = fi.PermissionsId;
+                    isNew = true;
+                }
+                if (fi.ForumID > 0 & !(string.IsNullOrEmpty(fi.ForumSettingsKey)))
+                {
+                    if (fi.ForumSettingsKey.Contains("G:"))
+                    {
+                        fi.ForumSettingsKey = string.Empty;
+                    }
+                }
+                if (string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
+                {
+                    fi.ForumSettingsKey = $"F:{fi.ForumID}";
+                }
+            }
+            else if (useGroup == false && string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
+            {
+                fi.ForumSettingsKey = $"F:{fi.ForumID}";
+            }
 
-        public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
+            var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
+            if (String.IsNullOrEmpty(fi.ForumSettingsKey))
+                fi.ForumSettingsKey = string.Concat("F:", forumId);
+
+            if (fi.ForumSettingsKey.Contains("G:"))
+                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID), string.Concat("F:", fi.ForumID));
+
+            if (isNew && useGroup == false)
+            {
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
+
+                var sKey = "F:" + forumId.ToString();
+                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
+                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
+                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
+                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.ReplyFormId, "0");
+                Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.AllowRSS, "false");
+            }
+
+            // Clear the caches
+            DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumList, fi.ModuleId));
+            DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumInfo, fi.ModuleId, forumId));
+
+            return forumId;
+        }
+        public static DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
         {
             DataSet ds;
             DataTable dt;
@@ -365,15 +365,29 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return dt;
         }
-        public int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig)
+        private static string GetSubForums(int itemCount, int parentForumId, DataTable dtForums, ref int n)
+        {
+            var sb = new StringBuilder();
+            dtForums.DefaultView.RowFilter = string.Concat("ParentForumId = ", parentForumId);
+            if (dtForums.DefaultView.Count > 0)
+            {
+                foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
+                {
+                    sb.AppendFormat("<option value=\"{0}\">----{1}</option>", dr["ForumID"], dr["ForumName"]);
+                    itemCount += 1;
+                }
+            }
+            n = itemCount;
+            return sb.ToString();
+        }
+        public static int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig)
         {
             var forumId = -1;
 
             try
             {
                 var forumsDb = new Data.Common();
-                var fgc = new ForumGroupController();
-                var gi = fgc.Groups_Get(moduleId, forumGroupId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Get(moduleId, forumGroupId);
                 var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
@@ -383,7 +397,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 moduleId = gi.ModuleId;
 
-                var fi = new ForumInfo
+                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
                 {
                     ForumDesc = forumDescription,
                     Active = true,

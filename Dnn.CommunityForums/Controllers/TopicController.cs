@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         IRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> repo;
         internal TopicController()
         {
+            
             ctx = DataContext.Instance();
             repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
         }

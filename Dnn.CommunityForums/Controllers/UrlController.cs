@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal static class UrlController
     {
-        internal static string BuildTopicUrl(int PortalId, int ModuleId, int TopicId, string subject, Forum forumInfo)
+        internal static string BuildTopicUrl(int PortalId, int ModuleId, int TopicId, string subject, ForumInfo forumInfo)
         {
             var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
             if (SimulateIsNumeric.IsNumeric(cleanSubject))

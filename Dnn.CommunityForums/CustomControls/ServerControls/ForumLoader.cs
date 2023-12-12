@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:ForumLoader runat=server></{0}:ForumLoader>")]
     public class ForumLoader : ForumBase
     {
-        private Forum fi;
+        private ForumInfo fi;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

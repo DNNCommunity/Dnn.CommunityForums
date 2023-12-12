@@ -265,12 +265,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int ForumCount = 0;
                     bool hasForums = false;
                     DataTable rsForums = ForumTable.DefaultView.ToTable();
-                    Forum fi;
+                    ForumInfo fi;
                     int tmpGroupCount = 0;
                     foreach (DataRow dr in rsForums.Rows)
                     {
                         fi = FillForumRow(dr);
-                        bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                        bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
                         if ((UserInfo.IsSuperUser) || (canView) || (!Convert.ToBoolean(dr["GroupHidden"])))
                         {
                             if (tmpGroup != dr["GroupName"].ToString())
@@ -347,9 +347,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return string.Empty;
             }
         }
-        private Forum FillForumRow(DataRow dr)
+        private ForumInfo FillForumRow(DataRow dr)
         {
-            var fi = new Forum();
+            var fi = new ForumInfo();
             try
             {
                 fi.ForumID = Convert.ToInt32(dr["ForumId"]);
@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[USERID]", CurrentUserId.ToString());
             return sOutput;
         }
-        private string ParseForumRow(string Template, Forum fi, int currForumIndex, string ThemePath, int totalForums)
+        private string ParseForumRow(string Template, ForumInfo fi, int currForumIndex, string ThemePath, int totalForums)
         {
 
 
@@ -475,9 +475,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
-            bool canSubscribe = Permissions.HasPerm(fi.Security.Subscribe, ForumUser.UserRoles);
-            bool canRead = Permissions.HasPerm(fi.Security.Read, ForumUser.UserRoles);
+            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
+            bool canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, ForumUser.UserRoles);
+            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Read, ForumUser.UserRoles);
             string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, CurrentUserId, fi.LastPostDateTime, fi.LastRead, fi.LastPostID);
             string sIconImage = "<img alt=\"" + fi.ForumName + "\" src=\"" + ThemePath + "images/" + sIcon + "\" />";
 
@@ -668,7 +668,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
-        private string GetLastPostSubject(int LastPostID, int ParentPostID, int ForumID, int TabID, string Subject, int Length, int PageSize, Forum fi)
+        private string GetLastPostSubject(int LastPostID, int ParentPostID, int ForumID, int TabID, string Subject, int Length, int PageSize, ForumInfo fi)
         {
             //TODO: Verify that this will still jump to topics on page 2
             var sb = new StringBuilder();
@@ -728,7 +728,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (Convert.ToInt32(dr["ParentForumId"]) == ForumId)
                     {
-                        bool canView = Permissions.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
+                        bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
                         SubForum = GetForumName(canView, Convert.ToBoolean(dr["ForumHidden"]), TabId, Convert.ToInt32(dr["ForumId"]), dr["ForumName"].ToString(), MainSettings.UseShortUrls);
                         if (SubForum != string.Empty)
                         {
@@ -763,8 +763,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     i += 1;
                     string tmpSubs = TemplateUtils.GetTemplateSection(Template, "[SUBFORUMS]", "[/SUBFORUMS]");
-                    Forum fi = FillForumRow(dr);
-                    bool canView = Permissions.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
+                    ForumInfo fi = FillForumRow(dr);
+                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
                     if (canView || (!fi.Hidden) | UserInfo.IsSuperUser)
                     {
                         string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, CurrentUserId, fi.LastPostDateTime, fi.LastRead, fi.LastPostID);

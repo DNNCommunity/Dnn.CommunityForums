@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int oldForumId = -1;
                     oldForumId = db.Forum_GetByTopicId(TopicId);
                     ForumController fc = new ForumController();
-                    Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
+                    ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
 
                     if (!(string.IsNullOrEmpty(fi.PrefixURL)))
                     {
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
             ForumController fc = new ForumController();
-            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
 
             TopicsController tc = new TopicsController();
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
@@ -414,11 +414,11 @@ namespace DotNetNuke.Modules.ActiveForums
             Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(moduleInfo.PortalID))
             {
                 roles.Add(r.RoleName);
             }
-            string roleIds = Permissions.GetRoleIds(roles.ToArray(), moduleInfo.PortalID);
+            string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
 
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
@@ -491,7 +491,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
                         var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
-                        permittedRolesCanView = Permissions.GetRoleNames(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
+                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
                         AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
                     var searchDoc = new SearchDocument

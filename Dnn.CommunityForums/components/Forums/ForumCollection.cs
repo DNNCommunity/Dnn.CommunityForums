@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 
 
-		private Forum _Item;
+		private ForumInfo _Item;
 
 		public void CopyTo(System.Array array, int index)
 		{
@@ -52,23 +52,23 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 
-		public int Add(Forum value)
+		public int Add(ForumInfo value)
 		{
 			return List.Add(value);
 		}
 
 
-		public bool Contains(Forum value)
+		public bool Contains(ForumInfo value)
 		{
 			return List.Contains(value);
 		}
 
-		public int IndexOf(Forum value)
+		public int IndexOf(ForumInfo value)
 		{
 			return List.IndexOf(value);
 		}
 
-		public void Insert(int index, Forum value)
+		public void Insert(int index, ForumInfo value)
 		{
 			List.Insert(index, value);
 		}
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 		}
 
-		public Forum this[int index]
+		public ForumInfo this[int index]
 		{
 			get
 			{

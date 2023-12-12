@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (ForumId > 0)
 				{
-					Forum f = fc.GetForum(PortalId, ModuleId, ForumId);
+					ForumInfo f = fc.GetForum(PortalId, ModuleId, ForumId);
 					if (f != null)
 					{
 						forumPrefix = f.PrefixURL;

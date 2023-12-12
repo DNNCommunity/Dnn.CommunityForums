@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		public string imgOff;
         public bool ReadOnly { get; set; } = false;
 
-        public DotNetNuke.Modules.ActiveForums.PermissionInfo Perms { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Perms { get; set; }
         public int PermissionsId { get; set; } = -1;
 
         protected override void OnInit(EventArgs e)
@@ -67,22 +67,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
 			sb.Append("<option value=\"-1\">All Users</option>");
 			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Permissions.GetRoles(PortalId))
+			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
-			}
-			//drpSecRoles.DataTextField = "RoleName"
-			//drpSecRoles.DataValueField = "RoleId"
-			//drpSecRoles.DataSource = rc.GetPortalRoles(PortalId)
-			//drpSecRoles.DataBind()
-			//drpSecRoles.Items.Insert(0, New ListItem("[RESX:DropDownDefault]", ""))
-			//drpSecRoles.Items.Insert(1, New ListItem("All Users", "-1"))
-			//drpSecRoles.Items.Insert(2, New ListItem("Unauthenticated Users", "-3"))
-			//drpSecRoles.Items.Insert(3, New ListItem("Topic Author", "-10"))
+			} 
 			sb.Append("</select>");
 			litRoles.Text = sb.ToString();
 		}
-		private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.PermissionInfo security, int permissionsId)
+		private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security, int permissionsId)
 		{
 			//Roles
 			string[] roles = GetSecureObjectList(security, 0).Split(';');
@@ -101,12 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				tmp += n.ToString() + ";";
 			}
-			List<PermissionInfo> pl = new List<PermissionInfo>();
+			List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
-            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Permissions.GetRolesNVC(PortalId, tmp);
+            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
-				PermissionInfo pi = new PermissionInfo();
+                DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
 				pi.ObjectId = key;
 				pi.ObjectName = nvc[key];
 				if (string.IsNullOrEmpty(pi.ObjectName))
@@ -129,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
                         if (u != null)
                         {
-                            PermissionInfo pi = new PermissionInfo();
+                            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
                             pi.ObjectId = u.UserID.ToString();
                             pi.ObjectName = u.DisplayName;
                             pi.Type = ObjectType.UserId;
@@ -154,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         string groupName = role.RoleName;
                         if (!(string.IsNullOrEmpty(groupName)))
                         {
-                            PermissionInfo pi = new PermissionInfo();
+                            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
                             pi.ObjectId = g;
                             pi.ObjectName = groupName;
                             pi.Type = ObjectType.GroupId;
@@ -174,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             string[,] grid = new string[pl.Count + 1, 28];
             i = 0;
-            foreach (PermissionInfo pi in pl)
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
             {
                 grid[i, 0] = pi.ObjectId;
                 grid[i, 1] = pi.ObjectName;
@@ -259,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (int r = 3; r <= 27; r++)
                 {
                     keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-                    bool bState = Convert.ToBoolean(grid[x, r]); //Permissions.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
+                    bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
                     string sState = "<img src=\"" + imgOff + "\" alt=\"Disabled\" />";
                     if (bState)
                     {
@@ -299,12 +291,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			else
 			{
-				return DotNetNuke.Modules.ActiveForums.Permissions.HasAccess(permSet.Split('|')[objectType], objectId + ";");
+				return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(permSet.Split('|')[objectType], objectId + ";");
 			}
 
         }
 
-		private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.PermissionInfo s, int objectType)
+		private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
 		{
 			string roleObjects = string.Empty;
 
@@ -377,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string sOut = string.Empty;
 			if (action == "delete")
 			{
-                Permissions.RemoveObjectFromAll(secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(secId, secType, pId);
 
 			}
 			else if (action == "addobject")
@@ -405,7 +397,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				if (! (string.IsNullOrEmpty(secId)))
 				{
 					string permSet = db.GetPermSet(pId, "View");
-					permSet = Permissions.AddPermToSet(secId, secType, permSet);
+					permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(secId, secType, permSet);
 					db.SavePermSet(pId, "View", permSet);
 				}
 
@@ -416,11 +408,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				string permSet = db.GetPermSet(pId, key);
 				if (action == "remove")
 				{
-					permSet = Permissions.RemovePermFromSet(secId, secType, permSet);
+					permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(secId, secType, permSet);
 				}
 				else
 				{
-					permSet = Permissions.AddPermToSet(secId, secType, permSet);
+					permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(secId, secType, permSet);
 				}
 				db.SavePermSet(pId, key, permSet);
 				sOut = action + "|" + returnId;

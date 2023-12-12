@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class Classic : ForumBase
     {
 
-        private Forum fi;
+        private ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members
@@ -268,8 +268,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
-                cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
-                cc.AdminRoles = Permissions.GetRoleIds(this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'), PortalId);
+                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, authorizedViewRoles.Split(';'));
+                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
                 cc.ProfileLink = ""; //GetProfileLink()
                 cc.MembersLink = ""; // GetMembersLink()
                 this.ControlConfig = cc;

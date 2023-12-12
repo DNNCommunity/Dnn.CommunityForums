@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs);
             }
         }
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
+        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, ForumInfo fi, List<SubscriptionInfo> subs)
         {
             PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             SettingsInfo mainSettings = SettingsBase.GetModuleSettings(moduleID);

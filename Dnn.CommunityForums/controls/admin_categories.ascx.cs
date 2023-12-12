@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			Data.ForumsDB fdb = new Data.ForumsDB();
 			ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
 			ForumCollection filteredForums = new ForumCollection();
-			foreach (Forum f in allForums)
+			foreach (ForumInfo f in allForums)
 			{
 				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
 				{
@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 			}
 			int tmpGroupId = -1;
-			foreach (Forum f in filteredForums)
+			foreach (ForumInfo f in filteredForums)
 			{
 				if (! (tmpGroupId == f.ForumGroupId))
 				{
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				drpForums.Items.Add(new ListItem(" - " + f.ForumName, "FORUM" + f.ForumID.ToString()));
 				if (f.SubForums != null && f.SubForums.Count > 0)
 				{
-					foreach (Forum ff in f.SubForums)
+					foreach (ForumInfo ff in f.SubForums)
 					{
 						drpForums.Items.Add(new ListItem(" ---- " + ff.ForumName, "FORUM" + ff.ForumID.ToString()));
 					}
@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private ForumCollection GetSubForums(ForumCollection forums, int forumId)
 		{
 			ForumCollection subforums = null;
-			foreach (Forum s in forums)
+			foreach (ForumInfo s in forums)
 			{
 				if (s.ParentForumId == forumId)
 				{

@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Make sure the user has permissions to attach files
-                if (forumUser == null || !Permissions.HasPerm(forum.Security.Attach, forumUser.UserRoles))
+                if (forumUser == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.Attach, forumUser.UserRoles))
                 {
                     File.Delete(file.LocalFileName);
                     return request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized");
@@ -422,14 +422,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (forum_out == forum_in)
                 {
-                    perm = Permissions.HasPerm(forum_out.Security.View, forumUser.UserRoles);
+                    perm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.View, forumUser.UserRoles);
                 }
                 else
                 {
-                    perm = Permissions.HasPerm(forum_out.Security.View, forumUser.UserRoles) && Permissions.HasPerm(forum_in.Security.View, forumUser.UserRoles);
+                    perm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.View, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_in.Security.View, forumUser.UserRoles);
                 }
 
-                var modSplit = Permissions.HasPerm(forum_out.Security.ModSplit, forumUser.UserRoles);
+                var modSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.ModSplit, forumUser.UserRoles);
 
                 if (perm && modSplit)
                 {

@@ -291,7 +291,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			}
 			pc.SaveProperty(pi);
 			ForumController fc = new ForumController();
-			Forum fi = fc.GetForum(PortalId, ModuleId, pi.ObjectOwnerId, true);
+			ForumInfo fi = fc.GetForum(PortalId, ModuleId, pi.ObjectOwnerId, true);
 			fi.HasProperties = true;
 			fc.Forums_Save(PortalId, fi, false, false);
 
@@ -345,7 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				if (! (pc.ListProperties(PortalId, prop.ObjectType, prop.ObjectOwnerId).Count > 0))
 				{
 					ForumController fc = new ForumController();
-					Forum fi = fc.GetForum(PortalId, ModuleId, prop.ObjectOwnerId, true);
+					ForumInfo fi = fc.GetForum(PortalId, ModuleId, prop.ObjectOwnerId, true);
 					fi.HasProperties = false;
 					fc.Forums_Save(PortalId, fi, false, false);
 				}

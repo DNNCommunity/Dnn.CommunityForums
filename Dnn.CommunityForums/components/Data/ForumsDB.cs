@@ -64,11 +64,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "ForumsList", PortalId, ModuleId))
 				{
 
-					Forum fi = null;
+					ForumInfo fi = null;
 					ForumGroupInfo gi = null;
 					while (dr.Read())
 					{
-						fi = new Forum();
+						fi = new ForumInfo();
 						gi = new ForumGroupInfo();
 						fi.ModuleId = int.Parse(dr["ModuleId"].ToString());
 						fi.ForumID = Convert.ToInt32(dr["ForumId"].ToString());
@@ -125,8 +125,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.Security.Reply = dr["CanReply"].ToString();
 						fi.Security.Subscribe = dr["CanSubscribe"].ToString();
 						fi.Security.Trust = dr["CanTrust"].ToString();
-						fi.Security.View = dr["CanView"].ToString();
-						fi.ForumSettings = LoadSettings(dr);
+						fi.Security.View = dr["CanView"].ToString(); 
+						fi.Security.Tag = dr["CanTag"].ToString();
+                        fi.Security.Prioritize = dr["CanPrioritize"].ToString();
+                        fi.Security.Categorize = dr["CanCategorize"].ToString();
+                        fi.ForumSettings = LoadSettings(dr);
 						fi.PrefixURL = dr["PrefixURL"].ToString();
 							//.SEO = dr("ForumSEO").ToString
 						fi.TotalTopics = int.Parse(dr["TotalTopics"].ToString());
@@ -172,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				int groupId = -1;
 				System.Text.StringBuilder groups = new System.Text.StringBuilder();
 				System.Text.StringBuilder forums = new System.Text.StringBuilder();
-				foreach (Forum f in fc)
+				foreach (ForumInfo f in fc)
 				{
 					if (groupId != f.ForumGroupId)
 					{
@@ -191,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				sb.Append(groups.ToString());
 				sb.Append("</groups>");
 				sb.AppendLine();
-				foreach (Forum f in fc)
+				foreach (ForumInfo f in fc)
 				{
 					forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
 					//forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")

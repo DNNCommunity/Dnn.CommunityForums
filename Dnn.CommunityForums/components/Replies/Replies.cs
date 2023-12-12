@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
             ForumController fc = new ForumController();
-            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
 
             ReplyController rc = new ReplyController();
             DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);

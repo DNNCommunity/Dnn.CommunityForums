@@ -355,9 +355,12 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumSettings = "AF-{0}-fs-{1}";
 
 
+        public const string ForumGroupInfo = "AF-{0}-fgi-{1}";
+        public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
 
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
+        public const string Roles = "AF-roles-{0}"; 
         public const string UserRoles  = "AF-userroles-{0}";
 
         //public const string ForumView = "AF-{0}-FV-{1}";

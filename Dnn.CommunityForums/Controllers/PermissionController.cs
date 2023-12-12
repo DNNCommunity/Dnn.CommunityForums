@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public class PermissionsController : DotNetNuke.Modules.ActiveForums.Controllers.ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+    internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole)
         {
@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModLock = adminRoleId,
                 ModPin = adminRoleId
             };
-            Repo.Insert(permissionInfo);
+            Insert(permissionInfo);
             return permissionInfo;
         }
         public static bool HasAccess(string AuthorizedRoles, string UserRoles)
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (string.IsNullOrEmpty(userRoles))
             {
                 string[] roles = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId).Roles;
-                string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionsController.GetRoleIds(PortalId, roles);
+                string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, roles);
                 userRoles = roleIds + "|" + UserId + "|" + string.Empty + "|";
                 UserRolesDictionary.AddRoles(PortalId, UserId, userRoles);
             }
