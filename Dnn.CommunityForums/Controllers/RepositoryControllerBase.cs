@@ -39,17 +39,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var content = Repo.GetById(id);
             return content;
         }
-        internal void Update(T info)
+        internal void Update(T item)
         {
-            Repo.Update(info);
+            Repo.Update(item);
         }
-        internal void Insert(T info)
+        internal void Insert(T item)
         {
-            Repo.Insert(info);
+            Repo.Insert(item);
         }
         internal void Delete(string sqlCondition, params object[] args)
         {
             Repo.Delete(sqlCondition, args);
+        }
+        internal void Delete(T item)
+        {
+            Repo.Delete(item);
         }
         internal int Count(string sqlCondition, params object[] args)
         {

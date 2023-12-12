@@ -30,7 +30,7 @@ using DotNetNuke.Security.Permissions;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController")]
-    public partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController
+    internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController")]
         public new DotNetNuke.Modules.ActiveForums.ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)

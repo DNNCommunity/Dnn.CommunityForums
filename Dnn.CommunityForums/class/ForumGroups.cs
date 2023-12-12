@@ -317,26 +317,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
     }
 
-	public class ForumGroupController
+	internal partial class ForumGroupController
 	{
 		public void Group_Delete(int moduleId, int forumGroupId)
 		{
 			DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
-		}
-
-		public ForumGroupInfo GetForumGroup(int moduleId, int forumGroupId)
-		{
-			var db = new Data.Groups();
-			ForumGroupInfo gi = null;
-			using (var dr = db.Groups_Get(moduleId, forumGroupId))
-			{
-				while (dr.Read())
-				{
-					gi = FillForumGroup(dr);
-				}
-				dr.Close();
-			}
-			return gi;
 		}
 
 		private static ForumGroupInfo FillForumGroup(IDataRecord dr)
@@ -383,34 +368,6 @@ namespace DotNetNuke.Modules.ActiveForums
 						};
 
 			return g;
-		}
-
-		public ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)
-		{
-			var gi = GetForumGroup(moduleID, forumGroupID);
-			gi.GroupSettings = DataCache.GetSettings(moduleID, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, moduleID,gi.GroupSettingsKey), false);
-			return gi;
-		}
-
-		public ArrayList Groups_List(int moduleId, bool fillSettings = false)
-		{
-			var groupArr = CBO.FillCollection(DataProvider.Instance().Groups_List(moduleId), typeof(ForumGroupInfo));
-			
-			if (fillSettings == false)
-				return groupArr;
-
-			int i;
-			for (i = 0; i < groupArr.Count; i++)
-			{
-				var gi = groupArr[i] as ForumGroupInfo;
-				if(gi == null)
-					continue;
-
-				gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey,moduleId, gi.GroupSettingsKey), false);
-
-				groupArr[i] = gi;
-			}
-			return groupArr;
 		}
 
 		internal int Groups_Save(int portalId, ForumGroupInfo fg)

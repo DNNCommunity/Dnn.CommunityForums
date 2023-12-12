@@ -763,7 +763,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     i += 1;
                     string tmpSubs = TemplateUtils.GetTemplateSection(Template, "[SUBFORUMS]", "[/SUBFORUMS]");
-                    Forum fi = FillForumRow(dr);
+                    ForumInfo fi = FillForumRow(dr);
                     bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
                     if (canView || (!fi.Hidden) | UserInfo.IsSuperUser)
                     {
