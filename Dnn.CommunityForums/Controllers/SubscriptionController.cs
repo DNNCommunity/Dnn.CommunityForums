@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class SubscriptionController : ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>
+    class SubscriptionController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>
     {
         public SubscriptionController() : base() { }
         public void Subscribe(int portalId, int moduleId, int userId, int forumId)
