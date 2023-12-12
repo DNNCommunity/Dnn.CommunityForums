@@ -1125,7 +1125,7 @@
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Deprecated\PermissionInfo.cs" />
-    <Compile Include="Entities\Like.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
