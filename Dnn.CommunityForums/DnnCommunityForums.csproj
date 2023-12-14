@@ -1774,6 +1774,7 @@
     <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="components\Filters\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>

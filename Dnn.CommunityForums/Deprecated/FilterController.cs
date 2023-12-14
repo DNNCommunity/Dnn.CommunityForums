@@ -35,13 +35,13 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Update()")]
         public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Save(DotNetNuke.Modules.ActiveForums.FilterInfo filter)
 		{
-            if (filter.FilterId == -1)
+            if (filter.FilterId > 0)
             {
-                filterController.Insert(filter);
+                filterController.Update(filter);
             }
             else
             {
-                filterController.Update(filter);
+                filterController.Insert(filter);
             }
             return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.Get(filter.FilterId);
         }
