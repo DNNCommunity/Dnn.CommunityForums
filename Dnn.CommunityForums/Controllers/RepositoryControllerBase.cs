@@ -39,12 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
-        internal T GetById<TProperty>(TProperty id)
-        {
-            var content = Repo.GetById(id);
-            return content;
-        }
-        internal T Get(int id)
+        internal T Get<TProperty>(TProperty id)
         {
             var content = Repo.GetById(id);
             return content;
