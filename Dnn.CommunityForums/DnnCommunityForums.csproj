@@ -1124,6 +1124,8 @@
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
@@ -1228,8 +1230,6 @@
     <Compile Include="components\Data\Topics.cs" />
     <Compile Include="components\Extensions\ConfigUtils.cs" />
     <Compile Include="components\Extensions\ReWriter.cs" />
-    <Compile Include="components\Filters\FilterController.cs" />
-    <Compile Include="components\Filters\FilterInfo.cs" />
     <Compile Include="Deprecated\FilterController.cs" />
     <Compile Include="Deprecated\FilterInfo.cs" />
     <Compile Include="components\Forums\ForumCollection.cs" />
@@ -1774,7 +1774,6 @@
     <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="components\Filters\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>

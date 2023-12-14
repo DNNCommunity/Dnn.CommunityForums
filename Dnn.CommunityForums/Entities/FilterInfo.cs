@@ -17,32 +17,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-<<<<<<<< HEAD:Dnn.CommunityForums/Entities/LikeInfo.cs
+//
 using DotNetNuke.ComponentModel.DataAnnotations;
-========
->>>>>>>> dev81/3-dal2/3-filtercontroller:Dnn.CommunityForums/Deprecated/FilterInfo.cs
-using System;
 using System.Web.Caching;
-namespace DotNetNuke.Modules.ActiveForums
-{
-<<<<<<<< HEAD:Dnn.CommunityForums/Entities/LikeInfo.cs
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
-}
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    [TableName("activeforums_Likes")]
-    [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("PostId")]
-    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    class LikeInfo
+    internal partial class FilterInfo
     {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        public bool Checked { get; set; }
+        [TableName("activeforums_Filters")]
+        [PrimaryKey("FilterId", AutoIncrement = true)]
+        [Scope("ModuleId")]
+        [Cacheable("activeforums_Filters", CacheItemPriority.Normal)]
+        public int FilterId { get; set; }
+        public string Find { get; set; }
+        public string Replace { get; set; }
+        public string FilterType { get; set; }
+        public int PortalId { get; set; }
+        public int ModuleId { get; set; }
     }
-========
-	public class FilterInfo : DotNetNuke.Modules.ActiveForums.Entities.FilterInfo;
->>>>>>>> dev81/3-dal2/3-filtercontroller:Dnn.CommunityForums/Deprecated/FilterInfo.cs
 }
+

@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		}
 		private void FilterSave()
 		{
-			FilterInfo filter = new FilterInfo();
+			DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Entities.FilterInfo();
 			filter.FilterId = -1;
 			filter.ModuleId = ModuleId;
 			filter.PortalId = PortalId;
