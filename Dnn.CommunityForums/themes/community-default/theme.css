@@ -97,7 +97,7 @@
 @media screen and (min-width: 992px) {
   .dnn-community-forums .dcf-cols .dcf-col-25 {
     width: 25%;
-    max-width: 300px;
+    max-width: 250px;
   }
 }
 .dnn-community-forums .dcf-cols .dcf-col-75 {
