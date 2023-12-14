@@ -18,11 +18,11 @@
 						<td valign="top" class="NormalBold">[RESX:Body]:</td>
 						<td width="100%"><div id="btnToolBar" runat="server">
 							<input type="button" class="afButton" accesskey="b" name="afBold" value="[RESX:Bold]" style="font-weight:bold;" onclick="insertCode('[b] [/b]');" onmouseover="window.status='[RESX:BoldDesc]';  return true;" onmouseout="window.status=''; return true;" />
-							<input type="button" class="afButton" accesskey="i" name="afBold" value="[RESX:Italics]"  style="font-weight:bold;" onclick="insertCode('[i] [/i]');" onmouseover="window.status='[RESX:ItalicsDesc]';  return true;" onmouseout="window.status=''; return true;" />
-							<input type="button" class="afButton" accesskey="u" name="afBold" value="[RESX:Underline]" style="font-weight:bold;" onclick="insertCode('[u] [/u]');" onmouseover="window.status='[RESX:UnderlineDesc]';  return true;" onmouseout="window.status=''; return true;" />
-							<input type="button" class="afButton" accesskey="q" name="afBold" value="[RESX:Quote]" style="font-weight:bold;" onclick="insertQuote();" onmouseover="window.status='[RESX:QuoteDesc]';  return true;" onmouseout="window.status=''; return true;" />
-							<input type="button" class="afButton" accesskey="m" name="afBold" value="[RESX:Image]" style="font-weight:bold;" onclick="insertCode('[img] [/img]');" onmouseover="window.status='[RESX:ImageDesc]';  return true;" onmouseout="window.status=''; return true;" />
-							<input type="button" class="afButton" accesskey="c" name="afBold" value="[RESX:Code]" style="font-weight:bold;" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]';  return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;" />
+							<input type="button" class="afButton" accesskey="i" name="afItalics" value="[RESX:Italics]"  style="font-weight:bold;" onclick="insertCode('[i] [/i]');" onmouseover="window.status='[RESX:ItalicsDesc]';  return true;" onmouseout="window.status=''; return true;" />
+							<input type="button" class="afButton" accesskey="u" name="afUnderline" value="[RESX:Underline]" style="font-weight:bold;" onclick="insertCode('[u] [/u]');" onmouseover="window.status='[RESX:UnderlineDesc]';  return true;" onmouseout="window.status=''; return true;" />
+							<input type="button" class="afButton" accesskey="q" name="afQuote" value="[RESX:Quote]" style="font-weight:bold;" onclick="insertQuote();" onmouseover="window.status='[RESX:QuoteDesc]';  return true;" onmouseout="window.status=''; return true;" />
+							<input type="button" class="afButton" accesskey="m" name="afImage" value="[RESX:Image]" style="font-weight:bold;" onclick="insertCode('[img] [/img]');" onmouseover="window.status='[RESX:ImageDesc]';  return true;" onmouseout="window.status=''; return true;" />
+							<input type="button" class="afButton" accesskey="c" name="afCode" value="[RESX:Code]" style="font-weight:bold;" onclick="insertCode('[code] [/code]');" onmouseover="window.status='[RESX:CodeDesc]';  return true;" title='[RESX:CodeDesc]' onmouseout="window.status=''; return true;" />
 							</div>
 							<textarea id="txtBody" name="txtBody" class="aftextbox" style="height:120px" rows="5" cols="250"></textarea></td>
 						<td valign="top">
