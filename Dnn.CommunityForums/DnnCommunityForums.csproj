@@ -1229,7 +1229,7 @@
     <Compile Include="components\Data\Topics.cs" />
     <Compile Include="components\Extensions\ConfigUtils.cs" />
     <Compile Include="components\Extensions\ReWriter.cs" />
-    <Compile Include="components\Filters\FilterController.cs" />
+    <Compile Include="Deprecated\FilterController.cs" />
     <Compile Include="Deprecated\FilterInfo.cs" />
     <Compile Include="components\Forums\ForumCollection.cs" />
     <Compile Include="components\Helpers\Environment.cs" />
@@ -1773,6 +1773,7 @@
     <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="components\Filters\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
