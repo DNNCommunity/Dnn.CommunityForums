@@ -23,7 +23,7 @@ using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    internal partial class FilterInfo
+    public partial class FilterInfo
     {
         [TableName("activeforums_Filters")]
         [PrimaryKey("FilterId", AutoIncrement = true)]
