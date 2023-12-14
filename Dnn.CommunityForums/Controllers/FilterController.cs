@@ -29,7 +29,7 @@ using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    internal static class FilterController
+    internal static class FilterController : DotNetNuke.Modules.ActiveForums.Controllers.re<DotNetNuke.Modules.ActiveForums.Entities.FilterInfo>
     {
 
         public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)

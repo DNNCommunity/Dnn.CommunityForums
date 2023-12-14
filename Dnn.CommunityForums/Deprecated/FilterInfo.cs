@@ -17,7 +17,6 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,35 +26,6 @@ using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class FilterController : DotNetNuke.Modules.ActiveForums.Controllers.FilterController
-
-    {
-		public DotNetNuke.Modules.ActiveForums.Entities.FilterInfo Filter_Save(DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter)
-		{
-			int filterId = DataProvider.Instance().Filters_Save(filter.PortalId, filter.ModuleId, filter.FilterId, filter.Find, filter.Replace, filter.FilterType);
-			return Filter_Get(filter.PortalId, filter.ModuleId, filterId);
-		}
-		public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
-		{
-			DataProvider.Instance().Filters_Delete(PortalId, ModuleId, FilterId);
-		}
-		public FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
-		{
-            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.FilterInfo();
-			IDataReader dr = DataProvider.Instance().Filters_Get(PortalId, ModuleID, FilterId);
-			while (dr.Read())
-			{
-				fi.FilterId = Convert.ToInt32(dr["FilterId"].ToString());
-				fi.Find = dr["Find"].ToString();
-				fi.Replace = dr["Replace"].ToString();
-				fi.FilterType = dr["FilterType"].ToString();
-				fi.ModuleId = ModuleID;
-				fi.PortalId = PortalId;
-
-			}
-			dr.Close();
-			return fi;
-		}
-	}
+	public class FilterInfo : DotNetNuke.Modules.ActiveForums.Entities.FilterInfo;
 }
 

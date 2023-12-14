@@ -1108,6 +1108,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
@@ -1211,7 +1212,7 @@
     <Compile Include="components\Extensions\ConfigUtils.cs" />
     <Compile Include="components\Extensions\ReWriter.cs" />
     <Compile Include="components\Filters\FilterController.cs" />
-    <Compile Include="components\Filters\FilterInfo.cs" />
+    <Compile Include="Deprecated\FilterInfo.cs" />
     <Compile Include="components\Forums\ForumCollection.cs" />
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />

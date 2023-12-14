@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				FilterId = Convert.ToInt32(Params["FilterId"]);
 			}
 			FilterController fc = new FilterController();
-			FilterInfo filter = fc.Filter_Get(PortalId, ModuleId, FilterId);
+            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = fc.Filter_Get(PortalId, ModuleId, FilterId);
 			string sOut = "{";
 			sOut += Utilities.JSON.Pair("FilterId", filter.FilterId.ToString());
 			sOut += ",";
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		}
 		private void FilterSave()
 		{
-			FilterInfo filter = new FilterInfo();
+			DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Entities.FilterInfo();
 			filter.FilterId = -1;
 			filter.ModuleId = ModuleId;
 			filter.PortalId = PortalId;
