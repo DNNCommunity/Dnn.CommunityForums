@@ -1277,7 +1277,7 @@
     <Compile Include="CustomControls\HTML\ForumContentView.cs" />
     <Compile Include="CustomControls\HTML\ForumDirectory.cs" />
     <Compile Include="CustomControls\HTML\Rating.cs" />
-    <Compile Include="CustomControls\HTML\SecurityGrid.cs" />
+    <Compile Include="Deprecated\SecurityGrid.cs" />
     <Compile Include="CustomControls\HTML\ToggleSubscribe.cs" />
     <Compile Include="CustomControls\HTML\TopicBrowser.cs" />
     <Compile Include="CustomControls\HTML\TopicViewer.cs" />
