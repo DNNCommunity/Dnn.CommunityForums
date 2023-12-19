@@ -17,6 +17,13 @@
 	}
 /* /1 */
 
+/* #1a new for v8, command buttons */
+	.dcf-link-text{
+		margin-left: 0.25em;
+	}	
+/* /1a */
+
+
 /* TEMP until all image icons are taken out for responsive optimizations!*/
 	.fa-grey {
 		color: #555555;
