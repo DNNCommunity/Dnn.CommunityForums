@@ -1,0 +1,35 @@
+.dcf-cols{
+    display:flex;
+    flex-wrap: wrap;
+
+    .dcf-col-100{
+        width: 100%;
+    }
+    .dcf-col-50{
+        
+        width: 50%;
+
+    }
+
+    .dcf-col-50-md{
+        width: 100%;
+        @media screen and (min-width: @break-tablet){
+        width: 50%;
+        }
+    }
+
+    .dcf-col-25{
+        width: 100%;
+        @media screen and (min-width: @break-desktop){
+            width: 25%;
+            max-width: 250px;
+         }
+    }
+    .dcf-col-75{
+        width: 100%;
+        @media screen and (min-width: @break-desktop){
+         width: 75%;
+        }
+        flex-grow: 1;
+    }
+}

@@ -1,0 +1,678 @@
+/* ---------------------------
+	From version 7  Root Module.css 
+------------------------------*/
+
+/* 2 Should be inherited from Theme */
+	.dnnPrimaryAction {
+		box-shadow: none !important;
+		-moz-user-select: none;
+		box-sizing: border-box;
+		display: inline-block;
+		font-weight: 500;
+		outline: 0px none;
+		padding: 3px 7px 4px;
+		text-align: center;
+		text-decoration: none;
+		text-shadow: none;
+		cursor: pointer;
+		border: 0px none;
+		background: none repeat scroll 0% 0% #68AAC7;
+		color: #FFF;
+		line-height: 1.5;
+	}
+/* /2 */
+
+
+
+/* 3 Should be part of Theme */
+	.afpostinfo_responsive {
+		/*position:absolute;*/
+		position: relative;
+		width: 120px;
+		margin-right: -120px;
+		word-wrap: break-word;
+		float: left;
+		/*clear:both;*/
+		z-index: 10;
+	}
+
+	.afpostcontent_responsive {
+		width: 100% !important;
+		/*margin-right: -120px;*/
+		padding-left: 120px;
+		position: relative;
+		/*min-height:440px !important;*/
+		float: left;
+		z-index: 9;
+	}
+
+	.afpostcontent_responsive img {
+		/* width: 100%;*/
+		max-width: 100%;
+		height: auto;
+	}
+/* /3 */
+
+
+
+/* /4 already defined */
+	/*Override 'border-box' for Text Editor*/
+
+	.reToolbar {
+		box-sizing: content-box;
+	}
+
+/* 4 */
+
+
+
+/* 6 too generic */
+*,
+:active,
+:focus {
+	outline: 0;
+	outline-style: none;
+	outline-width: 0;
+	-moz-outline-width: 0;
+}
+/* /6 */
+
+
+
+/* 8 too generic */
+	input[type="text"],
+	select,
+	textarea,
+	input[type="email"],
+	input[type="search"],
+	input[type="password"] {
+		color: rgba(0, 0, 0, 0.44);
+		font-size: 12px;
+	}
+
+
+	:before,
+	:after {
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+/* /8 */
+
+
+
+/* 9 > Theme */
+	.afcontainer {
+		padding: 0px;
+		text-align: left;
+		color: #333;
+		font-weight: 400;
+		font-family: "Helvetica Neue", "HelveticaNeue", Helvetica, Arial, "Lucida Grande", sans-serif;
+		font-size: 15px;
+		line-height: 1.4;
+		-webkit-font-smoothing: subpixel-antialiased;
+	}
+
+	* .afcontainer a,
+	.afcontainer a:link,
+	.afcontainer a:active,
+	.afcontainer a:visited {
+		text-decoration: none;
+	}
+
+	* .afcontainer a:hover {
+		text-decoration: underline;
+	}
+
+/* 9 */
+
+
+
+/* 10 removed rule font-size */ 
+.afgrid {
+	font-size: 12px; 
+}
+/* /10 */
+
+
+/* 11 Already defined above */
+	table.afgrid {
+		padding: 0px;
+		margin: 0px;
+		border-collapse: collapse;
+	}
+/* /11 */
+
+
+/* 12 > Theme  */
+	* .afcontainer blockquote {
+		border: solid 1px #a9a9a9;
+		padding: 5px;
+		display: block;
+		font-size: 8pt;
+		margin: 10px;
+		background-color: #f5f5f5;
+	}
+/* /12 */
+
+
+
+
+/* 13 too generic */
+	mark,
+	.mark {
+		background: transparent !important;
+	}
+/* /13 */
+
+
+
+
+/* 14 Part to Theme */
+	.afgrid tr {
+		width: 100%;
+		position: relative;
+	}
+
+	td.afgrouprow.afgrouprow-f {
+		width: 50%;
+		text-align: left;
+	}
+
+	td.afgrouprow.afgrouprow-m {
+		width: 10%;
+		text-align: center
+	}
+
+	td.afgrouprow.afgrouprow-l {
+		width: 20%;
+		text-align: left;
+	}
+
+	.afcontrolheader {
+		color: #888;
+		font-weight: bold;
+		font-size: 13px;
+		letter-spacing: 0.05px;
+		text-transform: uppercase;
+	}
+
+	.afgrouprow-f .afcontrolheader {
+		margin-left: 5px;
+	}
+
+	.afgroupsection {
+		font-size: 14px;
+		margin-bottom: 10px;
+		margin-top: 25px;
+		text-transform: uppercase;
+		color: #999;
+		display: block;
+		text-align: center;
+		position: relative;
+	}
+
+	.afgroupsection img {
+		-moz-opacity: 0.00;
+		-khtml-opacity: 0.00;
+		opacity: 0.00;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha"(opacity=0);
+		filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+		filter: alpha(opacity=0);
+
+		position: absolute;
+		left: 0;
+		right: 0;
+		width: 100%;
+		height: 20px;
+		cursor: pointer;
+	}
+
+	.afgroupsection:before,
+	.afgroupsectiononline:before {
+		content: "";
+		width: 100%;
+		height: 2px;
+		background-color: rgba(0, 0, 0, 0.05);
+		position: absolute;
+		top: 50%;
+		display: block;
+		left: 0;
+		right: 0;
+	}
+
+	.afgroupsectiononline:before {
+		top: 10px;
+	}
+
+	.afgrouponline {
+		clear: both;
+		text-transform: none;
+		color: rgba(0, 0, 0, 0.44);
+		margin-top: 10px;
+	}
+
+	.afgroupsectiontitle {
+		position: relative;
+		background: #FFF;
+		display: inline-block;
+		padding: 2px 10px;
+	}
+
+	.afquote {
+		border: solid 1px #a9a9a9;
+		padding: 5px;
+		display: block;
+		font-size: 8pt;
+		margin: 10px;
+		background-color: #f5f5f5;
+	}
+
+	.afsubgrid {
+		width: 100%;
+		border: none 0px #cdcdcd;
+	}
+
+	table.afsubgrid {
+		padding: 0px;
+		margin: 0px;
+		border-collapse: collapse;
+	}
+
+	.afgrouprow {
+		padding: 0px;
+		margin: 0px;
+		height: 30px;
+	}
+
+	.afheader {
+		padding-left: 5px;
+		padding-bottom: 3px;
+	}
+
+/* /14 */
+
+
+
+/* 16 not in use*/
+
+	.af-left {
+		float: left;
+	}
+
+	.af-right {
+		float: right;
+	}
+/* /16 */
+
+
+
+/* 19 afmodform class > does not exist in solution > Remove ? */
+
+
+	.afmodform {
+		padding: 0;
+		margin: 0;
+	}
+
+	.afmodform li {
+		list-style-type: none;
+		padding-bottom: 4px;
+	}
+
+	.afmodform li b {
+		padding-right: 6px;
+	}
+
+
+/* /19 */
+
+
+
+/* 23 > Theme */
+	.afactionicon {
+		padding-left: 5px;
+		padding-right: 0px;
+	}
+/* /23 */
+
+
+/* 24 Not found in the solution > remove */
+
+
+	td.af-minicon {
+		width: 20px;
+		vertical-align: top;
+	}
+	
+/* /24 */
+
+
+/* 25 > Theme */
+	td.af-forumdetail {
+		vertical-align: middle;
+		width: 100%;
+	}
+
+	td.af-subforumdetail {
+		vertical-align: top;
+		width: 100%;
+	}
+/* /25 */
+
+
+
+
+/* 26 move to Theme */
+	td.af-colstats {
+		text-align: center;
+		width: 10%;
+		font-size: 19px;
+		font-weight: 300;
+		color: #333;
+	}
+
+	td.af-lastpost {
+		width: 20%;
+		white-space: nowrap;
+		text-align: center;
+		font-size: 12px;
+		font-weight: 400;
+		color: #888;
+	}
+
+	td.af-colstats.af-colstats-replies {
+		font-weight: 700;
+	}
+
+	td.af-lastpost div {
+		text-align: left;
+		width: 175px;
+		overflow: hidden;
+		white-space: normal !important;
+	}
+
+	td.af-lastpost div a:link,
+	td.af-lastpost div a:visited {
+		text-decoration: none;
+		font-size: 12px;
+		font-weight: 700;
+		color: #333;
+		word-break: break-word;
+	}
+
+	td.af-title {
+		width: 100%;
+		padding-left: 25px;
+	}
+
+	td.af-groupname {
+		padding-left: 10px;
+		width: 100%;
+	}
+
+	td.af-groupcollapse {
+		text-align: right;
+		position: relative;
+	}
+
+	td.af-right {
+		text-align: right;
+	}
+
+	td.af-posticon {
+		width: 30px;
+		vertical-align: top;
+	}
+
+
+	td.af-content td.afsubject {
+		vertical-align: top;
+		width: 100%;
+		padding-right: 10px;
+	}
+
+	td.af-content td.afsubject>a {
+		color: #333;
+		font-weight: 700;
+		font-size: 13px;
+	}
+
+	.aftopictitle,
+	.aftopictitle a,
+	.aftopicrownew .aftopictitle a,
+	.aftopicrownew .aftopictitle a:link,
+	.aftopicrownewalt .aftopictitle a,
+	.aftopicrownewalt .aftopictitle a:link {
+		font-size: 19px;
+		/*display: block;*/
+		font-weight: 700;
+		color: #333 !important;
+		letter-spacing: -0.5px;
+		line-height: 1.25;
+	}
+
+
+	td.af-content td.afsubject .aftopicstarted a,
+	.aftopicrownew .aftopicstarted a,
+	.aftopicrownew .aftopicstarted a:link {
+		color: #333;
+		font-weight: 700;
+		font-size: 14px;
+		display: inline-block;
+		margin-top: 4px;
+		margin-bottom: 4px;
+	}
+
+	.aftopicstarted {
+		display: block !important;
+		color: #888;
+		font-size: 14px;
+	}
+
+	.aftopicsubtitle .clearboth,
+	.aftruncateellipsis {
+		display: inline-block;
+	}
+
+	.aftopicsubtitle {
+		font-size: 15px;
+		font-weight: 400;
+		display: block;
+		color: #888;
+		word-break: break-word;
+		overflow: hidden;
+	}
+
+	.aftopictools {
+		display: block;
+		/*float:left;*/
+		height: 21px;
+	}
+
+	.aftopictools * {
+		cursor: pointer;
+	}
+
+	td.af-content td.afsubject .aftruncatemorelink {
+		font-size: 15px;
+		color: #285a8f;
+		font-weight: 400;
+		display: inline;
+		margin-left: 3px;
+	}
+
+	.af-icons {
+		width: 40px;
+		vertical-align: top;
+	}
+
+	td.af-content {
+		vertical-align: top;
+	}
+
+	.af-status {}
+
+	.af-postcontent {
+		margin-left: 10px;
+}
+
+/* /26 */
+
+
+
+/* 27 Remove font sizes + styling */
+	.afhiddenstats,
+	.afhiddentime {
+		font-size: 15px;
+		display: none;
+		font-weight: 400;
+		color: #888;
+		text-transform: lowercase;
+	}
+	.afhiddentime {
+		display: block;
+		float: right;
+		font-size: 11px;
+		color: #bbb;
+	}
+
+/* /27 */
+
+
+
+/* 28 not found in solution */
+	
+	.af-right {
+		float: right;
+	}
+	
+/* /28 */
+
+
+
+/* 30 Theme specific and floats instead of flexbox */
+
+
+.aftoolbarpanel{border-bottom: solid 1px #dcdcdc;
+background-color: transparent;
+margin-bottom: 15px;
+width: 100%;
+margin-top: 15px;}
+.aftoolbarpanel ul.af-list-flat{padding:10px 0;}
+.aftoolbarpanel ul.af-list-flat li a, .aftoolbarpanel ul.af-list-flat li a:link, .aftoolbarpanel ul.af-list-flat li a:visited, .aftoolbarpanel ul.af-list-flat li a:active, .aftoolbarpanel ul.af-list-flat li a:hover {
+color: #888;
+padding-left: 0;
+padding-right: 5px;
+}
+
+/* /30 */
+
+
+
+/* 32 Not in use */
+
+	.afcattree ul {
+		margin: 0;
+		padding: 0;
+	}
+
+	.afcattree ul li ul {
+		margin-left: 12px;
+		display: none;
+	}
+
+	.afcattree .category.cat-selected ul {
+		display: block;
+	}
+
+	.afcattree ul li {
+		list-style-type: none;
+	}
+
+	.afcattree ul li em {
+		float: right;
+		font-style: normal;
+	}
+
+/* /32 */
+
+
+
+/* 34 Don't overrrule DNN Theme */
+a.dnnTertiaryAction,
+a.dnnTertiaryAction:link,
+a.dnnTertiaryAction:visited {
+	line-height: 2.5;
+	padding: 0 1.2em;
+}
+/* /34 */
+
+
+
+
+/* 37 Not in use  */
+	.afgridhd {
+		background-color: #555;
+		color: #f5f5f5;
+		padding: 2px;
+	}
+
+	.afgridhdsub {
+		padding-left: 2px;
+		padding-right: 2px;
+	}
+
+	.afgriditem {
+		padding: 2px;
+	}
+
+	.afgridrow {
+		background-color: #fff;
+	}
+
+	.afgridrowalt {
+		background-color: #f3f3f3;
+	}
+
+	.afgridrow_over {
+		background-color: #ffff99 !important;
+	}
+		
+	.afgroupactions {}
+
+	.afgroupactionsitem {
+		padding: 3px;
+	}
+	
+	.gridcheck {
+	text-align: center;
+	}
+
+	.dnnForm .gridcheck input {
+		margin: 0;
+		float: inherit;
+	}
+
+	.dnnForm .gridcheck input[type="radio"] {
+		margin: 0;
+		float: inherit;
+	}
+
+/* /37 */
+
+
+/* 40 Part of the Theme */
+.af-colstats_responsive,
+.af_lastpost_responsive {
+	display: none;
+	white-space: nowrap;
+}
+/* /40 */
+
+
+
+
+
+
+
