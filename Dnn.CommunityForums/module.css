@@ -17,6 +17,13 @@
 	}
 /* /1 */
 
+/* #1a new for v8, command buttons */
+	.dcf-link-text{
+		margin-left: 0.25em;
+	}	
+/* /1a */
+
+
 /* TEMP until all image icons are taken out for responsive optimizations!*/
 	.fa-grey {
 		color: #555555;
@@ -1378,12 +1385,16 @@ div.dcf-mod-edit-wrap {
  
 /* 43 collapsible */
 .dcf-collapsible {
-	text-align: right;
-	padding-right: 2px;
+	text-align: center;
+	padding: 0.2em;
+	width: 1.8em;
 	cursor: pointer;
 	float: right;
-	padding-top: 3px;
-	font-size: 1.5em !important;
+	font-size: 1.1em !important;
+	background: #eee;
+	border-radius: 50%;
+	position: relative;
+	z-index: 2;
 }
 
 /* not sure these are needed but put them here to use if desired */
