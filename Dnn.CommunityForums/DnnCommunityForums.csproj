@@ -1107,6 +1107,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
