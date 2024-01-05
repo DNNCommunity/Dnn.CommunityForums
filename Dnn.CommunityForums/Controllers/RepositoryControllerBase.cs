@@ -42,8 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal T Get<TProperty>(TProperty id)
         {
-            var content = Repo.GetById(id);
-            return content;
+            return Repo.GetById(id);
         }
         internal void Update(T info)
         {
@@ -60,6 +59,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal void DeleteById<TProperty>(TProperty id)
         {
             Repo.Delete(Repo.GetById(id));
+        }
+        internal void Delete(T item)
+        {
+            Repo.Delete(item);
         }
         internal void DeleteByModuleId(int ModuleId)
         {
