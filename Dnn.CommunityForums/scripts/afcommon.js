@@ -368,10 +368,10 @@ function dcf_collapsible_showOrHideTarget(targetName) {
     }
 };
 function dcf_collapsible_getFaCssClassOpened() {
-    return 'fa-chevron-circle-down';
+    return 'fa-chevron-down';
 };
 function dcf_collapsible_getFaCssClassClosed() {
-    return 'fa-chevron-circle-left';
+    return 'fa-chevron-left';
 };
 function dcf_collapsible_getCssClassOpened() {
     return 'dcf-collapsible-opened';
