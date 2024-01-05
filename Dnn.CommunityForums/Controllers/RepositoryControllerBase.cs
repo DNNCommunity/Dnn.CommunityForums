@@ -19,6 +19,7 @@
 //
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web.UI;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -35,22 +36,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Repo.Get();
         }
+        internal IEnumerable<T> Get<TScopeValue>(TScopeValue id)
+        {
+            return Repo.Get(id);
+        }
+        internal T GetById<TProperty>(TProperty id)
+        {
+            return Repo.GetById(id);
+        }
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
             return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
-        internal T Get<TProperty>(TProperty id)
+        internal void Update(T item)
         {
-            var content = Repo.GetById(id);
-            return content;
+            Repo.Update(item);
         }
-        internal void Update(T info)
+        internal void Insert(T item)
         {
-            Repo.Update(info);
-        }
-        internal void Insert(T info)
-        {
-            Repo.Insert(info);
+            Repo.Insert(item);
         }
         internal void Delete(string sqlCondition, params object[] args)
         {
@@ -59,6 +63,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal void DeleteById<TProperty>(TProperty id)
         {
             Repo.Delete(Repo.GetById(id));
+        }
+        internal void Delete(T item)
+        {
+            Repo.Delete(item);
+        }
+        internal void DeleteByModuleId(int ModuleId)
+        {
+            Repo.Delete("WHERE ModuleId = @0", ModuleId);
         }
         internal int Count(string sqlCondition, params object[] args)
         {
