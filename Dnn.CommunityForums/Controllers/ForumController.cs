@@ -20,6 +20,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
@@ -43,17 +44,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
 
             var cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-            var forum = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
-            if (forum == null || ignoreCache)
+            var forum = ignoreCache ? null : DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
+            if (forum == null)
             {
-                using (var dr = GetForumsDB().Forums_Get(portalId, moduleId, forumId))
-                {
-                    while (dr.Read())
-                    {
-                        forum = FillForum(dr);
-                    }
-                    dr.Close();
-                }
+                forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
+                forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forum.ForumGroupId) : null;
+                forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
+                //using (var dr = GetForumsDB().Forums_Get(portalId, moduleId, forumId))
+                //{
+                //    while (dr.Read())
+                //    {
+                //        forum = FillForum(dr);
+                //    }
+                //    dr.Close();
+                //}
                 if (forum != null)
                 {
                     if (forum.HasProperties)
@@ -68,62 +72,62 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forum;
         }
-        private static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo FillForum(IDataRecord dr)
-        {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
-            {
-                ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo(),
-                ForumID = Convert.ToInt32(dr["ForumId"].ToString()),
-                Active = Convert.ToBoolean(dr["Active"]),
-                ModuleId = Convert.ToInt32(dr["ModuleId"].ToString()),
-                ForumGroupId = Convert.ToInt32(dr["ForumGroupId"].ToString()),
-                ParentForumId = Convert.ToInt32(dr["ParentForumId"].ToString()),
-                ForumName = dr["ForumName"].ToString(),
-                ForumDesc = dr["ForumDesc"].ToString(),
-                SortOrder = Convert.ToInt32(dr["SortOrder"].ToString()),
-                Hidden = Convert.ToBoolean(dr["Hidden"]),
-                TotalTopics = Convert.ToInt32(dr["TotalTopics"].ToString()),
-                TotalReplies = Convert.ToInt32(dr["TotalReplies"].ToString()),
-                LastTopicId = Convert.ToInt32(dr["LastTopicId"].ToString()),
-                LastReplyId = Convert.ToInt32(dr["LastReplyId"].ToString()),
-                PermissionsId = Convert.ToInt32(dr["PermissionsId"].ToString()),
-                ForumSettingsKey = dr["ForumSettingsKey"].ToString(),
-                PrefixURL = dr["PrefixURL"].ToString(),
-                SocialGroupId = Convert.ToInt32(dr["SocialGroupId"].ToString()),
-                HasProperties = Convert.ToBoolean(dr["HasProperties"])
-            };
+        //private static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo FillForum(IDataRecord dr)
+        //{
+        //    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
+        //    {
+        //        ForumGroup = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo(),
+        //        ForumID = Convert.ToInt32(dr["ForumId"].ToString()),
+        //        Active = Convert.ToBoolean(dr["Active"]),
+        //        ModuleId = Convert.ToInt32(dr["ModuleId"].ToString()),
+        //        ForumGroupId = Convert.ToInt32(dr["ForumGroupId"].ToString()),
+        //        ParentForumId = Convert.ToInt32(dr["ParentForumId"].ToString()),
+        //        ForumName = dr["ForumName"].ToString(),
+        //        ForumDesc = dr["ForumDesc"].ToString(),
+        //        SortOrder = Convert.ToInt32(dr["SortOrder"].ToString()),
+        //        Hidden = Convert.ToBoolean(dr["Hidden"]),
+        //        TotalTopics = Convert.ToInt32(dr["TotalTopics"].ToString()),
+        //        TotalReplies = Convert.ToInt32(dr["TotalReplies"].ToString()),
+        //        LastTopicId = Convert.ToInt32(dr["LastTopicId"].ToString()),
+        //        LastReplyId = Convert.ToInt32(dr["LastReplyId"].ToString()),
+        //        PermissionsId = Convert.ToInt32(dr["PermissionsId"].ToString()),
+        //        ForumSettingsKey = dr["ForumSettingsKey"].ToString(),
+        //        PrefixURL = dr["PrefixURL"].ToString(),
+        //        SocialGroupId = Convert.ToInt32(dr["SocialGroupId"].ToString()),
+        //        HasProperties = Convert.ToBoolean(dr["HasProperties"])
+        //    };
 
-            fi.ForumGroup.ForumGroupId = fi.ForumGroupId;
-            fi.ForumGroup.GroupName = fi.GroupName;
-            fi.ForumGroup.PrefixURL = dr["GroupPrefixURL"].ToString();
-            fi.Security.Announce = dr["CanAnnounce"].ToString();
-            fi.Security.Attach = dr["CanAttach"].ToString();
-            fi.Security.Create = dr["CanCreate"].ToString();
-            fi.Security.Delete = dr["CanDelete"].ToString();
-            fi.Security.Edit = dr["CanEdit"].ToString();
-            fi.Security.Lock = dr["CanLock"].ToString();
-            fi.Security.ModApprove = dr["CanModApprove"].ToString();
-            fi.Security.ModDelete = dr["CanModDelete"].ToString();
-            fi.Security.ModEdit = dr["CanModEdit"].ToString();
-            fi.Security.ModLock = dr["CanModLock"].ToString();
-            fi.Security.ModMove = dr["CanModMove"].ToString();
-            fi.Security.ModPin = dr["CanModPin"].ToString();
-            fi.Security.ModSplit = dr["CanModSplit"].ToString();
-            fi.Security.ModUser = dr["CanModUser"].ToString();
-            fi.Security.Pin = dr["CanPin"].ToString();
-            fi.Security.Poll = dr["CanPoll"].ToString();
-            fi.Security.Block = dr["CanBlock"].ToString();
-            fi.Security.Read = dr["CanRead"].ToString();
-            fi.Security.Reply = dr["CanReply"].ToString();
-            fi.Security.Subscribe = dr["CanSubscribe"].ToString();
-            fi.Security.Trust = dr["CanTrust"].ToString();
-            fi.Security.View = dr["CanView"].ToString();
-            fi.Security.Tag = dr["CanTag"].ToString();
-            fi.Security.Prioritize = dr["CanPrioritize"].ToString();
-            fi.Security.Categorize = dr["CanCategorize"].ToString();
+        //    fi.ForumGroup.ForumGroupId = fi.ForumGroupId;
+        //    fi.ForumGroup.GroupName = fi.GroupName;
+        //    fi.ForumGroup.PrefixURL = dr["GroupPrefixURL"].ToString();
+        //    fi.Security.Announce = dr["CanAnnounce"].ToString();
+        //    fi.Security.Attach = dr["CanAttach"].ToString();
+        //    fi.Security.Create = dr["CanCreate"].ToString();
+        //    fi.Security.Delete = dr["CanDelete"].ToString();
+        //    fi.Security.Edit = dr["CanEdit"].ToString();
+        //    fi.Security.Lock = dr["CanLock"].ToString();
+        //    fi.Security.ModApprove = dr["CanModApprove"].ToString();
+        //    fi.Security.ModDelete = dr["CanModDelete"].ToString();
+        //    fi.Security.ModEdit = dr["CanModEdit"].ToString();
+        //    fi.Security.ModLock = dr["CanModLock"].ToString();
+        //    fi.Security.ModMove = dr["CanModMove"].ToString();
+        //    fi.Security.ModPin = dr["CanModPin"].ToString();
+        //    fi.Security.ModSplit = dr["CanModSplit"].ToString();
+        //    fi.Security.ModUser = dr["CanModUser"].ToString();
+        //    fi.Security.Pin = dr["CanPin"].ToString();
+        //    fi.Security.Poll = dr["CanPoll"].ToString();
+        //    fi.Security.Block = dr["CanBlock"].ToString();
+        //    fi.Security.Read = dr["CanRead"].ToString();
+        //    fi.Security.Reply = dr["CanReply"].ToString();
+        //    fi.Security.Subscribe = dr["CanSubscribe"].ToString();
+        //    fi.Security.Trust = dr["CanTrust"].ToString();
+        //    fi.Security.View = dr["CanView"].ToString();
+        //    fi.Security.Tag = dr["CanTag"].ToString();
+        //    fi.Security.Prioritize = dr["CanPrioritize"].ToString();
+        //    fi.Security.Categorize = dr["CanCategorize"].ToString();
 
-            return fi;
-        }
+        //    return fi;
+        //}
 
         public static string GetForumIdsBySocialGroup(int portalId, int socialGroupId)
         {

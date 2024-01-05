@@ -236,6 +236,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public bool IndexContent => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IndexContent]);
         
+        /// <summary>
+        /// Indicates a moderated forum
+        /// </summary>
         [IgnoreColumn()]
         public bool IsModerated => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IsModerated]);
         

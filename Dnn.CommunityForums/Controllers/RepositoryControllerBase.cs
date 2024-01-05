@@ -36,17 +36,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Repo.Get();
         }
+        internal IEnumerable<T> Get<TScopeValue>(TScopeValue id)
+        {
+            return Repo.Get(id);
+        }
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
+            return Repo.Get(id);
         }
         internal T GetById<TProperty>(TProperty id)
         {
             return Repo.GetById(id);
         }
-        internal T Get<TProperty>(TProperty id)
+        internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return Repo.GetById(id);
+            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
         internal void Update(T item)
         {
