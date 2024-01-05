@@ -354,7 +354,7 @@ function addRole(){
 		cellLeft.appendChild(textNode)
 		var cellRight = row.insertCell(1);
 		var img = document.createElement('img');
-        img.src = "~/DesktopModules/ActiveForums/images/delete16.png";
+        img.src = imgPath + "delete16.png";
 		img.onclick = function() {removeRole(this,drp.options[drp.selectedIndex].value)};
 		cellRight.appendChild(img);        
 		var hidRoles = document.getElementById('<%=hidRoles.ClientID%>');
