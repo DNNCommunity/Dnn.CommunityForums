@@ -22,6 +22,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using DotNetNuke.Modules.ActiveForums.API;
+using System.Reflection;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -58,11 +62,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "DELETE":
                             if (SimulateIsNumeric.IsNumeric(FilterId))
                             {
-                                DataProvider.Instance().Filters_Delete(PortalId, ModuleId, FilterId);
+                                new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
                             }
                             break;
                         case "DEFAULTS":
-                            DataProvider.Instance().Filters_DeleteByModuleId(PortalId, ModuleId);
+                            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Delete("WHERE ModuleId = @0", ModuleId);
                             Controllers.FilterController.ImportFilter(PortalId, ModuleId);
                             break;
                     }
