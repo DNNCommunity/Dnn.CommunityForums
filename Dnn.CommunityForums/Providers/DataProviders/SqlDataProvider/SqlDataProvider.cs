@@ -247,10 +247,12 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion
         #region Filters
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public override void Filters_Delete(int PortalId, int ModuleId, int FilterId)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_Delete", PortalId, ModuleId, FilterId);
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.DeleteByModuleId()")]
         public override void Filters_DeleteByModuleId(int PortalId, int ModuleId)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_DeleteByModuleId", PortalId, ModuleId);

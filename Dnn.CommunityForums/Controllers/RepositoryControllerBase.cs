@@ -19,6 +19,7 @@
 //
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web.UI;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -71,6 +72,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal void Delete(T item)
         {
             Repo.Delete(item);
+        }
+        internal void DeleteByModuleId(int ModuleId)
+        {
+            Repo.Delete("WHERE ModuleId = @0", ModuleId);
         }
         internal int Count(string sqlCondition, params object[] args)
         {

@@ -52,7 +52,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract IDataReader Filters_GetEmoticons(int ModuleId);
         public abstract IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn);
         public abstract IDataReader Filters_ListByType(int PortalId, int ModuleId, string FilterType);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public abstract void Filters_Delete(int PortalId, int ModuleId, int FilterId);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public abstract void Filters_DeleteByModuleId(int PortalId, int ModuleId);
         #endregion
 
