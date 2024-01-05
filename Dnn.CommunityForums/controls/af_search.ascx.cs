@@ -373,7 +373,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var parseId = 0;
 
             var fc = new ForumController();
-
             var sForumsAllowed = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead", true); // Make sure and pass strict = true here
             var forumsAllowed = sForumsAllowed.Split(new [] {':',';'}).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
             var forumsRequested = Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
