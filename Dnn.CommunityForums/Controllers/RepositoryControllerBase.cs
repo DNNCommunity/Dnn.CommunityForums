@@ -17,7 +17,9 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.UI;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -29,12 +31,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var ctx = DataContext.Instance();
             Repo = ctx.GetRepository<T>();
         }
+        internal IEnumerable<T> Get()
+        {
+            return Repo.Get();
+        }
+        internal IEnumerable<T> Find(string sqlCondition, params object[] args)
+        {
+            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
+        }
         internal T GetById<TProperty>(TProperty id)
         {
-            var content = Repo.GetById(id);
-            return content;
+            return Repo.Get();
         }
-        internal T Get(int id)
+        internal IEnumerable<T> Find(string sqlCondition, params object[] args)
+        {
+            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
+        }
+        internal T Get<TProperty>(TProperty id)
         {
             var content = Repo.GetById(id);
             return content;
@@ -50,6 +63,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal void Delete(string sqlCondition, params object[] args)
         {
             Repo.Delete(sqlCondition, args);
+        }
+        internal void DeleteById<TProperty>(TProperty id)
+        {
+            Repo.Delete(Repo.GetById(id));
         }
         internal void Delete(T item)
         {

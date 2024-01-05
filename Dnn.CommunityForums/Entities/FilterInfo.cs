@@ -17,21 +17,24 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
- 
-using DotNetNuke.ComponentModel.DataAnnotations; 
+//
+using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    [TableName("activeforums_Likes")]
-    [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("PostId")]
-    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    internal partial class LikeInfo
+    public partial class FilterInfo
     {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        public bool Checked { get; set; }
+        [TableName("activeforums_Filters")]
+        [PrimaryKey("FilterId", AutoIncrement = true)]
+        [Scope("ModuleId")]
+        [Cacheable("activeforums_Filters", CacheItemPriority.Normal)]
+        public int FilterId { get; set; }
+        public string Find { get; set; }
+        public string Replace { get; set; }
+        public string FilterType { get; set; }
+        public int PortalId { get; set; }
+        public int ModuleId { get; set; }
     }
 }
+

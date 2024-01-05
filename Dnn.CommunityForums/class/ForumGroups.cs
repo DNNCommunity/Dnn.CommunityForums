@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public ForumGroupInfo()
 		{
-			Security = new PermissionInfo();
+			Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
 			PermissionsId = -1;
 			PrefixURL = string.Empty;
 			GroupSettings = new Hashtable();
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		#region Settings & Security
 
-		public PermissionInfo Security { get; set; }
+		public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
         public Hashtable GroupSettings { get; set; }
 
 		public bool AllowAttach

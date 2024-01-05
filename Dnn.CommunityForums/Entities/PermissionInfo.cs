@@ -94,5 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()] public ObjectType Type { get; set; }
         [IgnoreColumn()] public string ObjectId { get; set; }
         [IgnoreColumn()] public string ObjectName { get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")][IgnoreColumn()] public int UserTrustLevel { get; set; }
+
     }
 }
