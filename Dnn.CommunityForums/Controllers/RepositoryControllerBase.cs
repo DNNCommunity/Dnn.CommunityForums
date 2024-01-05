@@ -48,13 +48,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
-        internal void Update(T info)
+        internal void Update(T item)
         {
-            Repo.Update(info);
+            Repo.Update(item);
         }
-        internal void Insert(T info)
+        internal void Insert(T item)
         {
-            Repo.Insert(info);
+            Repo.Insert(item);
         }
         internal void Delete(string sqlCondition, params object[] args)
         {
