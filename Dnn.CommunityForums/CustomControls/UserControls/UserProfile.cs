@@ -28,6 +28,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -126,33 +127,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-
-            string sTemplate = string.Empty;
-
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-            string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + "_userprofile.txt");
-            if (!System.IO.File.Exists(templateFilePathFileName))
-            {
-                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + "_userprofile.txt");
-                if (!System.IO.File.Exists(templateFilePathFileName))
-                {
-                    templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + "_userprofile.txt");
-                }
-            }
-            sTemplate = Utilities.GetFileContent(templateFilePathFileName);
-            sTemplate = Utilities.ParseSpacer(sTemplate);
-            sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
+            string sTemplate = TemplateCache.GetCachedTemplate(ForumModuleId, "_userprofile", 0);
 
             if (ProfileMode == ProfileModes.Edit)
             {
-                sTemplate = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + sTemplate;
+                sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
             }
             Literal lit = new Literal();
             UserController upc = new UserController();
             User up = upc.GetUser(PortalId, ForumModuleId, UID);
             ForumController fc = new ForumController();
             up.UserForums = fc.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
-            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, UserInfo.UserID, TimeZoneOffset);
+            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, false, false, false, string.Empty, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
@@ -245,7 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = TemplateCache.GetTemplate("ForumTracking.txt");
+                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(ForumModuleId,"ForumTracking", 0);
                 ctlForums.CurrentUserId = UID;
                 ctlForums.ForumIds = up.UserForums;
                 plhTracker.Controls.Add(ctlForums);
@@ -644,11 +630,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         string tmp = TemplateUtils.GetTemplateSection(sOut, match.Value, match.Value.Replace("[AM", "[/AM"));
                         if (tmp.Contains("<dnn:"))
                         {
-                            tmp = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + tmp;
-                        }
-                        if (tmp.Contains("<social:"))
-                        {
-                            tmp = Globals.SocialRegisterTag + tmp;
+                            tmp =  Globals.DnnControlsRegisterTag + tmp;
                         }
                         Control ctl = this.ParseControl(tmp);
                         tbc.Controls.Add(ctl);

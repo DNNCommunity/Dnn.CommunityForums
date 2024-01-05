@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			TemplateInfo ti = null;
 			TemplateController tc = new TemplateController();
-			ti = tc.Template_Get(TemplateId, PortalId, ModuleId);
+			ti = tc.Template_Get(TemplateId);
 			if (ti != null)
 			{
 				txtTitle.Text = ti.Title;
@@ -69,8 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
                 txtFileName.Text = Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
-                txtPlainText.Text = ti.TemplateText;
-				txtEditor.Text = Server.HtmlDecode(ti.TemplateHTML.Replace("[RESX:", "[TRESX:"));
+				txtEditor.Text = Server.HtmlDecode(ti.Template.Replace("[RESX:", "[TRESX:"));
 				drpTemplateType.SelectedIndex = drpTemplateType.Items.IndexOf(drpTemplateType.Items.FindByValue(Convert.ToString(Convert.ToInt32(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString())))));
 				hidTemplateId.Value = Convert.ToString(ti.TemplateId);
 				if (ti.IsSystem)
@@ -98,29 +97,21 @@ namespace DotNetNuke.Modules.ActiveForums
 						if (e.Parameters[1].ToString() != "")
 						{
 							templateId = Convert.ToInt32(e.Parameters[1]);
-							ti = tc.Template_Get(templateId, PortalId, ModuleId);
+							ti = tc.Template_Get(templateId);
 						}
 						else
 						{
 							ti = new TemplateInfo();
 							ti.IsSystem = false;
-							ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(e.Parameters[6]));
+							ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(e.Parameters[5]));
 							ti.PortalId = PortalId;
 							ti.ModuleId = ModuleId;
 						}
 						ti.Title = e.Parameters[2].ToString();
-						ti.Subject = e.Parameters[3].ToString();
-						if (ti.TemplateType == Templates.TemplateTypes.Email || ti.TemplateType == Templates.TemplateTypes.ModEmail)
-						{
-							ti.Template = "<template><html>" + Server.HtmlEncode(e.Parameters[4]) + "</html><plaintext>" + Utilities.StripHTMLTag(e.Parameters[5].ToString()) + "</plaintext></template>";
-						}
-						else
-						{
-							ti.Template = "<template><html>" + Server.HtmlEncode(e.Parameters[4]) + "</html><plaintext>" + string.Empty + "</plaintext></template>";
-						}
-
+						ti.Subject = e.Parameters[3].ToString(); 
+						ti.Template = e.Parameters[4];
 						ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
-                            templateId = tc.Template_Save(ti);
+                        templateId = tc.Template_Save(ti);
 						DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.Template, ModuleId, templateId, ti.TemplateType));
 						sMsg = "Template saved successfully!";
 					}
@@ -143,7 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						if (e.Parameters[1].ToString() != "")
 						{
 							templateid = Convert.ToInt32(e.Parameters[1]);
-							ti = tc.Template_Get(templateid, PortalId, ModuleId);
+							ti = tc.Template_Get(templateid);
 							if (! (ti.IsSystem == true))
 							{
 								tc.Template_Delete(templateid, PortalId, ModuleId);

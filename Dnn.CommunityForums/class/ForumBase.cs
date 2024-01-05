@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _topicId; // = -1;
         private int? _replyId;
         private int? _quoteId;
+        private int? _authorid;
         private bool? _jumpToLastPost;
         private string _defaultView = Views.ForumView;
         private int _defaultForumViewTemplateId = -1;
@@ -103,21 +104,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 _defaultForumViewTemplateId = value;
             }
         }
-
-        public string TemplatePath
-        {
-            get
-            {
-                return _templatePath;
-            }
-            set
-            {
-                _templatePath = value;
-            }
-        }
-
-        public bool UseTemplatePath { get; set; }
-
         public int DefaultTopicsViewTemplateId
         {
             get
@@ -361,6 +347,45 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 _forumId = value;
+            }
+        }
+        public int AuthorId
+        {
+            get
+            {
+                // If the id has already been set, return it.
+                if (_authorid.HasValue)
+                    return _authorid.Value;
+
+                // Set out default value
+                _authorid = -1;
+
+                // If there is an id in the query string, parse it
+                var queryAuthorId = Request.QueryString[ParamKeys.AuthorId];
+                if (!string.IsNullOrWhiteSpace(queryAuthorId))
+                {
+                    // Try to parse the id, if it doesn't work, return the default value.
+                    int parsedAuthorId;
+                    _authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
+                }
+
+                // If we don't have a user id at this point, try and pull it from "authorid" in the query string
+                if (_authorid < 1)
+                {
+                    queryAuthorId = Request.QueryString["authorid"];
+                    if (!string.IsNullOrWhiteSpace(queryAuthorId))
+                    {
+                        // Try to parse the id, if it doesn't work, return the default value.
+                        int parsedAuthorId;
+                        _authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
+                    }
+                }
+
+               return _authorid.Value;
+            }
+            set
+            {
+                _authorid = value;
             }
         }
 

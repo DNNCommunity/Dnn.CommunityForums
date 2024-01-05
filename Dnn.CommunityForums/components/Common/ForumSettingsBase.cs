@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get
 			{
-                return Settings.GetString(SettingKeys.Theme, "_default");
+                return Settings.GetString(SettingKeys.Theme, "_legacy");
 			}
 			set
 			{

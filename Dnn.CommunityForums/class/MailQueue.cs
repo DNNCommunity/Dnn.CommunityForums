@@ -25,15 +25,21 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 {
 	public class Controller
 	{
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Add(int portalId, string emailFrom, string emailTo, string emailSubject, string body, string emailCC, string emailBcc).")]
 		public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
 		{
-			Add(-1, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+			Add(-1, emailFrom, emailTo, emailSubject, emailBody, emailCC, emailBcc);
 		}
-		public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
-		{
-			try
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Add(int portalId, string emailFrom, string emailTo, string emailSubject, string body, string emailCC, string emailBcc).")]
+        public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+		{ 
+			Add(portalId,emailFrom, emailTo, emailSubject,emailBody,emailCC, emailBcc);
+		}
+		public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string body, string emailCC, string emailBcc)
+        {
+            try
 			{
-				DataProvider.Instance().Queue_Add(portalId, emailFrom, emailTo, emailSubject, emailBody, emailBodyPlainText, emailCC, emailBcc);
+				DataProvider.Instance().Queue_Add(portalId, emailFrom, emailTo, emailSubject, body, emailCC, emailBcc);
 			}
 			catch (Exception ex)
 			{
@@ -82,7 +88,6 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 										SendFrom = dr["EmailFrom"].ToString(),
 										SendTo = dr["EmailTo"].ToString(),
 										Body = dr["EmailBody"].ToString(),
-										BodyText = dr["EmailBodyPlainText"].ToString(),
 					                   };
 
 				    var canDelete = objEmail.SendMail();
@@ -122,14 +127,15 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 		public string SendFrom;
 		public string SendTo;
 		public string Body;
-		public string BodyText;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
+        public string BodyText;
 
 		public bool SendMail()
 		{
 			try
 			{
 				var subs = new List<SubscriptionInfo>();
-				var si = new SubscriptionInfo { Email = SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
+				var si = new SubscriptionInfo { Email = SendTo };
 			    subs.Add(si);
 				var oEmail = new Email
 				{
@@ -138,9 +144,8 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 					Recipients = subs,
 					Subject = Subject,
 					From = SendFrom,
-					BodyText = BodyText,
-					BodyHTML = Body,
-				                 };
+					Body = Body,
+				};
 			    try
 				{
 					var objThread = new System.Threading.Thread(oEmail.Send);

@@ -25,6 +25,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common.Utilities;
@@ -441,6 +442,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ti.Content.AuthorId != UserId && _canModApprove)
                     ctlForm.ShowModOptions = true;
             }
+            if (_authorId != UserId)
+            {
+                ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
+            }
         }
 
         private void LoadReply()
@@ -479,24 +484,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ri.Content.AuthorId != UserId && _canModApprove)
                     ctlForm.ShowModOptions = true;
             }
+            if (_authorId != UserId)
+            {
+                ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
+            }
         }
-
         private void PrepareTopic()
         {
-            string template;
-            if (_fi.TopicFormId == 0)
-            {
-                var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\TopicEditor.txt";
-                template = File.ReadAllText(myFile);
-                template = template.Replace("[TRESX:", "[RESX:");
-            }
-            else
-            {
-                var tc = new TemplateController();
-                var ti = tc.Template_Get(_fi.TopicFormId, PortalId, ForumModuleId);
-                template = ti.TemplateHTML;
-            }
 
+            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicEditor", _fi.TopicFormId);
+            
             if (MainSettings.UseSkinBreadCrumb)
             {
                 var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId.ToString()) + "\">" + ForumInfo.GroupName + "</a>|";
@@ -507,11 +504,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.NewTopic;
 
-            if (Permissions.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles))
+            if (_canModApprove)
             {
                 ctlForm.ShowModOptions = true;
             }
-
+           
             ctlForm.Template = template;
             ctlForm.IsApproved = _isApproved;
 
@@ -524,23 +521,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
-            string template;
-            if (_fi.ReplyFormId == 0)
-            {
-                var myFile = Request.MapPath(Common.Globals.ApplicationPath) + "\\DesktopModules\\ActiveForums\\config\\templates\\ReplyEditor.txt";
-                template = File.ReadAllText(myFile);
-            }
-            else
-            {
-                var tc = new TemplateController();
-                var ti = tc.Template_Get(_fi.ReplyFormId, PortalId, ForumModuleId);
-                template = ti.TemplateHTML;
-            }
-
+            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
+            
             if (MainSettings.UseSkinBreadCrumb)
+            {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
+            }
 
-            ctlForm.Template = template;
+           ctlForm.Template = template;
             if (!(TopicId > 0))
             {
                 //Can't Find Topic

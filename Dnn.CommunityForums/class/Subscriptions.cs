@@ -32,11 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Public Properties
         public int UserId { get; set; }
-        public string Username { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
         public string Email { get; set; }
-        public string DisplayName { get; set; }
         public TimeSpan TimeZoneOffSet { get; set; }
         public CultureInfo UserCulture { get; set; }
         public bool TopicSubscriber { get; set; }
@@ -82,12 +78,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     si = new SubscriptionInfo
                     {
-                        DisplayName = dr["DisplayName"].ToString(),
-                        Email = dr["Email"].ToString(),
-                        FirstName = dr["FirstName"].ToString(),
-                        LastName = dr["LastName"].ToString(),
                         UserId = Convert.ToInt32(dr["UserId"]),
-                        Username = dr["Username"].ToString(),
+                        Email = dr["Email"].ToString(),
                         TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"])),
                         UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"])),
                         TopicSubscriber = Utilities.SafeConvertBool(dr["TopicSubscriber"])
@@ -151,10 +143,8 @@ namespace DotNetNuke.Modules.ActiveForums
             string tmpFG = string.Empty;
             string sBody = string.Empty;
             var sb = new System.Text.StringBuilder();
-            string Template = string.Empty;
-            string TemplatePlainText = string.Empty;
-            string TemplateSubject = string.Empty;
-            int tmpModuleId = 0;
+            string Template = string.Empty; 
+            string TemplateSubject = string.Empty; 
             string TemplateHeader = string.Empty;
             string TemplateBody = string.Empty;
             string TemplateFooter = string.Empty;
@@ -163,8 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string ItemsFooter = string.Empty;
             string Items = string.Empty;
             string sMessageBody;
-            string FromEmail = string.Empty;
-            //Dim newBody As String
+            string FromEmail = string.Empty; 
             string SubscriberDisplayName = string.Empty;
             string SubscriberUserName = string.Empty;
             string SubscriberFirstName = string.Empty;
@@ -212,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         GroupCount = 0;
                         tmpEmail = newEmail;
-                        Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
+                        Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, string.Empty, string.Empty);
                         i = 0;
                     }
                 }
@@ -309,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
-                Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, "TestPlainText", string.Empty, string.Empty);
+                Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, string.Empty, string.Empty);
             }
         }
     }

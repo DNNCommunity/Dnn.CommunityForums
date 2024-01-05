@@ -25,6 +25,7 @@ using System.Threading;
 using System.Web;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -156,86 +157,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (u != null && u.UserId > 0)
             {
-                u.Profile = Profiles_Get(PortalId, ModuleId, u.UserId);
+                u.Profile = new UserProfileController().Profiles_Get(PortalId, ModuleId, u.UserId);
             }
             return u;
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use UserProfileController.Profiles_Get().")]
         public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
-
-            string cachekey = string.Format("AF-prof-{0}-{1}-{2}", UserId, PortalId, ModuleId);
-            DataTable dt = null;
-            UserProfileInfo upi = null;
-            Data.Profiles db = new Data.Profiles();
-            PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            if (PortalId == -1)
-            {
-                PortalId = _portalSettings.PortalId;
-            }
-
-            // see if it's in cache already
-            object data = DataCache.SettingsCacheRetrieve(ModuleId,cachekey);
-
-            if (data != null)
-            {
-                dt = (DataTable)data;
-            }
-            else
-            {
-                dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(db.Profiles_Get(PortalId, -1, UserId));
-                DataCache.SettingsCacheStore(ModuleId,cachekey, dt);
-            }
-
-            foreach (DataRow row in dt.Rows)
-            {
-                upi = new UserProfileInfo();
-                upi.PortalId = PortalId;
-                upi.UserID = UserId;
-                upi.ModuleId = -1;
-                upi.AdminWatch = bool.Parse(row["AdminWatch"].ToString());
-                upi.AnswerCount = int.Parse(row["AnswerCount"].ToString());
-                upi.AOL = row["AOL"].ToString();
-                upi.AttachDisabled = bool.Parse(row["AttachDisabled"].ToString());
-                upi.Avatar = row["Avatar"].ToString();
-                upi.AvatarDisabled = bool.Parse(row["AvatarDisabled"].ToString());
-                upi.AvatarType = (AvatarTypes)(int.Parse(row["AvatarType"].ToString()));
-                upi.Badges = row["Badges"].ToString();
-                //.Bio = dr("Bio").ToString
-                upi.DateLastActivity = DateTime.Parse(row["DateLastActivity"].ToString());
-                upi.DateLastPost = DateTime.Parse(row["DateLastPost"].ToString());
-                upi.DateLastReply = DateTime.Parse(row["DateLastReply"].ToString());
-                upi.ForumsAllowed = string.Empty;
-                upi.ICQ = row["ICQ"].ToString();
-                upi.Interests = row["Interests"].ToString();
-                upi.IsUserOnline = Convert.ToBoolean(((int.Parse(row["IsUserOnline"].ToString()) == 1) ? 1 : 0));
-                upi.Location = row["Location"].ToString();
-                upi.MSN = row["MSN"].ToString();
-                upi.Occupation = row["Occupation"].ToString();
-                upi.PrefBlockAvatars = bool.Parse(row["PrefBlockAvatars"].ToString());
-                upi.PrefBlockSignatures = bool.Parse(row["PrefBlockSignatures"].ToString());
-                upi.PrefDefaultShowReplies = bool.Parse(row["PrefDefaultShowReplies"].ToString());
-                upi.PrefDefaultSort = row["PrefDefaultSort"].ToString();
-                upi.PrefJumpLastPost = bool.Parse(row["PrefJumpLastPost"].ToString());
-                upi.PrefPageSize = int.Parse(row["PrefPageSize"].ToString());
-                upi.PrefSubscriptionType = (SubscriptionTypes)(int.Parse(row["PrefSubscriptionType"].ToString()));
-                upi.PrefTopicSubscribe = bool.Parse(row["PrefTopicSubscribe"].ToString());
-                upi.PrefUseAjax = bool.Parse(row["PrefUseAjax"].ToString());
-                upi.ProfileId = int.Parse(row["ProfileId"].ToString());
-                upi.ReplyCount = int.Parse(row["ReplyCount"].ToString());
-                upi.RewardPoints = int.Parse(row["RewardPoints"].ToString());
-                upi.Signature = row["Signature"].ToString();
-                upi.SignatureDisabled = bool.Parse(row["SignatureDisabled"].ToString());
-                upi.TopicCount = int.Parse(row["TopicCount"].ToString());
-                upi.TrustLevel = int.Parse(row["TrustLevel"].ToString());
-                upi.UserCaption = row["UserCaption"].ToString();
-                upi.ViewCount = int.Parse(row["ViewCount"].ToString());
-                upi.WebSite = row["WebSite"].ToString();
-                upi.Yahoo = row["Yahoo"].ToString();
-                upi.DateCreated = DateTime.Parse(row["DateCreated"].ToString());
-
-            }
-
-            return upi;
+            return new UserProfileController().Profiles_Get(PortalId, ModuleId, UserId);
         }
         internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
         {

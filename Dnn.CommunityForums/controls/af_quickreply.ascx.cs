@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_quickreplyform : ForumBase
     {
-
+        private const string TargetCollapsible = "groupQR";
         protected System.Web.UI.HtmlControls.HtmlGenericControl ContactByFaxOnly = new HtmlGenericControl();
         protected System.Web.UI.WebControls.CheckBox ContactByFaxOnlyCheckBox = new CheckBox();
         protected System.Web.UI.HtmlControls.HtmlGenericControl QR = new HtmlGenericControl();
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 if (template.Contains("[AF:CONTROLS:GROUPTOGGLE]"))
                 {
-                    template = template.Replace("[AF:CONTROLS:GROUPTOGGLE]", "<img align=\"right\" class=\"afarrow\" id=\"imgGroupQR\" onclick=\"toggleGroup('QR');\" src=\"" + ImagePath + "/arrows_down.png\" />");
+                    template = template.Replace(oldValue: "[AF:CONTROLS:GROUPTOGGLE]", newValue: DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: TargetCollapsible, title:string.Empty));
                 }
                 if (!Request.IsAuthenticated)
                 {
@@ -162,6 +162,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
         }
+
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -362,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 notification.Subject = subject;
                 notification.Body = body;
                 notification.IncludeDismissAction = false;
-                notification.SenderUserID = UserInfo.UserID;
+                notification.SenderUserID = UserId;
                 notification.Context = notificationKey;
 
                 NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);

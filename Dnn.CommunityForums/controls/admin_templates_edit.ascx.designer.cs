@@ -87,15 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.TextBox txtEditor;
 
         /// <summary>
-        /// txtPlainText control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPlainText;
-
-        /// <summary>
         /// hidTemplateId control.
         /// </summary>
         /// <remarks>

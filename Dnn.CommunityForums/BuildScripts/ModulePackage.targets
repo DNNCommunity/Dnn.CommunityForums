@@ -31,35 +31,36 @@ OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     </XmlRead>
 
     <ItemGroup>
-      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
-      <InstallInclude Include="**\*.ascx" Exclude="packages\**;node_modules\**;clientApp\**;**\WhatsNew.ascx;**\WhatsNewOptions.ascx;**\ActiveForumViewer.ascx;**\ActiveForumViewerSettings.ascx;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.asmx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.ashx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.css" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.html" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.htm" Exclude="packages\**;node_modules\**;clientApp\**;UpgradeLog*.htm;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.resx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.aspx" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.js" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.js.map" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;node_modules\**;clientApp\**;readme.txt;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.eot" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.svg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.ttf" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.woff" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**v" />
-      <InstallInclude Include="**\*.woff2" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.swf" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.ico" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.json" Exclude="packages\**;node_modules\**;clientApp\**;obj\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.scss" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.cshtml" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.png" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.gif" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.jpeg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.jpg" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-      <InstallInclude Include="**\*.bmp" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
-		<InstallInclude Include="**\*.xml" Exclude="packages\**;node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*" />
-      <InstallInclude Include="**\*.config" Exclude="packages\**;node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\images\**\*.*" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
+      <InstallInclude Include="**\*.ascx" Exclude="packages\**;**\node_modules\**;clientApp\**;**\WhatsNew.ascx;**\WhatsNewOptions.ascx;**\ActiveForumViewer.ascx;.git\**;.vs\**;**\ActiveForumViewerSettings.ascx;themes\_legacy\templates\_Master.ascx" />
+      <InstallInclude Include="**\*.asmx" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ashx" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.css" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.html" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.htm" Exclude="packages\**;**\node_modules\**;clientApp\**;UpgradeLog*.htm;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.resx" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.aspx" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.js" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**;themes\**\gulpfile.js" />
+      <InstallInclude Include="**\*.js.map" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.txt"  Exclude="**\obj\**;**\_ReSharper*\**;packages\**;**\node_modules\**;clientApp\**;readme.txt;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.eot" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+		<InstallInclude Include="**\*.md" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**;**\images\branding\logo\illustrator\**" />
+      <InstallInclude Include="**\*.svg" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ttf" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.woff" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**v" />
+      <InstallInclude Include="**\*.woff2" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.swf" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.ico" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.json" Exclude="packages\**;**\node_modules\**;clientApp\**;obj\**;.git\**;.vs\**;themes\**\*.json" />
+      <InstallInclude Include="**\*.scss" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.cshtml" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.png" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.gif" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.jpeg" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.jpg" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+      <InstallInclude Include="**\*.bmp" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
+		<InstallInclude Include="**\*.xml" Exclude="packages\**;**\node_modules\**;clientApp\**;bin\**;.git\**;.vs\**;*.GhostDoc*" />
+		<InstallInclude Include="**\*.config" Exclude="packages\**;**\node_modules\**;clientApp\**;.git\**;.vs\**" />
     </ItemGroup>
 
     <CreateItem Include="$(DNNFileName).dnn">

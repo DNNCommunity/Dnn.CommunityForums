@@ -294,16 +294,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         pendingCount = dtContent.DefaultView.ToTable().Rows.Count;
                         dtContent.DefaultView.RowFilter = "";
                         sb.Append("<tr><td class=\"afgrouprow\" style=\"padding-left:10px;\">" + dr["GroupName"].ToString() + " > " + dr["ForumName"].ToString() + " [RESX:Pending]: (" + pendingCount + ")</td><td class=\"afgrouprow\" align=\"right\" style=\"padding-right:5px;\">");
-                        if (ForumId == -1)
-                        {
-                            sb.Append("<img align=\"absmiddle\" class=\"afarrow\" id=\"imgSection" + dr["ForumId"].ToString() + "\" onclick=\"aftoggleSection(" + dr["ForumId"].ToString() + ");\" src=\"" + ImagePath + "/arrows_down.png\" /></td></tr>");
-                            sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\" style=\"display:none;\"><td colspan=\"2\">");
-                        }
-                        else
-                        {
-                            sb.Append("<img align=\"absmiddle\" class=\"afarrow\" id=\"imgSection" + dr["ForumId"].ToString() + "\" onclick=\"aftoggleSection(" + dr["ForumId"].ToString() + ");\" src=\"" + ImagePath + "/arrows_up.png\" /></td></tr>");
-                            sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\"><td colspan=\"2\">");
-                        }
+                        sb.Append(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: "section" + dr["ForumId"].ToString(), title: string.Empty));
+                        sb.Append("</td></tr>");
+                        sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\"><td colspan=\"2\">");
                     }
                     tmpForum = forumKey;
                 }

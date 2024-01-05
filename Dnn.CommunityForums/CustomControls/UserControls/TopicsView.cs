@@ -183,15 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     defaultTemplateId = DefaultTopicsViewTemplateId;
                 }
                 string TopicsTemplate = string.Empty;
-                if (UseTemplatePath && !(TemplatePath == string.Empty))
-                {
-                    TopicsTemplate = Utilities.GetFileContent(TemplatePath + "TopicsView.htm");
-                    TopicsTemplate = Utilities.ParseSpacer(TopicsTemplate);
-                }
-                else
-                {
-                    TopicsTemplate = TemplateCache.GetCachedTemplate( ForumModuleId, "TopicsView", defaultTemplateId);
-                }
+                TopicsTemplate = TemplateCache.GetCachedTemplate( ForumModuleId, "TopicsView", defaultTemplateId);
                 if (TopicsTemplate.Contains("[NOTOOLBAR]"))
                 {
                     if (HttpContext.Current.Items.Contains("ShowToolbar"))
@@ -596,7 +588,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
                 sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
-            sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
+            sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" TID=\"" + TabId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\"  EnableViewState=\"False\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER2]", "<am:pagernav id=\"Pager2\" runat=\"server\" EnableViewState=\"False\" />");
             if (sOutput.Contains("[PARENTFORUMLINK]"))

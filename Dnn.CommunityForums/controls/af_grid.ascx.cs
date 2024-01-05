@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void DrpTimeFrameSelectedIndexChanged(object sender, EventArgs e)
         {
             var timeframe = Utilities.SafeConvertInt(drpTimeFrame.SelectedItem.Value, 1440);
-            Response.Redirect(NavigateUrl(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=activetopics", "ts=" + timeframe }));
+            Response.Redirect(NavigateUrl(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=" + Request.Params["afgt"], "ts=" + timeframe }));
         }
 
         private void BtnMarkReadClick(object sender, EventArgs e)
@@ -111,7 +111,8 @@ namespace DotNetNuke.Modules.ActiveForums
             
             if (Request.Params["afgt"] != null)
             {
-                var gview = Utilities.XSSFilter(Request.Params["afgt"]).ToLowerInvariant();
+                var gview = Utilities.XSSFilter(Request.Params["afgt"]).ToLowerInvariant(); 
+                var timeFrame = Utilities.SafeConvertInt(Request.Params["ts"], 1440);
                 switch (gview)
                 {
                     case "notread":
@@ -171,22 +172,48 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         lblHeader.Text = GetSharedResource("[RESX:ActiveTopics]");
 
-                        /*
-                        if (UserLastAccess != Utilities.NullDate())
-                        {
-                            timeFrame = Convert.ToInt32(SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, UserLastAccess, DateTime.UtcNow));
-                            drpTimeFrame.Items.Insert(0, new ListItem(GetDate(UserLastAccess), "~" + timeFrame.ToString()));
-                        }
-                         */
-
-                        var timeFrame = Utilities.SafeConvertInt(Request.Params["ts"], 1440);
-
                         if (timeFrame < 15 | timeFrame > 80640)
+                        {
                             timeFrame = 1440;
+                        }
 
                         drpTimeFrame.Visible = true;
                         drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
                         _dtResults = db.UI_ActiveView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
+                        if (_dtResults.Rows.Count > 0)
+                            _rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
+
+                        break;
+
+
+                    case "mostliked":
+
+                        lblHeader.Text = GetSharedResource("[RESX:MostLiked]");
+                        if (timeFrame < 15 | timeFrame > 80640)
+                        {
+                            timeFrame = 1440;
+                        }
+
+                        drpTimeFrame.Visible = true;
+                        drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
+                        _dtResults = db.UI_MostLiked(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
+                        if (_dtResults.Rows.Count > 0)
+                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+
+                        break;
+
+                    case "mostreplies":
+
+                        lblHeader.Text = GetSharedResource("[RESX:MostReplies]");
+
+                        if (timeFrame < 15 | timeFrame > 80640)
+                        {
+                            timeFrame = 1440;
+                        }
+
+                        drpTimeFrame.Visible = true;
+                        drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
+                        _dtResults = db.UI_MostReplies(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                             _rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
 
@@ -416,15 +443,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (locked)
                 return MainSettings.ThemeLocation + "/images/topic_lock.png";
 
-            // Unread has to be calculated based on a few fields
-            //var topicId = Convert.ToInt32(_currentRow["TopicId"]);
-            //var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
-            //var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
-            //var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
-            //var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
-            //var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
-
-            var isRead = _currentRow.GetBoolean("IsRead");
+           var isRead = _currentRow.GetBoolean("IsRead");
 
             if (isRead)
                 return MainSettings.ThemeLocation + "/images/topic.png";
