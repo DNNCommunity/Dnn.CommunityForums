@@ -1127,6 +1127,8 @@
     <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
