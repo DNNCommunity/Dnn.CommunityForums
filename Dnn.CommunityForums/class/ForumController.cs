@@ -21,6 +21,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
@@ -140,37 +141,37 @@ namespace DotNetNuke.Modules.ActiveForums
                 HasProperties = Convert.ToBoolean(dr["HasProperties"])
             };
 
-            fi.ForumGroup.ForumGroupId = fi.ForumGroupId;
-            fi.ForumGroup.GroupName = fi.GroupName;
-            fi.ForumGroup.PrefixURL = dr["GroupPrefixURL"].ToString();
-            fi.Security.Announce = dr["CanAnnounce"].ToString();
-            fi.Security.Attach = dr["CanAttach"].ToString();
-            fi.Security.Create = dr["CanCreate"].ToString();
-            fi.Security.Delete = dr["CanDelete"].ToString();
-            fi.Security.Edit = dr["CanEdit"].ToString();
-            fi.Security.Lock = dr["CanLock"].ToString();
-            fi.Security.ModApprove = dr["CanModApprove"].ToString();
-            fi.Security.ModDelete = dr["CanModDelete"].ToString();
-            fi.Security.ModEdit = dr["CanModEdit"].ToString();
-            fi.Security.ModLock = dr["CanModLock"].ToString();
-            fi.Security.ModMove = dr["CanModMove"].ToString();
-            fi.Security.ModPin = dr["CanModPin"].ToString();
-            fi.Security.ModSplit = dr["CanModSplit"].ToString();
-            fi.Security.ModUser = dr["CanModUser"].ToString();
-            fi.Security.Pin = dr["CanPin"].ToString();
-            fi.Security.Poll = dr["CanPoll"].ToString();
-            fi.Security.Block = dr["CanBlock"].ToString();
-            fi.Security.Read = dr["CanRead"].ToString();
-            fi.Security.Reply = dr["CanReply"].ToString();
-            fi.Security.Subscribe = dr["CanSubscribe"].ToString();
-            fi.Security.Trust = dr["CanTrust"].ToString();
-            fi.Security.View = dr["CanView"].ToString();
-            fi.Security.Tag = dr["CanTag"].ToString();
-            fi.Security.Prioritize = dr["CanPrioritize"].ToString();
-            fi.Security.Categorize = dr["CanCategorize"].ToString();
+        //    fi.ForumGroup.ForumGroupId = fi.ForumGroupId;
+        //    fi.ForumGroup.GroupName = fi.GroupName;
+        //    fi.ForumGroup.PrefixURL = dr["GroupPrefixURL"].ToString();
+        //    fi.Security.Announce = dr["CanAnnounce"].ToString();
+        //    fi.Security.Attach = dr["CanAttach"].ToString();
+        //    fi.Security.Create = dr["CanCreate"].ToString();
+        //    fi.Security.Delete = dr["CanDelete"].ToString();
+        //    fi.Security.Edit = dr["CanEdit"].ToString();
+        //    fi.Security.Lock = dr["CanLock"].ToString();
+        //    fi.Security.ModApprove = dr["CanModApprove"].ToString();
+        //    fi.Security.ModDelete = dr["CanModDelete"].ToString();
+        //    fi.Security.ModEdit = dr["CanModEdit"].ToString();
+        //    fi.Security.ModLock = dr["CanModLock"].ToString();
+        //    fi.Security.ModMove = dr["CanModMove"].ToString();
+        //    fi.Security.ModPin = dr["CanModPin"].ToString();
+        //    fi.Security.ModSplit = dr["CanModSplit"].ToString();
+        //    fi.Security.ModUser = dr["CanModUser"].ToString();
+        //    fi.Security.Pin = dr["CanPin"].ToString();
+        //    fi.Security.Poll = dr["CanPoll"].ToString();
+        //    fi.Security.Block = dr["CanBlock"].ToString();
+        //    fi.Security.Read = dr["CanRead"].ToString();
+        //    fi.Security.Reply = dr["CanReply"].ToString();
+        //    fi.Security.Subscribe = dr["CanSubscribe"].ToString();
+        //    fi.Security.Trust = dr["CanTrust"].ToString();
+        //    fi.Security.View = dr["CanView"].ToString();
+        //    fi.Security.Tag = dr["CanTag"].ToString();
+        //    fi.Security.Prioritize = dr["CanPrioritize"].ToString();
+        //    fi.Security.Categorize = dr["CanCategorize"].ToString();
 
-            return fi;
-        }
+        //    return fi;
+        //}
 
         public string GetForumIdsBySocialGroup(int portalId, int socialGroupId)
         {
