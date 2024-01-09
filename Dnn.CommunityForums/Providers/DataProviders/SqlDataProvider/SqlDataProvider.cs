@@ -299,11 +299,15 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forums_MoveForum", ModuleId, ForumId, SortDirection);
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, string ForumSecurityKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)")]
         public override int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forum_Save", PortalId, ForumId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, ForumSettingsKey, PermissionsId, PrefixURL, SocialGroupId, HasProperties));
+            return Forum_Save(PortalId, ForumId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, ForumSettingsKey, string.Empty, PermissionsId, PrefixURL, SocialGroupId, HasProperties);
         }
-
+        public override int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, string ForumSecurityKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forum_Save", PortalId, ForumId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, ForumSettingsKey, ForumSecurityKey, PermissionsId, PrefixURL, SocialGroupId, HasProperties));
+        }
         public override void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey, string ForumSecurityKey)
         {
             SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forum_ConfigCleanUp", ModuleId, ForumSettingsKey, ForumSecurityKey);

@@ -1,1 +1,99 @@
-/* placeholder */
+/* begin - issue 611 - split forum security / settings inheritance */
+/*activeforums_Forum_Save*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forum_Save]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forum_Save]
+@PortalId int,
+@ForumId int,
+@ModuleId int,
+@ForumGroupId int,
+@ParentForumId int,
+@ForumName nvarchar(255),
+@ForumDesc nvarchar(2000),
+@SortOrder int,
+@Active bit,
+@Hidden bit,
+@ForumSettingsKey varchar(255) = '',
+@ForumSecurityKey varchar(255) = '',
+@PermissionsId int,
+@PrefixURL nvarchar(50),
+@SocialGroupId int,
+@HasProperties bit
+AS
+IF @PrefixURL <> '' AND @ForumId >0
+	BEGIN
+		DECLARE @currURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,@ForumGroupId, @ForumId,-1,-1,-1)
+		DECLARE @newURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId, @ForumGroupId, -1,-1,-1,-1) + @PrefixURL + '/'
+		IF LTRIM(RTRIM(LOWER(@newURL))) <> LTRIM(RTRIM(LOWER(@currURL)))
+		BEGIN
+			exec {databaseOwner}{objectQualifier}activeforums_URL_Archive @PortalId,@ForumGroupId, @ForumId, -1, @currURL
+		END
+	END
+IF EXISTS (SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId AND ModuleId = @ModuleId)
+	BEGIN
+	DECLARE @curGroupId int 
+	DECLARE @curParentForumId int	
+	BEGIN
+		IF @ForumSettingsKey = ''
+			SET @ForumSettingsKey = (SELECT ForumSettingsKey FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+		IF @ForumSecurityKey = ''
+			SET @ForumSecurityKey = (SELECT ForumSecurityKey FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+	END
+	SET @curGroupId = (SELECT ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+	SET @curParentForumId = (SELECT ParentForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+		
+	IF @curGroupId <> @ForumGroupId OR @curParentForumId <> @ParentForumId
+		BEGIN
+		DECLARE @MaxSort int
+		SET @MaxSort = (SELECT MAX(SortOrder) from {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId AND ParentForumId = @ParentForumId AND ForumGroupId = @ForumGroupId)
+		IF @MaxSort IS NULL
+			SET @MaxSort = 0
+		ELSE
+			SET @MaxSort = @MaxSort + 1
+		
+		UPDATE {databaseOwner}{objectQualifier}activeforums_forums SET SortOrder = @MaxSort, ForumGroupId = @ForumGroupId WHERE ForumId = @ForumId --and ForumGroupID = @ForumGroupID
+		exec {databaseOwner}{objectQualifier}activeforums_Forums_RepairSort @curGroupId, @curParentForumId
+		exec {databaseOwner}{objectQualifier}activeforums_Forums_RepairSort @ForumGroupID, @ParentForumId
+		END
+	UPDATE {databaseOwner}{objectQualifier}activeforums_Forums
+	SET PortalId = @PortalId, ForumGroupId = @ForumGroupId, ParentForumId = @ParentForumId, ForumName = @ForumName,
+	ForumDesc = @ForumDesc,  Active = @Active, Hidden = @Hidden, DateUpdated = GETUTCDATE(), ForumSettingsKey = @ForumSettingsKey, ForumSecurityKey = @ForumSecurityKey,
+	PermissionsId = @PermissionsId,
+	PrefixURL = @PrefixURL,
+	SocialGroupId = @SocialGroupId,
+	HasProperties = @HasProperties
+	WHERE ForumId = @ForumId AND ModuleId = @ModuleId
+	END
+	
+ELSE
+	BEGIN
+		SELECT @SortOrder = (Max(SortOrder) + 1) From {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleID=@ModuleID and ForumGroupID = @ForumGroupID 
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Forums
+			(PortalId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, PermissionsId, PrefixURL, SocialGroupId, HasProperties)
+			VALUES
+			(@PortalId, @ModuleId, @ForumGroupId, @ParentForumId, @ForumName, @ForumDesc, IsNull(@SortOrder,0), @Active, @Hidden, @PermissionsId, @PrefixURL, @SocialGroupId, @HasProperties)
+		SET @ForumId = SCOPE_IDENTITY()
+		BEGIN
+			IF @ForumSettingsKey = ''
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET ForumSettingsKey = 'F:' + CAST(@ForumId as varchar(50)) WHERE ForumId = @ForumId
+			ELSE
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET ForumSettingsKey = @ForumSettingsKey WHERE ForumId = @ForumId
+		END
+		BEGIN
+			IF @ForumSecurityKey = ''
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET ForumSecurityKey = 'F:' + CAST(@ForumId as varchar(50)) WHERE ForumId = @ForumId
+			ELSE
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET ForumSecurityKey = @ForumSettingsKey WHERE ForumId = @ForumId
+		END
+	END
+SELECT @ForumId
+
+-- reset thread order
+EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+GO
+
+/* end - issue 611 - split forum security / settings inheritance */

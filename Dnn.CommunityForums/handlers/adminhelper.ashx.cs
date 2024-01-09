@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			ForumController fc = new ForumController();
 			Forum fi = fc.GetForum(PortalId, ModuleId, pi.ObjectOwnerId, true);
 			fi.HasProperties = true;
-			fc.Forums_Save(PortalId, fi, false, false);
+			fc.Forums_Save(PortalId, fi, false, false, false);
 
 		}
 		private string PropertyList()
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					ForumController fc = new ForumController();
 					Forum fi = fc.GetForum(PortalId, ModuleId, prop.ObjectOwnerId, true);
 					fi.HasProperties = false;
-					fc.Forums_Save(PortalId, fi, false, false);
+					fc.Forums_Save(PortalId, fi, false, false, false);
 				}
 			}
 

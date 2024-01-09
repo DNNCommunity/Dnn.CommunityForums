@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool Hidden { get; set; }
         public bool Active { get; set; }
         public string GroupSettingsKey { get; set; }
+        public string GroupSecurityKey { get; set; }
         public int PermissionsId { get; set; }
         public string PrefixURL { get; set; }
 
@@ -349,6 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums
 							GroupName = dr.GetString("GroupName"),
 							SortOrder = dr.GetInt("SortOrder"),
 							GroupSettingsKey = dr.GetString("GroupSettingsKey"),
+							GroupSecurityKey = dr.GetString("GroupSecurityKey"),
 							PermissionsId = dr.GetInt("PermissionsId"),
 							PrefixURL = dr.GetString("PrefixURL"),
 							ModuleId = dr.GetInt("ModuleId"),
