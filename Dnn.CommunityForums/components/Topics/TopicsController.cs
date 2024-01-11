@@ -128,10 +128,34 @@ namespace DotNetNuke.Modules.ActiveForums
                     // NOTE: indexer is called from scheduler and has no httpcontext 
                     // so any code that relies on HttpContext cannot be used...
 
-                    string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
-                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")))
+                    string link = string.Empty;
+                    if (!string.IsNullOrEmpty(forumPrefixUrl) && useFriendlyURLs)
                     {
-                        link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
+                        link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
+                    }
+                    else
+                    {
+                        PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                        string[] additionalParameters;
+                        try
+                        {
+                            if (replyId == 0)
+                            {
+                                additionalParameters = ms.UseShortUrls ? new[] { ParamKeys.TopicId + "=" + topicid } : new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid };
+                            }
+                            else
+                            {
+                                additionalParameters = ms.UseShortUrls ? new[] { ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId } : new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId };
+                            }
+                            link = Common.Globals.NavigateURL(settings: portalSettings, tabID: moduleInfo.TabID, controlKey: string.Empty, additionalParameters: additionalParameters);
+                        }
+                        catch
+                        {
+                        }
+                    }
+                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")) && !link.StartsWith("/"))
+                    {
+                        link = (isHttps ? "https://" : "http://") + primaryPortalAlias + "/" + link;
                     }
                     queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
                     string permittedRolesCanView = string.Empty;
