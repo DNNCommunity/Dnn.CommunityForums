@@ -708,8 +708,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (canSubscribe)
             {
                 var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
-                subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
-                subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                subControl.Checked = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
+                subControl.Text = "[RESX:TopicSubscribe:" + (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
                 sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
                 bHasOptions = true;
             }
