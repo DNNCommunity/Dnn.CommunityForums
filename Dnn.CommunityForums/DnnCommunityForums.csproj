@@ -1184,7 +1184,6 @@
       <DependentUpon>Classic.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Deprecated\API.cs" />
     <Compile Include="components\Common\Exceptions.cs" />
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
