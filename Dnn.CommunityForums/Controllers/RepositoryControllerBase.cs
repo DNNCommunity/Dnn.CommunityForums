@@ -50,8 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal T Get<TProperty>(TProperty id)
         {
-            var content = Repo.GetById(id);
-            return content;
+            return Repo.GetById(id);
         }
         internal void Update(T item)
         {
