@@ -215,12 +215,22 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SaveQuickReply()
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
-            int iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            ForumController fc = new ForumController();
+            Forum forumInfo = fc.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
-                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
-                return;
+                UserProfileController upc = new UserProfileController();
+                UserProfileInfo upi = upc.Profiles_Get(PortalId, ModuleId, this.UserId);
+                if (upi != null)
+                {
+                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < MainSettings.FloodInterval)
+                    {
+                        Controls.InfoMessage im = new Controls.InfoMessage();
+                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>";
+                        plhMessage.Controls.Add(im);
+                        return;
+                    }
+                }
             }
             if (!Request.IsAuthenticated)
             {
