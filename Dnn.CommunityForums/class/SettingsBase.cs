@@ -171,20 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public ForumController ForumController
-        {
-            get
-            {
-                const string forumControllerContextKey = "AF|ForumController";
-                var forumController = HttpContext.Current.Items[forumControllerContextKey] as ForumController;
-                if (forumController == null)
-                {
-                    forumController = new ForumController();
-                    HttpContext.Current.Items[forumControllerContextKey] = forumController;
-                }
-                return forumController;
-            }
-        }
 
         public ForumsDB ForumsDB
         {

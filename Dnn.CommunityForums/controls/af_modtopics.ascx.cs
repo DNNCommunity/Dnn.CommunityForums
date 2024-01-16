@@ -70,14 +70,14 @@ namespace DotNetNuke.Modules.ActiveForums
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
-            ForumInfo fi = null;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = null;
             if (e.Parameters.Length > 0)
             {
                 if (ForumId < 1)
                 {
                     SetPermissions(Convert.ToInt32(e.Parameters[1]));
                     ForumController fc = new ForumController();
-                    fi = fc.Forums_Get(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
+                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
                 }
                 else
                 {

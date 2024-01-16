@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int _defaultTopicViewTemplateId = -1;
         private string _templatePath = string.Empty;
         private string _templateFile = string.Empty;
-        private ForumInfo _foruminfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _foruminfo;
         private XmlDocument _forumData;
 
         private bool? _canRead;
@@ -446,11 +446,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public ForumInfo ForumInfo
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo
         {
             get 
             {
-                return _foruminfo ?? (_foruminfo = ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
+                return _foruminfo ?? (_foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
             }
             set
             {

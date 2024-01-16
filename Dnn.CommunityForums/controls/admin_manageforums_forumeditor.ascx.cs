@@ -227,8 +227,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (Utilities.SafeConvertBool(e.Parameters[8]))
                         {
-                            var fgc = new ForumGroupController();
-                            var fgi = fgc.GetForumGroup(ModuleId, forumGroupId);
+                            var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+                            var fgi = fgc.GetById(forumGroupId);
 
                             if (bIsNew)
                                 fi.PermissionsId = fgi.PermissionsId;
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var bIsNew = false;
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var fgc = new ForumGroupController();
+                        var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
                         var gi = (groupId > 0) ? fgc.Groups_Get(ModuleId, groupId) : new ForumGroupInfo();
 
                         var securityKey = string.Empty;
@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
 
                         gi.GroupSettingsKey = securityKey;
-                        var gc = new ForumGroupController();
+                        var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
                         groupId = gc.Groups_Save(PortalId, gi, bIsNew);
                         recordId = groupId;
                         hidEditorResult.Value = groupId.ToString();
@@ -543,8 +543,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadGroup(int groupId)
         {
-            var gc = new ForumGroupController();
-            var gi = gc.Groups_Get(ModuleId, groupId);
+            var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+            var gi = gc.GetById(groupId);
 
             if (gi == null)
                 return;

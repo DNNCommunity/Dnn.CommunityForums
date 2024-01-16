@@ -99,15 +99,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			StringBuilder sb = new StringBuilder();
 			Data.ForumsDB fdb = new Data.ForumsDB();
-			ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
-			ForumCollection filteredForums = new ForumCollection();
-			foreach (ForumInfo f in allForums)
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection filteredForums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in allForums)
 			{
 				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
 				{
 					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles))
 					{
-						f.TabId = TabId;
 						f.SubForums = GetSubForums(allForums, f.ForumID);
 						filteredForums.Add(f);
 					}
@@ -122,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string subtmp = string.Empty;
 			StringBuilder list = new StringBuilder();
 			bool inprogress = false;
-			foreach (ForumInfo f in filteredForums)
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
 			{
 				if (currGroup != f.ForumGroupId)
 				{
@@ -142,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				string forums = ParseForum(f, ftmp);
 				if (f.SubForums != null)
 				{
-					foreach (ForumInfo s in f.SubForums)
+					foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in f.SubForums)
 					{
 						forums = forums.Replace("[SUBFORUMHOLDER]", ParseForum(s, subtmp) + "[SUBFORUMHOLDER]");
 					}
@@ -156,13 +155,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			Template = TemplateUtils.ReplaceSubSection(Template, list.ToString(), "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
 			return Template;
 		}
-		private string ParseForumGroup(ForumGroupInfo f, string template)
+		private string ParseForumGroup(DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo f, string template)
 		{
 			template = template.Replace("[AF:DIR:FORUMGROUPID]", f.ForumGroupId.ToString());
 			template = template.Replace("[AF:DIR:FORUMGROUPNAME]", f.GroupName);
 			return template;
 		}
-		private string ParseForum(ForumInfo f, string template)
+		private string ParseForum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f, string template)
 		{
 			template = template.Replace("[AF:DIR:FORUMID]", f.ForumID.ToString());
 			template = template.Replace("[AF:DIR:FORUMNAME]", f.ForumName);
@@ -195,18 +194,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			return template;
 		}
-		private ForumCollection GetSubForums(ForumCollection forums, int forumId)
+		private DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums, int forumId)
 		{
-			ForumCollection subforums = null;
-			foreach (ForumInfo s in forums)
+			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection subforums = null;
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in forums)
 			{
 				if (s.ParentForumId == forumId)
 				{
 					if (subforums == null)
 					{
-						subforums = new ForumCollection();
+						subforums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 					}
-					s.TabId = TabId;
 					subforums.Add(s);
 				}
 			}

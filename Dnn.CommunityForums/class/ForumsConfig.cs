@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     for (int i = 0; i < xNodeList.Count; i++)
 					{
-						var gi = new ForumGroupInfo
+						var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
 						             {
 						                 ModuleId = ModuleId,
 						                 ForumGroupId = -1,
@@ -217,10 +217,9 @@ namespace DotNetNuke.Modules.ActiveForums
 						                 GroupSettingsKey = string.Empty,
 						                 PermissionsId = -1
 						             };
-					    var gc = new ForumGroupController();
-						int groupId;
-						groupId = gc.Groups_Save(PortalId, gi, true);
-						gi = gc.GetForumGroup(ModuleId, groupId);
+					    var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+						int groupId = gc.Groups_Save(PortalId, gi, true);
+						gi = gc.GetById(groupId);
 						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
@@ -284,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								System.Xml.XmlNodeList cNodes = xNodeList[i].ChildNodes;
 								for (int c = 0; c < cNodes.Count; c++)
 								{
-									var fi = new ForumInfo();
+									var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
 									var fc = new ForumController();
 									fi.ForumID = -1;
 									fi.ModuleId = ModuleId;
@@ -465,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int forumId = (Utilities.SafeConvertInt(dr["ForumId"]));
                     int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
                     string subject = (Utilities.SafeConvertString(dr["Subject"]));
-                    ForumInfo forumInfo = fc.GetForum(portalId, moduleId, forumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = fc.GetForum(portalId, moduleId, forumId);
 					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.Get(topicId);
 					topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
 					tc.Update(topicInfo); 

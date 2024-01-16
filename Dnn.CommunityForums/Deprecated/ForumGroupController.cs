@@ -59,5 +59,16 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return groupArr;
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Delete")]
+        public void Group_Delete(int moduleId, int forumGroupId)
+        {
+            DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Save")]
+        public int Groups_Save(int portalId, ForumGroupInfo fg, bool isNew)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Save(portalId, fg, isNew);           
+        }
     }
 }

@@ -248,8 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     Data.ForumsDB db = new Data.ForumsDB();
                     int oldForumId = -1;
                     oldForumId = db.Forum_GetByTopicId(TopicId);
-                    ForumController fc = new ForumController();
-                    ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
 
                     if (!(string.IsNullOrEmpty(fi.PrefixURL)))
                     {
@@ -336,10 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            ForumController fc = new ForumController();
-            ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
-
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
             TopicsController tc = new TopicsController();
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
             if (topic == null)
