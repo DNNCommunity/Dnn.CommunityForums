@@ -51,13 +51,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			return (IDataReader)(SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost));
 		}
-		public ForumCollection Forums_List(int PortalId, int ModuleId)
+		public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums_List(int PortalId, int ModuleId)
 		{
-			ForumCollection f = new ForumCollection();
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection f = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 			object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.ForumList, ModuleId));
 			if (obj != null)
 			{
-				f = (ForumCollection)obj;
+				f = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)obj;
 			}
 			else
 			{
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			if (obj == null)
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
-				ForumCollection fc = db.Forums_List(PortalId, ModuleId);
+				DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = db.Forums_List(PortalId, ModuleId);
 				//Dim ds As DataSet = SqlHelper.ExecuteDataset(connectionString, databaseOwner & objectQualifier & "activeforums_UI_ForumDisplay", PortalId, ModuleId, UserId, -1, ForumIds)
 				System.Text.StringBuilder sb = new System.Text.StringBuilder();
 				sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");

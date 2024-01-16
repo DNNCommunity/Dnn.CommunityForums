@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Profile = { TopicCount = 0, ReplyCount = 0 },
                         DateCreated = DateTime.UtcNow
                     };
-                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, TabId, ForumInfo, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
+                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
                     hidPreviewText.Value = message;
                     break;
             }

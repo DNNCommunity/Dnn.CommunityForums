@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using System.Runtime.Remoting.Messaging;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -34,6 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Forums", CacheItemPriority.Low)]
     public partial class ForumInfo
     {
+        private ForumGroupInfo _forumGroup;
+
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
         public int PortalId { get; set; }
@@ -68,25 +71,35 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool HasProperties { get; set; }
 
         [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
+        {
+            get
+            {
+                if (_forumGroup == null) { _forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); }
+                return _forumGroup;
+            }
+            set => _forumGroup = value;
+        }
+
+        [IgnoreColumn()]
+        public string GroupName { get { return ForumGroup.GroupName; } }
+
+        [IgnoreColumn()]
         public DateTime LastRead { get; set; }
         [IgnoreColumn()]
-        public string LastPostFirstName { get; set; }
+        public string LastPostFirstName { get { return new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,LastPostUserID).FirstName; } }
         [IgnoreColumn()]
-        public string LastPostLastName { get; set; }
+        public string LastPostLastName { get { return new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName; } }
         [IgnoreColumn()]
-        public string LastPostDisplayName { get; set; }
+        public string LastPostDisplayName { get { return new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName; } }
         [IgnoreColumn()]
-        public bool InheritSecurity { get; set; }
+        public bool InheritSecurity { get { return ForumSecurityKey == ForumGroup.GroupSecurityKey; } }
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup { get; set; }
+        public int SubscriberCount { get { return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID); } }
         [IgnoreColumn()]
-        public int SubscriberCount { get; set; }
+        public string ParentForumName { get { return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ParentForumId).ForumName; } }
         [IgnoreColumn()]
-        public string GroupName { get; set; }
-        [IgnoreColumn()]
-        public string ParentForumName { get; set; }
-        [IgnoreColumn()]
-        public int TabId { get; set; }
+        public int TabId { get { return new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).TabID; } }
 
         [IgnoreColumn()]
         public string ForumURL
@@ -116,12 +129,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public ForumInfo()
         {
             PortalId = -1;
-            TabId = -1;
             PermissionsId = -1;
             PrefixURL = string.Empty;
             ForumSettings = new Hashtable();
 
-            Security = new DotNetNuke.Modules.ActiveForums.PermissionInfo();
+            Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         }
         [IgnoreColumn()]
         public string TopicSubject { get; set; }

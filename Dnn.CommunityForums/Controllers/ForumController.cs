@@ -86,10 +86,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 TotalReplies = Convert.ToInt32(dr["TotalReplies"].ToString()),
                 LastTopicId = Convert.ToInt32(dr["LastTopicId"].ToString()),
                 LastReplyId = Convert.ToInt32(dr["LastReplyId"].ToString()),
-                GroupName = dr["GroupName"].ToString(),
                 PermissionsId = Convert.ToInt32(dr["PermissionsId"].ToString()),
                 ForumSettingsKey = dr["ForumSettingsKey"].ToString(),
-                InheritSecurity = Convert.ToBoolean(dr["InheritSecurity"]),
                 PrefixURL = dr["PrefixURL"].ToString(),
                 SocialGroupId = Convert.ToInt32(dr["SocialGroupId"].ToString()),
                 HasProperties = Convert.ToBoolean(dr["HasProperties"])
@@ -166,8 +164,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // that don't otherwise have access
 
             var forumIds = string.Empty;
-            var fc = GetForumsDB().Forums_List(portalId, moduleId);
-            foreach (ForumInfo f in fc)
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = GetForumsDB().Forums_List(portalId, moduleId);
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
                 string roles;
                 switch (permissionType)

@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								System.Xml.XmlNodeList cNodes = xNodeList[i].ChildNodes;
 								for (int c = 0; c < cNodes.Count; c++)
 								{
-									var fi = new ForumInfo();
+									var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
 									var fc = new ForumController();
 									fi.ForumID = -1;
 									fi.ModuleId = ModuleId;
@@ -465,7 +465,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int forumId = (Utilities.SafeConvertInt(dr["ForumId"]));
                     int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
                     string subject = (Utilities.SafeConvertString(dr["Subject"]));
-                    ForumInfo forumInfo = fc.GetForum(portalId, moduleId, forumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = fc.GetForum(portalId, moduleId, forumId);
 					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.Get(topicId);
 					topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
 					tc.Update(topicInfo); 

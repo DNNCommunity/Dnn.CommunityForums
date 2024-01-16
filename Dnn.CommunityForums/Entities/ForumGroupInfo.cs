@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         #region Settings & Security
         [IgnoreColumn()]
-        public PermissionInfo Security { get; set; } = new PermissionInfo();
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; } = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         [IgnoreColumn()]
         public Hashtable GroupSettings { get; set; } = new Hashtable();
         [IgnoreColumn()]
