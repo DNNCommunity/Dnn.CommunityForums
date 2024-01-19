@@ -285,8 +285,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int UserId { get; set; } = -1;
         public string Render()
 		{
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-			string fs = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
+			string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
 			if (! (string.IsNullOrEmpty(fs)))
 			{
 				_canEdit = true;
@@ -299,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (ForumId > 0)
 				{
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = fc.GetById(ForumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId,ModuleId,ForumId);
 					if (f != null)
 					{
 						forumPrefix = f.PrefixURL;

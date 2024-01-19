@@ -66,10 +66,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             ModuleId = ControlConfig.ModuleId;
             PortalId = ControlConfig.PortalId;
-            ForumController fc = new ForumController();
             if (ForumInfo == null)
             {
-                ForumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
+                ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
             }
 
             string sTemp = string.Empty;

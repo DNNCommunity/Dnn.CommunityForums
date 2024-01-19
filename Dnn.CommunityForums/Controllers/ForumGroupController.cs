@@ -17,14 +17,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
-using DotNetNuke.Common.Utilities;
 using System.Collections;
-using System.Data;
-using DotNetNuke.Modules.ActiveForums.API;
-using System.Reflection;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {

@@ -117,7 +117,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			{
 				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
 				{
-					f.TabId = TabId;
 					f.SubForums = GetSubForums(allForums, f.ForumID);
 					filteredForums.Add(f);
 				}
@@ -175,7 +174,6 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						subforums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 					}
-					s.TabId = TabId;
 					subforums.Add(s);
 				}
 			}

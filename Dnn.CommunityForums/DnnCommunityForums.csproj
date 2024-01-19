@@ -1113,6 +1113,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Deprecated\ForumController.cs" />
     <Compile Include="Deprecated\ForumGroupController.cs" />
     <Compile Include="Deprecated\ForumGroupInfo.cs" />
     <Compile Include="Deprecated\ForumInfo.cs" />
@@ -1207,7 +1208,6 @@
       <DependentUpon>Classic.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Deprecated\API.cs" />
     <Compile Include="components\Common\Exceptions.cs" />
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1225,7 +1225,7 @@
     <Compile Include="components\Data\Common.cs" />
     <Compile Include="components\Data\DataConfig.cs" />
     <Compile Include="components\Data\ForumsDB.cs" />
-    <Compile Include="components\Data\Groups.cs" />
+    <Compile Include="Deprecated\Groups.cs" />
     <Compile Include="components\Data\Null.cs" />
     <Compile Include="components\Data\ProfilesDB.cs" />
     <Compile Include="class\Logger.cs" />
@@ -1649,12 +1649,6 @@
     <Compile Include="class\ForumBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\ForumController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Deprecated\ForumGroups.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="class\Images.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -1771,10 +1765,7 @@
     <None Include="themes\community-default\_less\_variables.less" />
     <None Include="themes\README.md" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="components\Security\" />
-    <Folder Include="Legacy\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

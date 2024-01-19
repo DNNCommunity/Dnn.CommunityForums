@@ -352,8 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SetPermissions(int fId)
         {
-            ForumController fc = new ForumController();
-            ForumInfo f = fc.GetForum(PortalId, ModuleId, fId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, fId);
             bModDelete = false;
             bModApprove = false;
             bModEdit = false;

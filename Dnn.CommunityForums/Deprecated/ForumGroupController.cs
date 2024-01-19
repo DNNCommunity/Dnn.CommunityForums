@@ -20,12 +20,6 @@
 using System;
 using DotNetNuke.Common.Utilities;
 using System.Collections;
-using System.Data;
-using DotNetNuke.Modules.ActiveForums.API;
-using System.Reflection;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Security.Permissions;
-
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -51,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int i;
             for (i = 0; i < groupArr.Count; i++)
             {
-                DotNetNuke.Modules.ActiveForums.ForumGroupInfo gi = groupArr[i] as ForumGroupInfo;
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = groupArr[i] as ForumGroupInfo;
                 if (gi == null)
                     continue;
                 gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.ForumGroupSettings, moduleId, gi.ForumGroupId), false);

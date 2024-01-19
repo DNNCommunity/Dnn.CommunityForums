@@ -61,5 +61,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return topicUrl;
         }
+        internal static string BuildForumUrl(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        {
+            string url = "/";
+
+            if (!(string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL)))
+            {
+                url += forumInfo.ForumGroup.PrefixURL + "/";
+            }
+
+            if (!(string.IsNullOrEmpty(forumInfo.PrefixURL)))
+            {
+                url += forumInfo.PrefixURL + "/";
+            }
+            return url;
+        }
     }
 }

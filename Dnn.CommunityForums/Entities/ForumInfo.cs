@@ -75,57 +75,54 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (_forumGroup == null) { _forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); }
-                return _forumGroup;
+                return _forumGroup ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); 
             }
             set => _forumGroup = value;
         }
 
         [IgnoreColumn()]
-        public string GroupName { get { return ForumGroup.GroupName; } }
+        public string GroupName => ForumGroup.GroupName;
+
+        [IgnoreColumn()]
+        public string LastTopicUrl { get; set; }
 
         [IgnoreColumn()]
         public DateTime LastRead { get; set; }
-        [IgnoreColumn()]
-        public string LastPostFirstName { get { return new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,LastPostUserID).FirstName; } }
-        [IgnoreColumn()]
-        public string LastPostLastName { get { return new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName; } }
-        [IgnoreColumn()]
-        public string LastPostDisplayName { get { return new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName; } }
-        [IgnoreColumn()]
-        public bool InheritSecurity { get { return ForumSecurityKey == ForumGroup.GroupSecurityKey; } }
-        [IgnoreColumn()]
-        public int SubscriberCount { get { return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID); } }
-        [IgnoreColumn()]
-        public string ParentForumName { get { return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ParentForumId).ForumName; } }
-        [IgnoreColumn()]
-        public int TabId { get { return new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).TabID; } }
 
         [IgnoreColumn()]
-        public string ForumURL
-        {
-            get
-            {
-                return URL.ForumLink(TabId, this);
-            }
-        }
+        public string LastPostFirstName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).FirstName;
+
         [IgnoreColumn()]
-        public string TopicUrl { get; set; }
+        public string LastPostLastName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName;
+        
+        [IgnoreColumn()]
+        public string LastPostDisplayName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName;
+        
+        [IgnoreColumn()]
+        public bool InheritSecurity => ForumSecurityKey == ForumGroup.GroupSecurityKey;
+        
+        [IgnoreColumn()]
+        public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID);
+        
+        [IgnoreColumn()]
+        public string ParentForumName => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ParentForumId).ForumName;
+        
+        [IgnoreColumn()]
+        public int TabId => new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).TabID;
+
+        [IgnoreColumn()]
+        public string ForumURL => URL.ForumLink(TabId, this);
+        
         [IgnoreColumn()]
         public ForumCollection SubForums { get; set; }
+
         [IgnoreColumn()]
         public List<PropertiesInfo> Properties { get; set; }
 
-        #region Settings & Security
-        [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
-        [IgnoreColumn()]
-        public Hashtable ForumSettings { get; set; }
-
-        #endregion
-
-
-        // initialization
+        /// <summary>
+        /// initialization
+        /// </summary>
+        
         public ForumInfo()
         {
             PortalId = -1;
@@ -135,95 +132,66 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         }
+
+        #region "Settings"
+
         [IgnoreColumn()]
-        public string TopicSubject { get; set; }
+        public PermissionInfo Security { get; set; }
+
         [IgnoreColumn()]
-        public int TopicId { get; set; }
+        public Hashtable ForumSettings { get; set; }
+
         [IgnoreColumn()]
-        public bool AllowAttach
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowAttach]); }
-        }
+        public bool AllowAttach => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowAttach]);
+
         [IgnoreColumn()]
-        public bool AllowEmoticons
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowEmoticons]); }
-        }
+        public bool AllowEmoticons => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowEmoticons]);
+
         [IgnoreColumn()]
-        public bool AllowHTML
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowHTML]); }
-        }
+        public bool AllowHTML => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowHTML]);
+
         [IgnoreColumn()]
-        public bool AllowLikes
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowLikes]); }
-        }
+        public bool AllowLikes => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowLikes]);
+
         [IgnoreColumn()]
-        public bool AllowPostIcon
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowPostIcon]); }
-        }
+        public bool AllowPostIcon => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowPostIcon]);
+
         [IgnoreColumn()]
-        public bool AllowRSS
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowRSS]); }
-        }
+        public bool AllowRSS => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowRSS]);
+
         [IgnoreColumn()]
-        public bool AllowScript
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowScript]); }
-        }
+        public bool AllowScript => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowScript]);
+
         [IgnoreColumn()]
-        public bool AllowSubscribe
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowSubscribe]); }
-        }
+        public bool AllowSubscribe => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowSubscribe]);
+
         [IgnoreColumn()]
-        public int AttachCount
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AttachCount], 3); }
-        }
+        public int AttachCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AttachCount], 3);
+
         [IgnoreColumn()]
-        public int AttachMaxSize
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AttachMaxSize], 1000); }
-        }
+        public int AttachMaxSize => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AttachMaxSize], 1000);
+
         [IgnoreColumn()]
-        public string AttachTypeAllowed
-        {
-            get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.AttachTypeAllowed], ".jpg,.gif,.png"); }
-        }
+        public string AttachTypeAllowed => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.AttachTypeAllowed], ".jpg,.gif,.png");
+
         [IgnoreColumn()]
-        public bool AttachAllowBrowseSite
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AttachAllowBrowseSite]); }
-        }
+        public bool AttachAllowBrowseSite => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AttachAllowBrowseSite]);
+
         [IgnoreColumn()]
-        public int MaxAttachWidth
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.MaxAttachWidth], 800); }
-        }
+        public int MaxAttachWidth => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.MaxAttachWidth], 800);
+
         [IgnoreColumn()]
-        public int MaxAttachHeight
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.MaxAttachHeight], 800); }
-        }
+        public int MaxAttachHeight => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.MaxAttachHeight], 800);
+
         [IgnoreColumn()]
-        public bool AttachInsertAllowed
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AttachInsertAllowed]); }
-        }
+        public bool AttachInsertAllowed => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AttachInsertAllowed]);
+        
         [IgnoreColumn()]
-        public bool ConvertingToJpegAllowed
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.ConvertingToJpegAllowed]); }
-        }
+        public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
+        
         [IgnoreColumn()]
-        public string EditorHeight
-        {
-            get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorHeight], "400"); }
-        }
+        public string EditorHeight => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorHeight], "400");
+        
         [IgnoreColumn()]
         public EditorTypes EditorMobile
         {
@@ -235,7 +203,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                            : EditorTypes.HTMLEDITORPROVIDER;
             }
         }
-       [IgnoreColumn()]
+        
+        [IgnoreColumn()]
         public EditorTypes EditorType
         {
             get
@@ -246,6 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                            : EditorTypes.HTMLEDITORPROVIDER;
             }
         }
+        
         [IgnoreColumn()]
         public HTMLPermittedUsers EditorPermittedUsers
         {
@@ -258,66 +228,41 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
         [IgnoreColumn()]
-        public string EditorWidth
-        {
-            get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorWidth], "100%"); }
-        }
+        public string EditorWidth => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorWidth], "100%");
+        
         [IgnoreColumn()]
-        public string EmailAddress
-        {
-            get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EmailAddress], string.Empty); }
-        }
+        public string EmailAddress => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EmailAddress], string.Empty);
+        
         [IgnoreColumn()]
-        public bool IndexContent
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IndexContent]); }
-        }
+        public bool IndexContent => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IndexContent]);
+        
         [IgnoreColumn()]
-        public bool IsModerated
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IsModerated]); }
-        }
+        public bool IsModerated => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IsModerated]);
+        
         [IgnoreColumn()]
-        public int TopicsTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicsTemplateId]); }
-        }
+        public int TopicsTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicsTemplateId]);
+        
         [IgnoreColumn()]
-        public int TopicTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicTemplateId]); }
-        }
+        public int TopicTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicTemplateId]);
+        
         [IgnoreColumn()]
-        public int TopicFormId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicFormId]); }
-        }
+        public int TopicFormId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicFormId]);
+        
         [IgnoreColumn()]
-        public int ReplyFormId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyFormId]); }
-        }
+        public int ReplyFormId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyFormId]);
+        
         [IgnoreColumn()]
-        /// TODO
-        public int QuickReplyFormId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.QuickReplyFormId]); }
-        }
+        public int QuickReplyFormId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.QuickReplyFormId]);
+
+        [IgnoreColumn()]        
+        public int ProfileTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ProfileTemplateId]);
+        
         [IgnoreColumn()]
-        public int ProfileTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ProfileTemplateId]); }
-        }
+        public bool UseFilter => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.UseFilter]);
+        
         [IgnoreColumn()]
-        public bool UseFilter
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.UseFilter]); }
-        }
-        [IgnoreColumn()]
-        public int AutoTrustLevel
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AutoTrustLevel]); }
-        }
+        public int AutoTrustLevel => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AutoTrustLevel]);
+        
         [IgnoreColumn()]
         public TrustTypes DefaultTrustValue
         {
@@ -329,65 +274,45 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                            : TrustTypes.NotTrusted;
             }
         }
-        [IgnoreColumn()]
-        public int ModApproveTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModApproveTemplateId]); }
-        }
-        [IgnoreColumn()]
-        public int ModRejectTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModRejectTemplateId]); }
-        }
-        [IgnoreColumn()]
-        public int ModMoveTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModMoveTemplateId]); }
-        }
-        [IgnoreColumn()]
-        public int ModDeleteTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModDeleteTemplateId]); }
-        }
-        [IgnoreColumn()]
-        public int ModNotifyTemplateId
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModNotifyTemplateId]); }
-        }
-        [IgnoreColumn()]
-        public bool AllowTags
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowTags]); }
-        }
-        [IgnoreColumn()]
-        public bool AutoSubscribeEnabled
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeEnabled]); }
-        }
-        [IgnoreColumn()]
-        public string AutoSubscribeRoles
-        {
-            get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.AutoSubscribeRoles], string.Empty); }
-        }
-        [IgnoreColumn()]
-        public bool AutoSubscribeNewTopicsOnly
-        {
-            get { return Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeNewTopicsOnly]); }
-        }
-        [IgnoreColumn()]
-        public int CreatePostCount // Minimum posts required to create a topic in this forum if the user is not trusted
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.CreatePostCount]); }
-        }
-        [IgnoreColumn()]
-        public int ReplyPostCount // Minimum posts required to reply to a topic in this forum if the user is not trusted
-        {
-            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyPostCount]); }
-        }
 
-        public static explicit operator ForumInfo(Modules.ActiveForums.ForumInfo v)
-        {
-            throw new NotImplementedException();
-        }
+        [IgnoreColumn()]
+        public int ModApproveTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModApproveTemplateId]);
+        
+        [IgnoreColumn()]
+        public int ModRejectTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModRejectTemplateId]);
+        
+        [IgnoreColumn()]
+        public int ModMoveTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModMoveTemplateId]);
+        
+        [IgnoreColumn()]
+        public int ModDeleteTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModDeleteTemplateId]);
+        
+        [IgnoreColumn()]
+        public int ModNotifyTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModNotifyTemplateId]);
+        
+        [IgnoreColumn()]
+        public bool AllowTags => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowTags]);
+        
+        [IgnoreColumn()]
+        public bool AutoSubscribeEnabled => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeEnabled]);
+        
+        [IgnoreColumn()]
+        public string AutoSubscribeRoles => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.AutoSubscribeRoles], string.Empty);
+        
+        [IgnoreColumn()]
+        public bool AutoSubscribeNewTopicsOnly => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeNewTopicsOnly]);
+        
+        /// <summary>
+        ///  Minimum posts required to create a topic in this forum if the user is not trusted
+        /// </summary>
+        [IgnoreColumn()]
+        public int CreatePostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.CreatePostCount]);
+
+        /// <summary>
+        ///  Minimum posts required to reply to a topic in this forum if the user is not trusted
+        /// </summary>
+        [IgnoreColumn()]
+        public int ReplyPostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyPostCount]);
+        #endregion
     }
 }

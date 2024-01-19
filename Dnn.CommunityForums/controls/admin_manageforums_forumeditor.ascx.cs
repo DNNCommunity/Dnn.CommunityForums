@@ -181,8 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 case "forumsave":
                     {
-                        var fi = new ForumInfo();
-                        var fc = new ForumController();
+                        var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
                         var bIsNew = false;
                         int forumGroupId;
                         var forumSettingsKey = string.Empty;
@@ -194,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            fi = fc.Forums_Get(PortalId, ModuleId, Utilities.SafeConvertInt(e.Parameters[1]), false, -1);
+                            fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, Utilities.SafeConvertInt(e.Parameters[1]), false, -1);
                             forumSettingsKey = fi.ForumSettingsKey;
                         }
 
@@ -211,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             parentForumId = Utilities.SafeConvertInt(sParentValue.Replace("FORUM", string.Empty));
-                            forumGroupId = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: parentForumId, useCache: false).ForumGroupId;
+                            forumGroupId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: parentForumId, useCache: false).ForumGroupId;
                         }
 
                         fi.ForumGroupId = forumGroupId;
@@ -260,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 fi.PrefixURL = string.Empty;
                         }
 
-                        var forumId = fc.Forums_Save(PortalId, fi, bIsNew, Utilities.SafeConvertBool(e.Parameters[8]));
+                        var forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(PortalId, fi, bIsNew, Utilities.SafeConvertBool(e.Parameters[8]));
                         recordId = forumId;
 
                         hidEditorResult.Value = forumId.ToString();
@@ -271,8 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var bIsNew = false;
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-                        var gi = (groupId > 0) ? fgc.Groups_Get(ModuleId, groupId) : new ForumGroupInfo();
+                        var gi = (groupId > 0) ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Get(ModuleId, groupId) : new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
 
                         var securityKey = string.Empty;
                         if (groupId == 0)
@@ -399,13 +397,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForum(int forumId)
         {
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(PortalId, ModuleId, forumId, false);
+            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false);
 
             if (fi == null)
                 return;
 
-            var newForum = fc.GetForum(PortalId, ModuleId, forumId, true);
+            var newForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, forumId, true);
 
             ctlSecurityGrid = LoadControl(virtualPath: Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if (ctlSecurityGrid != null)

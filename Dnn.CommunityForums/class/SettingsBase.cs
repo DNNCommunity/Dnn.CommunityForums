@@ -58,8 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string forums;
                 if (string.IsNullOrEmpty(ForumUser.UserForums))
                 {
-                    var fc = new ForumController();
-                    forums = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
+                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
                     ForumUser.UserForums = forums;
                 }
                 else

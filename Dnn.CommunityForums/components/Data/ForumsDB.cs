@@ -64,12 +64,12 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "ForumsList", PortalId, ModuleId))
 				{
 
-					ForumInfo fi = null;
-					ForumGroupInfo gi = null;
+					DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = null;
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = null;
 					while (dr.Read())
 					{
-						fi = new ForumInfo();
-						gi = new ForumGroupInfo();
+						fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
+						gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
 						fi.ModuleId = int.Parse(dr["ModuleId"].ToString());
 						fi.ForumID = Convert.ToInt32(dr["ForumId"].ToString());
 						fi.Active = bool.Parse(dr["Active"].ToString());
@@ -77,7 +77,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.ForumGroupId = int.Parse(dr["ForumGroupId"].ToString());
 						fi.ForumID = int.Parse(dr["ForumId"].ToString());
 						fi.ForumName = dr["ForumName"].ToString();
-						fi.GroupName = dr["GroupName"].ToString();
 						fi.Hidden = bool.Parse(dr["Hidden"].ToString());
 						fi.ParentForumId = Convert.ToInt32(dr["ParentForumId"].ToString());
 					    DateTime postTime;
@@ -93,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.LastTopicId = int.Parse(dr["LastTopicId"].ToString());
 						fi.LastReplyId = int.Parse(dr["LastReplyId"].ToString());
 						fi.LastPostSubject = dr["LastPostSubject"].ToString();
-						fi.LastPostDisplayName = dr["LastPostAuthorName"].ToString();
 						fi.LastPostUserID = int.Parse(dr["LastPostAuthorId"].ToString());
 						fi.LastPostUserName = fi.LastPostDisplayName;
 						fi.LastRead = DateTime.Parse(dr["LastRead"].ToString());
@@ -175,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				int groupId = -1;
 				System.Text.StringBuilder groups = new System.Text.StringBuilder();
 				System.Text.StringBuilder forums = new System.Text.StringBuilder();
-				foreach (ForumInfo f in fc)
+				foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
 				{
 					if (groupId != f.ForumGroupId)
 					{
@@ -194,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				sb.Append(groups.ToString());
 				sb.Append("</groups>");
 				sb.AppendLine();
-				foreach (ForumInfo f in fc)
+				foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
 				{
 					forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
 					//forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")

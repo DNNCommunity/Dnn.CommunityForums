@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Reply)] 
         public HttpResponseMessage Like(LikeDto dto)
         {
-            if ((new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ForumModuleId, dto.ForumId).AllowLikes) &&
+            if ((DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalSettings.PortalId, ForumModuleId, dto.ForumId).AllowLikes) &&
                 ServicesHelper.IsAuthorized(PortalSettings.PortalId, ForumModuleId, dto.ForumId, SecureActions.Reply, UserInfo))
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, UserInfo.UserID));
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         public HttpResponseMessage Get(int forumId, int contentId)
         {
-            if (new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalSettings.PortalId, ForumModuleId, forumId).AllowLikes)
+            if (DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalSettings.PortalId, ForumModuleId, forumId).AllowLikes)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, value: new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Get(UserInfo.UserID, contentId));
             }

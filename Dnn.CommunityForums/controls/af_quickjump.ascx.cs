@@ -65,8 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void BindForums()
         {
-            ForumController fc = new ForumController();
-            dtForums = fc.GetForumView(PortalId, ForumModuleId, UserId, UserInfo.IsSuperUser, UserForumsList);
+            dtForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView(PortalId, ForumModuleId, UserId, UserInfo.IsSuperUser, UserForumsList);
 
             drpForums.Items.Clear();
             drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));

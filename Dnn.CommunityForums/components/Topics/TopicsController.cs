@@ -405,7 +405,6 @@ namespace DotNetNuke.Modules.ActiveForums
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
-            ForumController fc = new ForumController();
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
             Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
 
@@ -450,7 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string forumPrefixUrl = string.Empty;
                     if (!ForumUrlPrefixes.TryGetValue(forumid, out forumPrefixUrl))
                     {
-                        forumPrefixUrl = fc.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
+                        forumPrefixUrl = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
                         ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
                     }
                     string link = string.Empty;
