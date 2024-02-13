@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var bIsNew = false;
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        var gi = (groupId > 0) ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Get(ModuleId, groupId) : new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
+                        var gi = (groupId > 0) ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, groupId) : new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
 
                         var securityKey = string.Empty;
                         if (groupId == 0)

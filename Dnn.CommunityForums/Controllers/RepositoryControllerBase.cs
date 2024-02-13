@@ -40,10 +40,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Repo.Get(id);
         }
-        internal IEnumerable<T> Find(string sqlCondition, params object[] args)
-        {
-            return Repo.Get(id);
-        }
         internal T GetById<TProperty>(TProperty id)
         {
             return Repo.GetById(id);

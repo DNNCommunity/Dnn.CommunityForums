@@ -97,9 +97,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         
         [IgnoreColumn()]
         public string LastPostDisplayName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName;
-        
+
         [IgnoreColumn()]
-        public bool InheritSecurity => ForumSecurityKey == ForumGroup.GroupSecurityKey;
+        public bool InheritSecurity => this.PermissionsId == ForumGroup.PermissionsId;
         
         [IgnoreColumn()]
         public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID);

@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			{
 				FilterId = Convert.ToInt32(Params["FilterId"]);
 			}
-            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Get(FilterId);
+            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId);
             string sOut = "{";
 			sOut += Utilities.JSON.Pair("FilterId", filter.FilterId.ToString());
 			sOut += ",";

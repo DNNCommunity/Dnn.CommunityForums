@@ -17,24 +17,33 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
+using System;
 using System.Collections;
+using System.Reflection;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.GetForumGroup()")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = GetForumGroup(moduleID, forumGroupID);
-            forumGroupInfo.GroupSettings = (Hashtable)DataCache.GetSettings(moduleID, forumGroupInfo.GroupSettingsKey, string.Format(CacheKeys.ForumGroupSettings, moduleID, forumGroupInfo.ForumGroupId), false);
-            return forumGroupInfo;
+            return GetForumGroup(moduleID, forumGroupID);
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetForumGroup(int moduleId, int forumGroupId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = GetById(forumGroupId);
-            if (forumGroupInfo != null)
+            var cachekey = string.Format(CacheKeys.ForumGroupInfo, moduleId, forumGroupId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            if (forumGroupInfo == null)
             {
-                forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
+                forumGroupInfo = GetById(forumGroupId); 
+                if (forumGroupInfo != null)
+                {
+                    forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
+                    forumGroupInfo.GroupSettings = (Hashtable)DataCache.GetSettings(moduleId, forumGroupInfo.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, moduleId, forumGroupInfo.GroupSettingsKey), true);
+                }
+                DataCache.SettingsCacheStore(moduleId, cachekey, forumGroupInfo);
             }
             return forumGroupInfo;
         }

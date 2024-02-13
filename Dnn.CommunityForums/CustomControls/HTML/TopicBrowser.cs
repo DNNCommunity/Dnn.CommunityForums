@@ -307,8 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				else if (ForumGroupId > 0)
 				{
-                    DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController grp = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = grp.Groups_Get(ModuleId, ForumGroupId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, ForumGroupId);
 					if (g != null)
 					{
 						groupPrefix = g.PrefixURL;
