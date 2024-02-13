@@ -42,11 +42,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public string ImagePath {get; set; }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public PermissionInfo Security {get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security {get; set; }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public int PermissionsId {get; set; }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public SecurityGrid(DotNetNuke.Entities.Portals.PortalSettings ps, bool isReadOnly, string imgPath, PermissionInfo sec, int permId)
+        public SecurityGrid(DotNetNuke.Entities.Portals.PortalSettings ps, bool isReadOnly, string imgPath, DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo sec, int permId)
 		{
 			PortalSettings = ps;
 			ReadOnly = isReadOnly;
@@ -74,15 +74,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				tmp += n.ToString() + ";";
 			}
-			List<PermissionInfo> pl = new List<PermissionInfo>();
+			List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
 			//litNewGrid.Text = "Roles:" & tmp
 
 			//litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
-			NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
+			NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(PortalId, tmp);
 			foreach (string key in nvc.AllKeys)
 			{
-				PermissionInfo pi = new PermissionInfo();
+                DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
 				pi.ObjectId = key;
 				pi.ObjectName = nvc[key];
 				pi.Type = ObjectType.RoleId;
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 						DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
 						if (u != null)
 						{
-							PermissionInfo pi = new PermissionInfo();
+							DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
 							pi.ObjectId = u.UserID.ToString();
 							pi.ObjectName = u.DisplayName;
 							pi.Type = ObjectType.UserId;
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			
 			string[,] grid = new string[pl.Count + 1, 28];
 			i = 0;
-			foreach (PermissionInfo pi in pl)
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi in pl)
 			{
 				grid[i, 0] = pi.ObjectId;
 				grid[i, 1] = pi.ObjectName;
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				for (int r = 3; r <= 27; r++)
 				{
 					keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-					bool bState = Convert.ToBoolean(grid[x, r]); //Permissions.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
+					bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
 					string sState = "<img src=\"" + ImagePath + "admin_stop.png\" alt=\"Disabled\" />";
 					if (bState)
 					{
@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			return sb.ToString();
 
 		}
-		private string GetSecureObjectList(PermissionInfo s, int objectType)
+		private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
 		{
 			string roleObjects = string.Empty;
 
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			else
 			{
-				return Permissions.HasAccess(permSet.Split('|')[objectType], objectId + ";");
+				return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(permSet.Split('|')[objectType], objectId + ";");
 			}
 
 		}

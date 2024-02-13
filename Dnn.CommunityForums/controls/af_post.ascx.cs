@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool _isApproved;
         public string PreviewText = string.Empty;
         private bool _isEdit;
-        private Forum _fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _fi;
         private UserProfileInfo _ui = new UserProfileInfo();
         private string _themePath = string.Empty;
         private bool _userIsTrusted;
@@ -83,14 +83,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             _fi = ForumInfo;
             _authorId = UserId;
-            _canModEdit = Permissions.HasPerm(_fi.Security.ModEdit, ForumUser.UserRoles);
-            _canModApprove = Permissions.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles);
-            _canEdit = Permissions.HasPerm(_fi.Security.Edit, ForumUser.UserRoles);
-            _canAttach = Permissions.HasPerm(_fi.Security.Attach, ForumUser.UserRoles);
-            _canTrust = Permissions.HasPerm(_fi.Security.Trust, ForumUser.UserRoles);
-            _canLock = Permissions.HasPerm(_fi.Security.Lock, ForumUser.UserRoles);
-            _canPin = Permissions.HasPerm(_fi.Security.Pin, ForumUser.UserRoles);
-            _canAnnounce = Permissions.HasPerm(_fi.Security.Announce, ForumUser.UserRoles);
+            _canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.ModEdit, ForumUser.UserRoles);
+            _canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles);
+            _canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Edit, ForumUser.UserRoles);
+            _canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Attach, ForumUser.UserRoles);
+            _canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Trust, ForumUser.UserRoles);
+            _canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Lock, ForumUser.UserRoles);
+            _canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Pin, ForumUser.UserRoles);
+            _canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Announce, ForumUser.UserRoles);
 
             if (_fi == null)
                 Response.Redirect(NavigateUrl(TabId));
@@ -787,7 +787,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
                 DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumModuleId, TopicId);
                 var tagForm = string.Empty;
@@ -805,7 +805,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
                 if (Request.Form["amaf-catselect"] != null)
                 {
@@ -854,7 +854,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
 
                 if (bSend && !_isEdit)
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, 0, ti.Content.AuthorId);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, 0, ti.Content.AuthorId);
 
                 if (ti.IsApproved == false)
                 {
@@ -1020,7 +1020,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (bSend && !_isEdit)
                 {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, tmpReplyId, ri.Content.AuthorId);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
                 if (ri.IsApproved == false)
                 {

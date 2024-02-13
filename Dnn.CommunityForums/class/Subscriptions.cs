@@ -56,10 +56,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 UserRoles = uu.UserRoles;
             }
 
-            var fc = new ForumController();
-            Forum fi = fc.Forums_Get(PortalId, ModuleId, ForumId, false, -1);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, -1);
 
-            if (Permissions.HasPerm(fi.Security.Subscribe, UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, UserRoles))
             {
                 return Convert.ToInt32(DataProvider.Instance().Subscription_Update(PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
             }
@@ -87,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!(sl.Contains(si)))
                     {
-                        if (Permissions.HasPerm(CanSubscribe, si.UserId, PortalId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(CanSubscribe, si.UserId, PortalId))
                         {
                             sl.Add(si);
                         }
@@ -107,17 +106,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
-            var fc = new ForumController();
-            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
-            SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            SendSubscriptions(PortalId, ModuleId, TabId, fi.ForumID, TopicId, ReplyId, AuthorId);
         }
 
-        public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, Forum fi, int TopicId, int ReplyId, int AuthorId)
+        public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
         {
             SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
         }
 
-        public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, Forum fi, int TopicId, int ReplyId, int AuthorId)
+        public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
         {
             var sc = new SubscriptionController();
             List<SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);

@@ -111,19 +111,18 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 			Data.ForumsDB fdb = new Data.ForumsDB();
-			ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
-			ForumCollection filteredForums = new ForumCollection();
-			foreach (Forum f in allForums)
+			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection filteredForums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in allForums)
 			{
 				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
 				{
-					f.TabId = TabId;
 					f.SubForums = GetSubForums(allForums, f.ForumID);
 					filteredForums.Add(f);
 				}
 			}
 			int tmpGroupId = -1;
-			foreach (Forum f in filteredForums)
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
 			{
 				if (! (tmpGroupId == f.ForumGroupId))
 				{
@@ -133,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				drpForums.Items.Add(new ListItem(" - " + f.ForumName, "FORUM" + f.ForumID.ToString()));
 				if (f.SubForums != null && f.SubForums.Count > 0)
 				{
-					foreach (Forum ff in f.SubForums)
+					foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ff in f.SubForums)
 					{
 						drpForums.Items.Add(new ListItem(" ---- " + ff.ForumName, "FORUM" + ff.ForumID.ToString()));
 					}
@@ -164,18 +163,17 @@ namespace DotNetNuke.Modules.ActiveForums
             //e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
             e.Item[6] = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
-        private ForumCollection GetSubForums(ForumCollection forums, int forumId)
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums, int forumId)
 		{
-			ForumCollection subforums = null;
-			foreach (Forum s in forums)
+			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection subforums = null;
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in forums)
 			{
 				if (s.ParentForumId == forumId)
 				{
 					if (subforums == null)
 					{
-						subforums = new ForumCollection();
+						subforums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 					}
-					s.TabId = TabId;
 					subforums.Add(s);
 				}
 			}

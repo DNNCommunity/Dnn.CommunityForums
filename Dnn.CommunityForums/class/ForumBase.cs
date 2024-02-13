@@ -31,22 +31,15 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Member Variables
 
         private int? _forumId;
-        private string _forumIds = string.Empty;
         private int? _forumGroupId;
-        private int _parentForumId = -1;
         private int? _postId;
         private int? _topicId; // = -1;
         private int? _replyId;
         private int? _quoteId;
         private int? _authorid;
         private bool? _jumpToLastPost;
-        private string _defaultView = Views.ForumView;
-        private int _defaultForumViewTemplateId = -1;
-        private int _defaultTopicsViewTemplateId = -1;
-        private int _defaultTopicViewTemplateId = -1;
         private string _templatePath = string.Empty;
-        private string _templateFile = string.Empty;
-        private Forum _foruminfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _foruminfo;
         private XmlDocument _forumData;
 
         private bool? _canRead;
@@ -81,66 +74,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public string ForumIds
-        {
-            get
-            {
-                return _forumIds;
-            }
-            set
-            {
-                _forumIds = value;
-            }
-        }
+        public string ForumIds { get; set; } = string.Empty;
 
-        public int DefaultForumViewTemplateId
-        {
-            get
-            {
-                return _defaultForumViewTemplateId;
-            }
-            set
-            {
-                _defaultForumViewTemplateId = value;
-            }
-        }
-        public int DefaultTopicsViewTemplateId
-        {
-            get
-            {
-                return _defaultTopicsViewTemplateId;
-            }
-            set
-            {
-                _defaultTopicsViewTemplateId = value;
-            }
-        }
+        public int DefaultForumViewTemplateId { get; set; } = -1;
+        public int DefaultTopicsViewTemplateId { get; set; } = -1;
 
-        public int DefaultTopicViewTemplateId
-        {
-            get
-            {
-                return _defaultTopicViewTemplateId;
-            }
-            set
-            {
-                _defaultTopicViewTemplateId = value;
-            }
-        }
+        public int DefaultTopicViewTemplateId { get; set; } = -1;
 
-        public string DefaultView
-        {
-            get
-            {
-
-                return _defaultView;
-            }
-            set
-            {
-
-                _defaultView = value;
-            }
-        }
+        public string DefaultView { get; set; } = Views.ForumView;
 
         public bool JumpToLastPost
         {
@@ -422,35 +363,15 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int ParentForumId
-        {
-            get
-            {
-                return _parentForumId;
-            }
-            set
-            {
-                _parentForumId = value;
-            }
-        }
+        public int ParentForumId { get; set; } = -1;
 
-        public string TemplateFile
-        {
-            get
-            {
-                return _templateFile;
-            }
-            set
-            {
-                _templateFile = value;
-            }
-        }
+        public string TemplateFile { get; set; } = string.Empty;
 
-        public Forum ForumInfo
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo
         {
             get 
             {
-                return _foruminfo ?? (_foruminfo = ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
+                return _foruminfo ?? (_foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
             }
             set
             {
@@ -493,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
                         _canCreate = true;
 
                     // If CreatePostCount is not set, no need to go further
@@ -523,7 +444,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
                         _canReply = true;
 
                     // If ReplyPostCount is not set, no need to go further
@@ -560,7 +481,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var secRoles = xNode.InnerText;
 
-            return Permissions.HasPerm(secRoles, ForumUser.UserRoles);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(secRoles, ForumUser.UserRoles);
         }
 
         protected string GetSharedResource(string key)

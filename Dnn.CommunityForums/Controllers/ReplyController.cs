@@ -17,35 +17,29 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
-
+using DotNetNuke.Data;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    public partial class ReplyController
+    {
+        IDataContext ctx;
+        IRepository<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo> repo;
 
-#region Content Info
-	public class Content
-	{
-#region Private Members
+        public ReplyController()
+        {
+            ctx = DataContext.Instance();
+            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>();
+        }
 
-	    #endregion
-#region Public Properties
-
-	    public int ContentId { get; set; }
-        public string Subject { get; set; }
-        public string Summary { get; set; }
-        public string Body { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
-        public int AuthorId { get; set; }
-        public string AuthorName { get; set; }
-        public bool IsDeleted { get; set; }
-        public string IPAddress { get; set; }
-
-	    #endregion
-
-	}
-#endregion
-
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo Get(int replyId)
+        {
+            var reply = repo.GetById(replyId);
+            return reply;
+        }
+    }
 }

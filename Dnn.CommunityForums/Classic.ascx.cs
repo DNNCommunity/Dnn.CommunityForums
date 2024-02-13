@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class Classic : ForumBase
     {
 
-        private Forum fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members
@@ -232,8 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (SocialGroupId > 0)
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
                     { 
@@ -246,8 +245,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).TabModuleSettings;
 
-                        fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
-                        ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
+                        ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
                     }
                 }
                 ctl.ForumIds = ForumIds;
@@ -268,8 +267,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
-                cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
-                cc.AdminRoles = Permissions.GetRoleIds(this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'), PortalId);
+                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, authorizedViewRoles.Split(';'));
+                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
                 cc.ProfileLink = ""; //GetProfileLink()
                 cc.MembersLink = ""; // GetMembersLink()
                 this.ControlConfig = cc;

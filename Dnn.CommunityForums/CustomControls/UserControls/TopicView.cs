@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             if (ForumInfo == null)
-                ForumInfo = new ForumController().Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
+                ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // first make sure we have read permissions, otherwise we need to redirect
-            _bRead = Permissions.HasPerm(_drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
+            _bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
 
             if (!_bRead)
             {
@@ -350,25 +350,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
 
-            //bCreate = Permissions.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
-            _bEdit = Permissions.HasPerm(_drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
-            _bDelete = Permissions.HasPerm(_drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
-            //bReply = Permissions.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
-            //bPoll = Permissions.HasPerm(_drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
-            _bAttach = Permissions.HasPerm(_drSecurity["CanAttach"].ToString(), ForumUser.UserRoles);
-            _bSubscribe = Permissions.HasPerm(_drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
-            // bModMove = Permissions.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bModSplit = Permissions.HasPerm(_drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
-            _bModDelete = Permissions.HasPerm(_drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
-            _bModApprove = Permissions.HasPerm(_drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
-            _bTrust = Permissions.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
-            _bModEdit = Permissions.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
-            _bModMove = Permissions.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bModPin = Permissions.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
-            _bModLock = Permissions.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
-            _bModUser = Permissions.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
+            //bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
+            _bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
+            _bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
+            //bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
+            //bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
+            _bAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanAttach"].ToString(), ForumUser.UserRoles);
+            _bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
+            // bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+            _bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
+            _bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
+            _bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+            _bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
+            _bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
+            _bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+            _bModPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
+            _bModLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
+            _bModUser = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
 
-            _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
+            _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
             _forumName = _drForum["ForumName"].ToString();
             _groupName = _drForum["GroupName"].ToString();
@@ -656,8 +656,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             topic = ParseTopic(topic);
 
-            if (!topic.Contains(Globals.ControlRegisterTag))
-                topic = Globals.ControlRegisterTag + topic;
+            if (!topic.Contains(Globals.ForumsControlsRegisterAMTag))
+                topic = Globals.ForumsControlsRegisterAMTag + topic;
 
             topic = Utilities.LocalizeControl(topic);
 

@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     {
         internal static bool IsAuthorized(int portalId, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
         {
-            Forum fi = new ForumController().GetForum(portalId, moduleId, forumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(portalId, moduleId, forumId);
             string roles;
             switch (permissionRequired)
             {
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 default:
                     return false;
             }
-            return (Permissions.HasPerm(roles, userInfo.UserID, portalId));
+            return (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo.UserID, portalId));
         }
     }
 }

@@ -17,25 +17,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
-using System.Web.Caching;
-namespace DotNetNuke.Modules.ActiveForums
-{
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.Like { }
-}
+using System.Web.Caching; 
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    [TableName("activeforums_Likes")]
-    [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("PostId")]
-    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    class Like
+    [TableName("activeforums_Content")]
+    [PrimaryKey("ContentId", AutoIncrement = true)]
+    [Scope("ModuleId")]
+    [Cacheable("activeforums_Content", CacheItemPriority.Low)] 
+    public class ContentInfo
     {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        public bool Checked { get; set; }
+        public int ContentId { get; set; }
+        public string Subject { get; set; }
+        public string Summary { get; set; }
+        public string Body { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public int AuthorId { get; set; }
+        public string AuthorName { get; set; }
+        public bool IsDeleted { get; set; }
+        public string IPAddress { get; set; }
+        public int ContentItemId { get; set; }
+        public int ModuleId { get; set; }
     }
 }

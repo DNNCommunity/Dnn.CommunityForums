@@ -59,8 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
             string body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
             body = body.Replace("[REASON]", comments);
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
+            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
             var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
             //Send now
@@ -91,8 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user)
         {
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(portalId: portalId, moduleId: moduleID, forumId: forumId, useCache: true);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalId, moduleId: moduleID, forumId: forumId, useCache: true);
             if (fi == null)
                 return;
 
@@ -129,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs);
             }
         }
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs)
+        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<SubscriptionInfo> subs)
         {
             PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             SettingsInfo mainSettings = SettingsBase.GetModuleSettings(moduleID);

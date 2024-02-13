@@ -215,11 +215,10 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);
-                ForumController fc = new ForumController();
-                Forum f = fc.Forums_Get(PortalId, -1, forumId, this.UserId, true, false, -1);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
                 if (f != null)
                 {
-                    if (Permissions.HasPerm(f.Security.ModEdit, ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles))
                     {
                         StringBuilder sb = new StringBuilder();
                         sb.Append("{");
@@ -375,9 +374,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);
-                ForumController fc = new ForumController();
-                Forum ForumInfo = fc.Forums_Get(PortalId, ModuleId, forumId, false, -1);
-                if (Permissions.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles))
+                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles))
                 {
                     string subject = Params["subject"].ToString();
                     subject = Utilities.XSSFilter(subject, true);

@@ -25,48 +25,8 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class TopicController
+    class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
-        readonly IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> repo;
-        internal TopicController()
-        {
-            ctx = DataContext.Instance();
-            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
-        }
-        internal List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> Get()
-        {
-            return repo.Get().ToList();
-        }
-        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Get(int topicId)
-        {
-            return repo.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
-        }
-        internal void Update(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
-        {
-            repo.Update(topicInfo);
-        }
-        internal void Insert(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
-        {
-            repo.Insert(topicInfo);
-        }
-        //internal static List<DotNetNuke.Modules.ActiveForums.PropertiesInfo> GetTopicProperties(Forum forum, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic)
-        //{
-        //    List<DotNetNuke.Modules.ActiveForums.PropertiesInfo> tp =
-        //        new List<DotNetNuke.Modules.ActiveForums.PropertiesInfo>();
-
-        //    foreach (PropertiesInfo p in forum.Properties)
-        //    {
-        //        foreach (PropertiesInfo topicProperty in topic.TopicProperties)
-        //        {
-        //            if (topicProperty.PropertyId == p.PropertyId)
-        //            {
-        //                p.DefaultValue = topicProperty.DefaultValue;
-        //            }
-        //        }
-        //        tp.Add((p));
-        //    }
-        //    return tp;
-        //}
+        internal TopicController() : base() {}
     }
 }

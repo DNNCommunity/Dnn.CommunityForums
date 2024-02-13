@@ -30,11 +30,11 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         internal static string InjectCollapsibleOpened(string target, string title)
         {
-            return $"<span class=\"dcf-collapsible dcf-collapsible-opened\" id=\"dcf-collapsible-{target}\" onclick=\"dcf_collapsible_toggle('{target}');\"><i class=\"fa fa-chevron-circle-down\" title=\"{title}\"></i></span>";
+            return $"<span class=\"dcf-collapsible dcf-collapsible-opened\" id=\"dcf-collapsible-{target}\" onclick=\"dcf_collapsible_toggle('{target}');\"><i class=\"fa fa-chevron-down\" title=\"{title}\"></i></span>";
         }
         internal static string InjectCollapsibleClosed(string target, string title)
         {
-            return $"<span class=\"dcf-collapsible dcf-collapsible-closed\" id=\"dcf-collapsible-{target}\" onclick=\"dcf_collapsible_toggle('{target}');\"><i class=\"fa fa-chevron-circle-left\" title=\"{title}\"></i></span>";
+            return $"<span class=\"dcf-collapsible dcf-collapsible-closed\" id=\"dcf-collapsible-{target}\" onclick=\"dcf_collapsible_toggle('{target}');\"><i class=\"fa fa-chevron-left\" title=\"{title}\"></i></span>";
         }
     }
 }

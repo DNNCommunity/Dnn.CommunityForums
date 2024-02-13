@@ -35,52 +35,41 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		public int Forum_GetByTopicId(int TopicId)
 		{
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "ForumGetByTopicId", TopicId));
-		}
-		public IDataReader Forums_GetForSocialGroup(int PortalId, int SocialGroupId)
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForSocialGroup()")]
+        public IDataReader Forums_GetForSocialGroup(int PortalId, int SocialGroupId)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "GetForumsForSocialGroup", SocialGroupId);
 		}
-		//Public Function Forums_List(ByVal PortalId As Integer, ByVal ModuleId As Integer) As IDataReader
-		//    Return SqlHelper.ExecuteReader(_connectionString, dbPrefix & "Forums_GetPermissions", PortalId, ModuleId)
-		//End Function
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetById()")]
 		public IDataReader Forums_Get(int PortalId, int ModuleId, int ForumId)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "ForumGet", PortalId, ModuleId, ForumId);
-		}
-		public IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Get()")]
+        public IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
 		{
 			return (IDataReader)(SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost));
 		}
-		public ForumCollection Forums_List(int PortalId, int ModuleId)
+		public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums_List(int PortalId, int ModuleId)
 		{
-			ForumCollection f = new ForumCollection();
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection f = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 			object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.ForumList, ModuleId));
 			if (obj != null)
 			{
-				f = (ForumCollection)obj;
+				f = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)obj;
 			}
 			else
 			{
 				using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "ForumsList", PortalId, ModuleId))
 				{
 
-					Forum fi = null;
-					ForumGroupInfo gi = null;
+					DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = null;
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = null;
 					while (dr.Read())
 					{
-						fi = new Forum();
-						gi = new ForumGroupInfo();
-						fi.ModuleId = int.Parse(dr["ModuleId"].ToString());
-						fi.ForumID = Convert.ToInt32(dr["ForumId"].ToString());
-						fi.Active = bool.Parse(dr["Active"].ToString());
-						fi.ForumDesc = dr["ForumDesc"].ToString();
-						fi.ForumGroupId = int.Parse(dr["ForumGroupId"].ToString());
-						fi.ForumID = int.Parse(dr["ForumId"].ToString());
-						fi.ForumName = dr["ForumName"].ToString();
-						fi.GroupName = dr["GroupName"].ToString();
-						fi.Hidden = bool.Parse(dr["Hidden"].ToString());
-						fi.ParentForumId = Convert.ToInt32(dr["ParentForumId"].ToString());
-					    DateTime postTime;
+						fi = FillForum(dr);
+						DateTime postTime;
 						if (! (DateTime.TryParse(dr["LastPostDate"].ToString(), out postTime)))
 						{
 							fi.LastPostDateTime = new DateTime();
@@ -93,42 +82,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.LastTopicId = int.Parse(dr["LastTopicId"].ToString());
 						fi.LastReplyId = int.Parse(dr["LastReplyId"].ToString());
 						fi.LastPostSubject = dr["LastPostSubject"].ToString();
-						fi.LastPostDisplayName = dr["LastPostAuthorName"].ToString();
 						fi.LastPostUserID = int.Parse(dr["LastPostAuthorId"].ToString());
 						fi.LastPostUserName = fi.LastPostDisplayName;
 						fi.LastRead = DateTime.Parse(dr["LastRead"].ToString());
-						gi.Active = bool.Parse(dr["GroupActive"].ToString());
-						gi.Hidden = bool.Parse(dr["GroupHidden"].ToString());
-						gi.GroupName = fi.GroupName;
-						gi.ForumGroupId = fi.ForumGroupId;
-						gi.PrefixURL = dr["GroupPrefixURL"].ToString();
-							//gi.SEO = dr("GroupSEO").ToString
-						fi.ForumGroup = gi;
-						fi.Security.Announce = dr["CanAnnounce"].ToString();
-						fi.Security.Attach = dr["CanAttach"].ToString();
-						fi.Security.Create = dr["CanCreate"].ToString();
-						fi.Security.Delete = dr["CanDelete"].ToString();
-						fi.Security.Edit = dr["CanEdit"].ToString();
-						fi.Security.Lock = dr["CanLock"].ToString();
-						fi.Security.ModApprove = dr["CanModApprove"].ToString();
-						fi.Security.ModDelete = dr["CanModDelete"].ToString();
-						fi.Security.ModEdit = dr["CanModEdit"].ToString();
-						fi.Security.ModLock = dr["CanModLock"].ToString();
-						fi.Security.ModMove = dr["CanModMove"].ToString();
-						fi.Security.ModPin = dr["CanModPin"].ToString();
-						fi.Security.ModSplit = dr["CanModSplit"].ToString();
-						fi.Security.ModUser = dr["CanModUser"].ToString();
-						fi.Security.Pin = dr["CanPin"].ToString();
-						fi.Security.Poll = dr["CanPoll"].ToString();
-						fi.Security.Block = dr["CanBlock"].ToString();
-						fi.Security.Read = dr["CanRead"].ToString();
-						fi.Security.Reply = dr["CanReply"].ToString();
-						fi.Security.Subscribe = dr["CanSubscribe"].ToString();
-						fi.Security.Trust = dr["CanTrust"].ToString();
-						fi.Security.View = dr["CanView"].ToString();
-						fi.ForumSettings = LoadSettings(dr);
-						fi.PrefixURL = dr["PrefixURL"].ToString();
-							//.SEO = dr("ForumSEO").ToString
+
+						ForumGroup.Active = bool.Parse(dr["GroupActive"].ToString());
+						ForumGroup.Hidden = bool.Parse(dr["GroupHidden"].ToString());
+
+						fi.ForumSettings = LoadSettings(dr); 
 						fi.TotalTopics = int.Parse(dr["TotalTopics"].ToString());
 						fi.TotalReplies = int.Parse(dr["TotalReplies"].ToString());
 						f.Add(fi);
@@ -136,12 +97,71 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 					dr.Close();
 				}
 
-				DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.ForumList, ModuleId), f);
-			}
-			return f;
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumList, ModuleId), f);
+            }
+            return f;
 
 		}
-		private Hashtable LoadSettings(IDataRecord dr)
+
+        internal static Forum FillForum(IDataRecord dr)
+        {
+            var fi = new Forum
+            {
+                ForumGroup = new ForumGroupInfo(),
+                ForumID = Convert.ToInt32(dr["ForumId"].ToString()),
+                Active = Convert.ToBoolean(dr["Active"]),
+                ModuleId = Convert.ToInt32(dr["ModuleId"].ToString()),
+                ForumGroupId = Convert.ToInt32(dr["ForumGroupId"].ToString()),
+                ParentForumId = Convert.ToInt32(dr["ParentForumId"].ToString()),
+                ForumName = dr["ForumName"].ToString(),
+                ForumDesc = dr["ForumDesc"].ToString(),
+                SortOrder = Convert.ToInt32(dr["SortOrder"].ToString()),
+                Hidden = Convert.ToBoolean(dr["Hidden"]),
+                TotalTopics = Convert.ToInt32(dr["TotalTopics"].ToString()),
+                TotalReplies = Convert.ToInt32(dr["TotalReplies"].ToString()),
+                LastTopicId = Convert.ToInt32(dr["LastTopicId"].ToString()),
+                LastReplyId = Convert.ToInt32(dr["LastReplyId"].ToString()),
+                GroupName = dr["GroupName"].ToString(),
+                PermissionsId = Convert.ToInt32(dr["PermissionsId"].ToString()),
+                ForumSettingsKey = dr["ForumSettingsKey"].ToString(),
+                InheritSecurity = Convert.ToBoolean(dr["InheritSecurity"]),
+                PrefixURL = dr["PrefixURL"].ToString(),
+                SocialGroupId = Convert.ToInt32(dr["SocialGroupId"].ToString()),
+                HasProperties = Convert.ToBoolean(dr["HasProperties"])
+            };
+
+            fi.ForumGroup.ForumGroupId = fi.ForumGroupId;
+            fi.ForumGroup.GroupName = fi.GroupName;
+            fi.ForumGroup.PrefixURL = dr["GroupPrefixURL"].ToString();
+            fi.Security.Announce = dr["CanAnnounce"].ToString();
+            fi.Security.Attach = dr["CanAttach"].ToString();
+            fi.Security.Create = dr["CanCreate"].ToString();
+            fi.Security.Delete = dr["CanDelete"].ToString();
+            fi.Security.Edit = dr["CanEdit"].ToString();
+            fi.Security.Lock = dr["CanLock"].ToString();
+            fi.Security.ModApprove = dr["CanModApprove"].ToString();
+            fi.Security.ModDelete = dr["CanModDelete"].ToString();
+            fi.Security.ModEdit = dr["CanModEdit"].ToString();
+            fi.Security.ModLock = dr["CanModLock"].ToString();
+            fi.Security.ModMove = dr["CanModMove"].ToString();
+            fi.Security.ModPin = dr["CanModPin"].ToString();
+            fi.Security.ModSplit = dr["CanModSplit"].ToString();
+            fi.Security.ModUser = dr["CanModUser"].ToString();
+            fi.Security.Pin = dr["CanPin"].ToString();
+            fi.Security.Poll = dr["CanPoll"].ToString();
+            fi.Security.Block = dr["CanBlock"].ToString();
+            fi.Security.Read = dr["CanRead"].ToString();
+            fi.Security.Reply = dr["CanReply"].ToString();
+            fi.Security.Subscribe = dr["CanSubscribe"].ToString();
+            fi.Security.Trust = dr["CanTrust"].ToString();
+            fi.Security.View = dr["CanView"].ToString();
+            fi.Security.Tag = dr["CanTag"].ToString();
+            fi.Security.Prioritize = dr["CanPrioritize"].ToString();
+            fi.Security.Categorize = dr["CanCategorize"].ToString();
+
+            return fi;
+        }
+        private Hashtable LoadSettings(IDataRecord dr)
 		{
 			Hashtable ht = new Hashtable();
             string snames = "ALLOWATTACH,ALLOWEMOTICONS,ALLOWHTML,ALLOWPOSTICON,ALLOWRSS,ALLOWSCRIPT,ALLOWTAGS,ATTACHCOUNT,ATTACHMAXHEIGHT,ATTACHMAXSIZE,ATTACHMAXWIDTH,ATTACHSTORE,ATTACHTYPEALLOWED,ATTACHUNIQUEFILENAMES,AUTOSUBSCRIBEENABLED,AUTOSUBSCRIBENEWTOPICSONLY,AUTOSUBSCRIBEROLES,ATTACHINSERTALLOWED,MAXATTACHWIDTH,MAXATTACHHEIGHT,CONVERTINGTOJPEGALLOWED,AUTOTRUSTLEVEL,DEFAULTTRUSTLEVEL,EDITORHEIGHT,EDITORPERMITTEDUSERS,EDITORSTYLE,EDITORTOOLBAR,EDITORTYPE,EDITORWIDTH,EMAILADDRESS,INDEXCONTENT,ISMODERATED,MCADDRESS,MCADMINNOTIFY,MCAUTOCREATEUSERS,MCAUTORESPONSE,MCENABLED,MCEOMTAG,MCEOMTAGREQ,MCMODTYPE,MCPOPPASSWORD,MCPOPSERVER,MCPOPUSERNAME,MCREJECTNOTIFY,MCRESTRICTALIAS,MCSTRIPHTML,MCSUBNOTIFY,MCURL,MODAPPROVETEMPLATEID,MODDELETETEMPLATEID,MODMOVETEMPLATEID,MODNOTIFYTEMPLATEID,MODREJECTTEMPLATEID,PROFILETEMPLATEID,QUICKREPLYFORMID,REPLYFORMID,TOPICFORMID,TOPICSTEMPLATEID,TOPICTEMPLATEID,USEFILTER";
@@ -162,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			if (obj == null)
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
-				ForumCollection fc = db.Forums_List(PortalId, ModuleId);
+				DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = db.Forums_List(PortalId, ModuleId);
 				//Dim ds As DataSet = SqlHelper.ExecuteDataset(connectionString, databaseOwner & objectQualifier & "activeforums_UI_ForumDisplay", PortalId, ModuleId, UserId, -1, ForumIds)
 				System.Text.StringBuilder sb = new System.Text.StringBuilder();
 				sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
@@ -172,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				int groupId = -1;
 				System.Text.StringBuilder groups = new System.Text.StringBuilder();
 				System.Text.StringBuilder forums = new System.Text.StringBuilder();
-				foreach (Forum f in fc)
+				foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
 				{
 					if (groupId != f.ForumGroupId)
 					{
@@ -191,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				sb.Append(groups.ToString());
 				sb.Append("</groups>");
 				sb.AppendLine();
-				foreach (Forum f in fc)
+				foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
 				{
 					forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
 					//forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")

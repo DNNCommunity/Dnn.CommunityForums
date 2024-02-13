@@ -91,8 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
             User u = LoadUser(cu);
 
             u = FillProfile(PortalId, ModuleId, u);
-            ForumController fc = new ForumController();
-            string fs = fc.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
             if (!(string.IsNullOrEmpty(fs)))
             {
                 u.Profile.IsMod = true;
@@ -121,8 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (u != null)
             {
                 u = FillProfile(PortalId, ModuleId, u);
-                ForumController fc = new ForumController();
-                string fs = fc.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
+                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
                 if (!(string.IsNullOrEmpty(fs)))
                 {
                     u.Profile.IsMod = true;
@@ -140,8 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (u != null)
             {
                 u = FillProfile(PortalId, ModuleId, u);
-                ForumController fc = new ForumController();
-                string fs = fc.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
+                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
                 if (!(string.IsNullOrEmpty(fs)) || u.IsSuperUser || u.IsAdmin)
                 {
                     u.Profile.IsMod = true;

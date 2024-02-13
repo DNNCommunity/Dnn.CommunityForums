@@ -421,7 +421,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Filter out any forums the user can't read
             var visibleRows = from rows in dt.AsEnumerable()
-                                where Permissions.HasPerm(rows.Field<string>("CanRead"), ForumUser.UserRoles)
+                                where DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(rows.Field<string>("CanRead"), ForumUser.UserRoles)
                                 select rows;
 
             // The JQuery plugin convert the group option elements to optgroup elements

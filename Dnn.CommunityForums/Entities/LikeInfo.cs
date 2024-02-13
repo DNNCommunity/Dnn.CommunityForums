@@ -17,96 +17,21 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+ 
+using DotNetNuke.ComponentModel.DataAnnotations; 
+using System.Web.Caching;
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-	public class ForumCollection : CollectionBase, ICollection, IList
-	{
-
-
-		private Forum _Item;
-
-		public void CopyTo(System.Array array, int index)
-		{
-			List.CopyTo(array, index);
-		}
-
-		public bool IsSynchronized
-		{
-			get
-			{
-				return List.IsSynchronized;
-			}
-		}
-
-		public object SyncRoot
-		{
-			get
-			{
-				return List.SyncRoot;
-			}
-		}
-
-
-		public int Add(Forum value)
-		{
-			return List.Add(value);
-		}
-
-
-		public bool Contains(Forum value)
-		{
-			return List.Contains(value);
-		}
-
-		public int IndexOf(Forum value)
-		{
-			return List.IndexOf(value);
-		}
-
-		public void Insert(int index, Forum value)
-		{
-			List.Insert(index, value);
-		}
-
-		public bool IsFixedSize
-		{
-			get
-			{
-				return List.IsFixedSize;
-			}
-		}
-
-		public bool IsReadOnly
-		{
-			get
-			{
-				return List.IsReadOnly;
-			}
-		}
-
-		public Forum this[int index]
-		{
-			get
-			{
-				return _Item;
-			}
-			set
-			{
-				_Item = value;
-			}
-		}
-
-		public void Remove(object value)
-		{
-			List.Remove(value);
-		}
-
-
-	}
+    [TableName("activeforums_Likes")]
+    [PrimaryKey("Id", AutoIncrement = true)]
+    [Scope("PostId")]
+    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
+    internal partial class LikeInfo
+    {
+        public int Id { get; set; }
+        public int PostId { get; set; }
+        public int UserId { get; set; }
+        public bool Checked { get; set; }
+    }
 }
-
