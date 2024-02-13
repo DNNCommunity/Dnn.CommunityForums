@@ -1,16 +1,4 @@
-IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Security') AND name = N'idx_{objectQualifier}activeforums_Security_Opt1')
-DROP INDEX [idx_{objectQualifier}activeforums_Security_Opt1]
-    ON {databaseOwner}[{objectQualifier}activeforums_Security];	
-GO
-
-ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Security] ALTER COLUMN [SecurityKey] VARCHAR (50) NULL;
-GO 
-
-GO
-CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Security_Opt1]
-    ON [dbo].[activeforums_Security]([SecurityKey] ASC, [ObjectId] ASC, [ObjectType] ASC)
-    INCLUDE([View], [Read], [Create], [Reply], [Edit], [Delete], [Lock], [Pin], [Attach], [Poll], [Block], [Trust], [Subscribe], [Announce], [ModApprove], [ModMove], [ModSplit], [ModDelete], [ModUser], [ModEdit], [ModLock], [ModPin]);
-GO 
+/* issue 536 begin - dbtype alignment */
 
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Settings') AND name = N'idx_{objectQualifier}activeforums_Settings_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Settings_Opt1]
@@ -37,8 +25,6 @@ ON {databaseOwner}[{objectQualifier}activeforums_Settings]
 ) 
 GO
 
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}vw_activeforums_Security]';
-GO
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]';
 GO
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]';
@@ -46,18 +32,6 @@ GO
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]';
 GO
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]';
-GO
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Security_Delete]';
-GO
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Security_Get]';
-GO
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Security_GetByKey]';
-GO
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Security_GetByUser]';
-GO
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Security_Save]';
-GO
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_Get]';
 GO
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]';
 GO
@@ -97,3 +71,5 @@ EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_URL_
 GO
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_ForumsList]';
 GO
+
+/* issue 536 end - dbtype alignment */

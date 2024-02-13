@@ -51,7 +51,7 @@
 				</table>
 				<table width="100%" cellspacing="0" cellpadding="4">	
 					<tr>
-						<td align="right" colspan="4"><div id="divSubscribe" runat="server"></td>
+						<td align="right" colspan="4"><div id="divSubscribe" runat="server" /></td>
 					</tr>
 				</table>
 				<table width="100%" cellspacing="0" cellpadding="4">	
