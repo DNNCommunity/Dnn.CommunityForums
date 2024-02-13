@@ -35,41 +35,41 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		public int Forum_GetByTopicId(int TopicId)
 		{
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "ForumGetByTopicId", TopicId));
-		}
-		public IDataReader Forums_GetForSocialGroup(int PortalId, int SocialGroupId)
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForSocialGroup()")]
+        public IDataReader Forums_GetForSocialGroup(int PortalId, int SocialGroupId)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "GetForumsForSocialGroup", SocialGroupId);
 		}
-		//Public Function Forums_List(ByVal PortalId As Integer, ByVal ModuleId As Integer) As IDataReader
-		//    Return SqlHelper.ExecuteReader(_connectionString, dbPrefix & "Forums_GetPermissions", PortalId, ModuleId)
-		//End Function
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetById()")]
 		public IDataReader Forums_Get(int PortalId, int ModuleId, int ForumId)
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "ForumGet", PortalId, ModuleId, ForumId);
-		}
-		public IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Get()")]
+        public IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
 		{
 			return (IDataReader)(SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost));
 		}
-		public ForumCollection Forums_List(int PortalId, int ModuleId)
+		public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums_List(int PortalId, int ModuleId)
 		{
-			ForumCollection f = new ForumCollection();
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection f = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 			object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.ForumList, ModuleId));
 			if (obj != null)
 			{
-				f = (ForumCollection)obj;
+				f = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)obj;
 			}
 			else
 			{
 				using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "ForumsList", PortalId, ModuleId))
 				{
 
-					ForumInfo fi = null;
-					ForumGroupInfo gi = null;
+					DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = null;
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = null;
 					while (dr.Read())
 					{
-						fi = new ForumInfo();
-						gi = new ForumGroupInfo();
+						fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
+						gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
 						fi.ModuleId = int.Parse(dr["ModuleId"].ToString());
 						fi.ForumID = Convert.ToInt32(dr["ForumId"].ToString());
 						fi.Active = bool.Parse(dr["Active"].ToString());
@@ -77,7 +77,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.ForumGroupId = int.Parse(dr["ForumGroupId"].ToString());
 						fi.ForumID = int.Parse(dr["ForumId"].ToString());
 						fi.ForumName = dr["ForumName"].ToString();
-						fi.GroupName = dr["GroupName"].ToString();
 						fi.Hidden = bool.Parse(dr["Hidden"].ToString());
 						fi.ParentForumId = Convert.ToInt32(dr["ParentForumId"].ToString());
 					    DateTime postTime;
@@ -93,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.LastTopicId = int.Parse(dr["LastTopicId"].ToString());
 						fi.LastReplyId = int.Parse(dr["LastReplyId"].ToString());
 						fi.LastPostSubject = dr["LastPostSubject"].ToString();
-						fi.LastPostDisplayName = dr["LastPostAuthorName"].ToString();
 						fi.LastPostUserID = int.Parse(dr["LastPostAuthorId"].ToString());
 						fi.LastPostUserName = fi.LastPostDisplayName;
 						fi.LastRead = DateTime.Parse(dr["LastRead"].ToString());
@@ -165,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			if (obj == null)
 			{
 				Data.ForumsDB db = new Data.ForumsDB();
-				ForumCollection fc = db.Forums_List(PortalId, ModuleId);
+				DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = db.Forums_List(PortalId, ModuleId);
 				//Dim ds As DataSet = SqlHelper.ExecuteDataset(connectionString, databaseOwner & objectQualifier & "activeforums_UI_ForumDisplay", PortalId, ModuleId, UserId, -1, ForumIds)
 				System.Text.StringBuilder sb = new System.Text.StringBuilder();
 				sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
@@ -175,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				int groupId = -1;
 				System.Text.StringBuilder groups = new System.Text.StringBuilder();
 				System.Text.StringBuilder forums = new System.Text.StringBuilder();
-				foreach (ForumInfo f in fc)
+				foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
 				{
 					if (groupId != f.ForumGroupId)
 					{
@@ -194,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				sb.Append(groups.ToString());
 				sb.Append("</groups>");
 				sb.AppendLine();
-				foreach (ForumInfo f in fc)
+				foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
 				{
 					forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
 					//forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")

@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool _isApproved;
         public string PreviewText = string.Empty;
         private bool _isEdit;
-        private ForumInfo _fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _fi;
         private UserProfileInfo _ui = new UserProfileInfo();
         private string _themePath = string.Empty;
         private bool _userIsTrusted;
@@ -854,7 +854,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
 
                 if (bSend && !_isEdit)
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, 0, ti.Content.AuthorId);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, 0, ti.Content.AuthorId);
 
                 if (ti.IsApproved == false)
                 {
@@ -1020,7 +1020,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (bSend && !_isEdit)
                 {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, tmpReplyId, ri.Content.AuthorId);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
                 if (ri.IsApproved == false)
                 {

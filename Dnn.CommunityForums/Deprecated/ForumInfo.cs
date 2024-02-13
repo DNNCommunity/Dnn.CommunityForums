@@ -30,15 +30,30 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     public partial class ForumInfo
     {
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use LastPostSubject.")]
+        [IgnoreColumn()]
+        public string TopicSubject { get { return LastPostSubject; } set { LastPostSubject = value; } }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use LastTopicId.")]
+        [IgnoreColumn()]
+        public int TopicId { get { return LastTopicId; } set { LastTopicId = value; } }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use LastTopicUrl.")]
+        [IgnoreColumn()]
+        public string TopicUrl { get { return LastTopicUrl; } set { LastTopicUrl = value; } }
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int LastPostLastPostID { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int LastPostParentPostID { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int CustomFieldType { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
         [IgnoreColumn()]
         public int AttachMaxHeight
@@ -64,4 +79,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
         }
     }
+}
+namespace DotNetNuke.Modules.ActiveForums
+{
+    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo.")]
+    public partial class ForumInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumInfo { }
+   
 }

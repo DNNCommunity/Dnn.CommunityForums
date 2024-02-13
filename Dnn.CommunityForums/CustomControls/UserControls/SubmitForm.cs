@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public ImageButton PostButton { get; set; } = new ImageButton();
         public ImageButton CancelButton { get; set; } = new ImageButton();
         public EditorTypes EditorType { get; set; }
-        public ForumInfo ForumInfo { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo { get; set; }
         public string TopicIcon
         {
             get => string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;

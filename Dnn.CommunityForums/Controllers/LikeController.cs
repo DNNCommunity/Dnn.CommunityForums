@@ -17,38 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-namespace DotNetNuke.Modules.ActiveForums
-{
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
-    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
-    {
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.GetForPost()")]
-        public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId)
-        {
-            IDataContext ctx = DataContext.Instance();
-            IRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>();
-            List<DotNetNuke.Modules.ActiveForums.Likes> likes = new List<DotNetNuke.Modules.ActiveForums.Likes>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like in base.GetForPost(postId))
-            {
-                likes.Add((DotNetNuke.Modules.ActiveForums.Likes)like);
-            }
-            return likes; 
-        }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Like()")]
-        public new void Like(int contentId, int userId)
-        {
-            base.Like(contentId, userId);
-        }
-    }
-}
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
+    internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
         public LikeController() : base()
         {
@@ -82,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             else
             {
-                like = new Entities.LikeInfo();
+                like = new DotNetNuke.Modules.ActiveForums.Entities.LikeInfo();
                 like.PostId = contentId;
                 like.UserId = userId;
                 like.Checked = true;

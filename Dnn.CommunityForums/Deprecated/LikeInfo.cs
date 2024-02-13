@@ -16,24 +16,11 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
-
+// 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-namespace DotNetNuke.Modules.ActiveForums.Data
-{
-	public class Groups : DataConfig
-	{
-		//Public Function Forums_List(ByVal PortalId As Integer, ByVal ModuleId As Integer) As IDataReader
-		//    Return SqlHelper.ExecuteReader(_connectionString, dbPrefix & "Forums_GetPermissions", PortalId, ModuleId)
-		//End Function
-		public IDataReader Groups_Get(int ModuleId, int ForumGroupId)
-		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Groups_Get", ModuleId, ForumGroupId);
-		}
-	}
-}
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums
+{ 
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
+    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
+} 
