@@ -388,8 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    ForumController fc = new ForumController();
-                    string fs = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanEdit");
+                    string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanEdit");
                     if (!(string.IsNullOrEmpty(fs)))
                     {
                         bModEdit = true;

@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:ForumLoader runat=server></{0}:ForumLoader>")]
     public class ForumLoader : ForumBase
     {
-        private ForumInfo fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -56,8 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (ForumId > 0 && ForumModuleId == -1)
                 {
-                    ForumController fc = new ForumController();
-                    fi = fc.Forums_Get(PortalId, ForumModuleId, ForumId, true);
+                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true);
                     ForumModuleId = fi.ModuleId;
                 }
                 if (ForumModuleId > 0)

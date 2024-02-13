@@ -140,8 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Make sure that we can find the forum and that attachments are allowed
-                var fc = new ForumController();
-                var forum = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, true, -1);
+                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, true, -1);
 
                 if (forum == null || !forum.AllowAttach)
                 {
@@ -381,10 +380,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var portalSettings = PortalSettings;
             var userInfo = portalSettings.UserInfo;
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
-            var fc = new ForumController();
-            var forumIds = fc.GetForumsForUser(forumUser.UserRoles, portalSettings.PortalId, ActiveModule.ModuleID, "CanView", true);
-
-            DataTable ForumTable = fc.GetForumView(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID, userInfo.IsSuperUser, forumIds);
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, portalSettings.PortalId, ActiveModule.ModuleID, "CanView", true);
+            DataTable ForumTable = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID, userInfo.IsSuperUser, forumIds);
 
             Dictionary<string, string> rows = new Dictionary<string, string>();;
             foreach (DataRow dr in ForumTable.Rows)
@@ -412,10 +409,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var userInfo = portalSettings.UserInfo;
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
 
-            var fc = new ForumController();
-
-            var forum_out = fc.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
-            var forum_in = fc.GetForum(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId);
+            var forum_out = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
+            var forum_in = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId);
             if (forum_out != null && forum_in != null)
             {
                 var perm = false;
@@ -443,8 +438,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         var replies = dto.Replies.Split('|');
                         var rc = new DotNetNuke.Modules.ActiveForums.DAL2.ReplyController();
                         var firstReply = rc.Get(Convert.ToInt32(replies[0]));
-                        var cc = new ContentController();
-                        var firstContent = cc.Get(firstReply.ContentId);
+                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
                         topicId = tc.Topic_QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
                         tc.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
                     }
