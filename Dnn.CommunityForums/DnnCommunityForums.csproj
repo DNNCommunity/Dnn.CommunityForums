@@ -1162,8 +1162,8 @@
     <Compile Include="controls\af_searchadvanced.ascx.designer.cs">
       <DependentUpon>af_searchadvanced.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DAL2\Content\Content.cs" />
-    <Compile Include="DAL2\Content\ContentController.cs" />
+    <Compile Include="Deprecated\Content.cs" />
+    <Compile Include="Deprecated\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\PermissionInfo.cs" />
