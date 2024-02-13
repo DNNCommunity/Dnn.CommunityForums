@@ -20,17 +20,11 @@
 using System;
 using DotNetNuke.Common.Utilities;
 using System.Collections;
-using System.Data;
-using DotNetNuke.Modules.ActiveForums.API;
-using System.Reflection;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Security.Permissions;
-
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController")]
-    public partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController
+    internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController")]
         public new DotNetNuke.Modules.ActiveForums.ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)
@@ -51,13 +45,24 @@ namespace DotNetNuke.Modules.ActiveForums
             int i;
             for (i = 0; i < groupArr.Count; i++)
             {
-                DotNetNuke.Modules.ActiveForums.ForumGroupInfo gi = groupArr[i] as ForumGroupInfo;
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = groupArr[i] as ForumGroupInfo;
                 if (gi == null)
                     continue;
                 gi.GroupSettings = DataCache.GetSettings(moduleId, gi.GroupSettingsKey, string.Format(CacheKeys.ForumGroupSettings, moduleId, gi.ForumGroupId), false);
                 groupArr[i] = gi;
             }
             return groupArr;
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Delete")]
+        public void Group_Delete(int moduleId, int forumGroupId)
+        {
+            DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController.Save")]
+        public int Groups_Save(int portalId, ForumGroupInfo fg, bool isNew)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Save(portalId, fg, isNew);           
         }
     }
 }

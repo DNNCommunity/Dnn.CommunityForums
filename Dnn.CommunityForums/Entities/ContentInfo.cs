@@ -17,96 +17,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+
+using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
+using System.Web.Caching; 
 
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-	public class ForumCollection : CollectionBase, ICollection, IList
-	{
-
-
-		private ForumInfo _Item;
-
-		public void CopyTo(System.Array array, int index)
-		{
-			List.CopyTo(array, index);
-		}
-
-		public bool IsSynchronized
-		{
-			get
-			{
-				return List.IsSynchronized;
-			}
-		}
-
-		public object SyncRoot
-		{
-			get
-			{
-				return List.SyncRoot;
-			}
-		}
-
-
-		public int Add(ForumInfo value)
-		{
-			return List.Add(value);
-		}
-
-
-		public bool Contains(ForumInfo value)
-		{
-			return List.Contains(value);
-		}
-
-		public int IndexOf(ForumInfo value)
-		{
-			return List.IndexOf(value);
-		}
-
-		public void Insert(int index, ForumInfo value)
-		{
-			List.Insert(index, value);
-		}
-
-		public bool IsFixedSize
-		{
-			get
-			{
-				return List.IsFixedSize;
-			}
-		}
-
-		public bool IsReadOnly
-		{
-			get
-			{
-				return List.IsReadOnly;
-			}
-		}
-
-		public ForumInfo this[int index]
-		{
-			get
-			{
-				return _Item;
-			}
-			set
-			{
-				_Item = value;
-			}
-		}
-
-		public void Remove(object value)
-		{
-			List.Remove(value);
-		}
-
-
-	}
+    [TableName("activeforums_Content")]
+    [PrimaryKey("ContentId", AutoIncrement = true)]
+    [Scope("ModuleId")]
+    [Cacheable("activeforums_Content", CacheItemPriority.Low)] 
+    public class ContentInfo
+    {
+        public int ContentId { get; set; }
+        public string Subject { get; set; }
+        public string Summary { get; set; }
+        public string Body { get; set; }
+        public DateTime DateCreated { get; set; }
+        public DateTime DateUpdated { get; set; }
+        public int AuthorId { get; set; }
+        public string AuthorName { get; set; }
+        public bool IsDeleted { get; set; }
+        public string IPAddress { get; set; }
+        public int ContentItemId { get; set; }
+        public int ModuleId { get; set; }
+    }
 }
-

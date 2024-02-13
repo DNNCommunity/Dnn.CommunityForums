@@ -17,25 +17,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.ComponentModel.DataAnnotations;
-using System;
-using System.Web.Caching;
-namespace DotNetNuke.Modules.ActiveForums
+
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.Like { }
-}
-namespace DotNetNuke.Modules.ActiveForums.Entities
-{
-    [TableName("activeforums_Likes")]
-    [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("PostId")]
-    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    class Like
+    internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
     {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        public bool Checked { get; set; }
     }
 }

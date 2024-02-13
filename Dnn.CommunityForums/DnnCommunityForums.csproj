@@ -94,7 +94,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <HintPath>packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
@@ -1012,6 +1012,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\08.01.00.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
     <None Include="sql\07.00.06.SqlDataProvider" />
@@ -1102,22 +1103,36 @@
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
+    <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\RepositoryControllerBase.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Deprecated\ForumController.cs" />
     <Compile Include="Deprecated\ForumGroupController.cs" />
     <Compile Include="Deprecated\ForumGroupInfo.cs" />
     <Compile Include="Deprecated\ForumInfo.cs" />
+    <Compile Include="Entities\ContentInfo.cs" />
+    <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
     <Compile Include="Deprecated\PermissionInfo.cs" />
-    <Compile Include="Entities\Like.cs" />
+    <Compile Include="Deprecated\LikeController.cs" />
+    <Compile Include="Deprecated\LikeInfo.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
@@ -1151,6 +1166,10 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
+    <Compile Include="Deprecated\Content.cs" />
+    <Compile Include="Deprecated\ContentController.cs" />
+    <Compile Include="DAL2\Reply\Reply.cs" />
+    <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\PermissionInfo.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
@@ -1163,6 +1182,9 @@
     <Compile Include="Services\Controllers\LikeController.cs" />
     <Compile Include="Services\ForumAuthorizeAttribute.cs" />
     <Compile Include="Services\ServicesHelper.cs" />
+    <Compile Include="Services\UrlNavigator.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="SimulateDateDiff.cs" />
     <Compile Include="SimulateIsNumeric.cs" />
     <Compile Include="ActiveForums.ascx.designer.cs">
@@ -1193,7 +1215,6 @@
       <DependentUpon>Classic.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\API.cs" />
     <Compile Include="components\Common\Exceptions.cs" />
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1211,7 +1232,7 @@
     <Compile Include="components\Data\Common.cs" />
     <Compile Include="components\Data\DataConfig.cs" />
     <Compile Include="components\Data\ForumsDB.cs" />
-    <Compile Include="components\Data\Groups.cs" />
+    <Compile Include="Deprecated\Groups.cs" />
     <Compile Include="components\Data\Null.cs" />
     <Compile Include="components\Data\ProfilesDB.cs" />
     <Compile Include="class\Logger.cs" />
@@ -1220,9 +1241,9 @@
     <Compile Include="components\Data\Topics.cs" />
     <Compile Include="components\Extensions\ConfigUtils.cs" />
     <Compile Include="components\Extensions\ReWriter.cs" />
-    <Compile Include="components\Filters\FilterController.cs" />
-    <Compile Include="components\Filters\FilterInfo.cs" />
-    <Compile Include="components\Forums\ForumCollection.cs" />
+    <Compile Include="Deprecated\FilterController.cs" />
+    <Compile Include="Deprecated\FilterInfo.cs" />
+    <Compile Include="Deprecated\ForumCollection.cs" />
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
@@ -1262,7 +1283,7 @@
     <Compile Include="CustomControls\HTML\ForumContentView.cs" />
     <Compile Include="CustomControls\HTML\ForumDirectory.cs" />
     <Compile Include="CustomControls\HTML\Rating.cs" />
-    <Compile Include="CustomControls\HTML\SecurityGrid.cs" />
+    <Compile Include="Deprecated\SecurityGrid.cs" />
     <Compile Include="CustomControls\HTML\ToggleSubscribe.cs" />
     <Compile Include="CustomControls\HTML\TopicBrowser.cs" />
     <Compile Include="CustomControls\HTML\TopicViewer.cs" />
@@ -1401,7 +1422,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\Author.cs" />
-    <Compile Include="class\Content.cs" />
+    <Compile Include="Deprecated\Content.cs" />
     <Compile Include="class\Rewards.cs" />
     <Compile Include="class\Templates.cs" />
     <Compile Include="class\UsersOnline.cs" />
@@ -1533,7 +1554,7 @@
     <Compile Include="class\ActiveAdminBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\AMPageBase.cs">
+    <Compile Include="Deprecated\AMPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\CodeParser.cs">
@@ -1633,15 +1654,6 @@
     </Compile>
     <Compile Include="class\ForumBase.cs">
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="class\ForumController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="class\ForumGroups.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="class\ForumInfo.cs">
-      <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Images.cs">
       <SubType>Code</SubType>
@@ -1766,6 +1778,7 @@
     <Folder Include="DAL2\Reply\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

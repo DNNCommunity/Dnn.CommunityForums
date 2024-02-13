@@ -47,21 +47,34 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #region Filters
-        public abstract int Filters_Save(int PortalId, int ModuleId, int FilterId, string Find, string Replace, string FilterType);
+        public abstract int Filters_Save(int PortalId, int ModuleId, int FilterId, string Find, string Replace, string FilterType); 
+        
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
         public abstract IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId);
+        
         public abstract IDataReader Filters_GetEmoticons(int ModuleId);
-        public abstract IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn);
+        
+        public abstract IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn); 
+        
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used")]
         public abstract IDataReader Filters_ListByType(int PortalId, int ModuleId, string FilterType);
+        
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public abstract void Filters_Delete(int PortalId, int ModuleId, int FilterId);
+        
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public abstract void Filters_DeleteByModuleId(int PortalId, int ModuleId);
         #endregion
 
         #region Forums
         public abstract void Forums_Delete(int PortalId, int ModuleId, int ForumId);
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Not Used.")]
         public abstract IDataReader Forums_Get(int PortalId, int ModuleId, int ForumID, int UserId, bool WithSecurity);
         public abstract IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost);
         public abstract void Forums_Move(int ModuleId, int ForumId, int SortDirection);
         public abstract int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties);
+        public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey); 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey)")]
         public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey, string ForumSecurityKey);
         #endregion
 
@@ -120,11 +133,17 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Security
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Delete(int SecuredId, int ObjectId, int SecureAction, int SecureType, int ObjectType);
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_Get(int SecuredId, int ObjectId, int SecureType);
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_GetByKey(string SecurityKey);
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_GetByUser(int PortalId, int ForumId, int UserId, bool IsSuperUser);
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Save(int SecuredId, int ObjectId, string SecureAction, bool SecureActionValue, int SecureType, string ObjectName, int ObjectType, string SecurityKey);
+        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")] 
         public abstract IDataReader Security_SearchObjects(int PortalId, string Search);
         #endregion
 
