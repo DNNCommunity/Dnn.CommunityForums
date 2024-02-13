@@ -18,34 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 
-#region Content Info
-	public class Content
-	{
-#region Private Members
-
-	    #endregion
-#region Public Properties
-
-	    public int ContentId { get; set; }
-        public string Subject { get; set; }
-        public string Summary { get; set; }
-        public string Body { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
-        public int AuthorId { get; set; }
-        public string AuthorName { get; set; }
-        public bool IsDeleted { get; set; }
-        public string IPAddress { get; set; }
-
-	    #endregion
-
-	}
-#endregion
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
+    public class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }  
+}
+namespace DotNetNuke.Modules.ActiveForums.DAL2
+{
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
+    partial class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }
 
 }

@@ -438,8 +438,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         var replies = dto.Replies.Split('|');
                         var rc = new DotNetNuke.Modules.ActiveForums.DAL2.ReplyController();
                         var firstReply = rc.Get(Convert.ToInt32(replies[0]));
-                        var cc = new ContentController();
-                        var firstContent = cc.Get(firstReply.ContentId);
+                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
                         topicId = tc.Topic_QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
                         tc.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
                     }
