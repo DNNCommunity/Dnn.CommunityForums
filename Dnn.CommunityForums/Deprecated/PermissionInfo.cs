@@ -18,8 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -29,18 +27,6 @@ namespace DotNetNuke.Modules.ActiveForums
         ForumGroup,
         Forum
     }
-}
-namespace DotNetNuke.Modules.ActiveForums.Entities
-{
-    public partial class PermissionInfo
-    { 
-    [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")][IgnoreColumn()] public int UserTrustLevel { get; set; }
-    }
-}
-namespace DotNetNuke.Modules.ActiveForums
-{
     [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo.")]
-    public partial class PermissionInfo : DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
-    {
-    }
+    public partial class PermissionInfo : DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo{ }
 }

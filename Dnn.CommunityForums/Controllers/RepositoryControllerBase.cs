@@ -17,7 +17,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Web.UI;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -29,15 +32,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var ctx = DataContext.Instance();
             Repo = ctx.GetRepository<T>();
         }
+        internal IEnumerable<T> Get()
+        {
+            return Repo.Get();
+        }
+        internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
+        {
+            return Repo.Get(scopeValue);
+        }
         internal T GetById<TProperty>(TProperty id)
         {
-            var content = Repo.GetById(id);
-            return content;
+            return Repo.GetById(id);
         }
-        internal T Get(int id)
+        internal T Save<TProperty>(T item, TProperty id)
         {
-            var content = Repo.GetById(id);
-            return content;
+            if (id == null || id.Equals(0) || id.Equals(-1) || GetById(id) == null)
+            {
+                Insert(item);
+            }
+            else
+            {
+                Update(item);
+            }
+            return item;
+        }
+        internal IEnumerable<T> Find(string sqlCondition, params object[] args)
+        {
+            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
         internal void Update(T item)
         {
@@ -51,9 +72,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             Repo.Delete(sqlCondition, args);
         }
+        internal void DeleteById<TProperty>(TProperty id)
+        {
+            Repo.Delete(Repo.GetById(id));
+        }
         internal void Delete(T item)
         {
             Repo.Delete(item);
+        }
+        internal void DeleteByModuleId(int ModuleId)
+        {
+            Repo.Delete("WHERE ModuleId = @0", ModuleId);
         }
         internal int Count(string sqlCondition, params object[] args)
         {

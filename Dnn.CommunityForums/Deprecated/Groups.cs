@@ -17,96 +17,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 
-namespace DotNetNuke.Modules.ActiveForums
+using Microsoft.ApplicationBlocks.Data;
+namespace DotNetNuke.Modules.ActiveForums.Data
 {
-	public class ForumCollection : CollectionBase, ICollection, IList
+	[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+	public class Groups : DataConfig
 	{
-
-
-		private ForumInfo _Item;
-
-		public void CopyTo(System.Array array, int index)
+        //Public Function Forums_List(ByVal PortalId As Integer, ByVal ModuleId As Integer) As IDataReader
+        //    Return SqlHelper.ExecuteReader(_connectionString, dbPrefix & "Forums_GetPermissions", PortalId, ModuleId)
+        //End Function
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public IDataReader Groups_Get(int ModuleId, int ForumGroupId)
 		{
-			List.CopyTo(array, index);
+			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Groups_Get", ModuleId, ForumGroupId);
 		}
-
-		public bool IsSynchronized
-		{
-			get
-			{
-				return List.IsSynchronized;
-			}
-		}
-
-		public object SyncRoot
-		{
-			get
-			{
-				return List.SyncRoot;
-			}
-		}
-
-
-		public int Add(ForumInfo value)
-		{
-			return List.Add(value);
-		}
-
-
-		public bool Contains(ForumInfo value)
-		{
-			return List.Contains(value);
-		}
-
-		public int IndexOf(ForumInfo value)
-		{
-			return List.IndexOf(value);
-		}
-
-		public void Insert(int index, ForumInfo value)
-		{
-			List.Insert(index, value);
-		}
-
-		public bool IsFixedSize
-		{
-			get
-			{
-				return List.IsFixedSize;
-			}
-		}
-
-		public bool IsReadOnly
-		{
-			get
-			{
-				return List.IsReadOnly;
-			}
-		}
-
-		public ForumInfo this[int index]
-		{
-			get
-			{
-				return _Item;
-			}
-			set
-			{
-				_Item = value;
-			}
-		}
-
-		public void Remove(object value)
-		{
-			List.Remove(value);
-		}
-
-
 	}
 }
-
