@@ -257,6 +257,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_DeleteByModuleId", PortalId, ModuleId);
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
         public override IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_Get", PortalId, ModuleId, FilterId));
@@ -269,6 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_List", PortalId, ModuleId, PageIndex, PageSize, Sort, SortColumn));
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used")]
         public override IDataReader Filters_ListByType(int PortalId, int ModuleId, string FilterType)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_ListByType", PortalId, ModuleId, FilterType));

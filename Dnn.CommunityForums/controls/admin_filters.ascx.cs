@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "DELETE":
                             if (SimulateIsNumeric.IsNumeric(FilterId))
                             {
-                                DataProvider.Instance().Filters_Delete(PortalId, ModuleId, FilterId);
+                                new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
                             }
                             break;
                         case "DEFAULTS":
