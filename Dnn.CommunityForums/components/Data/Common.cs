@@ -38,16 +38,16 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
 		}
-		public string GetPermSet(int PermissionsId, string Key)
+		public string GetPermSet(int PermissionsId, string requestedAccess)
 		{
-			string sSQL = "SELECT IsNULL(Can" + Key + ",'||||') from " + dbPrefix + "Permissions WHERE PermissionsId = " + PermissionsId;
+			string sSQL = "SELECT IsNULL(Can" + requestedAccess + ",'||||') from " + dbPrefix + "Permissions WHERE PermissionsId = " + PermissionsId;
 			return Convert.ToString(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sSQL));
 		}
-		public string SavePermSet(int PermissionsId, string Key, string PermSet)
+		public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet)
 		{
-			string sSQL = "UPDATE " + dbPrefix + "Permissions SET Can" + Key + " = '" + PermSet + "' WHERE PermissionsId = " + PermissionsId;
+			string sSQL = "UPDATE " + dbPrefix + "Permissions SET Can" + requestedAccess + " = '" + PermSet + "' WHERE PermissionsId = " + PermissionsId;
 			SqlHelper.ExecuteNonQuery(_connectionString, CommandType.Text, sSQL);
-			return GetPermSet(PermissionsId, Key);
+			return GetPermSet(PermissionsId, requestedAccess);
 		}
 		public int CreatePermSet(string AdminRoleId)
 		{
@@ -226,8 +226,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			try
 			{
 				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-				ForumGroupController fgc = new ForumGroupController();
-				ForumGroupInfo fg = fgc.GetForumGroup(ModuleId, ForumGroupId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = fgc.GetById(ForumGroupId);
 				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
 				{
 					VanityName = fg.PrefixURL + "/" + VanityName;

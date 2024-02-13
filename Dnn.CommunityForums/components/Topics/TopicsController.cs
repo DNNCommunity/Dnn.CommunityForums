@@ -248,8 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     Data.ForumsDB db = new Data.ForumsDB();
                     int oldForumId = -1;
                     oldForumId = db.Forum_GetByTopicId(TopicId);
-                    ForumController fc = new ForumController();
-                    ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
 
                     if (!(string.IsNullOrEmpty(fi.PrefixURL)))
                     {
@@ -336,10 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            ForumController fc = new ForumController();
-            ForumInfo fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
-
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
             TopicsController tc = new TopicsController();
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
             if (topic == null)
@@ -409,7 +405,6 @@ namespace DotNetNuke.Modules.ActiveForums
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
 
-            ForumController fc = new ForumController();
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
             Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
 
@@ -454,7 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string forumPrefixUrl = string.Empty;
                     if (!ForumUrlPrefixes.TryGetValue(forumid, out forumPrefixUrl))
                     {
-                        forumPrefixUrl = fc.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
+                        forumPrefixUrl = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
                         ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
                     }
                     string link = string.Empty;

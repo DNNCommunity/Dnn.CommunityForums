@@ -10,9 +10,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Tracking_HasRead]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_Tracking_HasRead]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UserProfiles_GetUserRoles]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_UserProfiles_GetUserRoles]
 GO
@@ -76,9 +73,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Security_GetByKey') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Security_GetByKey
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp
 GO
@@ -132,9 +126,6 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Filters_Save]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_Save]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forum_Save]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_Get]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_List]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_List]
@@ -210,21 +201,6 @@ DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_ManageFullTe
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_Standard]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_Standard]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_Delete]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_Delete]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_Get]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_Get]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_GetByUser]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_GetByUser]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_Save]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_Save]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_SearchObjects]') AND type in (N'P', N'PC'))
-DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_SearchObjects]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Delete]') AND type in (N'P', N'PC'))
 DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Settings_Delete]
@@ -475,9 +451,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_GroupForum]'))
 DROP VIEW {databaseOwner}[{objectQualifier}vw_activeforums_GroupForum]
 GO
-IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_Security]'))
-DROP VIEW {databaseOwner}[{objectQualifier}vw_activeforums_Security]
-GO
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_TopicsView]'))
 DROP VIEW {databaseOwner}[{objectQualifier}vw_activeforums_TopicsView]
 GO
@@ -495,9 +468,6 @@ DROP VIEW {databaseOwner}[{objectQualifier}vw_activeforums_Topics]
 GO
 IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_TopicRatings]'))
 DROP VIEW {databaseOwner}[{objectQualifier}vw_activeforums_TopicRatings]
-GO
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Security') AND name = N'idx_{objectQualifier}activeforums_Security_Opt1')
-DROP INDEX [idx_{objectQualifier}activeforums_Security_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Security 
 GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Settings') AND name = N'idx_{objectQualifier}activeforums_Settings_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Settings_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Settings 
@@ -733,9 +703,6 @@ DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Ranks]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Replies]
-GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Security]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Settings]

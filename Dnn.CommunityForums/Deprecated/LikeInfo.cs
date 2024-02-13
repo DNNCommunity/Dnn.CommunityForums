@@ -16,24 +16,11 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
+// 
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
-
+using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums
-{
-	public class FilterInfo
-	{
-		public int FilterId {get; set;}
-		public string Find {get; set;}
-		public string Replace {get; set;}
-		public string FilterType {get; set;}
-		public int PortalId {get; set;}
-		public int ModuleId {get; set;}
-	}
-}
-
+{ 
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
+    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
+} 

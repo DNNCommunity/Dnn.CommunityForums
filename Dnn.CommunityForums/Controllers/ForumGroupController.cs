@@ -18,30 +18,32 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using DotNetNuke.Common.Utilities;
 using System.Collections;
-using System.Data;
-using DotNetNuke.Modules.ActiveForums.API;
 using System.Reflection;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Security.Permissions;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
+    internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.GetForumGroup()")]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo Groups_Get(int moduleID, int forumGroupID)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = GetForumGroup(moduleID, forumGroupID);
-            forumGroupInfo.GroupSettings = (Hashtable)DataCache.GetSettings(moduleID, forumGroupInfo.GroupSettingsKey, string.Format(CacheKeys.ForumGroupSettings, moduleID, forumGroupInfo.ForumGroupId), false);
-            return forumGroupInfo;
+            return GetForumGroup(moduleID, forumGroupID);
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetForumGroup(int moduleId, int forumGroupId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = Repo.GetById(forumGroupId);
-            if (forumGroupInfo != null)
+            var cachekey = string.Format(CacheKeys.ForumGroupInfo, moduleId, forumGroupId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            if (forumGroupInfo == null)
             {
-                forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
+                forumGroupInfo = GetById(forumGroupId); 
+                if (forumGroupInfo != null)
+                {
+                    forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
+                    forumGroupInfo.GroupSettings = (Hashtable)DataCache.GetSettings(moduleId, forumGroupInfo.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, moduleId, forumGroupInfo.GroupSettingsKey), true);
+                }
+                DataCache.SettingsCacheStore(moduleId, cachekey, forumGroupInfo);
             }
             return forumGroupInfo;
         }
@@ -61,11 +63,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             if (forumGroupInfo.ForumGroupId <= 0)
             {
-                Repo.Insert(forumGroupInfo);
+                Insert(forumGroupInfo);
                 forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
                 forumGroupInfo.GroupSecurityKey = $"G:{forumGroupInfo.ForumGroupId}";
             }
-            Repo.Update(forumGroupInfo);
+            Update(forumGroupInfo);
             if (isNew)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
@@ -73,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.ReplyFormId, "0");
+                Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "false");
             }
             DataCache.SettingsCacheClear(forumGroupInfo.ModuleId, string.Format(CacheKeys.ForumList, forumGroupInfo.ModuleId));
@@ -80,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public void Group_Delete(int moduleId, int forumGroupId)
         {
-            Repo.Delete(Repo.GetById(id: forumGroupId));
+            Delete(GetById(id: forumGroupId));
         }
     }
 }

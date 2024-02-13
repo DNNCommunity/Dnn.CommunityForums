@@ -138,8 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 forumUser = uc.GetUser(PortalId, ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
                 }
                 else
                 {

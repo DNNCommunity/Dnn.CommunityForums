@@ -18,34 +18,22 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
+using System.Data;
 
-namespace DotNetNuke.Modules.ActiveForums
+using Microsoft.ApplicationBlocks.Data;
+namespace DotNetNuke.Modules.ActiveForums.Data
 {
-
-#region Content Info
-	public class Content
+	[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+	public class Groups : DataConfig
 	{
-#region Private Members
-
-	    #endregion
-#region Public Properties
-
-	    public int ContentId { get; set; }
-        public string Subject { get; set; }
-        public string Summary { get; set; }
-        public string Body { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
-        public int AuthorId { get; set; }
-        public string AuthorName { get; set; }
-        public bool IsDeleted { get; set; }
-        public string IPAddress { get; set; }
-
-	    #endregion
-
+        //Public Function Forums_List(ByVal PortalId As Integer, ByVal ModuleId As Integer) As IDataReader
+        //    Return SqlHelper.ExecuteReader(_connectionString, dbPrefix & "Forums_GetPermissions", PortalId, ModuleId)
+        //End Function
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public IDataReader Groups_Get(int ModuleId, int ForumGroupId)
+		{
+			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Groups_Get", ModuleId, ForumGroupId);
+		}
 	}
-#endregion
-
 }

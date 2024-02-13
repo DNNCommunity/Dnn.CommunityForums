@@ -25,21 +25,5 @@ using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public partial class ReplyController
-    {
-        IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo> repo;
-
-        public ReplyController()
-        {
-            ctx = DataContext.Instance();
-            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>();
-        }
-
-        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo Get(int replyId)
-        {
-            var reply = repo.GetById(replyId);
-            return reply;
-        }
-    }
+    internal partial class ReplyController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo> { }
 }
