@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("ContentId", AutoIncrement = true)]
     [Scope("ModuleId")]
     [Cacheable("activeforums_Content", CacheItemPriority.Low)] 
-    internal class ContentInfo
+    public class ContentInfo
     {
         public int ContentId { get; set; }
         public string Subject { get; set; }

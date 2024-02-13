@@ -1419,7 +1419,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\Author.cs" />
-    <Compile Include="class\Content.cs" />
+    <Compile Include="Deprecated\Content.cs" />
     <Compile Include="class\Rewards.cs" />
     <Compile Include="class\Templates.cs" />
     <Compile Include="class\UsersOnline.cs" />
