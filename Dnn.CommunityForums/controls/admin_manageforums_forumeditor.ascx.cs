@@ -272,11 +272,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
                         var gi = (groupId > 0) ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, groupId) : new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo();
 
-                        var securityKey = string.Empty;
+                        var settingsKey = string.Empty;
                         if (groupId == 0)
                             bIsNew = true;
                         else
-                            securityKey = "G:" + groupId;
+                            settingsKey = "G:" + groupId;
 
                         gi.ModuleId = ModuleId;
                         gi.ForumGroupId = groupId;
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 gi.PrefixURL = string.Empty;
                         }
 
-                        gi.GroupSettingsKey = securityKey;
+                        gi.GroupSettingsKey = settingsKey;
                         var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
                         groupId = gc.Groups_Save(PortalId, gi, bIsNew);
                         recordId = groupId;

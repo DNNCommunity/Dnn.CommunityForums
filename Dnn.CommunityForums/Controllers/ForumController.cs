@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 fi.ForumSettingsKey = string.Concat("F:", forumId);
 
             if (fi.ForumSettingsKey.Contains("G:"))
-                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID), string.Concat("F:", fi.ForumID));
+                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID));
 
             if (isNew && useGroup == false)
             {
