@@ -44,6 +44,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Repo.GetById(id);
         }
+        internal T Save<TProperty>(T item, TProperty id)
+        {
+            if (id == null || id.Equals(0) || id.Equals(-1) || GetById(id) == null)
+            {
+                Insert(item);
+            }
+            else
+            {
+                Update(item);
+            }
+            return item;
+        }
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
             return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
