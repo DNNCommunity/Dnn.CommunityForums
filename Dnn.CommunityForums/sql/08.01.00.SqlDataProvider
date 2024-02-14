@@ -1,0 +1,75 @@
+/* issue 398 : allow user to change topic rating / issue 267 : improve/update database procedures / issue 266 : refactor/modernize entities/controllers (TopicRating) */
+
+/* add index to support retrieval by user id/topic id */
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Ratings') AND name = N'IX_{objectQualifier}activeforums_Topics_Ratings_Users')
+DROP INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Users ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings] 
+GO
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Users ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
+	(
+	UserId,
+	TopicId
+	) 
+INCLUDE([Rating]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
+
+/* add index to support retrieval by topic id/user id */
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Ratings') AND name = N'IX_{objectQualifier}activeforums_Topics_Ratings_Topics')
+DROP INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Topics ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings] 
+GO
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Topics ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
+	(
+	TopicId,
+	UserId	
+	) 
+INCLUDE([Rating]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
+
+/* no longer needed */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_AddRating]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_AddRating]
+GO
+/* no longer needed */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_GetRating]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_GetRating]
+GO
+
+/* issue 398 : allow user to change topic rating / issue 267 : improve/update database procedures / issue 266 : refactor/modernize entities/controllers (TopicRating) */
+/* begin - issue 643 - fix friendly urls in search results */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]
+GO
+
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate(@ModuleId int, @beginDateUtc datetime)
+AS
+SELECT F.ForumGroupId, FT.ForumId, X.TopicId, X.ReplyId, X.ContentId, X.DateCreated, X.DateUpdated, X.Summary, X.Subject, X.AuthorId, X.Body , X.IsDeleted, X.IsApproved,
+RTRIM(IsNull([dbo].activeforums_Topics_GetTags(X.TopicId),'')) AS Tags, X.TopicURL, F.PrefixURL AS ForumUrlPrefix, G.PrefixURL AS ForumGroupUrlPrefix
+FROM 
+(
+SELECT 
+T.TopicId, -1 AS ReplyId, C.ContentId, C.DateCreated, C.DateUpdated, C.Summary, C.Subject, C.AuthorId, Convert(nvarchar(max),C.Body) as Body, T.IsDeleted, T.IsApproved, T.URL AS TopicUrl
+FROM {databaseOwner}{objectQualifier}activeforums_Topics T
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = T.ContentId 
+WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE() 
+UNION
+SELECT
+R.TopicId, R.ReplyId, C.ContentId, C.DateCreated, C.DateUpdated, C.Summary, C.Subject, C.AuthorId, Convert(nvarchar(max),C.Body) as Body , R.IsDeleted, R.IsApproved, T.URL AS TopicUrl
+FROM {databaseOwner}{objectQualifier}activeforums_Replies R
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content C ON C.ContentId = R.ContentId 
+LEFT OUTER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = R.TopicId
+WHERE C.DateUpdated BETWEEN @beginDateUtc AND GETUTCDATE() 
+) X
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = X.TopicId
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics FT ON FT.TopicId = T.TopicId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums F ON F.ForumId = FT.ForumId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups G ON G.ForumGroupId  = F.ForumGroupId 
+INNER JOIN {databaseOwner}{objectQualifier}activeforums_settings S ON S.GroupKey = F.ForumSettingsKey AND S.SettingName = 'INDEXCONTENT'
+WHERE F.Active = 1 AND S.SettingValue = 'true' AND F.ModuleId = @ModuleId 
+GO
+
+/* this is no longer needed */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItems
+GO
+
+/* end - issue 643 - fix friendly urls in search results */
