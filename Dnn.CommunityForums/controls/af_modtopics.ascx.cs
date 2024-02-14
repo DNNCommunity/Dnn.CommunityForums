@@ -123,13 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
-                                    ReplyController rc = new ReplyController();
-                                    DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(tmpReplyId);
                                     if (ri != null)
                                     {
                                         auth = ri.Author;
                                     }
-                                    rc.Reply_Delete(PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
                                 }
 
                             }
@@ -214,14 +213,13 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                             {
-                                ReplyController rc = new ReplyController();
-                                DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(tmpReplyId);
                                 if (ri != null)
                                 {
                                     ri.IsApproved = true;
                                     sSubject = ri.Content.Subject;
                                     sBody = ri.Content.Body;
-                                    rc.Reply_Save(PortalId, ForumModuleId, ri);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ForumModuleId, ri);
                                     TopicsController tc = new TopicsController();
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId, tmpReplyId);
                                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);

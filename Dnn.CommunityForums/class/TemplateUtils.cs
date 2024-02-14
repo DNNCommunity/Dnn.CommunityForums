@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (topicId > 0 && replyId > 0)
             {
-                var ri = new ReplyController().Reply_Get(portalID, moduleID, topicId, replyId);
+                var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(replyId);
                 if (ri != null)
                 {
                     subject = ri.Content.Subject;

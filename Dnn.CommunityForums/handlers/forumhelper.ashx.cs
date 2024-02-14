@@ -370,8 +370,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
             else
             {
-                ReplyController rc = new ReplyController();
-                DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ModuleId, TopicId, replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(replyId);
                 if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModDelete, ForumUser.UserRoles) || (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.Delete, ForumUser.UserRoles) && ri.Content.AuthorId == UserId))
                 {
                     DataProvider.Instance().Reply_Delete(forumId, TopicId, replyId, MainSettings.DeleteBehavior);

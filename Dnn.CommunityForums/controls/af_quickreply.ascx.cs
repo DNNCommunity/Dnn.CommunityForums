@@ -260,8 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 isApproved = true;
             }
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
-            ReplyController rc = new ReplyController();
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             int ReplyId = -1;
             string sUsername = string.Empty;
             if (Request.IsAuthenticated)
@@ -314,8 +313,8 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = Request.UserHostAddress;
-            ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
-            rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
+            ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.Reply_Save(PortalId, ModuleId, ri);
+            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
