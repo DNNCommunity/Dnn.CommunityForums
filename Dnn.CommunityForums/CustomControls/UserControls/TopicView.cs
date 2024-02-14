@@ -656,8 +656,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             topic = ParseTopic(topic);
 
-            if (!topic.Contains(Globals.ControlRegisterTag))
-                topic = Globals.ControlRegisterTag + topic;
+            if (!topic.Contains(Globals.ForumsControlsRegisterAMTag))
+                topic = Globals.ForumsControlsRegisterAMTag + topic;
 
             topic = Utilities.LocalizeControl(topic);
 
