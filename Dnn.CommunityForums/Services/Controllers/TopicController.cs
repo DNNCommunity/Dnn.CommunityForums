@@ -21,6 +21,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Web;
 using System.Web.Http;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -165,6 +166,25 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
+        }
+        /// <summary>
+        /// Rates a topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <param name="rating" type="int"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Rate</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Edit)]
+        [ForumsAuthorize(SecureActions.ModEdit)]
+        public HttpResponseMessage Rate(TopicDto dto, int rating)
+        {
+            if (dto.TopicId > 0 && (rating >= 1 && rating <= 5))
+            {   
+                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(UserInfo.UserID, dto.TopicId, rating, HttpContext.Current.Request.UserHostAddress ?? string.Empty));
+            }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }
 }
