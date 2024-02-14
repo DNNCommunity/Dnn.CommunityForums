@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             foreach (string s in roles.Split(';'))
             {
-                if ((s == "-1") | (s == "-3"))
+                if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                 {
                     /* cjh - securityset was null and throwing an error, thus journal items weren't added */
                     if ((ji.SecuritySet != null) && !(ji.SecuritySet.Contains("E,")))
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 foreach (string s in roles.Split(';'))
                 {
-                    if ((s == "-1") | (s == "-3"))
+                    if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                     {
                         /* cjh - securityset was null and throwing an error, thus journal items weren't added */
                         if ((ji.SecuritySet != null) && (!(ji.SecuritySet.Contains("E,"))))
