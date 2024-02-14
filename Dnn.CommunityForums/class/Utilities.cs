@@ -93,8 +93,8 @@ namespace DotNetNuke.Modules.ActiveForums
             if (string.IsNullOrEmpty(template))
                 return string.Empty;
 
-            if (!(template.Contains(Globals.ControlRegisterTag)))
-                template = Globals.ControlRegisterTag + template;
+            if (!(template.Contains(Globals.ForumsControlsRegisterAMTag)))
+                template = Globals.ForumsControlsRegisterAMTag + template;
 
             template = ParseSpacer(template);
 

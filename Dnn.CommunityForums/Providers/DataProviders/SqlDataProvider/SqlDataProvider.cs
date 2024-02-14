@@ -415,9 +415,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-        
+
         #region Search
-        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Using Search_DotNetNuke(int moduleId, DateTime beginDateUtc)")]
         public override IDataReader Search_DotNetNuke(int moduleId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Search_GetSearchItems", moduleId);
