@@ -1058,18 +1058,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
 
 
-
-        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. ManageImagePath(string sHTML, Uri hostUri)")]
-        public static string ManageImagePath(string sHTML)
-        {
-            return ManageImagePath(sHTML, HttpContext.Current.Request.Url);
-        }
-        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. ManageImagePath(string sHTML, Uri hostUri)")]
-        public static string ManageImagePath(string sHTML, string hostWithScheme)
-        {
-            return ManageImagePath(sHTML, new Uri(hostWithScheme));
-        }
-
         public static string ManageImagePath(string sHTML, Uri hostUri)
         {
             string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
@@ -1500,11 +1488,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 }
             }
             return contents;
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetListOfModerators(int portalId, int ModuleId, int forumId).")]
-        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
-        {
-            return GetListOfModerators(portalId, -1, forumId);
         }
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
