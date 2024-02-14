@@ -203,7 +203,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="app.config" />
     <None Include="BuildScripts\ModulePackage.targets">
       <SubType>Designer</SubType>
     </None>
@@ -1012,6 +1011,7 @@
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
+    <None Include="sql\07.00.11.SqlDataProvider" />
     <None Include="sql\08.01.00.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
@@ -1106,8 +1106,11 @@
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
+    <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
@@ -1144,6 +1147,7 @@
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
+    <Compile Include="Entities\TopicRatingInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
@@ -1183,7 +1187,7 @@
       <DependentUpon>Classic.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\API.cs" />
+    <Compile Include="Deprecated\API.cs" />
     <Compile Include="components\Common\Exceptions.cs" />
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1524,7 +1528,7 @@
     <Compile Include="class\ActiveAdminBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\AMPageBase.cs">
+    <Compile Include="Deprecated\AMPageBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\CodeParser.cs">
@@ -1754,7 +1758,6 @@
     <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>

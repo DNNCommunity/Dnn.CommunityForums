@@ -134,7 +134,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 GroupName = dr["GroupName"].ToString(),
                 PermissionsId = Convert.ToInt32(dr["PermissionsId"].ToString()),
                 ForumSettingsKey = dr["ForumSettingsKey"].ToString(),
-                ForumSecurityKey = dr["ForumSecurityKey"].ToString(),
                 InheritSecurity = Convert.ToBoolean(dr["InheritSecurity"]),
                 PrefixURL = dr["PrefixURL"].ToString(),
                 SocialGroupId = Convert.ToInt32(dr["SocialGroupId"].ToString()),
@@ -220,12 +219,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (fg != null)
                 {
                     fi.PermissionsId = fg.PermissionsId;
-                    fi.ForumSecurityKey = fg.GroupSecurityKey;
                 }
             }
             else 
             {
-                fi.ForumSecurityKey = (fi.ForumID > 0 ? $"F:{fi.ForumID}" : string.Empty); 
                 if (fi.PermissionsId <= 0 || fi.InheritSecurity) /* if new forum or changing from inheriting security, create new permissions set */
                 {
                     var rc = new RoleController();
@@ -249,18 +246,14 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 isNew = true;
             }
-            var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.ForumSecurityKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
+            var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
             if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
             {
                 fi.ForumSettingsKey = $"F:{forumId}";
             }
-            if (!useGroupSecurity && String.IsNullOrEmpty(fi.ForumSecurityKey))
-            {
-                fi.ForumSecurityKey = $"F:{forumId}";
-            }
             if (fi.ForumSettingsKey.StartsWith("G:"))
             {
-                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}", $"F:{fi.ForumID}");
+                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
             }
 
             if (isNew && useGroupFeatures == false)
@@ -306,8 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (tmpGroupKey != groupKey)
                 {
-                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", groupName);
-                    n += 1;
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", groupName); n += 1;
                     tmpGroupKey = groupKey;
                 }
 
@@ -482,7 +474,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     continue;
 
                                 permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = Permissions.AddPermToSet("-1", 0, permSet);
+                                permSet = Permissions.AddPermToSet(DotNetNuke.Common.Globals.glbRoleAllUsers, 0, permSet); //
                                 forumsDb.SavePermSet(permissionsId, secKey, permSet);
                             }
                         }

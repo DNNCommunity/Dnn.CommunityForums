@@ -346,7 +346,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForm(string template)
         {
-            template = Globals.ControlRegisterTag + template;
+            template = Globals.ForumsControlsRegisterAMTag + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
             template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:SUBJECT]", "<asp:requiredfieldvalidator id=\"reqSubject\" validationgroup=\"afform\" ControlToValidate=\"txtSubject\" runat=\"server\" />");
@@ -708,8 +708,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (canSubscribe)
             {
                 var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
-                subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
-                subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                subControl.Checked = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
+                subControl.Text = "[RESX:TopicSubscribe:" + (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
                 sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
                 bHasOptions = true;
             }

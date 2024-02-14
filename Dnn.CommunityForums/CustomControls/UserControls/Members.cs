@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, sGrid, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
             }
-            sTemplate = Globals.ControlRegisterTag + sTemplate;
+            sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             sTemplate = sTemplate.Replace("[AF:CONTROL:PAGER]", "<am:pagernav id=\"Pager1\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AF:CONTROL:ALPHABAR]", BuildAlphaList());
             Control ctl = this.ParseControl(sTemplate);

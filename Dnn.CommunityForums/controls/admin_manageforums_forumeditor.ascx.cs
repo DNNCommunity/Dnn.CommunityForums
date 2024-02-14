@@ -253,11 +253,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fgc = new ForumGroupController();
                         var gi = (groupId > 0) ? fgc.Groups_Get(ModuleId, groupId) : new ForumGroupInfo();
 
-                        var securityKey = string.Empty;
+                        var settingsKey = string.Empty;
                         if (groupId == 0)
                             bIsNew = true;
                         else
-                            securityKey = "G:" + groupId;
+                            settingsKey = "G:" + groupId;
 
                         gi.ModuleId = ModuleId;
                         gi.ForumGroupId = groupId;
@@ -275,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 gi.PrefixURL = string.Empty;
                         }
 
-                        gi.GroupSettingsKey = securityKey;
+                        gi.GroupSettingsKey = settingsKey;
                         var gc = new ForumGroupController();
                         groupId = gc.Groups_Save(PortalId, gi, bIsNew);
                         recordId = groupId;
@@ -404,6 +404,7 @@ namespace DotNetNuke.Modules.ActiveForums
             chkHidden.Checked = fi.Hidden;
             hidForumId.Value = fi.ForumID.ToString();
             txtPrefixURL.Text = fi.PrefixURL;
+            chkInheritGroupSecurity.Checked = fi.InheritSecurity;
 
             var groupValue = (fi.ParentForumId > 0) ? "FORUM" + fi.ParentForumId : "GROUP" + fi.ForumGroupId;
 
@@ -415,10 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 chkInheritGroupFeatures.Checked = true;
                 trTemplates.Attributes.Add("style", "display:none;");
             }
-            if (fi.ForumSecurityKey == "G:" + fi.ForumGroupId)
-            {
-                chkInheritGroupSecurity.Checked = true;
-            }
+
             Utilities.SelectListItemByValue(drpTopicsTemplate, fi.TopicsTemplateId);
             Utilities.SelectListItemByValue(drpTopicTemplate, fi.TopicTemplateId);
             Utilities.SelectListItemByValue(drpTopicForm, fi.TopicFormId);
