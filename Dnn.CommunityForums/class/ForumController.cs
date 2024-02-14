@@ -296,8 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (tmpGroupKey != groupKey)
                 {
-                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", groupName);
-                    n += 1;
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", groupName); n += 1;
                     tmpGroupKey = groupKey;
                 }
 
@@ -472,7 +471,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     continue;
 
                                 permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = Permissions.AddPermToSet("-1", 0, permSet);
+                                permSet = Permissions.AddPermToSet(DotNetNuke.Common.Globals.glbRoleAllUsers, 0, permSet); //
                                 forumsDb.SavePermSet(permissionsId, secKey, permSet);
                             }
                         }
