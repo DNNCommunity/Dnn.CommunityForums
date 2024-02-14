@@ -1,1 +1,36 @@
-/* placeholder */
+/* issue 398 : allow user to change topic rating / issue 267 : improve/update database procedures / issue 266 : refactor/modernize entities/controllers (TopicRating) */
+
+/* add index to support retrieval by user id/topic id */
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Ratings') AND name = N'IX_{objectQualifier}activeforums_Topics_Ratings_Users')
+DROP INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Users ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings] 
+GO
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Users ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
+	(
+	UserId,
+	TopicId
+	) 
+INCLUDE([Rating]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
+
+/* add index to support retrieval by topic id/user id */
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Ratings') AND name = N'IX_{objectQualifier}activeforums_Topics_Ratings_Topics')
+DROP INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Topics ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings] 
+GO
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Ratings_Topics ON {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
+	(
+	TopicId,
+	UserId	
+	) 
+INCLUDE([Rating]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON)
+GO
+
+/* no longer needed */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_AddRating]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_AddRating]
+GO
+/* no longer needed */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_GetRating]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_GetRating]
+GO
+
+/* issue 398 : allow user to change topic rating / issue 267 : improve/update database procedures / issue 266 : refactor/modernize entities/controllers (TopicRating) */

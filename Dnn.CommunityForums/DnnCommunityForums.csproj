@@ -1106,6 +1106,7 @@
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
+    <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Entities\Like.cs" />
@@ -1144,6 +1145,7 @@
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
+    <Compile Include="Entities\TopicRatingInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
