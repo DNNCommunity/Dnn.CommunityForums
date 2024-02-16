@@ -1414,4 +1414,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:AllowLikes].Text" xml:space="preserve">
     <value>Allow Likes</value>
   </data>
+  <data name="[RESX:Parent].Text" xml:space="preserve">
+    <value>Parent: </value>
+  </data>
 </root>
