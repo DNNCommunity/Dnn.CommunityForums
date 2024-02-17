@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.StatusId = -1;
             ri.TopicId = TopicId;
             replyId = Reply_Save(PortalId, ModuleId, ri);
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
@@ -240,7 +240,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
                 ri.StatusId = Convert.ToInt32(dr["StatusId"]);
                 ri.TopicId = Convert.ToInt32(dr["TopicId"]);
-                //tl.Add(ti)
             }
             dr.Close();
             return ri;
@@ -291,15 +290,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return reply;
         }
+        [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
-            // signal to platform that module has updated content in order to be included in incremental search crawls
-            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
-
-        #endregion
     }
     #endregion
-
+    #endregion
 }
 
