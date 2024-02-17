@@ -26,10 +26,12 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Xml;
+using DotNetNuke.Common.Controls;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using Microsoft.ApplicationBlocks.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
@@ -38,6 +40,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal static ForumsDB GetForumsDB()
         {
             return _forumDB ?? (_forumDB = new ForumsDB());
+        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = base.GetById(forumId);
+            if (forum != null)
+            {
+                forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(forum.ModuleId, forum.ForumGroupId) : null;
+                forum.ForumSettings = (Hashtable)DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, forum.ModuleId, forum.ForumSettingsKey), true);
+                forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
+                if (forum.HasProperties)
+                {
+                    var propC = new PropertiesController();
+                    forum.Properties = propC.ListProperties(forum.PortalId, 1, forumId);
+                }
+            }
+            string cachekey = string.Format(CacheKeys.ForumInfo, forum.ModuleId, forumId);
+            DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
+            return forum;
+        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int ModuleId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumList, ModuleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            if (forums == null)
+            {
+                forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(ModuleId))
+                {
+                    forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, forum.ForumGroupId) : null;
+                    forum.ForumSettings = (Hashtable)DataCache.GetSettings(ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, ModuleId, forum.ForumSettingsKey), true);
+                    forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
+                    if (forum.HasProperties)
+                    {
+                        var propC = new PropertiesController();
+                        forum.Properties = propC.ListProperties(forum.PortalId, 1, forum.ForumID);
+                    }
+                    forums.Add(forum);
+                }
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumList, ModuleId), forums);
+            }
+            return forums;
         }
         public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId)
         {
@@ -53,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (forum != null)
                 {
                     forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(moduleId, forum.ForumGroupId) : null;
-                    forum.ForumSettings = (Hashtable)DataCache.GetSettings(moduleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, forum.ForumSettingsKey), !ignoreCache);
+                    forum.ForumSettings = (Hashtable)DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, forum.ModuleId, forum.ForumSettingsKey), !ignoreCache);
                     forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
                     if (forum.HasProperties)
                     {
@@ -61,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         forum.Properties = propC.ListProperties(portalId, 1, forumId);
                     }
                 }
-                DataCache.SettingsCacheStore(moduleId, cachekey, forum);
+                DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
             }
             return forum;
         }
@@ -71,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache)
         {
-            return Forums_Get(portalId, moduleId, forumId, useCache, -1);
+            return GetForum(portalId: portalId, moduleId: moduleId, forumId: forumId, !useCache);
         }
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
         {
@@ -95,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // that don't otherwise have access
 
             var forumIds = string.Empty;
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = GetForumsDB().Forums_List(portalId, moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
                 string roles;
@@ -127,28 +169,113 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forumIds;
         }
-        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, int userId, bool withSecurity, bool useCache, int topicId)
+        public XmlDocument GetForumListXML(int PortalId, int ModuleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = null;
-
-            if (forumId <= 0 && topicId <= 0)
-                return null;
-
-            // Get the forum by topic id
-            if (topicId > 0 & forumId <= 0)
-                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsDB().Forum_GetByTopicId(topicId);
-
-            if (forumId <= 0)
-                return null;
-
-            fi = (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId));
-            if (fi == null)
+            XmlDocument xDoc = new XmlDocument();
+            object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId));
+            if (obj == null)
             {
-                fi = GetForum(portalId, moduleId, forumId, !useCache);
+                Data.ForumsDB db = new Data.ForumsDB();
+                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
+                sb.AppendLine();
+                sb.Append("<root>");
+                sb.AppendLine();
+                int groupId = -1;
+                System.Text.StringBuilder groups = new System.Text.StringBuilder();
+                System.Text.StringBuilder forums = new System.Text.StringBuilder();
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
+                {
+                    if (groupId != f.ForumGroupId)
+                    {
+                        groups.Append("<group groupid=\"" + f.ForumGroupId.ToString() + "\" active=\"" + f.ForumGroup.Active.ToString().ToLowerInvariant() + "\" hidden=\"" + f.ForumGroup.Hidden.ToString().ToLowerInvariant() + "\">");
+                        groups.Append("<name><![CDATA[" + f.GroupName.ToString() + "]]></name>");
+                        //If Not String.IsNullOrEmpty(f.ForumGroup.SEO) Then
+                        //    groups.Append(f.ForumGroup.SEO)
+                        //End If
+                        groups.Append("</group>");
+                        sb.AppendLine();
+                        groupId = f.ForumGroupId;
+                    }
+                }
+                sb.Append("<groups>");
+                sb.AppendLine();
+                sb.Append(groups.ToString());
+                sb.Append("</groups>");
+                sb.AppendLine();
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
+                {
+                    forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
+                    //forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")
+                    //forums.Append(" desc=""" & HttpUtility.UrlEncode(Utilities.HTMLEncode(f.ForumDesc.ToString)) & """")
+                    forums.Append(" active=\"" + f.Active.ToString().ToLowerInvariant() + "\"");
+                    forums.Append(" hidden=\"" + f.Hidden.ToString().ToLowerInvariant() + "\"");
+                    forums.Append(" totaltopics=\"" + f.TotalTopics.ToString() + "\"");
+                    forums.Append(" totalreplies=\"" + f.TotalReplies.ToString() + "\"");
+                    forums.Append(" lasttopicid=\"" + f.LastTopicId.ToString() + "\"");
+                    forums.Append(" lastreplyid=\"" + f.LastReplyId.ToString() + "\"");
+                    //forums.Append(" lastpostsubject=""" & f.LastPostSubject & """")
+                    //forums.Append(" lastpostauthorname=""" & f.LastPostDisplayName & """")
+                    forums.Append(" lastpostauthorid=\"" + f.LastPostUserID + "\"");
+                    forums.Append(" lastpostdate=\"" + f.LastPostDateTime.ToString() + "\"");
+                    forums.Append(" lastread=\"" + f.LastRead.ToString() + "\"");
+                    forums.Append(" allowrss=\"" + f.ForumSettings["ALLOWRSS"].ToString() + "\"");
+                    forums.Append(" parentforumid=\"" + f.ParentForumId.ToString() + "\"");
+                    forums.Append(" viewroles=\"" + f.Security.View.ToString() + "\"");
+                    forums.Append(" readroles=\"" + f.Security.Read.ToString() + "\"");
+                    forums.Append(" replyroles=\"" + f.Security.Reply.ToString() + "\"");
+                    forums.Append(" modroles=\"" + f.Security.ModApprove.ToString() + "\"");
+                    forums.Append(" modmove=\"" + f.Security.ModMove.ToString() + "\"");
+                    forums.Append(">");
+                    forums.Append("<name><![CDATA[" + f.ForumName + "]]></name>");
+                    forums.Append("<description><![CDATA[" + f.ForumDesc + "]]></description>");
+                    forums.Append("<security>");
+                    forums.Append("<view>" + f.Security.View + "</view>");
+                    forums.Append("<read>" + f.Security.Read + "</read>");
+                    forums.Append("<create>" + f.Security.Create + "</create>");
+                    forums.Append("<reply>" + f.Security.Reply + "</reply>");
+                    forums.Append("<edit>" + f.Security.Edit + "</edit>");
+                    forums.Append("<delete>" + f.Security.Delete + "</delete>");
+                    forums.Append("<lock>" + f.Security.Lock + "</lock>");
+                    forums.Append("<pin>" + f.Security.Pin + "</pin>");
+                    forums.Append("<modapprove>" + f.Security.ModApprove + "</modapprove>");
+                    forums.Append("<modedit>" + f.Security.ModEdit + "</modedit>");
+                    forums.Append("<moddelete>" + f.Security.ModDelete + "</moddelete>");
+                    forums.Append("<modlock>" + f.Security.ModLock + "</modlock>");
+                    forums.Append("<modpin>" + f.Security.ModPin + "</modpin>");
+                    forums.Append("<modmove>" + f.Security.ModMove + "</modmove>");
+                    forums.Append("</security>");
+                    //If Not String.IsNullOrEmpty(f.SEO) Then
+                    //    forums.Append(f.SEO)
+                    //End If
 
-                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumInfo, moduleId, forumId), fi);
+                    forums.Append("</forum>");
+                    sb.AppendLine();
+                }
+                sb.Append("<forums>");
+                sb.AppendLine();
+                sb.Append(forums.ToString());
+                sb.Append("</forums>");
+                sb.AppendLine();
+                sb.Append("<topics />");
+                sb.AppendLine();
+                sb.Append("<replies />");
+                sb.AppendLine();
+                sb.Append("</root>");
+                sb.AppendLine();
+
+
+                //Dim sXML As String = ds.GetXml()
+                xDoc.LoadXml(sb.ToString());
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);
             }
-            return fi;
+            else
+            {
+                xDoc = (XmlDocument)obj;
+            }
+            //Logger.Log(xDoc.OuterXml)
+            return xDoc;
         }
         public static string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
         {
@@ -355,17 +482,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     var xSecList = xRoot.SelectSingleNode("//security[@type='groupadmin']");
                     string permSet;
-                    string secKey;
+                    string requestedAccess;
                     if (xSecList != null)
                     {
                         foreach (XmlNode n in xSecList.ChildNodes)
                         {
-                            secKey = n.Name;
+                            requestedAccess = n.Name;
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
-                            permSet = forumsDb.GetPermSet(permissionsId, secKey);
+                            permSet = forumsDb.GetPermSet(permissionsId, requestedAccess);
                             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(groupAdmin, 2, permSet);
-                            forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                            forumsDb.SavePermSet(permissionsId, requestedAccess, permSet);
                         }
                     }
 
@@ -374,14 +501,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         foreach (XmlNode n in xSecList.ChildNodes)
                         {
-                            secKey = n.Name;
+                            requestedAccess = n.Name;
 
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
 
-                            permSet = forumsDb.GetPermSet(permissionsId, secKey);
+                            permSet = forumsDb.GetPermSet(permissionsId, requestedAccess);
                             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(groupMember, 0, permSet);
-                            forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                            forumsDb.SavePermSet(permissionsId, requestedAccess, permSet);
                         }
                     }
 
@@ -393,14 +520,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         {
                             foreach (XmlNode n in xSecList.ChildNodes)
                             {
-                                secKey = n.Name;
+                                requestedAccess = n.Name;
 
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                permSet = forumsDb.GetPermSet(permissionsId, secKey);
+                                permSet = forumsDb.GetPermSet(permissionsId, requestedAccess);
                                 permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(ri.RoleID.ToString(), 0, permSet);
-                                forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                                forumsDb.SavePermSet(permissionsId, requestedAccess, permSet);
                             }
                         }
 
@@ -409,14 +536,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         {
                             foreach (XmlNode n in xSecList.ChildNodes)
                             {
-                                secKey = n.Name;
+                                requestedAccess = n.Name;
 
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                permSet = forumsDb.GetPermSet(permissionsId, secKey);
+                                permSet = forumsDb.GetPermSet(permissionsId, requestedAccess);
                                 permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet("-1", 0, permSet);
-                                forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                                forumsDb.SavePermSet(permissionsId, requestedAccess, permSet);
                             }
                         }
                     }

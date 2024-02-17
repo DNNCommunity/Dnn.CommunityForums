@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						             };
 					    var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
 						int groupId = gc.Groups_Save(PortalId, gi, true);
-						gi = gc.GetById(groupId);
+						gi = gc.GetForumGroup(ModuleId, groupId);
 						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
