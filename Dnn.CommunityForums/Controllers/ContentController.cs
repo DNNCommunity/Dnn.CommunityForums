@@ -18,8 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ContentController.")]
     internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
     {
     }
