@@ -217,36 +217,36 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
             TopicsController tc = new TopicsController();
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-            if (topic == null)
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+            if (ti == null)
             {
                 return null;
             }
-            topic.IsApproved = true;
+            ti.IsApproved = true;
             new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId);
             tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId);
 
-            if (fi.ModApproveTemplateId > 0 & topic.Author.AuthorId > 0)
+            if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
-                Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, 0, string.Empty, topic.Author);
+                Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, 0, string.Empty, ti.Author);
             }
 
-            Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, 0, topic.Content.AuthorId);
+            Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, 0, ti.Content.AuthorId);
 
             try
             {
                 ControlUtils ctlUtils = new ControlUtils();
-                string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
+                string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
                 Social amas = new Social();
-                amas.AddTopicToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, fi.Security.Read, fi.SocialGroupId);
+                amas.AddTopicToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ti.Author.AuthorId, sUrl, ti.Content.Subject, string.Empty, ti.Content.Body, fi.Security.Read, fi.SocialGroupId);
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-            return topic;
+            return ti;
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled changed to internal in 10.00.00.")]
+        [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);

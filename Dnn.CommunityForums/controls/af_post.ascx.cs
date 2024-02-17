@@ -586,7 +586,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (_editorType == EditorTypes.TEXTBOX)
                             userDisplay = "none";
 
-                        Content ci;
+                        DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
                         if (postId == TopicId)
                         {
                             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
@@ -1015,7 +1015,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.StatusId = ctlForm.StatusId;
             ri.TopicId = TopicId;
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
-            rc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));

@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsDeleted = false;
             ri.Content.IPAddress = Request.UserHostAddress;
             ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
-            rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 

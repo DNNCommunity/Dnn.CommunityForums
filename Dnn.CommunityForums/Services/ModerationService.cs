@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = reply.Content.AuthorId;
 
                 rc.Reply_Delete(PortalSettings.PortalId, _forumId, _topicId, _replyId, ms.DeleteBehavior);
-                rc.UpdateModuleLastContentModifiedOnDate(_moduleId);
+                Utilities.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
             else
             {
