@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				return "Please specify a template";
 			}
 			StringBuilder sb = new StringBuilder();
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection filteredForums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in allForums)
 			{

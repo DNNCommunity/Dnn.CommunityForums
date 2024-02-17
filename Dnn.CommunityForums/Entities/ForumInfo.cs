@@ -98,13 +98,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DateTime LastRead { get; set; }
 
         [IgnoreColumn()]
-        public string LastPostFirstName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).FirstName;
+        public string LastPostFirstName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).FirstName : string.Empty;
 
         [IgnoreColumn()]
-        public string LastPostLastName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName;
+        public string LastPostLastName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName : string.Empty;
         
         [IgnoreColumn()]
-        public string LastPostDisplayName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName;
+        public string LastPostDisplayName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName : string.Empty;
 
         [IgnoreColumn()]
         public bool InheritSecurity => this.PermissionsId == ForumGroup.PermissionsId;

@@ -41,6 +41,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return _forumDB ?? (_forumDB = new ForumsDB());
         }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int ModuleId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumList, ModuleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            if (forums == null)
+            {
+                forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(ModuleId))
+                {
+                    forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, forum.ForumGroupId) : null;
+                    forum.ForumSettings = (Hashtable)DataCache.GetSettings(ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, ModuleId, forum.ForumSettingsKey), true);
+                    forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
+                    if (forum.HasProperties)
+                    {
+                        var propC = new PropertiesController();
+                        forum.Properties = propC.ListProperties(forum.PortalId, 1, forum.ForumID);
+                    }
+                    forums.Add(forum);
+                }
+                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumList, ModuleId), forums);
+            }
+            return forums;
+        }
         public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId)
         {
             return GetForum(portalId, moduleId, forumId, false);
@@ -118,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             // that don't otherwise have access
 
             var forumIds = string.Empty;
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(moduleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
             {
                 string roles;
@@ -157,7 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (obj == null)
             {
                 Data.ForumsDB db = new Data.ForumsDB();
-                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ModuleId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
                 sb.AppendLine();
