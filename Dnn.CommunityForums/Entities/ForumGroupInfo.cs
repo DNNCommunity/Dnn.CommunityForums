@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool Active { get; set; }
         public bool Hidden { get; set; }
         public string GroupSettingsKey { get; set; } = string.Empty;
-        public string GroupSecurityKey { get; set; } = string.Empty;
         public int PermissionsId { get; set; } = -1;
         public string PrefixURL { get; set; } = string.Empty;
 

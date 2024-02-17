@@ -54,7 +54,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [ColumnName("LastPostId")]
         public int LastPostID { get; set; }
         public string ForumSettingsKey { get; set; }
-        public string ForumSecurityKey { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public int LastTopicId { get; set; }
@@ -113,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID);
 
         [IgnoreColumn()]
-        public string ParentForumName => ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ParentForumId).ForumName : string.Empty;
+        public string ParentForumName => ParentForumId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId,ModuleId,ParentForumId).ForumName : string.Empty;
         
         [IgnoreColumn()]
         public int TabId => new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).TabID;
