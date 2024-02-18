@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string vpath = null;
             vpath = PortalSettings.HomeDirectory + "activeforums_Attach/";
             string fpath = null;
-            fpath = Server.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/");
+            fpath = Utilities.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/");
             dtAttach.DefaultView.RowFilter = "ContentId = " + ContentId;
             foreach (DataRow dr in dtAttach.DefaultView.ToTable().Rows)
             {

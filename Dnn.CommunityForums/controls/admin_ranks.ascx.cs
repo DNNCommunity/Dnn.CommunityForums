@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			System.IO.FileInfo myFileInfo = null;
 			int i = 0;
 
-            FileCollection = System.IO.Directory.GetFiles(Server.MapPath(Globals.ModulePath + "Images/ranks"));
+            FileCollection = System.IO.Directory.GetFiles(Utilities.MapPath(Globals.ModulePath + "Images/ranks"));
             for (i = 0; i < FileCollection.Length; i++)
 			{
 				string path = null;
