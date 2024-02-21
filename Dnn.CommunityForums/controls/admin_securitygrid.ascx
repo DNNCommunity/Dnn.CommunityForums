@@ -64,14 +64,14 @@ function secGridComplete(){
     af_clearLoad();
 };
 
-function securityCallback(action, returnId, pid, secId,secName, secType, key, callback) {
+function securityCallback(action, returnId, pid, secId,secName, secType, accessReq, callback) {
     var data = {};
     data.ModuleId = <%=ModuleId%>;
     data.Action = action;
     data.PermissionsId = pid;
     data.SecurityId = secId;
     data.SecurityType = secType;
-    data.SecurityKey = key;
+    data.SecurityAccessRequested = accessReq;
     data.ReturnId = returnId;
     var sf = $.ServicesFramework(<%=ModuleId%>);
     //sf.getAntiForgeryProperty(data);
