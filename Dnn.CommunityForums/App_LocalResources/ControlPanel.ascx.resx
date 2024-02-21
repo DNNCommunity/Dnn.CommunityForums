@@ -1420,4 +1420,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:Theme].Text" xml:space="preserve">
     <value>Theme</value>
   </data>
+  <data name="[RESX:Parent].Text" xml:space="preserve">
+    <value>Parent:</value>
+  </data>
 </root>
