@@ -25,6 +25,9 @@ using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Services.Social.Notifications;  
 using System.Web.UI.WebControls; 
 using System.Web.UI.HtmlControls;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.UI.UserControls;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -93,8 +96,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (AllowSubscribe)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
-                    subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
-                    subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                    subControl.Checked = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
+                    subControl.Text = "[RESX:TopicSubscribe:" + (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
@@ -215,12 +218,22 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SaveQuickReply()
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
-            int iFloodInterval = MainSettings.FloodInterval;
-            if (iFloodInterval > 0)
+            ForumController fc = new ForumController();
+            Forum forumInfo = fc.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
-                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
-                return;
+                UserProfileController upc = new UserProfileController();
+                UserProfileInfo upi = upc.Profiles_Get(PortalId, ModuleId, this.UserId);
+                if (upi != null)
+                {
+                    if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < MainSettings.FloodInterval)
+                    {
+                        Controls.InfoMessage im = new Controls.InfoMessage();
+                        im.Message = "<div class=\"afmessage\">" + string.Format(Utilities.GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>";
+                        plhMessage.Controls.Add(im);
+                        return;
+                    }
+                }
             }
             if (!Request.IsAuthenticated)
             {
@@ -305,6 +318,10 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = Request.UserHostAddress;
+            if (UserPrefTopicSubscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
+            }
             ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));

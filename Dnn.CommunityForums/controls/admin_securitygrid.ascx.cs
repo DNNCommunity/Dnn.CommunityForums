@@ -65,20 +65,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<select id=\"drpSecRoles\" class=\"amcptxtbx\" style=\"width:150px;\">");
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
-			sb.Append("<option value=\"-1\">All Users</option>");
-			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
+			sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleAllUsers}\">{DotNetNuke.Common.Globals.glbRoleAllUsersName}</option>");
+			sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleUnauthUser}\">{DotNetNuke.Common.Globals.glbRoleUnauthUserName}</option>");
 			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Permissions.GetRoles(PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
 			}
-			//drpSecRoles.DataTextField = "RoleName"
-			//drpSecRoles.DataValueField = "RoleId"
-			//drpSecRoles.DataSource = rc.GetPortalRoles(PortalId)
-			//drpSecRoles.DataBind()
-			//drpSecRoles.Items.Insert(0, New ListItem("[RESX:DropDownDefault]", ""))
-			//drpSecRoles.Items.Insert(1, New ListItem("All Users", "-1"))
-			//drpSecRoles.Items.Insert(2, New ListItem("Unauthenticated Users", "-3"))
-			//drpSecRoles.Items.Insert(3, New ListItem("Topic Author", "-10"))
 			sb.Append("</select>");
 			litRoles.Text = sb.ToString();
 		}
