@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            body = Utilities.ManageImagePath(body, Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)));
+            body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request))));
 
             // load the forum information
             var fi = new ForumController().Forums_Get(portalId: portalID, moduleId: moduleID, forumId: forumID, useCache: true);

@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return ManageImagePath(sHTML, HttpContext.Current.Request.Url);
         }
-        [Obsolete("Deprecated in Community Forums. To be removed in 09.00.00. Use ManageImagePath(string sHTML, Uri hostUri)")]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use ManageImagePath(string sHTML, Uri hostUri)")]
         public static string ManageImagePath(string sHTML, string hostWithScheme)
         {
             return ManageImagePath(sHTML, new Uri(hostWithScheme));
