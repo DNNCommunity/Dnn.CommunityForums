@@ -86,8 +86,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 						fi.LastPostUserName = fi.LastPostDisplayName;
 						fi.LastRead = DateTime.Parse(dr["LastRead"].ToString());
 
-						ForumGroup.Active = bool.Parse(dr["GroupActive"].ToString());
-						ForumGroup.Hidden = bool.Parse(dr["GroupHidden"].ToString());
+                        gi.Active = bool.Parse(dr["GroupActive"].ToString());
+                        gi.Hidden = bool.Parse(dr["GroupHidden"].ToString());
 
 						fi.ForumSettings = LoadSettings(dr); 
 						fi.TotalTopics = int.Parse(dr["TotalTopics"].ToString());
@@ -103,9 +103,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
 		}
 
-        internal static Forum FillForum(IDataRecord dr)
+        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo FillForum(IDataRecord dr)
         {
-            var fi = new Forum
+			DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo()
             {
                 ForumGroup = new ForumGroupInfo(),
                 ForumID = Convert.ToInt32(dr["ForumId"].ToString()),

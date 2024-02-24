@@ -33,8 +33,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-    [Scope("TopicId")]
-    [Cacheable("activeforums_Topics", CacheItemPriority.Normal)]
+    [Scope("ModuleId")]
+    [Cacheable("activeforums_Topics", CacheItemPriority.Low)]
     public class TopicInfo
     {
         public int TopicId { get; set; }

@@ -453,8 +453,7 @@ namespace DotNetNuke.Modules.ActiveForums
             //Edit a Reply
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.EditReply;
 
-            var rc = new ReplyController();
-            var ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(PostId);
 
             if (ri == null)
                 Response.Redirect(NavigateUrl(TabId));
@@ -586,7 +585,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (_editorType == EditorTypes.TEXTBOX)
                             userDisplay = "none";
 
-                        Content ci;
+                        DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
                         if (postId == TopicId)
                         {
                             ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
@@ -595,8 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            var rc = new ReplyController();
-                            var ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, postId);
+                            var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(postId);
                             ci = ri.Content;
                             sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, PortalId, UserId));
                         }
@@ -971,9 +969,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
             }
 
-            var tc = new TopicsController();
-            var rc = new ReplyController();
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri;
+            var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
+            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri;
+
+
 
             if (PostId > 0)
             {
@@ -982,7 +982,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
+                ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
                 var dt = DateTime.UtcNow;
                 ri.Content.DateCreated = dt;
                 ri.Content.DateUpdated = dt;
@@ -1019,7 +1019,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
-            rc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
@@ -1061,7 +1061,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else
                 {
                     var ctlUtils = new ControlUtils();
-                    var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
+                    var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                     var fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
 
                     if (fullURL.Contains("~/"))

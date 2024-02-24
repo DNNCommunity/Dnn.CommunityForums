@@ -18,27 +18,167 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Journal;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public partial class ReplyController
+    internal partial class ReplyController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>
     {
-        IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo> repo;
-
-        public ReplyController()
+        internal static DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetReply(int ReplyId) 
         {
-            ctx = DataContext.Instance();
-            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>();
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
         }
-
-        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo Get(int replyId)
+        internal static void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
-            var reply = repo.GetById(replyId);
+            // signal to platform that module has updated content in order to be included in incremental search crawls
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+        }
+        public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
+        {
+            DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
+            var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
+            JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
+
+            if (DelBehavior != 0)
+                return;
+
+            // If it's a hard delete, delete associated attachments
+            var attachmentController = new Data.AttachController();
+            var fileManager = FileManager.Instance;
+            var folderManager = FolderManager.Instance;
+            var attachmentFolder = folderManager.GetFolder(PortalId, "activeforums_Attach");
+
+            foreach (var attachment in attachmentController.ListForPost(TopicId, ReplyId))
+            {
+                attachmentController.Delete(attachment.AttachmentId);
+
+                var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
+
+                // Only delete the file if it exists in the attachment folder
+                if (file != null && file.FolderId == attachmentFolder.FolderID)
+                    fileManager.DeleteFile(file);
+            }
+        }
+        public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+        {
+            int replyId = -1;
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+            DateTime dt = DateTime.UtcNow;
+            ri.Content.DateUpdated = dt;
+            ri.Content.DateCreated = dt;
+            ri.Content.AuthorId = UserId;
+            ri.Content.AuthorName = DisplayName;
+            ri.Content.Subject = Subject;
+            ri.Content.Body = Body;
+            ri.Content.IPAddress = IPAddress;
+            ri.Content.Summary = string.Empty;
+            ri.IsApproved = IsApproved;
+            ri.IsDeleted = false;
+            ri.ReplyToId = ReplyToId;
+            ri.StatusId = -1;
+            ri.TopicId = TopicId;
+            replyId = Reply_Save(PortalId, ModuleId, ri);
+            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            return replyId;
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
+        public int Reply_Save(int PortalId, ReplyInfo ri)
+        {
+            return Reply_Save(PortalId, -1, ri);
+        }
+        public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
+        {
+            // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
+            UserProfileController.Profiles_ClearCache(ModuleId, ri.Content.AuthorId);
+
+            return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
+        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
+        {
+            IDataReader dr = DataProvider.Instance().Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = null;
+            while (dr.Read())
+            {
+                ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+                ri.ReplyId = Convert.ToInt32(dr["ReplyId"]);
+                ri.ReplyToId = Convert.ToInt32(dr["ReplyToId"]);
+                ri.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
+                ri.Content.AuthorName = dr["AuthorName"].ToString();
+                ri.Content.Body = dr["Body"].ToString();
+                ri.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
+                ri.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
+                ri.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
+                ri.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+                ri.Content.Subject = dr["Subject"].ToString();
+                ri.Content.Summary = dr["Summary"].ToString();
+                ri.Content.IPAddress = dr["IPAddress"].ToString();
+                ri.Author.AuthorId = ri.Content.AuthorId;
+                ri.Author.DisplayName = dr["DisplayName"].ToString();
+                ri.Author.Email = dr["Email"].ToString();
+                ri.Author.FirstName = dr["FirstName"].ToString();
+                ri.Author.LastName = dr["LastName"].ToString();
+                ri.Author.Username = dr["Username"].ToString();
+                ri.ContentId = Convert.ToInt32(dr["ContentId"]);
+                ri.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
+                ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
+                ri.StatusId = Convert.ToInt32(dr["StatusId"]);
+                ri.TopicId = Convert.ToInt32(dr["TopicId"]);
+                //tl.Add(ti)
+            }
+            dr.Close();
+            return ri;
+        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+        {
+            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+
+            ReplyController rc = new ReplyController();
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+            if (reply == null)
+            {
+                return null;
+            }
+            reply.IsApproved = true;
+            rc.Reply_Save(PortalId, ModuleId, reply);
+            TopicsController tc = new TopicsController();
+            tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+
+            if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
+            {
+                Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
+            }
+
+            Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
+
+            try
+            {
+                ControlUtils ctlUtils = new ControlUtils();
+                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
+
+                if (fullURL.Contains("~/"))
+                {
+                    fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                }
+                if (fullURL.EndsWith("/"))
+                {
+                    fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
+                }
+                Social amas = new Social();
+                amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, fi.Security.Read, fi.SocialGroupId);
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
             return reply;
         }
     }
