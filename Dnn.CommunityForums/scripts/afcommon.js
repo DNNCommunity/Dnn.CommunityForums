@@ -162,21 +162,30 @@ function amaf_UpdateForumSubscriberCount(mid, fid) {
         });
     }
 };
-function amaf_changeRate(r, t) {
-    var d = {};
-    d.action = 5;
-    d.rate = r;
-    d.topicid = t;
-    amaf.callback(d, amaf_rateComplete);
-};
-function amaf_rateComplete(result) {
-    var r = document.getElementById('af-rater');
-    var rate = result[0].result;
-    var rv = document.getElementById('af-rate-value');
-    rv.value = rate;
-    if (typeof (r) != 'undefined') {
-        r.className = 'fa-rater fa-rate' + rate;
+function amaf_ChangeTopicRating(mid, fid, tid, rating) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Rate?rating=' + rating,
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        var r = document.getElementById('af-rater');
+        var rate = data;
+        var rv = document.getElementById('af-rate-value');
+        rv.value = rate;
+        if (typeof (r) != 'undefined') {
+            r.className = 'fa-rater fa-rate' + rate;
+        };
+    }).fail(function (xhr, status) {
+        alert('error updating topic rating');
+    });
 };
 function amaf_hoverRate(obj, r) {
     var p = obj.parentNode;

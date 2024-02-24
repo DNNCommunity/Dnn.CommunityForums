@@ -26,6 +26,8 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.ActiveForums.API;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Search.Entities;
@@ -376,19 +378,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
-            /*
-			 * NOTE: In search results, the "source" display name comes from Module's display name, e.g. "Active Forums".
-			 * If you want to override this, 
-			 *     add an entry to ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].text 
-			 *     
-			 * e.g.,
-			 *   <data name="Module_Active Forums.Text" xml:space="preserve">
-             *       <value>Community Forums</value>
-             *  </data>
-			 * 
-			 * A possible future enhancement might be to write this entry or to perhaps change the module definition ...
-			 * 
-			 */
             var ms = new SettingsInfo { MainSettings = moduleInfo.ModuleSettings };
             /* if not using soft deletes, remove and rebuild entire index; 
 			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
@@ -404,9 +393,9 @@ namespace DotNetNuke.Modules.ActiveForums
             bool isHttps = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID).IsSecure;
             bool useFriendlyURLs = Utilities.UseFriendlyURLs(moduleInfo.ModuleID);
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
-            Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(moduleInfo.PortalID))
@@ -433,21 +422,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     bool isDeleted = Convert.ToBoolean(dr["isDeleted"]);
                     bool isApproved = Convert.ToBoolean(dr["isApproved"]);
                     int contentid = Convert.ToInt32(dr["ContentId"]);
-                    int forumid = Convert.ToInt32(dr["ForumId"]);
+                    int forumid = Convert.ToInt32(dr["ForumId"]); 
+                    int forumGroupId = Convert.ToInt32(dr["ForumGroupId"]); 
                     int topicid = Convert.ToInt32(dr["TopicId"]);
                     int replyId = Convert.ToInt32(dr["ReplyId"]);
+                    string topicURL = dr["TopicUrl"].ToString();
+                    string forumGroupUrlPrefix = dr["ForumGroupUrlPrefix"].ToString();
+                    string forumUrlPrefix = dr["ForumUrlPrefix"].ToString();
                     int jumpid = (replyId > 0) ? replyId : topicid;
                     body = Common.Utilities.HtmlUtils.Clean(body, false);
                     if (!(string.IsNullOrEmpty(body)))
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     };
+                    Forum forumInfo = fc.GetForum(moduleInfo.PortalID, moduleInfo.ModuleID, forumid);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext 
                     // so any code that relies on HttpContext cannot be used...
 
-                    string forumPrefixUrl = string.Empty;
-                    if (!ForumUrlPrefixes.TryGetValue(forumid, out forumPrefixUrl))
+                    string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
+                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")))
                     {
                         forumPrefixUrl = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
                         ForumUrlPrefixes.Add(forumid, forumPrefixUrl);

@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _topicURL = _drForum["URL"].ToString();
             _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
-            _isSubscribedTopic = UserId > 0 && Utilities.SafeConvertInt(_drForum["IsSubscribedTopic"]) > 0;
+            _isSubscribedTopic = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)); 
 
             if (Page.IsPostBack)
                 return;
@@ -1062,8 +1062,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Sort
             sbOutput.Replace("[SORTDROPDOWN]", "<asp:placeholder id=\"plhTopicSort\" runat=\"server\" />");
-            var rateControl = new Ratings(TopicId, true, _topicRating);
-            sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
+            if (sOutput.Contains("[POSTRATINGBUTTON]"))
+            {
+                var rateControl = new Ratings(ModuleId,ForumId, TopicId, true, _topicRating);
+                sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
+            }
 
             // Jump To
             sbOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");

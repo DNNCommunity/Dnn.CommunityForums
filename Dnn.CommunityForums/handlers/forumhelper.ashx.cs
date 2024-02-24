@@ -42,8 +42,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             GetUsersOnline,/* no longer used */
             TopicSubscribe,/* no longer used */
             ForumSubscribe,/* no longer used */
-            RateTopic,
-			DeleteTopic,/* no longer used */
+            RateTopic,/* no longer used */
+            DeleteTopic,/* no longer used */
             MoveTopic,/* no longer used */
             PinTopic,/* no longer used */
             LockTopic,/* no longer used */
@@ -81,50 +81,29 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 case Actions.UserPing:
                     throw new NotImplementedException();
-                ////sOut = UserOnline();
-                ////break;
                 case Actions.GetUsersOnline:
                     throw new NotImplementedException();
-                ////sOut = GetUserOnlineList();
-                ////break;
                 case Actions.TopicSubscribe:
                     throw new NotImplementedException();
-     //               sOut = SubscribeTopic();
-					//break;
-				case Actions.ForumSubscribe:
+                case Actions.ForumSubscribe:
                     throw new NotImplementedException();
-     //               sOut = SubscribeForum();
-					//break;
-				case Actions.RateTopic:
-					sOut = RateTopic();
-					break;
-				case Actions.DeleteTopic:
+                case Actions.RateTopic:
                     throw new NotImplementedException();
-     //               sOut = DeleteTopic();
-					//break;
-				case Actions.MoveTopic:
-                    throw new NotImplementedException();
-     //               sOut = MoveTopic();
-					//break;
 				case Actions.PinTopic:
                     throw new NotImplementedException();
-                //               sOut = PinTopic();
-                //break;
+				case Actions.DeleteTopic:
+                    throw new NotImplementedException();
+				case Actions.MoveTopic:
+                    throw new NotImplementedException();
                 case Actions.LockTopic:
                     throw new NotImplementedException();
-     //               sOut = LockTopic();
-					//break;
 				case Actions.MarkAnswer:
                     throw new NotImplementedException();
-     //               sOut = MarkAnswer();
-					//break;
 				case Actions.TagsAutoComplete:
 					sOut = TagsAutoComplete();
 					break;
 				case Actions.DeletePost:
                     throw new NotImplementedException();
-     //               sOut = DeletePost();
-					//break;
 				case Actions.LoadTopic:
 					sOut = LoadTopic();
 					break;
@@ -133,74 +112,53 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					break;
 				case Actions.ForumList:
                     throw new NotImplementedException();
-     //               sOut = ForumList();
-					//break;
                 case Actions.LikePost:
                     throw new NotImplementedException();
-                    //sOut = LikePost();
-                    //break;
-			}
-			context.Response.ContentType = "text/plain";
-			context.Response.Write(sOut);
-		}
-		private string RateTopic()
-		{
-			int r = 0;
-			int topicId = -1;
-			if (Params.ContainsKey("rate") && SimulateIsNumeric.IsNumeric(Params["rate"]))
-			{
-				r = int.Parse(Params["rate"].ToString());
-			}
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (r >= 1 && r <= 5 && topicId > 0)
-			{
-				DataProvider.Instance().Topics_AddRating(topicId, UserId, r, string.Empty, HttpContext.Current.Request.UserHostAddress.ToString());
-			}
-			r = DataProvider.Instance().Topics_GetRating(topicId);
-			return BuildOutput(r.ToString(), OutputCodes.Success, true, false);
-		}
-		private string TagsAutoComplete()
-		{
-			System.Text.StringBuilder sb = new System.Text.StringBuilder();
-			string q = string.Empty;
-			if (! (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["q"])))
-			{
-				q = HttpContext.Current.Request.QueryString["q"].Trim();
-				q = Utilities.Text.RemoveHTML(q);
-				q = Utilities.Text.CheckSqlString(q);
-				if (! (string.IsNullOrEmpty(q)))
-				{
-					if (q.Length > 20)
-					{
-						q = q.Substring(0, 20);
-					}
-				}
-			}
-			int i = 0;
-			if (! (string.IsNullOrEmpty(q)))
-			{
-				using (IDataReader dr = DataProvider.Instance().Tags_Search(PortalId, ModuleId, q))
-				{
-					while (dr.Read())
-					{
-						sb.AppendLine("{\"id\":\"" + dr["TagId"].ToString() + "\",\"name\":\"" + dr["TagName"].ToString() + "\",\"type\":\"0\"},");
-						i += 1;
-					}
-					dr.Close();
-				}
-			}
-			string @out = "[";
-			if (i > 0)
-			{
-				@out += sb.ToString().Trim();
-				@out = @out.Substring(0, @out.Length - 1);
-			}
-			@out += "]";
-			return @out;
-		}
+            }
+            context.Response.ContentType = "text/plain";
+            context.Response.Write(sOut);
+        }
+        
+        private string TagsAutoComplete()
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            string q = string.Empty;
+            if (!(string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["q"])))
+            {
+                q = HttpContext.Current.Request.QueryString["q"].Trim();
+                q = Utilities.Text.RemoveHTML(q);
+                q = Utilities.Text.CheckSqlString(q);
+                if (!(string.IsNullOrEmpty(q)))
+                {
+                    if (q.Length > 20)
+                    {
+                        q = q.Substring(0, 20);
+                    }
+                }
+            }
+            int i = 0;
+            if (!(string.IsNullOrEmpty(q)))
+            {
+                using (IDataReader dr = DataProvider.Instance().Tags_Search(PortalId, ModuleId, q))
+                {
+                    while (dr.Read())
+                    {
+                        sb.AppendLine("{\"id\":\"" + dr["TagId"].ToString() + "\",\"name\":\"" + dr["TagName"].ToString() + "\",\"type\":\"0\"},");
+                        i += 1;
+                    }
+                    dr.Close();
+                }
+            }
+            string @out = "[";
+            if (i > 0)
+            {
+                @out += sb.ToString().Trim();
+                @out = @out.Substring(0, @out.Length - 1);
+            }
+            @out += "]";
+            return @out;
+        }
+        
         private string LoadTopic()
         {
             int topicId = -1;

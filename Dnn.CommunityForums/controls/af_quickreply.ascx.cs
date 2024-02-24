@@ -25,6 +25,9 @@ using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Services.Social.Notifications;  
 using System.Web.UI.WebControls; 
 using System.Web.UI.HtmlControls;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.UI.UserControls;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -93,8 +96,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (AllowSubscribe)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
-                    subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
-                    subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
+                    subControl.Checked = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId));
+                    subControl.Text = "[RESX:TopicSubscribe:" + (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
@@ -314,6 +317,10 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
             ri.Content.IPAddress = Request.UserHostAddress;
+            if (UserPrefTopicSubscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
+            }
             ReplyId = rc.Reply_Save(PortalId, ModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));

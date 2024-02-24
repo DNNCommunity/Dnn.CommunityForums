@@ -844,7 +844,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                 ti.TopicType = TopicTypes.Poll;
-                tc.TopicSave(PortalId, ForumModuleId, ti);
+                tc.TopicSave(PortalId, ForumModuleId, ti); 
+                if (UserPrefTopicSubscribe)
+                {
+                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
+                }
                 tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             }
 
@@ -1009,7 +1013,11 @@ namespace DotNetNuke.Modules.ActiveForums
             var bSend = ri.IsApproved;
             ri.IsDeleted = false;
             ri.StatusId = ctlForm.StatusId;
-            ri.TopicId = TopicId;
+            ri.TopicId = TopicId; 
+            if (UserPrefTopicSubscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
+            }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);

@@ -260,7 +260,68 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return forumId;
         }
-        public static DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
+
+        public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
+        {
+            var userForums = GetForumsForUser(currentUser.UserRoles, portalId, moduleId, "CanView");
+            var dt = DataProvider.Instance().UI_ForumView(portalId, moduleId, currentUser.UserId, currentUser.IsSuperUser, userForums).Tables[0];
+            var i = 0;
+            var n = 1;
+            var tmpGroupCount = 0;
+            var tmpForumCount = 0;
+            var tmpGroupKey = string.Empty;
+            var tmpForumKey = string.Empty;
+            var sb = new StringBuilder();
+            foreach (DataRow dr in dt.Rows)
+            {
+                var bView = Permissions.HasPerm(dr["CanView"].ToString(), currentUser.UserRoles);
+                var groupName = Convert.ToString(dr["GroupName"]);
+                var groupId = Convert.ToInt32(dr["ForumGroupId"]);
+                var groupKey = groupName + groupId.ToString();
+                var forumName = Convert.ToString(dr["ForumName"]);
+                var forumId = Convert.ToInt32(dr["ForumId"]);
+                var forumKey = forumName + forumId.ToString();
+                var parentForumId = Convert.ToInt32(dr["ParentForumId"]);
+
+                //TODO - Need to add support for Group Permissions and GroupHidden
+
+                if (tmpGroupKey != groupKey)
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", groupName); n += 1;
+                    tmpGroupKey = groupKey;
+                }
+
+                if (bView)
+                {
+                    if (parentForumId == 0)
+                    {
+                        sb.AppendFormat("<option value=\"{0}\">{1}</option>", dr["ForumID"], "--" + dr["ForumName"]);
+                        n += 1;
+                        sb.Append(GetSubForums(n, Convert.ToInt32(dr["ForumId"]), dt, ref n));
+                    }
+
+                }
+            }
+
+            return sb.ToString();
+        }
+        private static string GetSubForums(int itemCount, int parentForumId, DataTable dtForums, ref int n)
+        {
+            var sb = new StringBuilder();
+            dtForums.DefaultView.RowFilter = string.Concat("ParentForumId = ", parentForumId);
+            if (dtForums.DefaultView.Count > 0)
+            {
+                foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
+                {
+                    sb.AppendFormat("<option value=\"{0}\">----{1}</option>", dr["ForumID"], dr["ForumName"]);
+                    itemCount += 1;
+                }
+            }
+            n = itemCount;
+            return sb.ToString();
+        }
+
+        public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
         {
             DataSet ds;
             DataTable dt;

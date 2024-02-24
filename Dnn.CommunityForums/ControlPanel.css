@@ -82,7 +82,7 @@ border-bottom-left-radius: 4px;}
 .amtabdisplay{width:auto;min-height:400px;}
 .amcpsubnav{padding-left:10px;padding-top:3px;padding-bottom:3px;background:#ddd;text-align:left;}
 .amcpsubnav .amcplnkbtn{color:#000000;}
-.amcpbrdnav{font-family:Tahoma;font-size:12px;color:#666; background-color:#ebf2ff;text-align:left;padding-top:4px;padding-left:4px;padding-bottom:4px}
+.amcpbrdnav{font-family:Tahoma;font-size:12px;color:#666; background-color:#ebf2ff;text-align:left;padding-top:4px;padding-left:10px;padding-bottom:4px}
 .amcpbrdnavitem{cursor:pointer;}
 .amcpcontrols{min-height:490px;font-family:Tahoma;font-size:11px; padding-top:5px;padding-left:10px;padding-right:10px;text-align:left;border-top:solid 1px #aaa;}
 .amcpfooter{margin-left:auto;margin-right:auto;min-width:650px;padding-top:0px !important;padding-top:3px;padding-left:0px !important;padding-left:4px;padding-right:0px !important;padding-right:4px;height:30px;background: #eee;border-left:solid 1px #666;border-right:solid 1px #666;border-bottom:solid 1px #666;}
