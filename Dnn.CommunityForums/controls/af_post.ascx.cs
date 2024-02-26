@@ -1013,7 +1013,11 @@ namespace DotNetNuke.Modules.ActiveForums
             var bSend = ri.IsApproved;
             ri.IsDeleted = false;
             ri.StatusId = ctlForm.StatusId;
-            ri.TopicId = TopicId;
+            ri.TopicId = TopicId; 
+            if (UserPrefTopicSubscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
+            }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);

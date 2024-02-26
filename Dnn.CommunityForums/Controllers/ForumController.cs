@@ -523,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                     continue;
 
                                 permSet = forumsDb.GetPermSet(permissionsId, requestedAccess);
-                                permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet("-1", 0, permSet);
+                                permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(DotNetNuke.Common.Globals.glbRoleAllUsers, 0, permSet);
                                 forumsDb.SavePermSet(permissionsId, requestedAccess, permSet);
                             }
                         }
