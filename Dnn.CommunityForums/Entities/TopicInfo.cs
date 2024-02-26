@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Xml;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -37,7 +38,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Topics", CacheItemPriority.Normal)]
     public class TopicInfo
     {
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Author _Author;
+        private int? forumId;
+
         public int TopicId { get; set; }
+        public int? ForumId 
+        { 
+            get
+            {
+                //TODO : clean this up to use DAL2
+                if (forumId == null)
+                {
+                    forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
+                }
+                return forumId; 
+            } 
+            set => forumId = value;
+        }
+        public int PortalId { get => Forum.PortalId; }
+        public int ModuleId { get => Content.ModuleId; }
         public int ContentId { get; set; }
         public int ViewCount { get; set; }
         public int ReplyCount { get; set; }
@@ -56,51 +77,81 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int Priority { get; set; } = 0;
         [ColumnName("URL")]
         public string TopicUrl { get; set; } = string.Empty;
+        [IgnoreColumn()]
+        public string URL => !(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)) ? ForumURL + TopicUrl : string.Empty;
+        [IgnoreColumn()]
+        public string ForumURL => !(string.IsNullOrEmpty(Forum.PrefixURL)) && !(string.IsNullOrEmpty(TopicUrl)) ? "/" + Forum.PrefixURL + "/" : string.Empty;
         public int NextTopic { get; set; }
         public int PrevTopic { get; set; }
         public string TopicData { get; set; } = string.Empty;
         [IgnoreColumn()]
-        public Content Content { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
+        {
+            get
+            {
+                if (_contentInfo == null)
+                {
+                    _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                }
+                return _contentInfo;
+            }
+            set
+            { _contentInfo = value; }
+        }
         [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
+        {
+            get
+            {
+                if (_forumInfo == null)
+                {
+                    _forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
+                }
+                return _forumInfo;
+            }
+            set
+            { _forumInfo = value; }
+        }
         [IgnoreColumn()]
-        public Author Author { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Author Author
+        {
+            get
+            {
+                if (Author == null)
+                {
+                    Author = new DotNetNuke.Modules.ActiveForums.Author();
+                    Author.AuthorId = Content.AuthorId;
+                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
+                    if (userInfo != null)
+                    {
+                        Author.Email = userInfo?.Email;
+                        Author.FirstName = userInfo?.FirstName;
+                        Author.LastName = userInfo?.LastName;
+                        Author.DisplayName = userInfo?.DisplayName;
+                        Author.Username = userInfo?.Username;
+                    }
+                    else
+                    {
+                        Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                    }
+                }
+                return Author;
+            }
+            set
+            { Author = value; }
+        }
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
         [IgnoreColumn()]
         public string Tags { get; set; }
         [IgnoreColumn()]
         public string Categories { get; set; } = string.Empty;
         [IgnoreColumn()]
-        public string ForumURL { get; set; } = string.Empty;
-
-        [IgnoreColumn()]
         public TopicInfo()
         {
-            Content = new Content();
-            Security = new PermissionInfo();
+            Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+            Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
             Author = new Author();
-        }
-        [IgnoreColumn()]
-        public string URL
-        {
-            get
-            {
-                if (!(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)))
-                {
-                    if (TopicUrl.StartsWith("/") & ForumURL.EndsWith("/"))
-                    {
-                        ForumURL = ForumURL.Substring(0, ForumURL.Length - 1);
-                        if (!(ForumURL.StartsWith("/")))
-                        {
-                            ForumURL = "/" + ForumURL;
-                        }
-                    }
-                    return ForumURL + TopicUrl;
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
         }
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties

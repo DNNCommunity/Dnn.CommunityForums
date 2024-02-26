@@ -32,6 +32,7 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -192,7 +193,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var ti = new TopicsController().Topics_Get(portalID, moduleID, topicId);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+
                 if (ti != null)
                 {
                     subject = ti.Content.Subject;

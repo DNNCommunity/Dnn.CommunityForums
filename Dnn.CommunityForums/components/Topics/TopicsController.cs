@@ -26,8 +26,6 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Search.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -64,9 +62,9 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.TopicIcon = string.Empty;
             ti.TopicType = TopicTypes.Topic;
             ti.ViewCount = 0;
-            topicId = TopicSave(PortalId, ModuleId, ti);
+            topicId = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId).TopicId;
 
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
 
             if (topicId > 0)
             {
@@ -98,19 +96,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use TopicsController.TopicSave(int PortalId, int ModuleId, TopicInfo ti)")]
-        public int TopicSave(int PortalId, TopicInfo ti)
-        {
-            return TopicSave(PortalId, -1, ti);
-        }
-        public int TopicSave(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
-        {
-            // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-            UserProfileController.Profiles_ClearCache(ModuleId, ti.Content.AuthorId);
-
-            return Convert.ToInt32(DataProvider.Instance().Topics_Save(PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
-
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
+        public int TopicSave(int PortalId, TopicInfo ti) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId).TopicId;
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
+        public int TopicSave(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId).TopicId;
         public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId)
         {
             int id = Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, -1);
@@ -118,126 +107,17 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public int Topics_SaveToForum(int ForumId, int TopicId, int PortalId, int ModuleId, int LastReplyId)
         {
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             int id = Convert.ToInt32(DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId));
 
             return id;
         }
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId)
-        {
-            return Topics_Get(PortalId, ModuleId, TopicId, -1, -1, false);
-        }
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity)
-        {
-            IDataReader dr = DataProvider.Instance().Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, WithSecurity);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = null;
-            while (dr.Read())
-            {
-                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-
-                if (!(dr["AnnounceEnd"] == DBNull.Value))
-                {
-                    ti.AnnounceEnd = Convert.ToDateTime(dr["AnnounceEnd"]);
-                }
-
-                if (!(dr["AnnounceStart"] == DBNull.Value))
-                {
-                    ti.AnnounceStart = Convert.ToDateTime(dr["AnnounceStart"]);
-                }
-                ti.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
-                ti.Content.AuthorName = dr["AuthorName"].ToString();
-                ti.Content.Body = dr["Body"].ToString();
-                ti.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ti.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
-                ti.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
-                ti.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-                ti.Content.Subject = dr["Subject"].ToString();
-                ti.Content.Summary = dr["Summary"].ToString();
-                ti.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ti.Author.AuthorId = ti.Content.AuthorId;
-                ti.Author.DisplayName = dr["DisplayName"].ToString();
-                ti.Author.Email = dr["Email"].ToString();
-                ti.Author.FirstName = dr["FirstName"].ToString();
-                ti.Author.LastName = dr["LastName"].ToString();
-                ti.Author.Username = dr["Username"].ToString();
-                ti.IsAnnounce = Convert.ToBoolean(dr["IsAnnounce"]);
-                ti.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
-                ti.IsArchived = Convert.ToBoolean(dr["IsArchived"]);
-                ti.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-                ti.IsLocked = Convert.ToBoolean(dr["IsLocked"]);
-                ti.IsPinned = Convert.ToBoolean(dr["IsPinned"]);
-                ti.ReplyCount = Convert.ToInt32(dr["ReplyCount"]);
-                ti.StatusId = Convert.ToInt32(dr["StatusId"]);
-                ti.TopicIcon = Convert.ToString(dr["TopicIcon"]);
-                ti.TopicId = Convert.ToInt32(dr["TopicId"]);
-                ti.TopicType = (TopicTypes)(dr["TopicType"]);
-                ti.ViewCount = Convert.ToInt32(dr["ViewCount"]);
-                ti.Tags = dr["Tags"].ToString();
-                ti.Priority = Convert.ToInt32(dr["Priority"].ToString());
-                ti.Categories = dr["Categories"].ToString();
-                ti.ForumURL = dr["ForumURL"].ToString();
-                ti.TopicUrl = dr["TopicURL"].ToString();
-                //.URL = dr("URL").ToString
-                try
-                {
-                    ti.TopicData = dr["TopicData"].ToString();
-                }
-                catch (Exception ex)
-                {
-                    ti.TopicData = string.Empty;
-                }
-
-            }
-            //If WithSecurity Then
-            //    dr.NextResult()
-            //    'Dim tmpDr As IDataReader = dr
-            //    ti.Security = CType(DotNetNuke.Common.Utilities.CBO.FillObject(dr, GetType(PermissionInfo)), PermissionInfo)
-            //End If
-
-            if (!dr.IsClosed)
-            {
-                dr.Close();
-            }
-
-            return ti;
-        }
-        public void Topics_Delete(int PortalId, int ModuleId, int ForumId, int TopicId, int DelBehavior)
-        {
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
-
-            DataProvider.Instance().Topics_Delete(ForumId, TopicId, DelBehavior);
-            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
-            try
-            {
-                var objectKey = string.Format("{0}:{1}", ForumId, TopicId);
-                JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
-            }
-            catch (Exception ex)
-            {
-
-            }
-
-            if (DelBehavior != 0)
-                return;
-
-            // If it's a hard delete, delete associated attachments
-            var attachmentController = new Data.AttachController();
-            var fileManager = FileManager.Instance;
-            var folderManager = FolderManager.Instance;
-            var attachmentFolder = folderManager.GetFolder(PortalId, "activeforums_Attach");
-
-            foreach (var attachment in attachmentController.ListForPost(TopicId, null))
-            {
-                attachmentController.Delete(attachment.AttachmentId);
-
-                var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
-
-                // Only delete the file if it exists in the attachment folder
-                if (file != null && file.FolderId == attachmentFolder.FolderID)
-                    fileManager.DeleteFile(file);
-            }
-
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
+        public void Topics_Delete(int PortalId, int ModuleId, int ForumId, int TopicId, int DelBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(TopicId);
         public void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId)
         {
             SettingsInfo settings = SettingsBase.GetModuleSettings(ModuleId);
@@ -266,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
             DataProvider.Instance().Topics_Move(PortalId, ModuleId, ForumId, TopicId);
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
 
         #region "Obsolete ISearchable replaced by DotNetNuke.Entities.Modules.ModuleSearchBase.GetModifiedSearchDocuments "
@@ -337,13 +217,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
             TopicsController tc = new TopicsController();
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             if (topic == null)
             {
                 return null;
             }
             topic.IsApproved = true;
-            tc.TopicSave(PortalId, ModuleId, topic);
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId);
             tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId);
 
             if (fi.ModApproveTemplateId > 0 & topic.Author.AuthorId > 0)
@@ -366,10 +246,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return topic;
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
-            // signal to platform that module has updated content in order to be included in incremental search crawls
-            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
 
         #region ModuleSearchBase

@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     SetPermissions(Convert.ToInt32(e.Parameters[1]));
                     ForumController fc = new ForumController();
-                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
+                    fi = new  DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
                 }
                 else
                 {
@@ -106,19 +106,18 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
                                     catch (Exception ex)
                                     {
-
+                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                                     }
 
                                 }
                                 if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                                 {
-                                    TopicsController tc = new TopicsController();
-                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                     if (ti != null)
                                     {
                                         auth = ti.Author;
                                     }
-                                    tc.Topics_Delete(PortalId, ModuleId, tmpForumId, tmpTopicId, delAction);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(tmpTopicId);
 
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
@@ -179,13 +178,13 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                             {
                                 TopicsController tc = new TopicsController();
-                                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
+                                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                 if (ti != null)
                                 {
                                     sSubject = ti.Content.Subject;
                                     sBody = ti.Content.Body;
                                     ti.IsApproved = true;
-                                    tc.TopicSave(PortalId, ModuleId, ti);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId);
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
@@ -224,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     rc.Reply_Save(PortalId, ForumModuleId, ri);
                                     TopicsController tc = new TopicsController();
                                     tc.Topics_SaveToForum(tmpForumId, tmpTopicId, PortalId, ModuleId, tmpReplyId);
-                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ForumModuleId, tmpTopicId, tmpForumId, -1, false);
+                                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {

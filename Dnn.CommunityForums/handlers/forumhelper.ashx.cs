@@ -423,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
@@ -572,17 +572,17 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
         }
         private string SaveTopic()
-        {
-            int topicId = -1;
-            int forumId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-            {
-                topicId = int.Parse(Params["topicid"].ToString());
-            }
-            if (topicId > 0)
-            {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+		{
+			int topicId = -1;
+			int forumId = -1;
+			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+			{
+				topicId = int.Parse(Params["topicid"].ToString());
+			}
+			if (topicId > 0)
+			{
+				TopicsController tc = new TopicsController();
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
@@ -627,8 +627,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         t.TopicData = tData.ToString();
                     }
                 }
-                tc.TopicSave(PortalId, ModuleId, t);
-                tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(t, t.TopicId);
+                Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 if (Params["tags"] != null)
                 {
                     DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumInfo.ModuleId, topicId);

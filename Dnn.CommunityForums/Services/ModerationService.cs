@@ -20,6 +20,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
@@ -108,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 var tc = new TopicsController();
-                var topic = tc.Topics_Get(PortalSettings.PortalId, _moduleId, _topicId);
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
 
@@ -172,14 +173,14 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 var tc = new TopicsController();
-                var topic = tc.Topics_Get(PortalSettings.PortalId, _moduleId, _topicId);
-                if (topic == null)
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
+                if (ti == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
 
-                authorId = topic.Content.AuthorId;
+                authorId = ti.Content.AuthorId;
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(_topicId);
 
-                tc.Topics_Delete(PortalSettings.PortalId, _moduleId, _forumId, _topicId, ms.DeleteBehavior);
-                tc.UpdateModuleLastContentModifiedOnDate(_moduleId);
+                
             }
 
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)

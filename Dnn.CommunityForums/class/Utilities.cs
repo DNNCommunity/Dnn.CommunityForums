@@ -1628,5 +1628,10 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 Exceptions.LogException(ex);
             }
         }
+        internal static void UpdateModuleLastContentModifiedOnDate(int ModuleId)
+        {
+            // signal to platform that module has updated content in order to be included in incremental search crawls
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+        }
     }
 }

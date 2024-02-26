@@ -183,8 +183,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Topics
         public abstract int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
         public abstract void Topics_Delete(int ForumId, int TopicId, int DelBehavior);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteForUser(int UserId)")]
         public abstract void Topics_Delete_For_User(int ModuleId, int UserId, int DelBehavior);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);
         public abstract int Topics_GetRating(int TopicId);
         public abstract IDataReader Topics_List(int ForumId, int PortalId, int ModuleId);

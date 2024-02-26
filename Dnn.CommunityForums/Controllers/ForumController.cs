@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return forumId;
         }
-        public static DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
+        public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
         {
             DataSet ds;
             DataTable dt;

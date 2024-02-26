@@ -209,7 +209,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         var ds = new DataSet();
                         dtForums = new DataTable();
-                        ForumTable = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView(PortalId, ForumModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); // KR - added cache retreival
+                        ForumTable = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumView(PortalId, ForumModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); // KR - added cache retreival
                         //ds = DataProvider.Instance.UI_ForumView(PortalId, ModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds)
                         //ForumTable = ds.Tables(0)
                     }
