@@ -31,6 +31,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Modules.ActiveForums.DAL2;
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     public class forumhelper : HandlerBase
@@ -184,23 +185,18 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		private string DeleteTopic()
 		{
 			int topicId = -1;
-			int forumId = -1;
 			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
 			{
 				topicId = int.Parse(Params["topicid"].ToString());
 			}
 			if (topicId > 0)
 			{
-				TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
-                if (f != null)
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                if (ti?.Forum != null)
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModDelete, ForumUser.UserRoles) || (t.Author.AuthorId == this.UserId && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.Delete, ForumUser.UserRoles)))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ti.Forum.Security.ModDelete, ForumUser.UserRoles) || (ti.Author.AuthorId == this.UserId && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ti.Forum.Security.Delete, ForumUser.UserRoles)))
                     {
-                        tc.Topics_Delete(PortalId, ModuleId, forumId, topicId, MainSettings.DeleteBehavior);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(topicId);
                         return BuildOutput(string.Empty, OutputCodes.Success, true);
                     }
                 }
@@ -222,16 +218,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
             if (topicId > 0)
             {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
-                if (f != null)
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                if (ti?.Forum != null)
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModMove, ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ti.Forum.Security.ModMove, ForumUser.UserRoles))
                     {
-                        tc.Topics_Move(PortalId, ModuleId, targetForumId, topicId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(topicId, targetForumId);
                         DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
                         return BuildOutput(string.Empty, OutputCodes.Success, true);
                     }
@@ -243,7 +235,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private string MarkAnswer()
         {
             int topicId = -1;
-            int forumId = -1;
             int replyId = -1;
             if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
             {
@@ -254,16 +245,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 replyId = int.Parse(Params["replyid"].ToString());
             }
             if (topicId > 0 & UserId > 0)
-            {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
-                if ((this.UserId == t.Author.AuthorId && !t.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, ForumUser.UserRoles))
+            { 
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                if ((this.UserId == ti.Author.AuthorId && !ti.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ti.Forum.Security.ModEdit, ForumUser.UserRoles))
                 {
-                    DataProvider.Instance().Reply_UpdateStatus(PortalId, ModuleId, topicId, replyId, UserId, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, ForumUser.UserRoles));
-
+                    DataProvider.Instance().Reply_UpdateStatus(PortalId, ModuleId, topicId, replyId, UserId, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ti.Forum.Security.ModEdit, ForumUser.UserRoles));
                 }
                 return BuildOutput(string.Empty, OutputCodes.Success, true);
             }
@@ -337,10 +323,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             if (TopicId > 0 & replyId < 1)
             {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId);
-
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModDelete, ForumUser.UserRoles) || (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.Delete, ForumUser.UserRoles) && ti.Content.AuthorId == UserId && ti.IsLocked == false))
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ti.Forum.Security.ModDelete, ForumUser.UserRoles) || (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ti.Forum.Security.Delete, ForumUser.UserRoles) && ti.Content.AuthorId == UserId && ti.IsLocked == false))
                 {
                     DataProvider.Instance().Topics_Delete(forumId, TopicId, MainSettings.DeleteBehavior);
                     string journalKey = string.Format("{0}:{1}", forumId.ToString(), TopicId.ToString());
@@ -610,7 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         t.TopicData = tData.ToString();
                     }
                 }
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(t, t.TopicId);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(t);
                 Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 if (Params["tags"] != null)
                 {

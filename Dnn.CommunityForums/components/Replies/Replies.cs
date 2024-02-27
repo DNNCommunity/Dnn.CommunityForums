@@ -257,21 +257,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             reply.IsApproved = true;
             rc.Reply_Save(PortalId, ModuleId, reply);
-            TopicsController tc = new TopicsController();
-            tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, ReplyId);
             if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
             {
                 Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
             }
-
             Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
 
             try
             {
-                ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
+                string fullURL = new ControlUtils().BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
 
                 if (fullURL.Contains("~/"))
                 {

@@ -774,14 +774,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.TopicData = tData.ToString();
             }
 
-            TopicId = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId).TopicId;
+            TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             if (ti != null)
             {
-                tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ForumModuleId);
+                TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
                 SaveAttachments(ti.ContentId);
                 if (ti.IsApproved && ti.Author.AuthorId > 0)
-                {
+                {//TODO: move this to more appropriate place and make consistent with reply count
                     var uc = new Data.Profiles();
                     uc.Profile_UpdateTopicCount(PortalId, ti.Author.AuthorId);
                 }
@@ -844,7 +844,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 ti.TopicType = TopicTypes.Poll;
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                 if (UserPrefTopicSubscribe)
                 {
                     new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
@@ -971,7 +971,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
             }
 
-            var tc = new TopicsController();
             var rc = new ReplyController();
             DotNetNuke.Modules.ActiveForums.ReplyInfo ri;
 
@@ -1030,10 +1029,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 if (ri.IsApproved == false)
-                {
-                    var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
-
+                {                    
                     var mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
                     var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
                     var notifySubject = Utilities.GetSharedResource("NotificationSubjectReply");
@@ -1060,10 +1058,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    var ctlUtils = new ControlUtils();
-                    var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-                    var fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
-
+                    var fullURL = new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
 

@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
@@ -122,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (ti != null)
                 {
                     ti.IsPinned = !ti.IsPinned;
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                     return Request.CreateResponse(HttpStatusCode.OK, value: ti.IsPinned);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -150,7 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (ti != null)
                 {
                     ti.IsLocked = !ti.IsLocked;
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().Save<int>(ti, ti.TopicId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                     return Request.CreateResponse(HttpStatusCode.OK, ti.IsLocked);
                 }
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -172,11 +173,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             int forumId = dto.ForumId;
             if (topicId > 0 && forumId > 0)
             {
-                TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 if (ti != null)
                 {
-                    tc.Topics_Move(ActiveModule.PortalID, ForumModuleId, forumId, topicId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(topicId, forumId);
                     DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }

@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public partial class ForumInfo
     {
         private ForumGroupInfo _forumGroup;
+        private PermissionInfo _security;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -75,9 +76,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                return _forumGroup ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); 
+                if (_forumGroup == null)
+                {
+                    _forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId);
+                }
+                return _forumGroup;
             }
-            set => _forumGroup = value;
+            set
+            {
+                _forumGroup = value;
+            }
         }
 
         [IgnoreColumn()]
@@ -136,7 +144,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         #region "Settings"
 
         [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
+        public PermissionInfo Security
+        {
+            get
+            {
+                if (_security == null)
+                { 
+                    _security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId);
+                }
+                return _security; 
+            }
+            set => _security = value;
+        }
 
         [IgnoreColumn()]
         public Hashtable ForumSettings { get; set; }

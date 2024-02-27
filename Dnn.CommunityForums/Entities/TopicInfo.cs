@@ -41,15 +41,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int? forumId;
+        private int forumId;
 
         public int TopicId { get; set; }
-        public int? ForumId 
+        public int ForumId 
         { 
             get
             {
                 //TODO : clean this up to use DAL2
-                if (forumId == null)
+                if (forumId < 1)
                 {
                     forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
                 }

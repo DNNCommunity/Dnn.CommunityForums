@@ -65,8 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TopicsController();
-                var topic = tc.ApproveTopic(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
             }
