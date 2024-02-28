@@ -153,13 +153,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static string GetRoleIds(int PortalId, string[] Roles)
         {
-            string RoleIds = string.Empty;
-            foreach (string role in Roles)
+            string RoleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, PortalId));
+            if (string.IsNullOrEmpty(RoleIds))
             {
-                if (!string.IsNullOrEmpty(role))
+                foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
                 {
-                    RoleIds += string.Concat(GetRoleName(PortalId, role), ";");
+                    string roleName = ri.RoleName;
+                    foreach (string role in Roles)
+                    {
+                        if (!string.IsNullOrEmpty(role))
+                        {
+                            if (roleName == role)
+                            {
+                                RoleIds += string.Concat(ri.RoleID.ToString(), ";");
+                                break;
+                            }
+                        }
+                    }
                 }
+                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, PortalId), RoleIds);
             }
             return RoleIds;
         }
