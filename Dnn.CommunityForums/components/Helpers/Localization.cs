@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
 				node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
 			}
-			node.InnerXml = HttpContext.Current.Server.HtmlEncode(text);
+			node.InnerXml = HttpUtility.HtmlEncode(text);
 
 		}
 	}

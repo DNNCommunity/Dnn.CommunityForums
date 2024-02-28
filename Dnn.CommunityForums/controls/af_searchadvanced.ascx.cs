@@ -336,10 +336,10 @@ namespace DotNetNuke.Modules.ActiveForums
             var @params = new List<string> { ParamKeys.ViewType + "=search" };
 
             if(!string.IsNullOrWhiteSpace(searchText))
-                @params.Add("q=" + Server.UrlEncode(searchText));
+                @params.Add("q=" + System.Web.HttpUtility.UrlEncode(searchText));
 
             if (!string.IsNullOrWhiteSpace(tags))
-                @params.Add("tg=" + Server.UrlEncode(tags));
+                @params.Add("tg=" + System.Web.HttpUtility.UrlEncode(tags));
 
             if(searchType > 0)
                 @params.Add("k=" + searchType);
@@ -358,10 +358,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             if(!string.IsNullOrWhiteSpace(authorUsername))
-                @params.Add("author=" + Server.UrlEncode(authorUsername));
+                @params.Add("author=" + System.Web.HttpUtility.UrlEncode(authorUsername));
 
             if(!string.IsNullOrWhiteSpace(forums))
-                @params.Add("f=" + Server.UrlEncode(forums));
+                @params.Add("f=" + System.Web.HttpUtility.UrlEncode(forums));
 
             if (SocialGroupId > 0)
                 @params.Add("GroupId=" + SocialGroupId.ToString());

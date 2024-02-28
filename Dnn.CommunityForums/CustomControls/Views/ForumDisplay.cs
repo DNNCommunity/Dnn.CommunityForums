@@ -56,9 +56,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = Convert.ToString(obj);
             }
             sTemp = Utilities.LocalizeControl(sTemp);
-            if (!(sTemp.Contains(Globals.ControlRegisterAFTag)))
+            if (!(sTemp.Contains(Globals.ForumsControlsRegisterAFTag)))
             {
-                sTemp = Globals.ControlRegisterAFTag + sTemp;
+                sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
             }
             Control ctl = Page.ParseControl(sTemp);
             LinkControls(ctl.Controls);
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sURL = Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
 
                 }
-                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + Utilities.HTMLEncode(Subject) + "\" runat=\"server\" />";
+                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(Subject) + "\" runat=\"server\" />";
             }
             return sOut;
         }
