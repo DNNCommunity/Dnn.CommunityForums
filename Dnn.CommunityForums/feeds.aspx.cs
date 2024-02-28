@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
              */
             body = body.Replace("src=\"/Portals", "src=\"" + DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host) + "/Portals");
-            body = Utilities.ManageImagePath(body, DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host));
+            body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Request.Url.Host)));
 
             sb.Append(WriteElement("title", dr["Subject"].ToString(), Indent + 1));
             sb.Append(WriteElement("description", body, Indent + 1));

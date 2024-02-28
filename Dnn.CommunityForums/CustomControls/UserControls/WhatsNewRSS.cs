@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private static string CleanXmlString(string xmlString)
         {
-            xmlString = HttpContext.Current.Server.HtmlEncode(xmlString);
+            xmlString = HttpUtility.HtmlEncode(xmlString);
             return xmlString;
         }
 
@@ -233,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(WriteElement("channel", indent));
             sb.Append(WriteElement("title", ps.PortalName, indent));
             sb.Append(WriteElement("link", "http://" + HttpContext.Current.Request.Url.Host, indent));
-            sb.Append(WriteElement("description", ps.PortalName, indent));
+            sb.Append(value: WriteElement("description", ps.PortalName, indent));
             sb.Append(WriteElement("generator", "ActiveForums  5.0", indent));
             sb.Append(WriteElement("language", ps.DefaultLanguage, indent));
 
@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                         }
                         bodyHtml = bodyHtml.Replace("src=\"/Portals", "src=\"" + Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/Portals");
-                        bodyHtml = Utilities.ManageImagePath(bodyHtml, Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host));
+                        bodyHtml = Utilities.ManageImagePath(bodyHtml, new Uri(Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host)));
 
                         sb.Append(WriteElement("description", bodyHtml, indent + 1));
                     }
