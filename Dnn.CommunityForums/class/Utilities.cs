@@ -323,36 +323,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId) [Note URL in NavigateURL() is uppercase]")]
-        public static string NavigateUrl(int tabId)
-        {
-            return NavigateURL(tabId);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
-        public static string NavigateUrl(int tabId, int portalId, string controlKey, params string[] additionalParameters)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, Utilities.GetPortalSettings(portalId), controlKey, additionalParameters);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
-        public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
-        public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
-        {
-            return DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(tabId, controlKey, additionalParameters.ToArray());
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
-        public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
-        {
-            return NavigateURL(tabId, controlKey, pageName, portalId, additionalParameters);
-        }
-
-        public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue)
-        {
-            BindEnum(pDDL, enumType, pColValue, addEmptyValue, false, -1);
-        }
+        
 
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)
         {
@@ -1177,7 +1148,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, HttpUtility.HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
@@ -1189,7 +1160,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, HttpUtility.HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {

@@ -68,6 +68,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test()]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTestEmptyTag()
         {
             //Arrange
@@ -77,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             Assert.IsEmpty(actualResult);
         }
         [Test()]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTest()
         {
             //Arrange
@@ -88,6 +90,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             Assert.AreEqual(actualResult, expectedResult);
         }
         [Test()]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTestEmptyTag()
         {
             //Arrange
@@ -97,6 +100,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             Assert.IsEmpty(actualResult);
         }
         [Test()]
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTest()
         {
             //Arrange

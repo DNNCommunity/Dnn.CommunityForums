@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         var ds = new DataSet();
                         dtForums = new DataTable();
                         var fc = new ForumController();
-                        ForumTable = fc.GetForumView(PortalId, ForumModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); // KR - added cache retreival
+                        ForumTable = fc.GetForumView(PortalId, ForumModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); 
                         //ds = DataProvider.Instance.UI_ForumView(PortalId, ModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds)
                         //ForumTable = ds.Tables(0)
                     }
