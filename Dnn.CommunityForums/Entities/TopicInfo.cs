@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private int forumId;
 
         public int TopicId { get; set; }
+        [IgnoreColumn()]
         public int ForumId 
         { 
             get
@@ -57,7 +58,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             } 
             set => forumId = value;
         }
+        [IgnoreColumn()]
         public int PortalId { get => Forum.PortalId; }
+        [IgnoreColumn()]
         public int ModuleId { get => Content.ModuleId; }
         public int ContentId { get; set; }
         public int ViewCount { get; set; }
@@ -117,28 +120,28 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (Author == null)
+                if (_Author == null)
                 {
-                    Author = new DotNetNuke.Modules.ActiveForums.Author();
-                    Author.AuthorId = Content.AuthorId;
+                    _Author = new DotNetNuke.Modules.ActiveForums.Author();
+                    _Author.AuthorId = Content.AuthorId;
                     var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
                     if (userInfo != null)
                     {
-                        Author.Email = userInfo?.Email;
-                        Author.FirstName = userInfo?.FirstName;
-                        Author.LastName = userInfo?.LastName;
-                        Author.DisplayName = userInfo?.DisplayName;
-                        Author.Username = userInfo?.Username;
+                        _Author.Email = userInfo?.Email;
+                        _Author.FirstName = userInfo?.FirstName;
+                        _Author.LastName = userInfo?.LastName;
+                        _Author.DisplayName = userInfo?.DisplayName;
+                        _Author.Username = userInfo?.Username;
                     }
                     else
                     {
-                        Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                        _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
                     }
                 }
-                return Author;
+                return _Author;
             }
             set
-            { Author = value; }
+            { _Author = value; }
         }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
@@ -151,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
-            Author = new Author();
+            _Author = new Author();
         }
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties

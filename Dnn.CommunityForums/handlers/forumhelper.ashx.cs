@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             ForumSubscribe,/* no longer used */
             RateTopic,/* no longer used */
             DeleteTopic,
-			MoveTopic,/* no longer used */
+			MoveTopic,
             PinTopic,/* no longer used */
             LockTopic,/* no longer used */
             MarkAnswer,
