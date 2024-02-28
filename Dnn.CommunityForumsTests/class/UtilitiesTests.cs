@@ -68,42 +68,42 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         }
 
         [Test()]
-        public void HTMLEncodeTestEmptyTag()
+        public void HtmlEncodeTestEmptyTag()
         {
             //Arrange
             //Act
-            string actualResult = Utilities.HTMLEncode(string.Empty);
+            string actualResult = Utilities.HtmlEncode(string.Empty);
             //Assert
             Assert.IsEmpty(actualResult);
         }
         [Test()]
-        public void HTMLEncodeTest()
+        public void HtmlEncodeTest()
         {
             //Arrange
             string tag = "<p>";
             string expectedResult = "&lt;p&gt;";
             //Act
-            string actualResult = Utilities.HTMLEncode(tag);
+            string actualResult = Utilities.HtmlEncode(tag);
             //Assert
             Assert.AreEqual(actualResult, expectedResult);
         }
         [Test()]
-        public void HTMLDecodeTestEmptyTag()
+        public void HtmlDecodeTestEmptyTag()
         {
             //Arrange
             //Act
-            string actualResult = Utilities.HTMLDecode(string.Empty);
+            string actualResult = Utilities.HtmlDecode(string.Empty);
             //Assert
             Assert.IsEmpty(actualResult);
         }
         [Test()]
-        public void HTMLDecodeTest()
+        public void HtmlDecodeTest()
         {
             //Arrange
             string tag = "&lt;p&gt;";
             string expectedResult = "<p>";
             //Act
-            string actualResult = Utilities.HTMLDecode(tag);
+            string actualResult = Utilities.HtmlDecode(tag);
             //Assert
             Assert.AreEqual(actualResult, expectedResult);
         }
