@@ -409,8 +409,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             for (var i = 0; i < xNodeList.Count; i++)
                             {
-                                var pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                var pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                var pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                                 var xmlAttributeCollection = xNodeList[i].Attributes;
                                 if (xmlAttributeCollection == null)
                                     continue;
@@ -611,7 +611,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (body.ToUpper().Contains("<CODE") | body.ToUpper().Contains("[CODE]"))
                         {
                             var objCode = new CodeParser();
-                            body = CodeParser.ParseCode(Utilities.HTMLDecode(body));
+                            body = CodeParser.ParseCode(System.Web.HttpUtility.HtmlDecode(body));
                         }
                     }
                     else
@@ -844,7 +844,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                 ti.TopicType = TopicTypes.Poll;
-                tc.TopicSave(PortalId, ForumModuleId, ti);
+                tc.TopicSave(PortalId, ForumModuleId, ti); 
+                if (UserPrefTopicSubscribe)
+                {
+                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
+                }
                 tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             }
 
@@ -930,7 +934,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (Request.Params[ParamKeys.QuoteId] != null)
             {
-                body = Utilities.HTMLDecode(body);
+                body = System.Web.HttpUtility.HtmlDecode(body);
             }
             int authorId;
             string authorName;
@@ -1009,7 +1013,11 @@ namespace DotNetNuke.Modules.ActiveForums
             var bSend = ri.IsApproved;
             ri.IsDeleted = false;
             ri.StatusId = ctlForm.StatusId;
-            ri.TopicId = TopicId;
+            ri.TopicId = TopicId; 
+            if (UserPrefTopicSubscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
+            }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
             rc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);

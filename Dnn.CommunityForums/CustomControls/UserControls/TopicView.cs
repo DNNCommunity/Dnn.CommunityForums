@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _topicURL = _drForum["URL"].ToString();
             _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
-            _isSubscribedTopic = UserId > 0 && Utilities.SafeConvertInt(_drForum["IsSubscribedTopic"]) > 0;
+            _isSubscribedTopic = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)); 
 
             if (Page.IsPostBack)
                 return;
@@ -530,8 +530,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             for (var i = 0; i < xNodeList.Count; i++)
                             {
-                                var pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                var pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                var pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
 
                                 // This builds the replacement text for the properties template
                                 var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
@@ -656,8 +656,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             topic = ParseTopic(topic);
 
-            if (!topic.Contains(Globals.ControlRegisterTag))
-                topic = Globals.ControlRegisterTag + topic;
+            if (!topic.Contains(Globals.ForumsControlsRegisterAMTag))
+                topic = Globals.ForumsControlsRegisterAMTag + topic;
 
             topic = Utilities.LocalizeControl(topic);
 
@@ -1062,8 +1062,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Sort
             sbOutput.Replace("[SORTDROPDOWN]", "<asp:placeholder id=\"plhTopicSort\" runat=\"server\" />");
-            var rateControl = new Ratings(TopicId, true, _topicRating);
-            sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
+            if (sOutput.Contains("[POSTRATINGBUTTON]"))
+            {
+                var rateControl = new Ratings(ModuleId,ForumId, TopicId, true, _topicRating);
+                sbOutput.Replace("[POSTRATINGBUTTON]", rateControl.Render());
+            }
 
             // Jump To
             sbOutput.Replace("[JUMPTO]", "<asp:placeholder id=\"plhQuickJump\" runat=\"server\" />");
@@ -1586,7 +1589,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
             {
                 var objCode = new CodeParser();
-                sBody = CodeParser.ParseCode(Utilities.HTMLDecode(sBody));
+                sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
             }
             sBody = Utilities.StripExecCode(sBody);
             if (MainSettings.AutoLinkEnabled)

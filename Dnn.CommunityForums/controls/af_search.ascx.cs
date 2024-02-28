@@ -241,10 +241,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     _parameters = new List<string>();
 
                     if (!string.IsNullOrWhiteSpace(SearchText))
-                        _parameters.Add("q=" + Server.UrlEncode(SearchText));
+                        _parameters.Add("q=" + System.Web.HttpUtility.UrlEncode(SearchText));
 
                     if (!string.IsNullOrWhiteSpace(Tags))
-                        _parameters.Add("tg=" + Server.UrlEncode(Tags));
+                        _parameters.Add("tg=" + System.Web.HttpUtility.UrlEncode(Tags));
 
                     if (SearchId > 0)
                         _parameters.Add("sid=" + SearchId);
@@ -268,10 +268,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         _parameters.Add("srt=" + Sort);
 
                     if (!string.IsNullOrWhiteSpace(AuthorUsername))
-                        _parameters.Add("author=" + Server.UrlEncode(AuthorUsername));
+                        _parameters.Add("author=" + System.Web.HttpUtility.UrlEncode(AuthorUsername));
 
                     if (!string.IsNullOrWhiteSpace(Forums))
-                        _parameters.Add("f=" + Server.UrlEncode(Forums));
+                        _parameters.Add("f=" + System.Web.HttpUtility.UrlEncode(Forums));
                 }
 
                 return _parameters;

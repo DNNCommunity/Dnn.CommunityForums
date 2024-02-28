@@ -394,7 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
-                        upi.Signature = Utilities.HTMLEncode(upi.Signature);
+                        upi.Signature = HttpUtility.HtmlEncode(upi.Signature);
                     }
                     else if (MainSettings.AllowSignatures == 2)
                     {
@@ -631,6 +631,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (tmp.Contains("<dnn:"))
                         {
                             tmp =  Globals.DnnControlsRegisterTag + tmp;
+                        }
+                        if (tmp.Contains("<social:"))
+                        {
+                            tmp = Globals.SocialRegisterTag + tmp;
                         }
                         Control ctl = this.ParseControl(tmp);
                         tbc.Controls.Add(ctl);
