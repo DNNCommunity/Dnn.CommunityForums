@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (System.Text.RegularExpressions.Match match in matches)
             {
                 var sRoles = match.Groups[3].Value;
-                if (Permissions.HasAccess(sRoles, userRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(sRoles, userRoles))
                 {
                     template = template.Replace(match.Groups[1].Value, string.Empty);
                     template = template.Replace(match.Groups[5].Value, string.Empty);

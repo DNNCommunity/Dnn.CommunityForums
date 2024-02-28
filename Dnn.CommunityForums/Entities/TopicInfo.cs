@@ -90,30 +90,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get
-            {
-                if (_contentInfo == null)
-                {
-                    _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
-                }
-                return _contentInfo;
-            }
-            set
-            { _contentInfo = value; }
+            get => _contentInfo ?? new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+            set => _contentInfo = value;
         }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get
-            {
-                if (_forumInfo == null)
-                {
-                    _forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
-                }
-                return _forumInfo;
-            }
-            set
-            { _forumInfo = value; }
+            get => _forumInfo ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
+            set => _forumInfo = value;
         }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
