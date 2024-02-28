@@ -778,8 +778,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 for (i = 0; i < xNodeList.Count; i++)
                                 {
                                     string tmp = sPropTemplate;
-                                    string pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                    string pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                    string pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                    string pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                                     tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
                                     tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
                                     sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));

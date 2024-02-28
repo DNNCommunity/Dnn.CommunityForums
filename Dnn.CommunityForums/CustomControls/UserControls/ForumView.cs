@@ -700,7 +700,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
                 }
-                sb.Append("<a href=\"" + sURL + "\">" + Utilities.HTMLEncode(Subject) + "</a>");
+                sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
             }
             return sb.ToString();
         }

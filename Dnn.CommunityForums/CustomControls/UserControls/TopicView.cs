@@ -530,8 +530,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             for (var i = 0; i < xNodeList.Count; i++)
                             {
-                                var pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                var pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                var pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
 
                                 // This builds the replacement text for the properties template
                                 var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
@@ -1589,7 +1589,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (Regex.IsMatch(sBody, "\\[CODE([^>]*)\\]", RegexOptions.IgnoreCase))
             {
                 var objCode = new CodeParser();
-                sBody = CodeParser.ParseCode(Utilities.HTMLDecode(sBody));
+                sBody = CodeParser.ParseCode(HttpUtility.HtmlDecode(sBody));
             }
             sBody = Utilities.StripExecCode(sBody);
             if (MainSettings.AutoLinkEnabled)

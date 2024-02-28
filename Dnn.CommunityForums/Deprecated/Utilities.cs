@@ -57,5 +57,95 @@ namespace DotNetNuke.Modules.ActiveForums
             return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)")]
+        public static void BindEnum(System.Web.UI.WebControls.DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue)
+        {
+            BindEnum(pDDL, enumType, pColValue, addEmptyValue, false, -1);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public static string ParsePre(string strMessage)
+        {
+            var objRegEx = new System.Text.RegularExpressions.Regex("<pre>(.*?)</pre>");
+            strMessage = "<code>" + HttpUtility.HtmlDecode(objRegEx.Replace(strMessage, "$1")) + "</code>";
+            return strMessage;
+        }
+
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        internal static string ParseSecurityTokens(string template, string userRoles)
+        {
+            const string pattern = @"(\[AF:SECURITY:(.+?):(.+?)\])(.|\n)*?(\[/AF:SECURITY:(.+?):(.+?)\])";
+
+            var sKey = string.Empty;
+            var sReplace = string.Empty;
+
+            var regExp = new System.Text.RegularExpressions.Regex(pattern);
+            var matches = regExp.Matches(template);
+            foreach (System.Text.RegularExpressions.Match match in matches)
+            {
+                var sRoles = match.Groups[3].Value;
+                if (Permissions.HasAccess(sRoles, userRoles))
+                {
+                    template = template.Replace(match.Groups[1].Value, string.Empty);
+                    template = template.Replace(match.Groups[5].Value, string.Empty);
+                }
+                else
+                {
+                    template = template.Replace(match.Value, string.Empty);
+                }
+            }
+            return template;
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        /// <summary>
+        /// Calculates a friendly display string based on an input timespan
+        /// </summary>
+        public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
+        {
+            var newDate = DateTime.Parse(GetDate(displayDate, ModuleId, timeZoneOffset));
+            var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
+            var delta = ts.TotalSeconds;
+            if (delta <= 1)
+                return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
+
+            if (delta < 60)
+                return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
+
+            if (delta < 120)
+                return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
+
+            if (delta < (45 * 60))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
+
+            if (delta < (90 * 60))
+                return GetSharedResource("[RESX:TimeSpan:HourAgo]");
+
+            if (delta < (24 * 60 * 60))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
+
+            if (delta < (48 * 60 * 60))
+                return GetSharedResource("[RESX:TimeSpan:DayAgo]");
+
+            if (delta < (72 * 60 * 60))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
+
+            if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
+                return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
+
+            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
+                return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
+
+            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
+                return GetSharedResource("[RESX:TimeSpan:YearAgo]");
+
+            return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
+
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
+        public static string HtmlEncode(string strMessage = "") => HttpUtility.HtmlEncode(strMessage);
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
+        public static string HtmlDecode(string strMessage) => HttpUtility.HtmlDecode(strMessage);
+
     }
 }

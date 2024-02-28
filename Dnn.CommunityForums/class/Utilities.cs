@@ -42,52 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
 
-
-        /// <summary>
-        /// Calculates a friendly display string based on an input timespan
-        /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
-        {
-            var newDate = DateTime.Parse(GetDate(displayDate, ModuleId, timeZoneOffset));
-            var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
-            var delta = ts.TotalSeconds;
-            if (delta <= 1)
-                return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
-
-            if (delta < 60)
-                return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
-
-            if (delta < 120)
-                return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
-
-            if (delta < (45 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
-
-            if (delta < (90 * 60))
-                return GetSharedResource("[RESX:TimeSpan:HourAgo]");
-
-            if (delta < (24 * 60 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
-
-            if (delta < (48 * 60 * 60))
-                return GetSharedResource("[RESX:TimeSpan:DayAgo]");
-
-            if (delta < (72 * 60 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
-
-            if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
-                return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
-
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
-
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
-                return GetSharedResource("[RESX:TimeSpan:YearAgo]");
-
-            return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
-
-        }
-
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
@@ -117,31 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[PORTALID]", config.PortalId.ToString());
             template = template.Replace("[MODULEID]", config.ModuleId.ToString());
 
-            return template;
-        }
-
-        internal static string ParseSecurityTokens(string template, string userRoles)
-        {
-            const string pattern = @"(\[AF:SECURITY:(.+?):(.+?)\])(.|\n)*?(\[/AF:SECURITY:(.+?):(.+?)\])";
-
-            var sKey = string.Empty;
-            var sReplace = string.Empty;
-
-            var regExp = new Regex(pattern);
-            var matches = regExp.Matches(template);
-            foreach (Match match in matches)
-            {
-                var sRoles = match.Groups[3].Value;
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(sRoles, userRoles))
-                {
-                    template = template.Replace(match.Groups[1].Value, string.Empty);
-                    template = template.Replace(match.Groups[5].Value, string.Empty);
-                }
-                else
-                {
-                    template = template.Replace(match.Value, string.Empty);
-                }
-            }
             return template;
         }
 
@@ -410,12 +339,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
-
-        public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue)
-        {
-            BindEnum(pDDL, enumType, pColValue, addEmptyValue, false, -1);
-        }
-
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)
         {
             pDDL.Items.Clear();
@@ -580,7 +503,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
 
-            var strMessage = HTMLEncode(text);
+            var strMessage = HttpUtility.HtmlEncode(text);
 
             if (strMessage != string.Empty)
             {
@@ -602,7 +525,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (useFilter)
                         strMessage = Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
 
-                    strMessage = HTMLEncode(strMessage);
+                    strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
 
                     i = 0;
@@ -617,7 +540,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (!allowHTML)
-                        strMessage = HTMLEncode(strMessage);
+                        strMessage = HttpUtility.HtmlEncode(strMessage);
 
                     if (useFilter)
                         strMessage = Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
@@ -689,32 +612,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             return !string.IsNullOrEmpty(body.Replace("&nbsp;", string.Empty));
         }
-
-        public static string HTMLEncode(string strMessage = "")
-        {
-            if (strMessage != string.Empty)
-            {
-                strMessage = strMessage.Replace(">", "&gt;");
-                strMessage = strMessage.Replace("<", "&lt;");
-            }
-
-            return strMessage;
-        }
-
-        public static string ParsePre(string strMessage)
-        {
-            var objRegEx = new Regex("<pre>(.*?)</pre>");
-            strMessage = "<code>" + HTMLDecode(objRegEx.Replace(strMessage, "$1")) + "</code>";
-            return strMessage;
-        }
-
-        public static string HTMLDecode(string strMessage)
-        {
-            strMessage = strMessage.Replace("&gt;", ">");
-            strMessage = strMessage.Replace("&lt;", "<");
-            return strMessage;
-        }
-
         public static string StripHTMLTag(string sText)
         {
             if (string.IsNullOrEmpty(sText))
@@ -1140,11 +1037,11 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HTMLEncode(subject));
+                        sb.Append(HttpUtility.HtmlEncode(subject));
                     }
                 }
                 else
@@ -1152,11 +1049,11 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HTMLEncode(subject));
+                        sb.Append(HttpUtility.HtmlEncode(subject));
                     }
 
                 }

@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forums_Delete", PortalId, ModuleId, ForumId);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override IDataReader Forums_Get(int PortalId, int ModuleId, int ForumID, int UserId, bool WithSecurity)
         {
             throw new NotImplementedException();
@@ -449,32 +449,32 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Security
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override void Security_Delete(int SecuredId, int ObjectId, int SecureAction, int SecureType, int ObjectType)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_Get(int SecuredId, int ObjectId, int SecureType)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_GetByUser(int PortalId, int ForumId, int UserId, bool IsSuperUser)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override void Security_Save(int SecuredId, int ObjectId, string SecureAction, bool SecureActionValue, int SecureType, string ObjectName, int ObjectType, string SecurityKey)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_SearchObjects(int PortalId, string Search)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_GetByKey(string SecurityKey)
         {
             throw new NotImplementedException();
