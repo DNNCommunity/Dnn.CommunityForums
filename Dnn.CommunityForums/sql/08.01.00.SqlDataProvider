@@ -834,8 +834,8 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]') AND type in (N'P', N'PC'))
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]';
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]') AND type in (N'P', N'PC'))
-EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]';
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]';
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]') AND type in (N'P', N'PC'))
 EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]';
