@@ -24,6 +24,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.Literal litScripts;
 
         /// <summary>
+        /// span_Parent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span_Parent;
+
+        /// <summary>
         /// litTabs control.
         /// </summary>
         /// <remarks>
