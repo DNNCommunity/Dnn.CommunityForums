@@ -17,12 +17,25 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
-using System;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers
+using System; 
+using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
+    [TableName("activeforums_Topics_Ratings")]
+    [PrimaryKey("RatingId", AutoIncrement = true)]
+    [Scope("TopicId")]
+    [Cacheable("activeforums_Topics_Ratings", CacheItemPriority.Normal)]
+    public class TopicRatingInfo
     {
+        public int RatingId { get; set; }
+        public int TopicId { get; set; }
+        public int UserId { get; set; }
+        public int Rating { get; set; }
+        public bool Helpful { get; set; }
+        public string Comments { get; set; }
+        public string IPAddress { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime DateUpdated { get; set; }
     }
 }

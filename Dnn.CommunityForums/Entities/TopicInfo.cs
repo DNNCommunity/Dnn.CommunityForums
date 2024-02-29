@@ -22,6 +22,8 @@ using System.Collections.Generic;
 using System.Xml;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
+using DotNetNuke.UI.UserControls;
+using System.Runtime.Remoting.Messaging;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -37,7 +39,30 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Topics", CacheItemPriority.Low)]
     public class TopicInfo
     {
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Author _Author;
+        private int forumId;
+
         public int TopicId { get; set; }
+        [IgnoreColumn()]
+        public int ForumId 
+        { 
+            get
+            {
+                //TODO : clean this up to use DAL2
+                if (forumId < 1)
+                {
+                    forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
+                }
+                return forumId; 
+            } 
+            set => forumId = value;
+        }
+        [IgnoreColumn()]
+        public int PortalId { get => Forum.PortalId; }
+        [IgnoreColumn()]
+        public int ModuleId { get => Forum.ModuleId; }
         public int ContentId { get; set; }
         public int ViewCount { get; set; }
         public int ReplyCount { get; set; }
@@ -56,52 +81,60 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int Priority { get; set; } = 0;
         [ColumnName("URL")]
         public string TopicUrl { get; set; } = string.Empty;
+        [IgnoreColumn()]
+        public string URL => !(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)) ? ForumURL + TopicUrl : string.Empty;
+        [IgnoreColumn()]
+        public string ForumURL => !(string.IsNullOrEmpty(Forum.PrefixURL)) && !(string.IsNullOrEmpty(TopicUrl)) ? "/" + Forum.PrefixURL + "/" : string.Empty;
         public int NextTopic { get; set; }
         public int PrevTopic { get; set; }
         public string TopicData { get; set; } = string.Empty;
         [IgnoreColumn()]
-        public Content Content { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
+        {
+            get => _contentInfo ?? (_contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId)); 
+            set => _contentInfo = value;
+        }
         [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
+        {
+            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId)); 
+            set => _forumInfo = value;
+        }
         [IgnoreColumn()]
-        public Author Author { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Author Author
+        {
+            get
+            {
+                if (_Author == null)
+                {
+                    _Author = new DotNetNuke.Modules.ActiveForums.Author();
+                    _Author.AuthorId = Content.AuthorId;
+                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
+                    if (userInfo != null)
+                    {
+                        _Author.Email = userInfo?.Email;
+                        _Author.FirstName = userInfo?.FirstName;
+                        _Author.LastName = userInfo?.LastName;
+                        _Author.DisplayName = userInfo?.DisplayName;
+                        _Author.Username = userInfo?.Username;
+                    }
+                    else
+                    {
+                        _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                    }
+                }
+                return _Author;
+            }
+            set
+            { _Author = value; }
+        }
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
         [IgnoreColumn()]
         public string Tags { get; set; }
         [IgnoreColumn()]
         public string Categories { get; set; } = string.Empty;
-        [IgnoreColumn()]
-        public string ForumURL { get; set; } = string.Empty;
-
-        [IgnoreColumn()]
-        public TopicInfo()
-        {
-            Content = new Content();
-            Security = new PermissionInfo();
-            Author = new Author();
-        }
-        [IgnoreColumn()]
-        public string URL
-        {
-            get
-            {
-                if (!(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)))
-                {
-                    if (TopicUrl.StartsWith("/") & ForumURL.EndsWith("/"))
-                    {
-                        ForumURL = ForumURL.Substring(0, ForumURL.Length - 1);
-                        if (!(ForumURL.StartsWith("/")))
-                        {
-                            ForumURL = "/" + ForumURL;
-                        }
-                    }
-                    return ForumURL + TopicUrl;
-                }
-                else
-                {
-                    return string.Empty;
-                }
-            }
-        }
+       
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
         {
@@ -125,8 +158,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             int i = 0;
                             for (i = 0; i < xNodeList.Count; i++)
                             {
-                                string pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                string pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                string pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                string pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                                 int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
                                 PropertiesInfo p = new PropertiesInfo();
                                 p.Name = pName;

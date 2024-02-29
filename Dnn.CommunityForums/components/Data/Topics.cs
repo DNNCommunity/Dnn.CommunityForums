@@ -46,9 +46,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			}
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "TopicIdByURL", PortalId, ModuleId, URL));
 		}
+		[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
 		public int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress)
 		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Topics_AddRating", TopicId, UserID, Rating, Comments, IPAddress));
+			return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, IpAddress: IPAddress);
 		}
 		public IDataReader TopicForDisplay(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, int RowIndex, int MaxRows, string Sort)
 		{
