@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public bool GetForUser(int userId, int postId)
         {
-            return Repo.Get().Where(l => l.UserId == userId && l.PostId == postId && l.Checked).Select(l => l.Checked).FirstOrDefault();
+            return Repo.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
         }
         public (int count,bool liked) Get(int userId, int postId)
         {
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public int Like(int contentId, int userId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = Repo.Find("Where PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = Repo.Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
             if (like != null)
             {
                 if (like.Checked)
