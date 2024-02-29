@@ -72,10 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get
-            {
-                return _forumGroup ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); 
-            }
+            get => _forumGroup ?? (_forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId));
             set => _forumGroup = value;
         }
 
@@ -135,7 +132,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         #region "Settings"
 
         [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
+        public PermissionInfo Security
+        {
+            get => _security ?? (_security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId));
+            set => _security = value;
+        }
 
         [IgnoreColumn()]
         public Hashtable ForumSettings { get; set; }
