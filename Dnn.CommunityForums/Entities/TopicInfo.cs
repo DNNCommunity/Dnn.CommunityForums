@@ -23,6 +23,7 @@ using System.Xml;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.UI.UserControls;
+using System.Runtime.Remoting.Messaging;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -61,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public int PortalId { get => Forum.PortalId; }
         [IgnoreColumn()]
-        public int ModuleId { get => Content.ModuleId; }
+        public int ModuleId { get => Forum.ModuleId; }
         public int ContentId { get; set; }
         public int ViewCount { get; set; }
         public int ReplyCount { get; set; }
@@ -90,13 +91,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => _contentInfo ?? new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+            get => _contentInfo ?? (_contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId)); 
             set => _contentInfo = value;
         }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
+            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId)); 
             set => _forumInfo = value;
         }
         [IgnoreColumn()]
@@ -133,13 +134,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Tags { get; set; }
         [IgnoreColumn()]
         public string Categories { get; set; } = string.Empty;
-        [IgnoreColumn()]
-        public TopicInfo()
-        {
-            Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-            Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
-            _Author = new Author();
-        }
+       
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
         {

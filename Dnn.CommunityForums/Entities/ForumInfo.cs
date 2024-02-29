@@ -73,18 +73,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get
-            {
-                if (_forumGroup == null)
-                {
-                    _forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId);
-                }
-                return _forumGroup;
-            }
-            set
-            {
-                _forumGroup = value;
-            }
+            get => _forumGroup ?? (_forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId));
+            set => _forumGroup = value;
         }
 
         [IgnoreColumn()]
@@ -145,14 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public PermissionInfo Security
         {
-            get
-            {
-                if (_security == null)
-                { 
-                    _security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId);
-                }
-                return _security; 
-            }
+            get => _security ?? (_security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId));
             set => _security = value;
         }
 
