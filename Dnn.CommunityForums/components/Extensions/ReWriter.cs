@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					newSearchURL = newSearchURL.Replace(tagString, string.Empty);
 				}
 			}
-			if ((sUrl.Contains("afv") && sUrl.Contains("post")) | (sUrl.Contains("afv") && sUrl.Contains("confirmaction")) | (sUrl.Contains("afv") && sUrl.Contains("sendto")) | (sUrl.Contains("afv") && sUrl.Contains("modreport")) | (sUrl.Contains("afv") && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains("afv") && sUrl.Contains("modtopics")))
+			if ((sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("post")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("confirmaction")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("sendto")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modreport")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modtopics")))
 			{
 				return;
 			}
@@ -419,7 +419,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				}
 				else if (_urlType == 3 && _otherId > 0)
 				{
-					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=tags&aftg=" + _otherId + sPage + qs);
+					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}=grid&{ParamKeys.GridType}=tags&aftg=" + _otherId + sPage + qs);
 				}
 				else if (_urlType == 1)
 				{
@@ -449,7 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
 
                     }
-					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=" + v + sPage + qs);
+					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}=grid&{ParamKeys.GridType}=" + v + sPage + qs);
 				}
 				else if (_tabId > 0)
 				{

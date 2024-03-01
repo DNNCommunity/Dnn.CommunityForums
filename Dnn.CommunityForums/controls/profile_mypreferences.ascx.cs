@@ -26,7 +26,7 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public partial class profile_mypreferences : SettingsBase
+    public partial class profile_mypreferences : ForumBase
     {
         public int UID { get; set; }
 

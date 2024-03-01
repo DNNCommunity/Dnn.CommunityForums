@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-eye-slash fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:NotRead]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
                 template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-user fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MyTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
-                template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySettings]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "afprofile", 1, -1, -1)));
+                template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySettings]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, Views.MyPreferences, 1, -1, -1)));
 
                 if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
                     template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:ControlPanel]</span></a>", NavigateURL(forumTabId, "EDIT", "mid=" + forumModuleId)));

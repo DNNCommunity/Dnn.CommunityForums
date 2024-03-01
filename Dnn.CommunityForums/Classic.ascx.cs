@@ -92,7 +92,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     string ctl = DefaultView;
                     string opts = string.Empty;
-                    if (Request.Params[ParamKeys.ViewType] != null)
+
+
+                    if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == "grid" && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MyPreferences)
+                    {
+                        ctl = Views.MyPreferences;
+                    }
+                    else if (Request.Params[ParamKeys.ViewType] != null)
                     {
                         ctl = Request.Params[ParamKeys.ViewType];
                     }
@@ -162,7 +168,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     plhLoader.Controls.Clear();
                 }
                 ForumBase ctl = null;
-                if (view.ToUpperInvariant() == "FORUMVIEW")
+                if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant())
+                {
+                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
+                }
+                else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
                     ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                 }

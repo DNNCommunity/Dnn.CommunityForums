@@ -95,8 +95,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 else if (tagId > 0)
                 {
-                    @params.Add("afv=grid");
-                    @params.Add("afgt=tags");
+                    @params.Add($"{ParamKeys.ViewType}=grid");
+                    @params.Add($"{ParamKeys.GridType}=tags");
                     @params.Add("aftg=" + tagId);
                 }
 
@@ -105,8 +105,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 else if (!(string.IsNullOrEmpty(otherPrefix)))
                 {
-                    @params.Add("afv=grid");
-                    @params.Add("afgt=" + otherPrefix);
+                    @params.Add($"{ParamKeys.ViewType}=grid");
+                    @params.Add($"{ParamKeys.GridType}=" + otherPrefix);
                 }
 
                 else if (topicId > 0)

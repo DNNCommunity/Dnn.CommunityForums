@@ -888,7 +888,6 @@
     <Content Include="themes\_legacy\templates\_Master.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="userpref.css" />
     <Content Include="WhatsNew.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
