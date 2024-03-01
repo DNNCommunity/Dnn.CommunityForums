@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
             //Act
             string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(portalId, roles);
             //Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test()]
@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
             //Act
             string actualResult = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleName(portalId, roles);
             //Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test()]

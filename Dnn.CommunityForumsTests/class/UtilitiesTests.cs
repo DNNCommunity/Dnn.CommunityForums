@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             var actualResult = Utilities.NullDate();
             //Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test()]
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.CleanStringForUrl(input);
             //Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
         [Test()]
         [TestCase(0, 0, false, ExpectedResult = true)] // flood interval disables
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlEncode(tag);
             //Assert
-            Assert.AreEqual(actualResult, expectedResult);
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlDecode(tag);
             //Assert
-            Assert.AreEqual(actualResult, expectedResult);
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
         [Test()]
         [TestCase("", ExpectedResult = false)]
