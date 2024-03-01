@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 recordId = Utilities.SafeConvertInt(Params.Split(sepChar)[0]);
             }
 
+            span_Parent.Visible = false;
             if (editorType == "G")
             {
                 trGroups.Visible = false;
@@ -78,6 +79,25 @@ namespace DotNetNuke.Modules.ActiveForums
                 trInherit.Visible = true;
                 chkInheritGroup.Attributes.Add("onclick", "amaf_toggleInherit();");
                 btnDelete.ClientSideScript = "deleteForum();";
+                if (recordId != 0)
+                {
+                    span_Parent.Visible = true;
+                    string parent = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Parent]",true);
+                    var fi = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ModuleId, recordId); 
+                    if (fi.ParentForumId != 0)
+                    {
+                        span_Parent.Attributes.Add("onclick", $"LoadView('manageforums_forumeditor','{fi.ParentForumId}|F');");
+                        span_Parent.InnerText = "| " + parent + " " + fi.ParentForumName;
+                        /* TODO: When updating to DAL2 ForumController, these two lines can be removed because fi.ParentForumName will be populated :) */
+                        fi = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ModuleId, fi.ParentForumId);
+                        span_Parent.InnerText = "| " + parent + " " + fi.ForumName;
+                    }
+                    else 
+                    {
+                        span_Parent.InnerText = "| " + parent + " " + fi.GroupName;
+                        span_Parent.Attributes.Add("onclick", $"LoadView('manageforums_forumeditor','{fi.ForumGroupId}|G');");
+                    }
+                }
             }
 
             if (recordId == 0)
@@ -274,11 +294,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         var fgc = new ForumGroupController();
                         var gi = (groupId > 0) ? fgc.Groups_Get(ModuleId, groupId) : new ForumGroupInfo();
 
-                        var securityKey = string.Empty;
+                        var settingsKey = string.Empty;
                         if (groupId == 0)
                             bIsNew = true;
                         else
-                            securityKey = "G:" + groupId;
+                            settingsKey = "G:" + groupId;
 
                         gi.ModuleId = ModuleId;
                         gi.ForumGroupId = groupId;
@@ -296,7 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 gi.PrefixURL = string.Empty;
                         }
 
-                        gi.GroupSettingsKey = securityKey;
+                        gi.GroupSettingsKey = settingsKey;
                         var gc = new ForumGroupController();
                         groupId = gc.Groups_Save(PortalId, gi, bIsNew);
                         recordId = groupId;

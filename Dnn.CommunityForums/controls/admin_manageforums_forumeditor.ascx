@@ -354,7 +354,7 @@ function addRole(){
 		cellLeft.appendChild(textNode)
 		var cellRight = row.insertCell(1);
 		var img = document.createElement('img');
-        img.src = "~/DesktopModules/ActiveForums/images/delete16.png";
+        img.src = imgPath + "delete16.png";
 		img.onclick = function() {removeRole(this,drp.options[drp.selectedIndex].value)};
 		cellRight.appendChild(img);        
 		var hidRoles = document.getElementById('<%=hidRoles.ClientID%>');
@@ -830,7 +830,7 @@ function afadmin_getProperties() {
 <div class="amcpsubnav">
 	<div class="amcplnkbtn">&nbsp;</div>
 </div>
-<div class="amcpbrdnav"><span class="amcpbrdnavitem" onclick="LoadView('manageforums');">[RESX:ForumsGroups]</span> > [RESX:Details]</div>
+<div class="amcpbrdnav"><span class="amcpbrdnavitem" onclick="LoadView('manageforums');">[RESX:ForumsGroups]</span> > [RESX:Details]&nbsp;<span runat="server" id="span_Parent" class="amcpbrdnavitem"></span></div>
 <div class="amcpcontrolstab" id="amcpcontrolstab">
 	<asp:Literal ID="litTabs" runat="server" />
 	<div class="amtabcontent" id="amTabContent">

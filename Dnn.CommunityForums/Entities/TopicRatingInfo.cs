@@ -17,24 +17,25 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DotNetNuke.Modules.ActiveForums
+using System; 
+using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    internal static class Injector
+    [TableName("activeforums_Topics_Ratings")]
+    [PrimaryKey("RatingId", AutoIncrement = true)]
+    [Scope("TopicId")]
+    [Cacheable("activeforums_Topics_Ratings", CacheItemPriority.Normal)]
+    public class TopicRatingInfo
     {
-        internal static string InjectCollapsibleOpened(string target, string title)
-        {
-            return $"<span class=\"dcf-collapsible dcf-collapsible-opened\" id=\"dcf-collapsible-{target}\" onclick=\"dcf_collapsible_toggle('{target}');\"><i class=\"fa fa-chevron-down\" title=\"{title}\"></i></span>";
-        }
-        internal static string InjectCollapsibleClosed(string target, string title)
-        {
-            return $"<span class=\"dcf-collapsible dcf-collapsible-closed\" id=\"dcf-collapsible-{target}\" onclick=\"dcf_collapsible_toggle('{target}');\"><i class=\"fa fa-chevron-left\" title=\"{title}\"></i></span>";
-        }
+        public int RatingId { get; set; }
+        public int TopicId { get; set; }
+        public int UserId { get; set; }
+        public int Rating { get; set; }
+        public bool Helpful { get; set; }
+        public string Comments { get; set; }
+        public string IPAddress { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime DateUpdated { get; set; }
     }
 }

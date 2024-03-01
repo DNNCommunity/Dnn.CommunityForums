@@ -13,6 +13,7 @@ function openDialog(row){
 };
 </script>
 <div class="amcpsubnav"><div onclick="openDialog();" class="amcplnkbtn">[RESX:AddTemplate]</div></div>
+<span class="amcplabel"><span class="amcpbold">[RESX:Theme]:</span><span class="amcpnormal">&nbsp;<asp:Label ID="txtThemeName" runat="server" CssClass="amcplabel" /></span>&nbsp;<span class="amcpbold">[RESX:Template]&nbsp;[RESX:Folder]:</span>&nbsp;<span class="amcpnormal"><asp:Label ID="txtTemplateFolder" runat="server" CssClass="amcplabel" /></span></span>
 <div class="amcpbrdnav">[RESX:Templates]</div>
 <div class="amcpcontrols">
 	<am:ActiveGrid ID="agTemplates" runat="server" ImagePath="~/DesktopModules/activeforums/images/" PageSize="15">

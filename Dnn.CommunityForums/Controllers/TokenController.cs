@@ -66,11 +66,11 @@ namespace DotNetNuke.Modules.ActiveForums
                                 tk.TokenTag = xNodeList[i].Attributes["name"].Value;
                                 if (xNodeList[i].Attributes["value"] != null)
                                 {
-                                    tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].Attributes["value"].Value);
+                                    tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].Attributes["value"].Value);
                                 }
                                 else
                                 {
-                                    tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                    tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
                                 }
 
                                 li.Add(tk);

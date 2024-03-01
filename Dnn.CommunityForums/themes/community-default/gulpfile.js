@@ -42,7 +42,7 @@ function buildLess() { // Parse only the Skin.less file
 
 
 
-function styleTask() {
+function allTasks() {
   buildLess();
 }
 
@@ -59,13 +59,13 @@ function packageSource(cb) {
 // Watch task: watch LESS files for changes
 // If any change, run LESS tasks
 function watchTask() {
-  gulp.watch(lessWatchPath, buildLess, packageSource);
+
+  gulp.watch(lessWatchPath, gulp.series(buildLess, packageSource));
 
 
 }
 
 exports.buildLess = buildLess;
-exports.style = styleTask;
 exports.source = packageSource;
 
 exports.default = watchTask;
