@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+    public class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole)
         {
@@ -105,12 +105,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return roles;
         }
-        internal static string GetNamesForRoles(int PortalId, string Roles)
+        public static string GetNamesForRoles(int PortalId, string Roles)
         {
             try
             {
                 string RoleNames = string.Empty;
-                int i = 0;
                 string roleName;
                 foreach (string role in Roles.Split(new[] { ';' }))
                 {
@@ -142,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return string.Empty;
             }
         }
-        private static string GetRoleName(int PortalId, string role)
+        public static string GetRoleName(int PortalId, string role)
         {
             return GetRoles(PortalId).ToArray().Where(r => r.RoleID == Utilities.SafeConvertInt(role)).Select(r => r.RoleName).FirstOrDefault();
         }
