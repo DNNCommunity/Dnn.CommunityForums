@@ -30,17 +30,17 @@ using DotNetNuke.Collections;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Social.Subscriptions.Entities;
+using DotNetNuke.UI.UserControls;
 using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public partial class profile_mysubscriptions : SettingsBase
+    public partial class profile_mysubscriptions : ForumBase
     {
         private int UID { get; set; }
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
             dgrdTopicSubs.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Group].Text");
             dgrdTopicSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
             dgrdTopicSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Topic].Text");
@@ -53,17 +53,18 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdTopicSubs.RowDataBound += this.OnTopicSubsGridRowDataBound;
             this.dgrdForumSubs.PageIndexChanging += this.ForumSubsGridRow_PageIndexChanging;
             this.dgrdForumSubs.RowDataBound += this.OnForumSubsGridRowDataBound;
+            this.btnSubscribeAll.Click += btnSubscribeAll_Click;
         }
         protected override void OnLoad(EventArgs e)
         {
-            base.OnLoad(e); 
+            base.OnLoad(e);
             try
             {   // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
                 UID = Request.QueryString["UserId"] == null ? UserInfo.UserID : Convert.ToInt32(Request.QueryString["UserId"]);
                 if (this.UserId == UID | UserIsMod)
                 {
-                    BindTopicSubs(UID);
-                    BindForumSubs(UID);
+                    BindTopicSubs();
+                    BindForumSubs();
                 }
             }
             catch (Exception ex)
@@ -71,26 +72,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 Exceptions.LogException(ex);
             }
         }
-        private void BindTopicSubs(int UserID)
+        private void BindTopicSubs()
         {
-            ForumController fc = new DotNetNuke.Modules.ActiveForums.ForumController(); 
+            ForumController fc = new DotNetNuke.Modules.ActiveForums.ForumController();
             TopicsController tc = new DotNetNuke.Modules.ActiveForums.TopicsController();
-            var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(PortalId, ForumModuleId, UID);;
-            subscribedTopics.ForEach(s => {
+            var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(PortalId, ForumModuleId, this.UID); ;
+            subscribedTopics.ForEach(s =>
+            {
                 s.ForumName = fc.GetForum(PortalId, ForumModuleId, s.ForumId).ForumName;
                 s.ForumGroupName = fc.GetForum(PortalId, ForumModuleId, s.ForumId).GroupName;
                 var topic = tc.Topics_Get(PortalId, ForumModuleId, s.TopicId);
                 s.Subject = topic.Content.Subject;
                 s.LastPostDate = topic.Content.DateUpdated;
                 s.Subscribed = true;
-                }); 
+            });
             dgrdTopicSubs.DataSource = subscribedTopics.ToList();
-            dgrdTopicSubs.DataBind();  
+            dgrdTopicSubs.DataBind();
         }
-        private void BindForumSubs(int UserID)
+        private void BindForumSubs()
         {
             var fc = new DotNetNuke.Modules.ActiveForums.ForumController();
-            var roles = new UserController().GetUser(PortalId, ForumModuleId, UserID).UserRoles;
+            var roles = new UserController().GetUser(PortalId, ForumModuleId, UID).UserRoles;
             var availableForumsString = fc.GetForumsForUser(roles, PortalId, ForumModuleId);
             var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
             {
@@ -99,17 +101,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new { ForumId = int.Parse(forum), Forum };
             });
 
-            var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(PortalId, ForumModuleId, UID);
+            var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(PortalId, ForumModuleId, this.UID);
             var subscribedForums = forumSubscriptions.Select(forumSubscription =>
             {
                 return new { forumSubscription.Id, forumSubscription.ForumId };
             });
             var mergedSubscriptions = from af in availableForums
-                                      join sf in subscribedForums 
+                                      join sf in subscribedForums
                                       on af.ForumId equals sf.ForumId into merged
                                       from ms in merged.DefaultIfEmpty()
                                       where (af.Forum.AllowSubscribe || ms == null || ms.Id != 0)
-                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0),PortalId,ForumModuleId, af.ForumId,0,1,UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime,(ms != null));
+                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0), PortalId, ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, (ms != null));
             dgrdForumSubs.DataSource = mergedSubscriptions.ToList();
             dgrdForumSubs.DataBind();
         }
@@ -166,6 +168,34 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             dgrdTopicSubs.PageIndex = e.NewPageIndex;
             dgrdTopicSubs.DataBind();
+        }
+        private void btnSubscribeAll_Click(object sender, System.EventArgs e)
+        {
+            var fc = new DotNetNuke.Modules.ActiveForums.ForumController();
+            var roles = new UserController().GetUser(PortalId, ForumModuleId, UID).UserRoles;
+            var availableForumsString = fc.GetForumsForUser(roles, PortalId, ForumModuleId);
+            var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
+            {
+                var Forum = fc.GetForum(PortalId, ForumModuleId, int.Parse(forum));
+                return new { ForumId = int.Parse(forum), Forum };
+            });
+
+            var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(PortalId, ForumModuleId, UID);
+            var subscribedForums = forumSubscriptions.Select(forumSubscription =>
+            {
+                return new { forumSubscription.Id, forumSubscription.ForumId };
+            });
+            var mergedSubscriptions = from af in availableForums
+                                      join sf in subscribedForums
+                                      on af.ForumId equals sf.ForumId into merged
+                                      from ms in merged.DefaultIfEmpty()
+                                      where (af.Forum.AllowSubscribe || ms == null || ms.Id != 0)
+                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0), PortalId, ForumModuleId, af.ForumId, 0, 1, UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, (ms != null));
+            mergedSubscriptions.Where(s => !s.Subscribed).ForEach(s =>
+            {
+               new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, UID, s.ForumId);
+            });
+            BindForumSubs();
         }
     }
 }

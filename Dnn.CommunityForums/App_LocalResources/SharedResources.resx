@@ -384,13 +384,10 @@
   <data name="NoProfile.Text" xml:space="preserve">
     <value>User has not created a profile.</value>
   </data>
-  <data name="Subscriptions.Text" xml:space="preserve">
-    <value>Subscriptions</value>
-  </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
+  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
     <value>Topics you are subscribed to:</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
+  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
     <value>Forums you are subscribed to:</value>
   </data>
   <data name="Banned.Text" xml:space="preserve">
@@ -1282,10 +1279,10 @@ From,
   <data name="[RESX:SplitCancelConfirm].Text" xml:space="preserve">
     <value>Cancel split?</value>
   </data>
-	<data name="[RESX:FileName].Text" xml:space="preserve">
+  <data name="[RESX:FileName].Text" xml:space="preserve">
     <value>File Name</value>
   </data>
-	<data name="[RESX:Folder].Text" xml:space="preserve">
+  <data name="[RESX:Folder].Text" xml:space="preserve">
     <value>Folder</value>
   </data>
   <data name="[RESX:FileSize].Text" xml:space="preserve">
@@ -1701,5 +1698,8 @@ From,
   </data>
   <data name="[RESX:NoSubscriptions].Text" xml:space="preserve">
     <value>No Subscriptions</value>
+  </data>
+  <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve">
+    <value>Subscribe to All Forums</value>
   </data>
 </root>

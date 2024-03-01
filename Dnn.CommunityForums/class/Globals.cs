@@ -306,6 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string Tags = "aftg";
         public const string FirstNewPost = "afnp";
         public const string AuthorId = "authorid";
+        public const string GridType = "afgt";
     }
 
 	public class Views
@@ -314,8 +315,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string Topic = "topic";
 		public const string ForumView = "forumview";
 		public const string TopicNew = "topicnew";
-		public const string TopicEdit = "topicedit";
-	}
+        public const string TopicEdit = "topicedit";
+        public const string MyPreferences = "afprofile";
+        public const string MySubscriptions = "afsubscriptions";
+    }
 
 	public class CacheKeys
     {
