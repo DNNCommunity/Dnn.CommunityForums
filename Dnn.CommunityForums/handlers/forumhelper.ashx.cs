@@ -41,18 +41,18 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             UserPing, /* no longer used */
             GetUsersOnline,/* no longer used */
             TopicSubscribe,/* no longer used */
-            ForumSubscribe,
-            RateTopic,
+            ForumSubscribe,/* no longer used */
+            RateTopic,/* no longer used */
             DeleteTopic,
-            MoveTopic,
+			MoveTopic,/* no longer used */
             PinTopic,/* no longer used */
             LockTopic,/* no longer used */
             MarkAnswer,
             TagsAutoComplete,
-            DeletePost,
-            LoadTopic,
-            SaveTopic,
-            ForumList,
+			DeletePost,
+			LoadTopic,
+			SaveTopic,
+			ForumList,
             LikePost /*no longer used*/
 
         }
@@ -89,21 +89,23 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 ////break;
                 case Actions.TopicSubscribe:
                     throw new NotImplementedException();
-                //               sOut = SubscribeTopic();
-                //break;
-                case Actions.ForumSubscribe:
-                    sOut = SubscribeForum();
-                    break;
+     //               sOut = SubscribeTopic();
+					//break;
+				case Actions.ForumSubscribe:
+                    throw new NotImplementedException();
+                //	sOut = SubscribeForum();
+                //	break;
                 case Actions.RateTopic:
-                    sOut = RateTopic();
-                    break;
+                    throw new NotImplementedException();
+                //sOut = RateTopic();
+                //break;
                 case Actions.DeleteTopic:
-                    sOut = DeleteTopic();
-                    break;
-                case Actions.MoveTopic:
-                    sOut = MoveTopic();
-                    break;
-                case Actions.PinTopic:
+					sOut = DeleteTopic();
+					break;
+				case Actions.MoveTopic:
+					sOut = MoveTopic();
+					break;
+				case Actions.PinTopic:
                     throw new NotImplementedException();
                 //               sOut = PinTopic();
                 //break;
@@ -179,37 +181,18 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
 
 
-        }
-        private string RateTopic()
-        {
-            int r = 0;
-            int topicId = -1;
-            if (Params.ContainsKey("rate") && SimulateIsNumeric.IsNumeric(Params["rate"]))
-            {
-                r = int.Parse(Params["rate"].ToString());
-            }
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-            {
-                topicId = int.Parse(Params["topicid"].ToString());
-            }
-            if (r >= 1 && r <= 5 && topicId > 0)
-            {
-                DataProvider.Instance().Topics_AddRating(topicId, UserId, r, string.Empty, HttpContext.Current.Request.UserHostAddress.ToString());
-            }
-            r = DataProvider.Instance().Topics_GetRating(topicId);
-            return BuildOutput(r.ToString(), OutputCodes.Success, true, false);
-        }
-        private string DeleteTopic()
-        {
-            int topicId = -1;
-            int forumId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-            {
-                topicId = int.Parse(Params["topicid"].ToString());
-            }
-            if (topicId > 0)
-            {
-                TopicsController tc = new TopicsController();
+		}
+		private string DeleteTopic()
+		{
+			int topicId = -1;
+			int forumId = -1;
+			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+			{
+				topicId = int.Parse(Params["topicid"].ToString());
+			}
+			if (topicId > 0)
+			{
+				TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);

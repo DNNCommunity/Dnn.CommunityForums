@@ -46,7 +46,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GroupName { get; set; }
         public string ParentForumName { get; set; }
         public string ForumSettingsKey { get; set; }
-        public string ForumSecurityKey { get; set; }
         public int LastTopicId { get; set; }
         public int LastReplyId { get; set; }
         public int PermissionsId { get; set; }

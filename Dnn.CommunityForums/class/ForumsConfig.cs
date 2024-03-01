@@ -154,8 +154,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		private void LoadFilters(int PortalId, int ModuleId)
 		{
-            Controllers.FilterController.ImportFilter(PortalId, ModuleId);
-		}
+            Utilities.ImportFilter(PortalId, ModuleId);
+        }
 
 		private void LoadRanks(int PortalId, int ModuleId)
 		{
@@ -293,7 +293,6 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.ForumName = cNodes[c].Attributes["forumname"].Value;
 									fi.ForumDesc = cNodes[c].Attributes["forumdesc"].Value;
 									fi.PrefixURL = cNodes[c].Attributes["prefixurl"].Value;
-									fi.ForumSecurityKey = string.Concat("G:", groupId.ToString());
 									fi.ForumSettingsKey = string.Concat("G:", groupId.ToString());
 									fi.Active = cNodes[c].Attributes["active"].Value == "1";
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";

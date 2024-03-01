@@ -17,38 +17,25 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers
+using System; 
+using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    class TopicController
+    [TableName("activeforums_Topics_Ratings")]
+    [PrimaryKey("RatingId", AutoIncrement = true)]
+    [Scope("TopicId")]
+    [Cacheable("activeforums_Topics_Ratings", CacheItemPriority.Normal)]
+    public class TopicRatingInfo
     {
-        readonly IDataContext ctx;
-        IRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> repo;
-        internal TopicController()
-        {
-            ctx = DataContext.Instance();
-            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
-        }
-        internal List<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> Get()
-        {
-            return repo.Get().ToList();
-        }
-        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Get(int topicId)
-        {
-            return repo.Find("WHERE TopicId = @0", topicId).FirstOrDefault();
-        }
-        internal void Update(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
-        {
-            repo.Update(topicInfo);
-        }
-        internal void Insert(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
-        {
-            repo.Insert(topicInfo);
-        }
+        public int RatingId { get; set; }
+        public int TopicId { get; set; }
+        public int UserId { get; set; }
+        public int Rating { get; set; }
+        public bool Helpful { get; set; }
+        public string Comments { get; set; }
+        public string IPAddress { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime DateUpdated { get; set; }
     }
 }
