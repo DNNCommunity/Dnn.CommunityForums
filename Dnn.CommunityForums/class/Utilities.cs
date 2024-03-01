@@ -25,6 +25,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -41,7 +42,6 @@ namespace DotNetNuke.Modules.ActiveForums
     public abstract partial class Utilities
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
-
 
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
@@ -74,7 +74,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return template;
         }
-
 
         internal static string GetTemplate(string filePath)
         {
@@ -123,12 +122,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySettings]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "afprofile", 1, -1, -1)));
 
                 if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
-                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:ControlPanel]</span></a>", NavigateUrl(forumTabId, "EDIT", "mid=" + forumModuleId)));
+                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:ControlPanel]</span></a>", NavigateURL(forumTabId, "EDIT", "mid=" + forumModuleId)));
                 else
                     template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
 
                 if (currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser || currentUserType == CurrentUserTypes.Admin)
-                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateUrl(tabId, "", ParamKeys.ViewType + "=modtopics")));
+                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=modtopics")));
                 else
                     template = template.Replace("[AF:TB:ModList]", string.Empty);
             }
@@ -144,11 +143,11 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:ActiveTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "activetopics", 1, -1, -1)));
             template = template.Replace("[AF:TB:MostLiked]", string.Format("<a href=\"{0}\"><i class=\"fa fa-thumbs-o-up fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostLiked]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mostliked", 1, -1, -1)));
             template = template.Replace("[AF:TB:MostReplies]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comments fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostReplies]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mostreplies", 1, -1, -1)));
-            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-home fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:FORUMS]</span></a>", NavigateUrl(tabId)));
+            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-home fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:FORUMS]</span></a>", NavigateURL(tabId)));
 
             // Search popup
-            var searchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
-            var advancedSearchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
+            var searchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
+            var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
             var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
 
@@ -300,35 +299,18 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             }
             return strHost.ToLowerInvariant();
         }
-
-        public static string NavigateUrl(int tabId)
+        public static string NavigateURL(int tabId)
         {
-            return Common.Globals.NavigateURL(tabId);
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId);
         }
-
-        public static string NavigateUrl(int tabId, int portalId, string controlKey, params string[] additionalParameters)
+        public static string NavigateURL(int tabId, string controlKey, params string[] additionalParameters)
         {
-            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
         }
-        public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
-        {
-            int portalId = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, DotNetNuke.Common.Utilities.Null.NullInteger).PortalID;
-            return NavigateUrl(tabId, controlKey, string.Empty, portalId, additionalParameters);
-        }
-        public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
-        {
-            string[] parameters = new string[additionalParameters.Count];
-            for (int i = 0; i < additionalParameters.Count; i++)
-            {
-                parameters[i] = additionalParameters[i];
-            }
-            return NavigateUrl(tabId, controlKey, parameters);
-        }
-
-        public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
+        public static string NavigateURL(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-            string s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
+            string s = new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
 
@@ -337,7 +319,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
             pageName = CleanStringForUrl(pageName);
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
@@ -506,7 +488,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
 
-            var strMessage = HTMLEncode(text);
+            var strMessage = HttpUtility.HtmlEncode(text);
 
             if (strMessage != string.Empty)
             {
@@ -528,7 +510,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (useFilter)
                         strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
 
-                    strMessage = HTMLEncode(strMessage);
+                    strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
 
                     i = 0;
@@ -543,7 +525,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (!allowHTML)
-                        strMessage = HTMLEncode(strMessage);
+                        strMessage = HttpUtility.HtmlEncode(strMessage);
 
                     if (useFilter)
                         strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
@@ -739,24 +721,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             return !string.IsNullOrEmpty(body.Replace("&nbsp;", string.Empty));
         }
-
-        public static string HTMLEncode(string strMessage = "")
-        {
-            if (strMessage != string.Empty)
-            {
-                strMessage = strMessage.Replace(">", "&gt;");
-                strMessage = strMessage.Replace("<", "&lt;");
-            }
-
-            return strMessage;
-        }
-        public static string HTMLDecode(string strMessage)
-        {
-            strMessage = strMessage.Replace("&gt;", ">");
-            strMessage = strMessage.Replace("&lt;", "<");
-            return strMessage;
-        }
-
         public static string StripHTMLTag(string sText)
         {
             if (string.IsNullOrEmpty(sText))
@@ -1182,11 +1146,11 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HTMLEncode(subject));
+                        sb.Append(HttpUtility.HtmlEncode(subject));
                     }
                 }
                 else
@@ -1194,11 +1158,11 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HTMLEncode(subject));
+                        sb.Append(HttpUtility.HtmlEncode(subject));
                     }
 
                 }

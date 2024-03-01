@@ -32,7 +32,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
-using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
+using DotNetNuke.Abstractions;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -156,6 +156,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
+        { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCultureInfo, timeZoneOffset, topicSubscriber, null); }
+
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager)
         {
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             var ms = SettingsBase.GetModuleSettings(moduleID);
@@ -200,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            body = Utilities.ManageImagePath(body, Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)));
+            body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request))));
 
             // load the forum information
             var fi = new ForumController().Forums_Get(portalId: portalID, moduleId: moduleID, forumId: forumID, useCache: true);
@@ -239,16 +242,16 @@ namespace DotNetNuke.Modules.ActiveForums
             if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
-                    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
-                        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
+                    link = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL( tabID,  new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
+                        : new Services.URLNavigator().NavigateURL( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
                 else
-                    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
-                        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
+                    link = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
+                        : new Services.URLNavigator().NavigateURL( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
             }
             else
             {
                 var contentId = (replyId > 0) ? replyId : -1;
-                link = String.Concat(Common.Globals.NavigateURL(tabID), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
+                link = string.Concat(new Services.URLNavigator().NavigateURL(tabID, (string[])null), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
             if (!(link.StartsWith("http")))
@@ -256,18 +259,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!link.StartsWith("/"))
                     link = string.Concat("/", link);
 
-                if (link.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
+                if (HttpContext.Current != null && link.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
                     link = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + link;
             }
 
 
             // Build the forum Url
-            var forumURL = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
-                : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
+            var forumURL = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
+                : new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
 
             // Build Moderation url
-            var modLink = Common.Globals.NavigateURL(tabID, string.Empty, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
-            if (modLink.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
+            var modLink = new Services.URLNavigator().NavigateURL(tabID, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
+            if (HttpContext.Current != null && modLink.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
                 modLink = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + modLink;
 
             var result = new StringBuilder(sOut);
@@ -580,7 +583,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
 
                         case PMTypes.Ventrian:
-                            pmUrl = Common.Globals.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", string.Concat("sendto=", up.UserId) });
+                            pmUrl = Utilities.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", string.Concat("sendto=", up.UserId) });
                             pmLink = string.Concat("<a href=\"", pmUrl, "\"><img src=\"", imagePath, "/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>");
                             break;
                     }
@@ -601,11 +604,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     switch (mainSettings.AllowSignatures)
                     {
                         case 1:
-                            sSignature = Utilities.HTMLEncode(sSignature);
+                            sSignature = HttpUtility.HtmlEncode(sSignature);
                             sSignature = sSignature.Replace(System.Environment.NewLine, "<br />");
                             break;
                         case 2:
-                            sSignature = Utilities.HTMLDecode(sSignature);
+                            sSignature = HttpUtility.HtmlDecode(sSignature);
                             break;
                     }
                 }
@@ -680,9 +683,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:POSTCOUNT]", (up.PostCount == 0) ? string.Empty : up.PostCount.ToString());
                 result.Replace("[AF:PROFILE:USERCAPTION]", up.Profile.UserCaption);
                 result.Replace("[AF:PROFILE:USERID]", up.UserId.ToString());
-                result.Replace("[AF:PROFILE:USERNAME]", Utilities.HTMLEncode(up.UserName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:FIRSTNAME]", Utilities.HTMLEncode(up.FirstName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:LASTNAME]", Utilities.HTMLEncode(up.LastName).Replace("&amp;#", "&#"));
+                result.Replace("[AF:PROFILE:USERNAME]", HttpUtility.HtmlEncode(up.UserName).Replace("&amp;#", "&#"));
+                result.Replace("[AF:PROFILE:FIRSTNAME]", HttpUtility.HtmlEncode(up.FirstName).Replace("&amp;#", "&#"));
+                result.Replace("[AF:PROFILE:LASTNAME]", HttpUtility.HtmlEncode(up.LastName).Replace("&amp;#", "&#"));
                 result.Replace("[AF:PROFILE:DATELASTPOST]", (up.Profile.DateLastPost == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDateTime(up.Profile.DateLastPost, portalId, currentUserId));
                 result.Replace("[AF:PROFILE:TOPICCOUNT]", up.Profile.TopicCount.ToString());
                 result.Replace("[AF:PROFILE:REPLYCOUNT]", up.Profile.ReplyCount.ToString());
@@ -935,7 +938,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         message = message.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
                 }
                 var objCode = new CodeParser();
-                template = CodeParser.ParseCode(Utilities.HTMLDecode(template));
+                template = CodeParser.ParseCode(HttpUtility.HtmlDecode(template));
             }
             return template;
         }
