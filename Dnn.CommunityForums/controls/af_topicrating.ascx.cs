@@ -91,27 +91,27 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void Rate1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataProvider.Instance().Topics_AddRating(TopicId, UserId, 1, string.Empty, Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 1, IpAddress: Request.UserHostAddress.ToString());
         }
 
         private void Rate2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataProvider.Instance().Topics_AddRating(TopicId, UserId, 2, string.Empty, Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 2, IpAddress: Request.UserHostAddress.ToString());
         }
 
         private void Rate3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataProvider.Instance().Topics_AddRating(TopicId, UserId, 3, string.Empty, Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 3, IpAddress: Request.UserHostAddress.ToString());
         }
 
         private void Rate4_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataProvider.Instance().Topics_AddRating(TopicId, UserId, 4, string.Empty, Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 4, IpAddress: Request.UserHostAddress.ToString());
         }
 
         private void Rate5_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            DataProvider.Instance().Topics_AddRating(TopicId, UserId, 5, string.Empty, Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 5, IpAddress: Request.UserHostAddress.ToString());
         }
         private void cbRating_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    DataProvider.Instance().Topics_AddRating(TopicId, UserId, rate, string.Empty, Request.UserHostAddress.ToString());
+                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: rate, IpAddress: Request.UserHostAddress.ToString());
                 }
             }
             Rating = -1;
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (Rating == -1)
             {
-                Rating = DataProvider.Instance().Topics_GetRating(TopicId);
+                Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
             }
             RatingClass = "rating" + Rating.ToString();
             plhRating.Controls.Clear();

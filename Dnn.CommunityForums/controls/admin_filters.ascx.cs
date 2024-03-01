@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
                         case "DEFAULTS":
                             DataProvider.Instance().Filters_DeleteByModuleId(PortalId, ModuleId);
-                            Controllers.FilterController.ImportFilter(PortalId, ModuleId);
+                            Utilities.ImportFilter(PortalId, ModuleId);
                             break;
                     }
 

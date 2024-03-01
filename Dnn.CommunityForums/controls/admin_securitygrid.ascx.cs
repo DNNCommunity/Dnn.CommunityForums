@@ -20,12 +20,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+
+using System.Web.UI.WebControls;
 using System.Text;
 using System.Collections.Specialized;
-using System.Text;
 using System.Web.UI;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Modules.ActiveForums.Controllers;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -33,10 +34,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 	{
 		public string imgOn;
 		public string imgOff;
-        public bool ReadOnly { get; set; } = false;
-
-        public DotNetNuke.Modules.ActiveForums.PermissionInfo Perms { get; set; }
-        public int PermissionsId { get; set; } = -1;
+        private PermissionInfo _permissionsInfo;
+        private int _permissionsId = -1;
+        private bool _readOnly = false;
+        public bool ReadOnly
+        {
+            get
+            {
+                return _readOnly;
+            }
+            set
+            {
+                _readOnly = value;
+            }
+        }
+        //Public ReadOnly Property IsCallBack() As Boolean
+        //    Get
+        //        Return cbSecurityToggle.IsCallback
+        //    End Get
+        //End Property
+        public PermissionInfo Perms
+        {
+            get
+            {
+                return _permissionsInfo;
+            }
+            set
+            {
+                _permissionsInfo = value;
+            }
+        }
+        public int PermissionsId
+        {
+            get
+            {
+                return _permissionsId;
+            }
+            set
+            {
+                _permissionsId = value;
+            }
+        }
 
         protected override void OnInit(EventArgs e)
         {
@@ -65,24 +103,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<select id=\"drpSecRoles\" class=\"amcptxtbx\" style=\"width:150px;\">");
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
-			sb.Append("<option value=\"-1\">All Users</option>");
-			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
+			sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleAllUsers}\">{DotNetNuke.Common.Globals.glbRoleAllUsersName}</option>");
+			sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleUnauthUser}\">{DotNetNuke.Common.Globals.glbRoleUnauthUserName}</option>");
 			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Permissions.GetRoles(PortalId))
 			{
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
 			}
-			//drpSecRoles.DataTextField = "RoleName"
-			//drpSecRoles.DataValueField = "RoleId"
-			//drpSecRoles.DataSource = rc.GetPortalRoles(PortalId)
-			//drpSecRoles.DataBind()
-			//drpSecRoles.Items.Insert(0, New ListItem("[RESX:DropDownDefault]", ""))
-			//drpSecRoles.Items.Insert(1, New ListItem("All Users", "-1"))
-			//drpSecRoles.Items.Insert(2, New ListItem("Unauthenticated Users", "-3"))
-			//drpSecRoles.Items.Insert(3, New ListItem("Topic Author", "-10"))
 			sb.Append("</select>");
 			litRoles.Text = sb.ToString();
 		}
-		private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.PermissionInfo security, int permissionsId)
+		private void BuildNewGrid(PermissionInfo security, int permissionsId)
 		{
 			//Roles
 			string[] roles = GetSecureObjectList(security, 0).Split(';');
@@ -103,8 +133,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			List<PermissionInfo> pl = new List<PermissionInfo>();
 
-            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Permissions.GetRolesNVC(PortalId, tmp);
-			foreach (string key in nvc.AllKeys)
+            //litNewGrid.Text = "Roles:" & tmp
+
+            //litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
+            NameValueCollection nvc = Permissions.GetRolesNVC(PortalId, tmp);
+            foreach (string key in nvc.AllKeys)
 			{
 				PermissionInfo pi = new PermissionInfo();
 				pi.ObjectId = key;
@@ -120,11 +153,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Users
             string users = GetSecureObjectList(security, 1);
             string userNames = string.Empty;
-            if (!(string.IsNullOrEmpty(users)))
+            if (! (string.IsNullOrEmpty(users)))
             {
                 foreach (string uid in users.Split(';'))
                 {
-                    if (!(string.IsNullOrEmpty(uid)))
+                    if (! (string.IsNullOrEmpty(uid)))
                     {
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
                         if (u != null)
@@ -141,18 +174,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             //Groups
             string groups = GetSecureObjectList(security, 2);
-            if (!(string.IsNullOrEmpty(groups)))
+            if (! (string.IsNullOrEmpty(groups)))
             {
                 foreach (string g in groups.Split(';'))
                 {
-                    if (!(string.IsNullOrEmpty(g)))
+                    if (! (string.IsNullOrEmpty(g)))
                     {
 
                         string gType = g.Split(':')[1];
                         int groupId = Convert.ToInt32(g.Split(':')[0]);
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: groupId);
                         string groupName = role.RoleName;
-                        if (!(string.IsNullOrEmpty(groupName)))
+                        if (! (string.IsNullOrEmpty(groupName)))
                         {
                             PermissionInfo pi = new PermissionInfo();
                             pi.ObjectId = g;
@@ -209,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				i += 1;
 			}
-			System.Type enumType = typeof(DotNetNuke.Modules.ActiveForums.SecureActions);
+			System.Type enumType = typeof(SecureActions);
 			Array values = Enum.GetValues(enumType);
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\"><div class=\"afsecobjects\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">");
@@ -275,7 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
-                    if (!ReadOnly)
+                    if (! ReadOnly)
                     {
                         sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
@@ -299,12 +332,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			else
 			{
-				return DotNetNuke.Modules.ActiveForums.Permissions.HasAccess(permSet.Split('|')[objectType], objectId + ";");
+				return Permissions.HasAccess(permSet.Split('|')[objectType], objectId + ";");
 			}
 
         }
 
-		private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.PermissionInfo s, int objectType)
+		private string GetSecureObjectList(PermissionInfo s, int objectType)
 		{
 			string roleObjects = string.Empty;
 
@@ -348,11 +381,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string[] perms = permSet.Split('|');
             if (perms[index] != null)
             {
-                if (!(string.IsNullOrEmpty(perms[index])))
+                if (! (string.IsNullOrEmpty(perms[index])))
                 {
                     foreach (string s in perms[index].Split(';'))
                     {
-                        if (!(string.IsNullOrEmpty(s)))
+                        if (! (string.IsNullOrEmpty(s)))
                         {
                             if (Array.IndexOf(objects.Split(';'), s) == -1)
                             {

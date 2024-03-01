@@ -369,17 +369,17 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 
 			permSet = db.GetPermSet(PermissionsId, "View");
-			permSet = AddPermToSet("-3", 0, permSet);
-			db.SavePermSet(PermissionsId, "View", permSet);
+			permSet = AddPermToSet(DotNetNuke.Common.Globals.glbRoleUnauthUser, 0, permSet);
+            db.SavePermSet(PermissionsId, "View", permSet);
 		    permSet = db.GetPermSet(PermissionsId, "Read");
-			permSet = AddPermToSet("-3", 0, permSet);
-			db.SavePermSet(PermissionsId, "Read", permSet);
+			permSet = AddPermToSet(DotNetNuke.Common.Globals.glbRoleUnauthUser, 0, permSet);
+            db.SavePermSet(PermissionsId, "Read", permSet);
 		    permSet = db.GetPermSet(PermissionsId, "View");
-			permSet = AddPermToSet("-1", 0, permSet);
-			db.SavePermSet(PermissionsId, "View", permSet);
+			permSet = AddPermToSet(DotNetNuke.Common.Globals.glbRoleAllUsers, 0, permSet);
+            db.SavePermSet(PermissionsId, "View", permSet);
 		    permSet = db.GetPermSet(PermissionsId, "Read");
-			permSet = AddPermToSet("-1", 0, permSet);
-			db.SavePermSet(PermissionsId, "Read", permSet);
+			permSet = AddPermToSet(DotNetNuke.Common.Globals.glbRoleAllUsers, 0, permSet);
+            db.SavePermSet(PermissionsId, "Read", permSet);
 		}
 		public static string GetRoleIds(string[] Roles, int PortalId)
 		{
@@ -418,11 +418,11 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						switch (role)
 						{
-							case "-1":
-								nvc.Add("-1", Common.Globals.glbRoleAllUsersName);
+							case DotNetNuke.Common.Globals.glbRoleAllUsers:
+                                nvc.Add(DotNetNuke.Common.Globals.glbRoleAllUsers, DotNetNuke.Common.Globals.glbRoleAllUsersName);
 								break;
-							case "-3":
-								nvc.Add("-3", Common.Globals.glbRoleUnauthUserName);
+							case DotNetNuke.Common.Globals.glbRoleUnauthUser:
+								nvc.Add(DotNetNuke.Common.Globals.glbRoleUnauthUser, Common.Globals.glbRoleUnauthUserName);
 								break;
 							default:
 								roleName = GetRoleName(PortalId, role);
@@ -457,11 +457,11 @@ namespace DotNetNuke.Modules.ActiveForums
 					{
 						switch (role)
 						{
-							case "-1":
-								RoleNames = string.Concat(RoleNames + Common.Globals.glbRoleAllUsersName, ";");
+							case DotNetNuke.Common.Globals.glbRoleAllUsers:
+								RoleNames = string.Concat(RoleNames + DotNetNuke.Common.Globals.glbRoleAllUsersName, ";");
 								break;
-							case "-3":
-								RoleNames = string.Concat(RoleNames + Common.Globals.glbRoleUnauthUserName, ";");
+                            case DotNetNuke.Common.Globals.glbRoleUnauthUser:
+								RoleNames = string.Concat(RoleNames + DotNetNuke.Common.Globals.glbRoleUnauthUserName, ";");
 								break;
 							default:
 								roleName = GetRoleName(PortalId: PortalId, role: role);

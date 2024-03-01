@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append("<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">" + System.Environment.NewLine);
                         string[] Params = { ParamKeys.ForumId + "=" + ForumID, ParamKeys.ViewType + "=" + Views.Topics };
                         string URL = string.Empty;
-                        URL = DotNetNuke.Common.Globals.NavigateURL(TabId, "", Params);
+                        URL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(TabId, "", Params);
                         if (URL.IndexOf(Request.Url.Host) == -1)
                         {
                             URL = DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host) + URL;
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
             SettingsInfo MainSettings = SettingsBase.GetModuleSettings(ModuleID);
             StringBuilder sb = new StringBuilder(1024);
             string[] Params = { ParamKeys.ForumId + "=" + dr["ForumID"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic };
-            string URL = DotNetNuke.Common.Globals.NavigateURL(PostTabID, "", Params);
+            string URL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(PostTabID, "", Params);
             if (MainSettings.URLRewriteEnabled && !(string.IsNullOrEmpty(dr["FullUrl"].ToString())))
             {
                 string sTopicURL = string.Empty;
@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
              */
             body = body.Replace("src=\"/Portals", "src=\"" + DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host) + "/Portals");
-            body = Utilities.ManageImagePath(body, DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host));
+            body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Request.Url.Host)));
 
             sb.Append(WriteElement("title", dr["Subject"].ToString(), Indent + 1));
             sb.Append(WriteElement("description", body, Indent + 1));
