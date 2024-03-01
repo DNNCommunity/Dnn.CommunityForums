@@ -40,15 +40,15 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (sMode == "DISABLED")
                 {
-                    Response.Redirect(NavigateUrl(TabId));
+                    Response.Redirect(Utilities.NavigateURL(TabId));
                 }
                 if (!Request.IsAuthenticated & (sMode == "ENABLEDREG" || sMode == "ENABLEDMOD"))
                 {
-                    Response.Redirect(NavigateUrl(TabId));
+                    Response.Redirect(Utilities.NavigateURL(TabId));
                 }
                 else if (Request.IsAuthenticated && sMode == "ENABLEDMOD" && !UserIsMod)
                 {
-                    Response.Redirect(NavigateUrl(TabId));
+                    Response.Redirect(Utilities.NavigateURL(TabId));
                 }
             }
 

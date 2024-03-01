@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             IsCallBack = cbShell.IsCallback;
 
-            btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
+            btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(TabId) + "';";
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
             Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)

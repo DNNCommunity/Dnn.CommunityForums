@@ -1,4 +1,4 @@
-/* issue 398 : allow user to change topic rating / issue 267 : improve/update database procedures / issue 266 : refactor/modernize entities/controllers (TopicRating) */
+/* issue 398 begin : allow user to change topic rating / issue 267 : improve/update database procedures / issue 266 : refactor/modernize entities/controllers (TopicRating) */
 
 /* add index to support retrieval by user id/topic id */
 IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Ratings') AND name = N'IX_{objectQualifier}activeforums_Topics_Ratings_Users')
@@ -366,3 +366,541 @@ AS
 GO
 /* end - issue 666 - most likes */
 
+
+/* --------------------- */
+
+/* issue 662 begin : remove activeforums_Security */
+
+
+/* activeforums_Groups_Get -- remove GroupSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Get]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Get]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Get]
+@ModuleId int,
+@ForumGroupId int
+AS
+SELECT     g.ForumGroupId, g.ModuleId, g.GroupName, g.SortOrder, g.GroupSettingsKey, g.Active, g.Hidden, ISNULL(g.PrefixURL,'') as PrefixURL, p.*
+FROM         {databaseOwner}{objectQualifier}activeforums_Groups as g INNER JOIN {databaseOwner}{objectQualifier}activeforums_Permissions as p on p.PermissionsId = g.PermissionsId
+WHERE ForumGroupId = @ForumGroupId
+GO
+
+/* activeforums_Groups_List -- remove GroupSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_List]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_List]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_List]
+@ModuleId int
+AS
+SELECT     ForumGroupId, ModuleId, GroupName, SortOrder, GroupSettingsKey, Active, Hidden,ISNULL(PrefixURL,'') as PrefixURL
+FROM         {databaseOwner}{objectQualifier}activeforums_Groups
+WHERE ModuleId = @ModuleId
+GO
+
+
+
+/* activeforums_Groups_Save -- remove GroupSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Save]
+@PortalId int,
+@ModuleId int,
+@ForumGroupId int,
+@GroupName nvarchar(150),
+@SortOrder int,
+@Active bit,
+@Hidden bit,
+@PermissionsId int,
+@PrefixURL nvarchar(50)
+AS
+IF @PrefixURL <> '' AND @ForumGroupId >0
+	BEGIN
+		DECLARE @currURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,@ForumGroupId, -1,-1,-1,-1)
+		DECLARE @newURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,-1, -1,-1,-1,-1) + @PrefixURL + '/'
+	IF LTRIM(RTRIM(LOWER(@newURL))) <> LTRIM(RTRIM(LOWER(@currURL)))
+		BEGIN
+			exec {databaseOwner}{objectQualifier}activeforums_URL_Archive @PortalId,@ForumGroupId, -1, -1, @currURL
+		END
+	END
+IF EXISTS(Select ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ForumGroupId = @ForumGroupId AND ModuleId = @ModuleId)
+	UPDATE {databaseOwner}{objectQualifier}activeforums_Groups
+	SET GroupName=@GroupName, Active=@Active,Hidden=@Hidden, PermissionsId = @PermissionsId,PrefixURL = @PrefixURL
+	WHERE ForumGroupId = @ForumGroupId and ModuleId = @ModuleId
+ELSE
+	BEGIN
+		BEGIN
+			SELECT @SortOrder = Max(SortOrder) + 1 From {databaseOwner}{objectQualifier}activeforums_Groups WHERE ModuleID=@ModuleID
+				If @SortOrder IS NULL 
+					SET @SortOrder = 1
+			END
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Groups
+		(ModuleId, GroupName, SortOrder,GroupSettingsKey,Active,Hidden, PermissionsId,PrefixURL)
+		VALUES
+		(@ModuleId, @GroupName, @SortOrder,'',@Active,@Hidden, @PermissionsId,@PrefixURL)
+		SET @ForumGroupId = SCOPE_IDENTITY()
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Groups SET GroupSettingsKey = 'G:' + CAST(@ForumGroupId as varchar(50)) WHERE ForumGroupId = @ForumGroupId
+	END
+SELECT @ForumGroupId
+GO
+
+
+/* activeforums_Forum_Save -- remove ForumSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forum_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forum_Save]
+@PortalId int,
+@ForumId int,
+@ModuleId int,
+@ForumGroupId int,
+@ParentForumId int,
+@ForumName nvarchar(255),
+@ForumDesc nvarchar(2000),
+@SortOrder int,
+@Active bit,
+@Hidden bit,
+@ForumSettingsKey varchar(255) = '',
+@PermissionsId int,
+@PrefixURL nvarchar(50),
+@SocialGroupId int,
+@HasProperties bit
+AS
+IF @PrefixURL <> '' AND @ForumId >0
+	BEGIN
+		DECLARE @currURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId,@ForumGroupId, @ForumId,-1,-1,-1)
+		DECLARE @newURL nvarchar(1000)
+		SET @currURL = {databaseOwner}{objectQualifier}fn_activeforums_GetURL(@ModuleId, @ForumGroupId, -1,-1,-1,-1) + @PrefixURL + '/'
+	IF LTRIM(RTRIM(LOWER(@newURL))) <> LTRIM(RTRIM(LOWER(@currURL)))
+		BEGIN
+			exec {databaseOwner}{objectQualifier}activeforums_URL_Archive @PortalId,@ForumGroupId, @ForumId, -1, @currURL
+		END
+	END
+IF EXISTS (SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId AND ModuleId = @ModuleId)
+	BEGIN
+	DECLARE @curGroupId int 
+	DECLARE @curParentForumId int
+	BEGIN
+	IF @ForumSettingsKey = ''
+		SET @ForumSettingsKey = (SELECT ForumSettingsKey FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+	END
+		SET @curGroupId = (SELECT ForumGroupId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+		SET @curParentForumId = (SELECT ParentForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumId = @ForumId)
+		
+	IF @curGroupId <> @ForumGroupId OR @curParentForumId <> @ParentForumId
+		BEGIN
+		DECLARE @MaxSort int
+		SET @MaxSort = (SELECT MAX(SortOrder) from {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleId = @ModuleId AND ParentForumId = @ParentForumId AND ForumGroupId = @ForumGroupId)
+		IF @MaxSort IS NULL
+			SET @MaxSort = 0
+		ELSE
+			SET @MaxSort = @MaxSort + 1
+		
+		UPDATE {databaseOwner}{objectQualifier}activeforums_forums SET SortOrder = @MaxSort, ForumGroupId = @ForumGroupId WHERE ForumId = @ForumId --and ForumGroupID = @ForumGroupID
+		exec {databaseOwner}{objectQualifier}activeforums_Forums_RepairSort @curGroupId, @curParentForumId
+		exec {databaseOwner}{objectQualifier}activeforums_Forums_RepairSort @ForumGroupID, @ParentForumId
+		END
+	UPDATE {databaseOwner}{objectQualifier}activeforums_Forums
+	SET PortalId = @PortalId, ForumGroupId = @ForumGroupId, ParentForumId = @ParentForumId, ForumName = @ForumName,
+	ForumDesc = @ForumDesc,  Active = @Active, Hidden = @Hidden, DateUpdated = GetDate(), ForumSettingsKey = @ForumSettingsKey,
+	PermissionsId = @PermissionsId,
+	PrefixURL = @PrefixURL,
+	SocialGroupId = @SocialGroupId,
+	HasProperties = @HasProperties
+	WHERE ForumId = @ForumId AND ModuleId = @ModuleId
+	END
+	
+ELSE
+	BEGIN
+	SELECT @SortOrder = (Max(SortOrder) + 1) From {databaseOwner}{objectQualifier}activeforums_Forums WHERE ModuleID=@ModuleID and ForumGroupID = @ForumGroupID 
+	INSERT INTO {databaseOwner}{objectQualifier}activeforums_Forums
+		(PortalId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, PermissionsId, PrefixURL, SocialGroupId, HasProperties)
+		VALUES
+		(@PortalId, @ModuleId, @ForumGroupId, @ParentForumId, @ForumName, @ForumDesc, IsNull(@SortOrder,0), @Active, @Hidden, @PermissionsId, @PrefixURL, @SocialGroupId, @HasProperties)
+	SET @ForumId = SCOPE_IDENTITY()
+		BEGIN
+			IF @ForumSettingsKey = ''
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET ForumSettingsKey = 'F:' + CAST(@ForumId as varchar(50)) WHERE ForumId = @ForumId
+			ELSE
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Forums SET ForumSettingsKey = @ForumSettingsKey WHERE ForumId = @ForumId
+		END
+	END
+SELECT @ForumId
+
+
+-- reset thread order
+EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+GO
+
+
+/* activeforums_Forums_List -- remove ForumSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_List]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_List]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_List]
+@ModuleId int,
+@ForumGroupId int,
+@ParentForumId int,
+@FillLastPost bit
+AS
+IF @ForumGroupId = -1 AND @ParentForumId = -1 AND @FillLastPost = 0
+	--Return all Forums
+SELECT     IsNull(F.ForumId,-1) as ForumId, G.ModuleId, G.ForumGroupId, IsNull(F.ParentForumId,'-1') as ParentForumId, IsNull(F.ForumName,'') as ForumName, F.ForumDesc, F.SortOrder, F.Active, F.Hidden, F.TotalTopics, 
+                      F.TotalReplies, F.LastTopicId, F.LastReplyId, F.ForumSettingsKey, G.GroupName, ISNULL(P.ForumName, '') AS ParentForumName,
+		TopicsTemplateId = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICSTEMPLATEID' and GroupKey = F.ForumSettingsKey),0),
+		TopicTemplateId =  IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICTEMPLATEID' and GroupKey = F.ForumSettingsKey),0)
+FROM         {databaseOwner}{objectQualifier}activeforums_Forums AS F RIGHT OUTER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Groups AS G ON F.ForumGroupId = G.ForumGroupId LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Forums AS P ON F.ParentForumId = P.ForumId
+WHERE     (G.ModuleId = @ModuleId)
+ORDER BY G.SortOrder, F.SortOrder
+	
+ELSE
+	IF @ForumGroupId > 0 AND @ParentForumId = -1 AND @FillLastPost = 0
+		--Return Forums in Group
+		SELECT     F.ForumId, F.ModuleId, F.ForumGroupId, F.ParentForumId, F.ForumName, F.ForumDesc, F.SortOrder, F.Active, F.Hidden, F.TotalTopics, 
+						  F.TotalReplies, F.LastTopicId, F.LastReplyId, F.ForumSettingsKey, G.GroupName, ISNULL(P.ForumName, '') AS ParentForumName,
+		TopicsTemplateId = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICSTEMPLATEID' and GroupKey = F.ForumSettingsKey),0),
+		TopicTemplateId =  IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICTEMPLATEID' and GroupKey = F.ForumSettingsKey),0)
+		FROM         {databaseOwner}{objectQualifier}activeforums_Forums AS F INNER JOIN
+						  {databaseOwner}{objectQualifier}activeforums_Groups AS G ON F.ForumGroupId = G.ForumGroupId LEFT OUTER JOIN
+						  {databaseOwner}{objectQualifier}activeforums_Forums AS P ON F.ParentForumId = P.ForumId
+		WHERE F.ModuleId = @ModuleId AND F.ForumGroupId = @ForumGroupId
+		ORDER By F.SortOrder
+	ELSE
+		If @ForumGroupId > 0 AND @ParentForumId > 0 AND @FillLastPost = 0
+			--Return Sub Forums
+			
+			SELECT     F.ForumId, F.ModuleId, F.ForumGroupId, F.ParentForumId, F.ForumName, F.ForumDesc, F.SortOrder, F.Active, F.Hidden, F.TotalTopics, 
+							  F.TotalReplies, F.LastTopicId, F.LastReplyId, F.ForumSettingsKey, G.GroupName, ISNULL(P.ForumName, '') AS ParentForumName,
+		TopicsTemplateId = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICSTEMPLATEID' and GroupKey = F.ForumSettingsKey),0),
+		TopicTemplateId =  IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICTEMPLATEID' and GroupKey = F.ForumSettingsKey),0)
+			FROM         {databaseOwner}{objectQualifier}activeforums_Forums AS F INNER JOIN
+							  {databaseOwner}{objectQualifier}activeforums_Groups AS G ON F.ForumGroupId = G.ForumGroupId LEFT OUTER JOIN
+							  {databaseOwner}{objectQualifier}activeforums_Forums AS P ON F.ParentForumId = P.ForumId
+			WHERE F.ModuleId = @ModuleId AND F.ParentForumId = @ParentForumId
+			ORDER By G.SortOrder, F.SortOrder
+		ELSE
+			---Returns Forums In Group with Last Post Info
+SELECT     F.ForumId, F.ModuleId, F.ForumGroupId, F.ParentForumId, F.ForumName, F.ForumDesc, F.SortOrder, F.Active, F.Hidden, F.TotalTopics, 
+                      F.TotalReplies, F.LastTopicId, F.LastReplyId, F.ForumSettingsKey, G.GroupName, ISNULL(P.ForumName, '') AS ParentForumName, ISNULL(U.FirstName, '') 
+                      AS LastPostFirstName, ISNULL(U.LastName, '') AS LastPostLastName, ISNULL(C.AuthorId, - 1) AS LastPostUserId, ISNULL(C.AuthorName, '') AS LastPostUserName, 
+                      C.Subject AS LastPostSubject, C.DateCreated AS LastPostDateTime,
+		TopicsTemplateId = IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICSTEMPLATEID' and GroupKey = F.ForumSettingsKey),0),
+		TopicTemplateId =  IsNull((SELECT SettingValue FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE SettingName = 'TOPICTEMPLATEID' and GroupKey = F.ForumSettingsKey),0)
+FROM         {databaseOwner}{objectQualifier}activeforums_Content AS C INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Topics AS T ON C.ContentId = T.ContentId INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_UserProfiles AS UD INNER JOIN
+                      {databaseOwner}{objectQualifier}Users AS U ON UD.UserID = U.UserID ON C.AuthorId = UD.UserID RIGHT OUTER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Forums AS F INNER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Groups AS G ON F.ForumGroupId = G.ForumGroupId ON T.TopicId = F.LastPostId LEFT OUTER JOIN
+                      {databaseOwner}{objectQualifier}activeforums_Forums AS P ON F.ParentForumId = P.ForumId
+WHERE     (F.ModuleId = @ModuleId) AND (F.ForumGroupId = @ForumGroupId)
+ORDER BY G.SortOrder, F.SortOrder
+GO
+
+
+
+/* activeforums_Security_GetByKey -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Security_GetByKey') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Security_GetByKey
+GO
+
+/* activeforums_Security_Delete -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_Delete]
+GO
+
+/* activeforums_Security_Get -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_Get]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_Get]
+GO
+
+/* activeforums_Security_GetByUser -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_GetByUser]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_GetByUser]
+GO
+
+/* activeforums_Security_Save -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_Save]
+GO
+
+/* activeforums_Security_SearchObjects -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security_SearchObjects]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Security_SearchObjects]
+GO
+
+/* activeforums_Forum_ConfigCleanUp -- no longer need to update ForumSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_Forum_ConfigCleanUp
+@ModuleId int,
+@ForumSettingsKey nvarchar(25)
+AS
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE GroupKey = @ForumSettingsKey AND ModuleId = @ModuleId
+GO
+
+/* activeforums_Groups_Delete -- no longer delete from activeforums_Security when deleting group */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Delete]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Groups_Delete]
+@ModuleId int,
+@ForumGroupId int
+AS
+DECLARE @GroupSettingsKey nvarchar(25)
+SET @GroupSettingsKey = (SELECT GroupSettingsKey FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ForumGroupId = @ForumGroupId AND ModuleId = @ModuleId)
+
+/*DELETE REPLY ATTACHMENTS*/
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Attachments 
+	WHERE AttachId IN (
+		SELECT ca.AttachId FROM {databaseOwner}{objectQualifier}activeforums_Content_Attachments as ca 
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c on c.ContentId = ca.ContentId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Replies as r on c.ContentId = r.ContentId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft on ft.TopicId = r.TopicId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as g on g.ForumGroupId = f.ForumGroupId
+		WHERE g.ForumGroupId = @ForumGroupId)
+/*DELETE TOPIC ATTACHMENTS*/
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Attachments 
+	WHERE AttachId IN (
+		SELECT ca.AttachId FROM {databaseOwner}{objectQualifier}activeforums_Content_Attachments as ca 
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Content as c on c.ContentId = ca.ContentId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics as t on c.ContentId = t.ContentId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft on ft.TopicId = t.TopicId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as g on g.ForumGroupId = f.ForumGroupId
+		WHERE g.ForumGroupId = @ForumGroupId)
+
+/*DELETE REPLY CONTENT */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId IN (
+	Select r.ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies as r 
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft on ft.TopicId = r.TopicId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as g on g.ForumGroupId = f.ForumGroupId
+		WHERE g.ForumGroupId = @ForumGroupId)	
+
+/*DELETE REPLIES */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Replies 
+	WHERE TopicId IN (
+		SELECT ft.TopicId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft 
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f ON f.ForumId = ft.ForumID
+		WHERE f.ForumGroupId = @ForumGroupId)
+
+/*DELETE TOPIC CONTENT */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Content WHERE ContentId IN (
+	Select t.ContentId FROM {databaseOwner}{objectQualifier}activeforums_Topics as t
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft on ft.TopicId = t.TopicId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId
+		INNER JOIN {databaseOwner}{objectQualifier}activeforums_Groups as g on g.ForumGroupId = f.ForumGroupId
+		WHERE g.ForumGroupId = @ForumGroupId)	
+/*DELETE TOPICS*/
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics WHERE TopicId IN (
+		SELECT ft.TopicId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft INNER JOIN
+		{databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId
+		WHERE f.ForumGroupId = @ForumGroupId)
+
+/*DELETE FORUM TRACKING*/
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking 
+	WHERE ForumId IN (
+		SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId)
+/*DELETE FORUM SETTINGS */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings
+	WHERE ModuleId = @ModuleId AND GroupKey IN (
+		SELECT ForumSettingsKey FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId) 
+/*DELETE FORUM SUBSCRIPTIONS */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Subscriptions
+	WHERE ForumId IN (
+		SELECT ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId) 
+/*DELETE FORUM TAGS */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tags
+	WHERE TopicId IN (
+		SELECT ft.TopicId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId WHERE f.ForumGroupId = @ForumGroupId) 
+/*DELETE FORUM TAGS */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Tracking
+	WHERE TopicId IN (
+		SELECT ft.TopicId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId WHERE f.ForumGroupId = @ForumGroupId)
+/*DELETE FORUM TAGS */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Topics_Ratings
+	WHERE TopicId IN (
+		SELECT ft.TopicId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics as ft INNER JOIN {databaseOwner}{objectQualifier}activeforums_Forums as f on f.ForumId = ft.ForumId WHERE f.ForumGroupId = @ForumGroupId) 
+/*DELETE FORUMTOPICS TABLE */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics 
+	WHERE ForumId IN ( 
+		SELECT f.ForumId FROM {databaseOwner}{objectQualifier}activeforums_Forums as f WHERE f.ForumGroupId = @ForumGroupId)
+/*DELETE FORUMS */
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Forums WHERE ForumGroupId = @ForumGroupId
+
+
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Settings WHERE GroupKey = @GroupSettingsKey AND ModuleId = @ModuleId
+
+DELETE FROM {databaseOwner}{objectQualifier}activeforums_Groups WHERE ForumGroupId = @ForumGroupId AND ModuleId = @ModuleId
+GO
+
+/* activeforums_ForumGet -- remove ForumSecurityKey */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumGet]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_ForumGet]
+GO
+CREATE PROCEDURE {databaseOwner}{objectQualifier}activeforums_ForumGet
+@PortalId int,
+@ModuleId int,
+@ForumId int
+AS 
+SELECT     F.ForumId, F.ModuleId, F.ForumGroupId, F.ParentForumId, F.ForumName, F.ForumDesc, F.SortOrder, F.Active, F.Hidden, F.TotalTopics, 
+					  F.TotalReplies, F.LastTopicId, F.LastReplyId, F.ForumSettingsKey, G.GroupName, ISNULL(P.ForumName, '') AS ParentForumName, pf.*,
+					  InheritSecurity = (CASE WHEN G.PermissionsId = F.PermissionsId THEN 1 ELSE 0 END),
+					  ISNULL(F.PrefixURL,'') as PrefixURL,
+					  ISNULL(g.PrefixURL,'') as GroupPrefixURL,
+					  ISNULL(f.SocialGroupId, -1) as SocialGroupId,
+					  f.HasProperties
+FROM         {databaseOwner}{objectQualifier}activeforums_Forums AS F INNER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Permissions as pf on pf.PermissionsId = f.PermissionsId INNER JOIN
+					  {databaseOwner}{objectQualifier}activeforums_Groups AS G ON F.ForumGroupId = G.ForumGroupId LEFT OUTER JOIN
+					  {databaseOwner}{objectQualifier}activeforums_Forums AS P ON F.ParentForumId = P.ForumId
+WHERE     (F.ForumId = @ForumId)
+GO
+
+/* activeforums_Forums_Get -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_Get]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Forums_Get]
+GO
+
+/* activeforums_GetForumSecurity -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION {databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]
+GO
+
+/* vw_activeforums_Security -- no longer used */
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}vw_activeforums_Security]'))
+DROP VIEW {databaseOwner}[{objectQualifier}vw_activeforums_Security]
+GO
+
+/* activeforums_Security_Opt1 -- no longer used */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Security') AND name = N'idx_{objectQualifier}activeforums_Security_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_Security_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Security 
+GO
+
+/* activeforums_Security -- no longer used */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Security]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Security]
+GO
+
+/* activeforums_Forums -- remove column no longer used */
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'ForumSecurityKey' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP COLUMN ForumSecurityKey
+GO
+
+/* activeforums_Groups -- remove column no longer used */
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'GroupSecurityKey' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Groups] DROP COLUMN GroupSecurityKey
+GO
+
+/* issue 662 end : remove activeforums_Security */
+
+/* --------------------- */
+
+/* issue 536 begin - dbtype alignment */
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Settings') AND name = N'idx_{objectQualifier}activeforums_Settings_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_Settings_Opt1]
+    ON {databaseOwner}[{objectQualifier}activeforums_Settings];	
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Settings') AND name = N'idx_{objectQualifier}activeforums_Settings_Opt2')
+DROP INDEX [idx_{objectQualifier}activeforums_Settings_Opt2]
+    ON {databaseOwner}[{objectQualifier}activeforums_Settings];	
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Settings] ALTER COLUMN [GroupKey] VARCHAR (50) NULL;
+GO 
+
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Settings_Opt1]
+    ON {databaseOwner}[{objectQualifier}activeforums_Settings]([GroupKey] ASC, [SettingName] ASC)
+    INCLUDE([SettingValue]);
+GO
+CREATE CLUSTERED INDEX [idx_{objectQualifier}activeforums_Settings_Opt2] 
+ON {databaseOwner}[{objectQualifier}activeforums_Settings]
+(
+	[GroupKey] ASC,
+	[SettingName] ASC,
+	[ModuleId] ASC
+) 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_GetPrefixes]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_GetPrefixes]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_List]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_List]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_MC_Forums]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_MC_Forums]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItems]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItems]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Delete]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_Delete]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Get]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_Get]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_List]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_List]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_ListAll]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_ListAll]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Save]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_Save]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_UpdateStatus]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_UpdateStatus]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_ForumView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_ForumView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckForumVanity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckForumVanity]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckGroupVanity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckGroupVanity]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumsList]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_ForumsList]';
+GO
+
+/* issue 536 end - dbtype alignment */
+
+/* --------------------- */
