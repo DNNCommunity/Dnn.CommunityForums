@@ -94,6 +94,9 @@
       <Name>DnnCommunityForums</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\NUnit.Analyzers.4.0.1\analyzers\dotnet\cs\nunit.analyzers.dll" />
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
