@@ -394,7 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
-                        upi.Signature = Utilities.HTMLEncode(upi.Signature);
+                        upi.Signature = HttpUtility.HtmlEncode(upi.Signature);
                     }
                     else if (MainSettings.AllowSignatures == 2)
                     {

@@ -434,11 +434,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Public Methods
         public string NavigateUrl(int TabId)
         {
-            return Utilities.NavigateUrl(TabId);
+            return Utilities.NavigateURL(TabId);
         }
         public string NavigateUrl(int TabId, string ControlKey, params string[] AdditionalParameters)
         {
-            return Utilities.NavigateUrl(TabId, ControlKey, AdditionalParameters);
+            return Utilities.NavigateURL(TabId, ControlKey, AdditionalParameters);
         }
         private string[] AddParams(string param, string[] currParams)
         {

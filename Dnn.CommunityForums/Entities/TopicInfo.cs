@@ -125,8 +125,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                             int i = 0;
                             for (i = 0; i < xNodeList.Count; i++)
                             {
-                                string pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                string pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                string pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                string pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                                 int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
                                 PropertiesInfo p = new PropertiesInfo();
                                 p.Name = pName;
