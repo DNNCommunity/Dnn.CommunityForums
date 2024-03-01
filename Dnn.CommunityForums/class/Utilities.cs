@@ -486,8 +486,10 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             return sClean;
         }
+
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
+
             var strMessage = HttpUtility.HtmlEncode(text);
 
             if (strMessage != string.Empty)
