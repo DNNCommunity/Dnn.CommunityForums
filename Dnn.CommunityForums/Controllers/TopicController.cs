@@ -47,14 +47,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId);
                 }
-                //forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(moduleId, forum.ForumGroupId) : null;
-                //forum.ForumSettings = (Hashtable)DataCache.GetSettings(moduleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, forum.ForumSettingsKey), !ignoreCache);
-                //forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
-                //if (forum.HasProperties)
-                //{
-                //    var propC = new PropertiesController();
-                //    forum.Properties = propC.ListProperties(portalId, 1, forumId);
-                //}
             }
             return ti;
         }

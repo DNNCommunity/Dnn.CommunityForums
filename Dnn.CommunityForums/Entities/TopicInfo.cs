@@ -129,8 +129,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             { _Author = value; }
         }
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
-        [IgnoreColumn()]
         public string Tags { get; set; }
         [IgnoreColumn()]
         public string Categories { get; set; } = string.Empty;
@@ -172,8 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return pl;
                 }
             }
-        }
-         
+        }         
     } 
 
 }

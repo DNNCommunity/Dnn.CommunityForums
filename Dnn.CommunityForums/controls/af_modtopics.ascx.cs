@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                 ReplyController rc = new ReplyController();
-                                DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(tmpReplyId);
                                 if (ri != null)
                                 {
                                     ri.IsApproved = true;

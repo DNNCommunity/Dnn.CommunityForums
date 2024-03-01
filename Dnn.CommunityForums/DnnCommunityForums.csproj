@@ -1773,7 +1773,6 @@
     <Folder Include="class\API\" />
     <Folder Include="components\Replies\" />
     <Folder Include="components\Security\" />
-    <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

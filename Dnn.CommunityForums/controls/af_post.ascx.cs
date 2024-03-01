@@ -969,13 +969,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
             }
 
-            var rc = new ReplyController();
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri;
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri;
 
 
             if (PostId > 0)
             {
-                ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
+                ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(PostId);
                 ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else

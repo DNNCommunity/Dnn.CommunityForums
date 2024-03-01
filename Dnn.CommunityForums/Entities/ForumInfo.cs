@@ -127,7 +127,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             PrefixURL = string.Empty;
             ForumSettings = new Hashtable();
 
-            Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         }
 
         #region "Settings"
