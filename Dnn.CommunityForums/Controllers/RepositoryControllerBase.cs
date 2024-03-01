@@ -24,7 +24,7 @@ using System.Web.UI;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public partial class RepositoryControllerBase<T> where T : class
+    internal partial class RepositoryControllerBase<T> where T : class
     {
         internal readonly IRepository<T> Repo;
         internal RepositoryControllerBase()

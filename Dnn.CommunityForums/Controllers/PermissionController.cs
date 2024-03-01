@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
+    internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole)
         {
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return HasRequiredPerm(AuthorizedRoles.Split(new[] { ';' }), UserRoles.Split(new[] { ';' }));
         }
-        public static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles)
+        internal static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles)
         {
             bool bolAuth = false;
             if (UserRoles != null)
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return roles;
         }
-        public static string GetNamesForRoles(int PortalId, string Roles)
+        internal static string GetNamesForRoles(int PortalId, string Roles)
         {
             try
             {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return string.Empty;
             }
         }
-        public static string GetRoleName(int PortalId, string role)
+        internal static string GetRoleName(int PortalId, string role)
         {
             return GetRoles(PortalId).ToArray().Where(r => r.RoleID == Utilities.SafeConvertInt(role)).Select(r => r.RoleName).FirstOrDefault();
         }
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return GetRoleIds(PortalId, Roles);
         }
-        public static string GetRoleIds(int PortalId, string[] Roles)
+        internal static string GetRoleIds(int PortalId, string[] Roles)
         {
             string RoleIds = (string)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.RoleIDs, PortalId));
             if (string.IsNullOrEmpty(RoleIds))
