@@ -595,11 +595,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (ForumInfo.ParentForumId > 0)
                 {
-                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
+                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
                 else if (ForumInfo.ForumGroupId > 0)
                 {
-                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.GroupName + "</a>");
+                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.GroupName + "</a>");
                 }
             }
             // If String.IsNullOrEmpty(ForumInfo.ParentForumName) Then

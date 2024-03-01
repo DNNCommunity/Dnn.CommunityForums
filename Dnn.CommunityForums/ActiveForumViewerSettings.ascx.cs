@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				//ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
 				objModules.UpdateModuleSetting(ModuleId, ForumViewerSettingsKeys.AFForumGroupId, sID);
 				// Redirect back to the portal home page
-				Response.Redirect(Utilities.NavigateUrl(TabId), true);
+				Response.Redirect(Utilities.NavigateURL(TabId), true);
 			}
 			catch (Exception exc)
 			{

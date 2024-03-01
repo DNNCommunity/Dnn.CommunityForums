@@ -804,6 +804,109 @@ GO
 
 /* --------------------- */
 
+/* issue 536 begin - dbtype alignment */
+
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Settings') AND name = N'idx_{objectQualifier}activeforums_Settings_Opt1')
+DROP INDEX [idx_{objectQualifier}activeforums_Settings_Opt1]
+    ON {databaseOwner}[{objectQualifier}activeforums_Settings];	
+GO
+IF EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Settings') AND name = N'idx_{objectQualifier}activeforums_Settings_Opt2')
+DROP INDEX [idx_{objectQualifier}activeforums_Settings_Opt2]
+    ON {databaseOwner}[{objectQualifier}activeforums_Settings];	
+GO
+
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Settings] ALTER COLUMN [GroupKey] VARCHAR (50) NULL;
+GO 
+
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Settings_Opt1]
+    ON {databaseOwner}[{objectQualifier}activeforums_Settings]([GroupKey] ASC, [SettingName] ASC)
+    INCLUDE([SettingValue]);
+GO
+CREATE CLUSTERED INDEX [idx_{objectQualifier}activeforums_Settings_Opt2] 
+ON {databaseOwner}[{objectQualifier}activeforums_Settings]
+(
+	[GroupKey] ASC,
+	[SettingName] ASC,
+	[ModuleId] ASC
+) 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_SettingsTable]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_GetForumSecurity]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forum_ConfigCleanUp]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Groups_Delete]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItemsFromBegDate]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_GetPrefixes]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_GetPrefixes]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_List]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Forums_List]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_MC_Forums]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_MC_Forums]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Replies_UpdateStatus]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItems]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Search_GetSearchItems]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Delete]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_Delete]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Get]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_Get]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_List]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_List]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_ListAll]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_ListAll]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings_Save]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Settings_Save]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions_Subscribers]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_UpdateStatus]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Topics_UpdateStatus]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_ForumView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_ForumView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_UI_TopicsView]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckForumVanity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckForumVanity]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckGroupVanity]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_URL_CheckGroupVanity]';
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumsList]') AND type in (N'P', N'PC'))
+EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_ForumsList]';
+GO
+
+/* issue 536 end - dbtype alignment */
+
+/* --------------------- */
+
+ 
+
 /* issue 680 begin - ModuleId not populated in activeforums_Content */
 
 
