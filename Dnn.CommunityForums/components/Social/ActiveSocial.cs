@@ -18,8 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Data;
+
+using System.Web;
 using DotNetNuke.Modules.ActiveForums.Data;
+using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Services.Journal;
+using DotNetNuke.Web.Models;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -86,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ji.SocialGroupId = SocialGroupId;
 
             }
-            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, true));
+            JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId,TabId, true));
         }
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
         public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)

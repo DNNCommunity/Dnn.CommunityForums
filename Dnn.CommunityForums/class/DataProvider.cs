@@ -68,10 +68,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Forums
         public abstract void Forums_Delete(int PortalId, int ModuleId, int ForumId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract IDataReader Forums_Get(int PortalId, int ModuleId, int ForumID, int UserId, bool WithSecurity);
         public abstract IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost);
         public abstract void Forums_Move(int ModuleId, int ForumId, int SortDirection);
         public abstract int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties);
+        public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey); 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey)")]
         public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey, string ForumSecurityKey);
         #endregion
 
@@ -131,11 +134,17 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Security
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Delete(int SecuredId, int ObjectId, int SecureAction, int SecureType, int ObjectType);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_Get(int SecuredId, int ObjectId, int SecureType);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_GetByKey(string SecurityKey);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_GetByUser(int PortalId, int ForumId, int UserId, bool IsSuperUser);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Save(int SecuredId, int ObjectId, string SecureAction, bool SecureActionValue, int SecureType, string ObjectName, int ObjectType, string SecurityKey);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")] 
         public abstract IDataReader Security_SearchObjects(int PortalId, string Search);
         #endregion
 
