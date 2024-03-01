@@ -58,10 +58,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Forums
         public abstract void Forums_Delete(int PortalId, int ModuleId, int ForumId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract IDataReader Forums_Get(int PortalId, int ModuleId, int ForumID, int UserId, bool WithSecurity);
         public abstract IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost);
         public abstract void Forums_Move(int ModuleId, int ForumId, int SortDirection);
         public abstract int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties);
+        public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey); 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey)")]
         public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey, string ForumSecurityKey);
         #endregion
 
@@ -115,16 +118,23 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet Search(int portalId, int moduleId, int userId, int searchId, int rowIndex, int maxRows, string searchString, int matchType, int searchField, int timespan, int authorId, string author, string forums, string tags, int resultType, int sort, int maxCacheHours, bool fullText);
         public abstract int Search_ManageFullText(bool enabled);
         public abstract int Search_GetFullTextStatus();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Using Search_DotNetNuke(int moduleId, DateTime beginDateUtc)")]
         public abstract IDataReader Search_DotNetNuke(int moduleId);
         public abstract IDataReader Search_DotNetNuke(int moduleId, DateTime beginDateUtc);
         #endregion
 
         #region Security
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Delete(int SecuredId, int ObjectId, int SecureAction, int SecureType, int ObjectType);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_Get(int SecuredId, int ObjectId, int SecureType);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_GetByKey(string SecurityKey);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract IDataReader Security_GetByUser(int PortalId, int ForumId, int UserId, bool IsSuperUser);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public abstract void Security_Save(int SecuredId, int ObjectId, string SecureAction, bool SecureActionValue, int SecureType, string ObjectName, int ObjectType, string SecurityKey);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")] 
         public abstract IDataReader Security_SearchObjects(int PortalId, string Search);
         #endregion
 
@@ -163,10 +173,12 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Topics
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
         public abstract int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress);
         public abstract void Topics_Delete(int ForumId, int TopicId, int DelBehavior);
         public abstract void Topics_Delete_For_User(int ModuleId, int UserId, int DelBehavior);
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
         public abstract int Topics_GetRating(int TopicId);
         public abstract IDataReader Topics_List(int ForumId, int PortalId, int ModuleId);
         public abstract void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId);
