@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, userPostCount);
             //Assert
-            Assert.IsFalse(isTrusted);
+            Assert.That(isTrusted, Is.False);
         }
 
         [Test()]
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlEncode(string.Empty);
             //Assert
-            Assert.IsEmpty(actualResult);
+            Assert.That(actualResult, Is.Empty);
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlDecode(string.Empty);
             //Assert
-            Assert.IsEmpty(actualResult);
+            Assert.That(actualResult, Is.Empty);
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
