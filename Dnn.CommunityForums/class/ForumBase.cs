@@ -327,7 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we don't have a forum id at this point, try and pull it from "forumid" in the query string
                 if (_forumId < 1)
                 {
-                    queryForumId = Request.QueryString["forumid"];
+                    queryForumId = Request.QueryString[Literals.ForumId];
                     if (!string.IsNullOrWhiteSpace(queryForumId))
                     {
                         // Try to parse the id, if it doesn't work, return the default value.
