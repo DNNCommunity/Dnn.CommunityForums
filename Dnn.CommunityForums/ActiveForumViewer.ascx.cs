@@ -55,6 +55,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlForumLoader.DefaultView = viewType;
                     ctlForumLoader.ForumModuleId = tmpModuleId;
                     ctlForumLoader.ForumTabId = ForumTabId; 
+                    int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(tmpModuleId).FirstOrDefault().TabID;
+                    if (tmpForumTabId <= 0) { tmpForumTabId = TabId; }
+                    ctlForumLoader.ForumTabId = tmpForumTabId;
                     ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration; 
                     if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTheme]) == null))
                     {
@@ -62,11 +65,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";
-                    oLink.Attributes["type"] = "text/css";
+                    oLink.Attributes["type"] = "text/css"; 
                     oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "module.css");
                     System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
                     if (oCSS != null)
-                    {
+                        {
                         int iControlIndex = 0;
                         iControlIndex = oCSS.Controls.Count;
                         oCSS.Controls.AddAt(0, oLink);
