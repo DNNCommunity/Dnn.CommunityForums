@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						             };
 					    var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
 						int groupId = gc.Groups_Save(PortalId, gi, true);
-						gi = gc.GetById(groupId);
+						gi = gc.GetForumGroup(ModuleId, groupId);
 						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
@@ -462,7 +462,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
                     string subject = (Utilities.SafeConvertString(dr["Subject"]));
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(portalId, moduleId, forumId);
-					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.Get(topicId);
+					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.GetById(topicId);
 					topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
 					tc.Update(topicInfo); 
                 }

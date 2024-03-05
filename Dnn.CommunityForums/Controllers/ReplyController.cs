@@ -31,14 +31,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class ReplyController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo>
     {
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetById(int ReplyId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.GetById(ReplyId);
+            if (ri != null)
+            {
+                if (ri.Topic == null)
+                {
+                    ri.Topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ri.TopicId);
+                }
+                if (ri.Content == null)
+                {
+                    ri.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ri.ContentId);
+                }
+                if (ri.Forum == null)
+                {
+                    ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.ForumId);
+                }
+            }
+            return ri;
+        }
         internal static DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetReply(int ReplyId) 
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
-        }
-        internal static void UpdateModuleLastContentModifiedOnDate(int ModuleId)
-        {
-            // signal to platform that module has updated content in order to be included in incremental search crawls
-            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
         {
@@ -85,13 +100,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             ri.StatusId = -1;
             ri.TopicId = TopicId;
             replyId = Reply_Save(PortalId, ModuleId, ri);
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
-        }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
-        public int Reply_Save(int PortalId, ReplyInfo ri)
-        {
-            return Reply_Save(PortalId, -1, ri);
         }
         public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
         {
@@ -148,9 +158,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             reply.IsApproved = true;
             rc.Reply_Save(PortalId, ModuleId, reply);
-            TopicsController tc = new TopicsController();
-            tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, ReplyId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
             if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
             {

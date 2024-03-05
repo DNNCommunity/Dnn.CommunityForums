@@ -350,7 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.EditTopic;
             var tc = new TopicsController();
-            var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, UserId, true);
+            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             if (ti == null)
             {
                 Response.Redirect(NavigateUrl(TabId));
@@ -409,8 +409,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             for (var i = 0; i < xNodeList.Count; i++)
                             {
-                                var pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                var pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                var pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                                 var xmlAttributeCollection = xNodeList[i].Attributes;
                                 if (xmlAttributeCollection == null)
                                     continue;
@@ -543,7 +543,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 var tc = new TopicsController();
-                var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, UserId, true);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
                 if (ti == null)
                     Response.Redirect(NavigateUrl(TabId));
@@ -588,7 +588,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
                         if (postId == TopicId)
                         {
-                            ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
+                            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                             ci = ti.Content;
                             sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
                         }
@@ -609,7 +609,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (body.ToUpper().Contains("<CODE") | body.ToUpper().Contains("[CODE]"))
                         {
                             var objCode = new CodeParser();
-                            body = CodeParser.ParseCode(Utilities.HTMLDecode(body));
+                            body = CodeParser.ParseCode(System.Web.HttpUtility.HtmlDecode(body));
                         }
                     }
                     else
@@ -692,7 +692,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (TopicId > 0)
             {
-                ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
+                ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 ti.Content.DateUpdated = DateTime.UtcNow;
                 authorId = ti.Author.AuthorId;
             }
@@ -772,14 +772,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.TopicData = tData.ToString();
             }
 
-            TopicId = tc.TopicSave(PortalId, ModuleId, ti);
-            ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
+            TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             if (ti != null)
             {
-                tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ForumModuleId);
+                TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
                 SaveAttachments(ti.ContentId);
                 if (ti.IsApproved && ti.Author.AuthorId > 0)
-                {
+                {//TODO: move this to more appropriate place and make consistent with reply count
                     var uc = new Data.Profiles();
                     uc.Profile_UpdateTopicCount(PortalId, ti.Author.AuthorId);
                 }
@@ -840,14 +840,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
+                ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 ti.TopicType = TopicTypes.Poll;
-                tc.TopicSave(PortalId, ForumModuleId, ti); 
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                 if (UserPrefTopicSubscribe)
                 {
                     new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
                 }
-                tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+                Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             }
 
             try
@@ -932,7 +932,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (Request.Params[ParamKeys.QuoteId] != null)
             {
-                body = Utilities.HTMLDecode(body);
+                body = System.Web.HttpUtility.HtmlDecode(body);
             }
             int authorId;
             string authorName;
@@ -969,15 +969,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
             }
 
-            var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
-            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri;
-
 
 
             if (PostId > 0)
             {
-                ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
+                ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(PostId);
                 ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else
@@ -1019,7 +1016,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
-            new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
@@ -1030,10 +1027,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 if (ri.IsApproved == false)
-                {
-                    var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
-
+                {                    
                     var mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
                     var notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
                     var notifySubject = Utilities.GetSharedResource("NotificationSubjectReply");
@@ -1060,10 +1056,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    var ctlUtils = new ControlUtils();
-                    var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-                    var fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
-
+                    var fullURL = new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     if (fullURL.Contains("~/"))
                         fullURL = Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
 

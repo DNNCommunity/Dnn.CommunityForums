@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 			Data.ForumsDB fdb = new Data.ForumsDB();
-			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
+			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection filteredForums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in allForums)
 			{

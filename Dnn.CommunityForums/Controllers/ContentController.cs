@@ -18,6 +18,8 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>

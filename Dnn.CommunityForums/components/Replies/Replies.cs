@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.StatusId = -1;
             ri.TopicId = TopicId;
             replyId = Reply_Save(PortalId, ModuleId, ri);
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
@@ -240,7 +240,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
                 ri.StatusId = Convert.ToInt32(dr["StatusId"]);
                 ri.TopicId = Convert.ToInt32(dr["TopicId"]);
-                //tl.Add(ti)
             }
             dr.Close();
             return ri;
@@ -258,21 +257,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             reply.IsApproved = true;
             rc.Reply_Save(PortalId, ModuleId, reply);
-            TopicsController tc = new TopicsController();
-            tc.Topics_SaveToForum(ForumId, TopicId, PortalId, ModuleId, ReplyId);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, ReplyId);
             if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
             {
                 Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
             }
-
             Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
 
             try
             {
-                ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
+                string fullURL = new ControlUtils().BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
 
                 if (fullURL.Contains("~/"))
                 {
@@ -291,15 +287,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return reply;
         }
+        [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
-            // signal to platform that module has updated content in order to be included in incremental search crawls
-            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
-
-        #endregion
     }
     #endregion
-
+    #endregion
 }
 

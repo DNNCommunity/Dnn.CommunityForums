@@ -31,6 +31,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Modules.ActiveForums.DAL2;
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     public class forumhelper : HandlerBase
@@ -170,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
@@ -329,7 +330,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			if (topicId > 0)
 			{
 				TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 Data.ForumsDB db = new Data.ForumsDB();
                 forumId = db.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
@@ -374,8 +375,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         t.TopicData = tData.ToString();
                     }
                 }
-                tc.TopicSave(PortalId, ModuleId, t);
-                tc.UpdateModuleLastContentModifiedOnDate(ModuleId);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(t);
+                Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 if (Params["tags"] != null)
                 {
                     DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumInfo.ModuleId, topicId);

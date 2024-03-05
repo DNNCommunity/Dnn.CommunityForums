@@ -246,8 +246,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         if (Utilities.SafeConvertBool(e.Parameters[8]))
                         {
-                            var fgc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-                            var fgi = fgc.GetById(forumGroupId);
+                            var fgi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, forumGroupId);
 
                             if (bIsNew)
                                 fi.PermissionsId = fgi.PermissionsId;
@@ -561,7 +560,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void LoadGroup(int groupId)
         {
             var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-            var gi = gc.GetById(groupId);
+            var gi = gc.GetForumGroup(ModuleId, groupId);
 
             if (gi == null)
                 return;

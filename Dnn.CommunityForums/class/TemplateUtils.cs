@@ -32,6 +32,7 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Abstractions;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -192,7 +193,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var ti = new TopicsController().Topics_Get(portalID, moduleID, topicId);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+
                 if (ti != null)
                 {
                     subject = ti.Content.Subject;
@@ -202,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            body = Utilities.ManageImagePath(body, Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)));
+            body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request))));
 
             // load the forum information
             var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalID, moduleId: moduleID, forumId: forumID, useCache: true);
@@ -609,11 +611,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     switch (mainSettings.AllowSignatures)
                     {
                         case 1:
-                            sSignature = Utilities.HTMLEncode(sSignature);
+                            sSignature = HttpUtility.HtmlEncode(sSignature);
                             sSignature = sSignature.Replace(System.Environment.NewLine, "<br />");
                             break;
                         case 2:
-                            sSignature = Utilities.HTMLDecode(sSignature);
+                            sSignature = HttpUtility.HtmlDecode(sSignature);
                             break;
                     }
                 }
@@ -688,9 +690,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:POSTCOUNT]", (up.PostCount == 0) ? string.Empty : up.PostCount.ToString());
                 result.Replace("[AF:PROFILE:USERCAPTION]", up.Profile.UserCaption);
                 result.Replace("[AF:PROFILE:USERID]", up.UserId.ToString());
-                result.Replace("[AF:PROFILE:USERNAME]", Utilities.HTMLEncode(up.UserName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:FIRSTNAME]", Utilities.HTMLEncode(up.FirstName).Replace("&amp;#", "&#"));
-                result.Replace("[AF:PROFILE:LASTNAME]", Utilities.HTMLEncode(up.LastName).Replace("&amp;#", "&#"));
+                result.Replace("[AF:PROFILE:USERNAME]", HttpUtility.HtmlEncode(up.UserName).Replace("&amp;#", "&#"));
+                result.Replace("[AF:PROFILE:FIRSTNAME]", HttpUtility.HtmlEncode(up.FirstName).Replace("&amp;#", "&#"));
+                result.Replace("[AF:PROFILE:LASTNAME]", HttpUtility.HtmlEncode(up.LastName).Replace("&amp;#", "&#"));
                 result.Replace("[AF:PROFILE:DATELASTPOST]", (up.Profile.DateLastPost == DateTime.MinValue) ? string.Empty : Utilities.GetUserFormattedDateTime(up.Profile.DateLastPost, portalId, currentUserId));
                 result.Replace("[AF:PROFILE:TOPICCOUNT]", up.Profile.TopicCount.ToString());
                 result.Replace("[AF:PROFILE:REPLYCOUNT]", up.Profile.ReplyCount.ToString());
@@ -943,7 +945,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         message = message.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
                 }
                 var objCode = new CodeParser();
-                template = CodeParser.ParseCode(Utilities.HTMLDecode(template));
+                template = CodeParser.ParseCode(HttpUtility.HtmlDecode(template));
             }
             return template;
         }
