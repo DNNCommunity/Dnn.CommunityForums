@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Groups", CacheItemPriority.Normal)]
     public partial class ForumGroupInfo
     {
+        private PermissionInfo _security;
         public int ForumGroupId { get; set; }
         public int ModuleId { get; set; }
         public string GroupName { get; set; }
@@ -37,13 +38,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool Active { get; set; }
         public bool Hidden { get; set; }
         public string GroupSettingsKey { get; set; } = string.Empty;
-        public string GroupSecurityKey { get; set; } = string.Empty;
         public int PermissionsId { get; set; } = -1;
         public string PrefixURL { get; set; } = string.Empty;
 
         #region Settings & Security
+
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; } = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
+        public PermissionInfo Security
+        {
+            get => _security ?? (_security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId));
+            set => _security = value;
+        }
         [IgnoreColumn()]
         public Hashtable GroupSettings { get; set; } = new Hashtable();
         [IgnoreColumn()]

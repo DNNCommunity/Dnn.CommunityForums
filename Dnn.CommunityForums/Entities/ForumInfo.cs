@@ -53,7 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [ColumnName("LastPostId")]
         public int LastPostID { get; set; }
         public string ForumSettingsKey { get; set; }
-        public string ForumSecurityKey { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
         public int LastTopicId { get; set; }
@@ -73,10 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get
-            {
-                return _forumGroup ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); 
-            }
+            get => _forumGroup ?? (_forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId));
             set => _forumGroup = value;
         }
 
@@ -90,13 +86,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DateTime LastRead { get; set; }
 
         [IgnoreColumn()]
-        public string LastPostFirstName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).FirstName;
+        public string LastPostFirstName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).FirstName : string.Empty;
 
         [IgnoreColumn()]
-        public string LastPostLastName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName;
+        public string LastPostLastName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName : string.Empty;
         
         [IgnoreColumn()]
-        public string LastPostDisplayName => new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName;
+        public string LastPostDisplayName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName : string.Empty;
 
         [IgnoreColumn()]
         public bool InheritSecurity => this.PermissionsId == ForumGroup.PermissionsId;
@@ -105,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID);
 
         [IgnoreColumn()]
-        public string ParentForumName => ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ParentForumId).ForumName : string.Empty;
+        public string ParentForumName => ParentForumId > 0 ? DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId,ModuleId,ParentForumId).ForumName : string.Empty;
         
         [IgnoreColumn()]
         public int TabId => new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).TabID;
@@ -136,7 +132,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         #region "Settings"
 
         [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
+        public PermissionInfo Security
+        {
+            get => _security ?? (_security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId));
+            set => _security = value;
+        }
 
         [IgnoreColumn()]
         public Hashtable ForumSettings { get; set; }
