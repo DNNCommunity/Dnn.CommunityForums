@@ -1015,9 +1015,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
-            var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
+            var tmpReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ForumModuleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
-            ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
+            ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
