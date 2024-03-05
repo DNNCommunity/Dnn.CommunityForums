@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView.")]
         public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds);
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser.")]
         public string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)

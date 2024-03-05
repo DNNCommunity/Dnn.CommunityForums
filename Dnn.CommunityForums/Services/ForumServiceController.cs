@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var userInfo = portalSettings.UserInfo;
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
             var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, portalSettings.PortalId, ActiveModule.ModuleID, "CanView", true);
-            DataTable ForumTable = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID, userInfo.IsSuperUser, forumIds);
+            DataTable ForumTable = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumView(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID, userInfo.IsSuperUser, forumIds);
 
             Dictionary<string, string> rows = new Dictionary<string, string>();;
             foreach (DataRow dr in ForumTable.Rows)

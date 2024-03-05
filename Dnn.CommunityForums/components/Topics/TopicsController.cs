@@ -84,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
+            Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(moduleInfo.PortalID))
@@ -125,13 +126,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     };
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(moduleInfo.PortalID, moduleInfo.ModuleID, forumid);
 
-                    // NOTE: indexer is called from scheduler and has no httpcontext 
-                    // so any code that relies on HttpContext cannot be used...
-
-                    string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
-                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")))
+                    string forumPrefixUrl = string.Empty;
+                    if (!ForumUrlPrefixes.TryGetValue(forumid, out forumPrefixUrl))
                     {
-                        link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
                         forumPrefixUrl = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
                         ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
                     }
@@ -142,7 +139,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     else
                     {
-                        PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                         string[] additionalParameters;
                         try
                         {
@@ -159,6 +155,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         catch
                         {
                         }
+                    }
+                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")) && !link.StartsWith("/"))
+                    {
+                        link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
+                        forumPrefixUrl = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: moduleInfo.PortalID, moduleId: moduleInfo.ModuleID, forumId: forumid, useCache: true).PrefixURL;
+                        ForumUrlPrefixes.Add(forumid, forumPrefixUrl);
                     }
                     if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")) && !link.StartsWith("/"))
                     {
