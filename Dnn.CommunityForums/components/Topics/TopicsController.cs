@@ -23,6 +23,7 @@ using System.Data;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DotNetNuke.Common.Controls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
@@ -83,10 +84,11 @@ namespace DotNetNuke.Modules.ActiveForums
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
+            ForumController fc = new ForumController();
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(moduleInfo.PortalID))
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))
             {
                 roles.Add(r.RoleName);
             }
@@ -110,8 +112,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     bool isDeleted = Convert.ToBoolean(dr["isDeleted"]);
                     bool isApproved = Convert.ToBoolean(dr["isApproved"]);
                     int contentid = Convert.ToInt32(dr["ContentId"]);
-                    int forumid = Convert.ToInt32(dr["ForumId"]); 
-                    int forumGroupId = Convert.ToInt32(dr["ForumGroupId"]); 
+                    int forumid = Convert.ToInt32(dr["ForumId"]);
+                    int forumGroupId = Convert.ToInt32(dr["ForumGroupId"]);
                     int topicid = Convert.ToInt32(dr["TopicId"]);
                     int replyId = Convert.ToInt32(dr["ReplyId"]);
                     string topicURL = dr["TopicUrl"].ToString();
@@ -128,34 +130,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     // NOTE: indexer is called from scheduler and has no httpcontext 
                     // so any code that relies on HttpContext cannot be used...
 
-                    string link = string.Empty;
-                    if (!string.IsNullOrEmpty(forumPrefixUrl) && useFriendlyURLs)
+                    string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
+                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")))
                     {
-                        link = new Data.Common().GetUrl(moduleInfo.ModuleID, -1, forumid, topicid, -1, contentid);
-                    }
-                    else
-                    {
-                        PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-                        string[] additionalParameters;
-                        try
-                        {
-                            if (replyId == 0)
-                            {
-                                additionalParameters = ms.UseShortUrls ? new[] { ParamKeys.TopicId + "=" + topicid } : new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid };
-                            }
-                            else
-                            {
-                                additionalParameters = ms.UseShortUrls ? new[] { ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId } : new[] { ParamKeys.ForumId + "=" + forumid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicid, ParamKeys.ContentJumpId + "=" + replyId };
-                            }
-                            link = Common.Globals.NavigateURL(settings: portalSettings, tabID: moduleInfo.TabID, controlKey: string.Empty, additionalParameters: additionalParameters);
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")) && !link.StartsWith("/"))
-                    {
-                        link = (isHttps ? "https://" : "http://") + primaryPortalAlias + "/" + link;
+                        link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
                     }
                     queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
                     string permittedRolesCanView = string.Empty;
@@ -187,6 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
+                Exceptions.LogException(ex);
                 return null;
             }
             finally
