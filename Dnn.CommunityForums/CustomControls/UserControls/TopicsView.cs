@@ -373,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseControls(string Template)
         {
-            string MyTheme = this.ModuleSettings.Theme;
+            //string MyTheme = this.ModuleSettings.Theme;
             string sOutput = Template;
             sOutput = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + sOutput;
 
@@ -710,7 +710,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (replies + 1 > this.pageSize)
             {
                 List<string> Params = new List<string>();
-                sOut = "<div class=\"afpagermini\">(<img src=\"" + this.ModuleSettings.ThemeLocation + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
+                sOut = "<div class=\"afpagermini\">(<img src=\"" + ThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
 
                 // Jump to pages
                 int intPostPages = 0;

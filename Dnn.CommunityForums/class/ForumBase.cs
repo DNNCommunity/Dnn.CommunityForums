@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? replyId;
         private int? quoteId;
         private int? authorid;
+        private string _theme;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo foruminfo;
 
         private bool? canCreate;
@@ -71,6 +72,14 @@ namespace DotNetNuke.Modules.ActiveForums
             } 
         }
 
+               public string Theme
+        {
+            get => _theme ?? (_theme = MainSettings.Theme);
+            set => _theme = value;
+        }
+        new public string ImagePath => string.Concat(ThemePath, "images/");
+        public string ThemePath => string.Concat(Globals.ThemesPath, "/", Theme, "/");
+        public string ForumIds { get; set; } = string.Empty; 
         public string DefaultView { get; set; } = Views.ForumView;
 
         public int PostId
