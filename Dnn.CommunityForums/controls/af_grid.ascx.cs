@@ -451,50 +451,8 @@ namespace DotNetNuke.Modules.ActiveForums
             return MainSettings.ThemeLocation + "/images/topic_new.png";
         }
 
-        public string GetMiniPager()
-        {
-            if (_currentRow == null)
-                return null;
-
-            var replyCount = Convert.ToInt32(_currentRow["ReplyCount"]);
-            var pageCount = Convert.ToInt32(Math.Ceiling((double)(replyCount + 1) / _pageSize));
-            var forumId = _currentRow["ForumId"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
-
-            // No pager if there is only one page.
-            if (pageCount <= 1)
-                return null;
-
-            string[] @params;
-
-            var result = string.Empty;
-
-            if (pageCount <= 5)
-            {
-                for (var i = 1; i <= pageCount; i++)
-                {
-                    @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-                    result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params) + "\">" + i + "</a>";
-                }
-
-                return result;
-            }
-
-            // 1 2 3 ... N
-
-            for (var i = 1; i <= 3; i++)
-            {
-                @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-                result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params) + "\">" + i + "</a>";
-            }
-
-            result += "<span>...</span>";
-
-            @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
-            result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params) + "\">" + pageCount + "</a>";
-
-            return result;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetMiniPager() => MiniPager.GetMiniPager(_currentRow, TabId, SocialGroupId, _pageSize);
 
         #endregion
     }
