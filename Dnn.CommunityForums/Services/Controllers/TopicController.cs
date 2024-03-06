@@ -200,10 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load</remarks>
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.View)]
-        [ForumsAuthorize(SecureActions.Edit)]
         [ForumsAuthorize(SecureActions.ModEdit)]
-        [ForumsAuthorize(SecureActions.ModMove)]
         public HttpResponseMessage Load(TopicDto dto)
         {
             int topicId = dto.TopicId;
@@ -215,13 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 if (t != null)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(ActiveModule.PortalID, ForumModuleId,forumId);
-                    if (f != null)
-                    {
-                        //t.TopicProperties =
-                        //    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicProperties(forum: f, topic: t);
-                        return Request.CreateResponse(HttpStatusCode.OK, new object[1] { (t, f) });
-                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, new object[] { t });
                 }
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);

@@ -1,4 +1,4 @@
-﻿//
+﻿//T
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -46,6 +46,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (ti.Forum == null)
                 {
                     ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId);
+                }
+                if (ti.Forum.HasProperties)
+                { 
+
                 }
             }
             return ti;

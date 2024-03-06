@@ -264,7 +264,7 @@ function amaf_quickEdit2(mid, fid, tid) {
     }).done(function (data) {
         amaf_loadTopicComplete2(data);
     }).fail(function (xhr, status) {
-        alert('error moving post');
+        alert('error loading post');
     });
 };
 function amaf_loadTopicComplete2(data) {
