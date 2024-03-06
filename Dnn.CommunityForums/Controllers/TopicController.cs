@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             ti.IsApproved = true;
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ti.ModuleId,ti.ForumId, TopicId);
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ti.ModuleId, ti.ForumId, TopicId);
 
             if (ti.Forum.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(TopicId);
             if (ti != null)
             {
-               try
+                try
                 {
                     var objectKey = string.Format("{0}:{1}", ti.ForumId, TopicId);
                     JournalController.Instance.DeleteJournalItemByKey(ti.PortalId, objectKey);
@@ -231,8 +231,43 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         fileManager.DeleteFile(file);
                 }
             }
+        }
 
+        public static string GetTopicIcon(int topicId, bool isRead, string themePath, int userLastTopicRead, int userLastReplyRead)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+            if (!string.IsNullOrWhiteSpace(ti.TopicIcon))
+            {
+                return $"{themePath}/emoticons/{ti.TopicIcon}";
+            }
+            else if (ti.IsPinned && ti.IsLocked)
+            {
+                return $"{themePath}/images/topic_pinlocked.png";
+            }
+            else if (ti.IsPinned)
+            {
+                return $"{themePath}/images/topic_pin.png";
+            }
+            else if (ti.IsLocked)
+            {
+                return $"{themePath}/images/topic_lock.png";
+            }
+            else if (isRead)
+            {
+                return $"{themePath}/images/topic.png";
+            }
+            else
+            {
+                // Unread has to be calculated based on a few fields
+                if ((ti.ReplyCount <= 0 && topicId > userLastTopicRead) || (ti.Forum.LastReplyId > userLastReplyRead))
+                {
+                    return $"{themePath}/images/topic.png";
+                }
+                else
+                {
+                    return $"{themePath}/images/topic_new.png";
+                }
+            }
         }
     }
-    
 }
