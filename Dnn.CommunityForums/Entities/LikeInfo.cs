@@ -25,7 +25,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Likes")]
     [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("PostId")]
     [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
     internal partial class LikeInfo
     {
