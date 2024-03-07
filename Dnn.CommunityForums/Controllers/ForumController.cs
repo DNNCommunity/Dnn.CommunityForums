@@ -81,10 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forums;
         }
-        public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId)
-        {
-            return GetForum(portalId, moduleId, forumId, false);
-        }
+        public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId) => GetForum(portalId, moduleId, forumId, false);
         public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
         {
             string cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
@@ -92,17 +89,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forum == null)
             {
                 forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
-                if (forum != null)
-                {
-                    forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(moduleId, forum.ForumGroupId) : null;
-                    forum.ForumSettings = (Hashtable)DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, forum.ModuleId, forum.ForumSettingsKey), !ignoreCache);
-                    forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
-                    if (forum.HasProperties)
-                    {
-                        var propC = new PropertiesController();
-                        forum.Properties = propC.ListProperties(portalId, 1, forumId);
-                    }
-                }
                 DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
             }
             return forum;
