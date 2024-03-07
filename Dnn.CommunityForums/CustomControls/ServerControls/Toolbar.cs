@@ -86,8 +86,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             string tb = DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, ModuleId, UserId, CurrentUserTypes.Admin)
             //tb = tb.Replace
-            tb = tb.Replace("[AF:TB:Unanswered]", "<af:link id=\"lnkUnanswered\" NavigateUrl=\"" + Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=unanswered" }) + "\" text=\"[RESX:Unanswered]\" runat=\"server\" />");
-            tb = tb.Replace("[AF:TB:ActiveTopics]", "<af:link id=\"lnkActive\" NavigateURL=\"" + Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=activetopics" }) + "\" text=\"[RESX:ActiveTopics]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:Announcements]", "<af:link id=\"lnkAnnouncements\" NavigateUrl=\"" + Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=announcements" }) + "\" text=\"[RESX:Announcements]\" runat=\"server\" />");
+            tb = tb.Replace("[AF:TB:Unanswered]", "<af:link id=\"lnkUnanswered\" NavigateUrl=\"" + Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=unanswered" }) + "\" text=\"[RESX:Unanswered]\" runat=\"server\" />"); tb = tb.Replace("[AF:TB:ActiveTopics]", "<af:link id=\"lnkActive\" NavigateURL=\"" + Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=activetopics" }) + "\" text=\"[RESX:ActiveTopics]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:Search]", "<af:link id=\"lnkSearch\" NavigateUrl=\"" + Utilities.NavigateURL(PageId, "", ParamKeys.ViewType + "=search") + "\" text=\"[RESX:Search]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:Forums]", "<af:link id=\"lnkForums\" navigateUrl=\"" + Utilities.NavigateURL(PageId) + "\" text=\"[RESX:FORUMS]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:NotRead]", "<af:link id=\"lnkNotRead\" NavigateUrl=\"" + Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ViewType + "=grid", "afgt=notread" }) + "\" text=\"[RESX:NotRead]\" AuthRequired=\"True\" runat=\"server\" />");

@@ -132,6 +132,15 @@ namespace DotNetNuke.Modules.ActiveForums
                             Response.Redirect(Utilities.NavigateURL(TabId), true);
                         break;
 
+                    case "announcements":
+
+                        lblHeader.Text = GetSharedResource("[RESX:Announcements]");
+                        _dtResults = db.UI_Announcements(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                        if (_dtResults.Rows.Count > 0)
+                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+
+                        break;
+
                     case "unanswered":
 
                         lblHeader.Text = GetSharedResource("[RESX:Unanswered]");

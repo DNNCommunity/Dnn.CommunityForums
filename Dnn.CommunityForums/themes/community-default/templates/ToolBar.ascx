@@ -3,6 +3,7 @@
         <ul>
             <li>[AF:TB:Forums]</li>
             <li>[AF:TB:Unanswered]</li>
+            <li>[AF:TB:Announcements]</li>
             <li>[AF:TB:NotRead]</li>
             <li>[AF:TB:MyTopics]</li>
             <li>[AF:TB:ActiveTopics]</li>
