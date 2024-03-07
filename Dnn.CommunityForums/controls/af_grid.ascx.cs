@@ -141,6 +141,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         break;
 
+                    case "unresolved":
+
+                        lblHeader.Text = GetSharedResource("[RESX:Unresolved]");
+                        _dtResults = db.UI_Unresolved(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                        if (_dtResults.Rows.Count > 0)
+                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+
+                        break;
                     case "unanswered":
 
                         lblHeader.Text = GetSharedResource("[RESX:Unanswered]");
@@ -149,7 +157,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
 
                         break;
-
                     case "tags":
 
                         var tagId = -1;

@@ -450,6 +450,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 8:
                             v = "announcements";
                             break;
+                        case 9:
+                            v = "unresolved";
+                            break;
 
                     }
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=" + v + sPage + qs);

@@ -8,9 +8,10 @@
 	</ul>
 	<ul class="af-list-flat af-left">
         <li>[AF:TB:Unanswered]</li>
-        <li>[AF:TB:Announcements]</li>
+        <li>[AF:TB:Unresolved]</li>
 		<li>[AF:TB:NotRead]</li>
 		<li>[AF:TB:MyTopics]</li>
+        <li>[AF:TB:Announcements]</li>
 		<li>[AF:TB:ActiveTopics]</li>
 		<li>[AF:TB:MostLiked]</li>
 		<li>[AF:TB:MostReplies]</li>
