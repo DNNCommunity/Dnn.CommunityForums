@@ -143,7 +143,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.CancelButton.Width = Unit.Pixel(50);
             ctlForm.CancelButton.ConfirmMessage = GetSharedResource("[RESX:ConfirmCancel]");
             ctlForm.ModuleConfiguration = ModuleConfiguration;
-            //ctlForm.Subscribe = UserPrefTopicSubscribe;
             if (_fi.AllowHTML)
             {
                 _allowHTML = IsHtmlPermitted(_fi.EditorPermittedUsers, _userIsTrusted, _canModEdit);
@@ -844,14 +843,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                 ti.TopicType = TopicTypes.Poll;
-                tc.TopicSave(PortalId, ForumModuleId, ti); 
-                if (UserPrefTopicSubscribe)
-                {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
-                }
-                tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+                tc.TopicSave(PortalId, ForumModuleId, ti);
             }
-
+            if ((UserPrefTopicSubscribe && authorId == UserId) || ctlForm.Subscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
+            }
+            tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             try
             {
                 DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId));

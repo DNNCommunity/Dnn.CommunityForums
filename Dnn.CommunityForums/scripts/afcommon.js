@@ -85,22 +85,24 @@ function amaf_topicSubscribe(mid, fid, tid) {
         forumId: fid,
         topicId: tid
     };
-    $.ajax({
-        type: "POST",
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Subscribe',
-        beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
-        amaf_UpdateTopicSubscriberCount(mid, fid, tid);
-        $('input[type=checkbox].amaf-chk-subs')
-            .prop('checked', data)
-            .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.TopicSubscribeTrue : amaf.resx.TopicSubscribeFalse);
-
-    }).fail(function (xhr, status) {
-        alert('error subscribing to topic');
-    });
+    /* can only subscribe using API if existing topic; new topic will be handled in code-behind when saving the topic */
+    if (tid > 0) {
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: "json",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Subscribe',
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            amaf_UpdateTopicSubscriberCount(mid, fid, tid);
+            $('input[type=checkbox].amaf-chk-subs')
+                .prop('checked', data)
+                .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.TopicSubscribeTrue : amaf.resx.TopicSubscribeFalse);
+        }).fail(function (xhr, status) {
+            alert('error subscribing to topic');
+        });
+    }
 };
 function amaf_UpdateTopicSubscriberCount(mid, fid, tid) {
     var u = document.getElementById('af-topicview-topicsubscribercount');
