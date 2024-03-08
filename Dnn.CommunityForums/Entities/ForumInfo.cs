@@ -114,9 +114,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public string ForumURL => URL.ForumLink(TabId, this);
-        
+
         [IgnoreColumn()]
-        public ForumCollection SubForums { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection SubForums { get; set; }
 
         [IgnoreColumn()]
         public List<PropertiesInfo> Properties
