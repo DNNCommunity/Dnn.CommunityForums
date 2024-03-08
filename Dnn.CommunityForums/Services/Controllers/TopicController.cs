@@ -200,15 +200,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load</remarks>
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModEdit)]
+        [ForumsAuthorize(SecureActions.Read)]
         public HttpResponseMessage Load(TopicDto dto)
         {
             int topicId = dto.TopicId;
             int forumId = dto.ForumId;
             if (topicId > 0 && forumId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.User user = new DotNetNuke.Modules.ActiveForums.UserController().LoadUser(UserInfo);
-                TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 if (t != null)
                 {
