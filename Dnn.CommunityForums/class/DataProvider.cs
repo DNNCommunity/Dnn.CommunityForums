@@ -218,7 +218,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet Dashboard_Get(int PortalId, int ModuleId);
         #endregion
 
-        #region UI
+        #region UI    
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public abstract DataSet UI_ForumView(int PortalId, int ModuleId, int UserId, bool IsSuper, string ForumIds);
         public abstract DataSet UI_TopicsView(int PortalId, int ModuleId, int ForumId, int UserId, int PageIndex, int PageSize, bool IsSuper, string SortColumn);
         public abstract DataSet UI_TopicView(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, int PageIndex, int PageSize, bool IsSuper, string Sort);

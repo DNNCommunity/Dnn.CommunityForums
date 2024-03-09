@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -72,37 +73,27 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
             }
-
             drpForums.Items.Clear();
             drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));
             int index = 1;
-            string tmpGroupKey = string.Empty;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in Forums.Where(f => !f.Hidden && !f.ForumGroup.Hidden && (UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles))))
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(Forums, ForumUser, fi =>
             {
-                string GroupName = fi.GroupName;
-                int GroupId = fi.ForumGroupId;
-                string GroupKey = $"{GroupName}{GroupId}";
-                string ForumName = fi.ForumName;
-                int ForumId = fi.ForumID;
-                string ForumKey = $"{ForumName}{ForumId}";
-                if (ForumName.Length > 30)
-                {
-                    ForumName = ForumName.Substring(0, 30) + "...";
-                }
-                int ParentForumId = fi.ParentForumId;
-                if (tmpGroupKey != GroupKey)
-                {
-                    drpForums.Items.Insert(index, new ListItem(GroupName, $"GROUPJUMP:{GroupId}"));
-                    index += 1;
-                    tmpGroupKey = GroupKey;
-                }
-                if (ParentForumId == 0)
-                {
-                    drpForums.Items.Insert(index, new ListItem($"--{ForumName}", $"FORUMJUMP{ForumId}"));
-                    index += 1;
-                    index = GetSubForums(index, fi.ForumID);
-                }
-            }
+                drpForums.Items.Insert(index, new ListItem(fi.GroupName, $"GROUPJUMP:{fi.ForumGroupId}"));
+                index += 1;
+            },
+            fi =>
+            {
+                drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP{fi.ForumID}"));
+                index += 1;
+            },
+            fi  =>
+            {
+                drpForums.Items.Insert(index, new ListItem(
+                    fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,
+                    $"FORUMJUMP{fi.ForumID}"));
+                index += 1;
+            });
+
             if (GetViewType != null)
             {
                 if (GetViewType == "TOPICS" || GetViewType == "TOPIC")
@@ -111,17 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
-        private int GetSubForums(int ItemCount, int ParentForumId)
-        {
-            foreach (var fi in Forums.Where(f=>f.ParentForumId == ParentForumId && (!f.Hidden && !f.ForumGroup.Hidden && (UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles)))))
-            {                   
-                string ForumName = fi.ForumName;
-                if (ForumName.Length > 30) ForumName = ForumName.Substring(0, 30) + "...";
-                drpForums.Items.Insert(ItemCount, new ListItem("----" + ForumName, $"FORUMJUMP:{fi.ForumID}"));
-                ItemCount += 1;
-            }
-            return ItemCount;
-        }
+
         private void drpForums_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             string sJumpValue = drpForums.SelectedItem.Value;

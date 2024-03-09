@@ -475,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumSubs = (ForumView)(LoadControl(typeof(ForumView), null));
                 ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumSubs.ForumId = ForumId;
-                ctlForumSubs.ForumTable = dtSubForums;
+                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId).SubForums;
                 ctlForumSubs.ForumTabId = ForumTabId;
                 ctlForumSubs.ForumModuleId = ForumModuleId;
                 ctlForumSubs.SubsOnly = true;

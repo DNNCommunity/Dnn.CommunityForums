@@ -31,6 +31,8 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using System.Reflection;
+using System.Linq;
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     public class forumhelper : HandlerBase
@@ -139,7 +141,27 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         }
         private string ForumList()
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(PortalId, ModuleId, ForumUser);
+            var sb = new StringBuilder();
+            int index = 1;
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles)));
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), ForumUser,
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
+                    index += 1;
+                },
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", fi.ForumID.ToString(), "--" + fi.ForumName);
+                    index += 1;
+                },
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">----{1}</option>", fi.ForumID.ToString(), fi.ForumName);
+                    index += 1;
+                }
+                );
+            return sb.ToString();
         }
         private string SubscribeForum()
         {
