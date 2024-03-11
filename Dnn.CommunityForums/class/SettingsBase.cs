@@ -408,12 +408,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Methods        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected DateTime GetUserDate(DateTime displayDate)
         {
             return Utilities.GetUserDate(displayDate, ForumModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected string GetServerDateTime(DateTime DisplayDate)
         {
             //Dim newDate As Date 

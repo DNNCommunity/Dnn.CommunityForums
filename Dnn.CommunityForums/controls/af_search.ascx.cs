@@ -523,23 +523,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
-        // Todo: Localize today and yesterday
         public string GetPostTime()
         {
-            if (_currentRow == null)
-                return null;
-
-            var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
-            var currentDate = GetUserDate(DateTime.UtcNow);
-
-            var datePart = date.ToString(MainSettings.DateFormatString);
-
-            if (currentDate.Date == date.Date)
-                datePart = GetSharedResource("Today");
-            else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = GetSharedResource("Yesterday");
-
-            return string.Format(GetSharedResource("SearchPostTime"), datePart, date.ToString(MainSettings.TimeFormatString));
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
         }
 
         public string GetAuthor()
@@ -570,23 +556,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
-        // Todo: Localize today and yesterday
         public string GetLastPostTime()
         {
-            if (_currentRow == null)
-                return null;
-
-            var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
-            var currentDate = GetUserDate(DateTime.UtcNow);
-
-            var datePart = date.ToString(MainSettings.DateFormatString);
-
-            if (currentDate.Date == date.Date)
-                datePart = GetSharedResource("Today");
-            else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = GetSharedResource("Yesterday");
-
-            return datePart + " @ " + date.ToString(MainSettings.TimeFormatString);
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
         }
 
         public string GetPostSnippet()
