@@ -20,6 +20,8 @@ using System;
 using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -341,71 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return true;
         }
-        //internal string GetPermSet(int permissionsId, SecureActions action)
-        //{
-        //    var permissionInfo = Repo.GetById(permissionsId);
-        //    switch (action)
-        //    {
-        //        case SecureActions.View:
-        //            return permissionInfo.View;
-        //        case SecureActions.Read:
-        //            return permissionInfo.Read;
-        //        case SecureActions.Create:
-        //            return permissionInfo.Create;
-        //        case SecureActions.Reply:
-        //            return permissionInfo.Reply;
-        //        case SecureActions.Edit:
-        //            return permissionInfo.Edit;
-        //        case SecureActions.Delete:
-        //            return permissionInfo.Delete;
-        //        case SecureActions.Lock:
-        //            return permissionInfo.Lock;
-        //        case SecureActions.Pin:
-        //            return permissionInfo.Pin;
-        //        case SecureActions.Attach:
-        //            return permissionInfo.Attach;
-        //        case SecureActions.Poll:
-        //            return permissionInfo.Poll;
-        //        case SecureActions.Block:
-        //            return permissionInfo.Block;
-        //        case SecureActions.Trust:
-        //            return permissionInfo.Trust;
-        //        case SecureActions.Subscribe:
-        //            return permissionInfo.Subscribe;
-        //        case SecureActions.Announce:
-        //            return permissionInfo.Announce;
-        //        case SecureActions.Tag:
-        //            return permissionInfo.Tag;
-        //        case SecureActions.Categorize:
-        //            return permissionInfo.Categorize;
-        //        case SecureActions.Prioritize:
-        //            return permissionInfo.Prioritize;
-        //        case SecureActions.ModApprove:
-        //            return permissionInfo.ModApprove;
-        //        case SecureActions.ModMove:
-        //            return permissionInfo.ModMove; 
-        //        case SecureActions.ModSplit:
-        //            return permissionInfo.ModSplit; 
-        //        case SecureActions.ModDelete:
-        //            return permissionInfo.ModDelete; 
-        //        case SecureActions.ModUser:
-        //            return permissionInfo.ModUser; 
-        //        case SecureActions.ModEdit:
-        //            return permissionInfo.ModEdit; 
-        //        case SecureActions.ModLock:
-        //            return permissionInfo.ModLock; 
-        //        case SecureActions.ModPin:
-        //            return permissionInfo.ModPin; 
-        //        default:
-        //            return "|||";
-        //    }
-
-        //}
-        //internal static void SavePermSet(int permissionsId, SecureActions action, string permSet)
-        //{
-
-
-        //}
+      
         internal static void CreateDefaultSets(int PortalId, int PermissionsId)
         {
             var db = new Data.Common();
@@ -441,6 +379,67 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             permSet = db.GetPermSet(PermissionsId, "Read");
             permSet = AddPermToSet(RoleId, 0, permSet);
             db.SavePermSet(PermissionsId, "Read", permSet);
+        }
+        internal static string GetSecureObjectList(IPortalSettings portalSettings, DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
+        {
+            string roleObjects = string.Empty;
+
+            roleObjects = GetObjFromSecObj(portalSettings, s.Announce, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Attach, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Categorize, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Create, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Delete, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Edit, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Lock, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModApprove, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModDelete, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModEdit, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModLock, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModMove, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModPin, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModSplit, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.ModUser, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Pin, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Poll, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Prioritize, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Read, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Reply, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Subscribe, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Tag, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Trust, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.View, objectType, roleObjects);
+
+
+
+
+
+            return roleObjects;
+        }
+        internal static string GetObjFromSecObj(IPortalSettings portalSettings, string permSet, int index, string objects)
+        {
+            if (string.IsNullOrEmpty(permSet))
+            {
+                permSet = portalSettings.AdministratorRoleId + ";||||";
+            }
+            string[] perms = permSet.Split('|');
+            if (perms[index] != null)
+            {
+                if (!(string.IsNullOrEmpty(perms[index])))
+                {
+                    foreach (string s in perms[index].Split(';'))
+                    {
+                        if (!(string.IsNullOrEmpty(s)))
+                        {
+                            if (Array.IndexOf(objects.Split(';'), s) == -1)
+                            {
+                                objects += s + ";";
+                            }
+                        }
+                    }
+                }
+            }
+
+            return objects;
         }
     }
 }

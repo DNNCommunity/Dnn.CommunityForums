@@ -298,66 +298,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
 		private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
-		{
-			string roleObjects = string.Empty;
-
-            roleObjects = GetObjFromSecObj(s.Announce, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Attach, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Categorize, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Create, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Delete, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Edit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Lock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModApprove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModDelete, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModEdit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModLock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModMove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModPin, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModSplit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModUser, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Pin, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Poll, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Prioritize, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Read, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Reply, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Subscribe, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Tag, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Trust, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.View, objectType, roleObjects);
-
-
-
-
-
-            return roleObjects;
-        }
-        private string GetObjFromSecObj(string permSet, int index, string objects)
         {
-            if (string.IsNullOrEmpty(permSet))
-            {
-                permSet = PortalSettings.AdministratorRoleId + ";||||";
-            }
-            string[] perms = permSet.Split('|');
-            if (perms[index] != null)
-            {
-                if (! (string.IsNullOrEmpty(perms[index])))
-                {
-                    foreach (string s in perms[index].Split(';'))
-                    {
-                        if (! (string.IsNullOrEmpty(s)))
-                        {
-                            if (Array.IndexOf(objects.Split(';'), s) == -1)
-                            {
-                                objects += s + ";";
-                            }
-                        }
-                    }
-                }
-            }
-
-			return objects;
-		}
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(PortalSettings, s, objectType);
+        }
 		private void cbSecurityToggle_Callback(object sender, CallBackEventArgs e)
 		{
 			string action = e.Parameters[0].ToString();
