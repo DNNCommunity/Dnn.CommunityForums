@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {

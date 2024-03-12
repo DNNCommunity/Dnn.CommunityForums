@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
 									fi.PermissionsId = gi.PermissionsId;
-									fc.Forums_Save(PortalId, fi, true, true);
+									fc.Forums_Save(PortalId, fi, true, true, true);
 								}
 							}
 						}
@@ -324,8 +324,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
 			{
-				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_legacy")));
-				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")));
+				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_legacy")));
+				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_default")));
             }
             catch (Exception ex)
             {
@@ -337,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+                var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
                 System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
                 foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
                 {
@@ -355,16 +355,16 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal void Install_Or_Upgrade_MoveTemplates()
 		{
-			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+			if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
 			{
-				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+				System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
 			}
-			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
+			if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.DefaultTemplatePath)))
 			{
-				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
+				System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
 			}
 
-			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+			var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
 			System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
 			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
 			{
