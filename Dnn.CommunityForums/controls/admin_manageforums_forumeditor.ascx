@@ -32,28 +32,37 @@
 		}else{
 			fgpid = 0;
 			currAction = 'groupsave';
-		};
-		var ig = document.getElementById("<%=chkInheritGroup.ClientID%>");
-	if (ig != null){
-		ig = ig.checked;
-		if (ig == true){
+        };
+        var igFeatures = document.getElementById("<%=chkInheritGroupFeatures.ClientID%>");
+        if (igFeatures != null) {
+            igFeatures = igFeatures.checked;
+            if (igFeatures == true) {
+                bSaveSettings = true;
+            };
+        } else {
+            igFeatures = false;
+            //bSaveSettings = true;
+
+        };
+        var igSecurity = document.getElementById("<%=chkInheritGroupSecurity.ClientID%>");
+        if (igSecurity != null) {
+            igSecurity = igSecurity.checked;
+            if (igSecurity == true) {
+                bSaveSettings = true;
+            };
+        } else {
+            igSecurity = false;
+            //bSaveSettings = true;
+
+        };
+        if (currAction == 'groupsave' || (igFeatures == false) || (igSecurity == false)){
 			bSaveSettings = true;
-		};    
-	}else{
-		ig = false;
-		//bSaveSettings = true;
+       }else {
 
-	};
-	if (currAction == 'groupsave' || ig == false){
-		bSaveSettings = true;
-	}else if (ig == true && currAction=='groupsave') {
-		bSaveSettings = true;
-	}else {
-
-		bSaveSettings = false;
-	};
+			bSaveSettings = false;
+		};
 	var purl = document.getElementById("<%=txtPrefixURL.ClientID%>").value;
-		<%=cbEditorAction.ClientID%>.Callback(currAction,fid,fgpid,fn,fd,a,h,so,ig,purl);
+		<%=cbEditorAction.ClientID%>.Callback(currAction, fid, fgpid, fn, fd, a, h, so, igFeatures, igSecurity, purl);
 	};
 
 	function cbEditorAction_complete(){
@@ -121,15 +130,15 @@
 function saveSettings(gs){
 	var settingsAction = "forumsettingssave";
 	var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
-	var ig = document.getElementById("<%=chkInheritGroup.ClientID%>");
-	if (ig == null){
+	var igFeatures = document.getElementById("<%=chkInheritGroupFeatures.ClientID%>");
+    if (igFeatures == null){
 		settingsAction = "groupsettingssave";
-		ig = false;
+        igFeatures = false;
 	}else{
-		ig = ig.checked;
+        igFeatures = igFeatures.checked;
 	};
 
-	if (ig == false){
+    if (igFeatures == false){
 
 		var tt1 = document.getElementById("<%=drpTopicsTemplate.ClientID%>");
         if (tt1.selectedIndex > 0) {
@@ -401,31 +410,43 @@ function deleteGroup(){
 		var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
 		<%=cbEditorAction.ClientID%>.Callback('deletegroup',forumid);
 	};
-};
-function amaf_toggleInherit(){
-	var chk = document.getElementById('<%=chkInheritGroup.ClientID%>');
-	var trTmp = document.getElementById('<%=trTemplates.ClientID%>');
-	var divSec = document.getElementById('divSecurity');
-	var divSet = document.getElementById('divSettings');
-	if (chk.checked) {
-		trTmp.style.display = 'none';
-		if (divSec != null){
-			divSec.style.display = 'none';
-		};
-		if (divSet != null){
-			divSet.style.display = 'none';
-		};
+    };
+    function amaf_toggleInheritFeatures() {
+        var chk = document.getElementById('<%=chkInheritGroupFeatures.ClientID%>');
+		var trTmp = document.getElementById('<%=trTemplates.ClientID%>');
+		var divSet = document.getElementById('divSettings');
+		if (chk.checked) {
+			trTmp.style.display = 'none';
+			if (divSet != null) {
+				divSet.style.display = 'none';
+			};
 
-	}else{
-		forumSave();
-		trTmp.style.display = '';
-		var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
-		if (forumid != ''){
-			divSec.style.display = '';
-			divSet.style.display = '';
-		};
-	};
-};
+		} else {
+			forumSave();
+			trTmp.style.display = '';
+			var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
+				if (forumid != '') {
+					divSet.style.display = '';
+				};
+			};
+    };
+
+    function amaf_toggleInheritSecurity() {
+        var chk = document.getElementById('<%=chkInheritGroupSecurity.ClientID%>');
+		var divSec = document.getElementById('divSecurity');
+		if (chk.checked) {
+			if (divSec != null) {
+				divSec.style.display = 'none';
+			};
+
+		} else {
+			forumSave();
+			var forumid = document.getElementById("<%=hidForumId.ClientID%>").value;
+				if (forumid != '') {
+					divSec.style.display = '';
+				};
+			};
+    };
 
 function maintRun(opt){
 	var topicsOlderThan = 0;
@@ -830,7 +851,7 @@ function afadmin_getProperties() {
 <div class="amcpsubnav">
 	<div class="amcplnkbtn">&nbsp;</div>
 </div>
-<div class="amcpbrdnav"><span class="amcpbrdnavitem" onclick="LoadView('manageforums');">[RESX:ForumsGroups]</span> > [RESX:Details]</div>
+<div class="amcpbrdnav"><span class="amcpbrdnavitem" onclick="LoadView('manageforums');">[RESX:ForumsGroups]</span> > [RESX:Details]&nbsp;<span runat="server" id="span_Parent" class="amcpbrdnavitem"></span></div>
 <div class="amcpcontrolstab" id="amcpcontrolstab">
 	<asp:Literal ID="litTabs" runat="server" />
 	<div class="amtabcontent" id="amTabContent">
@@ -895,17 +916,29 @@ function afadmin_getProperties() {
 						<td></td>
 					</tr>
 				</table>
-				<table width="100%" id="trInherit" runat="server">
-					<tr>
-						<td>
-							<img id="Img9" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroup]');" onmouseout="amHideTip(this);" /></td>
-						<td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroup]:</td>
-						<td width="100%">
-							<asp:CheckBox ID="chkInheritGroup" runat="server" /></td>
-						<td></td>
-					</tr>
-				</table>
-				<table width="100%" id="trTemplates" runat="server">
+                <table width="100%" id="trInheritFeatures" runat="server">
+                    <tr>
+                        <td>
+                            <img id="Img9" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupFeatures]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupFeatures]:</td>
+                        <td width="100%">
+                            <asp:checkbox id="chkInheritGroupFeatures" runat="server" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table width="100%" id="trInheritSecurity" runat="server">
+                    <tr>
+                        <td>
+                            <img id="Img10" src="~/DesktopModules/ActiveForums/images/tooltip.png" runat="server" onmouseover="amShowTip(this, '[RESX:Tips:InheritGroupSecurity]');" onmouseout="amHideTip(this);" /></td>
+                        <td class="amcpbold" style="white-space: nowrap;">[RESX:InheritGroupSecurity]:</td>
+                        <td width="100%">
+                            <asp:checkbox id="chkInheritGroupSecurity" runat="server" />
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table width="100%" id="trTemplates" runat="server">
 					<tr>
 						<td colspan="4" class="amcpbold">[RESX:Templates]</td>
 					</tr>

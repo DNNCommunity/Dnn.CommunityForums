@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void DrpTimeFrameSelectedIndexChanged(object sender, EventArgs e)
         {
             var timeframe = Utilities.SafeConvertInt(drpTimeFrame.SelectedItem.Value, 1440);
-            Response.Redirect(NavigateUrl(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=" + Request.Params["afgt"], "ts=" + timeframe }));
+            Response.Redirect(Utilities.NavigateURL(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=" + Request.Params["afgt"], "ts=" + timeframe }));
         }
 
         private void BtnMarkReadClick(object sender, EventArgs e)
@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if(UserId >= 0)
                 DataProvider.Instance().Utility_MarkAllRead(ForumModuleId, UserId, 0);
 
-            Response.Redirect(NavigateUrl(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=notread" }));
+            Response.Redirect(Utilities.NavigateURL(TabId, string.Empty, new[] { ParamKeys.ViewType + "=grid", "afgt=notread" }));
         }
 
         private void RepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var fc = new ForumController();
             var forumIds = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanRead");
             
-            var sCrumb = "<a href=\"" + Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.ViewType + "=grid", "afgt=xxx" }) + "\">yyyy</a>";
+            var sCrumb = "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=grid", "afgt=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
             
             if (Request.Params["afgt"] != null)
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                         else
-                            Response.Redirect(NavigateUrl(TabId), true);
+                            Response.Redirect(Utilities.NavigateURL(TabId), true);
                         break;
 
                     case "unanswered":
@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
                         else
-                            Response.Redirect(NavigateUrl(TabId), true);
+                            Response.Redirect(Utilities.NavigateURL(TabId), true);
 
                         break;
 
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
 
                     default:
-                        Response.Redirect(NavigateUrl(TabId), true);
+                        Response.Redirect(Utilities.NavigateURL(TabId), true);
                         break;
                 }
 
@@ -474,7 +474,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 for (var i = 1; i <= pageCount; i++)
                 {
                     @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-                    result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params) + "\">" + i + "</a>";
+                    result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params) + "\">" + i + "</a>";
                 }
 
                 return result;
@@ -485,13 +485,13 @@ namespace DotNetNuke.Modules.ActiveForums
             for (var i = 1; i <= 3; i++)
             {
                 @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-                result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params) + "\">" + i + "</a>";
+                result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params) + "\">" + i + "</a>";
             }
 
             result += "<span>...</span>";
 
             @params = new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
-            result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params) + "\">" + pageCount + "</a>";
+            result += "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params) + "\">" + pageCount + "</a>";
 
             return result;
         }

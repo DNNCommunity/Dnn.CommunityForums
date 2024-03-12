@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             ForumSubscriberCount = Utilities.SafeConvertInt(drForum["ForumSubscriberCount"]);
                             if (UserId > 0)
                             {
-                                IsSubscribedForum = Convert.ToBoolean(((Convert.ToInt32(drForum["IsSubscribedForum"]) > 0) ? true : false));
+                                IsSubscribedForum = (Subscriptions.IsSubscribed(PortalId, ModuleId: ForumModuleId, ForumId, SubscriptionType: SubscriptionTypes.Instant, UserId: UserId));
                             }
                             if (MainSettings.UseSkinBreadCrumb)
                             {
@@ -595,11 +595,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (ForumInfo.ParentForumId > 0)
                 {
-                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
+                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
                 else if (ForumInfo.ForumGroupId > 0)
                 {
-                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.GroupName + "</a>");
+                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.GroupName + "</a>");
                 }
             }
             // If String.IsNullOrEmpty(ForumInfo.ParentForumName) Then
@@ -779,8 +779,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 for (i = 0; i < xNodeList.Count; i++)
                                 {
                                     string tmp = sPropTemplate;
-                                    string pName = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                    string pValue = Utilities.HTMLDecode(xNodeList[i].ChildNodes[1].InnerText);
+                                    string pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                    string pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
                                     tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
                                     tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
                                     sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));

@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
-                    outputTemplate = string.Concat("<a href='", Common.Globals.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
+                    outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
             }
 
             var displayMode = mainSettings.UserNameDisplay + string.Empty;

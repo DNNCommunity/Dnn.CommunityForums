@@ -100,11 +100,14 @@ namespace DotNetNuke.Modules.ActiveForums
     }
     public abstract class Subscriptions
     {
-        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int AuthorId)
+        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int UserId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, AuthorId, ForumId, TopicId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId);
         }
-
+        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, SubscriptionTypes SubscriptionType, int UserId)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId);
+        }
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
             var fc = new ForumController();

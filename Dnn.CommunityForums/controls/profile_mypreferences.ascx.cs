@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
-                        upi.Signature = Utilities.HTMLEncode(upi.Signature);
+                        upi.Signature = System.Web.HttpUtility.HtmlEncode(upi.Signature);
                     }
                     else if (MainSettings.AllowSignatures == 2)
                     {

@@ -1282,8 +1282,11 @@ From,
   <data name="[RESX:SplitCancelConfirm].Text" xml:space="preserve">
     <value>Cancel split?</value>
   </data>
-  <data name="[RESX:FileName].Text" xml:space="preserve">
+	<data name="[RESX:FileName].Text" xml:space="preserve">
     <value>File Name</value>
+  </data>
+	<data name="[RESX:Folder].Text" xml:space="preserve">
+    <value>Folder</value>
   </data>
   <data name="[RESX:FileSize].Text" xml:space="preserve">
     <value>File Size</value>
