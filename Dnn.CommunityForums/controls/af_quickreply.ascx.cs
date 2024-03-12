@@ -332,7 +332,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (fullURL.Contains("~/"))
             {
-                fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
             }
             if (fullURL.EndsWith("/"))
             {
@@ -390,7 +390,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     @params.Add("GroupId=" + SocialGroupId);
                 }
-                Response.Redirect(Utilities.NavigateUrl(TabId, "", @params.ToArray()), false);
+                Response.Redirect(Utilities.NavigateURL(TabId, "", @params.ToArray()), false);
             }
             else
             {

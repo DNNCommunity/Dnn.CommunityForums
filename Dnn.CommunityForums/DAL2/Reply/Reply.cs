@@ -3,12 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.DAL2
 {
     [TableName("activeforums_Replies")]
-    [PrimaryKey("ReplyId")]
-    class Reply
+    [PrimaryKey("ReplyId", AutoIncrement = true)]
+    [Scope("ModuleId")]
+    [Cacheable("activeforums_Replies", CacheItemPriority.Low)]
+    public partial class ReplyInfo
     {
         public int ReplyId { get; set; }
         public int TopicId { get; set; }
@@ -18,5 +21,7 @@ namespace DotNetNuke.Modules.ActiveForums.DAL2
         public bool IsRejected { get; set; }
         public int StatusId { get; set; }
         public bool IsDeleted { get; set; }
+        [IgnoreColumn]
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content { get; set; }
     }
 }

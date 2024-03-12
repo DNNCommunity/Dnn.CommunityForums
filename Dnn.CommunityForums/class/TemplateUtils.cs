@@ -243,22 +243,16 @@ namespace DotNetNuke.Modules.ActiveForums
             if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
-                    link = ms.UseShortUrls ? new Services.UrlNavigator().NavigateUrl( tabID,  new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
-                        : new Services.UrlNavigator().NavigateUrl( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
+                    link = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL( tabID,  new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
+                        : new Services.URLNavigator().NavigateURL( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
                 else
-                    link = ms.UseShortUrls ? new Services.UrlNavigator().NavigateUrl(tabID, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
-                        : new Services.UrlNavigator().NavigateUrl( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
-                //if (replyId == 0)
-                //    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
-                //        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
-                //else
-                //    link = ms.UseShortUrls ? Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
-                //        : Common.Globals.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
+                    link = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
+                        : new Services.URLNavigator().NavigateURL( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
             }
             else
             {
                 var contentId = (replyId > 0) ? replyId : -1;
-                link = String.Concat(Common.Globals.NavigateURL(tabID), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
+                link = string.Concat(new Services.URLNavigator().NavigateURL(tabID, (string[])null), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
             if (!(link.StartsWith("http")))
@@ -272,11 +266,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             // Build the forum Url
-            var forumURL = ms.UseShortUrls ? new Services.UrlNavigator().NavigateUrl(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
-                : new Services.UrlNavigator().NavigateUrl(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
+            var forumURL = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
+                : new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
 
             // Build Moderation url
-            var modLink = new Services.UrlNavigator().NavigateUrl(tabID, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
+            var modLink = new Services.URLNavigator().NavigateURL(tabID, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
             if (HttpContext.Current != null && modLink.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
                 modLink = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + modLink;
 
@@ -590,7 +584,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
 
                         case PMTypes.Ventrian:
-                            pmUrl = Common.Globals.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", string.Concat("sendto=", up.UserId) });
+                            pmUrl = Utilities.NavigateURL(mainSettings.PMTabId, string.Empty, new[] { "type=compose", string.Concat("sendto=", up.UserId) });
                             pmLink = string.Concat("<a href=\"", pmUrl, "\"><img src=\"", imagePath, "/icon_pm.png\" alt=\"[RESX:SendPM]\" border=\"0\" /></a>");
                             break;
                     }

@@ -26,6 +26,10 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using System.Runtime.Remoting.Messaging;
+using static DotNetNuke.Modules.ActiveForums.Services.Controllers.TopicController;
+using System.Xml;
+using DotNetNuke.Common.Controls;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -37,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         private ForumGroupInfo _forumGroup;
         private PermissionInfo _security;
+        private List<PropertiesInfo> _properties;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -109,17 +114,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public string ForumURL => URL.ForumLink(TabId, this);
-        
-        [IgnoreColumn()]
-        public ForumCollection SubForums { get; set; }
 
         [IgnoreColumn()]
-        public List<PropertiesInfo> Properties { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection SubForums { get; set; }
 
-        /// <summary>
-        /// initialization
-        /// </summary>
-        
+        [IgnoreColumn()]
+        public List<PropertiesInfo> Properties
+        {
+            get => _properties ?? (_properties = new PropertiesController().ListProperties(PortalId, 1, ForumID));
+            set => _properties = value;
+        }
+
         public ForumInfo()
         {
             PortalId = -1;
