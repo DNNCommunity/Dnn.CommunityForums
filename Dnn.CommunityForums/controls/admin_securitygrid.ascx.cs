@@ -34,47 +34,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 	{
 		public string imgOn;
 		public string imgOff;
-        private PermissionInfo _permissionsInfo;
-        private int _permissionsId = -1;
-        private bool _readOnly = false;
-        public bool ReadOnly
-        {
-            get
-            {
-                return _readOnly;
-            }
-            set
-            {
-                _readOnly = value;
-            }
-        }
-        //Public ReadOnly Property IsCallBack() As Boolean
-        //    Get
-        //        Return cbSecurityToggle.IsCallback
-        //    End Get
-        //End Property
-        public PermissionInfo Perms
-        {
-            get
-            {
-                return _permissionsInfo;
-            }
-            set
-            {
-                _permissionsInfo = value;
-            }
-        }
-        public int PermissionsId
-        {
-            get
-            {
-                return _permissionsId;
-            }
-            set
-            {
-                _permissionsId = value;
-            }
-        }
+
+        public bool ReadOnly { get; set; } = false;
+        public PermissionInfo Perms { get; set; }
+        public int PermissionsId { get; set; } = -1;
 
         protected override void OnInit(EventArgs e)
         {
