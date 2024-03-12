@@ -46,13 +46,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         string fileName = $"{TemplateType}.ascx";
                         SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
-                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + fileName);
+                        string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
                         {                            
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + fileName);
+                            templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + fileName);
                             if (!System.IO.File.Exists(templateFilePathFileName))
                             {
-                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + fileName);
+                                templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + fileName);
                             }
                         }
                         if (System.IO.File.Exists(templateFilePathFileName))

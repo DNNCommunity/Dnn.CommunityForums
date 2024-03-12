@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forums_Delete", PortalId, ModuleId, ForumId);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Not Used.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public override IDataReader Forums_Get(int PortalId, int ModuleId, int ForumID, int UserId, bool WithSecurity)
         {
             throw new NotImplementedException();
@@ -303,6 +303,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public override void Forums_Move(int ModuleId, int ForumId, int SortDirection)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forums_MoveForum", ModuleId, ForumId, SortDirection);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)")]
+        public override int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, string ForumSecurityKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)
+        {
+            return Forum_Save(PortalId, ForumId, ModuleId, ForumGroupId, ParentForumId, ForumName, ForumDesc, SortOrder, Active, Hidden, ForumSettingsKey, string.Empty, PermissionsId, PrefixURL, SocialGroupId, HasProperties);
         }
         public override int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)
         {
@@ -419,9 +424,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-        
+
         #region Search
-        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Using Search_DotNetNuke(int moduleId, DateTime beginDateUtc)")]
         public override IDataReader Search_DotNetNuke(int moduleId)
         {
             return SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Search_GetSearchItems", moduleId);
@@ -449,32 +454,32 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Security
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override void Security_Delete(int SecuredId, int ObjectId, int SecureAction, int SecureType, int ObjectType)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_Get(int SecuredId, int ObjectId, int SecureType)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_GetByUser(int PortalId, int ForumId, int UserId, bool IsSuperUser)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override void Security_Save(int SecuredId, int ObjectId, string SecureAction, bool SecureActionValue, int SecureType, string ObjectName, int ObjectType, string SecurityKey)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_SearchObjects(int PortalId, string Search)
         {
             throw new NotImplementedException();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 08.01.00. Obsoleted by activeforums_Permissions")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Obsoleted by activeforums_Permissions")]
         public override IDataReader Security_GetByKey(string SecurityKey)
         {
             throw new NotImplementedException();
@@ -581,9 +586,10 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion
         #region Topics
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
         public override int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_AddRating", TopicId, UserID, Rating, Comments, IPAddress));
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, IpAddress: IPAddress);
         }
         public override void Topics_Delete(int ForumId, int TopicId, int DelBehavior)
         {
@@ -597,9 +603,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Get", PortalId, ModuleId, TopicId, ForumId, UserId, WithSecurity));
         }
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
         public override int Topics_GetRating(int TopicId)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_GetRating", TopicId));
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
         }
         public override IDataReader Topics_List(int ForumId, int PortalId, int ModuleId)
         {
