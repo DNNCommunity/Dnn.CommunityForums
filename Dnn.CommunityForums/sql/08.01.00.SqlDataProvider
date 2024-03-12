@@ -257,7 +257,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_MostLiked]
 	@ForumIds nvarchar(1000)
 AS
 	
-	-- Populate our active topics table
+	/* Populate our active topics table */
 	
 	CREATE TABLE #MostLiked(RowRank int NOT NULL, TopicId int NOT NULL)
 	
@@ -265,15 +265,15 @@ AS
 	SELECT ROW_NUMBER() OVER (
 			ORDER BY 
 				CASE 
-					WHEN @Sort = 'DESC' THEN  SUM(COALESCE(LikeCount,0)) END DESC, 
+					WHEN @Sort = 'DESC' THEN SUM(COALESCE(LikeCount,0)) END DESC, 
 				CASE  
-					WHEN @Sort = 'ASC' THEN  SUM(COALESCE(LikeCount,0)) END ASC
+					WHEN @Sort = 'ASC' THEN SUM(COALESCE(LikeCount,0)) END ASC
 					) as RowRank,  TopicId
 	FROM 
 	(SELECT T.TopicId, l.LikeCount
 	FROM {databaseOwner}{objectQualifier}vw_activeforums_TopicsView FT 
 	INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@ForumIds,';') as X ON X.id = FT.ForumId
-	INNER JOIN{databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = FT.TopicId
+	INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = FT.TopicId
 	LEFT OUTER JOIN (SELECT l.PostId AS ContentId, COUNT(*) AS LikeCount FROM {databaseOwner}{objectQualifier}activeforums_Likes l WHERE l.Checked = 1 GROUP BY l.PostId) l ON l.ContentId = T.ContentId
 	WHERE FT.PortalId = @PortalId AND FT.ModuleId = @ModuleId AND (COALESCE(l.LikeCount,0) > 0) AND DATEDIFF(mi,FT.LastReplyDate,GETUTCDATE())<= @TimeFrame 
 	UNION 
@@ -281,18 +281,18 @@ AS
 	FROM {databaseOwner}{objectQualifier}activeforums_Replies R 
 	INNER JOIN {databaseOwner}{objectQualifier}vw_activeforums_TopicsView FT ON FT.TopicId = R.TopicId
 	INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@ForumIds,';') as X ON X.id = FT.ForumId
-	LEFT OUTER JOIN (SELECT l.PostId AS ContentId, COUNT(*) AS LikeCount FROM{databaseOwner}{objectQualifier}activeforums_Likes l WHERE l.Checked = 1 GROUP BY l.PostId) l ON l.ContentId = R.ContentId
+	LEFT OUTER JOIN (SELECT l.PostId AS ContentId, COUNT(*) AS LikeCount FROM {databaseOwner}{objectQualifier}activeforums_Likes l WHERE l.Checked = 1 GROUP BY l.PostId) l ON l.ContentId = R.ContentId
 	WHERE FT.PortalId = @PortalId AND FT.ModuleId = @ModuleId AND (COALESCE(l.LikeCount,0) > 0) AND DATEDIFF(mi,FT.LastReplyDate,GETUTCDATE())<= @TimeFrame 
 	 
 	) x
 	GROUP BY TopicId
 
-	-- Get our record count
+	/* Get our record count */
 	
 	DECLARE @RecordCount int
 	SET @RecordCount = (SELECT COUNT(*) FROM #MostLiked)
 
-	-- Return our result set
+	/* Return our result set */
 
 	SELECT 
 		f.ForumId,
