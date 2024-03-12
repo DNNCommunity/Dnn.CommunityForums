@@ -425,13 +425,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			
 			var permissionsId = -1;
 			if (fg.PermissionsId == -1)
-			{
-				var ri = rc.GetRoleByName(portalId, "Administrators");
-				if (ri != null)
-				{
-					fg.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
-					permissionsId = fg.PermissionsId;
-				}
+		{
+				fg.PermissionsId = db.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
+				permissionsId = fg.PermissionsId;
 			}
 		   
 			var groupId = DataProvider.Instance().Groups_Save(portalId, fg.ModuleId, fg.ForumGroupId, fg.GroupName, fg.SortOrder, fg.Active, fg.Hidden, fg.PermissionsId, fg.PrefixURL);
