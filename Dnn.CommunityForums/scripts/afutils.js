@@ -21,36 +21,39 @@ function toggleGroup(whichgroup, cssOn, cssOff) {
     };
 };
 function af_showLoad() {
-    var afdiv = document.getElementById('afgrid');
-    if (afdiv.style.position == '' || afdiv.style.position == 'static') {
-        afdiv.style.position = 'relative';
+    var afdiv = document.getElementById('dcf-content-loading');
+    if (afdiv != null) {
+        if (afdiv.style.position == '' || afdiv.style.position == 'static') {
+                afdiv.style.position = 'relative';
+            };
+            var afloaddiv = document.createElement('div');
+            afloaddiv.setAttribute('id', 'afLoadDiv');
+            afloaddiv.style.position = 'absolute';
+            afloaddiv.style.float = 'left';
+            afloaddiv.style.top = '0px';
+            afloaddiv.style.left = '0px';
+            afloaddiv.style.width = afdiv.offsetWidth + 'px';
+            afloaddiv.style.height = afdiv.offsetHeight + 'px';
+            afloaddiv.style.zIndex = '1000';
+            afloaddiv.className = 'afloader';
+            afSpinLg.style.position = 'absolute';
+            afSpinLg.style.top = ((afdiv.offsetHeight / 2) - 16) + 'px';
+            afSpinLg.style.left = ((afdiv.offsetWidth / 2) - 16) + 'px';
+            afloaddiv.appendChild(afSpinLg);
+            afdiv.appendChild(afloaddiv);
     };
-    var afloaddiv = document.createElement('div');
-    afloaddiv.setAttribute('id', 'afLoadDiv');
-    afloaddiv.style.position = 'absolute';
-    afloaddiv.style.float = 'left';
-    afloaddiv.style.top = '0px';
-    afloaddiv.style.left = '0px';
-    afloaddiv.style.width = afdiv.offsetWidth + 'px';
-    afloaddiv.style.height = afdiv.offsetHeight + 'px';
-    afloaddiv.style.zIndex = '1000';
-    afloaddiv.className = 'afloader';
-    afSpinLg.style.position = 'absolute';
-    afSpinLg.style.top = ((afdiv.offsetHeight / 2) - 16) + 'px';
-    afSpinLg.style.left = ((afdiv.offsetWidth / 2) - 16) + 'px';
-    afloaddiv.appendChild(afSpinLg);
-    afdiv.appendChild(afloaddiv);
 };
 function af_clearLoad() {
-    var afdiv = document.getElementById('afgrid');
-    if (afdiv.style.position == 'relative' || afdiv.style.position == 'static') {
-        afdiv.style.position = '';
+    var afdiv = document.getElementById('dcf-content-loading');
+    if (afdiv != null) {
+        if (afdiv.style.position == 'relative' || afdiv.style.position == 'static') {
+            afdiv.style.position = '';
+        };
+        var ld = document.getElementById('afLoadDiv');
+        if (ld != null) {
+            afdiv.removeChild(ld);
+        };
     };
-    var ld = document.getElementById('afLoadDiv');
-    if (ld != null) {
-        afdiv.removeChild(ld);
-    };
-
 };
 function af_OnTreeClick(evt) {
     var src = window.event != window.undefined ? window.event.srcElement : evt.target;
