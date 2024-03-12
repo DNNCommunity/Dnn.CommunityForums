@@ -640,6 +640,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion
         #region UI
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override DataSet UI_ForumView(int PortalId, int ModuleId, int UserId, bool IsSuper, string ForumIds)
         {
             return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_ForumView", PortalId, ModuleId, UserId, IsSuper, -1, ForumIds));

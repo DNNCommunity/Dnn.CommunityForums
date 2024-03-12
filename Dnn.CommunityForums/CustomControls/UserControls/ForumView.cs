@@ -182,23 +182,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     /* this is for backward compatibility -- remove when removing ForumTable property */
                     if (ForumTable != null)
                     {
-                        var ds = new DataSet();
-                        dtForums = new DataTable();
-                        ForumTable = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumView(PortalId, ForumModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); // KR - added cache retreival
-                        //ds = DataProvider.Instance.UI_ForumView(PortalId, ModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds)
-                        //ForumTable = ds.Tables(0)
-                    }
-                    string sCrumb = string.Empty;
-                    string sGroupName = string.Empty;
-                    if (ForumGroupId != -1)
-                    {
-                        DataRow tmpDR = null;
-                        ForumTable.DefaultView.RowFilter = "ForumGroupId = " + ForumGroupId;
-                        if (ForumTable.DefaultView.ToTable().Rows.Count > 0)
+                        Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                        foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
                         {
-                            tmpDR = ForumTable.DefaultView.ToTable().Rows[0];
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"])));
                         }
                     }
+                    #endregion
 
                     string sGroupName = (ForumGroupId != -1 && Forums.Count > 0) ? Forums.FirstOrDefault().GroupName : string.Empty;
                     string sCrumb = (ForumGroupId != -1 && Forums.Count>0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
@@ -707,7 +697,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
-        #endregion
+    #endregion
     }
 
 }
