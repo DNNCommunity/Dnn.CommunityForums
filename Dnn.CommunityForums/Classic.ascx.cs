@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_profile.ascx";
-                    if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
+                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                     }
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     // this is where af_post.ascx is used
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_" + view + ".ascx";
-                    if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
+                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                     }
@@ -326,35 +326,35 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.min.css", priority: 11);
             }
             else
             {
-                if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.css")))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css", priority: 11);
                 }
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.min.css", priority: 12);
             }
             else
             {
-                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.css")))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css", priority: 12);
                 }
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
             }
             else
             {
-                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css", priority: 13);
                 }
@@ -393,7 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
-            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
+            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Utilities.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
                 sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");

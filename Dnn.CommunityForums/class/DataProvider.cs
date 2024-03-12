@@ -62,6 +62,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract IDataReader Forums_Get(int PortalId, int ModuleId, int ForumID, int UserId, bool WithSecurity);
         public abstract IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost);
         public abstract void Forums_Move(int ModuleId, int ForumId, int SortDirection);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties)")]
+        public abstract int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, string ForumSecurityKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties);
         public abstract int Forum_Save(int PortalId, int ForumId, int ModuleId, int ForumGroupId, int ParentForumId, string ForumName, string ForumDesc, int SortOrder, bool Active, bool Hidden, string ForumSettingsKey, int PermissionsId, string PrefixURL, int SocialGroupId, bool HasProperties);
         public abstract void Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey); 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forum_ConfigCleanUp(int ModuleId, string ForumSettingsKey)")]

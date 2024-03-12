@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
 			try
 			{
 				var fc = new ForumController();
-				return fc.Forums_Save(PortalId, fi, isNew, UseGroup);
+				return fc.Forums_Save(PortalId, fi, isNew, UseGroup, UseGroup);
 			}
 			catch (Exception ex)
 			{
