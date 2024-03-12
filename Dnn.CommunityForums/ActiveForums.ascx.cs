@@ -69,11 +69,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (Request.QueryString["afgt"] == "afprofile" || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
+            if (Request.QueryString[$"{ParamKeys.GridType}"] == GridTypes.MySettings || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
             {
                 int userId;
 
-                userId = int.TryParse(Request.QueryString["UserId"], out userId) ? userId : UserInfo.UserID;
+                userId = int.TryParse(Request.QueryString[Literals.UserId], out userId) ? userId : UserInfo.UserID;
 
                 // Users can only view thier own settings unless they are admin.
                 if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))

@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: PortalId, ModuleId: ForumModuleId, UserId: AuthorId);
-                Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, (ReplyId > 0 ? ParamKeys.TopicId + "=" + TopicId : string.Empty), ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.UserBanned + (SocialGroupId > 0 ? "&" + ParamKeys.GroupIdName + "=" + SocialGroupId : string.Empty) }));
+                Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, (ReplyId > 0 ? ParamKeys.TopicId + "=" + TopicId : string.Empty), ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.UserBanned + (SocialGroupId > 0 ? "&" + Literals.GroupId + "=" + SocialGroupId : string.Empty) }));
             }
         }
     }

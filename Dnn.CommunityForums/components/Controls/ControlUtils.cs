@@ -95,18 +95,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 else if (tagId > 0)
                 {
-                    @params.Add("afv=grid");
-                    @params.Add("afgt=tags");
-                    @params.Add("aftg=" + tagId);
+                    @params.Add($"{ParamKeys.ViewType}={Views.Grid}");
+                    @params.Add($"{ParamKeys.GridType}={Views.Tags}");
+                    @params.Add($"{ParamKeys.Tags}=" + tagId);
                 }
 
                 else if (categoryId > 0)
-                    @params.Add("act=" + categoryId);
+                    @params.Add($"{ParamKeys.Category}=" + categoryId);
 
                 else if (!(string.IsNullOrEmpty(otherPrefix)))
                 {
-                    @params.Add("afv=grid");
-                    @params.Add("afgt=" + otherPrefix);
+                    @params.Add($"{ParamKeys.ViewType}={Views.Grid}");
+                    @params.Add($"{ParamKeys.GridType}=" + otherPrefix);
                 }
 
                 else if (topicId > 0)
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (socialGroupId > 0)
 
-                    @params.Add("GroupId=" + socialGroupId);
+                    @params.Add($"{Literals.GroupId}=" + socialGroupId);
 
                 return Utilities.NavigateURL(tabId, string.Empty, @params.ToArray());
             }

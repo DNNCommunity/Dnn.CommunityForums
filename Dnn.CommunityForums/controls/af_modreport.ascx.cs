@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sUrl;
                 if (SocialGroupId > 0)
                 {
-                    sUrl = Utilities.NavigateURL(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId });
+                    sUrl = Utilities.NavigateURL(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + SocialGroupId });
                 }
                 else
                 {
