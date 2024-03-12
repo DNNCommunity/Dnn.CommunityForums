@@ -7,9 +7,15 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class SubscriptionController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>
+    class SubscriptionController
     {
-        public SubscriptionController() : base() { }
+        readonly IDataContext ctx;
+        IRepository<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> repo;
+        public SubscriptionController()
+        {
+            ctx = DataContext.Instance();
+            repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
+        }
         public void Subscribe(int portalId, int moduleId, int userId, int forumId)
         {
             if (!Subscribed(portalId, moduleId, userId, forumId))
@@ -40,23 +46,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
         {
-            Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);
+            repo.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);
         }
         public void DeleteForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId);
+            repo.Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId);
         }
         public bool Subscribed(int portalId, int moduleId, int userId, int forumId)
         {
-            return Count("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId) == 1;
+            return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).Count() == 1;
         }
         public bool Subscribed(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            return Count("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId) == 1;
+            return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).Count() == 1;
         }
         public void InsertForUser(int portalId, int moduleId, int userId, int forumId)
         {
-            Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
+            repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
                 PortalId = portalId,
                 ModuleId = moduleId,
@@ -68,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public void InsertForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
-            Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
+            repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
                 PortalId = portalId,
                 ModuleId = moduleId,
@@ -80,11 +86,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public int Count(int portalId, int moduleId, int forumId)
         {
-            return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = 0", portalId, moduleId, forumId);
+            return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = 0", portalId, moduleId, forumId).Count();
         }
         public int Count(int portalId, int moduleId, int forumId, int topicId)
         {
-            return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId);
+            return repo.Find("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId).Count();
         }
     }
 }

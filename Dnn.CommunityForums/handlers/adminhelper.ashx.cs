@@ -295,7 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			pc.SaveProperty(pi);
 			DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, pi.ObjectOwnerId, true);
 			fi.HasProperties = true;
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(PortalId, fi, false, false);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(PortalId, fi, false, false, false);
 
 		}
 		private string PropertyList()
@@ -348,7 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				{
 					DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, prop.ObjectOwnerId, true);
 					fi.HasProperties = false;
-					DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(PortalId, fi, false, false);
+					DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(PortalId, fi, false, false, false);
 				}
 			}
 

@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 				{
 					forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
 					//forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")
-					//forums.Append(" desc=""" & HttpUtility.UrlEncode(Utilities.HTMLEncode(f.ForumDesc.ToString)) & """")
+					//forums.Append(" desc=""" & HttpUtility.UrlEncode(HttpUtility.HtmlEncode(f.ForumDesc.ToString)) & """")
 					forums.Append(" active=\"" + f.Active.ToString().ToLowerInvariant() + "\"");
 					forums.Append(" hidden=\"" + f.Hidden.ToString().ToLowerInvariant() + "\"");
 					forums.Append(" totaltopics=\"" + f.TotalTopics.ToString() + "\"");

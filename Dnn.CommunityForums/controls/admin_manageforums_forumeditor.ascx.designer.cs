@@ -24,6 +24,15 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.Literal litScripts;
 
         /// <summary>
+        /// span_Parent control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl span_Parent;
+
+        /// <summary>
         /// litTabs control.
         /// </summary>
         /// <remarks>
@@ -186,13 +195,13 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.WebControls.CheckBox chkHidden;
 
         /// <summary>
-        /// trInherit control.
+        /// trInheritFeatures control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable trInherit;
+        protected global::System.Web.UI.HtmlControls.HtmlTable trInheritFeatures;
 
         /// <summary>
         /// Img9 control.
@@ -204,13 +213,40 @@ namespace DotNetNuke.Modules.ActiveForums
         protected global::System.Web.UI.HtmlControls.HtmlImage Img9;
 
         /// <summary>
-        /// chkInheritGroup control.
+        /// chkInheritGroupFeatures control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkInheritGroup;
+        protected global::System.Web.UI.WebControls.CheckBox chkInheritGroupFeatures;
+
+        /// <summary>
+        /// trInheritSecurity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable trInheritSecurity;
+
+        /// <summary>
+        /// Img10 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage Img10;
+
+        /// <summary>
+        /// chkInheritGroupSecurity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkInheritGroupSecurity;
 
         /// <summary>
         /// trTemplates control.

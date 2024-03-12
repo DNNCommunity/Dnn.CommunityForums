@@ -203,19 +203,19 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (replyId == 0)
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Common.Globals.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Common.Globals.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
+                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }));
+                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId }) + "\">" + subject + "</a>");
                         }
                         else
                         {
-                            sbTemplate = sbTemplate.Replace("[POSTURL]", Common.Globals.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
-                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Common.Globals.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
+                            sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
+                            sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
                         }
-                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Common.Globals.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
+                        sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
                     }
 
 
-                    sbTemplate = sbTemplate.Replace("[FORUMURL]", Common.Globals.NavigateURL(topicTabId));
+                    sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));
 
                     // Do the body replacements last as they are the most likely to contain conflicts.
 

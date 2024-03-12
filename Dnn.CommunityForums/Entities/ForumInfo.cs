@@ -75,7 +75,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                return _forumGroup ?? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); 
+                if (_forumGroup == null) { _forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); }
+                return _forumGroup;
             }
             set => _forumGroup = value;
         }
