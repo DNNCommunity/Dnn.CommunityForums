@@ -1773,11 +1773,11 @@
     <None Include="themes\community-default\_less\_variables.less" />
     <None Include="themes\README.md" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
