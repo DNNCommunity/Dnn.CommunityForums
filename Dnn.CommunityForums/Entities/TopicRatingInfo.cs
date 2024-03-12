@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -17,18 +17,25 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-
-using System.Web;
-
-namespace DotNetNuke.Modules.ActiveForums
+using System; 
+using DotNetNuke.ComponentModel.DataAnnotations;
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-	public abstract class Logger
-	{
-		public static void Log(string Msg)
-		{
-			string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
-			Msg = Msg + System.Environment.NewLine;
-			System.IO.File.AppendAllText(sPath, Msg);
-        }
-	}
+    [TableName("activeforums_Topics_Ratings")]
+    [PrimaryKey("RatingId", AutoIncrement = true)]
+    [Scope("TopicId")]
+    [Cacheable("activeforums_Topics_Ratings", CacheItemPriority.Normal)]
+    public class TopicRatingInfo
+    {
+        public int RatingId { get; set; }
+        public int TopicId { get; set; }
+        public int UserId { get; set; }
+        public int Rating { get; set; }
+        public bool Helpful { get; set; }
+        public string Comments { get; set; }
+        public string IPAddress { get; set; }
+        public DateTime DateAdded { get; set; }
+        public DateTime DateUpdated { get; set; }
+    }
 }

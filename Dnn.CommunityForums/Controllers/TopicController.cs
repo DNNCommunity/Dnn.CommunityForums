@@ -25,13 +25,12 @@ using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    class TopicController : ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
+    class TopicController
     {
         readonly IDataContext ctx;
         IRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo> repo;
         internal TopicController()
         {
-            
             ctx = DataContext.Instance();
             repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>();
         }

@@ -19,12 +19,13 @@
 //
 
 using System;
+
 namespace DotNetNuke.Modules.ActiveForums.API
 {
-    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 08.01.00.")]
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Content
     {
-        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 08.01.00.")]
+        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
         public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			try
@@ -37,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
 				return -1;
 			}
         }
-        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 08.01.00.")]
+        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
         public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
 		{
 			try
@@ -51,12 +52,12 @@ namespace DotNetNuke.Modules.ActiveForums.API
 			}
 		}
     }
-    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 08.01.00.")]
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class ForumGroups
 	{
 
     }
-    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 08.01.00.")]
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Forums
 	{
 		public int Forums_Save(int PortalId, ForumInfo fi, bool isNew, bool UseGroup)
@@ -64,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
 			try
 			{
 				var fc = new ForumController();
-				return fc.Forums_Save(PortalId, fi, isNew, UseGroup);
+				return fc.Forums_Save(PortalId, fi, isNew, UseGroup, UseGroup);
 			}
 			catch (Exception ex)
 			{
@@ -72,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
 			}
 		}
     }
-    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 08.01.00.")]
+    [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Rewards
 	{
 

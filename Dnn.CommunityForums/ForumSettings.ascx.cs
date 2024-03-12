@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		
         private void BindThemes()
 		{
-			var di = new System.IO.DirectoryInfo(Server.MapPath(Globals.ModulePath + "themes"));
+			var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ModulePath + "themes"));
 			drpThemes.DataSource = di.GetDirectories();
 			drpThemes.DataBind();
 		}
@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			var xDoc = new XmlDocument();
 			if (string.IsNullOrEmpty(ForumConfig))
 			{
-				xDoc.Load(Server.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
+				xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
 			}
 			else
 			{
@@ -629,7 +629,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			var xDoc = new XmlDocument();
 			if (string.IsNullOrEmpty(ForumConfig))
 			{
-				xDoc.Load(Server.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
+				xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
 			}
 			else
 			{
