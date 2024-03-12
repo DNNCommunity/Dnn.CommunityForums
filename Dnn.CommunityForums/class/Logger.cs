@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public static void Log(string Msg)
 		{
-			string sPath = HttpContext.Current.Request.MapPath(string.Concat(Globals.ModulePath, "am.html"));
+			string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
 			Msg = Msg + System.Environment.NewLine;
 			System.IO.File.AppendAllText(sPath, Msg);
         }
