@@ -601,42 +601,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string GetIcon()
         {
-            if (_currentRow == null)
-                return null;
-
-            var theme = MainSettings.Theme;
-
-            // If we have a post icon, use it
-            var icon = _currentRow["TopicIcon"].ToString();
-            if (!string.IsNullOrWhiteSpace(icon))
-                return Page.ResolveUrl(MainSettings.ThemeLocation + "/emoticons/" + icon);
-
-            // Otherwise, chose the icons based on the post stats
-
-            var pinned = Convert.ToBoolean(_currentRow["IsPinned"]);
-            var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
-
-            if(pinned && locked)
-                return MainSettings.ThemeLocation + "/images/topic_pinlocked.png";
-
-            if(pinned)
-                return MainSettings.ThemeLocation + "/images/topic_pin.png";
-
-            if(locked)
-                return MainSettings.ThemeLocation + "/images/topic_lock.png";
-
-            // Unread has to be calculated based on a few fields
-            var topicId = Convert.ToInt32(_currentRow["TopicId"]);
-            var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
-            var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
-            var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
-            var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
-            var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
-
-            if(unread)
-                return MainSettings.ThemeLocation + "/images/topic.png";
-
-            return MainSettings.ThemeLocation + "/images/topic_new.png";
+            return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
+                Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
+                Utilities.SafeConvertBool(_currentRow["IsRead"]),
+                ThemePath,
+                Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
+                Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
         }
 
         public string GetMiniPager()

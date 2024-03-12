@@ -27,6 +27,9 @@ using DotNetNuke.Common.Controls;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
+using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Services.FileSystem;
+using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Search.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -126,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     };
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(moduleInfo.PortalID, moduleInfo.ModuleID, forumid);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext 
                     // so any code that relies on HttpContext cannot be used...

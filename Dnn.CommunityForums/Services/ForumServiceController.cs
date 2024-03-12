@@ -46,7 +46,7 @@ using System.Reflection;
 using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums
-{
+{ 
     [DnnAuthorize]
     [ValidateAntiForgeryToken]
     public class ForumServiceController : DnnApiController
@@ -384,13 +384,11 @@ namespace DotNetNuke.Modules.ActiveForums
             var portalSettings = PortalSettings;
             var userInfo = portalSettings.UserInfo;
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, portalSettings.PortalId, ActiveModule.ModuleID, "CanView", true);
-            DataTable ForumTable = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID, userInfo.IsSuperUser, forumIds);
 
-            Dictionary<string, string> rows = new Dictionary<string, string>();;
-            foreach (DataRow dr in ForumTable.Rows)
+            Dictionary<string, string> rows = new Dictionary<string, string>();
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
             {
-                rows.Add(dr["ForumId"].ToString(),dr["ForumName"].ToString());
+                rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
             return Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
         }
