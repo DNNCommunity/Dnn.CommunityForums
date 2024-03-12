@@ -154,8 +154,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		private void LoadFilters(int PortalId, int ModuleId)
 		{
-            Controllers.FilterController.ImportFilter(PortalId, ModuleId);
-		}
+            Utilities.ImportFilter(PortalId, ModuleId);
+        }
 
 		private void LoadRanks(int PortalId, int ModuleId)
 		{
@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						             };
 					    var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
 						int groupId = gc.Groups_Save(PortalId, gi, true);
-						gi = gc.GetById(groupId);
+						gi = gc.GetForumGroup(ModuleId, groupId);
 						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
@@ -296,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
 									fi.PermissionsId = gi.PermissionsId;
-                                    DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(PortalId, fi, true, true);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, true, true);
 								}
 							}
 						}
@@ -322,8 +322,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
 			{
-				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_legacy")));
-				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")));
+				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_legacy")));
+				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_default")));
             }
             catch (Exception ex)
             {
@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+                var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
                 System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
                 foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
                 {
@@ -353,16 +353,16 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal void Install_Or_Upgrade_MoveTemplates()
 		{
-			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+			if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
 			{
-				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+				System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
 			}
-			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
+			if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.DefaultTemplatePath)))
 			{
-				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
+				System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
 			}
 
-			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+			var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
 			System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
 			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
 			{

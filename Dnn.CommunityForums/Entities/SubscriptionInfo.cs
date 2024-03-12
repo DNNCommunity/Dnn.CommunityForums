@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Subscriptions")]
     [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("Id")]
+    [Scope("ModuleId")]
     [Cacheable("activeforums_Subscriptions", CacheItemPriority.Normal)]
     class SubscriptionInfo
     {

@@ -20,12 +20,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
+
+using System.Web.UI.WebControls;
 using System.Text;
 using System.Collections.Specialized;
-using System.Text;
 using System.Web.UI;
 using DotNetNuke.Security.Roles;
-using DotNetNuke.Modules.ActiveForums.Controllers;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -65,12 +66,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<select id=\"drpSecRoles\" class=\"amcptxtbx\" style=\"width:150px;\">");
 			sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
-			sb.Append("<option value=\"-1\">All Users</option>");
-			sb.Append("<option value=\"-3\">Unauthenticated Users</option>");
-			foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(PortalId))
-			{
+			sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleAllUsers}\">{DotNetNuke.Common.Globals.glbRoleAllUsersName}</option>");
+			sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleUnauthUser}\">{DotNetNuke.Common.Globals.glbRoleUnauthUserName}</option>");
+            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(PortalId))
+            {
 				sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
-			} 
+			}
 			sb.Append("</select>");
 			litRoles.Text = sb.ToString();
 		}
@@ -112,11 +113,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Users
             string users = GetSecureObjectList(security, 1);
             string userNames = string.Empty;
-            if (!(string.IsNullOrEmpty(users)))
+            if (! (string.IsNullOrEmpty(users)))
             {
                 foreach (string uid in users.Split(';'))
                 {
-                    if (!(string.IsNullOrEmpty(uid)))
+                    if (! (string.IsNullOrEmpty(uid)))
                     {
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
                         if (u != null)
@@ -133,18 +134,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             //Groups
             string groups = GetSecureObjectList(security, 2);
-            if (!(string.IsNullOrEmpty(groups)))
+            if (! (string.IsNullOrEmpty(groups)))
             {
                 foreach (string g in groups.Split(';'))
                 {
-                    if (!(string.IsNullOrEmpty(g)))
+                    if (! (string.IsNullOrEmpty(g)))
                     {
 
                         string gType = g.Split(':')[1];
                         int groupId = Convert.ToInt32(g.Split(':')[0]);
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: groupId);
                         string groupName = role.RoleName;
-                        if (!(string.IsNullOrEmpty(groupName)))
+                        if (! (string.IsNullOrEmpty(groupName)))
                         {
                             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
                             pi.ObjectId = g;
@@ -201,7 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				i += 1;
 			}
-			System.Type enumType = typeof(DotNetNuke.Modules.ActiveForums.SecureActions);
+			System.Type enumType = typeof(SecureActions);
 			Array values = Enum.GetValues(enumType);
 			StringBuilder sb = new StringBuilder();
 			sb.Append("<table cellpadding=\"0\" cellspacing=\"0\"><tr><td valign=\"top\"><div class=\"afsecobjects\"><table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">");
@@ -267,7 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
-                    if (!ReadOnly)
+                    if (! ReadOnly)
                     {
                         sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
@@ -297,66 +298,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
 		private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
-		{
-			string roleObjects = string.Empty;
-
-            roleObjects = GetObjFromSecObj(s.Announce, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Attach, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Categorize, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Create, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Delete, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Edit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Lock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModApprove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModDelete, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModEdit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModLock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModMove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModPin, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModSplit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.ModUser, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Pin, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Poll, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Prioritize, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Read, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Reply, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Subscribe, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Tag, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.Trust, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(s.View, objectType, roleObjects);
-
-
-
-
-
-            return roleObjects;
-        }
-        private string GetObjFromSecObj(string permSet, int index, string objects)
         {
-            if (string.IsNullOrEmpty(permSet))
-            {
-                permSet = PortalSettings.AdministratorRoleId + ";||||";
-            }
-            string[] perms = permSet.Split('|');
-            if (perms[index] != null)
-            {
-                if (!(string.IsNullOrEmpty(perms[index])))
-                {
-                    foreach (string s in perms[index].Split(';'))
-                    {
-                        if (!(string.IsNullOrEmpty(s)))
-                        {
-                            if (Array.IndexOf(objects.Split(';'), s) == -1)
-                            {
-                                objects += s + ";";
-                            }
-                        }
-                    }
-                }
-            }
-
-			return objects;
-		}
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(PortalSettings, s, objectType);
+        }
 		private void cbSecurityToggle_Callback(object sender, CallBackEventArgs e)
 		{
 			string action = e.Parameters[0].ToString();
