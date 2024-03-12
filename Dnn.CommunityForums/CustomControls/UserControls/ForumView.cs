@@ -594,13 +594,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (SocialGroupId > 0)
                             @params.Add("GroupId=" + SocialGroupId.ToString());
 
-                        sURL = Utilities.NavigateUrl(TabID, "", @params.ToArray());
+                        sURL = Utilities.NavigateURL(TabID, "", @params.ToArray());
                     }
 
 
 
                 }
-                sb.Append("<a href=\"" + sURL + "\">" + Utilities.HTMLEncode(Subject) + "</a>");
+                sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
             }
             return sb.ToString();
         }
@@ -694,7 +694,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (CanView)
             {
-                sOut = "<a href=\"" + Utilities.NavigateUrl(TabID, "", Params) + "\">" + Name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(TabID, "", Params) + "\">" + Name + "</a>";
             }
             else if (Hidden)
             {

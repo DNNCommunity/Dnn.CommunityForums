@@ -70,10 +70,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 );
             return sb.ToString();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save.")]
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(portalId, fi, isNew, useGroup);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, isNew, useGroup);
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup.")]
         public string GetForumIdsBySocialGroup(int portalId, int socialGroupId)

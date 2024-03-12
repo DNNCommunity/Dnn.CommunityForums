@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //Send Subscriptions
                 try
                 {
-                    string sURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                    string sURL = Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                     Subscriptions.SendSubscriptions(PortalId, ModuleId, PageId, ForumId, TopicId, ReplyId, UserId);
                     new Social().AddReplyToJournal(PortalId, ForumModuleId, TabModuleId, ForumId, TopicId, ReplyId, UserId, sURL, Subject, string.Empty, sBody, forumInfo.Security.Read, forumInfo.SocialGroupId); 
                 }
@@ -280,14 +280,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
                 //Redirect to show post
-                string fullURL = Utilities.NavigateUrl(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                string fullURL = Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
                 Email.SendEmailToModerators(forumInfo.ModNotifyTemplateId, PortalId, ForumId, ri.TopicId, ReplyId, ModuleId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
-                HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(PageId, "", Params), false);
+                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(PageId, "", Params), false);
             }
         }
         private string ParseTemplate()

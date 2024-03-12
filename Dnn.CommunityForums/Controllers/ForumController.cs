@@ -267,58 +267,53 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return xDoc;
         }
         
-        public static int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup)
+        public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup)
         {
-            var rc = new RoleController();
-            var db = new Data.Common();
-            var permissionsId = -1;
-            if (useGroup && (string.IsNullOrEmpty(fi.ForumSettingsKey) || fi.PermissionsId == -1))
+            return Forums_Save(portalId, fi, isNew, useGroup, useGroup);
+        }
+        public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
+        {
+            bool wasInheritingSecurity = fi.InheritSecurity;
+            var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(fi.ModuleId, fi.ForumGroupId);
+            if (useGroupSecurity)
             {
-                var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(fi.ModuleId, fi.ForumGroupId);
                 if (fg != null)
                 {
-                    fi.ForumSettingsKey = fg.GroupSettingsKey;
                     fi.PermissionsId = fg.PermissionsId;
                 }
             }
-            else if (fi.PermissionsId <= 0 && useGroup == false)
+            else
             {
-                var ri = rc.GetRoleByName(portalId, "Administrators");
-                if (ri != null)
+                if (fi.PermissionsId <= 0 || wasInheritingSecurity) /* if new forum or changing from inheriting security, create new permissions set */
                 {
-                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(ri.RoleID.ToString()).PermissionsId;
-                    permissionsId = fi.PermissionsId;
-                    isNew = true;
-                }
-                if (fi.ForumID > 0 & !(string.IsNullOrEmpty(fi.ForumSettingsKey)))
-                {
-                    if (fi.ForumSettingsKey.Contains("G:"))
+                    var rc = new RoleController();
+                    var ri = rc.GetRoleByName(portalId, "Administrators");
+                    if (ri != null)
                     {
-                        fi.ForumSettingsKey = string.Empty;
+                        var db = new Data.Common();
+                        fi.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, fi.PermissionsId);
                     }
                 }
-                if (string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
-                {
-                    fi.ForumSettingsKey = $"F:{fi.ForumID}";
-                }
             }
-            else if (useGroup == false && string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
+            fi.ForumSettingsKey = useGroupFeatures ? (fg != null ? fg.GroupSettingsKey : string.Empty) : (fi.ForumID > 0 ? $"F:{fi.ForumID}" : string.Empty);
+            if (fi.ForumID <= 0)
             {
-                fi.ForumSettingsKey = $"F:{fi.ForumID}";
+                isNew = true;
             }
 
             var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
-            if (String.IsNullOrEmpty(fi.ForumSettingsKey))
-                fi.ForumSettingsKey = string.Concat("F:", forumId);
-
-            if (fi.ForumSettingsKey.Contains("G:"))
-                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID));
-
-            if (isNew && useGroup == false)
+            if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
-
-                var sKey = "F:" + forumId.ToString();
+                fi.ForumSettingsKey = $"F:{forumId}";
+            }
+            if (fi.ForumSettingsKey.StartsWith("G:"))
+            {
+                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
+            }
+            if (isNew && useGroupFeatures == false)
+            {
+                var sKey = $"F:{fi.ForumID}";
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
@@ -390,10 +385,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     SocialGroupId = socialGroupId
                 };
 
-                forumId = Forums_Save(portalId, fi, true, true);
+                forumId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true);
                 fi = GetForum(portalId, moduleId, forumId);
                 fi.PermissionsId = permissionsId;
-                Forums_Save(portalId, fi, false, false);
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, false, false);
 
                 var xDoc = new XmlDocument();
                 xDoc.LoadXml(forumConfig);

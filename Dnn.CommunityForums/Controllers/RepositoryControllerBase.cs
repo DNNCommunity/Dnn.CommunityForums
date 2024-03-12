@@ -36,9 +36,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Repo.Get();
         }
-        internal IEnumerable<T> Get<TScopeValue>(TScopeValue id)
+        internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
-            return Repo.Get(id);
+            return Repo.Get(scopeValue);
         }
         internal T GetById<TProperty>(TProperty id)
         {
