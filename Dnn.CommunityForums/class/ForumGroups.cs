@@ -329,8 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var db = new Data.Groups();
 			ForumGroupInfo gi = null;
 			using (var dr = db.Groups_Get(moduleId, forumGroupId))
-			{
-				while (dr.Read())
+			{				while (dr.Read())
 				{
 					gi = FillForumGroup(dr);
 				}

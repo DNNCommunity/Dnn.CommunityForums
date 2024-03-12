@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -18,17 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Web;
-
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-	public abstract class Logger
-	{
-		public static void Log(string Msg)
-		{
-			string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
-			Msg = Msg + System.Environment.NewLine;
-			System.IO.File.AppendAllText(sPath, Msg);
-        }
-	}
+    internal partial class ControllerBase<T> where T : class
+    {
+        internal ControllerBase() : base() { }
+    }
 }

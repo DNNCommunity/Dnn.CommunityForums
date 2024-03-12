@@ -837,13 +837,19 @@
   <data name="[RESX:Exit].Text" xml:space="preserve">
     <value>Exit</value>
   </data>
-  <data name="[RESX:InheritGroup].Text" xml:space="preserve">
+	<data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
     <value>Inherit Group Settings</value>
   </data>
-  <data name="[RESX:Tips:InheritGroup].Text" xml:space="preserve">
-    <value>Check this box to inherit security and features from the group.</value>
+	<data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
+    <value>Check this box to inherit feature settings from the group.</value>
   </data>
-  <data name="[RESX:ClickToAdd].Text" xml:space="preserve">
+	<data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Inherit Group Security</value>
+  </data>
+	<data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Check this box to inherit security from the group.</value>
+  </data>
+	<data name="[RESX:ClickToAdd].Text" xml:space="preserve">
     <value>Click to Add</value>
   </data>
   <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve">

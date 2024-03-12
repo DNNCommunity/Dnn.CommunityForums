@@ -11,13 +11,13 @@ const zip = require('gulp-zip');
 
 // LESS ----------------------
 
-const lessWatchPath = ['./_less/**/*.less'];
+const lessWatchPath = ['./_src/less/**/*.less'];
 
 const cssCopyTo = "./";
 
 function buildLess() { // Parse only the Skin.less file
   // 1. What less files to parse?
-  var lessCss = gulp.src('./_less/theme.less')
+  var lessCss = gulp.src('./_src/less/theme.less')
 
     .pipe(sourcemaps.init())
     .pipe(less())
@@ -25,7 +25,7 @@ function buildLess() { // Parse only the Skin.less file
     .pipe(gulp.dest(cssCopyTo));
 
 
-    var lessCssMin = gulp.src('./_less/theme.less')
+    var lessCssMin = gulp.src('./_src/less/theme.less')
 
 
     .pipe(less())
