@@ -106,10 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string ftmp = string.Empty;
 			string subtmp = string.Empty;
 			StringBuilder list = new StringBuilder();
-			var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f =>
-            {
-                return f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles);
-            });
+			var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles));
 			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
 			{
 				if (currGroup != f.ForumGroupId)
