@@ -324,8 +324,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
-        
-
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)
         {
             pDDL.Items.Clear();
