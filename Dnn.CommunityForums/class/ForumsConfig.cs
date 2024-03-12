@@ -154,8 +154,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		private void LoadFilters(int PortalId, int ModuleId)
 		{
-			Utilities.ImportFilter(PortalId, ModuleId);
-		}
+            Utilities.ImportFilter(PortalId, ModuleId);
+        }
 
 		private void LoadRanks(int PortalId, int ModuleId)
 		{
