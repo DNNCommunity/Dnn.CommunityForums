@@ -204,58 +204,61 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return forumId <= 0 ? null : GetForum(portalId, moduleId, forumId, !useCache);
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use Forums_Save(int portalId, Forum fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)")]
         public int Forums_Save(int portalId, Forum fi, bool isNew, bool useGroup)
         {
-            var rc = new RoleController();
-            var db = new Data.Common();
+            return Forums_Save(portalId, fi,  isNew, useGroup, useGroup);
+        }
+        public int Forums_Save(int portalId, Forum fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
+        {
             var permissionsId = -1;
-            if (useGroup && (string.IsNullOrEmpty(fi.ForumSettingsKey) || fi.PermissionsId == -1))
+            var fc = new ForumGroupController();
+            var fg = fc.Groups_Get(fi.ModuleId, fi.ForumGroupId);
+            if (useGroupSecurity)
             {
-                var fc = new ForumGroupController();
-                var fg = fc.Groups_Get(fi.ModuleId, fi.ForumGroupId);
                 if (fg != null)
                 {
-                    fi.ForumSettingsKey = fg.GroupSettingsKey;
-                    //fi.ModuleId = fg.ModuleId
                     fi.PermissionsId = fg.PermissionsId;
                 }
             }
-            else if (fi.PermissionsId <= 0 && useGroup == false)
+            else 
             {
-                var ri = rc.GetRoleByName(portalId, "Administrators");
-                if (ri != null)
+                if (fi.PermissionsId <= 0 || fi.InheritSecurity) /* if new forum or changing from inheriting security, create new permissions set */
                 {
-                    fi.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
-                    permissionsId = fi.PermissionsId;
-                    isNew = true;
+                    var rc = new RoleController();
+                    var ri = rc.GetRoleByName(portalId, "Administrators");
+                    if (ri != null)
+                    {
+                        var db = new Data.Common();
+                        fi.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
+                        permissionsId = fi.PermissionsId;
+                        Permissions.CreateDefaultSets(portalId, permissionsId);
+                    }
                 }
-                if (fi.ForumID > 0 & !(string.IsNullOrEmpty(fi.ForumSettingsKey)))
+                else
                 {
-                    if (fi.ForumSettingsKey.Contains("G:"))
-                        fi.ForumSettingsKey = string.Empty;
-                }
-                if (fi.ForumSettingsKey == "" && fi.ForumID > 0)
-                {
-                    fi.ForumSettingsKey = string.Concat("F:", fi.ForumID);
-                }
-            }
-            else if (useGroup == false && string.IsNullOrEmpty(fi.ForumSettingsKey) && fi.ForumID > 0)
-            {
-                fi.ForumSettingsKey = string.Concat("F:", fi.ForumID);
-            }
 
+                }
+            }
+            fi.ForumSettingsKey = useGroupFeatures ? (fg != null ? fg.GroupSettingsKey : string.Empty) : (fi.ForumID > 0 ? $"F:{fi.ForumID}" : string.Empty);
+
+            if (fi.ForumID <= 0)
+            {
+                isNew = true;
+            }
             var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
-            if (String.IsNullOrEmpty(fi.ForumSettingsKey))
-                fi.ForumSettingsKey = string.Concat("F:", forumId);
-
-            if (fi.ForumSettingsKey.Contains("G:"))
-                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, string.Concat("F:", fi.ForumID));
-
-            if (isNew && useGroup == false)
+            if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
             {
-                Permissions.CreateDefaultSets(portalId, permissionsId);
+                fi.ForumSettingsKey = $"F:{forumId}";
+            }
+            if (fi.ForumSettingsKey.StartsWith("G:"))
+            {
+                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
+            }
 
-                var sKey = "F:" + forumId.ToString();
+            if (isNew && useGroupFeatures == false)
+            {
+                var sKey = $"F:{fi.ForumID}";
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(fi.ModuleId, sKey, ForumSettingKeys.TopicFormId, "0");
@@ -398,10 +401,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     SocialGroupId = socialGroupId
                 };
 
-                forumId = Forums_Save(portalId, fi, true, true);
+                forumId = Forums_Save(portalId, fi, true, true, true);
                 fi = GetForum(portalId, moduleId, forumId);
                 fi.PermissionsId = permissionsId;
-                Forums_Save(portalId, fi, false, false);
+                Forums_Save(portalId, fi, false, false, false);
 
                 var xDoc = new XmlDocument();
                 xDoc.LoadXml(forumConfig);
