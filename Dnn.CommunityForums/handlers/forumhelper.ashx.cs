@@ -65,14 +65,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             Actions action = Actions.None;
             if (Params != null && Params.Count > 0)
             {
-                if (Params["action"] != null && SimulateIsNumeric.IsNumeric(Params["action"]))
+                if (Params[ParamKeys.action] != null && SimulateIsNumeric.IsNumeric(Params[ParamKeys.action]))
                 {
-                    action = (Actions)(Convert.ToInt32(Params["action"].ToString()));
+                    action = (Actions)(Convert.ToInt32(Params[ParamKeys.action].ToString()));
                 }
             }
-            else if (HttpContext.Current.Request.QueryString["action"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["action"]))
+            else if (HttpContext.Current.Request.QueryString[ParamKeys.action] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.action]))
             {
-                if (int.Parse(HttpContext.Current.Request.QueryString["action"]) == 11)
+                if (int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.action]) == 11)
                 {
                     action = Actions.TagsAutoComplete;
                 }
@@ -152,9 +152,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
             int rUserId = -1;
 
-            if (Params.ContainsKey("userid") && SimulateIsNumeric.IsNumeric(Params["userid"]))
+            if (Params.ContainsKey(Literals.UserId) && SimulateIsNumeric.IsNumeric(Params[Literals.UserId]))
             {
-                rUserId = int.Parse(Params["userid"].ToString());
+                rUserId = int.Parse(Params[Literals.UserId].ToString());
 
             }
             if (rUserId > 0 & rUserId != ForumUser.UserId & !ForumUser.IsAdmin)
@@ -165,9 +165,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             int iStatus = 0;
             SubscriptionController sc = new SubscriptionController();
             int forumId = -1;
-            if (Params.ContainsKey("forumid") && SimulateIsNumeric.IsNumeric(Params["forumid"]))
+            if (Params.ContainsKey(Literals.ForumId) && SimulateIsNumeric.IsNumeric(Params[Literals.ForumId]))
             {
-                forumId = int.Parse(Params["forumid"].ToString());
+                forumId = int.Parse(Params[Literals.ForumId].ToString());
             }
             iStatus = sc.Subscription_Update(PortalId, ModuleId, forumId, -1, 1, rUserId, ForumUser.UserRoles);
 
@@ -186,9 +186,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		{
 			int topicId = -1;
 			int forumId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+			if (Params.ContainsKey(Literals.TopicId) && SimulateIsNumeric.IsNumeric(Params[Literals.TopicId]))
 			{
-				topicId = int.Parse(Params["topicid"].ToString());
+				topicId = int.Parse(Params[Literals.TopicId].ToString());
 			}
 			if (topicId > 0)
 			{
@@ -214,13 +214,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             int topicId = -1;
             int forumId = -1;
             int targetForumId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+            if (Params.ContainsKey(Literals.TopicId) && SimulateIsNumeric.IsNumeric(Params[Literals.TopicId]))
             {
-                topicId = int.Parse(Params["topicid"].ToString());
+                topicId = int.Parse(Params[Literals.TopicId].ToString());
             }
-            if (Params.ContainsKey("forumid") && SimulateIsNumeric.IsNumeric(Params["forumid"]))
+            if (Params.ContainsKey(Literals.ForumId) && SimulateIsNumeric.IsNumeric(Params[Literals.ForumId]))
             {
-                targetForumId = int.Parse(Params["forumid"].ToString());
+                targetForumId = int.Parse(Params[Literals.ForumId].ToString());
             }
             if (topicId > 0)
             {
@@ -248,13 +248,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             int topicId = -1;
             int forumId = -1;
             int replyId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+            if (Params.ContainsKey(Literals.TopicId) && SimulateIsNumeric.IsNumeric(Params[Literals.TopicId]))
             {
-                topicId = int.Parse(Params["topicid"].ToString());
+                topicId = int.Parse(Params[Literals.TopicId].ToString());
             }
-            if (Params.ContainsKey("replyid") && SimulateIsNumeric.IsNumeric(Params["replyid"]))
+            if (Params.ContainsKey(Literals.ReplyId) && SimulateIsNumeric.IsNumeric(Params[Literals.ReplyId]))
             {
-                replyId = int.Parse(Params["replyid"].ToString());
+                replyId = int.Parse(Params[Literals.ReplyId].ToString());
             }
             if (topicId > 0 & UserId > 0)
             {
@@ -280,9 +280,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string q = string.Empty;
-            if (!(string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["q"])))
+            if (!(string.IsNullOrEmpty(HttpContext.Current.Request.QueryString[SearchParamKeys.Query])))
             {
-                q = HttpContext.Current.Request.QueryString["q"].Trim();
+                q = HttpContext.Current.Request.QueryString[SearchParamKeys.Query].Trim();
                 q = Utilities.Text.RemoveHTML(q);
                 q = Utilities.Text.CheckSqlString(q);
                 if (!(string.IsNullOrEmpty(q)))
@@ -319,13 +319,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             int replyId = -1;
             int TopicId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+            if (Params.ContainsKey(Literals.TopicId) && SimulateIsNumeric.IsNumeric(Params[Literals.TopicId]))
             {
-                TopicId = int.Parse(Params["topicid"].ToString());
+                TopicId = int.Parse(Params[Literals.TopicId].ToString());
             }
-            if (Params.ContainsKey("replyid") && SimulateIsNumeric.IsNumeric(Params["replyid"]))
+            if (Params.ContainsKey(Literals.ReplyId) && SimulateIsNumeric.IsNumeric(Params[Literals.ReplyId]))
             {
-                replyId = int.Parse(Params["replyid"].ToString());
+                replyId = int.Parse(Params[Literals.ReplyId].ToString());
             }
             int forumId = -1;
             Data.ForumsDB db = new Data.ForumsDB();
@@ -404,9 +404,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             int topicId = -1;
             int forumId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+            if (Params.ContainsKey(Literals.TopicId) && SimulateIsNumeric.IsNumeric(Params[Literals.TopicId]))
             {
-                topicId = int.Parse(Params["topicid"].ToString());
+                topicId = int.Parse(Params[Literals.TopicId].ToString());
             }
             if (topicId > 0)
             {
@@ -564,9 +564,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             int topicId = -1;
             int forumId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
+            if (Params.ContainsKey(Literals.TopicId) && SimulateIsNumeric.IsNumeric(Params[Literals.TopicId]))
             {
-                topicId = int.Parse(Params["topicid"].ToString());
+                topicId = int.Parse(Params[Literals.TopicId].ToString());
             }
             if (topicId > 0)
             {

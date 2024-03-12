@@ -210,8 +210,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				var urlSettings = new FriendlyUrlSettings(PortalId);
                 string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
-                const string ignoreForumsRegex = "(aff=|afg=|aft=|afgt=|aftg=|afv=|act=|afpg=)|";
-				if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
+				const string ignoreForumsRegex = "("+ParamKeys.ForumId+"=|"+ParamKeys.GroupId+"=|"+ParamKeys.TopicId+"=|"+ParamKeys.GridType+"=|"+ParamKeys.Tags+"=|"+ParamKeys.ViewType+"=|"+ParamKeys.Category+"=|"+ParamKeys.PageId+"=)|";
+
+                if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
 				{
 					if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
 					{

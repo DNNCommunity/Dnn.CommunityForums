@@ -37,13 +37,13 @@ namespace DotNetNuke.Modules.ActiveForums
             btnSave.Click += new System.EventHandler(btnSave_Click);
 
 
-            if (Request.QueryString["UserId"] == null)
+            if (Request.QueryString[Literals.UserId] == null)
             {
                 UID = UserInfo.UserID;
             }
             else
             {
-                UID = Convert.ToInt32(Request.QueryString["UserId"]);
+                UID = Convert.ToInt32(Request.QueryString[Literals.UserId]);
             }
            
             if (UID > 0 && !Page.IsPostBack)

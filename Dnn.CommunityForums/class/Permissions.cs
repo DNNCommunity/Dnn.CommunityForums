@@ -202,22 +202,16 @@ namespace DotNetNuke.Modules.ActiveForums
 			userRoles = UserRolesDictionary.GetRoles(PortalId, UserId);
 			if (string.IsNullOrEmpty(userRoles))
 			{
-				var uc = new Security.Roles.RoleController();
 				string[] roles = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UserId).Roles;
 				string roleIds = GetRoleIds(roles, PortalId);
 				userRoles = roleIds + "|" + UserId + "|" + string.Empty + "|";
 				UserRolesDictionary.AddRoles(PortalId, UserId, userRoles);
 			}
 
-			if (string.IsNullOrEmpty(userRoles))
-			{
-				return false;
-			}
+            return string.IsNullOrEmpty(userRoles) ? false : HasPerm(AuthorizedRoles, userRoles);
+        }
 
-		    return HasPerm(AuthorizedRoles, userRoles);
-		}
-
-		public static bool HasPerm(string AuthorizedRoles, string UserPermSet)
+        public static bool HasPerm(string AuthorizedRoles, string UserPermSet)
 		{
 			if (string.IsNullOrEmpty(AuthorizedRoles) || string.IsNullOrEmpty(UserPermSet))
 			{
