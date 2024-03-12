@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         string sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId); // Utilities.NavigateUrl(TabId, "", ParamKeys.ViewType & "=" & Views.Topic & "&" & ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId)
                                         if (sUrl.Contains("~/"))
                                         {
-                                            sUrl = Utilities.NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId);
+                                            sUrl = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + TopicId);
                                         }
                                         Social amas = new Social();
                                         amas.AddTopicToJournal(PortalId, ForumModuleId, TabId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, sSubject, ti.Content.Summary, sBody, fi.Security.Read, SocialGroupId);
@@ -239,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         string fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
                                         if (fullURL.Contains("~/"))
                                         {
-                                            fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
+                                            fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                                         }
                                         Social amas = new Social();
                                         amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, sBody, fi.Security.Read, fi.SocialGroupId);
@@ -384,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string vpath = null;
             vpath = PortalSettings.HomeDirectory + "activeforums_Attach/";
             string fpath = null;
-            fpath = Server.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/");
+            fpath = Utilities.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/");
             dtAttach.DefaultView.RowFilter = "ContentId = " + ContentId;
             foreach (DataRow dr in dtAttach.DefaultView.ToTable().Rows)
             {
