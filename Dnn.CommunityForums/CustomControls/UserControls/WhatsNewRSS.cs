@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
-                        url = Common.Globals.NavigateURL(topicTabId, "", Params);
+                        url = Utilities.NavigateURL(topicTabId, "", Params);
                         if (url.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.CurrentCulture) == -1)
                         {
                             url = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;

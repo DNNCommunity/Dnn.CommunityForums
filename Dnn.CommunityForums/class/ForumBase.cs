@@ -66,21 +66,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public ControlsConfig ControlConfig { get; set; }
 
-        public string ThemePath
-        {
-            get
-            {
-                return Page.ResolveUrl(MainSettings.ThemeLocation);
-            }
-        }
+        public string ThemePath => Page.ResolveUrl(MainSettings.ThemeLocation);
 
         public string ForumIds { get; set; } = string.Empty;
 
         public int DefaultForumViewTemplateId { get; set; } = -1;
         public int DefaultTopicsViewTemplateId { get; set; } = -1;
-
         public int DefaultTopicViewTemplateId { get; set; } = -1;
-
         public string DefaultView { get; set; } = Views.ForumView;
 
         public bool JumpToLastPost
@@ -380,29 +372,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public int SocialGroupId { get; set; }
-
-        public bool CanRead
-        {
-            get
-            {
-                if(!_canRead.HasValue)
-                    _canRead =  SecurityCheck("read");
-
-                return _canRead.Value;
-            }
-        }
-
-        public bool CanView
-        {
-            get
-            {
-                if(!_canView.HasValue)
-                    _canView = SecurityCheck("view");
-
-                return _canView.Value;
-            }
-        }
-
+        public bool CanRead => _canRead ?? SecurityCheck("read");
+        public bool CanView => _canView ?? SecurityCheck("view");
         public bool CanCreate
         {
             get
@@ -591,7 +562,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (p.Count <= 0) 
                 return;
             
-            var sURL = Utilities.NavigateUrl(TabId, string.Empty, p.ToArray());
+            var sURL = Utilities.NavigateURL(TabId, string.Empty, p.ToArray());
             if (string.IsNullOrEmpty(sURL))
                 return;
 

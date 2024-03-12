@@ -20,6 +20,10 @@
 
 using System;
 using System.Data;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -41,22 +45,47 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateGroupForum(portalId, moduleId, socialGroupId, forumGroupId, forumName, forumDescription, isPrivate, forumConfig);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList().")]
         public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(portalId, moduleId, currentUser);
+            var sb = new StringBuilder();
+            int index = 1;
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, currentUser.UserRoles)));
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser,
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
+                    index += 1;
+                },
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", fi.ForumID.ToString(), "--" + fi.ForumName);
+                    index += 1;
+                },
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">----{1}</option>", fi.ForumID.ToString(), fi.ForumName);
+                    index += 1;
+                }
+                );
+            return sb.ToString();
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save.")]
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Save(portalId, fi, isNew, useGroup);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, isNew, useGroup);
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup.")]
         public string GetForumIdsBySocialGroup(int portalId, int socialGroupId)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(portalId, socialGroupId);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumView.")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser.")]
+        public string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(userRoles, portalId, moduleId, permissionType, strict);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds);

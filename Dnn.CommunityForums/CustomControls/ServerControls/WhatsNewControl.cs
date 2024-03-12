@@ -283,13 +283,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             if (AdditionalParams != string.Empty)
                                 @params.Add(AdditionalParams);
 
-                            sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateUrl(TabId, string.Empty, @params.ToArray()));
+                            sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()));
                            
                             @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
                             if (AdditionalParams != string.Empty)
                                 @params.Add(AdditionalParams);
 
-                            sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId, "", @params.ToArray()) + "\">" + subject + "</a>");
+                            sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\">" + subject + "</a>");
                         }
                         else
                         {
@@ -297,21 +297,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             if (AdditionalParams != string.Empty)
                                 @params.Add(AdditionalParams);
 
-                            sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateUrl(TabId, "", @params.ToArray()));
+                            sTempTemplate = sTempTemplate.Replace("[POSTURL]", Utilities.NavigateURL(TabId, "", @params.ToArray()));
 
                             @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId };
                             if (AdditionalParams != string.Empty)
                                 @params.Add(AdditionalParams);
 
-                            sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>");
+                            sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>");
                         }
                         @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId };
                         if (AdditionalParams != string.Empty)
                             @params.Add(AdditionalParams);
 
-                        sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", Utilities.NavigateUrl(TabId, string.Empty, @params.ToArray()));
+                        sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()));
                     }
-                    sTempTemplate = sTempTemplate.Replace("[FORUMURL]", Utilities.NavigateUrl(TabId));
+                    sTempTemplate = sTempTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(TabId));
                     sb.Append(sTempTemplate);
                 }
 

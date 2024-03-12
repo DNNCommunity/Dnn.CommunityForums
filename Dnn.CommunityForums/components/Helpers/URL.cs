@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (string.IsNullOrWhiteSpace(fi.PrefixURL) || !mainSettings.URLRewriteEnabled)
 			{
-				sURL = Utilities.NavigateUrl(tabId, string.Empty, ParamKeys.ForumId + "=" + fi.ForumID);
+				sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.ForumId + "=" + fi.ForumID);
 			}
 			else
 			{
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			if (string.IsNullOrEmpty(ti.URL) || !mainSettings.URLRewriteEnabled)
 			{
-				sURL = Utilities.NavigateUrl(tabId, string.Empty, ParamKeys.TopicId + "=" + ti.TopicId);
+				sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.TopicId + "=" + ti.TopicId);
 			}
 			else
 			{
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
             public static string ReplyLink(int tabId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti, int userId, int replyId)
 		{
-			var sURL = Utilities.NavigateUrl(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
+			var sURL = Utilities.NavigateURL(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
 
 			if (string.IsNullOrEmpty(ti.URL) || ! Utilities.UseFriendlyURLs(moduleId))
 				return sURL;
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public static string ForForum(int pageId, int forumId, string groupName, string forumName)
 		{
-			var sURL = Utilities.NavigateUrl(pageId, string.Empty, ParamKeys.ForumId + "=" + forumId);
+			var sURL = Utilities.NavigateURL(pageId, string.Empty, ParamKeys.ForumId + "=" + forumId);
 
 			var sNewPage = string.Empty;
 			if (! (string.IsNullOrEmpty(groupName)))
@@ -155,9 +155,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			string sURL;
 
 			if (pageNumber > 1)
-				sURL = Utilities.NavigateUrl(pageId, "", subject, portalId, new [] {ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber});
+				sURL = Utilities.NavigateURL(pageId, "", subject, portalId, new [] {ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber});
 			else
-				sURL = Utilities.NavigateUrl(pageId, "", subject, portalId, ParamKeys.TopicId + "=" + topicId);
+				sURL = Utilities.NavigateURL(pageId, "", subject, portalId, ParamKeys.TopicId + "=" + topicId);
 
 			sURL = sURL.ToLowerInvariant();
 			if (!(sURL.EndsWith(".aspx")))

@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -146,6 +148,30 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string HtmlEncode(string strMessage = "") => HttpUtility.HtmlEncode(strMessage);
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public static string HtmlDecode(string strMessage) => HttpUtility.HtmlDecode(strMessage);
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId) [Note URL in NavigateURL() is uppercase]")]
+        public static string NavigateUrl(int tabId)
+        {
+            return NavigateURL(tabId);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
+        public static string NavigateUrl(int tabId, int portalId, string controlKey, params string[] additionalParameters)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, Utilities.GetPortalSettings(portalId), controlKey, additionalParameters);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
+        public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
+        public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
+        {
+            return DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(tabId, controlKey, additionalParameters.ToArray());
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used. Use Utilities.NavigateURL(int tabId, string controlKey, params string[] additionalParameters) [Note URL in NavigateURL() is uppercase]")]
+        public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
+        {
+            return NavigateURL(tabId, controlKey, pageName, portalId, additionalParameters);
+        }
     }
 }

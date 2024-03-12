@@ -257,11 +257,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string[] Params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId };
             if (CanView && Name != string.Empty)
             {
-                sOut = "<a href=\"" + Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId }) + "\">" + Name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId }) + "\">" + Name + "</a>";
             }
             else if (CanView && Name == string.Empty)
             {
-                return Utilities.NavigateUrl(PageId, "", Params);
+                return Utilities.NavigateURL(PageId, "", Params);
             }
             else
             {
@@ -287,11 +287,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sURL;
                 if (ParentPostID == 0 || LastPostID == ParentPostID)
                 {
-                    sURL = Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + PostId });
+                    sURL = Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + PostId });
                 }
                 else
                 {
-                    sURL = Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
+                    sURL = Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
 
                 }
                 sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(Subject) + "\" runat=\"server\" />";

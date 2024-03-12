@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -112,15 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 			Data.ForumsDB fdb = new Data.ForumsDB();
 			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection filteredForums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in allForums)
-			{
-				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
-				{
-					f.SubForums = GetSubForums(allForums, f.ForumID);
-					filteredForums.Add(f);
-				}
-			}
+			var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0);
 			int tmpGroupId = -1;
 			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
 			{
@@ -138,24 +130,6 @@ namespace DotNetNuke.Modules.ActiveForums
 					}
 				}
 			}
-			//Dim dr As IDataReader = DataProvider.Instance.Forums_List(PortalId, ModuleId, -1, -1, False)
-
-
-			//While dr.Read
-			//    If Not tmpGroupId = CInt(dr("ForumGroupId")) Then
-			//        drpForums.Items.Add(New ListItem(dr("GroupName").ToString, "GROUP" & dr("ForumGroupId").ToString))
-			//        tmpGroupId = CInt(dr("ForumGroupId"))
-			//    End If
-			//    If Not CInt(dr("ForumId")) = 0 Then
-			//        If CInt(dr("ParentForumID")) = 0 Then
-			//            drpForums.Items.Add(New ListItem(" - " & dr("ForumName").ToString, "FORUM" & dr("ForumId").ToString))
-			//        End If
-			//        'If CInt(dr("ParentForumID")) > 0 Then
-			//        '    drpForums.Items.Add(New ListItem(" ---- " & dr("ForumName").ToString, "FORUM" & dr("ForumId").ToString))
-			//        'End If
-			//    End If
-			//End While
-			//dr.Close()
 		}
 		private void agCategories_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
 		{

@@ -475,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumSubs = (ForumView)(LoadControl(typeof(ForumView), null));
                 ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumSubs.ForumId = ForumId;
-                ctlForumSubs.ForumTable = dtSubForums;
+                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId).SubForums;
                 ctlForumSubs.ForumTabId = ForumTabId;
                 ctlForumSubs.ForumModuleId = ForumModuleId;
                 ctlForumSubs.SubsOnly = true;
@@ -594,11 +594,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (ForumInfo.ParentForumId > 0)
                 {
-                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
+                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
                 else if (ForumInfo.ForumGroupId > 0)
                 {
-                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateUrl(TabId) + "\">" + ForumInfo.GroupName + "</a>");
+                    sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.GroupName + "</a>");
                 }
             }
             // If String.IsNullOrEmpty(ForumInfo.ParentForumName) Then

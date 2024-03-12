@@ -31,7 +31,7 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Modules.ActiveForums.DAL2;
+using System.Linq;
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     public class forumhelper : HandlerBase

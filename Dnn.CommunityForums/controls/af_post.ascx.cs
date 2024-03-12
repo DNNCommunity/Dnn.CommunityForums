@@ -897,7 +897,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
 
                     if (sUrl.Contains("~/"))
-                        sUrl = Utilities.NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId);
+                        sUrl = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + TopicId);
 
                     if (!_isEdit)
                     {
@@ -1052,13 +1052,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
-                    Response.Redirect(Utilities.NavigateUrl(TabId, "", @params), false);
+                    Response.Redirect(Utilities.NavigateURL(TabId, "", @params), false);
                 }
                 else
                 {
                     var fullURL = new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     if (fullURL.Contains("~/"))
-                        fullURL = Utilities.NavigateUrl(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
+                        fullURL = Utilities.NavigateURL(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
 
                     if (fullURL.EndsWith("/"))
                         fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
