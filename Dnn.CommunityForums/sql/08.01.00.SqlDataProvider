@@ -1199,3 +1199,64 @@ GO
 /* issue 520 -- END -- remove obsolete module definition creating duplicate modules when placing on page */
 
 /* --------------------- */
+
+
+/* issue 711 begin - Only append templateId to Filename if template name is duplicated within same module */
+
+/*activeforums_Templates_Save*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+	@TemplateId int,
+	@PortalId int,
+	@ModuleId int,
+	@TemplateType int,
+	@IsSystem bit,
+	@Title nvarchar(150),
+	@Subject nvarchar(200),
+	@Template ntext	
+AS
+BEGIN
+IF EXISTS (Select TemplateId FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE TemplateId = @TemplateID AND PortalId = @PortalId AND ModuleId = @ModuleID) 
+	--UPDATE
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Templates
+			SET
+				TemplateType = @TemplateType,
+				IsSystem = @IsSystem,
+				Title = @Title,
+				Subject = @Subject,
+				Template = @Template,
+				DateUpdated = GETUTCDATE()
+			WHERE
+				TemplateId = @TemplateId AND PortalId = @PortalId AND ModuleId = @ModuleId
+	END
+ELSE
+	--INSERT
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Templates
+			(PortalId, ModuleId, TemplateType, Title, Subject, Template, DateCreated)
+			VALUES
+			(@PortalId, @ModuleId, @TemplateType,@Title,@Subject,@Template, GETUTCDATE())
+		SET @TemplateId = SCOPE_IDENTITY()
+		DECLARE @TemplateTitleCount int
+		SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title AND ModuleId = @ModuleId) 
+		IF @TemplateTitleCount <> 1 
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
+			END
+			ELSE
+				BEGIN
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
+				END 
+	END
+END
+
+SELECT @TemplateId
+GO
+/*activeforums_Templates_Save*/
+
+/* issue 660 end -  Only append templateId to Filename if template name is duplicated within same module */
+
+/* --------------------- */
