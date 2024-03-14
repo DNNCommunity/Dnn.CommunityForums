@@ -257,7 +257,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_MostLiked]
 	@ForumIds nvarchar(1000)
 AS
 	
-	-- Populate our active topics table
+	/* Populate our active topics table */
 	
 	CREATE TABLE #MostLiked(RowRank int NOT NULL, TopicId int NOT NULL)
 	
@@ -265,15 +265,15 @@ AS
 	SELECT ROW_NUMBER() OVER (
 			ORDER BY 
 				CASE 
-					WHEN @Sort = 'DESC' THEN  SUM(COALESCE(LikeCount,0)) END DESC, 
+					WHEN @Sort = 'DESC' THEN SUM(COALESCE(LikeCount,0)) END DESC, 
 				CASE  
-					WHEN @Sort = 'ASC' THEN  SUM(COALESCE(LikeCount,0)) END ASC
+					WHEN @Sort = 'ASC' THEN SUM(COALESCE(LikeCount,0)) END ASC
 					) as RowRank,  TopicId
 	FROM 
 	(SELECT T.TopicId, l.LikeCount
 	FROM {databaseOwner}{objectQualifier}vw_activeforums_TopicsView FT 
 	INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@ForumIds,';') as X ON X.id = FT.ForumId
-	INNER JOIN{databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = FT.TopicId
+	INNER JOIN {databaseOwner}{objectQualifier}activeforums_Topics T ON T.TopicId = FT.TopicId
 	LEFT OUTER JOIN (SELECT l.PostId AS ContentId, COUNT(*) AS LikeCount FROM {databaseOwner}{objectQualifier}activeforums_Likes l WHERE l.Checked = 1 GROUP BY l.PostId) l ON l.ContentId = T.ContentId
 	WHERE FT.PortalId = @PortalId AND FT.ModuleId = @ModuleId AND (COALESCE(l.LikeCount,0) > 0) AND DATEDIFF(mi,FT.LastReplyDate,GETUTCDATE())<= @TimeFrame 
 	UNION 
@@ -281,18 +281,18 @@ AS
 	FROM {databaseOwner}{objectQualifier}activeforums_Replies R 
 	INNER JOIN {databaseOwner}{objectQualifier}vw_activeforums_TopicsView FT ON FT.TopicId = R.TopicId
 	INNER JOIN {databaseOwner}{objectQualifier}activeforums_Functions_Split(@ForumIds,';') as X ON X.id = FT.ForumId
-	LEFT OUTER JOIN (SELECT l.PostId AS ContentId, COUNT(*) AS LikeCount FROM{databaseOwner}{objectQualifier}activeforums_Likes l WHERE l.Checked = 1 GROUP BY l.PostId) l ON l.ContentId = R.ContentId
+	LEFT OUTER JOIN (SELECT l.PostId AS ContentId, COUNT(*) AS LikeCount FROM {databaseOwner}{objectQualifier}activeforums_Likes l WHERE l.Checked = 1 GROUP BY l.PostId) l ON l.ContentId = R.ContentId
 	WHERE FT.PortalId = @PortalId AND FT.ModuleId = @ModuleId AND (COALESCE(l.LikeCount,0) > 0) AND DATEDIFF(mi,FT.LastReplyDate,GETUTCDATE())<= @TimeFrame 
 	 
 	) x
 	GROUP BY TopicId
 
-	-- Get our record count
+	/* Get our record count */
 	
 	DECLARE @RecordCount int
 	SET @RecordCount = (SELECT COUNT(*) FROM #MostLiked)
 
-	-- Return our result set
+	/* Return our result set */
 
 	SELECT 
 		f.ForumId,
@@ -902,5 +902,361 @@ EXECUTE sp_refreshsqlmodule N'{databaseOwner}[{objectQualifier}activeforums_Foru
 GO
 
 /* issue 536 end - dbtype alignment */
+
+/* --------------------- */
+
+ 
+
+/* issue 680 begin - ModuleId not populated in activeforums_Content */
+
+
+
+/* Begin - update activeforums_Reply_Save procedure to populate ModuleId in activeforums_Content when saving reply */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+GO
+ 
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+@PortalId int,
+@TopicId int,
+@ReplyId int,
+@ReplyToId int,
+@StatusId int,
+@IsApproved bit,
+@IsDeleted bit,
+@Subject nvarchar(255),
+@Body ntext,
+@DateCreated datetime,
+@DateUpdated datetime,
+@AuthorId int,
+@AuthorName nvarchar(150),
+@IPAddress nvarchar(50)
+AS
+DECLARE @ContentId int
+DECLARE @IsEdit bit
+SET @IsEdit = 0
+DECLARE @ApprovedStatus bit
+SET @ApprovedStatus = @IsApproved
+
+-- This part is a work around for Quick Reply feature not working for Tapatalk STARTS
+
+DECLARE @TopicSubject NVARCHAR(255) =	(
+											SELECT top 1 afc.Subject FROM {databaseOwner}[{objectQualifier}activeforums_Topics] aft
+												JOIN {databaseOwner}[{objectQualifier}activeforums_Content] afc ON aft.ContentId = afc.ContentId
+											WHERE TopicId = @TopicId
+										)	
+										
+SET @Subject = ISNULL(NULLIF(@Subject, ''), 'RE: ' + @TopicSubject)	
+
+IF (@Subject NOT LIKE 'RE:%')
+BEGIN
+	SET @Subject = 'RE: ' + @Subject
+END
+-- This part is a work around for Quick Reply feature not working for Tapatalk ENDS
+
+
+IF EXISTS(SELECT ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE ReplyId = @ReplyId)
+	BEGIN
+		SELECT @ContentId = ContentId, @ApprovedStatus = IsApproved FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE ReplyId = @ReplyId
+		
+		BEGIN
+			SET @IsEdit = 1
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Content
+				SET Subject = @Subject,
+					Body = @Body,
+					DateCreated = @DateCreated,
+					DateUpdated = @DateUpdated,
+					AuthorId = @AuthorId,
+					AuthorName = @AuthorName,
+					IsDeleted = @IsDeleted,
+					IPAddress = @IPAddress
+				WHERE ContentId = @ContentId
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Replies
+				SET StatusId = @StatusId,
+					TopicId = @TopicId,
+					IsApproved = @IsApproved,
+					IsDeleted = @IsDeleted,
+					ReplyToId = @ReplyToId					
+				WHERE ReplyId = @ReplyId	
+		END
+	END
+ELSE
+--INSERT
+BEGIN
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Content
+			(Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IsDeleted, IPAddress)
+			VALUES
+			(@Subject, @Body, @DateCreated, @DateUpdated, @AuthorId, @AuthorName, @IsDeleted, @IPAddress)
+		SET @ContentId = SCOPE_IDENTITY()
+	END
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Replies
+			(ContentId, TopicId, StatusId, IsApproved, IsDeleted, ReplyToId)
+			VALUES
+			(@ContentId, @TopicId, @StatusId, @IsApproved, @IsDeleted, @ReplyToId)
+		SET @ReplyId = SCOPE_IDENTITY()
+		
+	END
+	
+
+END
+IF @IsApproved = 1
+	BEGIN
+		DECLARE @ForumId int
+		SELECT @ForumId = ForumId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @TopicId
+		DECLARE @TotalReplies int
+		SET @TotalReplies = (SELECT Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_replies as r inner join {databaseOwner}{objectQualifier}activeforums_topics as t on t.topicid = r.topicid and r.isapproved = 1 and r.isdeleted = 0 INNER JOIN {databaseOwner}{objectQualifier}activeforums_forumtopics as ft on t.topicid = ft.topicid WHERE ft.forumid = @ForumId)
+		DECLARE @LastReplyDate int
+		SET @LastReplyDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',rc.DATECREATED) FROM {databaseOwner}{objectQualifier}activeforums_Content as rc INNER JOIN {databaseOwner}{objectQualifier}activeforums_Replies as r ON r.ContentId = rc.ContentId WHERE ReplyId = @ReplyId)
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Forums 
+		SET LastPostSubject = @Subject, LastPostAuthorName = @AuthorName, LastPostAuthorId = IsNull(@AuthorId,-1), 
+			LastPostDate = @DateCreated, LastTopicId = IsNull(@TopicId,0), LastReplyId = IsNull(@ReplyId,0),
+			TotalReplies = ISNULL(@TotalReplies,0)
+		WHERE ForumId = @ForumId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = (Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
+			WHERE TopicId = @TopicId
+			If @IsEdit = 0
+				UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics SET LastReplyId = @ReplyId, LastReplyDate = @LastReplyDate 	WHERE TopicId = @TopicId
+			IF @AuthorId > 0
+				UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+					SET ReplyCount = ISNULL((Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies as r INNER JOIN 
+							{databaseOwner}{objectQualifier}activeforums_Content as c ON r.ContentId = c.ContentId AND c.AuthorId=@AuthorId INNER JOIN
+							{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = r.TopicId INNER JOIN
+							{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId
+							WHERE r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@PortalId),0)
+					WHERE UserId = @AuthorId AND PortalId = @PortalId					
+			
+		
+		-- reset thread order
+		EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+	END
+
+
+
+/* populate ModuleId in activeforums_Content */
+UPDATE c
+SET c.ModuleId = f.ModuleId
+FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r
+ON r.ContentId = c.ContentId 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
+ON ft.TopicId = r.TopicId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+ON f.ForumId = ft.ForumId
+WHERE c.ModuleId IS NULL AND r.ReplyId = @ReplyId
+
+
+SELECT @ReplyId
+GO
+/* End - update activeforums_Reply_Save procedure to populate ModuleId in activeforums_Content when saving reply */
+
+
+/* FIX: populate ModuleId in existing activeforums_Content */
+UPDATE c
+SET c.ModuleId = f.ModuleId
+FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r
+ON r.ContentId = c.ContentId 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
+ON ft.TopicId = r.TopicId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+ON f.ForumId = ft.ForumId
+WHERE c.ModuleId IS NULL
+
+/* issue 680 end - ModuleId not populated in activeforums_Content */
+
+
+
+/* --------------------- */
+
+/* issue 660 begin - unanswered topics should exclude locked topics */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_UI_UnansweredView]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_UnansweredView]
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_UI_UnansweredView]
+	@PortalId int,
+	@ModuleId int,
+	@UserId int,
+	@RowIndex int = 0,
+	@MaxRows int = 20,
+	@Sort nvarchar(10) = 'DESC',
+	@ForumIds nvarchar(1000)
+AS
+	SET NOCOUNT ON;
+	
+	SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+
+	-- Populate our unanswered topics table
+	
+	CREATE TABLE #UnansweredTopics(RowRank int NOT NULL, TopicId int NOT NULL)
+
+	INSERT INTO #UnansweredTopics(RowRank, TopicId)
+	SELECT ROW_NUMBER() OVER (
+			ORDER BY 
+				CASE 
+					WHEN @Sort = 'DESC' THEN T.LastReplyDate END DESC, 
+				CASE  
+					WHEN @Sort = 'ASC' THEN T.LastReplyDate END ASC) as RowRank, 
+		T.TopicId
+	FROM {databaseOwner}{objectQualifier}vw_activeforums_TopicsView T INNER JOIN
+		{databaseOwner}{objectQualifier}activeforums_Functions_Split(@ForumIds,';') as fids ON fids.id = T.ForumId		
+	WHERE T.LastReplyId = 0 AND T.PortalId = @PortalId AND T.ModuleId = @ModuleId AND T.IsLocked = 0
+
+	-- Get our record count
+	
+	DECLARE @RecordCount int
+	SET @RecordCount = (SELECT COUNT(*) FROM #UnansweredTopics)
+
+	-- Return our result set
+
+	SELECT 
+		f.ForumId,
+		f.ForumName,
+		IsNull(f.LastReplyId,0) as LastReplyId,
+		t.TopicId,
+		t.ViewCount,
+		t.ReplyCount,
+		t.IsLocked,
+		t.IsPinned,
+		IsNull(t.TopicIcon,'') as TopicIcon,
+		t.StatusId,
+		t.IsAnnounce,
+		t.AnnounceStart,
+		t.AnnounceEnd,
+		t.TopicType,
+		c.Subject,
+		IsNull(c.Summary,'') as Summary,
+		IsNull(c.AuthorId,-1) as AuthorId,
+		IsNull(c.AuthorName,'') as AuthorName,
+		c.Body,
+		c.DateCreated,
+		IsNull(u.Username,'') as AuthorUserName,
+		IsNull(u.FirstName,'') as AuthorFirstName,
+		IsNull(u.LastName,'') as AuthorLastName,
+		IsNull(u.DisplayName,'') as AuthorDisplayName,
+		CASE WHEN rc.Subject IS NULL THEN c.Subject ELSE rc.Subject END as LastReplySubject,
+		CASE WHEN rc.Summary IS NULL THEN IsNull(c.Summary,'') ELSE rc.Summary END as LastReplySummary,
+		CASE WHEN rc.AuthorId IS NULL THEN c.AuthorId ELSE rc.AuthorId END as LastReplyAuthorId,
+		CASE WHEN rc.AuthorName IS NULL THEN IsNull(c.AuthorName,'') ELSE rc.AuthorName END  as LastReplyAuthorName,
+		CASE WHEN ru.Username IS NULL THEN IsNull(u.UserName,'') ELSE ru.UserName END as LastReplyUserName,
+		CASE WHEN ru.FirstName IS NULL THEN IsNULL(u.FirstName,'') ELSE ru.FirstName END as LastReplyFirstName,
+		CASE WHEN ru.LastName IS NULL THEN IsNull(u.LastName,'') ELSE ru.LastName END as LastReplyLastName,
+		CASE WHEN ru.DisplayName IS NULL THEN IsNull(IsNull(u.DisplayName,rc.AuthorName),'') ELSE ru.DisplayName END as LastReplyDisplayName,
+		CASE WHEN rc.DateCreated IS NULL THEN c.DateCreated ELSE rc.DateCreated END  as LastReplyDate,
+		CASE WHEN TT.LastReplyId < ISNULL(f.LastReplyId,0) THEN TT.LastReplyId ELSE 0 END AS LastReplyRead, 
+		CASE WHEN FT.MaxReplyRead > TT.LastReplyId OR TT.LastReplyID IS NULL THEN ISNULL(FT.MaxReplyRead,0) ELSE TT.LastReplyId END AS UserLastReplyRead, 
+		CASE WHEN FT.MaxTopicRead > TT.TopicId OR TT.TopicId IS NULL THEN ISNULL(FT.MaxTopicRead,0) ELSE TT.TopicId END AS UserLastTopicRead,
+		CASE WHEN ftt.LastReplyID <= tt.LastReplyId OR (ISNULL(ftt.LastReplyId,'') = 0 AND c.AuthorId = @UserId) OR (FT.MaxReplyRead >= ftt.LastReplyId) THEN 1 ELSE 0 END AS IsRead,
+		ftt.LastReplyId as TopicLastReplyId,
+		tr.TopicRating, 
+		@RecordCount as RecordCount,
+		ISNULL(t.URL,'') as  TopicURL,
+		ISNULL(f.PrefixURL,'') as ForumUrl,
+		ISNULL(g.PrefixURL,'') as GroupUrl,
+		g.ForumGroupId,
+		IsNull(S.Mode,0) AS SubscriptionType
+		
+		FROM	#UnansweredTopics as tmp INNER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Topics as t on tmp.TopicId = t.TopicId INNER JOIN			
+				{databaseOwner}{objectQualifier}activeforums_ForumTopics AS ftt ON ftt.TopicId = t.TopicId INNER JOIN
+				{databaseOwner}{objectQualifier}activeforums_forums as f ON ftt.forumId = f.ForumId INNER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Groups as g ON f.ForumGroupId = g.ForumGroupId INNER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Content as c on t.ContentId = c.ContentId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}vw_activeforums_TopicRatings as tr on t.TopicId = tr.TopicId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}Users as u on c.AuthorId = u.UserId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Replies as r on ftt.LastReplyId = r.ReplyId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Content as rc on r.ContentId = rc.ContentId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}Users as ru on rc.AuthorId = ru.UserId LEFT OUTER JOIN				
+                {databaseOwner}{objectQualifier}activeforums_Topics_Tracking AS TT ON T.TopicId = TT.TopicId AND TT.UserId = @UserId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Forums_Tracking as FT ON f.ForumId = FT.ForumId AND FT.UserId = @UserId LEFT OUTER JOIN
+				{databaseOwner}{objectQualifier}activeforums_Subscriptions AS S ON S.ForumId = f.ForumId AND S.TopicId = T.TopicId and S.UserId = @UserId
+				
+	WHERE RowRank > @RowIndex AND RowRank <= (@RowIndex + @MaxRows)
+	ORDER BY RowRank
+
+	DROP TABLE #UnansweredTopics
+GO
+
+/* issue 660 end - unanswered topics should not include locked topics */
+
+/* --------------------- */
+
+
+
+/* issue 520 -- begin -- remove obsolete module definition creating duplicate modules when placing on page */
+
+SET NOCOUNT ON 
+DELETE {databaseOwner}{objectQualifier}ModuleDefinitions
+WHERE FriendlyName = 'Active Forums' AND DefinitionName = 'Active Forums'
+GO
+
+/* issue 520 -- END -- remove obsolete module definition creating duplicate modules when placing on page */
+
+/* --------------------- */
+
+
+/* issue 711 begin - Only append templateId to Filename if template name is duplicated within same module */
+
+/*activeforums_Templates_Save*/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Templates_Save]
+	@TemplateId int,
+	@PortalId int,
+	@ModuleId int,
+	@TemplateType int,
+	@IsSystem bit,
+	@Title nvarchar(150),
+	@Subject nvarchar(200),
+	@Template ntext	
+AS
+BEGIN
+IF EXISTS (Select TemplateId FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE TemplateId = @TemplateID AND PortalId = @PortalId AND ModuleId = @ModuleID) 
+	--UPDATE
+	BEGIN
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Templates
+			SET
+				TemplateType = @TemplateType,
+				IsSystem = @IsSystem,
+				Title = @Title,
+				Subject = @Subject,
+				Template = @Template,
+				DateUpdated = GETUTCDATE()
+			WHERE
+				TemplateId = @TemplateId AND PortalId = @PortalId AND ModuleId = @ModuleId
+	END
+ELSE
+	--INSERT
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Templates
+			(PortalId, ModuleId, TemplateType, Title, Subject, Template, DateCreated)
+			VALUES
+			(@PortalId, @ModuleId, @TemplateType,@Title,@Subject,@Template, GETUTCDATE())
+		SET @TemplateId = SCOPE_IDENTITY()
+		DECLARE @TemplateTitleCount int
+		SET @TemplateTitleCount = (SELECT COUNT(*) FROM {databaseOwner}{objectQualifier}activeforums_Templates WHERE Title = @Title AND ModuleId = @ModuleId) 
+		IF @TemplateTitleCount <> 1 
+			BEGIN
+				UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'-',LTRIM(STR(TemplateId)),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
+			END
+			ELSE
+				BEGIN
+					UPDATE {databaseOwner}{objectQualifier}activeforums_Templates SET FileName = CONCAT(RTRIM(Title),'.ascx') WHERE TemplateId = @TemplateId AND FileName IS NULL
+				END 
+	END
+END
+
+SELECT @TemplateId
+GO
+/*activeforums_Templates_Save*/
+
+/* issue 660 end -  Only append templateId to Filename if template name is duplicated within same module */
 
 /* --------------------- */

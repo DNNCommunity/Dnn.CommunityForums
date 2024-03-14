@@ -127,12 +127,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Otherwise check the attachments directory (current and legacy)
             else
             {
-                filePath = Server.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
+                filePath = Utilities.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
 
                 // This is another check to support legacy attachments.
                 if (!File.Exists(filePath))
                 {
-                    filePath = Server.MapPath(PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
+                    filePath = Utilities.MapPath(PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
                 }
             }
 
