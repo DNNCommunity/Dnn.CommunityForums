@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				tb.TagId = int.Parse(Request.QueryString["atg"]);
 
 			}
-			if (Request.QueryString["act"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["act"]))
+			if (Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Category]))
 			{
-				tb.CategoryId = int.Parse(Request.QueryString["act"]);
+				tb.CategoryId = int.Parse(Request.QueryString[ParamKeys.Category]);
 			}
 			tb.ForumUser = ForumUser;
 			tb.PageIndex = PageId;

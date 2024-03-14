@@ -102,29 +102,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Request.Params[ParamKeys.ViewType];
                     }
-                    else if (Request.Params["view"] != null)
+                    else if (Request.Params[Literals.view] != null)
                     {
-                        ctl = Request.Params["view"];
+                        ctl = Request.Params[Literals.view];
                     }
                     else if (Request.Params[ParamKeys.ViewType] == null & ForumId > 0 & TopicId <= 0)
                     {
                         ctl = Views.Topics;
                     }
-                    else if (Request.Params[ParamKeys.ViewType] == null && Request.Params["view"] == null & TopicId > 0)
+                    else if (Request.Params[ParamKeys.ViewType] == null && Request.Params[Literals.view] == null & TopicId > 0)
                     {
                         ctl = Views.Topic;
                     }
                     else if (Settings["amafDefaultView"] != null)
                     {
                         ctl = Settings["amafDefaultView"].ToString();
-                    }
-                    //ctl = "advanced"
-                    // If Not cbLoader.IsCallback Then
+                    } 
                     if (Request.QueryString[ParamKeys.PageJumpId] != null)
                     {
-                        opts = "PageId=" + Request.QueryString[ParamKeys.PageJumpId];
-                    }
-                    //End If
+                        opts = $"{Literals.PageId}={Request.QueryString[ParamKeys.PageJumpId]}";
+                    } 
                     currView = ctl;
                     GetControl(ctl, opts);
 
