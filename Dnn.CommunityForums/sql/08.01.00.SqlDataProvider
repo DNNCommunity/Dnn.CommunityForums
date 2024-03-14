@@ -1188,6 +1188,19 @@ GO
 /* --------------------- */
 
 
+
+/* issue 520 -- begin -- remove obsolete module definition creating duplicate modules when placing on page */
+
+SET NOCOUNT ON 
+DELETE {databaseOwner}{objectQualifier}ModuleDefinitions
+WHERE FriendlyName = 'Active Forums' AND DefinitionName = 'Active Forums'
+GO
+
+/* issue 520 -- END -- remove obsolete module definition creating duplicate modules when placing on page */
+
+/* --------------------- */
+
+
 /* issue 711 begin - Only append templateId to Filename if template name is duplicated within same module */
 
 /*activeforums_Templates_Save*/
