@@ -30,12 +30,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Content", CacheItemPriority.Low)] 
     public class ContentInfo
     {
+        private DateTime _dateCreated = DateTime.UtcNow;
+        private DateTime _dateUpdated = DateTime.UtcNow;
+
         public int ContentId { get; set; }
         public string Subject { get; set; }
         public string Summary { get; set; }
         public string Body { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
+        public DateTime DateCreated { get => _dateCreated; }
+        public DateTime DateUpdated { get => _dateUpdated; }
         public int AuthorId { get; set; }
         public string AuthorName { get; set; }
         public bool IsDeleted { get; set; }

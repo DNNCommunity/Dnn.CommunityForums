@@ -91,47 +91,56 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => _contentInfo ?? (_contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId)); 
-            set => _contentInfo = value;
-        }
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
-        {
-            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId)); 
-            set => _forumInfo = value;
-        }
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Author Author
-        {
             get
             {
-                if (_Author == null)
+                if (_contentInfo == null)
                 {
-                    _Author = new DotNetNuke.Modules.ActiveForums.Author();
-                    _Author.AuthorId = Content.AuthorId;
-                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
-                    if (userInfo != null)
+                    _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                    if (_contentInfo == null)
                     {
-                        _Author.Email = userInfo?.Email;
-                        _Author.FirstName = userInfo?.FirstName;
-                        _Author.LastName = userInfo?.LastName;
-                        _Author.DisplayName = userInfo?.DisplayName;
-                        _Author.Username = userInfo?.Username;
-                    }
-                    else
-                    {
-                        _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
                     }
                 }
-                return _Author;
+                return _contentInfo; }
+                
+                set => _contentInfo = value;
             }
-            set
-            { _Author = value; }
-        }
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
-        [IgnoreColumn()]
-        public string Tags { get; set; }
+            [IgnoreColumn()]
+            public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
+            {
+                get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Forum.ForumID));
+                set => _forumInfo = value;
+            }
+            [IgnoreColumn()]
+            public DotNetNuke.Modules.ActiveForums.Author Author
+            {
+                get
+                {
+                    if (_Author == null)
+                    {
+                        _Author = new DotNetNuke.Modules.ActiveForums.Author();
+                        _Author.AuthorId = Content.AuthorId;
+                        var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(Forum.PortalId, Content.AuthorId);
+                        if (userInfo != null)
+                        {
+                            _Author.Email = userInfo?.Email;
+                            _Author.FirstName = userInfo?.FirstName;
+                            _Author.LastName = userInfo?.LastName;
+                            _Author.DisplayName = userInfo?.DisplayName;
+                            _Author.Username = userInfo?.Username;
+                        }
+                        else
+                        {
+                            _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                        }
+                    }
+                    return _Author;
+                }
+                set
+                { _Author = value; }
+            }
+            [IgnoreColumn()]
+            public string Tags { get; set; }
         [IgnoreColumn()]
         public string Categories { get; set; } = string.Empty;
        
