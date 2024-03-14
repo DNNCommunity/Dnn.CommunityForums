@@ -85,9 +85,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             int replyId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
-            DateTime dt = DateTime.UtcNow;
-            ri.Content.DateUpdated = dt;
-            ri.Content.DateCreated = dt;
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = DisplayName;
             ri.Content.Subject = Subject;
@@ -112,38 +109,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
         {
-            IDataReader dr = DataProvider.Instance().Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = null;
-            while (dr.Read())
-            {
-                ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
-                ri.ReplyId = Convert.ToInt32(dr["ReplyId"]);
-                ri.ReplyToId = Convert.ToInt32(dr["ReplyToId"]);
-                ri.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
-                ri.Content.AuthorName = dr["AuthorName"].ToString();
-                ri.Content.Body = dr["Body"].ToString();
-                ri.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ri.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
-                ri.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
-                ri.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-                ri.Content.Subject = dr["Subject"].ToString();
-                ri.Content.Summary = dr["Summary"].ToString();
-                ri.Content.IPAddress = dr["IPAddress"].ToString();
-                ri.Author.AuthorId = ri.Content.AuthorId;
-                ri.Author.DisplayName = dr["DisplayName"].ToString();
-                ri.Author.Email = dr["Email"].ToString();
-                ri.Author.FirstName = dr["FirstName"].ToString();
-                ri.Author.LastName = dr["LastName"].ToString();
-                ri.Author.Username = dr["Username"].ToString();
-                ri.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ri.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
-                ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-                ri.StatusId = Convert.ToInt32(dr["StatusId"]);
-                ri.TopicId = Convert.ToInt32(dr["TopicId"]);
-                //tl.Add(ti)
-            }
-            dr.Close();
-            return ri;
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {

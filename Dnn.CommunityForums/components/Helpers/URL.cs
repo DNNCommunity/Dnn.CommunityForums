@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			string sURL;
 			var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
-			if (string.IsNullOrEmpty(ti.URL) || !mainSettings.URLRewriteEnabled)
+			if (string.IsNullOrEmpty(ti.TopicUrl) || !mainSettings.URLRewriteEnabled)
 			{
 				sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.TopicId + "=" + ti.TopicId);
 			}
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			var sURL = Utilities.NavigateURL(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
 
-			if (string.IsNullOrEmpty(ti.URL) || ! Utilities.UseFriendlyURLs(moduleId))
+			if (string.IsNullOrEmpty(ti.TopicUrl) || ! Utilities.UseFriendlyURLs(moduleId))
 				return sURL;
 
             var db = new Data.Common();
