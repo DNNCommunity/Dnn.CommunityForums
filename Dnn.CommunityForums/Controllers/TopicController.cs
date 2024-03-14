@@ -68,9 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             ti.Content.IPAddress = IPAddress;
 
-            DateTime dt = DateTime.Now;
-            ti.Content.DateCreated = dt;
-            ti.Content.DateUpdated = dt;
             ti.IsAnnounce = false;
             ti.IsApproved = IsApproved;
             ti.IsArchived = false;

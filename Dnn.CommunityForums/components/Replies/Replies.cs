@@ -180,10 +180,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             int replyId = -1;
             DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
-            DateTime dt = DateTime.UtcNow;
-            ri.Content.DateUpdated = dt;
-            ri.Content.DateCreated = dt;
-            ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = DisplayName;
             ri.Content.Subject = Subject;
             ri.Content.Body = Body;
@@ -223,8 +219,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.Content.AuthorName = dr["AuthorName"].ToString();
                 ri.Content.Body = dr["Body"].ToString();
                 ri.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ri.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
-                ri.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
                 ri.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
                 ri.Content.Subject = dr["Subject"].ToString();
                 ri.Content.Summary = dr["Summary"].ToString();
