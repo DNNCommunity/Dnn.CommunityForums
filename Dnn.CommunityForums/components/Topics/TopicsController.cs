@@ -51,9 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ti.Content.IPAddress = IPAddress;
 
-            DateTime dt = DateTime.Now;
-            ti.Content.DateCreated = dt;
-            ti.Content.DateUpdated = dt;
             ti.IsAnnounce = false;
             ti.IsApproved = IsApproved;
             ti.IsArchived = false;
@@ -149,8 +146,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.Content.AuthorName = dr["AuthorName"].ToString();
                 ti.Content.Body = dr["Body"].ToString();
                 ti.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ti.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
-                ti.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
+                //ti.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
+                //ti.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
                 ti.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
                 ti.Content.Subject = dr["Subject"].ToString();
                 ti.Content.Summary = dr["Summary"].ToString();
@@ -176,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.Tags = dr["Tags"].ToString();
                 ti.Priority = Convert.ToInt32(dr["Priority"].ToString());
                 ti.Categories = dr["Categories"].ToString();
-                ti.ForumURL = dr["ForumURL"].ToString();
+                //ti.ForumURL = dr["ForumURL"].ToString();
                 ti.TopicUrl = dr["TopicURL"].ToString();
                 //.URL = dr("URL").ToString
                 try
