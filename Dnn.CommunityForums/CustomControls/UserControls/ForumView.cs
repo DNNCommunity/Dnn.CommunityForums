@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")] 
         public DataTable ForumTable { get; set; }
         
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums;
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums { get; set; }
         public string DisplayTemplate { get; set; } = "";
         public int CurrentUserId { get; set; } = -1;
         protected af_quickjump ctlForumJump = new af_quickjump();
@@ -192,21 +192,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (Forums == null)
                     {
-                        Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
-                        if (ForumGroupId != -1)
+                        Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                        foreach (string ForumId in ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
                         {
-                            Forums = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)Forums.Where(f => f.ForumGroupId == ForumGroupId).ToList();
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId)));
                         }
                     }
+                    Forums = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder);
+                    
 
-                    string sGroupName = (ForumGroupId != -1 && Forums.Count > 0) ? Forums.FirstOrDefault().GroupName : string.Empty;
-                    string sCrumb = (ForumGroupId != -1 && Forums.Count>0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
-                   
+                    string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
+                    string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
+
                     if (ParentForumId != -1)
                     {
-                        sGroupName = Forums.Where(f=>f.ForumID == ParentForumId).FirstOrDefault().GroupName;
+                        sGroupName = Forums?.Where(f => f.ForumID == ParentForumId).FirstOrDefault().GroupName;
                     }
-                    if (MainSettings.UseSkinBreadCrumb && Forums.Count > 0 && SubsOnly == false && ForumGroupId != -1)
+                    if (MainSettings.UseSkinBreadCrumb && Forums?.Count > 0 && SubsOnly == false && ForumGroupId != -1)
                     {
                         Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + sGroupName + "</a>");
                         sTemplate = sTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
@@ -221,55 +223,57 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int ForumCount = 0;
                     bool hasForums = false;
                     int tmpGroupCount = 0;
-                    foreach (var fi in Forums.Take(Globals.ForumCount))
+                    if (Forums != null)
                     {
-                        bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
-                        if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
+                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).Take(Globals.ForumCount))
                         {
-                            if (tmpGroup != fi.GroupName)
+                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                            if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
                             {
-                                if (tmpGroupCount < Globals.GroupCount)
-                                {   
-                                    ForumCount = Forums.Count(f => f.ForumGroupId == fi.ForumGroupId);
-                                    if (sForums != string.Empty)
-                                    {
-                                        sGroupSection = TemplateUtils.ReplaceSubSection(sGroupSection, sForums, "[FORUMS]", "[/FORUMS]");
-                                        sForums = string.Empty;
-                                    }
-                                    int GroupId = fi.ForumGroupId;
-                                    sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", fi.GroupName);
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{GroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
-
-
-                                    //any replacements on the group
-                                    string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
-                                    sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
-                                    sGroupSection += sGroupSectionTemp;
-                                    tmpGroup = fi.GroupName;
-                                    tmpGroupCount += 1;
-                                    iForum = 1;
-                                }
-
-                            }
-                            if (iForum <= Globals.ForumCount)
-                            {
-                                if (canView || (!fi.Hidden))
+                                if (tmpGroup != fi.GroupName)
                                 {
-                                    sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
-                                    hasForums = true;
-                                    if (fi.ParentForumId == 0 || SubsOnly || (SubsOnly == false && fi.ParentForumId > 0 && Forums.Count == 1))
+                                    if (tmpGroupCount < Globals.GroupCount)
                                     {
-                                        sForumTemp = ParseForumRow(sForumTemp, fi, iForum, ForumCount);
-                                        iForum += 1;
-                                        sForums += sForumTemp;
+                                        ForumCount = Forums.Count(f => f.ForumGroupId == fi.ForumGroupId);
+                                        if (sForums != string.Empty)
+                                        {
+                                            sGroupSection = TemplateUtils.ReplaceSubSection(sGroupSection, sForums, "[FORUMS]", "[/FORUMS]");
+                                            sForums = string.Empty;
+                                        }
+                                        int GroupId = fi.ForumGroupId;
+                                        sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
+                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", fi.GroupName);
+                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
+                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{GroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
+
+
+                                        //any replacements on the group
+                                        string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
+                                        sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
+                                        sGroupSection += sGroupSectionTemp;
+                                        tmpGroup = fi.GroupName;
+                                        tmpGroupCount += 1;
+                                        iForum = 1;
+                                    }
+
+                                }
+                                if (iForum <= Globals.ForumCount)
+                                {
+                                    if (canView || (!fi.Hidden))
+                                    {
+                                        sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
+                                        hasForums = true;
+                                        if (fi.ParentForumId == 0 || SubsOnly || (SubsOnly == false && fi.ParentForumId > 0 && Forums.Count == 1))
+                                        {
+                                            sForumTemp = ParseForumRow(sForumTemp, fi, iForum, ForumCount);
+                                            iForum += 1;
+                                            sForums += sForumTemp;
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-
 
                     if (hasForums == false && SubsOnly)
                     {
