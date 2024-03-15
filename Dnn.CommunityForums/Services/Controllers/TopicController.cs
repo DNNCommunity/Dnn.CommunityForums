@@ -194,23 +194,32 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         }
         /// <summary>
         /// Loads a Topic
-        /// </summary>
-        /// <param name="dto"></param>
-        /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load</remarks>
-        [HttpPost]
+        /// <param name="ForumId" type="int"></param>
+        /// <param name="TopicId" type="int"></param>
+        /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.Entities.TopicInfo"></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load?ForumId=xxx&TopicId=xxx</remarks>
+        [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Read)]
-        public HttpResponseMessage Load(TopicDto dto)
+        public HttpResponseMessage Load(int ForumId, int TopicId)
         {
-            int topicId = dto.TopicId;
-            int forumId = dto.ForumId;
-            if (topicId > 0 && forumId > 0)
+            if (TopicId > 0 && ForumId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                if (t != null)
+                if (ServicesHelper.IsAuthorized(PortalSettings.PortalId, ForumModuleId, ForumId, SecureActions.Read, UserInfo))
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new object[] { t });
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                    if (t != null)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, new object[] { t });
+                    }
+                    else 
+                    {
+                        Request.CreateResponse(HttpStatusCode.NotFound);
+                    }
+                }
+                else
+                {
+                    Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);

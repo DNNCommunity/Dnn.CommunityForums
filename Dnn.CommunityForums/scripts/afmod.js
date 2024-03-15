@@ -151,10 +151,16 @@ function amaf_modLock(mid, fid, tid) {
 function amaf_quickEdit(mid, fid, tid) {
     amaf_resetQuickEdit();
     am.UI.LoadDiv('aftopicedit');
-    var d = {};
-    d.action = 13;
-    d.topicid = tid;
-    amaf.callback(d, amaf_loadTopicComplete);
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load?forumId=' + fid + '&topicId=' + tid,
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_loadTopicComplete(data);
+    }).fail(function (xhr, status) {
+        alert('error loading post');
+    });
 };
 function amaf_resetQuickEdit() {
     document.getElementById('aftopicedit-topicid').value = '';
@@ -168,19 +174,17 @@ function amaf_resetQuickEdit() {
     am.Utils.RemoveChildNodes('proplist');
 
 };
-function amaf_loadTopicComplete(result) {
-    if (result[0].success == true) {
-        var t = result[0].result;
-        document.getElementById('aftopicedit-topicid').value = t.topicid;
-        document.getElementById('aftopicedit-subject').value = t.subject;
-        document.getElementById('aftopicedit-tags').value = t.tags;
-        document.getElementById('aftopicedit-priority').value = t.priority;
-        am.Utils.SetSelected('aftopicedit-status', t.status);
-        document.getElementById('aftopicedit-locked').checked = t.locked;
-        document.getElementById('aftopicedit-pinned').checked = t.pinned;
-        amaf_loadCatList(t.categories);
-        amaf_loadProperties(t.properties);
-    };
+function amaf_loadTopicComplete(data) {
+    var t = data[0];
+    document.getElementById('aftopicedit-topicid').value = t.TopicId;
+    document.getElementById('aftopicedit-subject').value = t.Content.Subject;
+    document.getElementById('aftopicedit-tags').value = t.Tags;
+    document.getElementById('aftopicedit-priority').value = t.Priority;
+    am.Utils.SetSelected('aftopicedit-status', t.StatusId);
+    document.getElementById('aftopicedit-locked').checked = t.IsLocked;
+    document.getElementById('aftopicedit-pinned').checked = t.IsPinned;
+    amaf_loadCatList(t.Categories);
+    amaf_loadProperties(t.Forum.Properties, t.TopicProperties);
 };
 function amaf_loadCatList(cats) {
     var iCount = cats.length;
@@ -200,105 +204,7 @@ function amaf_loadCatList(cats) {
         ul.appendChild(li);
     };
 };
-function amaf_loadProperties(props) {
-    var iCount = props.length;
-    var ul = document.getElementById('proplist');
-    am.Utils.RemoveChildNodes('proplist');
-    for (var i = 0; i < iCount; i++) {
-        var p = props[i];
-        var li = document.createElement('li');
-        li.setAttribute('id', p.propertyid);
-        var lbl = document.createElement('label');
-        lbl.setAttribute('for', 'prop-' + p.propertyid);
-        lbl.appendChild(document.createTextNode(p.propertyname));
-        li.appendChild(lbl);
-        switch (p.datatype) {
-            case 'text':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + p.propertyid);
-                txt.setAttribute('type', 'text');
-                txt.value = p.propertyvalue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            case 'yesno':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + p.propertyid);
-                txt.setAttribute('type', 'checkbox');
-                txt.value = p.propertyvalue;
-                txt.checked = p.propertyvalue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            default:
-                var sel = document.createElement('select');
-                sel.setAttribute('id', 'prop-' + p.propertyid);
-                li.appendChild(sel);
-                ul.appendChild(li);
-                am.Utils.FillSelect(p.listdata, sel);
-                am.Utils.SetSelected(sel, p.propertyvalue);
-
-        };
-
-
-    };
-};
-
-
-
-function amaf_quickEdit2(mid, fid, tid) {
-    amaf_resetQuickEdit();
-    am.UI.LoadDiv('aftopicedit');
-    var sf = $.ServicesFramework(mid);
-    var params = {
-        forumId: fid,
-        topicId: tid
-    };
-    $.ajax({
-        type: "POST",
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load',
-        beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
-        amaf_loadTopicComplete2(data);
-    }).fail(function (xhr, status) {
-        alert('error loading post');
-    });
-};
-function amaf_loadTopicComplete2(data) {
-    var t = data[0].Item1;
-    var f = data[0].Item2;
-    document.getElementById('aftopicedit-topicid').value = t.TopicId;
-    document.getElementById('aftopicedit-subject').value = t.Content.Subject;
-    document.getElementById('aftopicedit-tags').value = t.Tags;
-    document.getElementById('aftopicedit-priority').value = t.Priority;
-    am.Utils.SetSelected('aftopicedit-status', t.StatusId);
-    document.getElementById('aftopicedit-locked').checked = t.IsLocked;
-    document.getElementById('aftopicedit-pinned').checked = t.IsPinned;
-    //amaf_loadCatList2(t.Categories);
-    amaf_loadProperties2(f.Properties, t.TopicProperties);
-};
-function amaf_loadCatList2(cats) {
-    var iCount = cats.length;
-    var ul = document.getElementById('catlist');
-    am.Utils.RemoveChildNodes('catlist');
-    for (var i = 0; i < iCount; i++) {
-        var c = cats[i];
-        var li = document.createElement('li');
-        li.setAttribute('id', c.id);
-        var chk = document.createElement('input');
-        chk.setAttribute('id', 'cat-' + c.id);
-        chk.setAttribute('type', 'checkbox');
-        chk.value = c.id;
-        chk.checked = c.selected;
-        li.appendChild(chk);
-        li.appendChild(document.createTextNode(c.name));
-        ul.appendChild(li);
-    };
-};
-function amaf_loadProperties2(propdefs, props) {
+function amaf_loadProperties(propdefs, props) {
     var iCount = props.length;
     var ul = document.getElementById('proplist');
     am.Utils.RemoveChildNodes('proplist');
@@ -314,7 +220,7 @@ function amaf_loadProperties2(propdefs, props) {
             if (props[i].PropertyId === pd.PropertyId) {
                 pd.DefaultValue = props[i].DefaultValue;
             };
-        }
+        };
         switch (pd.DataType) {
             case 'text':
                 var txt = document.createElement('input');
@@ -340,25 +246,21 @@ function amaf_loadProperties2(propdefs, props) {
                 ul.appendChild(li);
                 am.Utils.FillSelect(p.listdata, sel);
                 am.Utils.SetSelected(sel, p.DefaultValue);
-
         };
-
-    }
-}
+    };
 };
 
 
-function amaf_saveTopic() {
-    var d = {};
-    d.action = 14;
-    d.topicid = document.getElementById('aftopicedit-topicid').value;
-    d.subject = document.getElementById('aftopicedit-subject').value;
-    d.tags = document.getElementById('aftopicedit-tags').value;
-    d.priority = document.getElementById('aftopicedit-priority').value;
+function amaf_saveTopic(mid, fid, tid) {
+    var t = {};
+    t.Topicid = document.getElementById('aftopicedit-topicid').value;
+    t.Subject = document.getElementById('aftopicedit-subject').value;
+    t.Tags = document.getElementById('aftopicedit-tags').value;
+    t.Priority = document.getElementById('aftopicedit-priority').value;
     var stat = document.getElementById('aftopicedit-status');
-    d.status = stat.options[stat.selectedIndex].value;
-    d.locked = document.getElementById('aftopicedit-locked').checked;
-    d.pinned = document.getElementById('aftopicedit-pinned').checked;
+    t.StatusId = stat.options[stat.selectedIndex].value;
+    t.IsLocked = document.getElementById('aftopicedit-locked').checked;
+    t.IsPinned = document.getElementById('aftopicedit-pinned').checked;
     var ul = document.getElementById('proplist');
     var props = ul.getElementsByTagName('li');
     for (var i = 0; i < props.length; i++) {
@@ -367,26 +269,44 @@ function amaf_saveTopic() {
         var el = document.getElementById(pname);
         if (el.tagName == 'INPUT') {
             if (el.type == 'text') {
-                d[pname] = el.value;
+                t.Properties[pname] = el.value;
             } else {
-                d[pname] = el.checked;
+                t.Properties[pname] = el.checked;
             };
         } else {
-            d[pname] = el.options[el.selectedIndex].value;
+            t.Properties[pname] = el.options[el.selectedIndex].value;
         };
 
     };
     var ul = document.getElementById('catlist');
     var cats = ul.getElementsByTagName('li');
-    d.categories = '';
+    t.Categories = '';
     for (var i = 0; i < cats.length; i++) {
         var li = cats[i];
         var chk = document.getElementById('cat-' + li.id);
         if (chk.checked) {
-            d.categories += chk.value + ';';
+            C.categories += chk.value + ';';
         };
     };
-    amaf.callback(d, amaf_saveTopicComplete);
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid,
+        topic: t
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Save',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_loadTopicComplete(data);
+    }).fail(function (xhr, status) {
+        alert('error loading post');
+    });
+    amaf.callback(t, amaf_saveTopicComplete);
 };
 function amaf_saveTopicComplete(result) {
     am.UI.CloseDiv('aftopicedit');

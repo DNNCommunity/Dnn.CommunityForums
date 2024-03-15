@@ -198,9 +198,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId)));
                         }
                     }
-                    Forums = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder);
-                    
-
                     string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
                     string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
 
@@ -225,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int tmpGroupCount = 0;
                     if (Forums != null)
                     {
-                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).Take(Globals.ForumCount))
+                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
                             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
                             if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
