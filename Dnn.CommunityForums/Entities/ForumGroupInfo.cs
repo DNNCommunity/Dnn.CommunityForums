@@ -290,6 +290,30 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.ReplyPostCount]); }
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int AttachMaxWidth
+        {
+            get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.AttachMaxWidth], 500); }
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int AttachMaxHeight
+        {
+            get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.AttachMaxHeight], 500); }
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int EditorStyle
+        {
+            get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.EditorStyle], 1); }
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public string EditorToolBar
+        {
+            get { return Utilities.SafeConvertString(GroupSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
+        }
         #endregion
     }
 }

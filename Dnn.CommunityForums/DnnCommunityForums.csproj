@@ -1105,6 +1105,10 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Compile Include="class\Attachment.cs" />
+    <Compile Include="class\Content.cs" />
+    <Compile Include="class\ForumController.cs" />
+    <Compile Include="class\ForumGroups.cs" />
+    <Compile Include="class\ForumInfo.cs" />
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
@@ -1121,24 +1125,18 @@
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Deprecated\ForumController.cs" />
-    <Compile Include="Deprecated\ForumGroupController.cs" />
-    <Compile Include="Deprecated\ForumGroupInfo.cs" />
-    <Compile Include="Deprecated\ForumInfo.cs" />
     <Compile Include="Entities\ContentInfo.cs" />
+    <Compile Include="Deprecated\API.cs" />
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
-    <Compile Include="Deprecated\PermissionInfo.cs" />
-    <Compile Include="Deprecated\LikeController.cs" />
-    <Compile Include="Deprecated\LikeInfo.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
+    <Compile Include="class\Permissions.cs" />
+    <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\FilterInfo.cs" />
-    <Compile Include="Deprecated\Cache.cs" />
-    <Compile Include="Deprecated\Utilities.cs" />
-    <Compile Include="Deprecated\Cache.cs" />
-    <Compile Include="Deprecated\Cache.cs" />
-    <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
@@ -1168,7 +1166,7 @@
     <Compile Include="controls\af_searchadvanced.ascx.designer.cs">
       <DependentUpon>af_searchadvanced.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Deprecated\ContentController.cs" />
+    <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="Entities\PermissionInfo.cs" />
@@ -1234,7 +1232,7 @@
     <Compile Include="components\Data\Common.cs" />
     <Compile Include="components\Data\DataConfig.cs" />
     <Compile Include="components\Data\ForumsDB.cs" />
-    <Compile Include="Deprecated\Groups.cs" />
+    <Compile Include="components\Data\Groups.cs" />
     <Compile Include="components\Data\Null.cs" />
     <Compile Include="components\Data\ProfilesDB.cs" />
     <Compile Include="class\Logger.cs" />
@@ -1243,9 +1241,9 @@
     <Compile Include="components\Data\Topics.cs" />
     <Compile Include="components\Extensions\ConfigUtils.cs" />
     <Compile Include="components\Extensions\ReWriter.cs" />
-    <Compile Include="Deprecated\FilterController.cs" />
-    <Compile Include="Deprecated\FilterInfo.cs" />
-    <Compile Include="Deprecated\ForumCollection.cs" />
+    <Compile Include="components\Forums\ForumCollection.cs" />
+    <Compile Include="components\Filters\FilterController.cs" />
+    <Compile Include="components\Filters\FilterInfo.cs" />
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
@@ -1286,7 +1284,7 @@
     <Compile Include="CustomControls\HTML\ForumContentView.cs" />
     <Compile Include="CustomControls\HTML\ForumDirectory.cs" />
     <Compile Include="CustomControls\HTML\Rating.cs" />
-    <Compile Include="Deprecated\SecurityGrid.cs" />
+    <Compile Include="CustomControls\HTML\SecurityGrid.cs" />
     <Compile Include="CustomControls\HTML\ToggleSubscribe.cs" />
     <Compile Include="CustomControls\HTML\TopicBrowser.cs" />
     <Compile Include="CustomControls\HTML\TopicViewer.cs" />
@@ -1425,7 +1423,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\Author.cs" />
-    <Compile Include="Deprecated\Content.cs" />
+    <Compile Include="DAL2\Content\Content.cs" />
     <Compile Include="class\Rewards.cs" />
     <Compile Include="class\Templates.cs" />
     <Compile Include="class\UsersOnline.cs" />
