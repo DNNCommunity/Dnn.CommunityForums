@@ -1,4 +1,4 @@
-﻿//
+//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -17,16 +17,47 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
+
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public enum SecureType : int
     {
-        ForumGroup,
-        Forum
-    }
+		View,
+		Read,
+		Create,
+		Reply,
+		Edit,
+		Delete,
+		Lock,
+		Pin,
+		Attach,
+		Poll,
+		Block,
+		Trust,
+		Subscribe,
+		Announce,
+		Tag,
+		Categorize,
+		Prioritize,
+		ModApprove,
+		ModMove,
+		ModSplit,
+		ModDelete,
+		ModUser,
+		ModEdit,
+		ModLock,
+		ModPin
+	}
+
     [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo.")]
     public partial class PermissionInfo : DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo{ }
 }
