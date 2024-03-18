@@ -21,6 +21,6 @@ using System;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums
 { 
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
+    class Like : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
 } 
