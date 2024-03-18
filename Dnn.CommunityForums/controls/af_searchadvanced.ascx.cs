@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if(_searchText == null)
                 {
-                    _searchText = Request.Params["q"] + string.Empty;
+                    _searchText = Request.Params[SearchParamKeys.Query] + string.Empty;
                     _searchText = Utilities.XSSFilter(_searchText);
                     _searchText = Utilities.StripHTMLTag(_searchText);
                     _searchText = Utilities.CheckSqlString(_searchText);
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_tags == null)
                 {
-                    _tags = Request.Params["tg"] + string.Empty;
+                    _tags = Request.Params[SearchParamKeys.Tag] + string.Empty;
                     _tags = Utilities.XSSFilter(_tags);
                     _tags = Utilities.StripHTMLTag(_tags);
                     _tags = Utilities.CheckSqlString(_tags);
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if(!_searchType.HasValue)
                 {
                     int parsedSearchType;
-                    _searchType = int.TryParse(Request.Params["k"], out parsedSearchType) ? parsedSearchType : 0;
+                    _searchType = int.TryParse(Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
                 }
 
                 return _searchType.Value;
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_authorUsername == null)
                 {
-                    _authorUsername = Request.Params["author"] + string.Empty;
+                    _authorUsername = Request.Params[SearchParamKeys.Author] + string.Empty;
                     _authorUsername = Utilities.XSSFilter(_authorUsername);
                     _authorUsername = Utilities.StripHTMLTag(_authorUsername);
                     _authorUsername = Utilities.CheckSqlString(_authorUsername);
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchColumns.HasValue)
                 {
                     int parsedSearchColumns;
-                    _searchColumns = int.TryParse(Request.Params["c"], out parsedSearchColumns) ? parsedSearchColumns : 0;
+                    _searchColumns = int.TryParse(Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
                 }
 
                 return _searchColumns.Value;
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_forums == null)
                 {
-                    _forums = Request.Params["f"] + string.Empty;
+                    _forums = Request.Params[SearchParamKeys.Forums] + string.Empty;
                     _forums = Utilities.XSSFilter(_forums);
                     _forums = Utilities.StripHTMLTag(_forums);
                     _forums = Utilities.CheckSqlString(_forums);
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchDays.HasValue)
                 {
                     int parsedValue;
-                    _searchDays = int.TryParse(Request.Params["ts"], out parsedValue) ? parsedValue : 0;
+                    _searchDays = int.TryParse(Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _searchDays.Value;
@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_resultType.HasValue)
                 {
                     int parsedValue;
-                    _resultType = int.TryParse(Request.Params["rt"], out parsedValue) ? parsedValue : 0;
+                    _resultType = int.TryParse(Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _resultType.Value;
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_sort.HasValue)
                 {
                     int parsedValue;
-                    _sort = int.TryParse(Request.Params["srt"], out parsedValue) ? parsedValue : 0;
+                    _sort = int.TryParse(Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _sort.Value;
@@ -198,9 +198,9 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
 
-                if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+                if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
                 {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                    SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
                 }
 
                 btnSearch.Click += btnSearch_Click;
@@ -334,38 +334,57 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            var @params = new List<string> { ParamKeys.ViewType + "=search" };
+            var @params = new List<string> { $"{ParamKeys.ViewType}={Views.Search}" };
 
-            if(!string.IsNullOrWhiteSpace(searchText))
-                @params.Add("q=" + System.Web.HttpUtility.UrlEncode(searchText));
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                @params.Add($"{SearchParamKeys.Query}={System.Web.HttpUtility.UrlEncode(searchText)}");
+            }
 
             if (!string.IsNullOrWhiteSpace(tags))
-                @params.Add("tg=" + System.Web.HttpUtility.UrlEncode(tags));
+            {
+                @params.Add($"{SearchParamKeys.Tag}={System.Web.HttpUtility.UrlEncode(tags)}");
+            }
 
-            if(searchType > 0)
-                @params.Add("k=" + searchType);
+            if (searchType > 0)
+            {
+                @params.Add($"{SearchParamKeys.SearchType}={searchType}");
+            }
 
-            if(searchColumns > 0)
-                @params.Add("c=" + searchColumns);
+            if (searchColumns > 0)
+            {
+                @params.Add($"{SearchParamKeys.Columns}={searchColumns}");
+            }
 
             if(searchDays > 0)
-                @params.Add("ts=" + searchDays);
+            {
+                @params.Add($"{SearchParamKeys.TimeSpan}={searchDays}");
+            }
 
             if(resultType > 0)
-                @params.Add("rt=" + resultType);
+            {
+                @params.Add($"{SearchParamKeys.ResultType}={resultType}");
+            }
 
             if(sort > 0)
-                @params.Add("srt=" + sort);
-
+            {
+                @params.Add($"{SearchParamKeys.Sort}={sort}");
+            }
 
             if(!string.IsNullOrWhiteSpace(authorUsername))
-                @params.Add("author=" + System.Web.HttpUtility.UrlEncode(authorUsername));
+            {
+                @params.Add($"{SearchParamKeys.Author}={System.Web.HttpUtility.UrlEncode(authorUsername)}");
+            }
 
-            if(!string.IsNullOrWhiteSpace(forums))
-                @params.Add("f=" + System.Web.HttpUtility.UrlEncode(forums));
+            if (!string.IsNullOrWhiteSpace(forums))
+            {
+                @params.Add($"{SearchParamKeys.Forums}={System.Web.HttpUtility.UrlEncode(forums)}");
+            }
 
             if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            {
+                @params.Add($"{Literals.GroupId}={SocialGroupId}");
+            }
 
             Response.Redirect(NavigateUrl(TabId, string.Empty, @params.ToArray()));
         }
