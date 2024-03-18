@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             MarkAnswer,/* no longer used */
             TagsAutoComplete,
 			DeletePost,/* no longer used */
-            LoadTopic, 
+            LoadTopic, /* no longer used */
             SaveTopic,
 			ForumList,/* no longer used */
             LikePost /*no longer used*/
@@ -106,9 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				case Actions.DeletePost:
                     throw new NotImplementedException();
 				case Actions.LoadTopic:
-					sOut = LoadTopic();
-					break;
-				case Actions.SaveTopic:
+                    throw new NotImplementedException();
+                case Actions.SaveTopic:
 					sOut = SaveTopic();
 					break;
 				case Actions.ForumList:
@@ -160,165 +159,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             return @out;
         }
         
-        private string LoadTopic()
-        {
-            int topicId = -1;
-            int forumId = -1;
-            if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-            {
-                topicId = int.Parse(Params["topicid"].ToString());
-            }
-            if (topicId > 0)
-            {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
-                if (f != null)
-                {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles))
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        sb.Append("{");
-                        sb.Append(Utilities.JSON.Pair("topicid", t.TopicId.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("subject", t.Content.Subject));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("authorid", t.Content.AuthorId.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("locked", t.IsLocked.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("pinned", t.IsPinned.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("priority", t.Priority.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("status", t.StatusId.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("forumid", forumId.ToString()));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("forumname", f.ForumName));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("tags", t.Tags));
-                        sb.Append(",");
-                        sb.Append(Utilities.JSON.Pair("categories", t.Categories));
-                        sb.Append(",");
-                        sb.Append("\"properties\":[");
-                        string sCats = string.Empty;
-                        if (f.Properties != null)
-                        {
-                            int i = 0;
-                            foreach (PropertiesInfo p in f.Properties)
-                            {
-                                sb.Append("{");
-                                sb.Append(Utilities.JSON.Pair("propertyid", p.PropertyId.ToString()));
-                                sb.Append(",");
-                                sb.Append(Utilities.JSON.Pair("datatype", p.DataType));
-                                sb.Append(",");
-                                sb.Append(Utilities.JSON.Pair("propertyname", p.Name));
-                                sb.Append(",");
-                                string pvalue = p.DefaultValue;
-                                foreach (PropertiesInfo tp in t.TopicProperties)
-                                {
-                                    if (tp.PropertyId == p.PropertyId)
-                                    {
-                                        pvalue = tp.DefaultValue;
-                                    }
-                                }
-
-                                sb.Append(Utilities.JSON.Pair("propertyvalue", pvalue));
-                                if (p.DataType.Contains("list"))
-                                {
-                                    sb.Append(",\"listdata\":[");
-                                    if (p.DataType.Contains("list|categories"))
-                                    {
-                                        using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, f.ModuleId, true, 0, 200, "ASC", "TagName", forumId, f.ForumGroupId))
-                                        {
-                                            dr.NextResult();
-                                            while (dr.Read())
-                                            {
-                                                sCats += "{";
-                                                sCats += Utilities.JSON.Pair("id", dr["TagId"].ToString());
-                                                sCats += ",";
-                                                sCats += Utilities.JSON.Pair("name", dr["TagName"].ToString());
-                                                sCats += ",";
-                                                sCats += Utilities.JSON.Pair("selected", IsSelected(dr["TagName"].ToString(), t.Categories).ToString());
-                                                sCats += "},";
-                                            }
-                                            dr.Close();
-                                        }
-                                        if (!(string.IsNullOrEmpty(sCats)))
-                                        {
-                                            sCats = sCats.Substring(0, sCats.Length - 1);
-                                        }
-                                        sb.Append(sCats);
-                                    }
-                                    else
-                                    {
-                                        DotNetNuke.Common.Lists.ListController lists = new DotNetNuke.Common.Lists.ListController();
-                                        string lName = p.DataType.Substring(p.DataType.IndexOf("|") + 1);
-                                        DotNetNuke.Common.Lists.ListEntryInfoCollection lc = lists.GetListEntryInfoCollection(lName, string.Empty);
-                                        int il = 0;
-                                        foreach (DotNetNuke.Common.Lists.ListEntryInfo l in lc)
-                                        {
-                                            sb.Append("{");
-                                            sb.Append(Utilities.JSON.Pair("itemId", l.Value));
-                                            sb.Append(",");
-                                            sb.Append(Utilities.JSON.Pair("itemName", l.Text));
-                                            sb.Append("}");
-                                            il += 1;
-                                            if (il < lc.Count)
-                                            {
-                                                sb.Append(",");
-                                            }
-                                        }
-                                    }
-                                    sb.Append("]");
-                                }
-                                sb.Append("}");
-                                i += 1;
-                                if (i < f.Properties.Count)
-                                {
-                                    sb.Append(",");
-                                }
-
-                            }
-                        }
-
-
-
-
-                        sb.Append("],\"categories\":[");
-                        sCats = string.Empty;
-                        using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, f.ModuleId, true, 0, 200, "ASC", "TagName", forumId, f.ForumGroupId))
-                        {
-                            dr.NextResult();
-                            while (dr.Read())
-                            {
-                                sCats += "{";
-                                sCats += Utilities.JSON.Pair("id", dr["TagId"].ToString());
-                                sCats += ",";
-                                sCats += Utilities.JSON.Pair("name", dr["TagName"].ToString());
-                                sCats += ",";
-                                sCats += Utilities.JSON.Pair("selected", IsSelected(dr["TagName"].ToString(), t.Categories).ToString());
-                                sCats += "},";
-                            }
-                            dr.Close();
-                        }
-                        if (!(string.IsNullOrEmpty(sCats)))
-                        {
-                            sCats = sCats.Substring(0, sCats.Length - 1);
-                        }
-                        sb.Append(sCats);
-                        sb.Append("]");
-                        sb.Append("}");
-                        return BuildOutput(sb.ToString(), OutputCodes.Success, true, true);
-                    }
-                }
-
-            }
-            return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-        }
         private string SaveTopic()
 		{
 			int topicId = -1;

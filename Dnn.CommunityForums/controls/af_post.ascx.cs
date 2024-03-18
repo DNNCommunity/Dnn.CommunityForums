@@ -384,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctlForm.Pinned = ti.IsPinned;
                 ctlForm.TopicIcon = ti.TopicIcon;
                 ctlForm.Tags = ti.Tags;
-                ctlForm.Categories = ti.Categories;
+                ctlForm.Categories = ti.CategoriesAsString;
                 ctlForm.IsApproved = ti.IsApproved;
                 ctlForm.StatusId = ti.StatusId;
                 ctlForm.TopicPriority = ti.Priority;

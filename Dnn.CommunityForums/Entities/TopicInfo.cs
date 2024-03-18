@@ -24,6 +24,8 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.UI.UserControls;
 using System.Runtime.Remoting.Messaging;
+using System.Linq;
+using DotNetNuke.Collections;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -43,7 +45,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Author _Author;
         private int forumId;
         private string _tags = string.Empty;
-        private string _categories = string.Empty;
+        public class Category
+        {
+            public int id;
+            public string name;
+            public bool selected;
+
+            public Category(int id, string name, bool selected)
+            {
+                this.id = id;
+                this.name = name;
+                this.selected = selected;
+            }
+        }
+        private IEnumerable<Category> _categories;
 
         private int _forumId;
         public int TopicId { get; set; }
@@ -111,8 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 
                 set => _contentInfo = value;
             }
-            [IgnoreColumn()]
-            public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
             get
             {
@@ -133,7 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => _forumInfo = value;
         }
         [IgnoreColumn()]
-            public DotNetNuke.Modules.ActiveForums.Author Author
+        public DotNetNuke.Modules.ActiveForums.Author Author
         {
             get
             {
@@ -173,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (string.IsNullOrEmpty(_tags))
                 {
-                    _tags = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId), "|");
+                    _tags = string.Join(",",new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId).Select(t => t.Tag.TagName));
                     if (string.IsNullOrEmpty(_tags))
                     {
                         _tags = string.Empty;
@@ -183,20 +198,34 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
         [IgnoreColumn()]
-        public string Categories 
-        { 
+        public IEnumerable<Category> Categories
+        {
             get
             {
-                if (string.IsNullOrEmpty(_categories))
+                if (_categories == null)
                 {
-                    _categories = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId), "|");
-                    if (string.IsNullOrEmpty(_categories))
-                    {
-                        _categories = string.Empty;
-                    }
+                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); });
+                    var topicCategories = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
+                    topicCategories.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
+
                 }
                 return _categories;
-            } 
+            }
+        }
+        [IgnoreColumn()]
+        public string CategoriesAsString
+        {
+            get
+            {
+                if (_categories == null)
+                {
+                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); });
+                    var topicCategories = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
+                    topicCategories.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
+
+                }
+                return string.Join("|",Categories.Select(c => c.name));
+            }
         }
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
