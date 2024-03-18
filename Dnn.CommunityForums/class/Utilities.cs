@@ -42,6 +42,21 @@ namespace DotNetNuke.Modules.ActiveForums
     public abstract partial class Utilities
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string ImportFilter(int portalID, int moduleID)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
+        }
 
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {

@@ -233,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         var db = new Data.Common();
                         fi.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
                         permissionsId = fi.PermissionsId;
-                        Permissions.CreateDefaultSets(portalId, permissionsId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
                     }
                 }
                 else
