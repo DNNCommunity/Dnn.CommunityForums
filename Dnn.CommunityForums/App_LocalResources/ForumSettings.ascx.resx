@@ -381,7 +381,7 @@
   <data name="SecGrid:view.Text" xml:space="preserve">
     <value>View</value>
   </data>
-	<data name="String1" xml:space="preserve">
+  <data name="String1" xml:space="preserve">
     <value />
   </data>
   <data name="UserPermissions.Text" xml:space="preserve">
@@ -483,10 +483,13 @@
   <data name="FullTextNotInstalled.Text" xml:space="preserve">
     <value>Full text search is not installed on the SQL Server.</value>
   </data>
-	<data name="CacheTemplates.Help" xml:space="preserve">
+  <data name="CacheTemplates.Help" xml:space="preserve">
     <value>Should normally be enabled; disable if you are editing templates and want to see immediate results.</value>
   </data>
-	<data name="CacheTemplates.Text" xml:space="preserve">
+  <data name="CacheTemplates.Text" xml:space="preserve">
     <value>Enable Template Caching</value>
+  </data>
+  <data name="ApplicationRestart.Text" xml:space="preserve">
+    <value>Restarting Application after module settings changed</value>
   </data>
 </root>
