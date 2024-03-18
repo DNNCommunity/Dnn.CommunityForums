@@ -288,36 +288,90 @@ namespace DotNetNuke.Modules.ActiveForums
         */
     }
 
+	public class SearchParamKeys
+    {
+        public const string Tag = "tg";
+        public const string Query = "q";
+        public const string SearchType = "k";
+        public const string User = "uid";
+        public const string Author = "author";
+        public const string Search = "sid";
+        public const string Sort = "srt";
+        public const string ResultType = "rt";
+        public const string TimeSpan = "ts";
+        public const string Columns = "c";
+        public const string Forums = "f";
+    }
     public class ParamKeys
-	{
+    {
 		public const string ForumId = "aff";
-		public const string GroupId = "afg";
-        public const string GroupIdName = "GroupId";
-		public const string TopicId = "aft";
+        public const string GroupId = "afg";
+        public const string TopicId = "aft";
 		public const string ReplyId = "afr";
 		public const string ViewType = "afv";
 		public const string QuoteId = "afq";
 		public const string PageId = "afpg";
 		public const string PostId = "postid";
-		public const string Sort = "afs";
-		public const string PageJumpId = "afpgj";
+        public const string Sort = "afs";
+        public const string PageJumpId = "afpgj";
 		public const string ContentJumpId = "afc";
 		public const string ConfirmActionId = "afca";
-		public const string Tags = "aftg";
+        public const string Tags = "aftg";
         public const string FirstNewPost = "afnp";
         public const string AuthorId = "authorid";
+        public const string GridType = "afgt";
+        public const string Category = "act";
+        public const string action = "action";
+        public const string TimeSpan = "ts";
     }
-
-	public class Views
+    public class Literals
+    {
+        public const string page = "page";
+        public const string view = "view";
+        public const string ForumId = "ForumId";
+        public const string GroupId = "GroupId";
+        public const string TopicId = "TopicId";
+        public const string ReplyId = "ReplyId";
+        public const string UserId = "UserId";
+        public const string PostId = "PostId";
+        public const string PageId = "PageId";
+    }
+	public class SortOptions
 	{
-		public const string Topics = "topicsview";
-		public const string Topic = "topic";
-		public const string ForumView = "forumview";
-		public const string TopicNew = "topicnew";
-		public const string TopicEdit = "topicedit";
+		public const string Descending = "DESC";
+		public const string Ascending = "ASC";
 	}
 
-	public class CacheKeys
+    public class Views
+    {
+        public const string Topics = "topicsview";
+        public const string Topic = "topic";
+        public const string ForumView = "forumview";
+        public const string TopicNew = "topicnew";
+        public const string TopicEdit = "topicedit";
+        public const string Grid = "grid";
+        public const string Tags = "tags";
+        public const string Post = "post";
+        public const string Search = "search";
+    }
+    internal static class GridTypes
+    {
+        public const string NotRead = "notread";
+        public const string Unanswered = "unanswered";
+        public const string ActiveTopics = "activetopics";
+        public const string MyTopics = "mytopics";
+        public const string MySettings = "afprofile";
+        public const string MostLiked = "mostlikes";
+        public const string MostReplies = "mostreplies";
+    }
+    public class PostActions
+    {
+        public const string TopicEdit = "te";
+        public const string ReplyEdit = "re";
+        public const string Reply = "reply";
+    }
+
+    public class CacheKeys
     {
         public const string CachePrefix = "AF-";
         public const string CacheModulePrefix = "AF-{0}-";

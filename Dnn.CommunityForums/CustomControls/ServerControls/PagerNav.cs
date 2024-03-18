@@ -112,9 +112,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var qs = string.Empty;
-            if (HttpContext.Current.Request.QueryString["ts"] != null)
+            if (HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan] != null)
             {
-                qs = "?ts=" + HttpContext.Current.Request.QueryString["ts"];
+                qs = $"?{ParamKeys.TimeSpan}={HttpContext.Current.Request.QueryString[ParamKeys.TimeSpan]}";
             }
 
             if (PageCount > 1)
