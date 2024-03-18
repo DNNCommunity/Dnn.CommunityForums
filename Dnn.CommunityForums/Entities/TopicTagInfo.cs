@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topicInfo;
         public int TopicId { get; set; }
         public int TagId { get; set; }
+        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TagInfo Tag
         {
             get
@@ -47,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return _tagInfo;
             }
         }
+        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
             get

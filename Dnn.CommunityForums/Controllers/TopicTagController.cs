@@ -28,11 +28,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
         {
-            return Repo.Find("WHERE TopicId = @0 AND isCategory = 0", topicId);
+            return Repo.Find("WHERE TopicId = @0", topicId).Where(t => !t.Tag.IsCategory);
         }
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
         {
-            return Repo.Find("WHERE TagId = @0 AND isCategory = 0", tagId);
+            return Repo.Find("WHERE TagId = @0", tagId).Where(t => !t.Tag.IsCategory);
         }
     }
 }

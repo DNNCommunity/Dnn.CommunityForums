@@ -163,10 +163,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         { 
             get
             {
-                if (_categories == null)
+                if (string.IsNullOrEmpty(_categories))
                 {
                     _categories = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId), "|");
-                    if (_categories == null)
+                    if (string.IsNullOrEmpty(_categories))
                     {
                         _categories = string.Empty;
                     }
