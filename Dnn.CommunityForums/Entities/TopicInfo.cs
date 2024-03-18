@@ -41,6 +41,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
+        private int forumId;
+        private string _tags = string.Empty;
+        private string _categories = string.Empty;
+
         private int _forumId;
         public int TopicId { get; set; }
         [IgnoreColumn()]
@@ -102,7 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         _contentInfo = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
                     }
                 }
-                return _contentInfo; }
+                return _contentInfo; 
+            }
                 
                 set => _contentInfo = value;
             }
@@ -162,10 +167,37 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => _Author = value;
         }
         [IgnoreColumn()]
-        public string Tags { get; set; }
+        public string Tags
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_tags))
+                {
+                    _tags = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId), "|");
+                    if (string.IsNullOrEmpty(_tags))
+                    {
+                        _tags = string.Empty;
+                    }
+                }
+                return _tags;
+            }
+        }
         [IgnoreColumn()]
-        public string Categories { get; set; } = string.Empty;
-       
+        public string Categories 
+        { 
+            get
+            {
+                if (string.IsNullOrEmpty(_categories))
+                {
+                    _categories = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId), "|");
+                    if (string.IsNullOrEmpty(_categories))
+                    {
+                        _categories = string.Empty;
+                    }
+                }
+                return _categories;
+            } 
+        }
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
         {

@@ -319,6 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         /// <summary>
         /// Minimum posts required to reply to a topic in this forum if the user is not trusted
         /// </summary>
+        [IgnoreColumn()]
         public int ReplyPostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyPostCount]);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
