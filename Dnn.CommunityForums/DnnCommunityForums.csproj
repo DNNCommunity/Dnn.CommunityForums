@@ -1117,14 +1117,18 @@
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\RepositoryControllerBase.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
+    <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TopicCategoryController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\TopicRatingController.cs" />
+    <Compile Include="Controllers\TopicTagController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Deprecated\ForumController.cs" />
     <Compile Include="Deprecated\ForumGroupController.cs" />
     <Compile Include="Deprecated\ForumGroupInfo.cs" />
     <Compile Include="Deprecated\ForumInfo.cs" />
+    <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="Entities\ContentInfo.cs" />
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
@@ -1174,8 +1178,11 @@
     <Compile Include="Deprecated\ContentController.cs" />
     <Compile Include="Entities\PermissionInfo.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
+    <Compile Include="Entities\TagInfo.cs" />
+    <Compile Include="Entities\TopicCategoryInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
     <Compile Include="Entities\TopicRatingInfo.cs" />
+    <Compile Include="Entities\TopicTagInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
@@ -1777,7 +1784,6 @@
   <ItemGroup>
     <Folder Include="class\API\" />
     <Folder Include="components\Replies\" />
-    <Folder Include="components\Security\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
