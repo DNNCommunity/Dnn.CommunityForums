@@ -18,8 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using DotNetNuke.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -64,6 +66,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Repo.Insert(like);
             }
             return Count(contentId);
+        }
+    }
+}
+namespace DotNetNuke.Modules.ActiveForums
+{
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
+    class LikesController : DotNetNuke.Modules.ActiveForums.Controllers.LikeController
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.GetForPost()")]
+        public new List<DotNetNuke.Modules.ActiveForums.Likes> GetForPost(int postId)
+        {
+            IDataContext ctx = DataContext.Instance();
+            IRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>();
+            List<DotNetNuke.Modules.ActiveForums.Likes> likes = new List<DotNetNuke.Modules.ActiveForums.Likes>();
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like in base.GetForPost(postId))
+            {
+                likes.Add((DotNetNuke.Modules.ActiveForums.Likes)like);
+            }
+            return likes;
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Like()")]
+        public new void Like(int contentId, int userId)
+        {
+            base.Like(contentId, userId);
         }
     }
 }
