@@ -28,6 +28,7 @@ using System.Xml;
 using System.Web;
 using DotNetNuke.Entities.Urls;
 using System.Linq;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -312,7 +313,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Clear out the cache
                 DataCache.ClearSettingsCache(ModuleId);
 
-			}
+				var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
+				log.LogProperties.Add(new LogDetailInfo("ModuleId", ModuleId.ToString()));
+                log.AddProperty("Message", this.LocalizeString("ApplicationRestart"));
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+				DotNetNuke.Common.Utilities.Config.Touch();
+
+            }
 			catch (Exception exc) //Module failed to load
 			{
 				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);

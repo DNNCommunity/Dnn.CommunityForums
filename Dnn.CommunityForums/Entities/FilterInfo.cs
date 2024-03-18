@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [TableName("activeforums_Filters")]
         [PrimaryKey("FilterId", AutoIncrement = true)]
         [Scope("ModuleId")]
-        [Cacheable("activeforums_Filters", CacheItemPriority.Normal)]
+        [Cacheable("activeforums_Filters", CacheItemPriority.Low)]
         public int FilterId { get; set; }
         public string Find { get; set; }
         public string Replace { get; set; }
