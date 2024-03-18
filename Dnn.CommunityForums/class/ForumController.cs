@@ -1,4 +1,4 @@
-﻿//
+//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -88,37 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
         {
-            DataSet ds;
-            DataTable dt;
-            var cachekey = string.Format(CacheKeys.ForumViewForUser, moduleId, currentUserId, forumIds);
-
-            var dataSetXML = DataCache.ContentCacheRetrieve(moduleId, cachekey) as string;
-
-            // cached datatable is held as an XML string (because data vanishes if just caching the DT in this instance)
-            if (dataSetXML != null)
-            {
-                var sr = new StringReader(dataSetXML);
-                ds = new DataSet();
-                ds.ReadXml(sr);
-                dt = ds.Tables[0];
-            }
-            else
-            {
-                ds = DataProvider.Instance().UI_ForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds);
-                dt = ds.Tables[0];
-
-                var sw = new StringWriter();
-
-                dt.WriteXml(sw);
-                var result = sw.ToString();
-
-                sw.Close();
-                sw.Dispose();
-
-                DataCache.ContentCacheStore(moduleId, cachekey, result);
-            }
-
-            return dt;
+            return DataProvider.Instance().UI_ForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds).Tables[0];
         }
     }
 }
