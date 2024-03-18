@@ -18,17 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
-    public class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }  
-}
-namespace DotNetNuke.Modules.ActiveForums.DAL2
-{
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
-    partial class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }
-
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo")]
+    public class Forum : DotNetNuke.Modules.ActiveForums.Entities.ForumInfo { }
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumInfo")]
+    public class ForumInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumInfo { }
 }

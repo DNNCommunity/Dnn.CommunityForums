@@ -318,10 +318,43 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int CreatePostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.CreatePostCount]);
 
         /// <summary>
-        ///  Minimum posts required to reply to a topic in this forum if the user is not trusted
+        /// Minimum posts required to reply to a topic in this forum if the user is not trusted
         /// </summary>
-        [IgnoreColumn()]
         public int ReplyPostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyPostCount]);
+
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int LastPostLastPostID { get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int LastPostParentPostID { get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int CustomFieldType { get; set; }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int AttachMaxHeight
+        {
+            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AttachMaxHeight], 500); }
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int AttachMaxWidth
+        {
+            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AttachMaxWidth], 500); }
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public int EditorStyle
+        {
+            get { return Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.EditorStyle], 1); }
+        }
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]
+        [IgnoreColumn()]
+        public string EditorToolBar
+        {
+            get { return Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorToolbar], "bold,italic,underline"); }
+        }
         #endregion
     }
 }
