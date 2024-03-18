@@ -1,4 +1,4 @@
-﻿//
+//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -17,30 +17,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
+
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
+using System.Data;
+using DotNetNuke.Common.Utilities;
 
-namespace DotNetNuke.Modules.ActiveForums.Controllers
+namespace DotNetNuke.Modules.ActiveForums
 {
-    class TopicController
-    {
-        public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
-        {
-            repo.Update(topicInfo);
-        }
-        internal void Insert(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo)
-        {
-            repo.Insert(topicInfo);
-        }
-    }
+
+	[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo.")]
+	public partial class ForumGroupInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { }
 }
