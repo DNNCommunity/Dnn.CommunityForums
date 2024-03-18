@@ -43,21 +43,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return GetListOfModerators(portalId, -1, forumId);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
-        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)")]
         public static void BindEnum(System.Web.UI.WebControls.DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue)

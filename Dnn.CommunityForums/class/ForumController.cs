@@ -1,4 +1,4 @@
-﻿//
+//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public DataTable GetForumView(int portalId, int moduleId, int currentUserId, bool isSuperUser, string forumIds)
-        { 
+        {
             return DataProvider.Instance().UI_ForumView(portalId, moduleId, currentUserId, isSuperUser, forumIds).Tables[0];
         }
     }
