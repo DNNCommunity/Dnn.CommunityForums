@@ -52,8 +52,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             TagsAutoComplete,
 			DeletePost,/* no longer used */
             LoadTopic, /* no longer used */
-            SaveTopic,
-			ForumList,/* no longer used */
+            SaveTopic,/* no longer used */
+            ForumList,/* no longer used */
             LikePost /*no longer used*/
 
         }
@@ -108,9 +108,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				case Actions.LoadTopic:
                     throw new NotImplementedException();
                 case Actions.SaveTopic:
-					sOut = SaveTopic();
-					break;
-				case Actions.ForumList:
+                    throw new NotImplementedException();
+                case Actions.ForumList:
                     throw new NotImplementedException();
                 case Actions.LikePost:
                     throw new NotImplementedException();
@@ -157,128 +156,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
             @out += "]";
             return @out;
-        }
-        
-        private string SaveTopic()
-		{
-			int topicId = -1;
-			int forumId = -1;
-			if (Params.ContainsKey("topicid") && SimulateIsNumeric.IsNumeric(Params["topicid"]))
-			{
-				topicId = int.Parse(Params["topicid"].ToString());
-			}
-			if (topicId > 0)
-			{
-				TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles))
-                {
-                    string subject = Params["subject"].ToString();
-                    subject = Utilities.XSSFilter(subject, true);
-                    t.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ForumInfo.ModuleId, TopicId: topicId, subject: subject, forumInfo: ForumInfo);
-
-                    t.Content.Subject = subject;
-                    t.IsPinned = bool.Parse(Params["pinned"].ToString());
-                    t.IsLocked = bool.Parse(Params["locked"].ToString());
-                    t.Priority = int.Parse(Params["priority"].ToString());
-                    t.StatusId = int.Parse(Params["status"].ToString());
-                    if (ForumInfo.Properties != null)
-                    {
-                        StringBuilder tData = new StringBuilder();
-                        tData.Append("<topicdata>");
-                        tData.Append("<properties>");
-                        foreach (PropertiesInfo p in ForumInfo.Properties)
-                        {
-                            string pkey = "prop-" + p.PropertyId.ToString();
-
-                            tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                            tData.Append("<name><![CDATA[");
-                            tData.Append(p.Name);
-                            tData.Append("]]></name>");
-                            if (Params[pkey] != null)
-                            {
-                                tData.Append("<value><![CDATA[");
-                                tData.Append(Utilities.XSSFilter(Params[pkey].ToString()));
-                                tData.Append("]]></value>");
-                            }
-                            else
-                            {
-                                tData.Append("<value></value>");
-                            }
-                            tData.Append("</property>");
-                        }
-                        tData.Append("</properties>");
-                        tData.Append("</topicdata>");
-                        t.TopicData = tData.ToString();
-                    }
-                }
-                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(t);
-                Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
-                if (Params["tags"] != null)
-                {
-                    DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumInfo.ModuleId, topicId);
-                    string tagForm = string.Empty;
-                    if (Params["tags"] != null)
-                    {
-                        tagForm = Params["tags"].ToString();
-                    }
-                    if (!(tagForm == string.Empty))
-                    {
-                        string[] Tags = tagForm.Split(',');
-                        foreach (string tag in Tags)
-                        {
-                            string sTag = Utilities.CleanString(PortalId, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, ForumInfo.ModuleId, string.Empty, false);
-                            DataProvider.Instance().Tags_Save(PortalId, ForumInfo.ModuleId, -1, sTag, 0, 1, 0, topicId, false, -1, -1);
-                        }
-                    }
-                }
-
-                if (Params["categories"] != null)
-                {
-                    string[] cats = Params["categories"].ToString().Split(';');
-                    DataProvider.Instance().Tags_DeleteTopicToCategory(PortalId, ForumInfo.ModuleId, -1, topicId);
-                    foreach (string c in cats)
-                    {
-                        int cid = -1;
-                        if (!(string.IsNullOrEmpty(c)) && SimulateIsNumeric.IsNumeric(c))
-                        {
-                            cid = Convert.ToInt32(c);
-                            if (cid > 0)
-                            {
-                                DataProvider.Instance().Tags_AddTopicToCategory(PortalId, ForumInfo.ModuleId, cid, topicId);
-                            }
-                        }
-                    }
-                }
-            }
-
-
-			return BuildOutput(string.Empty, OutputCodes.UnsupportedRequest, false);
-		}
-        private bool IsSelected(string TagName, string selectedValues)
-        {
-            if (string.IsNullOrEmpty(selectedValues))
-            {
-                return false;
-            }
-            else
-            {
-                foreach (string s in selectedValues.Split('|'))
-                {
-                    if (!(string.IsNullOrEmpty(s)))
-                    {
-                        if (s.ToLowerInvariant().Trim() == TagName.ToLowerInvariant().Trim())
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
     }
 }

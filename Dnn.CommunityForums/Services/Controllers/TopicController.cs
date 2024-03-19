@@ -23,6 +23,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
+using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
@@ -32,6 +34,7 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Web.Api;
+using DotNetNuke.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
@@ -40,10 +43,15 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class TopicController : ControllerBase<TopicController>
     {
-        public struct TopicDto
+        public struct TopicDto1
         {
             public int ForumId { get; set; }
             public int TopicId { get; set; }
+        }
+        public struct TopicDto2
+        {
+            public int ForumId { get; set; }
+            public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; set; }
         }
 
         /// <summary>
@@ -55,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Subscribe)]
-        public HttpResponseMessage Subscribe(TopicDto dto)
+        public HttpResponseMessage Subscribe(TopicDto1 dto)
         {
             if (dto.TopicId > 0 && dto.ForumId > 0)
             {
@@ -121,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModPin)]
         [ForumsAuthorize(SecureActions.Pin)]
-        public HttpResponseMessage Pin(TopicDto dto)
+        public HttpResponseMessage Pin(TopicDto1 dto)
         {
             int topicId = dto.TopicId;
             if (topicId > 0)
@@ -149,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModLock)]
         [ForumsAuthorize(SecureActions.Lock)]
-        public HttpResponseMessage Lock(TopicDto dto)
+        public HttpResponseMessage Lock(TopicDto1 dto)
         {
             int topicId = dto.TopicId;
             if (topicId > 0)
@@ -175,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModMove)]
-        public HttpResponseMessage Move(TopicDto dto)
+        public HttpResponseMessage Move(TopicDto1 dto)
         {
             int topicId = dto.TopicId;
             int forumId = dto.ForumId;
@@ -234,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Delete)]
         [ForumsAuthorize(SecureActions.ModDelete)]
-        public HttpResponseMessage Delete(TopicDto dto)
+        public HttpResponseMessage Delete(TopicDto1 dto)
         {
             int topicId = dto.TopicId;
             int forumId = dto.ForumId;
@@ -262,12 +270,107 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Edit)]
         [ForumsAuthorize(SecureActions.ModEdit)]
-        public HttpResponseMessage Rate(TopicDto dto, int rating)
+        public HttpResponseMessage Rate(TopicDto1 dto, int rating)
         {
             if (dto.TopicId > 0 && (rating >= 1 && rating <= 5))
-            {   
+            {
                 return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(UserInfo.UserID, dto.TopicId, rating, HttpContext.Current.Request.UserHostAddress ?? string.Empty));
             }
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+        /// <summary>
+        /// Updates an existing topic
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.Entities.TopicInfo"></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Update</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Edit)]
+        [ForumsAuthorize(SecureActions.ModEdit)]
+        public HttpResponseMessage Update(TopicDto2 dto)
+        {
+            int topicId = dto.Topic.TopicId;
+            int forumId = dto.ForumId;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(ActiveModule.PortalID, ForumModuleId, forumId, false);
+
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
+            if (topicId > 0 && forumId > 0)
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                if (t != null)
+                {
+                    string subject = Utilities.XSSFilter(dto.Topic.Content.Subject, true);
+                    t.Content.Subject = subject;
+                    t.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: ActiveModule.PortalID, ModuleId: ForumModuleId, TopicId: topicId, subject: subject, forumInfo: ForumInfo);
+                    t.IsPinned = dto.Topic.IsPinned;
+                    t.IsLocked = dto.Topic.IsLocked;
+                    t.Priority = dto.Topic.Priority;
+                    t.StatusId = dto.Topic.StatusId;
+                    if (ForumInfo.Properties != null)
+                    {
+                        StringBuilder tData = new StringBuilder();
+                        tData.Append("<topicdata>");
+                        tData.Append("<properties>");
+                        foreach (PropertiesInfo p in ForumInfo.Properties)
+                        {
+                            tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
+                            tData.Append("<name><![CDATA[");
+                            tData.Append(p.Name);
+                            tData.Append("]]></name>");
+                            if (!string.IsNullOrEmpty(dto.Topic.TopicProperties?.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue))
+                            {
+                                tData.Append("<value><![CDATA[");
+                                tData.Append(Utilities.XSSFilter(dto.Topic.TopicProperties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue));
+                                tData.Append("]]></value>");
+                            }
+                            else
+                            {
+                                tData.Append("<value></value>");
+                            }
+                            tData.Append("</property>");
+                        }
+                        tData.Append("</properties>");
+                        tData.Append("</topicdata>");
+                        t.TopicData = tData.ToString();
+                    }
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(t);
+                    Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+                    if (!string.IsNullOrEmpty(dto.Topic.Tags))
+                    {
+                        DataProvider.Instance().Tags_DeleteByTopicId(ActiveModule.PortalID, ForumModuleId, topicId);
+                        string tagForm = dto.Topic.Tags;
+                        string[] tags = tagForm.Split(',');
+                        foreach (string tag in tags)
+                        {
+                            string sTag = Utilities.CleanString(ActiveModule.PortalID, tag.Trim(), false, EditorTypes.TEXTBOX, false, false, ForumModuleId, string.Empty, false);
+                            DataProvider.Instance().Tags_Save(ActiveModule.PortalID, ForumModuleId, -1, sTag, 0, 1, 0, topicId, false, -1, -1);
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(dto.Topic.CategoriesAsString))
+                    {
+                        string[] cats = dto.Topic.CategoriesAsString.Split(';');
+                        DataProvider.Instance().Tags_DeleteTopicToCategory(ActiveModule.PortalID, ForumModuleId, -1, topicId);
+                        foreach (string c in cats)
+                        {
+                            int cid = -1;
+                            if (!(string.IsNullOrEmpty(c)) && SimulateIsNumeric.IsNumeric(c))
+                            {
+                                cid = Convert.ToInt32(c);
+                                if (cid > 0)
+                                {
+                                    DataProvider.Instance().Tags_AddTopicToCategory(ActiveModule.PortalID, ForumModuleId, cid, topicId);
+                                }
+                            }
+                        }
+                    }
+                    return Request.CreateResponse(HttpStatusCode.OK, t);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
+                }
+            }            
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }
