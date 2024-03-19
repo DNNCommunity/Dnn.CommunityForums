@@ -163,6 +163,8 @@ function amaf_quickEdit(mid, fid, tid) {
     });
 };
 function amaf_resetQuickEdit() {
+    document.getElementById('aftopicedit-moduleid').value = '';
+    document.getElementById('aftopicedit-forumid').value = '';
     document.getElementById('aftopicedit-topicid').value = '';
     document.getElementById('aftopicedit-subject').value = '';
     document.getElementById('aftopicedit-tags').value = '';
@@ -177,6 +179,8 @@ function amaf_resetQuickEdit() {
 function amaf_loadTopicComplete(data) {
     var t = data[0];
     document.getElementById('aftopicedit-topicid').value = t.TopicId;
+    document.getElementById('aftopicedit-forumid').value = t.ForumId;
+    document.getElementById('aftopicedit-moduleid').value = t.ModuleId;
     document.getElementById('aftopicedit-subject').value = t.Content.Subject;
     document.getElementById('aftopicedit-tags').value = t.Tags;
     document.getElementById('aftopicedit-priority').value = t.Priority;
@@ -251,10 +255,13 @@ function amaf_loadProperties(propdefs, props) {
 };
 
 
-function amaf_saveTopic(mid, fid, tid) {
+function amaf_saveTopic() {
     var t = {};
+    var mid = document.getElementById('aftopicedit-moduleid').value;
+    var fid = document.getElementById('aftopicedit-forumid').value;
     t.Topicid = document.getElementById('aftopicedit-topicid').value;
-    t.Subject = document.getElementById('aftopicedit-subject').value;
+    t.Content = {};
+    t.Content.Subject = document.getElementById('aftopicedit-subject').value;
     t.Tags = document.getElementById('aftopicedit-tags').value;
     t.Priority = document.getElementById('aftopicedit-priority').value;
     var stat = document.getElementById('aftopicedit-status');
@@ -263,35 +270,37 @@ function amaf_saveTopic(mid, fid, tid) {
     t.IsPinned = document.getElementById('aftopicedit-pinned').checked;
     var ul = document.getElementById('proplist');
     var props = ul.getElementsByTagName('li');
+    t.TopicProperties = new Array();
     for (var i = 0; i < props.length; i++) {
         var l = props[i];
         var pname = 'prop-' + l.id;
+        t.TopicProperties[i] = {};
+        t.TopicProperties[i].Name = pname;
+        t.TopicProperties[i].PropertyId = l.id;
         var el = document.getElementById(pname);
         if (el.tagName == 'INPUT') {
             if (el.type == 'text') {
-                t.Properties[pname] = el.value;
+                t.TopicProperties[i].DefaultValue = el.value;
             } else {
-                t.Properties[pname] = el.checked;
+                t.TopicProperties[i].DefaultValue = el.checked;
             };
         } else {
-            t.Properties[pname] = el.options[el.selectedIndex].value;
+            t.TopicProperties[i].DefaultValue = el.options[el.selectedIndex].value;
         };
-
     };
     var ul = document.getElementById('catlist');
     var cats = ul.getElementsByTagName('li');
-    t.Categories = '';
+    t.CategoriesAsString = '';
     for (var i = 0; i < cats.length; i++) {
         var li = cats[i];
         var chk = document.getElementById('cat-' + li.id);
         if (chk.checked) {
-            C.categories += chk.value + ';';
+            t.CategoriesAsString += chk.value + ';';
         };
     };
     var sf = $.ServicesFramework(mid);
     var params = {
         forumId: fid,
-        topicId: tid,
         topic: t
     };
     $.ajax({
@@ -299,14 +308,13 @@ function amaf_saveTopic(mid, fid, tid) {
         data: JSON.stringify(params),
         contentType: "application/json",
         dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Save',
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Update',
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
-        amaf_loadTopicComplete(data);
+        amaf_saveTopicComplete(data);
     }).fail(function (xhr, status) {
-        alert('error loading post');
+        alert('error saving post');
     });
-    amaf.callback(t, amaf_saveTopicComplete);
 };
 function amaf_saveTopicComplete(result) {
     am.UI.CloseDiv('aftopicedit');

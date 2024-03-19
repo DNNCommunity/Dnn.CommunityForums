@@ -36,43 +36,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		public bool IsHidden {get; set;}
 		public bool IsRequired {get; set;}
 		public bool IsReadOnly {get; set;}
-		private string _ValidationExpression = string.Empty;
-		public string ValidationExpression
-		{
-			get
-			{
-				return _ValidationExpression;
-			}
-			set
-			{
-				_ValidationExpression = value;
-			}
-		}
-		private string _EditTemplate = string.Empty;
-		public string EditTemplate
-		{
-			get
-			{
-				return _EditTemplate;
-			}
-			set
-			{
-				_EditTemplate = value;
-			}
-		}
-		private string _ViewTemplate = string.Empty;
-		public string ViewTemplate
-		{
-			get
-			{
-				return _ViewTemplate;
-			}
-			set
-			{
-				_ViewTemplate = value;
-			}
-		}
-		public int SortOrder {get; set;}
+        public string ValidationExpression { get; set; } = string.Empty;
+        public string EditTemplate { get; set; } = string.Empty;
+        public string ViewTemplate { get; set; } = string.Empty;
+        public int SortOrder {get; set;}
 		public string DefaultValue {get; set;}
 	}
 }

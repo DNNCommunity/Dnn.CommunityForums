@@ -26,6 +26,7 @@ using DotNetNuke.UI.UserControls;
 using System.Runtime.Remoting.Messaging;
 using System.Linq;
 using DotNetNuke.Collections;
+using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -230,9 +231,38 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
         {
+            set
+            {
+                StringBuilder tData = new StringBuilder();
+                tData.Append("<topicdata>");
+                tData.Append("<properties>");
+                foreach (PropertiesInfo p in Forum.Properties)
+                {
+                    //string pkey = "prop-" + p.PropertyId.ToString();
+
+                    tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
+                    tData.Append("<name><![CDATA[");
+                    tData.Append(p.Name);
+                    tData.Append("]]></name>");
+                    if (!string.IsNullOrEmpty(value.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue))
+                    {
+                        tData.Append("<value><![CDATA[");
+                        tData.Append(Utilities.XSSFilter(value.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue));
+                        tData.Append("]]></value>");
+                    }
+                    else
+                    {
+                        tData.Append("<value></value>");
+                    }
+                    tData.Append("</property>");
+                }
+                tData.Append("</properties>");
+                tData.Append("</topicdata>");
+                TopicData = tData.ToString();
+            }
             get
             {
-                if (TopicData == string.Empty)
+                    if (TopicData == string.Empty)
                 {
                     return null;
                 }
