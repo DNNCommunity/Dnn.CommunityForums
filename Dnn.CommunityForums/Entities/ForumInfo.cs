@@ -39,9 +39,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Forums", CacheItemPriority.Low)]
     public partial class ForumInfo
     {
-        private ForumGroupInfo _forumGroup;
-        private PermissionInfo _security;
-        private List<PropertiesInfo> _properties;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo _forumGroup;
+        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo _security;
+        private DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo _properties;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -119,9 +119,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection SubForums { get; set; }
 
         [IgnoreColumn()]
-        public List<PropertiesInfo> Properties
+        public DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo Properties
         {
-            get => _properties ?? (_properties = new PropertiesController().ListProperties(PortalId, 1, ForumID));
+            get => _properties ?? (_properties = (DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo) new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2" ,PortalId, 1, ForumID));
             set => _properties = value;
         }
 

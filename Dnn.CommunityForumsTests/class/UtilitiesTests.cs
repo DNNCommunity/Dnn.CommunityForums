@@ -61,6 +61,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             mockUser.Object.Profile.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
+            mockForum.Object.Security = mockPermissions.Object;
             //Act
             bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
             //Assert

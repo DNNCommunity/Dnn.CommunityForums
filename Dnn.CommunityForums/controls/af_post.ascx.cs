@@ -397,31 +397,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!(string.IsNullOrEmpty(ti.TopicData)))
                 {
-                    var pl = new List<PropertiesInfo>();
-                    var xDoc = new XmlDocument();
-                    xDoc.LoadXml(ti.TopicData);
-
-                    XmlNode xRoot = xDoc.DocumentElement;
-                    if (xRoot != null)
-                    {
-                        var xNodeList = xRoot.SelectNodes("//properties/property");
-                        if (xNodeList != null && xNodeList.Count > 0)
-                        {
-                            for (var i = 0; i < xNodeList.Count; i++)
-                            {
-                                var pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                                var xmlAttributeCollection = xNodeList[i].Attributes;
-                                if (xmlAttributeCollection == null)
-                                    continue;
-                                var pId = Convert.ToInt32(xmlAttributeCollection["id"].Value);
-                                var p = new PropertiesInfo { Name = pName, DefaultValue = pValue, PropertyId = pId };
-                                pl.Add(p);
-                            }
-                        }
-                    }
-
-                    ctlForm.TopicProperties = pl;
+                    ctlForm.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(ti.TopicData);
                 }
 
                 if (ti.TopicType == TopicTypes.Poll)

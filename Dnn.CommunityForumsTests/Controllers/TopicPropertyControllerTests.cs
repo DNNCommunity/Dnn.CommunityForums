@@ -1,0 +1,71 @@
+﻿using NUnit.Framework;
+using DotNetNuke.Modules.ActiveForums.Controllers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Moq;
+using DotNetNuke.Modules.ActiveForums.Entities;
+
+namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
+{
+    [TestFixture()]
+    public class TopicPropertyControllerTests
+    {
+        [Test()]
+        public void SerializeTest()
+        {
+            //Arrange
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            mockForum.Object.ForumID = 1;
+            mockForum.Object.ForumName = "Test Forum";
+            mockForum.Object.Properties = new DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo();
+            var prop1 = new DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo();
+            prop1.PropertyId = 1;
+            prop1.Name = "Test Property";
+            prop1.DefaultValue = "Test Value";
+            mockForum.Object.Properties.Add(prop1);
+
+            var mockPropertyList = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo>();
+            var prop2 = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
+            prop2.PropertyId = 1;
+            prop2.Name = "Test Property";
+            prop2.Value = "Test Value";
+            mockPropertyList.Object.Add(prop2);
+
+            //Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(mockForum.Object, mockPropertyList.Object);
+
+
+            //Assert
+            var expectedResult = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
+        }
+
+        [Test()]
+        public void DeserializeTest()
+        {
+            //Arrange
+
+            var mockPropertyList = new Mock<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo>();
+            var prop1 = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
+            prop1.PropertyId = 1;
+            prop1.Name = "Test Property";
+            prop1.Value = "Test Value";
+            mockPropertyList.Object.Add(prop1);
+
+            var serialized = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
+
+            //Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(serialized);
+
+
+            //Assert
+            Assert.That(actualResult.Count, Is.EqualTo((mockPropertyList.Object).Count));
+            Assert.That(actualResult[0].PropertyId, Is.EqualTo((mockPropertyList.Object)[0].PropertyId));
+            Assert.That(actualResult[0].Name, Is.EqualTo((mockPropertyList.Object)[0].Name));
+            Assert.That(actualResult[0].Value, Is.EqualTo((mockPropertyList.Object)[0].Value));
+        }
+    }
+}

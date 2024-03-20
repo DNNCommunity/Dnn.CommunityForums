@@ -307,32 +307,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     t.IsLocked = dto.Topic.IsLocked;
                     t.Priority = dto.Topic.Priority;
                     t.StatusId = dto.Topic.StatusId;
-                    if (ForumInfo.Properties != null)
+                    if (ForumInfo.Properties != null && dto.Topic.TopicProperties != null)
                     {
-                        StringBuilder tData = new StringBuilder();
-                        tData.Append("<topicdata>");
-                        tData.Append("<properties>");
-                        foreach (PropertiesInfo p in ForumInfo.Properties)
-                        {
-                            tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                            tData.Append("<name><![CDATA[");
-                            tData.Append(p.Name);
-                            tData.Append("]]></name>");
-                            if (!string.IsNullOrEmpty(dto.Topic.TopicProperties?.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue))
-                            {
-                                tData.Append("<value><![CDATA[");
-                                tData.Append(Utilities.XSSFilter(dto.Topic.TopicProperties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue));
-                                tData.Append("]]></value>");
-                            }
-                            else
-                            {
-                                tData.Append("<value></value>");
-                            }
-                            tData.Append("</property>");
-                        }
-                        tData.Append("</properties>");
-                        tData.Append("</topicdata>");
-                        t.TopicData = tData.ToString();
+                        t.TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(ForumInfo, dto.Topic.TopicProperties);
                     }
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(t);
                     Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);

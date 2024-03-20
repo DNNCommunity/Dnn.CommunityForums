@@ -218,47 +218,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (_categories == null)
-                {
-                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); });
-                    var topicCategories = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
-                    topicCategories.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
-
-                }
                 return string.Join("|",Categories.Select(c => c.name));
             }
         }
         [IgnoreColumn()]
-        public List<PropertiesInfo> TopicProperties
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo TopicProperties
         {
             set
             {
-                StringBuilder tData = new StringBuilder();
-                tData.Append("<topicdata>");
-                tData.Append("<properties>");
-                foreach (PropertiesInfo p in Forum.Properties)
-                {
-                    //string pkey = "prop-" + p.PropertyId.ToString();
-
-                    tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
-                    tData.Append("<name><![CDATA[");
-                    tData.Append(p.Name);
-                    tData.Append("]]></name>");
-                    if (!string.IsNullOrEmpty(value.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue))
-                    {
-                        tData.Append("<value><![CDATA[");
-                        tData.Append(Utilities.XSSFilter(value.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue));
-                        tData.Append("]]></value>");
-                    }
-                    else
-                    {
-                        tData.Append("<value></value>");
-                    }
-                    tData.Append("</property>");
-                }
-                tData.Append("</properties>");
-                tData.Append("</topicdata>");
-                TopicData = tData.ToString();
+                TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(Forum, value);
             }
             get
             {
@@ -268,33 +236,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 }
                 else
                 {
-                    List<PropertiesInfo> pl = new List<PropertiesInfo>();
-                    XmlDocument xDoc = new XmlDocument();
-                    xDoc.LoadXml(TopicData);
-                    if (xDoc != null)
-                    {
-                        System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                        System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//properties/property");
-                        if (xNodeList.Count > 0)
-                        {
-                            int i = 0;
-                            for (i = 0; i < xNodeList.Count; i++)
-                            {
-                                string pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                string pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                                int pId = Convert.ToInt32(xNodeList[i].Attributes["id"].Value);
-                                PropertiesInfo p = new PropertiesInfo();
-                                p.Name = pName;
-                                p.DefaultValue = pValue;
-                                p.PropertyId = pId;
-                                pl.Add(p);
-                            }
-                        }
-                    }
-                    return pl;
+                    return DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(TopicData);
                 }
             }
-        }         
-    } 
+        }
+    }
 
 }

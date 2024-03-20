@@ -29,6 +29,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using DotNetNuke.Common.Controls;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Security.Permissions;
@@ -52,11 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(forum.ModuleId, forum.ForumGroupId) : null;
                 forum.ForumSettings = (Hashtable)DataCache.GetSettings(forum.ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, forum.ModuleId, forum.ForumSettingsKey), true);
                 forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
-                if (forum.HasProperties)
-                {
-                    var propC = new PropertiesController();
-                    forum.Properties = propC.ListProperties(forum.PortalId, 1, forumId);
-                }
             }
             string cachekey = string.Format(CacheKeys.ForumInfo, forum.ModuleId, forumId);
             DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
@@ -73,11 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, forum.ForumGroupId) : null;
                     forum.ForumSettings = (Hashtable)DataCache.GetSettings(ModuleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, ModuleId, forum.ForumSettingsKey), true);
                     forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
-                    if (forum.HasProperties)
-                    {
-                        var propC = new PropertiesController();
-                        forum.Properties = propC.ListProperties(forum.PortalId, 1, forum.ForumID);
-                    }
                     forums.Add(forum);
                 }
                 DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumList, ModuleId), forums);
