@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         gi.SortOrder = string.IsNullOrWhiteSpace(e.Parameters[7]) ? 0 : Utilities.SafeConvertInt(e.Parameters[7]);
 
-                        gi.PrefixURL = e.Parameters[9];
+                        gi.PrefixURL = e.Parameters[10];
                         if (!(string.IsNullOrEmpty(gi.PrefixURL)))
                         {
                             var db = new Data.Common();
