@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
                     if (!string.IsNullOrEmpty(dto.Topic.Tags))
                     {
-                        DataProvider.Instance().Tags_DeleteByTopicId(ActiveModule.PortalID, ForumModuleId, topicId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopicId(topicId);
                         string tagForm = dto.Topic.Tags;
                         string[] tags = tagForm.Split(',');
                         foreach (string tag in tags)

@@ -343,31 +343,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				dr.Close();
 			}
 			sb.Append(FooterTemplate);
-			int pageCount = 1;
-			pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / PageSize));
+			int pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / PageSize));
 			ControlUtils cUtils = new ControlUtils();
-			string otherPrefix = string.Empty;
-			if (TagId > 0 | CategoryId > 0)
-			{
-				int id = -1;
-				if (TagId > 0)
-				{
-					id = TagId;
-				}
-				else
-				{
-					id = CategoryId;
-				}
-				using (IDataReader dr = DataProvider.Instance().Tags_Get(PortalId, ModuleId, id))
-				{
-					while (dr.Read())
-					{
-						otherPrefix = Utilities.CleanName(dr["TagName"].ToString());
-					}
-					dr.Close();
-				}
-			}
-			sb.Append(cUtils.BuildPager(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, TagId, CategoryId, otherPrefix, PageIndex, pageCount));
+			int id = TagId > 0 ? TagId : CategoryId;
+            string otherPrefix = id > 0
+                ? Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(id).TagName)
+                : string.Empty;
+            sb.Append(cUtils.BuildPager(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, TagId, CategoryId, otherPrefix, PageIndex, pageCount));
 			return sb.ToString();
 		}
 		private string ParseDataRow(IDataRecord row, string tmp)

@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlEncode(tag);
             //Assert
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlDecode(tag);
             //Assert
-            Assert.That(expectedResult, Is.EqualTo(actualResult));
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
         [Test()]
         [TestCase("", ExpectedResult = false)]
@@ -126,5 +126,16 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Assert 
         }
 
+        [Test()]
+        public void CheckSqlStringTest()
+        {
+            //Arrange
+            var input = "SELECT * FROM TABLE1 UNION SELECT * FROM TABLE2";
+            var expectedResult = "SELECT * 1  SELECT * 2";
+            //Act
+            var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(input);
+            //Assert
+            Assert.That(actualResult,Is.EqualTo(expectedResult));
+        }
     }
 }

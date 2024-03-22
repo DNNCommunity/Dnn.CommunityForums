@@ -19,8 +19,6 @@
 //
 
 using DotNetNuke.ComponentModel.DataAnnotations;
-using System;
-using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {

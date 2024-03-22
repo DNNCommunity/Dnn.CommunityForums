@@ -37,77 +37,71 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class TagController : ControllerBase<TagController>
     {
-        public struct TopicDto1
+
+        /// <summary>
+        /// Gets Tags matching a string anywhere in string
+        /// </summary>
+        /// <param name="ForumId" type="int"></param>
+        /// <param name="MatchString" type="string"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Tag/Matches?ForumId=xxx&MatchString=xxx</remarks>
+        [HttpGet]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.Tag)]
+        public HttpResponseMessage Matches(int ForumId, string MatchString)
         {
-            public int ForumId { get; set; }
-            public int TopicId { get; set; }
-        }
-        public struct TopicDto2
-        {
-            public int ForumId { get; set; }
-            public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; set; }
+            return Match($"%{CleanAndChopString(MatchString, 20)}%");
         }
 
         /// <summary>
-        /// Subscribes to a Topic
+        /// Gets Tags with names matching string from beginning
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="ForumId" type="int"></param>
+        /// <param name="MatchString" type="string"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Subscribe</remarks>
-        [HttpPost]
+        /// <remarks>https://dnndev.me/API/ActiveForums/Tag/BeginsWith?ForumId=xxx&MatchString=xxx</remarks>
+        [HttpGet]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.Subscribe)]
-        public HttpResponseMessage Subscribe(TopicDto1 dto)
+        [ForumsAuthorize(SecureActions.Tag)]
+        public HttpResponseMessage BeginsWith(int ForumId, string MatchString)
         {
-            if (dto.TopicId > 0 && dto.ForumId > 0)
-            { 
+            return Match($"{CleanAndChopString(MatchString, 20)}%");
+        }
+
+        private HttpResponseMessage Match(string matchString)
+        {
+            if (!(string.IsNullOrEmpty(matchString)))
+            {
+                var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", ActiveModule.PortalID, ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
+                if (matchingTags.Count > 0)
                 {
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    string q = string.Empty;
-                    if (!(string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["q"])))
-                    {
-                        q = HttpContext.Current.Request.QueryString["q"].Trim();
-                        q = Utilities.Text.RemoveHTML(q);
-                        q = Utilities.Text.CheckSqlString(q);
-                        if (!(string.IsNullOrEmpty(q)))
-                        {
-                            if (q.Length > 20)
-                            {
-                                q = q.Substring(0, 20);
-                            }
-                        }
-                    }
-                    int i = 0;
-                    if (!(string.IsNullOrEmpty(q)))
-                    {
-                        using (IDataReader dr = DataProvider.Instance().Tags_Search(PortalId, ModuleId, q))
-                        {
-                            while (dr.Read())
-                            {
-                                sb.AppendLine("{\"id\":\"" + dr["TagId"].ToString() + "\",\"name\":\"" + dr["TagName"].ToString() + "\",\"type\":\"0\"},");
-                                i += 1;
-                            }
-                            dr.Close();
-                        }
-                    }
-                    string @out = "[";
-                    if (i > 0)
-                    {
-                        @out += sb.ToString().Trim();
-                        @out = @out.Substring(0, @out.Length - 1);
-                    }
-                    @out += "]";
-                    return @out;
+                    return Request.CreateResponse(HttpStatusCode.OK, matchingTags);
                 }
-
-                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController()
-                    .Profiles_Get(ActiveModule.PortalID, ForumModuleId, UserInfo.UserID).Roles;
-                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID,
-                    ForumModuleId, dto.ForumId, dto.TopicId, 1, UserInfo.UserID, userRoles);
-                return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NoContent);
+                }
             }
-
             return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+
+        private static string CleanAndChopString(string MatchString, int maxLength)
+        {
+            string matchString = string.Empty;
+            if (!(string.IsNullOrEmpty(MatchString)))
+            {
+                matchString = MatchString.Trim();
+                matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.RemoveHTML(matchString);
+                matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(matchString);
+                if (!(string.IsNullOrEmpty(matchString)))
+                {
+                    if (matchString.Length > maxLength)
+                    {
+                        matchString = matchString.Substring(0, 20);
+                    }
+                }
+            }
+            return matchString;
         }
     }
 }
