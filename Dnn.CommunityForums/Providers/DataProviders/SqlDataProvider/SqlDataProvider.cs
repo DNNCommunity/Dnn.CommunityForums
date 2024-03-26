@@ -122,124 +122,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return DotNetNuke.Common.Utilities.Null.GetNull(Field, DBNull.Value);
         }
 
-
-        //Public Overrides Function NTForums_GetSettingsForSession[ByVal ModuleId As Integer] As IDataReader
-        //    Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "NTForums_GetSettingsForSession", ModuleId), IDataReader)
-        //End Function
-        //Public Overrides Function Utility_ExecuteSQL(ByVal SQL As String) As IDataReader
-        //    SQL = SQL.Replace("{databaseOwner}", DatabaseOwner)
-        //    SQL = SQL.Replace("{objectQualifier}", ObjectQualifier)
-        //    Try
-        //        Return CType((ConnectionString, CommandType.Text, SQL), IDataReader)
-
-        //    Catch ex As Exception
-        //        Return Nothing
-        //    End Try
-
-        //End Function
-        //Public Overrides Function ActiveForumsCount() As Integer
-        //    Dim sSQL As String = "Select Count(*) From " & DatabaseOwner & ObjectQualifier & "NTForums"
-        //    Try
-        //        Return CType(SqlHelper.ExecuteScalar(ConnectionString, CommandType.Text, sSQL), Integer)
-
-        //    Catch ex As Exception
-        //        Return 0
-        //    End Try
-        //End Function
-
-        //Public Overrides Function GetStatistics(ByVal PortalId As Integer) As Hashtable
-        //    Dim statistics As Hashtable = New Hashtable
-
-        //    Dim reader As IDataReader = CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "GetOnlineUserStatistics", PortalId), IDataReader)
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("AnonymousUserCount", reader(0))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("OnlineUserCount", reader(0))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("LastUsername", reader(0))
-        //        statistics.Add("LastUserId", reader(1))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("MembershipCount", reader(0))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("MembershipToday", reader(0))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("MembershipYesterday", reader(0))
-        //    End If
-
-        //    reader.Close()
-
-        //    Return statistics
-        //End Function
-        // Forum Stats
-        //Public Overrides Function NTForums_GetForumStats(ByVal PortalId As Integer, ByVal ModuleID As Integer) As Hashtable
-        //    Dim statistics As Hashtable = New Hashtable
-
-        //    Dim reader As IDataReader = CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "NTForums_GetForumStats", PortalId, ModuleID), IDataReader)
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("ActiveUsers", reader(0))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("NewUserID", reader(0))
-        //        statistics.Add("NewUserName", reader(1))
-        //        statistics.Add("NewUserFirstName", reader(2))
-        //        statistics.Add("NewUserLastName", reader(3))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("TotalForums", reader(0))
-        //        statistics.Add("TotalTopics", reader(1))
-        //        statistics.Add("TotalReplies", reader(2))
-        //        statistics.Add("TotalPosts", reader(1) + reader(2))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("TopViewsPostID", reader(0))
-        //        statistics.Add("TopViewsForumID", reader(1))
-        //        statistics.Add("TopViewsSubject", reader(2))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("TopRepliesPostID", reader(0))
-        //        statistics.Add("TopRepliesForumID", reader(1))
-        //        statistics.Add("TopRepliesSubject", reader(2))
-        //    End If
-        //    reader.NextResult()
-
-        //    If (reader.Read()) Then
-        //        statistics.Add("MostActivePostID", reader(1))
-        //        statistics.Add("MostActiveForumID", reader(2))
-        //        statistics.Add("MostActiveSubject", reader(3))
-        //    End If
-
-        //    reader.Close()
-
-        //    Return statistics
-        //End Function
-
-
-
         #region Dashboard
         public override DataSet Dashboard_Get(int PortalId, int ModuleId)
         {
@@ -262,6 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_Get", PortalId, ModuleId, FilterId));
         }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetEmoticons()")]
         public override IDataReader Filters_GetEmoticons(int ModuleID)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_GetEmoticons", ModuleID));
