@@ -695,7 +695,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public override string GetDesignTimeHtml()
         {
-            return "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td>Active Forums Grid Control<br />Please use source view to make changes</td></tr></table>";
+            return "<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"><tr><td>DNN Community Forums Grid Control<br />Please use source view to make changes</td></tr></table>";
         }
 
     }

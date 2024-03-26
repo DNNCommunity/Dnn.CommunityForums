@@ -20,20 +20,21 @@
 
 using System;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public class URL
 	{
-		public static string ForumLink(int tabId, Forum fi)
+		public static string ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
 		{
-			var mainSettings = DataCache.MainSettings(fi.ModuleId);
+			var mainSettings = SettingsBase.GetModuleSettings(fi.ModuleId);
 			
             var sURL = string.Empty;
 
             if (string.IsNullOrWhiteSpace(fi.PrefixURL) || !mainSettings.URLRewriteEnabled)
 			{
-				sURL = Utilities.NavigateUrl(tabId, string.Empty, ParamKeys.ForumId + "=" + fi.ForumID);
+				sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.ForumId + "=" + fi.ForumID);
 			}
 			else
 			{
@@ -61,15 +62,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
 			return sURL;
 		}
-
-		public static string TopicLink(int tabId, int moduleId, TopicInfo ti)
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi).")]
+        public static string ForumLink(int tabId, DotNetNuke.Modules.ActiveForums.ForumInfo fi)
+        {
+			return ForumLink(tabId, (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo)fi );
+        }
+        public static string TopicLink(int tabId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
 		{	
 			string sURL;
-			var mainSettings = DataCache.MainSettings(moduleId);
+			var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
-			if (string.IsNullOrEmpty(ti.URL) || !mainSettings.URLRewriteEnabled)
+			if (string.IsNullOrEmpty(ti.TopicUrl) || !mainSettings.URLRewriteEnabled)
 			{
-				sURL = Utilities.NavigateUrl(tabId, string.Empty, ParamKeys.TopicId + "=" + ti.TopicId);
+				sURL = Utilities.NavigateURL(tabId, string.Empty, ParamKeys.TopicId + "=" + ti.TopicId);
 			}
 			else
 			{
@@ -94,11 +99,11 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			return ReplyLink(tabId, DotNetNuke.Common.Utilities.Null.NullInteger, ti, userId, replyId);
 		}
-            public static string ReplyLink(int tabId, int moduleId, TopicInfo ti, int userId, int replyId)
+            public static string ReplyLink(int tabId, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti, int userId, int replyId)
 		{
-			var sURL = Utilities.NavigateUrl(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
+			var sURL = Utilities.NavigateURL(tabId, string.Empty, new [] { ParamKeys.TopicId + "=" + ti.TopicId, ParamKeys.ContentJumpId + "=" + replyId });
 
-			if (string.IsNullOrEmpty(ti.URL) || ! Utilities.UseFriendlyURLs(moduleId))
+			if (string.IsNullOrEmpty(ti.TopicUrl) || ! Utilities.UseFriendlyURLs(moduleId))
 				return sURL;
 
             var db = new Data.Common();
@@ -125,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public static string ForForum(int pageId, int forumId, string groupName, string forumName)
 		{
-			var sURL = Utilities.NavigateUrl(pageId, string.Empty, ParamKeys.ForumId + "=" + forumId);
+			var sURL = Utilities.NavigateURL(pageId, string.Empty, ParamKeys.ForumId + "=" + forumId);
 
 			var sNewPage = string.Empty;
 			if (! (string.IsNullOrEmpty(groupName)))
@@ -150,9 +155,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			string sURL;
 
 			if (pageNumber > 1)
-				sURL = Utilities.NavigateUrl(pageId, "", subject, portalId, new [] {ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber});
+				sURL = Utilities.NavigateURL(pageId, "", subject, portalId, new [] {ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageNumber});
 			else
-				sURL = Utilities.NavigateUrl(pageId, "", subject, portalId, ParamKeys.TopicId + "=" + topicId);
+				sURL = Utilities.NavigateURL(pageId, "", subject, portalId, ParamKeys.TopicId + "=" + topicId);
 
 			sURL = sURL.ToLowerInvariant();
 			if (!(sURL.EndsWith(".aspx")))

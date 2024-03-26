@@ -18,75 +18,70 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
+using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.IO;
-using System.Linq;
+using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [ToolboxData("<{0}:ForumLoader runat=server></{0}:ForumLoader>")]
     public class ForumLoader : ForumBase
     {
-        private Forum fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {
+
+                if (Request.QueryString["afgt"] == "afprofile" || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
+                {
+                    int userId;
+
+                    userId = int.TryParse(Request.QueryString["UserId"], out userId) ? userId : UserInfo.UserID;
+
+                    // Users can only view thier own settings unless they are admin.
+                    if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
+                    {
+                        var userPrefsCtl = (SettingsBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
+                        userPrefsCtl.ModuleConfiguration = ModuleConfiguration;
+                        userPrefsCtl.LocalResourceFile = Page.ResolveUrl(Globals.SharedResourceFile);
+                        this.Controls.Add(userPrefsCtl);
+                    }
+
+                    return;
+                }
+
                 if (ForumId > 0 && ForumModuleId == -1)
                 {
-                    ForumController fc = new ForumController();
-                    fi = fc.Forums_Get(ForumId, UserId, true, true);
+                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true);
                     ForumModuleId = fi.ModuleId;
                 }
                 if (ForumModuleId > 0)
                 {
-                    //Dim mc As New DotNetNuke.Entities.Modules.ModuleController
-                    //Dim arrMods As ArrayList = mc.GetModule(ForumModuleId)
-                    //Dim modInfo As DotNetNuke.Entities.Modules.ModuleInfo = Nothing
-                    //For Each mi As DotNetNuke.Entities.Modules.ModuleInfo In arrMods
-                    //    If mi.ModuleID = ForumModuleId Then
-                    //        modInfo = mi
-                    //        Exit For
-                    //    End If
-                    //Next
                     DotNetNuke.Entities.Modules.ModuleInfo modInfo = new DotNetNuke.Entities.Modules.ModuleInfo();
                     modInfo.TabID = TabId;
-                    int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
-                    if (tmpForumTabId>0) { modInfo.TabID = tmpForumTabId; }
-                    modInfo.ModuleID = ForumModuleId;
+                    modInfo.ModuleID = ModuleId;
                     modInfo.PortalID = PortalId;
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
 
-                    //Dim mi As DotNetNuke.Entities.Modules.ModuleInfo = mc.GetModule(ForumModuleId, ForumTabId)
                     ForumBase objModule = (ForumBase)(LoadControl("~/desktopmodules/ActiveForums/classic.ascx"));
                     if (objModule != null)
                     {
                         objModule.ModuleConfiguration = modInfo;
                         objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/classic.ascx");
-                        objModule.ForumModuleId = ForumModuleId; //CType(Settings["AFForumModuleID"], Integer)
+                        objModule.ForumModuleId = ForumModuleId;
+                        objModule.ForumTabId = ForumTabId;
                         objModule.ForumInfo = fi;
-                        objModule.ForumId = ForumId; 
+                        objModule.ForumId = ForumId;
                         objModule.ForumGroupId = ForumGroupId;
                         objModule.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                         objModule.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
                         objModule.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                        objModule.TemplatePath = TemplatePath;
-                        objModule.UseTemplatePath = UseTemplatePath;
                         objModule.ParentForumId = ParentForumId;
                         objModule.ForumIds = ForumIds;
-                        objModule.InheritModuleCSS = InheritModuleCSS;
-                        //objModule.LoadGroupForumID = CType(Settings["AFForumGroupID"], Integer)
-                        objModule.DefaultView = DefaultView; //CType(Settings["AFViewType"], String)
                         this.Controls.Add(objModule);
                     }
                 }

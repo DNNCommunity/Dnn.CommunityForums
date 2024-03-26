@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				resourcefilename = resourcefilename.Substring(0, resourcefilename.Length - 5) + "." + "Portal-" + PortalId.ToString() + ".resx";
 			}
 
-			return HttpContext.Current.Server.MapPath(resourcefilename);
+			return DotNetNuke.Modules.ActiveForums.Utilities.MapPath(resourcefilename);
 
 		}
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
 				node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
 			}
-			node.InnerXml = HttpContext.Current.Server.HtmlEncode(text);
+			node.InnerXml = HttpUtility.HtmlEncode(text);
 
 		}
 	}

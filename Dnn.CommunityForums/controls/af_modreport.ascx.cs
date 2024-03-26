@@ -18,18 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using DotNetNuke;
-using DotNetNuke.Services.Localization;
-using DotNetNuke.Services.ClientCapability;
 using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -52,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (Request.IsAuthenticated)
                 {
 
-                    string strReasons = GetSharedResource("[RESX:ReasonOptions]"); 
+                    string strReasons = GetSharedResource("[RESX:ReasonOptions]");
                     int i = 0;
                     foreach (string strReason in strReasons.Split(new char[] { ';' }))
                     {
@@ -124,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {
-            Response.Redirect(DotNetNuke.Common.Globals.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }));
+            Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }));
         }
 
         private void btnSend_Click(object sender, System.EventArgs e)
@@ -134,19 +126,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 string Comments = drpReasons.SelectedItem.Value + "<br>";
                 Comments += Utilities.CleanString(PortalId, txtComments.Text, false, EditorTypes.TEXTBOX, false, false, ModuleId, string.Empty, false);
                 string sUrl = SocialGroupId > 0
-                    ? NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId })
-                    : NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
+                    ? Utilities.NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId })
+                    : Utilities.NavigateUrl(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ContentAlert");
-                TopicsController topicController = new TopicsController();
-                TopicInfo topic = topicController.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;
                 string sTopicURL = topic.TopicUrl;
                 if (ReplyId > 0 & TopicId != ReplyId)
                 {
-                    ReplyController rc = new ReplyController();
-                    DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(ReplyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;
@@ -160,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
                 ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, sTopicURL, -1, -1, string.Empty, 1, ReplyId, SocialGroupId);
+                string fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, sTopicURL, -1, -1, string.Empty, 1, ReplyId, SocialGroupId);
                 string subject = Utilities.GetSharedResource("AlertSubject");
                 subject = subject.Replace("[DisplayName]", authorName);
                 subject = subject.Replace("[Subject]", sSubject);
@@ -170,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 body = body.Replace("[Comment]", Comments);
                 body = body.Replace("[URL]", fullURL);
                 body = body.Replace("[Reason]", drpReasons.SelectedItem.Value);
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumId);
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
 
 
                 string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);

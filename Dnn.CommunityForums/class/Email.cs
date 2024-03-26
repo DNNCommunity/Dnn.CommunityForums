@@ -26,6 +26,7 @@ using System.Net.Mail;
 using System.Reflection;
 using System.Threading;
 using System.Web;
+using System.Xml.Linq;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
@@ -35,7 +36,16 @@ using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    #region Deprecated
+    public class Email
+    {
+        public int PortalId;
+        public string Subject;
+        public string From;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
+        public string BodyText;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
+        public string BodyHTML;
+        public string Body;
 
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Email.")]
     public class Email : DotNetNuke.Modules.ActiveForums.Entities.Email

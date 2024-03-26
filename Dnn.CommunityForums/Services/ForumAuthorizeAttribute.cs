@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     try
                     {
                         var postData = context.ActionContext.Request.Content.ReadAsStringAsync().Result;
-                        forumId = System.Web.Helpers.Json.Decode(postData).ForumId;
+                        forumId = Utilities.SafeConvertInt(System.Web.Helpers.Json.Decode(postData).ForumId);
                     }
                     catch
                     {
@@ -103,9 +103,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 else
                 {
                     ModuleInfo moduleInfo = context.ActionContext.Request.FindModuleInfo();
-                    PortalSettings portal = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
                     UserInfo userInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().UserInfo;
-                    return ServicesHelper.IsAuthorized(portal.PortalId, moduleInfo.ModuleID, forumId, PermissionNeeded, userInfo);
+                    int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
+                    return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, PermissionNeeded, userInfo);
                 }
             }
             return false;

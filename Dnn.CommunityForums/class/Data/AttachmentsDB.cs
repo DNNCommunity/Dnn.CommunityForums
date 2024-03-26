@@ -26,11 +26,11 @@ using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
-	public class AttachController : Connection
-	{
+    public class AttachController : Connection
+    {
         public int Save(int contentId, int userId, string fileName, string contentType, long fileSize, int? fileId)
         {
-             return Convert.ToInt32(SqlHelper.ExecuteScalar(connectionString, dbPrefix + "Attachments_Save", contentId, userId, fileName, contentType, fileSize, fileId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(connectionString, dbPrefix + "Attachments_Save", contentId, userId, fileName, contentType, fileSize, fileId));
         }
 
         public void Delete(int attachId)
@@ -83,26 +83,26 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         }
 
         private static PermissionAttachment FillAttachment(IDataRecord dr)
-        {           
+        {
             var result = new PermissionAttachment
-                             {
-                                 AttachmentId = Utilities.SafeConvertInt(dr["AttachId"]),
-                                 UserId = Utilities.SafeConvertInt(dr["UserId"], -1),
-                                 FileName = Utilities.SafeConvertString(dr["FileName"]),
-                                 ContentType = Utilities.SafeConvertString(dr["ContentType"]),
-                                 FileSize = Utilities.SafeConvertLong(dr["FileSize"]),
-                                 FileId = dr["FileId"] as int?,
-                                 AllowDownload = Utilities.SafeConvertBool(dr["AllowDownload"], true)
-                             };
+            {
+                AttachmentId = Utilities.SafeConvertInt(dr["AttachId"]),
+                UserId = Utilities.SafeConvertInt(dr["UserId"], -1),
+                FileName = Utilities.SafeConvertString(dr["FileName"]),
+                ContentType = Utilities.SafeConvertString(dr["ContentType"]),
+                FileSize = Utilities.SafeConvertLong(dr["FileSize"]),
+                FileId = dr["FileId"] as int?,
+                AllowDownload = Utilities.SafeConvertBool(dr["AllowDownload"], true)
+            };
 
             if (dr.HasColumn("FileData"))
                 result.FileData = dr["FileData"] as byte[];
 
             if (dr.HasColumn("CanRead"))
-                result.CanRead = Utilities.SafeConvertString(dr["CanRead"], "0;1;-3;-1;|||"); // Default to public read permissions
+                result.CanRead = Utilities.SafeConvertString(dr["CanRead"], "0;1;" + DotNetNuke.Common.Globals.glbRoleUnauthUser + ";" + DotNetNuke.Common.Globals.glbRoleAllUsers + ";|||"); // Default to public read permissions
 
             return result;
         }
-	}
+    }
 }
 

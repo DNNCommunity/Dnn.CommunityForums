@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 {
 	public class Topics : DataConfig
 	{
-		public int Reply_Save(DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
+		public int Reply_Save(DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
 		{
 			return Convert.ToInt32(Reply_Save(ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
 		}
@@ -46,13 +46,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			}
 			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "TopicIdByURL", PortalId, ModuleId, URL));
 		}
+		[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
 		public int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress)
 		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Topics_AddRating", TopicId, UserID, Rating, Comments, IPAddress));
+			return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, IpAddress: IPAddress);
 		}
-		public IDataReader TopicForDisplay(int SiteId, int InstanceId, int ForumId, int TopicId, int UserId, int RowIndex, int MaxRows, string Sort)
+		public IDataReader TopicForDisplay(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, int RowIndex, int MaxRows, string Sort)
 		{
-			IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopicDisplay", SiteId, InstanceId, ForumId, TopicId, UserId, RowIndex, MaxRows, false, Sort);
+			IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopicDisplay", PortalId, ModuleId, ForumId, TopicId, UserId, RowIndex, MaxRows, false, Sort);
 			return dr;
 		}
 		public IDataReader TopicsList(int PortalId, int PageIndex, int PageSize, string ForumIds, int CategoryId, int TagId)
@@ -63,8 +64,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		{
 			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "TopicWithReplies", PortalId, TopicId, PageIndex, PageSize);
 		}
-		//Public Function TopicsForDisplayXML(ByVal SiteId As Integer, ByVal InstanceId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal IsSuper As Boolean, ByVal SortColumn As String, ByVal ForumIds As String) As XmlDocument
-		//    Dim dr As IDataReader = SqlHelper.ExecuteReader(_connectionString, dbPrefix & "UI_TopicsDisplay", SiteId, InstanceId, ForumId, UserId, PageIndex, PageSize, IsSuper, SortColumn, ForumIds)
+		//Public Function TopicsForDisplayXML(ByVal PortalId As Integer, ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal IsSuper As Boolean, ByVal SortColumn As String, ByVal ForumIds As String) As XmlDocument
+		//    Dim dr As IDataReader = SqlHelper.ExecuteReader(_connectionString, dbPrefix & "UI_TopicsDisplay", PortalId, ModuleId, ForumId, UserId, PageIndex, PageSize, IsSuper, SortColumn, ForumIds)
 		//    Dim sb As New Text.StringBuilder
 		//    sb.Append("<?xml version=""1.0"" encoding=""utf-8"" ?>")
 		//    sb.Append("<root><topics>")

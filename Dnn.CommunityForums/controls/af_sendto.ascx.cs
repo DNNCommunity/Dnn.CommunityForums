@@ -24,6 +24,7 @@ using System.Data;
 
 using System.Web.UI;
 using DotNetNuke.Modules.ActiveForums.Entities;
+using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -47,10 +48,10 @@ namespace DotNetNuke.Modules.ActiveForums
             if (TopicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, true);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 if (ti != null)
                 {
-                    if (Permissions.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
                     {
                         if (!Page.IsPostBack)
                         {

@@ -33,6 +33,7 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Utilities;
 using System.Linq;
 using DotNetNuke.Entities.Modules;
+using System.Reflection;
 
 //using DotNetNuke.Framework.JavaScriptLibraries;
 
@@ -42,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class Classic : ForumBase
     {
 
-        private Forum fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members
@@ -181,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_profile.ascx";
-                    if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
+                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                     }
@@ -195,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     // this is where af_post.ascx is used
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_" + view + ".ascx";
-                    if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
+                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                     }
@@ -223,8 +224,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
                 ctl.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
                 ctl.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                ctl.UseTemplatePath = UseTemplatePath;
-                ctl.TemplatePath = TemplatePath;
                 ctl.ParentForumId = ParentForumId;
                 if (string.IsNullOrEmpty(ForumIds))
                 {
@@ -233,14 +232,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (SocialGroupId > 0)
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
-                    {
-                        RoleController rc = new RoleController();
-                        RoleInfo role = rc.GetRole(SocialGroupId, PortalId);
-                        //Create new forum
+                    { 
+                        RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: SocialGroupId);
+                        //Create new foportalId: rum
                         bool isPrivate = false;
                         if (!role.IsPublic)
                         {
@@ -248,8 +245,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).TabModuleSettings;
 
-                        fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
-                        ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
+                        ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
                     }
                 }
                 ctl.ForumIds = ForumIds;
@@ -263,15 +260,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
-                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemesLocation + "/" + MainSettings.Theme);
-                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatesLocation + "/");
-                cc.SiteId = PortalId;
+                cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
+                cc.TemplatePath = Page.ResolveUrl(MainSettings.TemplatePath + "/");
+                cc.PortalId = PortalId;
                 cc.PageId = TabId;
-                cc.InstanceId = ModuleId;
+                cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
-                cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
-                cc.AdminRoles = Permissions.GetRoleIds(this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'), PortalId);
+                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, authorizedViewRoles.Split(';'));
+                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
                 cc.ProfileLink = ""; //GetProfileLink()
                 cc.MembersLink = ""; // GetMembersLink()
                 this.ControlConfig = cc;
@@ -283,8 +280,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 string sOut = null;
                 //TODO: this should be resources instead of harcoded text?
-               sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
-                sOut +=  string.Concat("<!-- DNN Community Forums", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
+                sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
+                sOut +=  string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->" , System.Environment.NewLine);
 
                 Literal lit = new Literal();
                 lit.Text = sOut;
@@ -317,13 +314,42 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SetupPage()
         {
-
-            //Register theme
-            if (InheritModuleCSS == false)
+            //register style sheets
+            if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.min.css")))
             {
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/module.css");
-                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemesLocation + "/" + MainSettings.Theme + "/jquery-ui.min.css");
+                ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.min.css", priority: 11);
             }
+            else
+            {
+                if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css", priority: 11);
+                }
+            }
+            if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.min.css", priority: 12);
+            }
+            else
+            {
+                if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css", priority: 12);
+                }
+            }
+            if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
+            {
+                ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
+            }
+            else
+            {
+                if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+                {
+                    ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css", priority: 13);
+                }
+            }
+
+            ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
 
             string lang = "en-US";
             if (Request.QueryString["language"] != null)
@@ -356,10 +382,10 @@ namespace DotNetNuke.Modules.ActiveForums
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
-            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
+            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Utilities.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
-                sb.AppendLine("setInterval('amaf_updateuseronline(" + ForumModuleId.ToString() + ")',120000);");
+                sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
             }
             
             // Wire up the required jquery plugins: Search Popup
@@ -385,42 +411,43 @@ namespace DotNetNuke.Modules.ActiveForums
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, userId: UserId, currentUserType: CurrentUserType, forumId: ForumId);
+            html = Utilities.ParseToolBar(template: html, forumTabId: ForumTabId, forumModuleId: ForumModuleId, tabId: TabId, moduleId: ModuleId, currentUserType: CurrentUserType, forumId: ForumId);
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
 
 
         protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        {
+            base.OnPreRender(e);
 
 
             if (SocialGroupId > 0)
             {
                 ShowToolbar = false;
             }
+
             if (Request.QueryString["dnnprintmode"] == null)
             {
                 if (HttpContext.Current.Items["ShowToolbar"] != null)
                 {
                     ShowToolbar = bool.Parse(HttpContext.Current.Items["ShowToolbar"].ToString());
                 }
+
                 if (ShowToolbar == true)
                 {
                     LiteralControl lit = new LiteralControl();
-                    object sToolbar = DataCache.CacheRetrieve("aftb" + ForumModuleId);
-                    if (sToolbar == null)
+                    if (ForumTabId <= 0)
                     {
-                        sToolbar = Utilities.GetFileContent(Globals.DefaultTemplatePath + "ToolBar.txt");
-                        DataCache.CacheStore("aftb" + ForumModuleId, sToolbar);
+                        ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
                     }
-                    lit.Text = sToolbar.ToString();
+                    lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }
 
             }
+
             if (ForumId > 0 && UserIsMod)
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();

@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 settings.Save(moduleController, ModuleId);
 
                 // Redirect back to the portal home page
-                Response.Redirect(Common.Globals.NavigateURL(), true);
+                Response.Redirect(Utilities.NavigateURL(TabId), true);
             }
             catch (Exception exc)
             {
@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void lnkCancel_Click(object sender, EventArgs e)
         {
-            Response.Redirect(Common.Globals.NavigateURL(), true);
+            Response.Redirect(Utilities.NavigateURL(TabId), true);
         }
 
         private void chkRSS_Change(object sender, EventArgs e)

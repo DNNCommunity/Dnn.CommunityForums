@@ -23,6 +23,7 @@ using System.Linq;
 using System.Web;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -30,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public static string GetAvatar(int userID, int avatarWidth, int avatarHeight)
         {
-            var portalSettings = HttpContext.Current.Items["PortalSettings"] as PortalSettings;
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
             if (portalSettings == null)
                 return string.Empty;
@@ -58,11 +59,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
         {
-            var portalSettings = HttpContext.Current.Items["PortalSettings"] as PortalSettings;
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             if (portalSettings == null)
                 return null;
 
-            var mainSettings = DataCache.MainSettings(moduleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : string.Concat("<span class='", profileNameClass, "'>{0}</span>");
 
@@ -93,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
-                    outputTemplate = string.Concat("<a href='", Common.Globals.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
+                    outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
             }
 
             var displayMode = mainSettings.UserNameDisplay + string.Empty;

@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             IsCallBack = cbShell.IsCallback;
 
-            btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
+            btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(TabId) + "';";
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
             Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     var fc = new ForumsConfig();
                     bool configComplete = fc.ForumsInit(PortalId, ModuleId);
-                    new DotNetNuke.Entities.Modules.ModuleController().UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString()); 
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
             ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/themes/", MainSettings.Theme, "/jquery-ui.min.css"));
+            ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
 
 
             lblProd.Visible = true;

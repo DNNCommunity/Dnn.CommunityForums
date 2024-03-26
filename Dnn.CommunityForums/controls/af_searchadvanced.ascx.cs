@@ -23,6 +23,7 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -336,10 +337,10 @@ namespace DotNetNuke.Modules.ActiveForums
             var @params = new List<string> { ParamKeys.ViewType + "=search" };
 
             if(!string.IsNullOrWhiteSpace(searchText))
-                @params.Add("q=" + Server.UrlEncode(searchText));
+                @params.Add("q=" + System.Web.HttpUtility.UrlEncode(searchText));
 
             if (!string.IsNullOrWhiteSpace(tags))
-                @params.Add("tg=" + Server.UrlEncode(tags));
+                @params.Add("tg=" + System.Web.HttpUtility.UrlEncode(tags));
 
             if(searchType > 0)
                 @params.Add("k=" + searchType);
@@ -358,10 +359,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             if(!string.IsNullOrWhiteSpace(authorUsername))
-                @params.Add("author=" + Server.UrlEncode(authorUsername));
+                @params.Add("author=" + System.Web.HttpUtility.UrlEncode(authorUsername));
 
             if(!string.IsNullOrWhiteSpace(forums))
-                @params.Add("f=" + Server.UrlEncode(forums));
+                @params.Add("f=" + System.Web.HttpUtility.UrlEncode(forums));
 
             if (SocialGroupId > 0)
                 @params.Add("GroupId=" + SocialGroupId.ToString());
@@ -411,44 +412,20 @@ namespace DotNetNuke.Modules.ActiveForums
             var forumsToSearch = Forums.Split(':').Where(o => int.TryParse(o, out parseId) && parseId > 0).Select(int.Parse).ToList();
 
             // Add the "All Forums" item
-            var allForumsItem = new ListItem("All Forums", "0") { Selected = forumsToSearch.Count == 0 && ForumId <= 0 };
+            lbForums.Items.Add(new ListItem("All Forums", "0") { Selected = forumsToSearch.Count == 0 && ForumId <= 0 });
 
-            lbForums.Items.Add(allForumsItem);
-
-            // This call comes back in the proper order for the tree
-            // Assumes only 1 level of sub-forums
-            var dt = DataProvider.Instance().UI_ForumView(PortalId, ModuleId, UserId, UserInfo.IsSuperUser, ForumIds).Tables[0];
-
-            // Filter out any forums the user can't read
-            var visibleRows = from rows in dt.AsEnumerable()
-                                where Permissions.HasPerm(rows.Field<string>("CanRead"), ForumUser.UserRoles)
-                                select rows;
-
-            // The JQuery plugin convert the group option elements to optgroup elements
-            // and handles some extra click functions
-
-            var currentGroupId = string.Empty;
-            foreach (var row in visibleRows)
-            {
-                var groupId = row["ForumGroupId"].ToString();
-                
-                // Add a new group item if needed
-                if (currentGroupId != groupId)
-                {
-                    currentGroupId = groupId;
-                    var groupName = row["GroupName"].ToString();
-                    var groupListItem = new ListItem(groupName, "G" + groupId);
-                    lbForums.Items.Add(groupListItem);
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums, ForumUser,
+                fi => {
+                lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
+                },
+                fi => {
+                lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) });
+                },
+                fi => {
+                lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) } );
                 }
-
-                // Add the forum item
-                var forumId = Convert.ToInt32(row["ForumId"]);
-                var isSubForum = Convert.ToInt32(row["ParentForumId"]) > 0;
-                var forumName = (isSubForum ? "-- " : string.Empty) + row["ForumName"];
-                var forumListItem = new ListItem(forumName, "F" + forumId + "G" + groupId)  { Selected = (forumsToSearch.Contains(forumId) || ForumId == forumId) };
-
-                lbForums.Items.Add(forumListItem);
-            }
+                );
         }
 
         #endregion

@@ -37,9 +37,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (SimulateIsNumeric.IsNumeric(Request.Params["UID"]))
                 {
-                    tUid = Convert.ToInt32(Request.Params["UID"]);
-                    DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-                    DotNetNuke.Entities.Users.UserInfo ui = uc.GetUser(PortalId, tUid);
+                    tUid = Convert.ToInt32(Request.Params["UID"]); 
+                    DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tUid);
                     if (ui != null)
                     {
                         sDisplayName = UserProfiles.GetDisplayName(ModuleId, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
@@ -56,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
             lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
             if (MainSettings.UseSkinBreadCrumb)
             {
-                Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + Utilities.NavigateUrl(TabId, "", new string[] { "afv=profile", "uid=" + tUid.ToString() }) + "\">" + lblHeader.Text + "</a>");
+                Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + Utilities.NavigateURL(TabId, "", new string[] { "afv=profile", "uid=" + tUid.ToString() }) + "\">" + lblHeader.Text + "</a>");
             }
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
             Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");

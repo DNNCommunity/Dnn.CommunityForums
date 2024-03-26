@@ -21,15 +21,64 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
 using System.Xml;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class ConfigUtils
-	{
-		public bool EnableRewriter(string configPath)
+	public static class ConfigUtils
+    {
+        private const string _web_config_system_webserver_modules_node_XPath = "//system.webServer/modules"; 
+		private const string _ForumsRewriterTypeNameFull = "DotNetNuke.Modules.ActiveForums.ForumsReWriter, DotNetNuke.Modules.ActiveForums";
+        private const string _ForumsRewriterTypeNameShort = "ForumsReWriter";
+        private const string _attribute_name = "name";
+        private const string _attribute_type = "type";
+        private const string _attribute_precondition = "preCondition";
+        public static bool IsRewriterInstalled(string configPath)
+        {
+            bool isInstalled = false;
+            try
+            {
+                XmlDocument xDoc = new XmlDocument();
+                XmlReaderSettings readerSettings = new XmlReaderSettings
+                {
+                    IgnoreWhitespace = true,
+                    IgnoreComments = true,
+                    CloseInput = true
+                };
+                using (XmlReader reader = XmlReader.Create(configPath, readerSettings))
+                {
+                    xDoc.Load(reader);
+                    reader.Close();
+                }
+                if (xDoc != null)
+                {
+                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
+                    if (xNode != null)
+                    {
+                        foreach (XmlNode n in xNode.ChildNodes)
+                        {
+                            if ((n.Attributes[_attribute_name].Value == _ForumsRewriterTypeNameShort) && (n.Attributes[_attribute_type].Value == _ForumsRewriterTypeNameFull))
+                            {
+                                isInstalled = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+            }
+            return isInstalled;
+
+        }
+        public static bool InstallRewriter(string configPath)
 		{
+			if (IsRewriterInstalled(configPath))
+			{
+				return true;
+			}
 			try
 			{
 				XmlDocument xDoc = new XmlDocument();
@@ -37,86 +86,65 @@ namespace DotNetNuke.Modules.ActiveForums
 				if (xDoc != null)
 				{
 					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					System.Xml.XmlNode xNode = xRoot.SelectSingleNode("//system.webServer/modules");
+					System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
 					if (xNode != null)
 					{
-						if (xNode.Attributes["runAllManagedModulesForAllRequests"] == null)
-						{
-							XmlAttribute xAttrib = xDoc.CreateAttribute("runAllManagedModulesForAllRequests");
-							xAttrib.Value = "true";
-							xNode.Attributes.Append(xAttrib);
-						}
-						bool isInstalled = false;
-						foreach (XmlNode n in xNode.ChildNodes)
-						{
-							if (n.Attributes["name"].Value == "ForumsReWriter")
-							{
-								isInstalled = true;
-								break;
-							}
-						}
-						if (! isInstalled)
-						{
-							XmlElement xNewNode = xDoc.CreateElement("add");
-							XmlAttribute xAttrib = xDoc.CreateAttribute("name");
-							xAttrib.Value = "ForumsReWriter";
-							xNewNode.Attributes.Append(xAttrib);
-							xAttrib = xDoc.CreateAttribute("type");
-							xAttrib.Value = "DotNetNuke.Modules.ActiveForums.ForumsReWriter, DotNetNuke.Modules.ActiveForums";
-							xNewNode.Attributes.Append(xAttrib);
-							xAttrib = xDoc.CreateAttribute("preCondition");
-							xAttrib.Value = "managedHandler";
-							xNewNode.Attributes.Append(xAttrib);
-							xNode.PrependChild(xNewNode);
-							xDoc.Save(configPath);
-						}
+						XmlElement xNewNode = xDoc.CreateElement("add");
+						XmlAttribute xAttrib = xDoc.CreateAttribute(_attribute_name);
+						xAttrib.Value = _ForumsRewriterTypeNameShort;
+						xNewNode.Attributes.Append(xAttrib);
+						xAttrib = xDoc.CreateAttribute(_attribute_type);
+						xAttrib.Value = _ForumsRewriterTypeNameFull;
+						xNewNode.Attributes.Append(xAttrib);
+						xAttrib = xDoc.CreateAttribute(_attribute_precondition);
+						xAttrib.Value = "managedHandler";
+						xNewNode.Attributes.Append(xAttrib);
+						xNode.PrependChild(xNewNode);
+						xDoc.Save(configPath);
 					}
 				}
 				return true;
 			}
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
 				return false;
 			}
-
-
 		}
-		public bool DisableRewriter(string configPath)
+		public static bool UninstallRewriter(string configPath)
 		{
-			try
+            if (!IsRewriterInstalled(configPath))
+            {
+                return true;
+            }
+            try
 			{
 				XmlDocument xDoc = new XmlDocument();
 				xDoc.Load(configPath);
 				if (xDoc != null)
 				{
 					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					System.Xml.XmlNode xNode = xRoot.SelectSingleNode("//system.webServer/modules");
+					System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
 					if (xNode != null)
 					{
-						bool isInstalled = false;
 						foreach (XmlNode n in xNode.ChildNodes)
 						{
-							if (n.Attributes["name"].Value == "ForumsReWriter")
+							if (n.Attributes[_attribute_name].Value == _ForumsRewriterTypeNameShort)
 							{
 								xNode.RemoveChild(n);
-								isInstalled = true;
 								break;
 							}
 						}
-						if (isInstalled)
-						{
-							xDoc.Save(configPath);
-						}
+						xDoc.Save(configPath);
 					}
 				}
 				return true;
 			}
 			catch (Exception ex)
-			{
-				return false;
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
 			}
-
-
 		}
 	}
 }

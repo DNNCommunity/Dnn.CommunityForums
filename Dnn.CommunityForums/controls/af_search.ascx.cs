@@ -241,10 +241,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     _parameters = new List<string>();
 
                     if (!string.IsNullOrWhiteSpace(SearchText))
-                        _parameters.Add("q=" + Server.UrlEncode(SearchText));
+                        _parameters.Add("q=" + System.Web.HttpUtility.UrlEncode(SearchText));
 
                     if (!string.IsNullOrWhiteSpace(Tags))
-                        _parameters.Add("tg=" + Server.UrlEncode(Tags));
+                        _parameters.Add("tg=" + System.Web.HttpUtility.UrlEncode(Tags));
 
                     if (SearchId > 0)
                         _parameters.Add("sid=" + SearchId);
@@ -268,10 +268,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         _parameters.Add("srt=" + Sort);
 
                     if (!string.IsNullOrWhiteSpace(AuthorUsername))
-                        _parameters.Add("author=" + Server.UrlEncode(AuthorUsername));
+                        _parameters.Add("author=" + System.Web.HttpUtility.UrlEncode(AuthorUsername));
 
                     if (!string.IsNullOrWhiteSpace(Forums))
-                        _parameters.Add("f=" + Server.UrlEncode(Forums));
+                        _parameters.Add("f=" + System.Web.HttpUtility.UrlEncode(Forums));
                 }
 
                 return _parameters;
@@ -372,9 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var parseId = 0;
 
-            var fc = new ForumController();
-
-            var sForumsAllowed = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead", true); // Make sure and pass strict = true here
+            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead", true); // Make sure and pass strict = true here
             var forumsAllowed = sForumsAllowed.Split(new [] {':',';'}).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
             var forumsRequested = Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
 
@@ -603,42 +601,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string GetIcon()
         {
-            if (_currentRow == null)
-                return null;
-
-            var theme = MainSettings.Theme;
-
-            // If we have a post icon, use it
-            var icon = _currentRow["TopicIcon"].ToString();
-            if (!string.IsNullOrWhiteSpace(icon))
-                return Page.ResolveUrl(MainSettings.ThemeLocation + "/emoticons/" + icon);
-
-            // Otherwise, chose the icons based on the post stats
-
-            var pinned = Convert.ToBoolean(_currentRow["IsPinned"]);
-            var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
-
-            if(pinned && locked)
-                return MainSettings.ThemeLocation + theme + "/images/topic_pinlocked.png";
-
-            if(pinned)
-                return MainSettings.ThemeLocation + theme + "/images/topic_pin.png";
-
-            if(locked)
-                return MainSettings.ThemeLocation + theme + "/images/topic_lock.png";
-
-            // Unread has to be calculated based on a few fields
-            var topicId = Convert.ToInt32(_currentRow["TopicId"]);
-            var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
-            var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
-            var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
-            var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
-            var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
-
-            if(unread)
-                return MainSettings.ThemeLocation + theme + "/images/topic.png";
-
-            return MainSettings.ThemeLocation + theme + "/images/topic_new.png";
+            return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
+                Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
+                Utilities.SafeConvertBool(_currentRow["IsRead"]),
+                ThemePath,
+                Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
+                Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
         }
 
         public string GetMiniPager()

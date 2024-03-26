@@ -27,6 +27,8 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.UI.UserControls;
+using System.Net;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -181,8 +183,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				int rate = Convert.ToInt32(e.Parameter);
 				if (rate >= 1 && rate <= 5)
 				{
-					RatingValue = db.Topics_AddRating(TopicId, UserId, rate, string.Empty, HttpContext.Current.Request.UserHostAddress.ToString());
-				}
+					RatingValue = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: rate, IpAddress: HttpContext.Current.Request.UserHostAddress.ToString());
+                }
 			}
 
 			CallBackContent cbContent = new CallBackContent();

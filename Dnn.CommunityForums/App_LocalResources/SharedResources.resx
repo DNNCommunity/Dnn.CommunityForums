@@ -180,6 +180,9 @@
   <data name="[RESX:Pin].Text" xml:space="preserve">
     <value>Pin</value>
   </data>
+  <data name="[RESX:UnPin].Text" xml:space="preserve">
+    <value>Un-Pin</value>
+  </data>
   <data name="[RESX:Alert].Text" xml:space="preserve">
     <value>Alert</value>
   </data>
@@ -658,16 +661,16 @@
     <value>Preview</value>
   </data>
   <data name="[RESX:ForumSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Click to subscribe to this forum.</value>
+    <value>Subscribe to this forum</value>
   </data>
   <data name="[RESX:ForumSubscribe:TRUE].Text" xml:space="preserve">
-    <value>You are subscribed to this forum. Click to unsubscribe.</value>
+    <value>Unsubscribe from forum</value>
   </data>
   <data name="[RESX:TopicSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Check this box to subscribe to this topic</value>
+    <value>Subscribe to this topic</value>
   </data>
   <data name="[RESX:TopicSubscribe:TRUE].Text" xml:space="preserve">
-    <value>You are subscribed to this topic</value>
+    <value>Unsubscribe from topic</value>
   </data>
   <data name="[RESX:Avatar].Text" xml:space="preserve">
     <value>Avatar</value>
@@ -774,6 +777,12 @@
   <data name="[RESX:Unanswered].Text" xml:space="preserve">
     <value>Unanswered</value>
   </data>
+  <data name="[RESX:MostLiked].Text" xml:space="preserve">
+    <value>Most Liked</value>
+  </data>
+  <data name="[RESX:MostReplies].Text" xml:space="preserve">
+    <value>Most Replies</value>
+  </data>
   <data name="[RESX:ControlPanel].Text" xml:space="preserve">
     <value>Control Panel</value>
   </data>
@@ -845,6 +854,9 @@
   </data>
   <data name="[RESX:Delete].Text" xml:space="preserve">
     <value>Delete</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Ban</value>
   </data>
   <data name="[RESX:Edit].Text" xml:space="preserve">
     <value>Edit</value>
@@ -1041,6 +1053,9 @@ From,
   </data>
   <data name="[RESX:ReportContent].Text" xml:space="preserve">
     <value>Report Content</value>
+  </data>
+  <data name="[RESX:BanUser].Text" xml:space="preserve">
+    <value>Ban User (Remove Content and Unauthorize User)</value>
   </data>
   <data name="[RESX:Error:FloodControl].Text" xml:space="preserve">
     <value>You must wait at least {0} seconds between posts</value>
@@ -1267,8 +1282,11 @@ From,
   <data name="[RESX:SplitCancelConfirm].Text" xml:space="preserve">
     <value>Cancel split?</value>
   </data>
-  <data name="[RESX:FileName].Text" xml:space="preserve">
+	<data name="[RESX:FileName].Text" xml:space="preserve">
     <value>File Name</value>
+  </data>
+	<data name="[RESX:Folder].Text" xml:space="preserve">
+    <value>Folder</value>
   </data>
   <data name="[RESX:FileSize].Text" xml:space="preserve">
     <value>File Size</value>
@@ -1657,13 +1675,28 @@ From,
   <data name="[RESX:SubscribedForumTopicForumName].Text" xml:space="preserve">
     <value>Topic {0} on Subscribed Forum {1}</value>
   </data>
-	<data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve">
-        <value>Subscribed to this topic</value>
+  <data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve">
+    <value>Subscribed to this topic</value>
   </data>
-	<data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve">
-        <value>Subscribed to this forum</value>
-   </data>
-	<data name="[RESX:SUBSCRIBERS].Text" xml:space="preserve">
-        <value>Subscribers</value>
-   </data>
+  <data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve">
+    <value>Subscribed to this forum</value>
+  </data>
+  <data name="[RESX:SUBSCRIBERS].Text" xml:space="preserve">
+    <value>Subscribers</value>
+  </data>
+  <data name="[RESX:Rating].Text" xml:space="preserve">
+    <value>Rating</value>
+  </data>
+  <data name="[RESX:Moderator-Editor].Text" xml:space="preserve">
+    <value>Currently Editing the Content of Another Community Member</value>
+  </data>
+  <data name="[RESX:Community-Message-Intro].Text" xml:space="preserve">
+    <value>We would love to get in touch with you!</value>
+  </data>  
+  <data name="[RESX:Community-Message-Connect].Text" xml:space="preserve">
+    <value>How to provide feedback / stay up to date</value>
+  </data>  
+  <data name="[RESX:Community-Message-Help].Text" xml:space="preserve">
+    <value>Module manual / wiki</value>
+  </data>
 </root>

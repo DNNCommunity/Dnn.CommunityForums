@@ -33,8 +33,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TagCloud runat=server></{0}:TagCloud>")]
     public class TagCloud : WebControl
     {
-        private int _siteId = -1;
-        private int _instanceId = -1;
+        private int _PortalId = -1;
+        private int _ModuleId = -1;
         private string _cssOne = "tagcssone";
         private string _cssTwo = "tagcsstwo";
         private string _cssThree = "tagcssthree";
@@ -54,22 +54,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _siteId;
+                return _PortalId;
             }
             set
             {
-                _siteId = value;
+                _PortalId = value;
             }
         }
         public int ModuleId
         {
             get
             {
-                return _instanceId;
+                return _ModuleId;
             }
             set
             {
-                _instanceId = value;
+                _ModuleId = value;
             }
         }
         public string CSSOne
@@ -138,15 +138,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 forumUser = uc.GetUser(PortalId, ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
                 }
                 else
                 {
                     ForumIds = forumUser.UserForums;
                 }
             }
-            SettingsInfo _mainSettings = DataCache.MainSettings(ModuleId);
+            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
             Data.Common db = new Data.Common();
             IDataReader dr = db.TagCloud_Get(PortalId, ModuleId, ForumIds, TagCount);
             ControlUtils ctlUtils = new ControlUtils();

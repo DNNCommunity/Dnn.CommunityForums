@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    Visible = Permissions.HasAccess(EnabledRoles, UserRoles);
+                    Visible = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(EnabledRoles, UserRoles);
                 }
             }
             if (AuthRequired && !HttpContext.Current.Request.IsAuthenticated)
@@ -151,11 +151,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (string.IsNullOrEmpty(NavigateURL) && string.IsNullOrEmpty(Params))
             {
-                NavigateURL = Utilities.NavigateUrl(PageId);
+                NavigateURL = Utilities.NavigateURL(PageId);
             }
             else if (string.IsNullOrEmpty(NavigateURL) && !(string.IsNullOrEmpty(Params)))
             {
-                NavigateURL = Utilities.NavigateUrl(PageId, "", Params.Split(','));
+                NavigateURL = Utilities.NavigateURL(PageId, "", Params.Split(','));
             }
             string sTitle = " title=";
             if (!(string.IsNullOrEmpty(Title)))

@@ -175,13 +175,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		public string RenderView()
 		{
 			StringBuilder sb = new StringBuilder();
-			Forum forumInfo = null;
+			DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = null;
 			string groupPrefix = string.Empty;
 			string forumPrefix = string.Empty;
 			if (ForumId > 0)
 			{
 				ForumController fc = new ForumController();
-				forumInfo = fc.GetForum(PortalId, ModuleId, ForumId);
+				forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, ForumId);
 				if (forumInfo != null)
 				{
 					groupPrefix = forumInfo.ForumGroup.PrefixURL;

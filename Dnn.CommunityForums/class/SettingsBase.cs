@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Reflection;
 using System.Web;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -57,8 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string forums;
                 if (string.IsNullOrEmpty(ForumUser.UserForums))
                 {
-                    var fc = new ForumController();
-                    forums = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
+                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
                     ForumUser.UserForums = forums;
                 }
                 else
@@ -77,13 +77,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return _forumModuleId;
                 }
-                return ModuleId;
+                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ModuleId, TabId);
             }
             set
             {
                 _forumModuleId = value;
             }
         }
+
+        
 
         public int ForumTabId
         {
@@ -150,18 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private bool _ShowToolbar = true;
-        public bool ShowToolbar
-        {
-            get
-            {
-                return _ShowToolbar;
-            }
-            set
-            {
-                _ShowToolbar = value;
-            }
-        }
+        public bool ShowToolbar { get; set; } = true;
         #endregion
 
         public UserController UserController
@@ -179,20 +170,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public ForumController ForumController
-        {
-            get
-            {
-                const string forumControllerContextKey = "AF|ForumController";
-                var forumController = HttpContext.Current.Items[forumControllerContextKey] as ForumController;
-                if (forumController == null)
-                {
-                    forumController = new ForumController();
-                    HttpContext.Current.Items[forumControllerContextKey] = forumController;
-                }
-                return forumController;
-            }
-        }
 
         public ForumsDB ForumsDB
         {
@@ -363,14 +340,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static SettingsInfo GetModuleSettings(int ModuleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.CacheRetrieve(string.Format(CacheKeys.MainSettings, ModuleId));
+            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId));
             if (objSettings == null && ModuleId > 0)
             {
                 objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.CacheStore(string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
             return objSettings;
-
+            
         }
         public SettingsInfo MainSettings
         {
@@ -385,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemesLocation, "/", MainSettings.Theme, "/images"));
+                return Page.ResolveUrl(string.Concat(MainSettings.ThemeLocation, "/images"));
             }
         }
 
@@ -419,7 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Protected Methods
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return Utilities.GetUserDate(displayDate, ModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
+            return Utilities.GetUserDate(displayDate, ForumModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
         }
 
         protected string GetServerDateTime(DateTime DisplayDate)
@@ -442,11 +419,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Public Methods
         public string NavigateUrl(int TabId)
         {
-            return Utilities.NavigateUrl(TabId);
+            return Utilities.NavigateURL(TabId);
         }
         public string NavigateUrl(int TabId, string ControlKey, params string[] AdditionalParameters)
         {
-            return Utilities.NavigateUrl(TabId, ControlKey, AdditionalParameters);
+            return Utilities.NavigateURL(TabId, ControlKey, AdditionalParameters);
         }
         private string[] AddParams(string param, string[] currParams)
         {

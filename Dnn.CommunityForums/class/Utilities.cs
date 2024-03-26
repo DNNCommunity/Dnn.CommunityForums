@@ -22,84 +22,52 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.IO;
 using System.Web;
-using System.Reflection;
 using System.Web.UI.WebControls;
-using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Security.Roles;
 using DotNetNuke.Framework;
-using System.Web.UI;
+using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public abstract partial class Utilities
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
-
-
-        /// <summary>
-        /// Calculates a friendly display string based on an input timespan
-        /// </summary>
-        public static string HumanFriendlyDate(DateTime displayDate, int instanceId, int timeZoneOffset)
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML)
         {
-            var newDate = DateTime.Parse(GetDate(displayDate, instanceId, timeZoneOffset));
-            var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
-            var delta = ts.TotalSeconds;
-            if (delta <= 1)
-                return GetSharedResource("[RESX:TimeSpan:SecondAgo]");
-
-            if (delta < 60)
-                return string.Format(GetSharedResource("[RESX:TimeSpan:SecondsAgo]"), ts.Seconds);
-
-            if (delta < 120)
-                return GetSharedResource("[RESX:TimeSpan:MinuteAgo]");
-
-            if (delta < (45 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:MinutesAgo]"), ts.Minutes);
-
-            if (delta < (90 * 60))
-                return GetSharedResource("[RESX:TimeSpan:HourAgo]");
-
-            if (delta < (24 * 60 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:HoursAgo]"), ts.Hours);
-
-            if (delta < (48 * 60 * 60))
-                return GetSharedResource("[RESX:TimeSpan:DayAgo]");
-
-            if (delta < (72 * 60 * 60))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:DaysAgo]"), ts.Days);
-
-            if (delta < Convert.ToDouble(new TimeSpan(24 * 32, 0, 0).TotalSeconds))
-                return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
-
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
-                return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
-
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
-                return GetSharedResource("[RESX:TimeSpan:YearAgo]");
-
-            return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
-
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML, HttpContext.Current.Request.Url);
         }
-
-        internal static string ParseTokenConfig(string template, string group, ControlsConfig config)
+        [Obsolete(message: "Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, true, true, HttpContext.Current.Request.Url);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string ImportFilter(int portalID, int moduleID)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
+        }
+        internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
                 return string.Empty;
 
-            if (!(template.Contains(Globals.ControlRegisterTag)))
-                template = Globals.ControlRegisterTag + template;
+            if (!(template.Contains(Globals.ForumsControlsRegisterAMTag)))
+                template = Globals.ForumsControlsRegisterAMTag + template;
 
             template = ParseSpacer(template);
 
-            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.List(group);
+            var li = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokensList(moduleId, group);
             if (li != null)
                 template = li.Aggregate(template, (current, tk) => current.Replace(tk.TokenTag, tk.TokenReplace));
 
@@ -109,37 +77,15 @@ namespace DotNetNuke.Modules.ActiveForums
             template = template.Replace("[PARAMKEYS:VIEWTYPE]", ParamKeys.ViewType);
             template = template.Replace("[PARAMKEYS:QUOTEID]", ParamKeys.QuoteId);
             template = template.Replace("[PARAMKEYS:REPLYID]", ParamKeys.ReplyId);
+            template = template.Replace("[PARAMKEYS:AUTHORID]", ParamKeys.AuthorId);
             template = template.Replace("[VIEWS:TOPICS]", Views.Topics);
             template = template.Replace("[VIEWS:TOPIC]", Views.Topic);
             template = template.Replace("[PAGEID]", config.PageId.ToString());
-            template = template.Replace("[SITEID]", config.SiteId.ToString());
-            template = template.Replace("[INSTANCEID]", config.InstanceId.ToString());
+            template = template.Replace("[SITEID]", config.PortalId.ToString());
+            template = template.Replace("[INSTANCEID]", config.ModuleId.ToString());
+            template = template.Replace("[PORTALID]", config.PortalId.ToString());
+            template = template.Replace("[MODULEID]", config.ModuleId.ToString());
 
-            return template;
-        }
-
-        internal static string ParseSecurityTokens(string template, string userRoles)
-        {
-            const string pattern = @"(\[AF:SECURITY:(.+?):(.+?)\])(.|\n)*?(\[/AF:SECURITY:(.+?):(.+?)\])";
-
-            var sKey = string.Empty;
-            var sReplace = string.Empty;
-
-            var regExp = new Regex(pattern);
-            var matches = regExp.Matches(template);
-            foreach (Match match in matches)
-            {
-                var sRoles = match.Groups[3].Value;
-                if (Permissions.HasAccess(sRoles, userRoles))
-                {
-                    template = template.Replace(match.Groups[1].Value, string.Empty);
-                    template = template.Replace(match.Groups[5].Value, string.Empty);
-                }
-                else
-                {
-                    template = template.Replace(match.Value, string.Empty);
-                }
-            }
             return template;
         }
 
@@ -148,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var sPath = filePath;
 
             if (!(sPath.Contains(@"\\")) && !(sPath.Contains(@":\")))
-                sPath = HttpContext.Current.Server.MapPath(filePath);
+                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(filePath);
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -167,24 +113,35 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sContents;
         }
-
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, int userId, CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        {
+            string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(forumModuleId, string.Format(CacheKeys.Toolbar, forumModuleId, currentUserType)));
+            if (string.IsNullOrEmpty(sToolbar))
+            {
+                sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
+                sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
+                DataCache.SettingsCacheStore(ModuleId: forumModuleId, cacheKey: string.Format(CacheKeys.Toolbar, forumModuleId ,currentUserType), sToolbar);
+            }
+            return sToolbar;
+        }
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
+            CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 
-            if (HttpContext.Current.Request.IsAuthenticated)
+            if (HttpContext.Current != null && HttpContext.Current.Request.IsAuthenticated)
             {
-                template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-file fa-fw fa-grey\"></i>&nbsp;[RESX:NotRead]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
-                template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-files-o fa-fw fa-grey\"></i>&nbsp;[RESX:MyTopics]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
-                template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i>&nbsp;[RESX:MySettings]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "afprofile", 1, -1, -1)));
+                template = template.Replace("[AF:TB:NotRead]", string.Format("<a href=\"{0}\"><i class=\"fa fa-eye-slash fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:NotRead]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "notread", 1, -1, -1)));
+                template = template.Replace("[AF:TB:MyTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-user fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MyTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mytopics", 1, -1, -1)));
+                template = template.Replace("[AF:TB:MySettings]", string.Format("<a href=\"{0}\"><i class=\"fa fa-cog fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:MySettings]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "afprofile", 1, -1, -1)));
 
                 if (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser)
-                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i>&nbsp;[RESX:ControlPanel]</a>", NavigateUrl(forumTabId, "EDIT", "mid=" + forumModuleId)));
+                    template = template.Replace("[AF:TB:ControlPanel]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bars fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:ControlPanel]</span></a>", NavigateURL(forumTabId, "EDIT", "mid=" + forumModuleId)));
                 else
                     template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
 
                 if (currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser || currentUserType == CurrentUserTypes.Admin)
-                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i>&nbsp;[RESX:Moderate]</a>", NavigateUrl(tabId, "", ParamKeys.ViewType + "=modtopics")));
+                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=modtopics")));
                 else
                     template = template.Replace("[AF:TB:ModList]", string.Empty);
             }
@@ -196,16 +153,43 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
             }
 
-            template = template.Replace("[AF:TB:Unanswered]", string.Format("<a href=\"{0}\"><i class=\"fa fa-file fa-fw fa-blue\"></i>&nbsp;[RESX:Unanswered]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "unanswered", 1, -1, -1)));
-            template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i>&nbsp;[RESX:ActiveTopics]</a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "activetopics", 1, -1, -1)));
-            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment fa-fw fa-blue\"></i>&nbsp;[RESX:FORUMS]</a>", NavigateUrl(tabId)));
+            template = template.Replace("[AF:TB:Unanswered]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unanswered]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "unanswered", 1, -1, -1)));
+            template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:ActiveTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "activetopics", 1, -1, -1)));
+            template = template.Replace("[AF:TB:MostLiked]", string.Format("<a href=\"{0}\"><i class=\"fa fa-thumbs-o-up fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostLiked]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mostliked", 1, -1, -1)));
+            template = template.Replace("[AF:TB:MostReplies]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comments fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostReplies]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, "mostreplies", 1, -1, -1)));
+            template = template.Replace("[AF:TB:Forums]", string.Format("<a href=\"{0}\"><i class=\"fa fa-home fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:FORUMS]</span></a>", NavigateURL(tabId)));
 
             // Search popup
-            var searchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
-            var advancedSearchUrl = NavigateUrl(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
+            var searchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=search", "f=" + forumId });
+            var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
             var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
-            template = template.Replace("[AF:TB:Search]", string.Format(@"<span class='aftb-search' data-searchUrl='{0}'><span class='aftb-search-link'><span><i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}</span><span class='ui-icon ui-icon-triangle-1-s'></span></span><span class='aftb-search-popup'><input type='text' placeholder='Search for...' maxlength='50'><button>[RESX:Search]</button><br /><a href='{1}'>[RESX:SearchAdvanced]</a><input type='radio' name='afsrt' value='0' checked='checked' />[RESX:SearchByTopics]<input type='radio' name='afsrt' value='1' />[RESX:SearchByPosts]</span></span>", HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
+
+            template = template.Replace("[AF:TB:Search]", string.Format(@"
+<div class='dcf-quick-search aftb-search' data-searchUrl='{0}'>
+    <span class='dcf-search-link aftb-search-link'>
+        <span>
+            <i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}
+        </span>
+        <span class='ui-icon ui-icon-triangle-1-s'>
+        </span>
+    </span>
+    <div class='dcf-search-popup aftb-search-popup'>
+        <div class='dcf-search-input'>
+            <input class='dcf-search-input' type='text' placeholder='Search for...' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
+        </div>
+        <div class='dcf-search-options'>
+            <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
+            <span class='dcf-search-option-topics'>
+                <input type='radio' name='afsrt' value='0' checked='checked' /><span class='dcf-search-option-text'>[RESX:SearchByTopics]</span>
+            </span>
+            <span class='dcf-search-option-posts'>
+                <input type='radio' name='afsrt' value='1' /><span class='dcf-search-option-text'>[RESX:SearchByPosts]</span>
+            </span>
+        </div>
+    </div>
+</div>", 
+HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);
@@ -226,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return text;
         }
-        internal static bool HasFloodIntervalPassed(int floodInterval, User user, Forum forumInfo)
+        internal static bool HasFloodIntervalPassed(int floodInterval, User user, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             /* flood interval check passes if
             1) flood interval <= 0 (disabled)
@@ -240,10 +224,10 @@ namespace DotNetNuke.Modules.ActiveForums
                    || user == null
                    || user.IsAdmin
                    || user.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
-                   || Permissions.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
-                   || Permissions.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
-                   || Permissions.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
+                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
                    || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval
                    || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastReply, DateTime.UtcNow) > floodInterval;
         }
@@ -270,7 +254,52 @@ namespace DotNetNuke.Modules.ActiveForums
             var nfi = new CultureInfo("en-US", false).DateTimeFormat;
             return DateTime.Parse("1/1/1900", nfi).ToUniversalTime();
         }
-
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings()
+        {
+            try
+            {
+                if (HttpContext.Current?.Items["PortalSettings"] != null)
+                {
+                    return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                }
+                else
+                {
+                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings();
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return null;
+            }
+        }
+        public static DotNetNuke.Entities.Portals.PortalSettings GetPortalSettings(int portalId)
+        {
+            try
+            {
+                PortalSettings portalSettings = null;
+                if (HttpContext.Current?.Items["PortalSettings"] != null)
+                {
+                    portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                    if (portalSettings.PortalId != portalId)
+                    {
+                        portalSettings = null;
+                    }
+                }
+                if (portalSettings == null)
+                {
+                    portalSettings = new PortalSettings(portalId);
+                    PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
+                    psc.LoadPortalSettings(portalSettings);
+                }
+                return portalSettings;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return null;
+            }
+        }
         public static string GetHost()
         {
             string strHost;
@@ -284,32 +313,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return strHost.ToLowerInvariant();
         }
-
-        public static string NavigateUrl(int tabId)
+        public static string NavigateURL(int tabId)
         {
-            return Common.Globals.NavigateURL(tabId);
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId);
         }
-
-        public static string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
+        public static string NavigateURL(int tabId, string controlKey, params string[] additionalParameters)
         {
-            return NavigateUrl(tabId, controlKey, string.Empty, -1, additionalParameters);
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
         }
-
-        public static string NavigateUrl(int tabId, string controlKey, List<string> additionalParameters)
-        {
-
-            string[] parameters = new string[additionalParameters.Count];
-            for (int i = 0; i < additionalParameters.Count; i++)
-            {
-                parameters[i] = additionalParameters[i];
-            }
-            return NavigateUrl(tabId, controlKey, parameters);
-        }
-
-        public static string NavigateUrl(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
+        public static string NavigateURL(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
             var currParams = additionalParameters.ToList();
-            var s = Common.Globals.NavigateURL(tabId, controlKey, currParams.ToArray());
+            string s = new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
                 return s;
 
@@ -317,17 +332,11 @@ namespace DotNetNuke.Modules.ActiveForums
             var ti = tc.GetTab(tabId, portalId, false);
             var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
-            var portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             pageName = CleanStringForUrl(pageName);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
             s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
             return s;
         }
-
-        public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue)
-        {
-            BindEnum(pDDL, enumType, pColValue, addEmptyValue, false, -1);
-        }
-
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)
         {
             pDDL.Items.Clear();
@@ -363,7 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = RemoveFilterWords(portalId, moduleId, themePath, text);
+                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text,true, !allowHTML, HttpContext.Current.Request.Url);
 
                 return text;
             }
@@ -375,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = RemoveFilterWords(portalId, moduleId, themePath, text);
+                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text, true, !allowHTML, HttpContext.Current.Request.Url);
 
                 return text;
             }
@@ -489,11 +498,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sClean;
         }
-
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
 
-            var strMessage = HTMLEncode(text);
+            var strMessage = HttpUtility.HtmlEncode(text);
 
             if (strMessage != string.Empty)
             {
@@ -513,9 +521,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url); 
 
-                    strMessage = HTMLEncode(strMessage);
+                    strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
 
                     i = 0;
@@ -530,10 +538,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (!allowHTML)
-                        strMessage = HTMLEncode(strMessage);
+                        strMessage = HttpUtility.HtmlEncode(strMessage);
 
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
                 }
@@ -556,7 +564,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var sCode = strMessage.Substring(intStart, intEnd - intStart);
                 strMessage = strMessage.Replace(sCode, "[CODEHOLDER]");
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -566,7 +574,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -590,130 +598,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return strReturn;
         }
 
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
-        {
-            if (removeHTML)
-            {
-                var newSubject = StripHTMLTag(strMessage);
-                if (newSubject == string.Empty)
-                {
-                    newSubject = strMessage.Replace("<", string.Empty);
-                    newSubject = newSubject.Replace(">", string.Empty);
-                }
-                strMessage = newSubject;
-            }
-
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sFind, sReplace.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (processEmoticons)
-                        {
-                            if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                                sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />", themePath, sReplace);
-
-                            strMessage = strMessage.Replace(sFind, sReplace);
-                        }
-                        break;
-
-                    case "REGEX":
-                        strMessage = Regex.Replace(strMessage, sFind.Trim(), sReplace, RegexOptions.IgnoreCase);
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            return strMessage;
-        }
-
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sReplace, sFind.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                        {
-                            sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\"  border=\"0\"  class=\"afEmoticon\" />", themePath, sReplace);
-                            strMessage = strMessage.Replace(sReplace, sFind);
-                        }
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            strMessage = ManageImagePath(strMessage);
-
-            return strMessage;
-        }
-
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            string @out;
-            try
-            {
-                var myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
-                if (File.Exists(myFile))
-                {
-                    StreamReader objStreamReader;
-                    try
-                    {
-                        objStreamReader = File.OpenText(myFile);
-                    }
-                    catch (Exception exc)
-                    {
-                        @out = exc.Message;
-                        return @out;
-                    }
-                    var strFilter = objStreamReader.ReadLine();
-                    while (strFilter != null)
-                    {
-                        var row = Regex.Split(strFilter, ",,");
-                        var sFind = row[0].Substring(1, row[0].Length - 2);
-                        var sReplace = row[1].Trim(' ');
-                        sReplace = sReplace.Substring(1, sReplace.Length - 2);
-                        var sType = row[2].Substring(1, row[2].Length - 2);
-                        DataProvider.Instance().Filters_Save(portalID, moduleID, -1, sFind, sReplace, sType);
-                        strFilter = objStreamReader.ReadLine();
-                    }
-                    objStreamReader.Close();
-                    @out = "Success";
-                }
-                else
-                {
-                    @out = string.Concat("File Not Found<br />Path:", myFile);
-                }
-            }
-            catch (Exception exc)
-            {
-                @out = exc.Message;
-            }
-
-            return @out;
-        }
-
         public static bool InputIsValid(string body)
         {
             if (string.IsNullOrEmpty(body))
@@ -726,32 +610,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return !string.IsNullOrEmpty(body.Replace("&nbsp;", string.Empty));
         }
-
-        public static string HTMLEncode(string strMessage = "")
-        {
-            if (strMessage != string.Empty)
-            {
-                strMessage = strMessage.Replace(">", "&gt;");
-                strMessage = strMessage.Replace("<", "&lt;");
-            }
-
-            return strMessage;
-        }
-
-        public static string ParsePre(string strMessage)
-        {
-            var objRegEx = new Regex("<pre>(.*?)</pre>");
-            strMessage = "<code>" + HTMLDecode(objRegEx.Replace(strMessage, "$1")) + "</code>";
-            return strMessage;
-        }
-
-        public static string HTMLDecode(string strMessage)
-        {
-            strMessage = strMessage.Replace("&gt;", ">");
-            strMessage = strMessage.Replace("&lt;", "<");
-            return strMessage;
-        }
-
         public static string StripHTMLTag(string sText)
         {
             if (string.IsNullOrEmpty(sText))
@@ -918,19 +776,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return name.Length > 0 ? name : currentName;
         }
-
         internal static bool IsRewriteLoaded()
         {
-            try
-            {
-                /* handle situations where this code is called without an HttpContext */
-                var sConfig = GetFile((HttpContext.Current != null) ? HttpContext.Current.Server.MapPath("~/web.config") : System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
-                return sConfig.Contains("DotNetNuke.Modules.ActiveForums.ForumsReWriter");
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return ConfigUtils.IsRewriterInstalled(System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
         }
         internal static bool UseFriendlyURLs(int ModuleId)
         {
@@ -963,39 +811,48 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sContents;
         }
-
-        public static string ManageImagePath(string sHTML)
+        internal static string MapPath(string path)
         {
-            var strHost = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host);
-            return ManageImagePath(sHTML, strHost);
+            try
+            {
+                /* handle situations where method is called without an HttpContext */
+                return (HttpContext.Current != null) ? HttpContext.Current.Server.MapPath(path) : System.Web.Hosting.HostingEnvironment.MapPath(path);
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return path;
+            }
         }
 
-        public static string ManageImagePath(string sHTML, string hostURL)
+
+
+
+        public static string ManageImagePath(string sHTML, Uri hostUri)
         {
-            var strHost = hostURL.ToLower();
+            string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();
 
             var iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
             while (iStart != -1)
             {
-                sHTML = sHTML.Insert(iStart + 5, strHost);
+                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
                 iStart = sHTML.IndexOf("src='/", StringComparison.Ordinal);
             }
 
             iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
             while (iStart != -1)
             {
-                sHTML = sHTML.Insert(iStart + 5, strHost);
+                sHTML = sHTML.Insert(iStart + 5, hostWithScheme);
                 iStart = sHTML.IndexOf("src=\"/", StringComparison.Ordinal);
             }
 
             return sHTML;
         }
-
         internal static string GetFileContent(string filePath)
         {
             var sPath = filePath;
             if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
-                sPath = HttpContext.Current.Server.MapPath(sPath);
+                sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
 
             var sContents = string.Empty;
             if (File.Exists(sPath))
@@ -1020,7 +877,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var mUserOffSet = 0;
-                var mainSettings = DataCache.MainSettings(mid);
+                var mainSettings = SettingsBase.GetModuleSettings(mid);
                 var mServerOffSet = mainSettings.TimeZoneOffset;
                 var newDate = displayDate.AddMinutes(-mServerOffSet);
 
@@ -1050,18 +907,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
         {
-            var mainSettings = DataCache.MainSettings(mid);
+            var mainSettings = SettingsBase.GetModuleSettings(mid);
             var mServerOffSet = mainSettings.TimeZoneOffset;
             var newDate = displayDate.AddMinutes(-mServerOffSet);
 
             return newDate.AddMinutes(offset);
         }
-        
+
         public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
         {
             return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
         }
-        
+
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
@@ -1097,7 +954,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
         }
-        
+
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
@@ -1150,13 +1007,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
         {
-            return GetTimeZoneOffsetForUser( new DotNetNuke.Entities.Users.UserController().GetUser(PortalId,UserId));
+            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, UserId));
         }
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
         {
             return displayDate.AddMinutes(offset.TotalMinutes);
         }
-        
+
         public static string GetLastPostSubject(int lastPostID, int parentPostID, int forumID, int tabID, string subject, int length, int pageSize, int replyCount, bool canRead)
         {
             var sb = new StringBuilder();
@@ -1178,11 +1035,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + lastPostID, ParamKeys.PageJumpId + "=" + intPages };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HTMLEncode(subject));
+                        sb.Append(HttpUtility.HtmlEncode(subject));
                     }
                 }
                 else
@@ -1190,11 +1047,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (canRead)
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + lastPostID };
-                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Common.Globals.NavigateURL(tabID, string.Empty, Params), postId, HTMLEncode(subject));
+                        sb.AppendFormat("<a href=\"{0}#{1}\" rel=\"nofollow\">{2}</a>", Utilities.NavigateURL(tabID, string.Empty, Params), postId, System.Web.HttpUtility.HtmlEncode(subject));
                     }
                     else
                     {
-                        sb.Append(HTMLEncode(subject));
+                        sb.Append(HttpUtility.HtmlEncode(subject));
                     }
 
                 }
@@ -1402,14 +1259,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return contents;
         }
-
-        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
+        public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
-            var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(forumId, -1, false, true);
+            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
             if (fi == null)
                 return null;
 
@@ -1424,7 +1278,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     continue;
 
                 var rid = Convert.ToInt32(r);
-                var rName = rc.GetRole(rid, portalId).RoleName;
+                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
                 foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);
@@ -1608,6 +1462,71 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (selectedItem != null)
                 selectedItem.Selected = true;
+        }
+        internal static int GetForumModuleId(int ModuleId, int TabId)
+        {
+            int moduleId = ModuleId;
+            if (ModuleId > 0)
+            {
+                if (TabId > 0)
+                {
+                    if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                    {
+                        moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                    }
+                }
+            }
+            return moduleId;
+        }
+        internal static void CopyFolder(DirectoryInfo source, DirectoryInfo target)
+        {
+            try
+            {
+                if (!target.Exists)
+                {
+                    target.Create();
+                }
+                foreach (var file in source.GetFiles())
+                {
+                    file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name),overwrite: true);
+                }
+                foreach (var subDir in source.GetDirectories()) 
+                { 
+                    CopyFolder(subDir, new DirectoryInfo( System.IO.Path.Combine(target.FullName, subDir.Name)));
+                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+        }
+        internal static void DeleteFolder(DirectoryInfo dir)
+        {
+            try
+            {
+                if (dir.Exists)
+                {  
+                    foreach (var file in dir.GetFiles())
+                    {
+                            file.Delete();
+                    }
+                    foreach (var subDir in dir.GetDirectories())
+                    {
+                        DeleteFolder(subDir);
+                    }
+                    dir.Delete();
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+            }
+        }
+        internal static void UpdateModuleLastContentModifiedOnDate(int ModuleId)
+        {
+            // signal to platform that module has updated content in order to be included in incremental search crawls
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
     }
 }

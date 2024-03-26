@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Linq;
 using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -58,9 +58,9 @@ namespace DotNetNuke.Modules.ActiveForums
 							int TagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
 							if (SimulateIsNumeric.IsNumeric(TagId))
 							{
-								DataProvider.Instance().Tags_Delete(PortalId, ModuleId, TagId);
-							}
-							break;
+                                new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(TagId);
+                            }
+                            break;
 						}
 						case "SAVE":
 						{
@@ -111,19 +111,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
 			Data.ForumsDB fdb = new Data.ForumsDB();
-			ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
-			ForumCollection filteredForums = new ForumCollection();
-			foreach (Forum f in allForums)
-			{
-				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
-				{
-					f.TabId = TabId;
-					f.SubForums = GetSubForums(allForums, f.ForumID);
-					filteredForums.Add(f);
-				}
-			}
+			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
+			var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0);
 			int tmpGroupId = -1;
-			foreach (Forum f in filteredForums)
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
 			{
 				if (! (tmpGroupId == f.ForumGroupId))
 				{
@@ -133,30 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums
 				drpForums.Items.Add(new ListItem(" - " + f.ForumName, "FORUM" + f.ForumID.ToString()));
 				if (f.SubForums != null && f.SubForums.Count > 0)
 				{
-					foreach (Forum ff in f.SubForums)
+					foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ff in f.SubForums)
 					{
 						drpForums.Items.Add(new ListItem(" ---- " + ff.ForumName, "FORUM" + ff.ForumID.ToString()));
 					}
 				}
 			}
-			//Dim dr As IDataReader = DataProvider.Instance.Forums_List(PortalId, ModuleId, -1, -1, False)
-
-
-			//While dr.Read
-			//    If Not tmpGroupId = CInt(dr("ForumGroupId")) Then
-			//        drpForums.Items.Add(New ListItem(dr("GroupName").ToString, "GROUP" & dr("ForumGroupId").ToString))
-			//        tmpGroupId = CInt(dr("ForumGroupId"))
-			//    End If
-			//    If Not CInt(dr("ForumId")) = 0 Then
-			//        If CInt(dr("ParentForumID")) = 0 Then
-			//            drpForums.Items.Add(New ListItem(" - " & dr("ForumName").ToString, "FORUM" & dr("ForumId").ToString))
-			//        End If
-			//        'If CInt(dr("ParentForumID")) > 0 Then
-			//        '    drpForums.Items.Add(New ListItem(" ---- " & dr("ForumName").ToString, "FORUM" & dr("ForumId").ToString))
-			//        'End If
-			//    End If
-			//End While
-			//dr.Close()
 		}
 		private void agCategories_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
 		{
@@ -164,18 +137,17 @@ namespace DotNetNuke.Modules.ActiveForums
             //e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
             e.Item[6] = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
-        private ForumCollection GetSubForums(ForumCollection forums, int forumId)
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums, int forumId)
 		{
-			ForumCollection subforums = null;
-			foreach (Forum s in forums)
+			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection subforums = null;
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in forums)
 			{
 				if (s.ParentForumId == forumId)
 				{
 					if (subforums == null)
 					{
-						subforums = new ForumCollection();
+						subforums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
 					}
-					s.TabId = TabId;
 					subforums.Add(s);
 				}
 			}
