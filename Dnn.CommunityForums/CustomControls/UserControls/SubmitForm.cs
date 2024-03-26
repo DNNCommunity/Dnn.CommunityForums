@@ -648,8 +648,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
             {
-                var objUtils = new emoticons();
-               template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation), EditorType ) + "</fieldset>");
             }
             else
             {

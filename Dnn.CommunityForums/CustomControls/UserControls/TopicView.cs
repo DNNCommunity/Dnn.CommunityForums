@@ -1585,7 +1585,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(body))
                 body = " <br />";
 
-            var sBody = Utilities.ManageImagePath(body);
+            var sBody = Utilities.ManageImagePath(body, HttpContext.Current.Request.Url);
 
             sBody = sBody.Replace("[", "&#91;");
             sBody = sBody.Replace("]", "&#93;");

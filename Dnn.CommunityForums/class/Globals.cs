@@ -121,6 +121,12 @@ namespace DotNetNuke.Modules.ActiveForums
         UserBanned
     }
 
+    public class FilterTypes
+    {
+        public const string EMOTICON = "EMOTICON";
+        public const string MARKUP = "MARKUP";
+        public const string REGEX = "REGEX";
+    }
     #endregion
 
     public class Globals
@@ -135,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public const string ModuleName = "Active Forums";
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
+        public const string ModuleConfigPath = Globals.ModulePath + "config/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
         public const string TemplatesPath = Globals.ModulePath + "templates/";
