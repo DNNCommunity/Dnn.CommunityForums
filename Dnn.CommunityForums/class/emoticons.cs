@@ -18,49 +18,24 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System;
 using System.Data;
 using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+	[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
 	public class emoticons
 	{
-		public string LoadEmoticons(EditorTypes Type, int ModuleId, string ImagePath)
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
+        public string LoadEmoticons(EditorTypes Type, int ModuleId, string ImagePath)
 		{
-			return RegisterEmotIcons(ModuleId, ImagePath, Type);
+			return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, Type);
 		}
-
-		public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
+        public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
 		{
-			string strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");
-			var sb = new System.Text.StringBuilder();
-			IDataReader dr = DataProvider.Instance().Filters_GetEmoticons(ModuleId);
-			sb.Append("<div id=\"emotions\" class=\"afemoticons\"><div id=\"emotions\" style=\"width:100%; height:100%;align:center;\">");
-			int i = 0;
-			while (dr.Read())
-			{
-				string sEmotPath = ImagePath + dr["Replace"];
-				string sInsert;
-				if (InsertType == EditorTypes.TEXTBOX)
-				{
-					sInsert = dr["Find"].ToString();
-				}
-				else
-				{
-                    sInsert = $"<img src=\\'{sEmotPath}\\' />";
-                }
-                sb.AppendFormat("<span class=\"afEmot\" style=\"width:20px;height:20px;cursor:hand;\" unselectable=\"on\" onclick=\"amaf_insertHTML('{0}')\"><img onmousedown=\"return false;\" src=\"{1}\" width=\"20\" height=\"20\" title=\"{2}\" /></span>", sInsert, sEmotPath, dr["Find"]);
-
-                i += 1;
-				if (i % 2 == 0)
-				{
-					sb.Append("<br />");
-				}
-			}
-			dr.Close();
-			sb.Append("</div></div>");
-
-			return sb.ToString();
+			return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, InsertType);
         }
-	}
+    }
 }
