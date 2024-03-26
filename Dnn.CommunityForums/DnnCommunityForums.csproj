@@ -1119,6 +1119,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\EmoticonController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\RepositoryControllerBase.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />

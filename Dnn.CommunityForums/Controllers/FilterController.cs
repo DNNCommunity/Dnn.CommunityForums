@@ -22,9 +22,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
+using DotNetNuke.Collections;
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -32,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class FilterController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.FilterInfo>
     {
 
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
+        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML, Uri hostUri)
         {
             if (removeHTML)
             {
@@ -44,21 +46,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 strMessage = newSubject;
             }
-
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
+            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Get(moduleId).OrderBy(f => f.FilterId).Take(100000).ForEach(filter =>
             {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
+                var sReplace = filter.Replace;
+                var sFind = filter.Find;
+                switch (filter.FilterType.ToUpper())
                 {
-                    case "MARKUP":
+                    case FilterTypes.MARKUP:
                         strMessage = strMessage.Replace(sFind, sReplace.Trim());
                         break;
 
-                    case "EMOTICON":
+                    case FilterTypes.EMOTICON:
                         if (processEmoticons)
                         {
                             if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
@@ -68,55 +66,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         }
                         break;
 
-                    case "REGEX":
+                    case FilterTypes.REGEX:
                         strMessage = Regex.Replace(strMessage, sFind.Trim(), sReplace, RegexOptions.IgnoreCase);
                         break;
                 }
 
-            }
-            dr.Close();
-
+            });
             return strMessage;
         }
 
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sReplace, sFind.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                        {
-                            sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\"  border=\"0\"  class=\"afEmoticon\" />", themePath, sReplace);
-                            strMessage = strMessage.Replace(sReplace, sFind);
-                        }
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            strMessage = DotNetNuke.Modules.ActiveForums.Utilities.ManageImagePath(strMessage);
-
-            return strMessage;
-        }
 
         public static string ImportFilter(int portalID, int moduleID)
         {
             string @out;
             try
             {
-                var myFile = HttpContext.Current.Server.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
+                var myFile = Utilities.MapPath(string.Concat(Globals.ModuleConfigPath, "/Filters.txt"));
                 if (File.Exists(myFile))
                 {
                     StreamReader objStreamReader;
@@ -154,6 +119,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return @out;
+        }
+
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.FilterInfo> GetEmoticons(int moduleID)
+        {
+            return Repo.Find("WHERE ModuleId = @0 AND FilterType = @1", moduleID, FilterTypes.EMOTICON);
         }
     }
 }
