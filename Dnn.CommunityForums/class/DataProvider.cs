@@ -50,8 +50,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract int Filters_Save(int PortalId, int ModuleId, int FilterId, string Find, string Replace, string FilterType); 
         
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
-        public abstract IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId);
-        
+        public abstract IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId); 
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetEmoticons()")]
         public abstract IDataReader Filters_GetEmoticons(int ModuleId);
         
         public abstract IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn); 
