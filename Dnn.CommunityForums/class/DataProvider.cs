@@ -82,9 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Groups
         public abstract void Groups_Delete(int ModuleID, int ForumGroupID);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Groups_Get(int ModuleId, int ForumGroupID);
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
         public abstract IDataReader Groups_List(int ModuleId);
         public abstract void Groups_Move(int ModuleId, int ForumGroupId, int SortDirection);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract int Groups_Save(int PortalId, int ModuleId, int ForumGroupId, string GroupName, int SortOrder, bool Active, bool Hidden, int PermissionsId, string PrefixURL);
         #endregion
 
@@ -162,6 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract IDataReader Subscriptions_GetDigest(string SubscriptionType, DateTime StartDate);
         public abstract IDataReader Subscriptions_GetSubscribers(int PortalId, int ForumId, int TopicId, int Mode);
         public abstract int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract int Subscriptions_IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId);
         #endregion
 
@@ -195,8 +199,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
         public abstract int Topics_GetRating(int TopicId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Topics_List(int ForumId, int PortalId, int ModuleId);
         public abstract void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Topics_Replies(int TopicId);
         public abstract int Topics_Save(int PortalId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int TopicPriority, string URL, string TopicData);
         public abstract int Topics_SaveToForum(int ForumId, int TopicId, int LastReplyId);
