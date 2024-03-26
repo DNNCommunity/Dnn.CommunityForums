@@ -63,7 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
                         SendFrom = m.EmailFrom,
                         SendTo = m.EmailTo,
                         Body = m.EmailBody,
-                        BodyText = m.EmailBodyPlainText,
                     };
 
                     var canDelete = DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(message);

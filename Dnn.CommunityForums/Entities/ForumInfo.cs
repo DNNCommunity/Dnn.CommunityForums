@@ -316,6 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public int CreatePostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.CreatePostCount]);
 
+        [IgnoreColumn()]
         /// <summary>
         /// Minimum posts required to reply to a topic in this forum if the user is not trusted
         /// </summary>

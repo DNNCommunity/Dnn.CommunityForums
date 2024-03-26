@@ -40,12 +40,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int ModuleId;
         public string Subject;
         public string From;
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyText;
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyHTML;
         public string Body;
 
-        public List<SubscriptionInfo> Recipients;
+        public List<string> Recipients;
     }
 }

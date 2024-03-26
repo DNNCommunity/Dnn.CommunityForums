@@ -26,8 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
     public class Message : DotNetNuke.Modules.ActiveForums.Entities.Message
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send().")]
-        public bool SendMail()
-        { return DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(this); }
+        public bool SendMail() => DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(this);
     }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
     public class Controller : DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController

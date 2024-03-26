@@ -198,6 +198,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId)));
                         }
                     }
+                    Forums = (DotNetNuke.Modules.ActiveForums.Entities.ForumCollection)Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder);
+                    
+
                     string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
                     string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
 
@@ -421,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (canSubscribe)
                 {
-                    bool IsSubscribed = Subscriptions.IsSubscribed(PortalId, ForumModuleId, fi.ForumID, 0, SubscriptionTypes.Instant, CurrentUserId);
+                    bool IsSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
                     string sAlt = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
                     string sImg = ThemePath + "images/email_unchecked.png";
                     if (IsSubscribed)

@@ -24,7 +24,7 @@ using System;
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
 
-public class Message
+    public class Message
     {
         public int PortalId;
         public int ModuleId;
@@ -32,7 +32,6 @@ public class Message
         public string SendFrom;
         public string SendTo;
         public string Body;
-        public string BodyText;
 
     }
 }

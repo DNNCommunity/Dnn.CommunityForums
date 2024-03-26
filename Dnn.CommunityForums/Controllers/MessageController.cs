@@ -35,9 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-                var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo { Email = message.SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
-                subs.Add(si);
+                var recipients = new List<string>();
+                recipients.Add(message.SendTo);
                 try
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
@@ -46,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         From = message.SendFrom,
                         ModuleId = message.ModuleId,
                         PortalId = message.PortalId,
-                        Recipients = subs,
+                        Recipients = recipients,
                         Subject = message.Subject,
                     });
                     return true;
