@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal void DeleteByModuleId(int ModuleId)
         {
-            Repo.Delete("WHERE ModuleId = @0", ModuleId);
+            Repo.Delete("WHERE (ModuleId = @0)", ModuleId);
         }
         internal int Count(string sqlCondition, params object[] args)
         {
