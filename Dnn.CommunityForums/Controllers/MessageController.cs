@@ -35,25 +35,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                var subs = new List<SubscriptionInfo>();
-                var si = new SubscriptionInfo { Email = message.SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
+                var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
+                var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo { Email = message.SendTo, DisplayName = string.Empty, LastName = string.Empty, FirstName = string.Empty };
                 subs.Add(si);
                 try
                 {
-                    // var objThread = new System.Threading.Thread(
                     DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
                     {
-                        BodyHTML = message.Body,
-                        BodyText = message.BodyText,
+                        Body = message.Body,
                         From = message.SendFrom,
                         ModuleId = message.ModuleId,
                         PortalId = message.PortalId,
                         Recipients = subs,
                         Subject = message.Subject,
                     });
-                    ;
-                    ;
-                    //objThread.Start();
                     return true;
                 }
                 catch (Exception ex)

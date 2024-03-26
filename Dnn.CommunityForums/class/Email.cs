@@ -36,20 +36,10 @@ using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class Email
-    {
-        public int PortalId;
-        public string Subject;
-        public string From;
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyText;
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyHTML;
-        public string Body;
-
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Email.")]
     public class Email : DotNetNuke.Modules.ActiveForums.Entities.Email
-    {
+    { 
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEMail().")]
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author)
         {
@@ -99,6 +89,5 @@ namespace DotNetNuke.Modules.ActiveForums
                 Recipients = this.Recipients
             });
         }
-        #endregion  
     }
 }

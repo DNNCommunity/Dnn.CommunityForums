@@ -206,6 +206,9 @@
     <Content Include="config\templates\AdminWatchEmail.txt" />
     <Content Include="config\templates\AdminWatchEmail_plaintext.txt" />
     <None Include="ActiveForums_Symbols.dnn">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Content Include="config\templates\AdminWatchEmail.ascx" />
     <None Include="DnnCommunityForums_Symbols.dnn">
       <SubType>Designer</SubType>

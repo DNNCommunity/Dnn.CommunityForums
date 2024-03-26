@@ -49,18 +49,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var tc = new TemplateController();
             var ti = tc.Template_Get(templateId, portalId, moduleId);
             var subject = TemplateUtils.ParseEmailTemplate(ti.Subject, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            var bodyText = TemplateUtils.ParseEmailTemplate(ti.TemplateText, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            var bodyHTML = TemplateUtils.ParseEmailTemplate(ti.TemplateHTML, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
-            bodyText = bodyText.Replace("[REASON]", comments);
-            bodyHTML = bodyHTML.Replace("[REASON]", comments);
+            var body = TemplateUtils.ParseEmailTemplate(ti.Template, string.Empty, portalId, moduleId, tabId, forumId, topicId, replyId, string.Empty, author.AuthorId, Utilities.GetCultureInfoForUser(portalId, author.AuthorId), Utilities.GetTimeZoneOffsetForUser(portalId, author.AuthorId));
+            body = body.Replace("[REASON]", comments);
             var fc = new ForumController();
             var fi = fc.Forums_Get(forumId, -1, false, true);
             var sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
 
             //Send now
 
-            var subs = new List<SubscriptionInfo>();
-            var si = new SubscriptionInfo
+            var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
+            var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
                 DisplayName = author.DisplayName,
                 Email = author.Email,
@@ -71,18 +69,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             };
 
             subs.Add(si);
-            //new Thread(
             DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
             {
-                BodyHTML = bodyHTML,
-                BodyText = bodyText,
+                Body = body,
                 From = sFrom,
                 ModuleId = moduleId,
                 PortalId = portalId,
                 Recipients = subs,
                 Subject = subject
             });
-            //.Start();
         }
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments)
         {
