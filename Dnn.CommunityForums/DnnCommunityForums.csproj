@@ -1120,12 +1120,15 @@
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\EmoticonController.cs" />
+    <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\RepositoryControllerBase.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
     <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Deprecated\MiniPager.cs" />
     <Compile Include="Deprecated\Utilities.cs" />

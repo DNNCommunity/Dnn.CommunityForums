@@ -25,6 +25,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -318,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var topicTemplateID = ForumInfo.TopicTemplateId;
                     message = Utilities.CleanString(PortalId, message, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, ImagePath, ForumInfo.AllowEmoticons);
-                    message = Utilities.ManageImagePath(message);
+                    message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
                     var uc = new UserController();
                     var up = uc.GetUser(PortalId, ForumModuleId, UserId) ?? new User
                     {
