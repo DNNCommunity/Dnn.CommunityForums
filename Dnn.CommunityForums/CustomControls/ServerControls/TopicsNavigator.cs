@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			if (ForumId > 0)
 			{
-				if (Permissions.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
+				if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
 				{
 					tb.ForumIds = ForumId.ToString();
 				}

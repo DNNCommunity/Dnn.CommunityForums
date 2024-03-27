@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string tmpForumKey = string.Empty;
             foreach (DataRow dr in dtForums.Rows)
             {
-                bool bView = Permissions.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
+                bool bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
                 string GroupName = Convert.ToString(dr["GroupName"]);
                 int GroupId = Convert.ToInt32(dr["ForumGroupId"]);
                 string GroupKey = GroupName + GroupId.ToString();
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
                 {
-                    if (Permissions.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles))
                     {
                         string ForumName = dr["ForumName"].ToString();
 

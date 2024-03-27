@@ -361,10 +361,10 @@ namespace DotNetNuke.Modules.ActiveForums
             bCanMod = false;
             if (f != null)
             {
-                bModDelete = Permissions.HasPerm(f.Security.ModDelete, ForumUser.UserRoles);
-                bModApprove = Permissions.HasPerm(f.Security.ModApprove, ForumUser.UserRoles);
-                bModMove = Permissions.HasPerm(f.Security.ModMove, ForumUser.UserRoles);
-                bModEdit = Permissions.HasPerm(f.Security.ModEdit, ForumUser.UserRoles);
+                bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModDelete, ForumUser.UserRoles);
+                bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles);
+                bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModMove, ForumUser.UserRoles);
+                bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles);
                 if (bModDelete || bModApprove || bModMove || bModEdit)
                 {
                     bCanMod = true;

@@ -141,8 +141,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            bool canView = Permissions.HasPerm(ViewRoles, UserRoles);
-            bool canRead = Permissions.HasPerm(ReadRoles, UserRoles);
+            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ViewRoles, UserRoles);
+            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ReadRoles, UserRoles);
 
             if (Content != null)
             {

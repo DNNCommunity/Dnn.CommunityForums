@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public ForumGroupInfo()
 		{
-			Security = new PermissionInfo();
+			Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
 			PermissionsId = -1;
 			PrefixURL = string.Empty;
 			GroupSettings = new Hashtable();
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		#region Settings & Security
 
-		public PermissionInfo Security { get; set; }
+		public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
         public Hashtable GroupSettings { get; set; }
 
 		public bool AllowAttach
@@ -329,8 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var db = new Data.Groups();
 			ForumGroupInfo gi = null;
 			using (var dr = db.Groups_Get(moduleId, forumGroupId))
-			{
-				while (dr.Read())
+			{				while (dr.Read())
 				{
 					gi = FillForumGroup(dr);
 				}
@@ -420,20 +419,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public int Groups_Save(int portalId, ForumGroupInfo fg, bool isNew)
 		{
-			var rc = new Security.Roles.RoleController();
-			var db = new Data.Common();
 			
 			var permissionsId = -1;
 			if (fg.PermissionsId == -1)
 		{
-				fg.PermissionsId = db.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
-				permissionsId = fg.PermissionsId;
+				fg.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+
+                permissionsId = fg.PermissionsId;
 			}
 		   
 			var groupId = DataProvider.Instance().Groups_Save(portalId, fg.ModuleId, fg.ForumGroupId, fg.GroupName, fg.SortOrder, fg.Active, fg.Hidden, fg.PermissionsId, fg.PrefixURL);
 			if (isNew)
 			{
-				Permissions.CreateDefaultSets(portalId, permissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
 				var sKey = "G:" + groupId.ToString();
 				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, "0");
 				Settings.SaveSetting(fg.ModuleId, sKey, ForumSettingKeys.TopicTemplateId, "0");

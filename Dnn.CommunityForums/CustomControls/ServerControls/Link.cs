@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    Visible = Permissions.HasAccess(EnabledRoles, UserRoles);
+                    Visible = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(EnabledRoles, UserRoles);
                 }
             }
             if (AuthRequired && !HttpContext.Current.Request.IsAuthenticated)

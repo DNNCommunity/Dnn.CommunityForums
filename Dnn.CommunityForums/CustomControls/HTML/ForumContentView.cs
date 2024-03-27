@@ -233,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				string sSubforums = string.Empty;
 				while (dr.Read())
 				{
-					if (Permissions.HasPerm(dr["CanRead"].ToString(), ForumUser.UserRoles))
+					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(dr["CanRead"].ToString(), ForumUser.UserRoles))
 					{
 						string sURL = ctlUtils.BuildUrl(TabId, ModuleId, dr["GroupPrefixURL"].ToString(), dr["PrefixURL"].ToString(), int.Parse(dr["ForumGroupId"].ToString()), int.Parse(dr["ForumId"].ToString()), -1, -1, string.Empty, 1, -1, -1);
 						if (ForumId == int.Parse(dr["ForumId"].ToString()))

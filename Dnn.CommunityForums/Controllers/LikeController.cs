@@ -69,8 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
     }
 }
-
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
@@ -94,3 +92,4 @@ namespace DotNetNuke.Modules.ActiveForums
             base.Like(contentId, userId);
         }
     }
+}

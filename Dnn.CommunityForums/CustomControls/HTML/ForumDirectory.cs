@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
 				{
-					if (Permissions.HasPerm(f.Security.View, ForumUser.UserRoles))
+					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles))
 					{
 						f.TabId = TabId;
 						f.SubForums = GetSubForums(allForums, f.ForumID);

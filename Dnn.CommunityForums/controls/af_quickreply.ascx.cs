@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
 
-                    AllowSubscribe = Permissions.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
+                    AllowSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
                 }
                 else
                 {
@@ -257,10 +257,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
             bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ui.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, ui.PostCount);
+            UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ui.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, ui.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean(((ForumInfo.IsModerated == true) ? false : true));
-            if (UserIsTrusted || Permissions.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sBody = string.Empty;
             if (AllowHTML)
             {
-                AllowHTML = IsHtmlPermitted(ForumInfo.EditorPermittedUsers, IsTrusted, Permissions.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles));
+                AllowHTML = IsHtmlPermitted(ForumInfo.EditorPermittedUsers, IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles));
             }
             sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, ForumInfo.AllowEmoticons);
             DateTime createDate = DateTime.UtcNow;

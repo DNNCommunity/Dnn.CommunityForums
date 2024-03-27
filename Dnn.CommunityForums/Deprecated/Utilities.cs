@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (System.Text.RegularExpressions.Match match in matches)
             {
                 var sRoles = match.Groups[3].Value;
-                if (Permissions.HasAccess(sRoles, userRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(sRoles, userRoles))
                 {
                     template = template.Replace(match.Groups[1].Value, string.Empty);
                     template = template.Replace(match.Groups[5].Value, string.Empty);
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </summary>
         public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
         {
-            var newDate = DateTime.Parse(GetDate(displayDate, ModuleId, timeZoneOffset));
+            var newDate = displayDate.AddMinutes( timeZoneOffset);
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
