@@ -27,6 +27,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
+        internal static int GetAdministratorsRoleId(int portalId)
+        {
+            return Utilities.GetPortalSettings(portalId).AdministratorRoleId;
+        }
+        internal static string GetAdministratorsRoleName(int portalId)
+        {
+            return Utilities.GetPortalSettings(portalId).AdministratorRoleName;
+        }
+        internal static int GetRegisteredRoleId(int portalId)
+        {
+            return Utilities.GetPortalSettings(portalId).RegisteredRoleId;
+        }
+        internal static string GetRegisteredRoleName(int portalId)
+        {
+            return Utilities.GetPortalSettings(portalId).RegisteredRoleName;
+        }
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole)
         {
             string adminRoleId = string.Concat(adminRole, ";||||");
@@ -343,7 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return true;
         }
-      
+
         internal static void CreateDefaultSets(int PortalId, int PermissionsId)
         {
             var db = new Data.Common();
