@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else 
             {
-                fi.PermissionsId = db.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
+                fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Data.Common().CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
                 permissionsId = fi.PermissionsId;
                 isNew = true;
             }

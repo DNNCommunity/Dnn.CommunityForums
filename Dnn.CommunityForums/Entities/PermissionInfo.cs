@@ -21,43 +21,6 @@ using System;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 
-namespace DotNetNuke.Modules.ActiveForums
-{
-    public enum SecureActions : int
-    {
-        View,
-        Read,
-        Create,
-        Reply,
-        Edit,
-        Delete,
-        Lock,
-        Pin,
-        Attach,
-        Poll,
-        Block,
-        Trust,
-        Subscribe,
-        Announce,
-        Tag,
-        Categorize,
-        Prioritize,
-        ModApprove,
-        ModMove,
-        ModSplit,
-        ModDelete,
-        ModUser,
-        ModEdit,
-        ModLock,
-        ModPin
-    }
-    public enum ObjectType : int
-    {
-        RoleId,
-        UserId,
-        GroupId
-    }
-}
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Permissions")]
