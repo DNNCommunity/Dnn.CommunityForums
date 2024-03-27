@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -982,55 +983,24 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             }
             return sContents;
         }
-        public static string GetDate(DateTime displayDate, int mid, int offset)
+        internal static string GetUserFriendlyDateTimeString(DateTime datetime, int ModuleId, UserInfo userInfo)
         {
-            string dateStr;
-
-            try
+            var mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+            var displayDate = datetime.Add(GetTimeZoneOffsetForUser(userInfo));
+            if (displayDate.Date == DateTime.UtcNow.Date)
             {
-                var mUserOffSet = 0;
-                var mainSettings = SettingsBase.GetModuleSettings(mid);
-                var mServerOffSet = mainSettings.TimeZoneOffset;
-                var newDate = displayDate.AddMinutes(-mServerOffSet);
-
-                newDate = newDate.AddMinutes(offset);
-
-                var dateFormat = mainSettings.DateFormatString;
-                var timeFormat = mainSettings.TimeFormatString;
-                var formatString = string.Concat(dateFormat, " ", timeFormat);
-
-                try
-                {
-                    dateStr = newDate.ToString(formatString);
-                }
-                catch
-                {
-                    dateStr = displayDate.ToString();
-                }
-
-                return dateStr;
+                return $"{GetSharedResource("Today")} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
             }
-            catch (Exception ex)
+            else if (datetime.Date == DateTime.UtcNow.AddDays(-1).Date)
             {
-                dateStr = displayDate.ToString();
-                return dateStr;
+                return $"{GetSharedResource("Yesterday")} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
+            }
+            else
+            {
+                return $"{displayDate.ToString(mainSettings.DateFormatString)} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
             }
         }
-
-        public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
-        {
-            var mainSettings = SettingsBase.GetModuleSettings(mid);
-            var mServerOffSet = mainSettings.TimeZoneOffset;
-            var newDate = displayDate.AddMinutes(-mServerOffSet);
-
-            return newDate.AddMinutes(offset);
-        }
-
-        public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
-        {
-            return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
-        }
-
+        
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
