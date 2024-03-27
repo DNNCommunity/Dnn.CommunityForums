@@ -16,11 +16,21 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-// 
-using System;
+//
+ 
+using DotNetNuke.ComponentModel.DataAnnotations; 
 using System.Web.Caching;
-namespace DotNetNuke.Modules.ActiveForums
-{ 
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
-    class Like : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
-} 
+
+namespace DotNetNuke.Modules.ActiveForums.Entities
+{
+    [TableName("activeforums_Likes")]
+    [PrimaryKey("Id", AutoIncrement = true)]
+    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
+    internal partial class LikeInfo
+    {
+        public int Id { get; set; }
+        public int PostId { get; set; }
+        public int UserId { get; set; }
+        public bool Checked { get; set; }
+    }
+}

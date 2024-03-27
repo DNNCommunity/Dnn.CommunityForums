@@ -24,4 +24,3 @@ namespace DotNetNuke.Modules.ActiveForums
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.FilterInfo")]
     public class FilterInfo : DotNetNuke.Modules.ActiveForums.Entities.FilterInfo { }
 }
-
