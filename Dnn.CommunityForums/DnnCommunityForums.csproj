@@ -1118,6 +1118,7 @@
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\EmoticonController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
@@ -1133,6 +1134,7 @@
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="Deprecated\MiniPager.cs" />
     <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
