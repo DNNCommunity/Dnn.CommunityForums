@@ -341,27 +341,23 @@ namespace DotNetNuke.Modules.ActiveForums
 		internal static void CreateDefaultSets(int PortalId, int PermissionsId)
 		{
 			var db = new Data.Common();
-			var rc = new Security.Roles.RoleController();
-			Security.Roles.RoleInfo ri;
-			ri = rc.GetRoleByName(PortalId, "Registered Users");
 			string permSet;
 
-			if (ri != null)
-			{
-				permSet = db.GetPermSet(PermissionsId, "View");
-				permSet = AddPermToSet(ri.RoleID.ToString(), 0, permSet);
-				db.SavePermSet(PermissionsId, "View", permSet);
-			    permSet = db.GetPermSet(PermissionsId, "Read");
-				permSet = AddPermToSet(ri.RoleID.ToString(), 0, permSet);
-				db.SavePermSet(PermissionsId, "Read", permSet);
-			    permSet = db.GetPermSet(PermissionsId, "Create");
-				permSet = AddPermToSet(ri.RoleID.ToString(), 0, permSet);
-				db.SavePermSet(PermissionsId, "Create", permSet);
-			    permSet = db.GetPermSet(PermissionsId, "Reply");
-				permSet = AddPermToSet(ri.RoleID.ToString(), 0, permSet);
-				db.SavePermSet(PermissionsId, "Reply", permSet);
-			}
+            string RegisteredUsersRoleIdString = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(PortalId).ToString();
 
+			permSet = db.GetPermSet(PermissionsId, "View");
+			permSet = AddPermToSet(RegisteredUsersRoleIdString, 0, permSet);
+			db.SavePermSet(PermissionsId, "View", permSet);
+			permSet = db.GetPermSet(PermissionsId, "Read");
+			permSet = AddPermToSet(RegisteredUsersRoleIdString, 0, permSet);
+			db.SavePermSet(PermissionsId, "Read", permSet);
+			permSet = db.GetPermSet(PermissionsId, "Create");
+			permSet = AddPermToSet(RegisteredUsersRoleIdString, 0, permSet);
+			db.SavePermSet(PermissionsId, "Create", permSet);
+			permSet = db.GetPermSet(PermissionsId, "Reply");
+			permSet = AddPermToSet(RegisteredUsersRoleIdString, 0, permSet);
+			db.SavePermSet(PermissionsId, "Reply", permSet);
+			
 			permSet = db.GetPermSet(PermissionsId, "View");
 			permSet = AddPermToSet(DotNetNuke.Common.Globals.glbRoleUnauthUser, 0, permSet);
             db.SavePermSet(PermissionsId, "View", permSet);

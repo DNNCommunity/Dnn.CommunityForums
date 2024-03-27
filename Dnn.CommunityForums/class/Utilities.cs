@@ -268,7 +268,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current?.Items["PortalSettings"] != null)
                 {
-                    portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                    portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
                     if (portalSettings.PortalId != portalId)
                     {
                         portalSettings = null;
@@ -280,6 +280,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
                     psc.LoadPortalSettings(portalSettings);
                 }
+                portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
                 return portalSettings;
             }
             catch (Exception ex)

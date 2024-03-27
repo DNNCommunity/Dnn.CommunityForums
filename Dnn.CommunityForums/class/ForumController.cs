@@ -223,19 +223,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else 
             {
-                if (fi.PermissionsId <= 0 || fi.InheritSecurity) /* if new forum or changing from inheriting security, create new permissions set */
-                {
-                    var rc = new RoleController();
-                    var ri = rc.GetRoleByName(portalId, "Administrators");
-                    if (ri != null)
-                    {
-                        var db = new Data.Common();
-                        fi.PermissionsId = db.CreatePermSet(ri.RoleID.ToString());
-                        permissionsId = fi.PermissionsId;
-                        Permissions.CreateDefaultSets(portalId, permissionsId);
-                    }
-                }
-                else
+                fi.PermissionsId = db.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
+                permissionsId = fi.PermissionsId;
+                isNew = true;
+                if (fi.ForumID > 0 & !(string.IsNullOrEmpty(fi.ForumSettingsKey)))
                 {
 
                 }
@@ -380,8 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
 
-                var ri = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleByName(portalId: portalId, roleName: "Administrators");
-                var permissionsId = forumsDb.CreatePermSet(ri.RoleID.ToString());
+                int permissionsId = forumsDb.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
 
                 moduleId = gi.ModuleId;
 
@@ -447,7 +437,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (socialGroup.IsPublic)
                     {
                         xSecList = xRoot.SelectSingleNode("//security[@type='registereduser']");
-                        ri = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleByName(portalId: portalId, roleName: "Registered Users");
                         if (xSecList != null)
                         {
                             foreach (XmlNode n in xSecList.ChildNodes)
@@ -458,7 +447,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     continue;
 
                                 permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = Permissions.AddPermToSet(ri.RoleID.ToString(), 0, permSet);
+                                permSet = Permissions.AddPermToSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0, permSet);
                                 forumsDb.SavePermSet(permissionsId, secKey, permSet);
                             }
                         }
