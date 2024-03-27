@@ -129,16 +129,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             set => _properties = value;
         }
 
-        public ForumInfo()
-        {
-            PortalId = -1;
-            PermissionsId = -1;
-            PrefixURL = string.Empty;
-            ForumSettings = new Hashtable();
-
-            Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
-        }
-
         #region "Settings"
 
         [IgnoreColumn()]
