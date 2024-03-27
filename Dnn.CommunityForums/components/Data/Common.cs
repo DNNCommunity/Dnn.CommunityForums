@@ -28,33 +28,20 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 {
 	public class Common : DataConfig
 	{
-		#region Security
-
-		public void SavePermissionSet(int PermissionSetId, string PermissionSet)
+        #region Security
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
+        public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
+        public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet.")]
+        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(PermissionsId, requestedAccess);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet.")]
+        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(PermissionsId, requestedAccess, PermSet);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions().")]
+        public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId)).PermissionsId;
+        public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles)
 		{
-			SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
-		}
-		public IDataReader GetRoles(int PortalId)
-		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
-		}
-		public string GetPermSet(int PermissionsId, string requestedAccess)
-		{
-			string sSQL = "SELECT IsNULL(Can" + requestedAccess + ",'||||') from " + dbPrefix + "Permissions WHERE PermissionsId = " + PermissionsId;
-			return Convert.ToString(SqlHelper.ExecuteScalar(_connectionString, CommandType.Text, sSQL));
-		}
-		public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet)
-		{
-			string sSQL = "UPDATE " + dbPrefix + "Permissions SET Can" + requestedAccess + " = '" + PermSet + "' WHERE PermissionsId = " + PermissionsId;
-			SqlHelper.ExecuteNonQuery(_connectionString, CommandType.Text, sSQL);
-			return GetPermSet(PermissionsId, requestedAccess);
-		}
-		public int CreatePermSet(string AdminRoleId)
-		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Permission_Create", AdminRoleId));
-		}
-		public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles)
-		{
+			//TODO: This will get moved to PermissionController once ForumInfo is updated to DAL2
 			string cacheKey = string.Format(CacheKeys.ViewRolesForForumList,ModuleId, ForumIds);
 			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId  INNER JOIN " + dbPrefix + "Functions_Split('" + ForumIds + "',':') as ids on ids.id = f.ForumId";
 			string sForums = string.Empty;
@@ -85,7 +72,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 		}
 		public string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
 		{
-			string cacheKey = string.Format(CacheKeys.ViewRolesForForum,ModuleId, ForumId);
+            //TODO: This will get moved to PermissionController once ForumInfo is updated to DAL2
+            string cacheKey = string.Format(CacheKeys.ViewRolesForForum,ModuleId, ForumId);
 			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId WHERE f.ForumId = " + ForumId.ToString();
 			string sRoles = string.Empty;
 			DataTable dt = null;

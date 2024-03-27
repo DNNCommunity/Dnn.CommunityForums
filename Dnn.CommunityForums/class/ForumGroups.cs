@@ -419,14 +419,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public int Groups_Save(int portalId, ForumGroupInfo fg, bool isNew)
 		{
-			var rc = new Security.Roles.RoleController();
-			var db = new Data.Common();
 			
 			var permissionsId = -1;
 			if (fg.PermissionsId == -1)
 		{
-				fg.PermissionsId = db.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
-				permissionsId = fg.PermissionsId;
+				fg.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+
+                permissionsId = fg.PermissionsId;
 			}
 		   
 			var groupId = DataProvider.Instance().Groups_Save(portalId, fg.ModuleId, fg.ForumGroupId, fg.GroupName, fg.SortOrder, fg.Active, fg.Hidden, fg.PermissionsId, fg.PrefixURL);

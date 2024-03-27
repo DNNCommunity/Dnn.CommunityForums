@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
         public static string AddPermToSet(string objectId, int objectType, string PermissionSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, PermissionSet);
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static string GetRoleIds(string[] Roles, int PortalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(Roles, PortalId);
+        public static string GetRoleIds(string[] Roles, int PortalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, Roles);
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
         public static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(AuthorizedRoles, UserRoles);
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]

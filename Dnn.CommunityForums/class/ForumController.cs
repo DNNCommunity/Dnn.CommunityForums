@@ -21,6 +21,7 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Modules.ActiveForums.Data;
@@ -223,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else 
             {
-                fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Data.Common().CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
+                fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
                 permissionsId = fi.PermissionsId;
                 isNew = true;
             }
@@ -360,14 +361,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                var forumsDb = new Data.Common();
+                var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
                 var fgc = new ForumGroupController();
                 var gi = fgc.Groups_Get(moduleId, forumGroupId);
                 var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
 
-                int permissionsId = forumsDb.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
+                int permissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
 
                 moduleId = gi.ModuleId;
 
@@ -407,10 +408,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             secKey = n.Name;
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
-                                continue;
-                            permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(groupAdmin, 2, permSet);
-                            forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                                continue; 
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId: permissionsId, requestedAccess: secKey, objectId: groupAdmin, objectType: 2);
                         }
                     }
 
@@ -423,10 +422,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
-
-                            permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(groupMember, 0, permSet);
-                            forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                            
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: secKey, groupMember, 0);
                         }
                     }
 
@@ -442,9 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0, permSet);
-                                forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: secKey, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0);
                             }
                         }
 
@@ -458,9 +453,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                permSet = forumsDb.GetPermSet(permissionsId, secKey);
-                                permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(DotNetNuke.Common.Globals.glbRoleAllUsers, 0, permSet);
-                                forumsDb.SavePermSet(permissionsId, secKey, permSet);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: secKey, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
                             }
                         }
                     }
