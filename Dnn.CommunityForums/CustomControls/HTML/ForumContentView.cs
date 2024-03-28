@@ -301,7 +301,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 						catKey = dr["CategoryName"].ToString() + dr["CategoryId"].ToString();
 					}
-					//Dim Params As String() = {"aff=" & ForumId, "fcc=" & dr("TopicId").ToString}
 					if (TopicId == Convert.ToInt32(dr["TopicId"].ToString()))
 					{
 						sb.Append("<li class=\"fcv-selected\">");

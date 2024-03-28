@@ -19,6 +19,7 @@
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
+using System.Globalization;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -26,8 +27,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("Id", AutoIncrement = true)]
     [Scope("ModuleId")]
     [Cacheable("activeforums_Subscriptions", CacheItemPriority.Normal)]
-    class SubscriptionInfo
+    public class SubscriptionInfo
     {
+        private string _email = string.Empty;
+        private DotNetNuke.Modules.ActiveForums.User _user;
         public int Id { get; set; }
         public int PortalId { get; set; }
         public int ModuleId { get; set; }
@@ -35,5 +38,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TopicId { get; set; }
         public int Mode { get; set; }
         public int UserId { get; set; }
+        public bool TopicSubscriber { get => TopicId > 0; }
+        public DotNetNuke.Modules.ActiveForums.User User
+        {
+            get
+            {
+                if (_user == null)
+                {
+                    _user = new DotNetNuke.Modules.ActiveForums.UserController().GetUser(PortalId, ModuleId, UserId);
+                }
+                return _user;
+            }
+        }
+        public string Email { get => (_email = User?.Email); set => _email = value; } 
+        public TimeSpan TimeZoneOffSet { get => Utilities.GetTimeZoneOffsetForUser(PortalId, UserId); }
+        public CultureInfo UserCulture { get => Utilities.GetCultureInfoForUser(PortalId, UserId); }
     }
 }

@@ -95,9 +95,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_fi == null)
                 Response.Redirect(NavigateUrl(TabId));
-            else if (Request.Params["action"] != null)
+            else if (Request.Params[ParamKeys.action] != null)
             {
-                if (!_canEdit && (Request.Params["action"].ToLowerInvariant() == "te" || Request.Params["action"].ToLowerInvariant() == "re"))
+                if (!_canEdit && (Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.TopicEdit || Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.ReplyEdit))
                     Response.Redirect(NavigateUrl(TabId));
             }
 
@@ -144,7 +144,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.CancelButton.Width = Unit.Pixel(50);
             ctlForm.CancelButton.ConfirmMessage = GetSharedResource("[RESX:ConfirmCancel]");
             ctlForm.ModuleConfiguration = ModuleConfiguration;
-            //ctlForm.Subscribe = UserPrefTopicSubscribe;
             if (_fi.AllowHTML)
             {
                 _allowHTML = IsHtmlPermitted(_fi.EditorPermittedUsers, _userIsTrusted, _canModEdit);
@@ -189,11 +188,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     break;
             }
-            if (Request.Params["action"] != null)
+            if (Request.Params[ParamKeys.action] != null)
             {
-                switch (Request.Params["action"].ToLowerInvariant())
+                switch (Request.Params[ParamKeys.action].ToLowerInvariant())
                 {
-                    case "te": //Topic Edit
+                    case PostActions.TopicEdit:
                         if (_canModEdit || (_canEdit && Request.IsAuthenticated))
                         {
                             _isEdit = true;
@@ -201,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             LoadTopic();
                         }
                         break;
-                    case "re": //Reply Edit
+                    case PostActions.ReplyEdit:
                         if (_canModEdit || (_canEdit && Request.IsAuthenticated))
                         {
                             _isEdit = true;
@@ -209,17 +208,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             LoadReply();
                         }
                         break;
-                    case "reply":
+                    case PostActions.Reply:
                         if (CanReply)
                         {
                             PrepareReply();
-                        }
-                        break;
-                    case "new":
-                        if (CanCreate)
-                        {
-                            PrepareTopic();
-
                         }
                         break;
                     default:
@@ -280,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject))
                 return;
 
-            if (TopicId == -1 || (TopicId > 0 && Request.Params["action"] == "te"))
+            if (TopicId == -1 || (TopicId > 0 && Request.Params[ParamKeys.action] == PostActions.TopicEdit))
             {
                 if (ValidateProperties())
                     SaveTopic();
@@ -494,6 +486,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicEditor", _fi.TopicFormId);
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
+            }
             
             if (MainSettings.UseSkinBreadCrumb)
             {
@@ -523,7 +519,10 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
-            
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
+            }
             if (MainSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
@@ -840,14 +839,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
                 ti.TopicType = TopicTypes.Poll;
-                tc.TopicSave(PortalId, ForumModuleId, ti); 
-                if (UserPrefTopicSubscribe)
-                {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
-                }
-                tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+                tc.TopicSave(PortalId, ForumModuleId, ti);
             }
-
+            if ((UserPrefTopicSubscribe && authorId == UserId) || ctlForm.Subscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
+            }
+            tc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             try
             {
                 DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId));
