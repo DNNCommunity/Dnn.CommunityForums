@@ -453,8 +453,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();
                 ctl.ControlId = "aftopicedit";
-                ctl.Height = "350px";
-                ctl.Width = "400px";
+                ctl.Height = "500px";
+                ctl.Width = "500px";
                 ctl.Name = Utilities.GetSharedResource("[RESX:TopicQuickEdit]");
                 ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/quickedit.ascx";
                 this.Controls.Add(ctl);
