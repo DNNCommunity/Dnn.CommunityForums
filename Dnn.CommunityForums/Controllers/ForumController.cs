@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static int Forum_GetByTopicId(int TopicId)
         {
-            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>( "ForumGetByTopicId", TopicId);
+            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>( "activeforums_ForumGetByTopicId", TopicId);
         }
     }
 }

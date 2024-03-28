@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ForumId < 1)
                 {
                     SetPermissions(Convert.ToInt32(e.Parameters[1]));
-                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
+                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
                 }
                 else
                 {
