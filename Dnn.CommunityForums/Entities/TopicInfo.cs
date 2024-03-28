@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-    [Scope("ModuleId")]
     [Cacheable("activeforums_Topics", CacheItemPriority.Low)]
     public class TopicInfo
     {
@@ -55,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 //TODO : clean this up to use DAL2
                 if (forumId < 1)
                 {
-                    forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
+                    forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
                 return forumId; 
             } 
@@ -97,7 +96,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (_contentInfo == null)
                 {
-                    _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                    if (ContentId > 0)
+                    {
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                    }
                     if (_contentInfo == null)
                     {
                         _contentInfo = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
@@ -111,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Forum.ForumID));
+            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId));
             set => _forumInfo = value;
         }
         [IgnoreColumn()]

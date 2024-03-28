@@ -25,6 +25,7 @@ using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
@@ -94,9 +95,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_fi == null)
                 Response.Redirect(NavigateUrl(TabId));
-            else if (Request.Params["action"] != null)
+            else if (Request.Params[ParamKeys.action] != null)
             {
-                if (!_canEdit && (Request.Params["action"].ToLowerInvariant() == "te" || Request.Params["action"].ToLowerInvariant() == "re"))
+                if (!_canEdit && (Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.TopicEdit || Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.ReplyEdit))
                     Response.Redirect(NavigateUrl(TabId));
             }
 
@@ -143,7 +144,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.CancelButton.Width = Unit.Pixel(50);
             ctlForm.CancelButton.ConfirmMessage = GetSharedResource("[RESX:ConfirmCancel]");
             ctlForm.ModuleConfiguration = ModuleConfiguration;
-            //ctlForm.Subscribe = UserPrefTopicSubscribe;
             if (_fi.AllowHTML)
             {
                 _allowHTML = IsHtmlPermitted(_fi.EditorPermittedUsers, _userIsTrusted, _canModEdit);
@@ -188,11 +188,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     break;
             }
-            if (Request.Params["action"] != null)
+            if (Request.Params[ParamKeys.action] != null)
             {
-                switch (Request.Params["action"].ToLowerInvariant())
+                switch (Request.Params[ParamKeys.action].ToLowerInvariant())
                 {
-                    case "te": //Topic Edit
+                    case PostActions.TopicEdit:
                         if (_canModEdit || (_canEdit && Request.IsAuthenticated))
                         {
                             _isEdit = true;
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             LoadTopic();
                         }
                         break;
-                    case "re": //Reply Edit
+                    case PostActions.ReplyEdit:
                         if (_canModEdit || (_canEdit && Request.IsAuthenticated))
                         {
                             _isEdit = true;
@@ -208,17 +208,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             LoadReply();
                         }
                         break;
-                    case "reply":
+                    case PostActions.Reply:
                         if (CanReply)
                         {
                             PrepareReply();
-                        }
-                        break;
-                    case "new":
-                        if (CanCreate)
-                        {
-                            PrepareTopic();
-
                         }
                         break;
                     default:
@@ -279,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject))
                 return;
 
-            if (TopicId == -1 || (TopicId > 0 && Request.Params["action"] == "te"))
+            if (TopicId == -1 || (TopicId > 0 && Request.Params[ParamKeys.action] == PostActions.TopicEdit))
             {
                 if (ValidateProperties())
                     SaveTopic();
@@ -326,7 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     var topicTemplateID = ForumInfo.TopicTemplateId;
                     message = Utilities.CleanString(PortalId, message, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, ImagePath, ForumInfo.AllowEmoticons);
-                    message = Utilities.ManageImagePath(message);
+                    message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
                     var uc = new UserController();
                     var up = uc.GetUser(PortalId, ForumModuleId, UserId) ?? new User
                     {
@@ -492,6 +485,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicEditor", _fi.TopicFormId);
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
+            }
             
             if (MainSettings.UseSkinBreadCrumb)
             {
@@ -521,7 +518,10 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
-            
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
+            }
             if (MainSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
@@ -838,14 +838,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 ti.TopicType = TopicTypes.Poll;
-                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-                if (UserPrefTopicSubscribe)
-                {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
-                }
-                Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             }
-
+            if ((UserPrefTopicSubscribe && authorId == UserId) || ctlForm.Subscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
+            }
+            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+            
             try
             {
                 DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId));

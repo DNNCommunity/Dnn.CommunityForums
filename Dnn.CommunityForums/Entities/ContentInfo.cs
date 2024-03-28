@@ -26,7 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Content")]
     [PrimaryKey("ContentId", AutoIncrement = true)]
-    [Scope("ModuleId")]
     [Cacheable("activeforums_Content", CacheItemPriority.Low)] 
     public class ContentInfo
     {
@@ -37,8 +36,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Subject { get; set; }
         public string Summary { get; set; }
         public string Body { get; set; }
-        public DateTime DateCreated { get => _dateCreated; }
-        public DateTime DateUpdated { get => _dateUpdated; }
+        public DateTime DateCreated { get { return _dateCreated; } set => _dateCreated = DateTime.UtcNow; }
+        public DateTime DateUpdated { get { return _dateUpdated; } set => _dateUpdated = DateTime.UtcNow; }
         public int AuthorId { get; set; }
         public string AuthorName { get; set; }
         public bool IsDeleted { get; set; }

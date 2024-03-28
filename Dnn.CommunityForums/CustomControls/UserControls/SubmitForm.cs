@@ -254,6 +254,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 afpolledit.PollQuestion = value;
             }
         }
+        public bool Subscribe
+        {
+            get => chkSubscribe.Checked;
+            set => chkSubscribe.Checked = value;
+        }
         public string PollType
         {
             get
@@ -313,7 +318,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_topicstatus aftopicstatus = new af_topicstatus();
         protected CheckBox chkLocked = new CheckBox();
         protected CheckBox chkPinned = new CheckBox();
-        protected CheckBox chkAnnounce = new CheckBox(); 
+        protected CheckBox chkAnnounce = new CheckBox();
+        protected CheckBox chkSubscribe = new CheckBox();
         protected CheckBox chkApproved = new CheckBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqSubject = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected Label reqCustomBody = new Label();
@@ -642,8 +648,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
             {
-                var objUtils = new emoticons();
-               template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation), EditorType ) + "</fieldset>");
             }
             else
             {
@@ -707,10 +712,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (canSubscribe)
             {
-                var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
-                subControl.Checked = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
-                subControl.Text = "[RESX:TopicSubscribe:" + (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
-                sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
+                if (TopicId > 0)
+                {
+                    var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
+                    subControl.Checked = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId));
+                    subControl.Text = "[RESX:TopicSubscribe:" + (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId)).ToString().ToUpper() + "]";
+                    sb.Append("<tr><td colspan=\"2\">" + subControl.Render() + "</td></tr>");
+                }
+                else
+                {
+                    sb.Append("<tr><td colspan=\"2\"><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:TopicSubscribe:FALSE]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
+                }
                 bHasOptions = true;
             }
             if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
@@ -1115,6 +1127,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         ctlAttach.ModuleConfiguration = this.ModuleConfiguration;
                         ctlAttach.ModuleId = ModuleId;
                         ctlAttach.ForumInfo = ForumInfo;
+                        break;
+                    case "chkSubscribe":
+                        chkSubscribe = (CheckBox)ctrl;
                         break;
                     case "ctlCaptcha":
                         ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;
