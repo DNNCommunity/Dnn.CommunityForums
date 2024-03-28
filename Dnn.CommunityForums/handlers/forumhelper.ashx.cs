@@ -66,14 +66,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             Actions action = Actions.None;
             if (Params != null && Params.Count > 0)
             {
-                if (Params["action"] != null && SimulateIsNumeric.IsNumeric(Params["action"]))
+                if (Params[ParamKeys.action] != null && SimulateIsNumeric.IsNumeric(Params[ParamKeys.action]))
                 {
-                    action = (Actions)(Convert.ToInt32(Params["action"].ToString()));
+                    action = (Actions)(Convert.ToInt32(Params[ParamKeys.action].ToString()));
                 }
             }
-            else if (HttpContext.Current.Request.QueryString["action"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["action"]))
+            else if (HttpContext.Current.Request.QueryString[ParamKeys.action] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.action]))
             {
-                if (int.Parse(HttpContext.Current.Request.QueryString["action"]) == 11)
+                if (int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.action]) == 11)
                 {
                     action = Actions.TagsAutoComplete;
                 }
@@ -122,9 +122,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string q = string.Empty;
-            if (!(string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["q"])))
+            if (!(string.IsNullOrEmpty(HttpContext.Current.Request.QueryString[SearchParamKeys.Query])))
             {
-                q = HttpContext.Current.Request.QueryString["q"].Trim();
+                q = HttpContext.Current.Request.QueryString[SearchParamKeys.Query].Trim();
                 q = Utilities.Text.RemoveHTML(q);
                 q = Utilities.Text.CheckSqlString(q);
                 if (!(string.IsNullOrEmpty(q)))

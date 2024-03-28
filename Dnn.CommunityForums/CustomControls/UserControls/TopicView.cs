@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _topicURL = _drForum["URL"].ToString();
             _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
-            _isSubscribedTopic = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)); 
+            _isSubscribedTopic = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId)); 
 
             if (Page.IsPostBack)
                 return;
@@ -436,17 +436,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(sURL))
             {
 
-                var @params = new List<string> { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=" + Views.Topic };
+                var @params = new List<string> { 
+                    $"{ParamKeys.ForumId}={ForumId}", 
+                    $"{ParamKeys.TopicId}={TopicId}", 
+                    $"{ParamKeys.ViewType}={Views.Topic}"
+                };
                 if (MainSettings.UseShortUrls)
                     @params = new List<string> { ParamKeys.TopicId + "=" + TopicId };
 
                 var intPages = Convert.ToInt32(Math.Ceiling(_rowCount / (double)_pageSize));
                 if (intPages > 1)
-                    @params.Add(ParamKeys.PageJumpId + "=" + intPages);
+                    @params.Add($"{ParamKeys.PageJumpId}={intPages}");
 
                 if (SocialGroupId > 0)
-                    @params.Add("GroupId=" + SocialGroupId.ToString());
-
+                {
+                    @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                }
                 sURL = Utilities.NavigateURL(TabId, "", @params.ToArray()) + sTarget;
             }
 
@@ -920,10 +925,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //TODO: Check for owner
                 if (CanReply)
                 {
-                    var @params = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.TopicId + "=" + TopicId, ParamKeys.ForumId + "=" + ForumId };
+                    var @params = new List<string> {
+                        $"{ParamKeys.ViewType}={Views.Post}", 
+                        $"{ParamKeys.TopicId}={TopicId}", 
+                        $"{ParamKeys.ForumId}={ForumId}",
+                    };                    
                     if (SocialGroupId > 0)
-                        @params.Add("GroupId=" + SocialGroupId);
-
+                    {
+                        @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                    }
                     sbOutput.Replace("[ADDREPLY]", "<a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\" class=\"dnnPrimaryAction\">[RESX:AddReply]</a>");
                     sbOutput.Replace("[QUICKREPLY]", "<asp:placeholder id=\"plhQuickReply\" runat=\"server\" />");
                 }
@@ -955,7 +965,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ForumInfo.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
-                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace("oldValue: [PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                     else
                         sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
@@ -1079,7 +1089,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string nextTopic;
                 if (MainSettings.UseShortUrls)
                 {
-                    if (SocialGroupId > 0) nextTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _nextTopic + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    if (SocialGroupId > 0) nextTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _nextTopic + "&" + Literals.GroupId + "=" + SocialGroupId);
                     else nextTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _nextTopic);
                 }
                 else
@@ -1098,12 +1108,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string prevTopic;
                 if (MainSettings.UseShortUrls)
                 {
-                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _prevTopic + "&" + Literals.GroupId + "=" + SocialGroupId);
                     else prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _prevTopic);
                 }
                 else
                 {
-                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId + "&" + ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.ViewType + "=" + Views.Topic + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId + "&" + ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.ViewType + "=" + Views.Topic + "&" + Literals.GroupId + "=" + SocialGroupId);
                     else prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId + "&" + ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.ViewType + "=" + Views.Topic);
                 }
                 sbOutput.Replace("[PREVTOPIC]", "<a href=\"" + prevTopic + "\" rel=\"nofollow\" title=\"[RESX:PrevTopic]\"><i class=\"fa fa-chevron-left\" aria-hidden=\"true\"></i><span>[RESX:PrevTopic]</span></a>");
@@ -1390,13 +1400,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Edit Action
             if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
             {
-                var sAction = "re";
+                var sAction = PostActions.ReplyEdit;
                 if (replyId == 0)
-                    sAction = "te";
+                    sAction = PostActions.TopicEdit;
 
                 //var editParams = new[] { ParamKeys.ViewType + "=post", "action=" + sAction, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, "postid=" + postId };
-                var editParams = new List<string>() { ParamKeys.ViewType + "=post", "action=" + sAction, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, "postid=" + postId };
-                if (SocialGroupId > 0) editParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
+                var editParams = new List<string>() { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.action}={sAction}", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.PostId}={postId}" };
+                if (SocialGroupId > 0) editParams.Add(Literals.GroupId + "=" + SocialGroupId);
                 if (_useListActions)
                     sbOutput.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(TabId, "", editParams.ToArray()) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></li>");
                 else
@@ -1410,12 +1420,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Reply and Quote Actions
             if (!_bLocked && CanReply)
             {
-                var quoteParams = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.QuoteId + "=" + postId };
-                var replyParams = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
+                var quoteParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.QuoteId}={postId}" };
+                var replyParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.ReplyId}={postId}" };
                 if (SocialGroupId > 0)
                 {
-                    quoteParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
-                    replyParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    quoteParams.Add(Literals.GroupId + "=" + SocialGroupId);
+                    replyParams.Add(Literals.GroupId + "=" + SocialGroupId);
                 }
                 if (_useListActions)
                 {
@@ -1557,8 +1567,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             // Mod Alert
             //var alertParams = new[] { ParamKeys.ViewType + "=modreport", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
-            var alertParams = new List<string> { ParamKeys.ViewType + "=modreport", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
-            if (SocialGroupId > 0) alertParams.Add(String.Format("{0}={1}", ParamKeys.GroupIdName, SocialGroupId));
+            var alertParams = new List<string> { $"{ParamKeys.ViewType}=modreport", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", "${ParamKeys.ReplyId}={postId}" };
+            if (SocialGroupId > 0) alertParams.Add($"{Literals.GroupId}={SocialGroupId}");
             if (Request.IsAuthenticated)
             {
                 if (_useListActions)

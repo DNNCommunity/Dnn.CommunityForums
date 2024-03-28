@@ -149,9 +149,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			tb.HeaderTemplate = HeaderTemplate.Text;
 			tb.FooterTemplate = FooterTemplate.Text;
 			tb.CSSClass = CssClass;
-			if (HttpContext.Current.Request.QueryString["act"] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString["act"]))
+			if (HttpContext.Current.Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.Category]))
 			{
-				tb.SelectedCategory = int.Parse(HttpContext.Current.Request.QueryString["act"]);
+				tb.SelectedCategory = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.Category]);
 			}
 			if (RenderMode == 0)
 			{

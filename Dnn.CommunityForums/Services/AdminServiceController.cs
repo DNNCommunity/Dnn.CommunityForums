@@ -149,8 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage ToggleSecurity(ToggleSecurityDTO dto)
         {
-            var db = new Data.Common();
-            var sb = new StringBuilder();
+            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
             switch (dto.Action)
             {
                 case "delete":
@@ -173,22 +172,21 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         if (!(string.IsNullOrEmpty(dto.SecurityId)))
                         {
-                            var permSet = db.GetPermSet(dto.PermissionsId, "View");
-                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
-                            db.SavePermSet(dto.PermissionsId, "View", permSet);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.PermissionsId, "View", dto.SecurityId, dto.SecurityType);
                         }
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 default:
                     {
-                        var permSet = db.GetPermSet(dto.PermissionsId, dto.SecurityAccessRequested);
                         if (dto.Action == "remove")
-                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(dto.SecurityId, dto.SecurityType, permSet);
+                        {
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                        }
                         else
-                            permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
-
-                        db.SavePermSet(dto.PermissionsId, dto.SecurityAccessRequested, permSet);
+                        {
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                        };
                         return Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);
                     }
             }

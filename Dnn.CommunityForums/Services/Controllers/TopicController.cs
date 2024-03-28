@@ -248,11 +248,11 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             int forumId = dto.ForumId;
             if (topicId > 0 && forumId > 0)
             {
-                TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                DotNetNuke.Modules.ActiveForums.Controllers.TopicController tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.GetById(topicId);
                 if (ti != null)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(topicId);
+                    tc.DeleteById(topicId);
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);                   
                 }
             }

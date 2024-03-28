@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string BodyHTML;
         public string Body;
 
-        public List<SubscriptionInfo> Recipients;
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Recipients;
 
         public bool UseQueue = false;
 
@@ -65,11 +65,12 @@ namespace DotNetNuke.Modules.ActiveForums
             //Send now
 
             var oEmail = new Email();
-            var subs = new List<SubscriptionInfo>();
-            var si = new SubscriptionInfo
+            var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
+            var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
             {
+                PortalId = portalId,
+                ModuleId = moduleId,
                 UserId = author.AuthorId,
-                Email = author.Email,
             };
 
             subs.Add(si);
@@ -94,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (fi == null)
                 return;
 
-            var subs = new List<SubscriptionInfo>();
+            var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
             var rc = new Security.Roles.RoleController();
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
@@ -108,13 +109,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 foreach (UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);
-                    var si = new SubscriptionInfo
+                    var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                     {
-                        UserId = ui.UserID,
-                        Email = ui.Email,
-                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(portalId, ui.UserID),
-                        UserCulture = Utilities.GetCultureInfoForUser(portalId, ui.UserID),
-                        TopicSubscriber = false
+                        PortalId = portalId,
+                        ModuleId = moduleID,
+                        UserId = ui.UserID
                     };
                     if (!(subs.Contains(si)))
                     {
@@ -127,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs);
             }
         }
-        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<SubscriptionInfo> subs)
+        public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs)
         {
             PortalSettings portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             SettingsInfo mainSettings = SettingsBase.GetModuleSettings(moduleID);
