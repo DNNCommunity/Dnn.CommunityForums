@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected DropDownList drpForums = new DropDownList();
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")]
         public DataTable dtForums { get; set; } = null;
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums { get; set; }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

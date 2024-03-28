@@ -30,6 +30,7 @@ using System.Xml;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -458,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ctlForumJump = new af_quickjump();
                 ctlForumJump.ForumModuleId = ForumModuleId;
-                ctlForumJump.dtForums = null;
                 ctlForumJump.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumJump.ForumId = ForumId;
                 ctlForumJump.ModuleId = ModuleId;

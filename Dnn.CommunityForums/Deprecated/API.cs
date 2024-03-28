@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 namespace DotNetNuke.Modules.ActiveForums.API
 {
@@ -60,18 +61,8 @@ namespace DotNetNuke.Modules.ActiveForums.API
     [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Forums
     {
-        public int Forums_Save(int PortalId, DotNetNuke.Modules.ActiveForums.Forum fi, bool isNew, bool UseGroup)
-        {
-            try
-            {
-                var fc = new ForumController();
-                return fc.Forums_Save(PortalId, fi, isNew, UseGroup);
-            }
-            catch (Exception ex)
-            {
-                return -1;
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
+        public int Forums_Save(int PortalId, DotNetNuke.Modules.ActiveForums.Forum fi, bool isNew, bool UseGroup) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, isNew, UseGroup, UseGroup);
     }
     [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Rewards
