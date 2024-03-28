@@ -26,6 +26,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -42,7 +43,21 @@ namespace DotNetNuke.Modules.ActiveForums
     public abstract partial class Utilities
     {
         internal static CultureInfo DateTimeStringCultureInfo = new CultureInfo("en-US", true);
-
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, removeHTML, HttpContext.Current.Request.Url);
+        }
+        [Obsolete(message: "Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, true, true, HttpContext.Current.Request.Url);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController()")]
+        public static string ImportFilter(int portalID, int moduleID)
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalID, moduleID);
+        }
         internal static string ParseTokenConfig(int moduleId, string template, string group, ControlsConfig config)
         {
             if (string.IsNullOrEmpty(template))
@@ -267,7 +282,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current?.Items["PortalSettings"] != null)
                 {
-                    portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
+                    portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
                     if (portalSettings.PortalId != portalId)
                     {
                         portalSettings = null;
@@ -279,6 +294,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
                     psc.LoadPortalSettings(portalSettings);
                 }
+                portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
                 return portalSettings;
             }
             catch (Exception ex)
@@ -359,7 +375,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = RemoveFilterWords(portalId, moduleId, themePath, text);
+                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text,true, !allowHTML, HttpContext.Current.Request.Url);
 
                 return text;
             }
@@ -371,7 +387,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 text = text.Replace("<br>", System.Environment.NewLine);
                 text = text.Replace("<br />", System.Environment.NewLine);
                 text = text.Replace("<BR>", System.Environment.NewLine);
-                text = RemoveFilterWords(portalId, moduleId, themePath, text);
+                text = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, text, true, !allowHTML, HttpContext.Current.Request.Url);
 
                 return text;
             }
@@ -485,7 +501,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             return sClean;
         }
-
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
 
@@ -509,7 +524,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url); 
 
                     strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
@@ -529,7 +544,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                         strMessage = HttpUtility.HtmlEncode(strMessage);
 
                     if (useFilter)
-                        strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
                 }
@@ -552,7 +567,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 var sCode = strMessage.Substring(intStart, intEnd - intStart);
                 strMessage = strMessage.Replace(sCode, "[CODEHOLDER]");
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -562,7 +577,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             else
             {
                 if (useFilter)
-                    strMessage = FilterWords(portalId, moduleId, themePath, strMessage, processEmoticons);
+                    strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
@@ -584,130 +599,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             }
 
             return strReturn;
-        }
-
-        public static string FilterWords(int portalId, int moduleId, string themePath, string strMessage, bool processEmoticons, bool removeHTML = false)
-        {
-            if (removeHTML)
-            {
-                var newSubject = StripHTMLTag(strMessage);
-                if (newSubject == string.Empty)
-                {
-                    newSubject = strMessage.Replace("<", string.Empty);
-                    newSubject = newSubject.Replace(">", string.Empty);
-                }
-                strMessage = newSubject;
-            }
-
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sFind, sReplace.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (processEmoticons)
-                        {
-                            if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                                sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\" border=\"0\" class=\"afEmoticon\" />", themePath, sReplace);
-
-                            strMessage = strMessage.Replace(sFind, sReplace);
-                        }
-                        break;
-
-                    case "REGEX":
-                        strMessage = Regex.Replace(strMessage, sFind.Trim(), sReplace, RegexOptions.IgnoreCase);
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            return strMessage;
-        }
-
-        public static string RemoveFilterWords(int portalId, int moduleId, string themePath, string strMessage)
-        {
-            var dr = DataProvider.Instance().Filters_List(portalId, moduleId, 0, 100000, "ASC", "FilterId");
-            dr.NextResult();
-
-            while (dr.Read())
-            {
-                var sReplace = dr["Replace"].ToString();
-                var sFind = dr["Find"].ToString();
-                switch (dr["FilterType"].ToString().ToUpper())
-                {
-                    case "MARKUP":
-                        strMessage = strMessage.Replace(sReplace, sFind.Trim());
-                        break;
-
-                    case "EMOTICON":
-                        if (sReplace.IndexOf("/emoticons", StringComparison.Ordinal) >= 0)
-                        {
-                            sReplace = string.Format("<img src='{0}{1}' align=\"absmiddle\"  border=\"0\"  class=\"afEmoticon\" />", themePath, sReplace);
-                            strMessage = strMessage.Replace(sReplace, sFind);
-                        }
-                        break;
-                }
-
-            }
-            dr.Close();
-
-            strMessage = ManageImagePath(strMessage);
-
-            return strMessage;
-        }
-
-        public static string ImportFilter(int portalID, int moduleID)
-        {
-            string @out;
-            try
-            {
-                var myFile = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.DefaultTemplatePath, "/Filters.txt"));
-                if (File.Exists(myFile))
-                {
-                    StreamReader objStreamReader;
-                    try
-                    {
-                        objStreamReader = File.OpenText(myFile);
-                    }
-                    catch (Exception exc)
-                    {
-                        @out = exc.Message;
-                        return @out;
-                    }
-                    var strFilter = objStreamReader.ReadLine();
-                    while (strFilter != null)
-                    {
-                        var row = Regex.Split(strFilter, ",,");
-                        var sFind = row[0].Substring(1, row[0].Length - 2);
-                        var sReplace = row[1].Trim(' ');
-                        sReplace = sReplace.Substring(1, sReplace.Length - 2);
-                        var sType = row[2].Substring(1, row[2].Length - 2);
-                        DataProvider.Instance().Filters_Save(portalID, moduleID, -1, sFind, sReplace, sType);
-                        strFilter = objStreamReader.ReadLine();
-                    }
-                    objStreamReader.Close();
-                    @out = "Success";
-                }
-                else
-                {
-                    @out = string.Concat("File Not Found<br />Path:", myFile);
-                }
-            }
-            catch (Exception exc)
-            {
-                @out = exc.Message;
-            }
-
-            return @out;
         }
 
         public static bool InputIsValid(string body)
@@ -982,55 +873,24 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             }
             return sContents;
         }
-        public static string GetDate(DateTime displayDate, int mid, int offset)
+        internal static string GetUserFriendlyDateTimeString(DateTime datetime, int ModuleId, UserInfo userInfo)
         {
-            string dateStr;
-
-            try
+            var mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+            var displayDate = datetime.Add(GetTimeZoneOffsetForUser(userInfo));
+            if (displayDate.Date == DateTime.UtcNow.Date)
             {
-                var mUserOffSet = 0;
-                var mainSettings = SettingsBase.GetModuleSettings(mid);
-                var mServerOffSet = mainSettings.TimeZoneOffset;
-                var newDate = displayDate.AddMinutes(-mServerOffSet);
-
-                newDate = newDate.AddMinutes(offset);
-
-                var dateFormat = mainSettings.DateFormatString;
-                var timeFormat = mainSettings.TimeFormatString;
-                var formatString = string.Concat(dateFormat, " ", timeFormat);
-
-                try
-                {
-                    dateStr = newDate.ToString(formatString);
-                }
-                catch
-                {
-                    dateStr = displayDate.ToString();
-                }
-
-                return dateStr;
+                return $"{GetSharedResource("Today")} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
             }
-            catch (Exception ex)
+            else if (datetime.Date == DateTime.UtcNow.AddDays(-1).Date)
             {
-                dateStr = displayDate.ToString();
-                return dateStr;
+                return $"{GetSharedResource("Yesterday")} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
+            }
+            else
+            {
+                return $"{displayDate.ToString(mainSettings.DateFormatString)} @ {displayDate.ToString(mainSettings.TimeFormatString)}";
             }
         }
-
-        public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
-        {
-            var mainSettings = SettingsBase.GetModuleSettings(mid);
-            var mServerOffSet = mainSettings.TimeZoneOffset;
-            var newDate = displayDate.AddMinutes(-mServerOffSet);
-
-            return newDate.AddMinutes(offset);
-        }
-
-        public string GetUserFormattedDate(DateTime date, PortalInfo portalInfo, UserInfo userInfo)
-        {
-            return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
-        }
-
+        
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId, string format)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);

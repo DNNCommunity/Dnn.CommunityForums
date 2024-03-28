@@ -121,6 +121,12 @@ namespace DotNetNuke.Modules.ActiveForums
         UserBanned
     }
 
+    public class FilterTypes
+    {
+        public const string EMOTICON = "EMOTICON";
+        public const string MARKUP = "MARKUP";
+        public const string REGEX = "REGEX";
+    }
     #endregion
 
     public class Globals
@@ -135,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		public const string ModuleName = "Active Forums";
 		public const string ModulePath = "~/DesktopModules/ActiveForums/";
+        public const string ModuleConfigPath = Globals.ModulePath + "config/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
         public const string TemplatesPath = Globals.ModulePath + "templates/";
@@ -177,8 +184,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string StatsTemplate = "STATSTEMPLATE";
 		public const string StatsCache = "STATSCACHE";
 		public const string DateFormatString = "DATEFORMATSTRING";
-		public const string TimeFormatString = "TIMEFORMATSTRING";
-		public const string TimeZoneOffset = "TIMEZONEOFFSET";
+		public const string TimeFormatString = "TIMEFORMATSTRING"; 
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string TimeZoneOffset = "TIMEZONEOFFSET";
 		public const string UsersOnlineEnabled = "USERSONLINEENABLED";
 		public const string MemberListMode = "MEMBERLISTMODE";
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
@@ -190,8 +198,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string FloodInterval = "FLOODINTERVAL";
 		public const string EditInterval = "EDITINTERVAL";
 		public const string LoggingLevel = "LOGGINGLEVEL";
-		public const string DeleteBehavior = "DELETEBEHAVIOR";
-		public const string ProdKey = "AMFORUMS";
+		public const string DeleteBehavior = "DELETEBEHAVIOR"; 
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string ProdKey = "AMFORUMS";
 
 		public const string EnablePoints = "ENABLEPOINTS";
 		public const string TopicPointValue = "TOPICPOINTVALUE";

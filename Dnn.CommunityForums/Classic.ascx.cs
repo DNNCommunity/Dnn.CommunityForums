@@ -61,9 +61,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			base.OnLoad(e);
 
             SocialGroupId = -1;
-            if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+            if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
             {
-                SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
             }
 
             SetupPage();
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string opts = string.Empty;
 
 
-                    if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == "grid" && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MyPreferences)
+                    if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == Views.Grid && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MyPreferences)
                     {
                         ctl = Views.MyPreferences;
                     }

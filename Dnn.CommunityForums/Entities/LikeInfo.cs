@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -17,25 +17,20 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+ 
+using DotNetNuke.ComponentModel.DataAnnotations; 
+using System.Web.Caching;
 
-using System;
-using System.Data;
-using System.Web;
-
-namespace DotNetNuke.Modules.ActiveForums
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-	[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-	public class emoticons
-	{
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-        public string LoadEmoticons(EditorTypes Type, int ModuleId, string ImagePath)
-		{
-			return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, Type);
-		}
-        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-        public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
-		{
-			return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, InsertType);
-        }
+    [TableName("activeforums_Likes")]
+    [PrimaryKey("Id", AutoIncrement = true)]
+    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
+    internal partial class LikeInfo
+    {
+        public int Id { get; set; }
+        public int PostId { get; set; }
+        public int UserId { get; set; }
+        public bool Checked { get; set; }
     }
 }
