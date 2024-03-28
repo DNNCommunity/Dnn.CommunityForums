@@ -30,6 +30,7 @@ using System.Xml;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {

@@ -246,9 +246,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    Data.ForumsDB db = new Data.ForumsDB();
                     int oldForumId = -1;
-                    oldForumId = db.Forum_GetByTopicId(TopicId);
+                    oldForumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
 
                     if (!(string.IsNullOrEmpty(fi.PrefixURL)))
