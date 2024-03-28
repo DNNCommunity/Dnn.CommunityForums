@@ -1282,10 +1282,10 @@ From,
   <data name="[RESX:SplitCancelConfirm].Text" xml:space="preserve">
     <value>Cancel split?</value>
   </data>
-	<data name="[RESX:FileName].Text" xml:space="preserve">
+  <data name="[RESX:FileName].Text" xml:space="preserve">
     <value>File Name</value>
   </data>
-	<data name="[RESX:Folder].Text" xml:space="preserve">
+  <data name="[RESX:Folder].Text" xml:space="preserve">
     <value>Folder</value>
   </data>
   <data name="[RESX:FileSize].Text" xml:space="preserve">
@@ -1692,11 +1692,20 @@ From,
   </data>
   <data name="[RESX:Community-Message-Intro].Text" xml:space="preserve">
     <value>We would love to get in touch with you!</value>
-  </data>  
+  </data>
   <data name="[RESX:Community-Message-Connect].Text" xml:space="preserve">
     <value>How to provide feedback / stay up to date</value>
-  </data>  
+  </data>
   <data name="[RESX:Community-Message-Help].Text" xml:space="preserve">
     <value>Module manual / wiki</value>
+  </data>
+  <data name="[RESX:EditingExistingReply].Text" xml:space="preserve">
+    <value>Editing Existing Reply</value>
+  </data>
+  <data name="[RESX:EditingExistingTopic].Text" xml:space="preserve">
+    <value>Editing Existing Topic</value>
+  </data>
+  <data name="[RESX:ReplyToMessage].Text" xml:space="preserve">
+    <value>Reply To Topic</value>
   </data>
 </root>

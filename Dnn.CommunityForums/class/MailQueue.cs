@@ -134,8 +134,8 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
 		{
 			try
 			{
-				var subs = new List<SubscriptionInfo>();
-				var si = new SubscriptionInfo { Email = SendTo };
+				var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
+				var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo { Email = SendTo };
 			    subs.Add(si);
 				var oEmail = new Email
 				{
