@@ -296,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
 									fi.PermissionsId = gi.PermissionsId;
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, true, true);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, true, true, true);
 								}
 							}
 						}

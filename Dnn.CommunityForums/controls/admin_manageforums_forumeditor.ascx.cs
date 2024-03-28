@@ -86,14 +86,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     span_Parent.Visible = true;
                     string parent = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Parent]",true);
-                    var fi = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ModuleId, recordId); 
+                    var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(recordId); 
                     if (fi.ParentForumId != 0)
                     {
                         span_Parent.Attributes.Add("onclick", $"LoadView('manageforums_forumeditor','{fi.ParentForumId}|F');");
                         span_Parent.InnerText = "| " + parent + " " + fi.ParentForumName;
-                        /* TODO: When updating to DAL2 ForumController, these two lines can be removed because fi.ParentForumName will be populated :) */
-                        fi = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ModuleId, fi.ParentForumId);
-                        span_Parent.InnerText = "| " + parent + " " + fi.ForumName;
                     }
                     else 
                     {
@@ -284,7 +281,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         gi.SortOrder = string.IsNullOrWhiteSpace(e.Parameters[7]) ? 0 : Utilities.SafeConvertInt(e.Parameters[7]);
 
-                        gi.PrefixURL = e.Parameters[9];
+                        gi.PrefixURL = e.Parameters[10];
                         if (!(string.IsNullOrEmpty(gi.PrefixURL)))
                         {
                             var db = new Data.Common();
@@ -395,12 +392,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadForum(int forumId)
         {
-            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
 
             if (fi == null)
                 return;
 
-            var newForum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, forumId, true);
+            var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
 
             ctlSecurityGrid = LoadControl(virtualPath: Page.ResolveUrl(Globals.ModulePath + "/controls/admin_securitygrid.ascx")) as Controls.admin_securitygrid;
             if (ctlSecurityGrid != null)

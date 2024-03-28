@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
@@ -53,15 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public XmlDocument ForumData
         {
-            get
-            {
-                if(_forumData == null)
-                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : ForumsDB.ForumListXML(PortalId, ModuleId); 
-
-                return _forumData;
-            }
-
-            set { _forumData = value; }
+            get => _forumData ?? (_forumData = (ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(PortalId, ModuleId)));
+            set => _forumData = value;
         }
 
         public ControlsConfig ControlConfig { get; set; }
@@ -260,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we don't have a forum id at this point, try and pull it from "forumid" in the query string
                 if (_forumId < 1)
                 {
-                    queryForumId = Request.QueryString["forumid"];
+                    queryForumId = Request.QueryString[Literals.ForumId];
                     if (!string.IsNullOrWhiteSpace(queryForumId))
                     {
                         // Try to parse the id, if it doesn't work, return the default value.
@@ -272,7 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we still don't have a forum id, but we have a topic id, look up the forum id
                 if (_forumId < 1 & TopicId > 0)
                 {
-                   _forumId = ForumsDB.Forum_GetByTopicId(TopicId);
+                   _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
 
                 return _forumId.Value;

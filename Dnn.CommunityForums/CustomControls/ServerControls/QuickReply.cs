@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 sTemp = Utilities.LocalizeControl(sTemp);
                 string SubscribedChecked = string.Empty;
-                if (ControlConfig.User.PrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
+                if (ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId))
                 {
                     SubscribedChecked = " checked=true";
                 }
@@ -250,19 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ri.IsDeleted = false;
             ri.Content.IPAddress = HttpContext.Current.Request.UserHostAddress;
             ReplyId = db.Reply_Save(ri);
-            //Check if is subscribed
-            if (HttpContext.Current.Request.Params["chkSubscribe"] != null)
-            {
-                if (HttpContext.Current.Request.Params["chkSubscribe"] == "1" && UserId > 0)
-                {
-                    if (!(Subscriptions.IsSubscribed(PortalId, ModuleId, ForumId, TopicId, SubscriptionTypes.Instant, UserId)))
-                    {
-                        //TODO: Fix Subscriptions
-                        //Dim sc As New Data.Tracking
-                        //sc.Subscription_Update(PortalId, ModuleId, ForumId, TopicId, 1, UserId)
-                    }
-                }
-            }
+
             if (isApproved)
             {
                 //Send Subscriptions

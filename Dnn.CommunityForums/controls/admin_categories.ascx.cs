@@ -110,7 +110,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		private void BindGroups()
 		{
 			drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
-			Data.ForumsDB fdb = new Data.ForumsDB();
 			DotNetNuke.Modules.ActiveForums.Entities.ForumCollection allForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
 			var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0);
 			int tmpGroupId = -1;

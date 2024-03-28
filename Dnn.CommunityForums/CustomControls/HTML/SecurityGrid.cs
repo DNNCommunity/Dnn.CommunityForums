@@ -28,9 +28,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
     public class SecurityGrid
-	{
-		public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
-		public int PortalId
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
+        public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
+        public int PortalId
 		{
 			get
 			{
