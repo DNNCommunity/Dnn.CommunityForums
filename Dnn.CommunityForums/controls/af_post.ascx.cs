@@ -486,6 +486,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicEditor", _fi.TopicFormId);
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
+            }
             
             if (MainSettings.UseSkinBreadCrumb)
             {
@@ -515,7 +519,10 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
-            
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
+            }
             if (MainSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);

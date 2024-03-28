@@ -1112,6 +1112,7 @@
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\ForumGroupController.cs" />
@@ -1135,6 +1136,13 @@
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="class\Permissions.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="Deprecated\MiniPager.cs" />
+    <Compile Include="Entities\Like.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
@@ -1240,6 +1248,8 @@
     <Compile Include="components\Data\Topics.cs" />
     <Compile Include="components\Extensions\ConfigUtils.cs" />
     <Compile Include="components\Extensions\ReWriter.cs" />
+    <Compile Include="components\Filters\FilterController.cs" />
+    <Compile Include="components\Filters\FilterInfo.cs" />
     <Compile Include="components\Forums\ForumCollection.cs" />
     <Compile Include="components\Filters\FilterController.cs" />
     <Compile Include="components\Filters\FilterInfo.cs" />

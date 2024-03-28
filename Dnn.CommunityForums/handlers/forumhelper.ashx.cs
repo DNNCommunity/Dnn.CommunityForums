@@ -215,8 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			{
 				TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
+                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
                 if (f != null)
                 {
@@ -246,8 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
+                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
                 if (f != null)
                 {
@@ -279,8 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
+                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
                 if ((this.UserId == t.Author.AuthorId && !t.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, ForumUser.UserRoles))
                 {
@@ -345,9 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 replyId = int.Parse(Params[Literals.ReplyId].ToString());
             }
-            int forumId = -1;
-            Data.ForumsDB db = new Data.ForumsDB();
-            forumId = db.Forum_GetByTopicId(TopicId);
+            int forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: forumId, useCache: true);
 
             // Need to get the list of attachments BEFORE we remove the post recods
@@ -429,8 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
+                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
                 if (f != null)
                 {
@@ -588,8 +582,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 TopicsController tc = new TopicsController();
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(PortalId, ModuleId, topicId);
-                Data.ForumsDB db = new Data.ForumsDB();
-                forumId = db.Forum_GetByTopicId(topicId);
+                forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, forumId, false, -1);
                 if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles))
                 {

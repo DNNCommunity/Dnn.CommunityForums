@@ -30,6 +30,8 @@ using static DotNetNuke.Modules.ActiveForums.Services.Controllers.TopicControlle
 using System.Xml;
 using DotNetNuke.Common.Controls;
 using DotNetNuke.Modules.ActiveForums.Data;
+using System.Linq;
+using DotNetNuke.Modules.ActiveForums.API;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -39,9 +41,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Forums", CacheItemPriority.Low)]
     public partial class ForumInfo
     {
-        private ForumGroupInfo _forumGroup;
-        private PermissionInfo _security;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo _forumGroup;
+        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo _security;
         private List<PropertiesInfo> _properties;
+        private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> _subforums;
+        private Hashtable forumSettings;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -78,11 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get
-            {
-                if (_forumGroup == null) { _forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId); }
-                return _forumGroup;
-            }
+            get => _forumGroup ?? (_forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId));
             set => _forumGroup = value;
         }
 
@@ -106,7 +106,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public bool InheritSecurity => this.PermissionsId == ForumGroup.PermissionsId;
-        
+
+        [IgnoreColumn()]
+        public bool InheritSettings => this.ForumSettingsKey == ForumGroup.GroupSettingsKey;
+
         [IgnoreColumn()]
         public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumID);
 
@@ -120,23 +123,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ForumURL => URL.ForumLink(TabId, this);
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection SubForums { get; set; }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums 
+        { 
+            get => _subforums ?? (_subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumID == ParentForumId).ToList());
+            set => _subforums = value; 
+        }
 
         [IgnoreColumn()]
         public List<PropertiesInfo> Properties
         {
-            get => _properties ?? (_properties = new PropertiesController().ListProperties(PortalId, 1, ForumID));
+            get => _properties ?? (_properties = (HasProperties ? new PropertiesController().ListProperties(PortalId, 1, ForumID) : new List<PropertiesInfo>()));
             set => _properties = value;
-        }
-
-        public ForumInfo()
-        {
-            PortalId = -1;
-            PermissionsId = -1;
-            PrefixURL = string.Empty;
-            ForumSettings = new Hashtable();
-
-            Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
         }
 
         #region "Settings"
@@ -149,7 +146,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn()]
-        public Hashtable ForumSettings { get; set; }
+        public Hashtable ForumSettings
+        {
+            get => forumSettings ?? (forumSettings = (Hashtable)DataCache.GetSettings(ModuleId, ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, ModuleId, ForumSettingsKey), true));
+            set => forumSettings = value;
+        }
 
         [IgnoreColumn()]
         public bool AllowAttach => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowAttach]);

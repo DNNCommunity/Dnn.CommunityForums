@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -56,17 +57,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew)
         {
-            var rc = new DotNetNuke.Security.Roles.RoleController();
-            var db = new Data.Common();
-            var permissionsId = -1;
             if (forumGroupInfo.PermissionsId == -1)
             {
-                var ri = rc.GetRoleByName(portalId, "Administrators");
-                if (ri != null)
-                {
-                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(ri.RoleID.ToString()).PermissionsId;
-                    permissionsId = forumGroupInfo.PermissionsId;
-                }
+                    forumGroupInfo.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
             }
             if (forumGroupInfo.ForumGroupId <= 0)
             {
@@ -76,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             Update(forumGroupInfo);
             if (isNew)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.PermissionsId);
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
@@ -90,6 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public void Group_Delete(int moduleId, int forumGroupId)
         {
             Delete(GetById(id: forumGroupId));
+            DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.ForumList, moduleId));
         }
     }
 }
