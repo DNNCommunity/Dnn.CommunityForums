@@ -38,7 +38,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TopicId { get; set; }
         public int Mode { get; set; }
         public int UserId { get; set; }
+        [IgnoreColumn()]
         public bool TopicSubscriber { get => TopicId > 0; }
+        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.User User
         {
             get
@@ -50,8 +52,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return _user;
             }
         }
-        public string Email { get => (_email = User?.Email); set => _email = value; } 
+        [IgnoreColumn()]
+        public string Email { get => (_email = User?.Email); set => _email = value; }
+        [IgnoreColumn()]
         public TimeSpan TimeZoneOffSet { get => Utilities.GetTimeZoneOffsetForUser(PortalId, UserId); }
+        [IgnoreColumn()]
         public CultureInfo UserCulture { get => Utilities.GetCultureInfoForUser(PortalId, UserId); }
     }
 }
