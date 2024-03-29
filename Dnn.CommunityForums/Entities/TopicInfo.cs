@@ -75,9 +75,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get
             {
                 //TODO : clean this up to use DAL2
-                if (_forumId < 1)
+                if (_forumId < 1 && TopicId > 0)
                 {
-                    forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+                    _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
                 return _forumId; 
             } 
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId));
+            get => _forumInfo ?? (_forumInfo = ( ForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId) : null ));
             set => _forumInfo = value;
         }
         [IgnoreColumn()]

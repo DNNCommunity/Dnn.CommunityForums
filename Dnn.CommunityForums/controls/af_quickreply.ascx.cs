@@ -263,7 +263,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 isApproved = true;
             }
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo(); 
+            ri.ReplyToId = TopicId; 
+            ri.TopicId = TopicId;
+
+            ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo(); 
+
+
             int ReplyId = -1;
             string sUsername = string.Empty;
             if (Request.IsAuthenticated)
@@ -302,8 +308,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 AllowHTML = IsHtmlPermitted(ForumInfo.EditorPermittedUsers, IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles));
             }
             sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, ForumInfo.AllowEmoticons);
-            ri.TopicId = TopicId;
-            ri.ReplyToId = TopicId;
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;

@@ -43,8 +43,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = base.GetById(forumId);
-            string cachekey = string.Format(CacheKeys.ForumInfo, forum.ModuleId, forumId);
-            DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
+            if (forum != null)
+            {
+                string cachekey = string.Format(CacheKeys.ForumInfo, forum.ModuleId, forumId);
+                DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
+            }
             return forum;
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int ModuleId)

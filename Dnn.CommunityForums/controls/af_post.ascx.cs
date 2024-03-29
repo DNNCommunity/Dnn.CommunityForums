@@ -33,6 +33,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Modules.ActiveForums.Extensions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Social.Notifications;
@@ -542,6 +543,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
+                //TODO: Find out why Topic Get is called twice in this method
                 var tc = new TopicsController();
                 var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
@@ -697,7 +699,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+                ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+
+                ti.ForumId = ForumInfo.ForumID;
             }
 
             ti.AnnounceEnd = ctlForm.AnnounceEnd;
@@ -974,6 +979,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+                ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             }
 
             if (!_isEdit)

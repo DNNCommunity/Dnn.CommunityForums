@@ -36,17 +36,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.GetById(ReplyId);
             if (ri != null)
             {
-                if (ri.Topic == null)
+                if (ri.Topic == null && ri.TopicId > 0)
                 {
                     ri.Topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ri.TopicId);
                 }
-                if (ri.Content == null)
+                if (ri.Content == null && ri.ContentId > 0)
                 {
                     ri.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ri.ContentId);
-                }
-                if (ri.Forum == null)
-                {
-                    ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.ForumId);
                 }
             }
             return ri;
@@ -85,17 +81,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             int replyId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+            ri.TopicId = TopicId;
+            ri.ReplyToId = ReplyToId;
+            ri.IsApproved = IsApproved;
+            ri.IsDeleted = false;
+            ri.StatusId = -1;
+            ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = DisplayName;
             ri.Content.Subject = Subject;
             ri.Content.Body = Body;
             ri.Content.IPAddress = IPAddress;
             ri.Content.Summary = string.Empty;
-            ri.IsApproved = IsApproved;
-            ri.IsDeleted = false;
-            ri.ReplyToId = ReplyToId;
-            ri.StatusId = -1;
-            ri.TopicId = TopicId;
             replyId = Reply_Save(PortalId, ModuleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;

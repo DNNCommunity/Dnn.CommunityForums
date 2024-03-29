@@ -36,7 +36,7 @@ using DotNetNuke.Modules.ActiveForums.API;
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Forums")]
-    [PrimaryKey("ForumId", AutoIncrement = true)]
+    [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
     [Scope("ModuleId")]
     [Cacheable("activeforums_Forums", CacheItemPriority.Low)]
     public partial class ForumInfo

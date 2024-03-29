@@ -18,20 +18,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
         private int forumId; 
-        [IgnoreColumn()]
-        public int ForumId
-        {
-            get
-            {
-                //TODO : clean this up to use DAL2
-                if (forumId < 1)
-                {
-                    forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
-                }
-                return forumId;
-            }
-            set => forumId = value;
-        }
         public int ReplyId { get; set; }
         public int TopicId { get; set; }
         public int ReplyToId { get; set; }
@@ -53,15 +39,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => _contentInfo ?? (_contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId));
+            get
+            {
+                if (_contentInfo == null && ContentId > 0)
+                {
+                    _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                }
+                return _contentInfo;
+            }
+
             set => _contentInfo = value;
         }
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
-        {
-            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId));
-            set => _forumInfo = value;
-        }
+        public int ForumId => Topic.ForumId;
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => Topic.Forum;
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
