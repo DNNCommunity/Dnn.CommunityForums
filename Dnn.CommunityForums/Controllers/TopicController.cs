@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
@@ -34,34 +35,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int TopicId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(topicId);
-            if (ti != null)
-            {
-                if (ti.Content == null)
-                {
-                    ti.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ti.ContentId);
-                }
-                if (ti.Forum == null)
-                {
-                    ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId);
-                }
-                //forum.ForumGroup = forum.ForumGroupId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(moduleId, forum.ForumGroupId) : null;
-                //forum.ForumSettings = (Hashtable)DataCache.GetSettings(moduleId, forum.ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, moduleId, forum.ForumSettingsKey), !ignoreCache);
-                //forum.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forum.PermissionsId);
-                //if (forum.HasProperties)
-                //{
-                //    var propC = new PropertiesController();
-                //    forum.Properties = propC.ListProperties(portalId, 1, forumId);
-                //}
-            }
-            return ti;
+            return base.GetById(TopicId);
         }
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
             int topicId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+            ti.ForumId = ForumId;
             ti.AnnounceEnd = Utilities.NullDate();
             ti.AnnounceStart = Utilities.NullDate();
             ti.Content.AuthorId = UserId;
@@ -204,7 +186,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
-                base.DeleteById(TopicId);
+
+                DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
 
