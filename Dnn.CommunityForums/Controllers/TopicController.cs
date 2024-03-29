@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
@@ -180,7 +181,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
-                base.DeleteById(TopicId);
+
+                DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
 
