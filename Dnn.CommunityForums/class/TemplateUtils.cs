@@ -32,6 +32,7 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Abstractions;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -205,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
             body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request))));
 
             // load the forum information
-            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalID, moduleId: moduleID, forumId: forumID, useCache: true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumID, moduleId: moduleID);
 
             // Load the user if needed
             if (user == null)

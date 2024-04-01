@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                         foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
                         {
-                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"])));
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), ForumModuleId));
                         }
                     }
                     #endregion
@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                         foreach (string ForumId in ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
                         {
-                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId)));
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId),ForumModuleId));
                         }
                     }
                     Forums = (Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList());

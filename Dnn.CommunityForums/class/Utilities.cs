@@ -1235,7 +1235,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         {
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
-            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
             if (fi == null)
                 return null;
 
