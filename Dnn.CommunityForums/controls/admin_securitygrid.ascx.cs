@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string sOut = string.Empty;
 			if (action == "delete")
 			{
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(ModuleId,secId, secType, pId);
 
 			}
 			else if (action == "addobject")
@@ -339,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				if (! (string.IsNullOrEmpty(secId)))
 				{
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(pId, "View", secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, "View", secId, secType);
 				}
 
 
@@ -348,11 +348,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (action == "remove")
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(ModuleId, pId, key, secId, secType);
 				}
 				else
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, key, secId, secType);
                 }
 				sOut = action + "|" + returnId;
 			}

@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (ForumId > 0 && ForumModuleId == -1)
                 {
-                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true);
+                    fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
                     ForumModuleId = fi.ModuleId;
                 }
                 if (ForumModuleId > 0)
