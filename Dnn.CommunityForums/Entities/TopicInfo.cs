@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
         private string _tags = string.Empty;
-
+        private int _forumId = -1;
         public int TopicId { get; set; }
         [IgnoreColumn()]
         public int ForumId 
@@ -54,9 +54,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
-                return forumId; 
+                return _forumId; 
             } 
-            set => forumId = value;
+            set => _forumId = value;
         }
         [IgnoreColumn()]
         public int PortalId { get => Forum.PortalId; }
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     if (ContentId > 0)
                     {
-                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId, Forum.ModuleId);
                     }
                     if (_contentInfo == null)
                     {

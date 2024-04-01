@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                 foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
                 {
-                    Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"])));
+                    Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), ForumModuleId));
                 }
             }
             #endregion
