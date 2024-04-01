@@ -34,11 +34,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
         public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet.")]
-        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(PermissionsId, requestedAccess);
+        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(-1).GetPermSet(PermissionsId, requestedAccess);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet.")]
-        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(PermissionsId, requestedAccess, PermSet);
+        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(-1).SavePermSet(PermissionsId, requestedAccess, PermSet);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions().")]
-        public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId)).PermissionsId;
+        public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(-1).CreateAdminPermissions(AdminRoleId)).PermissionsId;
         public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles)
 		{
 			//TODO: This will get moved to PermissionController once ForumInfo is updated to DAL2

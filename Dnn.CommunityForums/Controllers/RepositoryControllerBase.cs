@@ -21,20 +21,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
+using DotNetNuke.Collections;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class RepositoryControllerBase<T> where T : class
     {
-        internal readonly IRepository<T> Repo;
+        private int ModuleId;
+        private readonly IRepository<T> Repo;
         internal RepositoryControllerBase()
         {
             var ctx = DataContext.Instance();
             Repo = ctx.GetRepository<T>();
         }
+        internal RepositoryControllerBase(int moduleId)
+        {
+            var ctx = DataContext.Instance();
+            Repo = ctx.GetRepository<T>();
+            ModuleId = moduleId;
+        }
         internal IEnumerable<T> Get()
         {
-            return Repo.Get();
+            return ModuleId > 0 ? Repo.Get(ModuleId) : Repo.Get();
         }
         internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
@@ -42,7 +50,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal T GetById<TProperty>(TProperty id)
         {
-            return Repo.GetById(id);
+            return ModuleId > 0 ? Repo.GetById(id, ModuleId) : Repo.GetById(id);
+        }
+        internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
+        {
+            return Repo.GetById(id, scopeValue);
         }
         internal T Save<TProperty>(T item, TProperty id)
         {
@@ -58,11 +70,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
+            return string.IsNullOrEmpty(sqlCondition) ? ModuleId > 0 ? Get(ModuleId) : Get() : Repo.Find(sqlCondition, args);
+        }
+        internal IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
+        {
+            return Repo.Find(pageIndex, pageSize, sqlCondition, args);
         }
         internal void Update(T item)
         {
             Repo.Update(item);
+        }
+        public void Update(string sqlCondition, params object[] args)
+        {
+            Repo.Update(sqlCondition, args);
         }
         internal void Insert(T item)
         {
@@ -87,6 +107,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal int Count(string sqlCondition, params object[] args)
         {
             return string.IsNullOrEmpty(sqlCondition) ? Repo.Get().Count() : Repo.Find(sqlCondition, args).Count(); 
+        }
+        internal IPagedList<T> GetPage(int pageIndex, int pageSize)
+        {
+            return ModuleId > -1 ? Repo.GetPage(ModuleId, pageIndex, pageSize) : Repo.GetPage(pageIndex, pageSize);
+        }
+        internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
+        {
+            return Repo.GetPage(scopeValue, pageIndex, pageSize);
         }
     }
 }

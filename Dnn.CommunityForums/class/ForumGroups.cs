@@ -423,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			var permissionsId = -1;
 			if (fg.PermissionsId == -1)
 		{
-				fg.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+				fg.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(fg.ModuleId).CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
 
                 permissionsId = fg.PermissionsId;
 			}
