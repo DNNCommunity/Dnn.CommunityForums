@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
 
-                int permissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+                int permissionsId = (pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
 
                 moduleId = gi.ModuleId;
 
@@ -409,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             secKey = n.Name;
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue; 
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId: permissionsId, requestedAccess: secKey, objectId: groupAdmin, objectType: 2);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, PermissionsId: permissionsId, requestedAccess: secKey, objectId: groupAdmin, objectType: 2);
                         }
                     }
 
@@ -423,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
                             
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: secKey, groupMember, 0);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, requestedAccess: secKey, objectId: groupMember, objectType: 0);
                         }
                     }
 
@@ -439,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: secKey, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, requestedAccess: secKey, objectId: DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), objectType: 0);
                             }
                         }
 
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: secKey, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, permissionsId, requestedAccess: secKey, objectId: DotNetNuke.Common.Globals.glbRoleAllUsers, objectType: 0);
                             }
                         }
                     }
