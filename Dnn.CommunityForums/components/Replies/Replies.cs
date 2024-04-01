@@ -19,6 +19,7 @@
 //
 using System;
 using System.Data;
+using System.Reflection;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 
@@ -247,7 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
 
             ReplyController rc = new ReplyController();
             DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);

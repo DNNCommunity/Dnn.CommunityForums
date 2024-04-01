@@ -34,9 +34,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
         public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
-        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(PermissionsId, requestedAccess);
+        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, PermissionsId, requestedAccess);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
-        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(PermissionsId, requestedAccess, PermSet);
+        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, PermissionsId, requestedAccess, PermSet);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
         public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId)).PermissionsId;
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			try
 			{
 				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId,ForumGroupId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
 				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
 				{
 					VanityName = fg.PrefixURL + "/" + VanityName;
