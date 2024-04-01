@@ -40,6 +40,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using DotNetNuke.Modules.ActiveForums.DAL2;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 { 
@@ -408,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
 
             var forum_out = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
-            var forum_in = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId);
+            var forum_in = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, ActiveModule.ModuleID);
             if (forum_out != null && forum_in != null)
             {
                 var perm = false;
@@ -436,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         var replies = dto.Replies.Split('|');
                         var rc = new DotNetNuke.Modules.ActiveForums.DAL2.ReplyController();
                         var firstReply = rc.Get(Convert.ToInt32(replies[0]));
-                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
+                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId, ActiveModule.ModuleID);
                         topicId = tc.Topic_QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
                         tc.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
                     }

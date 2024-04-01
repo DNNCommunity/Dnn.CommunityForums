@@ -21,12 +21,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
+using DotNetNuke.Collections;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class RepositoryControllerBase<T> where T : class
     {
-        internal readonly IRepository<T> Repo;
+        private readonly IRepository<T> Repo;
         internal RepositoryControllerBase()
         {
             var ctx = DataContext.Instance();
@@ -44,6 +45,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Repo.GetById(id);
         }
+        internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
+        {
+            return Repo.GetById(id, scopeValue);
+        }
         internal T Save<TProperty>(T item, TProperty id)
         {
             if (id == null || id.Equals(0) || id.Equals(-1) || GetById(id) == null)
@@ -60,9 +65,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
         }
+        internal IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
+        {
+            return Repo.Find(pageIndex, pageSize, sqlCondition, args);
+        }
         internal void Update(T item)
         {
             Repo.Update(item);
+        }
+        public void Update(string sqlCondition, params object[] args)
+        {
+            Repo.Update(sqlCondition, args);
         }
         internal void Insert(T item)
         {
@@ -87,6 +100,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal int Count(string sqlCondition, params object[] args)
         {
             return string.IsNullOrEmpty(sqlCondition) ? Repo.Get().Count() : Repo.Find(sqlCondition, args).Count(); 
+        }
+        internal IPagedList<T> GetPage(int pageIndex, int pageSize)
+        {
+            return Repo.GetPage(pageIndex, pageSize);
+        }
+        internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
+        {
+            return Repo.GetPage(scopeValue, pageIndex, pageSize);
         }
     }
 }
