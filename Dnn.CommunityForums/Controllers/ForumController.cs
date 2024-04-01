@@ -40,12 +40,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = base.GetById(forumId);
-            if (forum != null)
+            string cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum =  DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
+            if (forum == null)
             {
-                string cachekey = string.Format(CacheKeys.ForumInfo, forum.ModuleId, forumId);
+                forum = base.GetById(forumId, moduleId);
                 DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
             }
             return forum;
@@ -64,25 +65,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forums;
         }
-        public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
-        public static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum(int portalId, int moduleId, int forumId, bool ignoreCache)
-        {
-            string cachekey = string.Format(CacheKeys.ForumInfo, moduleId, forumId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = ignoreCache ? null : DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumInfo;
-            if (forum == null)
-            {
-                forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
-                DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
-            }
-            return forum;
-        }
-        public static string GetForumIdsBySocialGroup(int portalId, int socialGroupId)
+        public static string GetForumIdsBySocialGroup(int portalId, int moduleId, int socialGroupId)
         {
             return socialGroupId > 0 ? string.Join(";", new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0", socialGroupId).Select(f => f.ForumID.ToString()).ToArray()) : string.Empty;
-        }
-        internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache)
-        {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
         }
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
         {
@@ -97,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 forumId = Forum_GetByTopicId(topicId);
             }
 
-            return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
+            return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
         }
         public static string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)
         {
@@ -245,12 +230,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             //Logger.Log(xDoc.OuterXml)
             return xDoc;
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)")]
-        public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroup) => Forums_Save(portalId, fi, isNew, useGroup, useGroup);
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
         {
             var permissionsId = -1;
-            var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(fi.ModuleId, fi.ForumGroupId);
+            var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(fi.ForumGroupId, fi.ModuleId);
             if (useGroupSecurity)
             {
                 if (fg != null)
@@ -333,13 +316,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             try
             {
-                PermissionController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(); 
-                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(moduleId, forumGroupId);
+                PermissionController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo gi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forumGroupId, moduleId);
                 var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
 
-                int permissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+                int permissionsId = (pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
                
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
                 {
@@ -357,8 +340,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     SocialGroupId = socialGroupId
                 };
 
-                forumId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true, true);
-                fi = GetForum(portalId, gi.ModuleId, forumId);
+                var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+                forumId = fc.Forums_Save(portalId, fi, true, true, true);
+                fi = fc.GetById(forumId, gi.ModuleId);
                 fi.PermissionsId = permissionsId;
                 new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, false, false, false);
 
@@ -378,7 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
 
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId: permissionsId, requestedAccess: requestedAccess, objectId: groupAdmin, objectType: 2);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, PermissionsId: permissionsId, requestedAccess: requestedAccess, objectId: groupAdmin, objectType: 2);
                         }
                     }
 
@@ -392,7 +376,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                 continue;
                             
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: requestedAccess, groupMember, 0);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, groupMember, 0);
                         }
                     }
 
@@ -408,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
                                 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: requestedAccess, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRegisteredRoleId(portalId).ToString(), 0);
                             }
                         }
 
@@ -422,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 if (n.Attributes == null || n.Attributes["value"].Value != "true")
                                     continue;
 
-                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(permissionsId, requestedAccess: requestedAccess, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
+                                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId, requestedAccess: requestedAccess, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
                             }
                         }
                     }
