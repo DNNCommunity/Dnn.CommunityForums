@@ -298,14 +298,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static void AddObjectToPermissions(int ModuleId, int PermissionsId, string requestedAccess, string objectId, int objectType)
         {
-            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
+            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(ModuleId);
             string permSet = pc.GetPermSet(PermissionsId, requestedAccess);
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, permSet);
             pc.SavePermSet(PermissionsId, requestedAccess, permSet);
         }
         public static void RemoveObjectFromPermissions(int ModuleId, int PermissionsId, string requestedAccess, string objectId, int objectType)
         {
-            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
+            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(ModuleId);
             string permSet = pc.GetPermSet(PermissionsId, requestedAccess);
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objectId, objectType, permSet);
             pc.SavePermSet(PermissionsId, requestedAccess, permSet);
@@ -410,7 +410,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var enumType = typeof(SecureActions);
             Array values = Enum.GetValues(enumType);
-            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
+            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(ModuleId);
             for (int i = 0; i < values.Length; i++)
             {
                 string text = Convert.ToString(Enum.Parse(enumType, values.GetValue(i).ToString()));

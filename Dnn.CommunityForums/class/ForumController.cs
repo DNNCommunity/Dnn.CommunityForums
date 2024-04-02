@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else 
             {
-                fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
+                fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(fi.ModuleId).CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
                 permissionsId = fi.PermissionsId;
                 isNew = true;
             }
@@ -361,7 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
+                var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController(moduleId);
                 var fgc = new ForumGroupController();
                 var gi = fgc.Groups_Get(moduleId, forumGroupId);
                 var socialGroup = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: portalId, roleId: socialGroupId);
