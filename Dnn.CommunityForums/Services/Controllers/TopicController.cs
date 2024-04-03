@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId, ForumModuleId);
                 if (ti != null)
                 {
                     ti.IsPinned = !ti.IsPinned;
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId, ForumModuleId);
                 if (ti != null)
                 {
                     ti.IsLocked = !ti.IsLocked;
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             int topicId = dto.Topic.TopicId;
             int forumId = dto.ForumId;
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(ActiveModule.PortalID, ForumModuleId, forumId, false);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, ForumModuleId);
 
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
             if (topicId > 0 && forumId > 0)
