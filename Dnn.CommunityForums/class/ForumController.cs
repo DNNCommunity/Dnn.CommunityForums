@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     fi.PermissionsId = fg.PermissionsId;
                 }
             }
-            else 
+            else
             {
                 fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
                 permissionsId = fi.PermissionsId;

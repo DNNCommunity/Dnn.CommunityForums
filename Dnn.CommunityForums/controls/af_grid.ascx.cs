@@ -109,9 +109,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var sCrumb = "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
             
-            if (Request.Params[$"{ParamKeys.GridType}"] != null)
+            if (Request.Params[ParamKeys.GridType] != null)
             {
-                var gview = Utilities.XSSFilter(Request.Params[$"{ParamKeys.GridType}"]).ToLowerInvariant(); 
+                var gview = Utilities.XSSFilter(Request.Params[ParamKeys.GridType]).ToLowerInvariant(); 
                 var timeFrame = Utilities.SafeConvertInt(Request.Params[ParamKeys.TimeSpan], 1440);
                 switch (gview)
                 {
@@ -306,7 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!(string.IsNullOrEmpty(MainSettings.PrefixURLOther)))
                     pager.BaseURL += "/" + MainSettings.PrefixURLOther;
 
-                pager.BaseURL += "/" + Request.Params[$"{ParamKeys.GridType}"] + "/";
+                pager.BaseURL += "/" + Request.Params[ParamKeys.GridType] + "/";
             }
 
             pager.Params = @params;

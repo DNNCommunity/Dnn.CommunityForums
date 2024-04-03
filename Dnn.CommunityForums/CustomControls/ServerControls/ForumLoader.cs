@@ -36,24 +36,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
 
-                if (Request.QueryString[$"{ParamKeys.GridType}"] == GridTypes.MySettings || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
-                {
-                    int userId;
-
-                    userId = int.TryParse(Request.QueryString[Literals.UserId], out userId) ? userId : UserInfo.UserID;
-
-                    // Users can only view thier own settings unless they are admin.
-                    if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                    {
-                        var userPrefsCtl = (SettingsBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
-                        userPrefsCtl.ModuleConfiguration = ModuleConfiguration;
-                        userPrefsCtl.LocalResourceFile = Page.ResolveUrl(Globals.SharedResourceFile);
-                        this.Controls.Add(userPrefsCtl);
-                    }
-
-                    return;
-                }
-
                 if (ForumId > 0 && ForumModuleId == -1)
                 {
                     ForumController fc = new ForumController();

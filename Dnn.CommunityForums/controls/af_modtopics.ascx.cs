@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
+            lblHeader.Text = Utilities.GetSharedResource("[RESX:PendingPosts]");
             cbMod.CallbackEvent += cbMod_Callback;
 
         }
@@ -56,7 +57,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!cbMod.IsCallback)
                 {
-                    lblHeader.Text = Utilities.GetSharedResource("[RESX:PendingPosts]");
                     BuildModList();
                 }
 
