@@ -18,8 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.UI.UserControls;
 namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class af_modban : ForumBase
@@ -70,7 +75,62 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
+                DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: PortalId, userId: AuthorId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new TopicsController().Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+                string sBody = string.Empty;
+                string authorName = string.Empty;
+                string sSubject = string.Empty;
+                string sTopicURL = string.Empty;
+                sTopicURL = topic.TopicUrl;
+                if (ReplyId > 0 & TopicId != ReplyId)
+                {
+                    ReplyController rc = new ReplyController();
+                    DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+                    sBody = reply.Content.Body;
+                    sSubject = reply.Content.Subject;
+                    authorName = reply.Author.DisplayName;
+
+                }
+                else
+                {
+                    sBody = topic.Content.Body;
+                    sSubject = topic.Content.Subject;
+                    authorName = topic.Author.DisplayName;
+
+                }
+                string subject = Utilities.GetSharedResource("RESX:BanAlertSubject");
+                subject = subject.Replace("[Username]", user.Username);
+                subject = subject.Replace("[DisplayName]", user.DisplayName);
+                subject = subject.Replace("[BannedBy]", UserInfo.DisplayName);
+                string body = Utilities.GetSharedResource("RESX:BanAlertBody");
+                body = body.Replace("[Subject]", sSubject);
+                body = body.Replace("[Post]", sBody);
+
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
+
+                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);
+
+                Notification notification = new Notification(); 
+                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("DCF-UserBanned");
+
+                notification.NotificationTypeID = notificationType.NotificationTypeId;
+                notification.Subject = subject;
+                notification.Body = body;
+              
+                notification.IncludeDismissAction = true;
+                notification.SenderUserID = UserInfo.UserID;
+                notification.Context = notificationKey;
+
+                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", ModuleContext.Configuration.ModuleTitle));
+                string userBannedMsg = String.Format(Utilities.GetSharedResource("RESX:UserBanned"), user.Username);
+                log.AddProperty("Message", userBannedMsg);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+
                 DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: PortalId, ModuleId: ForumModuleId, UserId: AuthorId);
+
                 Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, (ReplyId > 0 ? ParamKeys.TopicId + "=" + TopicId : string.Empty), ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.UserBanned + (SocialGroupId > 0 ? "&" + Literals.GroupId + "=" + SocialGroupId : string.Empty) }));
             }
         }
