@@ -25,4 +25,4 @@ namespace DotNetNuke.Modules.ActiveForums
     class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
     class Like : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
-} 
+}
