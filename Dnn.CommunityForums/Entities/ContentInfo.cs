@@ -26,8 +26,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Content")]
     [PrimaryKey("ContentId", AutoIncrement = true)]
-    [Scope("ModuleId")]
-    [Cacheable("activeforums_Content", CacheItemPriority.Low)] 
     public class ContentInfo
     {
         private DateTime _dateCreated = DateTime.UtcNow;
