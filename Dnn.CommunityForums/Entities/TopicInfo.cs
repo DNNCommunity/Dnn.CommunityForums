@@ -41,8 +41,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int forumId;
-
+        private string _tags = string.Empty;
+        private int _forumId = -1;
         public int TopicId { get; set; }
         [IgnoreColumn()]
         public int ForumId 
@@ -50,13 +50,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get
             {
                 //TODO : clean this up to use DAL2
-                if (forumId < 1)
+                if (_forumId < 1 && TopicId > 0)
                 {
-                    forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+                    _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
-                return forumId; 
+                return _forumId; 
             } 
-            set => forumId = value;
+            set => _forumId = value;
         }
         [IgnoreColumn()]
         public int PortalId { get => Forum.PortalId; }
@@ -110,22 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             [IgnoreColumn()]
             public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get
-            {
-                if (_forumInfo == null)
-                {
-                    if (ForumId > 0)
-                    {
-                        _forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
-                    }
-                }
-                if (_forumInfo == null)
-                {
-                    _forumInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
-                }
-                return _forumInfo;
-            }
-
+            get => _forumInfo ?? (_forumInfo = ( ForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId) : null ));
             set => _forumInfo = value;
         }
         [IgnoreColumn()]

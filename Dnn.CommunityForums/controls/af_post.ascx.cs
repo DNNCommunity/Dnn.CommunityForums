@@ -698,6 +698,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+                ti.ForumId = ForumInfo.ForumID;
             }
 
             ti.AnnounceEnd = ctlForm.AnnounceEnd;
