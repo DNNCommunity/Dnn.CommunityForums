@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -36,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadSecurity();
                     forumGroup.LoadSettings();
                 }
-                DataCache.SettingsCacheStore(forumGroup.ModuleId, cachekey, forumGroup);
+                DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
             return forumGroup;
         }
@@ -48,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
-            int groupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
+            forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
 
             if (isNew)
             {
