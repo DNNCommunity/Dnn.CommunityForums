@@ -27,12 +27,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
-        public LikeController() : base()
-        {
-        }
+        public LikeController() : base() { }
         public bool GetForUser(int userId, int postId)
         {
-            return Repo.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+            return Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
         }
         public (int count,bool liked) Get(int userId, int postId)
         {
@@ -40,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public List<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int postId)
         {
-            return Repo.Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
+            return Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
         }
         public int Count(int postId)
         {
@@ -48,14 +46,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public int Like(int contentId, int userId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = Repo.Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
             if (like != null)
             {
                 if (like.Checked)
                     like.Checked = false;
                 else
                     like.Checked = true;
-                Repo.Update(like);
+                Update(like);
             }
             else
             {
@@ -63,14 +61,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 like.PostId = contentId;
                 like.UserId = userId;
                 like.Checked = true;
-                Repo.Insert(like);
+                Insert(like);
             }
             return Count(contentId);
         }
     }
 }
-
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]

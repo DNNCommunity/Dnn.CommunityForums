@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
                         _canCreate = true;
 
                     // If CreatePostCount is not set, no need to go further
@@ -415,7 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
                         _canReply = true;
 
                     // If ReplyPostCount is not set, no need to go further
@@ -452,7 +452,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var secRoles = xNode.InnerText;
 
-            return Permissions.HasPerm(secRoles, ForumUser.UserRoles);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(secRoles, ForumUser.UserRoles);
         }
 
         protected string GetSharedResource(string key)

@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, true);
                 if (ti != null)
                 {
-                    if (Permissions.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
                     {
                         if (!Page.IsPostBack)
                         {

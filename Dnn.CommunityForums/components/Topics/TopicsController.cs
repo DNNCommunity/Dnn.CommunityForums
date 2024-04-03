@@ -403,11 +403,11 @@ namespace DotNetNuke.Modules.ActiveForums
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(moduleInfo.PortalID))
             {
                 roles.Add(r.RoleName);
             }
-            string roleIds = Permissions.GetRoleIds(roles.ToArray(), moduleInfo.PortalID);
+            string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
 
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
@@ -455,7 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
                         var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
-                        permittedRolesCanView = Permissions.GetRoleNames(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
+                        permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
                         AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
                     var searchDoc = new SearchDocument

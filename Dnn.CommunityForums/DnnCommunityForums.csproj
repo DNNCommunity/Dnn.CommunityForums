@@ -1119,6 +1119,7 @@
     <Compile Include="class\Injector.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\EmoticonController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
     <Compile Include="Controllers\RepositoryControllerBase.cs" />
@@ -1127,19 +1128,13 @@
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="class\Permissions.cs" />
     <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Deprecated\Utilities.cs" />
-    <Compile Include="Entities\Like.cs" />
-    <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\FilterInfo.cs" />
     <Compile Include="Deprecated\MiniPager.cs" />
-    <Compile Include="Deprecated\Utilities.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
-    <Compile Include="Entities\FilterInfo.cs" />
-    <Compile Include="Deprecated\Utilities.cs" />
-    <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
@@ -1173,6 +1168,7 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Entities\PermissionInfo.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
     <Compile Include="Entities\TopicRatingInfo.cs" />
@@ -1673,9 +1669,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Utilities.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="class\Permissions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Polls.cs">

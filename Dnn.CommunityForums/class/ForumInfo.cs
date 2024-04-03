@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 		#region Settings & Security
 
-		public PermissionInfo Security { get; set; }
+		public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security { get; set; }
         public Hashtable ForumSettings { get; set; }
 
 		#endregion
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			PrefixURL = string.Empty;
 			ForumSettings = new Hashtable();
 
-			Security = new PermissionInfo();
+			Security = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
 		}
 
 		public string TopicSubject { get; set; }
