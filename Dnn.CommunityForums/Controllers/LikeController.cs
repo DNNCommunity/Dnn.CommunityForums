@@ -94,3 +94,4 @@ namespace DotNetNuke.Modules.ActiveForums
             base.Like(contentId, userId);
         }
     }
+}

@@ -221,8 +221,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     fi.PermissionsId = fg.PermissionsId;
                 }
             }
-            else 
+            else
             {
+                var db = new Data.Common();
                 fi.PermissionsId = db.CreatePermSet(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString());
                 permissionsId = fi.PermissionsId;
                 isNew = true;
