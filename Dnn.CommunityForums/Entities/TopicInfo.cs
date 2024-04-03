@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     if (ContentId > 0)
                     {
-                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId, Forum.ModuleId);
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
                     }
                     if (_contentInfo == null)
                     {

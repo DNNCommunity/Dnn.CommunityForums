@@ -214,7 +214,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, Utilities.SafeConvertInt(e.Parameters[1]), false, -1);
-                            forumSettingsKey = fi.ForumSettingsKey;
                         }
 
                         fi.ModuleId = ModuleId;
@@ -290,8 +289,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
 
                         gi.GroupSettingsKey = settingsKey;
-                        var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-                        groupId = gc.Groups_Save(PortalId, gi, bIsNew);
+                        groupId = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Save(PortalId, gi, bIsNew);
                         recordId = groupId;
                         hidEditorResult.Value = groupId.ToString();
 
@@ -323,14 +321,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "deleteforum":
                     {
                         var forumId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        DataProvider.Instance().Forums_Delete(PortalId, ModuleId, forumId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Delete(PortalId, ModuleId, forumId);
                         break;
                     }
 
                 case "deletegroup":
                     {
                         var groupId = Utilities.SafeConvertInt(e.Parameters[1]);
-                        DataProvider.Instance().Groups_Delete(ModuleId, groupId);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().Groups_Delete(ModuleId, groupId);
                         break;
                     }
             }
