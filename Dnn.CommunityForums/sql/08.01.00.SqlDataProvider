@@ -1260,3 +1260,24 @@ GO
 /* issue 660 end -  Only append templateId to Filename if template name is duplicated within same module */
 
 /* --------------------- */
+
+
+/* issue 721 - minor enhancements to banning user */
+
+INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] (
+  [Name],
+  [Description],
+  [TTL],
+  [DesktopModuleID])
+VALUES (
+  N'AF-UserBanned',
+  N'AF-UserBanned',
+  -1,
+  NULL)
+GO
+
+
+/* issue 721 - minor enhancements to banning user */
+
+
+/* --------------------- */
