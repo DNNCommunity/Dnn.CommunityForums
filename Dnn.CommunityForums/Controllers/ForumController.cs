@@ -310,7 +310,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.ClearSettingsCache(fi.ModuleId);
             return forumId;
         }
-   
+        public void Forums_Delete(int portalId, int forumId, int moduleId)
+        {
+            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
+            DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
+        }
+
         internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, User currentUser, 
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> groupAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forumAction,
