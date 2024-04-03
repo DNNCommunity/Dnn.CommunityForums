@@ -32,6 +32,7 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Abstractions;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
 {

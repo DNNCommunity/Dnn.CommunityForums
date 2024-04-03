@@ -87,7 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
         public abstract IDataReader Groups_List(int ModuleId);
         public abstract void Groups_Move(int ModuleId, int ForumGroupId, int SortDirection);
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract int Groups_Save(int PortalId, int ModuleId, int ForumGroupId, string GroupName, int SortOrder, bool Active, bool Hidden, int PermissionsId, string PrefixURL);
         #endregion
 

@@ -459,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ctlForumJump = new af_quickjump();
                 ctlForumJump.ForumModuleId = ForumModuleId;
-                ctlForumJump.dtForums = null;
                 ctlForumJump.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumJump.ForumId = ForumId;
                 ctlForumJump.ModuleId = ModuleId;

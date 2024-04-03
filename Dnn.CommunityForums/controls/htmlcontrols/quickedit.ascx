@@ -1,4 +1,4 @@
-﻿<div id="aftopicedit" style="width:500px;height:350px;display:none;" title="[RESX:TopicQuickEdit]">
+﻿<div id="aftopicedit" style="width:500px;height:500px;display:none;" title="[RESX:TopicQuickEdit]">
     <div class="dnnForm">
         <ul class="dnnAdminTabNav">
             <li><a href="#editTopic1">[RESX:Topic]</a></li>
