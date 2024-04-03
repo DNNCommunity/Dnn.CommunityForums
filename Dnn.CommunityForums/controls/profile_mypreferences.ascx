@@ -1,56 +1,56 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="false" CodeBehind="profile_mypreferences.ascx.cs" Inherits="DotNetNuke.Modules.ActiveForums.profile_mypreferences" %>
-<%@ Register  assembly="DotNetNuke.Modules.ActiveForums" namespace="DotNetNuke.Modules.ActiveForums.Controls" tagPrefix="am" %>
-<%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
-<%@ Register TagPrefix="dnnjs" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
-<dnnjs:DnnCssInclude runat="server" FilePath="~/DesktopModules/ActiveForums/userpref.css" />
-<script type="text/javascript">
-	function amaf_cbPrefComplete(){
-		$('.profMsg').show().fadeOut(3000, 'easeInExpo');
-	};
-</script>
-<div class="dnnFormMessage dnnFormSuccess profMsg" style="display:none;"><%=GetString("[RESX:Actions:PrefUpdated]")%></div>
+<%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
+<style>
+    .afpref{min-width:inherit !important}
+	.dcf-search-popup{z-index:9 !important;}
+</style>
+<h3 class="dcf-heading-3">
+    <dnn:label id="lblHeader" cssclass="aftitlelg" runat="server" resourcekey="[RESX:MySettings]" />
+</h3>
 <div class="dnnForm afpref">
-	<div class="dnnFormItem">
-		<dnn:label controlname="drpPrefDefaultSort" resourcekey="[RESX:PrefDefaultSort]" Text="Default Sort"  Suffix=":" runat="server" />
-		<asp:DropDownList ID="drpPrefDefaultSort" runat="server">
-									<asp:ListItem Value="ASC" resourcekey="[RESX:OldestFirst]"></asp:ListItem>
-									<asp:ListItem Value="DESC" resourcekey="[RESX:NewestFirst]"></asp:ListItem>
-									</asp:DropDownList>
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label controlname="drpPrefPageSize" resourcekey="[RESX:PrefPageSize]" Text="Page Size"  Suffix=":" runat="server" />
-        <asp:DropDownList ID="drpPrefPageSize" runat="server">
-              <asp:ListItem>5</asp:ListItem>
-                <asp:ListItem>10</asp:ListItem>
-                <asp:ListItem>25</asp:ListItem>
-                <asp:ListItem>50</asp:ListItem>
-                <asp:ListItem>100</asp:ListItem>
-                <asp:ListItem>200</asp:ListItem>
-        </asp:DropDownList>
 
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label controlname="chkPrefJumpToLastPost" resourcekey="[RESX:PrefJumpToLastPost]" Text="Jump to last post"  Suffix=":" runat="server" />
-		<asp:CheckBox ID="chkPrefJumpToLastPost" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label controlname="chkPrefTopicSubscribe" resourcekey="[RESX:PrefTopicSubscribe]" Text="Subscribe"  Suffix=":" runat="server" />
-		<asp:CheckBox ID="chkPrefTopicSubscribe" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label controlname="chkPrefBlockAvatars" resourcekey="[RESX:PrefBlockAvatars]" Text="Block Avatars"  Suffix=":" runat="server" />
-		<asp:CheckBox ID="chkPrefBlockAvatars" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label controlname="chkPrefBlockSignatures" resourcekey="[RESX:PrefBlockSignatures]" Text="Block Signatures"  Suffix=":" runat="server" />
-		<asp:CheckBox ID="chkPrefBlockSignatures" runat="server" />
-	</div>
-	<div class="dnnFormItem">
-		<dnn:label controlname="txtSignature" resourcekey="[RESX:Signature]" Text="Signature"  Suffix=":" runat="server" />
-		<asp:TextBox ID="txtSignature" runat="server" TextMode="MultiLine" />
-	</div>
-	<ul class="dnnActions dnnClear">
-		<li><asp:LinkButton ID="btnSave" CssClass="dnnPrimaryAction" runat="server" Text="Save" resourcekey="[RESX:Save]" /></li>
-	</ul>
+    <div class="dnnFormItem">
+        <dnn:label controlname="drpPrefDefaultSort" resourcekey="[RESX:PrefDefaultSort]" text="Default Sort" suffix=":" runat="server" />
+        <asp:dropdownlist id="drpPrefDefaultSort" runat="server">
+            <asp:listitem value="ASC" resourcekey="[RESX:OldestFirst]"></asp:listitem>
+            <asp:listitem value="DESC" resourcekey="[RESX:NewestFirst]"></asp:listitem>
+        </asp:dropdownlist>
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="drpPrefPageSize" resourcekey="[RESX:PrefPageSize]" text="Page Size" suffix=":" runat="server" />
+        <asp:dropdownlist id="drpPrefPageSize" runat="server">
+            <asp:listitem>5</asp:listitem>
+            <asp:listitem>10</asp:listitem>
+            <asp:listitem>25</asp:listitem>
+            <asp:listitem>50</asp:listitem>
+            <asp:listitem>100</asp:listitem>
+            <asp:listitem>200</asp:listitem>
+        </asp:dropdownlist>
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkPrefJumpToLastPost" resourcekey="[RESX:PrefJumpToLastPost]" text="Jump to last post" suffix=":" runat="server" />
+        <asp:checkbox id="chkPrefJumpToLastPost" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkPrefTopicSubscribe" resourcekey="[RESX:PrefTopicSubscribe]" text="Subscribe" suffix=":" runat="server" />
+        <asp:checkbox id="chkPrefTopicSubscribe" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkPrefBlockAvatars" resourcekey="[RESX:PrefBlockAvatars]" text="Block Avatars" suffix=":" runat="server" />
+        <asp:checkbox id="chkPrefBlockAvatars" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="chkPrefBlockSignatures" resourcekey="[RESX:PrefBlockSignatures]" text="Block Signatures" suffix=":" runat="server" />
+        <asp:checkbox id="chkPrefBlockSignatures" runat="server" />
+    </div>
+    <div class="dnnFormItem">
+        <dnn:label controlname="txtSignature" resourcekey="[RESX:Signature]" text="Signature" suffix=":" runat="server" />
+        <asp:textbox id="txtSignature" runat="server" textmode="MultiLine" />
+    </div>
+    <ul class="dnnActions dnnClear">
+        <li>
+            <asp:linkbutton id="btnSave" cssclass="dnnPrimaryAction" runat="server" text="Save" resourcekey="[RESX:Save]" />
+        </li>
+    </ul>
 </div>
