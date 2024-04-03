@@ -23,22 +23,25 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Reflection;
 using DotNetNuke.Services.Scheduling;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    #region SubscriberInfo
-    public class SubscriptionInfo
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
+    public class SubscriptionInfo : DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
     {
-        #region Public Properties
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public int UserId { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public string Email { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public TimeSpan TimeZoneOffSet { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public CultureInfo UserCulture { get; set; }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
         public bool TopicSubscriber { get; set; }
-        #endregion
     }
-    #endregion
 
     public class SubscriptionController
     {
@@ -66,22 +69,18 @@ namespace DotNetNuke.Modules.ActiveForums
             return -1;
         }
 
-        public List<SubscriptionInfo> Subscription_GetSubscribers(int PortalId, int ForumId, int TopicId, SubscriptionTypes Mode, int AuthorId, string CanSubscribe)
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int PortalId, int ForumId, int TopicId, SubscriptionTypes Mode, int AuthorId, string CanSubscribe)
         {
-            SubscriptionInfo si;
-            var sl = new List<SubscriptionInfo>();
+            DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo si;
+            var sl = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
             IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(PortalId, ForumId, TopicId, (int)Mode);
             while (dr.Read())
             {
                 if (AuthorId != Convert.ToInt32(dr["UserId"]))
                 {
-                    si = new SubscriptionInfo
+                    si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                     {
-                        UserId = Convert.ToInt32(dr["UserId"]),
-                        Email = dr["Email"].ToString(),
-                        TimeZoneOffSet = Utilities.GetTimeZoneOffsetForUser(PortalId, Convert.ToInt32(dr["UserId"])),
-                        UserCulture = Utilities.GetCultureInfoForUser(PortalId, Convert.ToInt32(dr["UserId"])),
-                        TopicSubscriber = Utilities.SafeConvertBool(dr["TopicSubscriber"])
+                        UserId = Convert.ToInt32(dr["UserId"])
                     };
 
                     if (!(sl.Contains(si)))
@@ -99,17 +98,20 @@ namespace DotNetNuke.Modules.ActiveForums
     }
     public abstract class Subscriptions
     {
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
         public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int UserId)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId);
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
         public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, SubscriptionTypes SubscriptionType, int UserId)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId);
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
             SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
         }
 
@@ -121,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
         {
             var sc = new SubscriptionController();
-            List<SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
+            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
 
             if (subs.Count > 0)
             {

@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (ForumId > 0)
 				{
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId,ModuleId,ForumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId);
 					if (f != null)
 					{
 						forumPrefix = f.PrefixURL;
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				else if (ForumGroupId > 0)
 				{
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetForumGroup(ModuleId, ForumGroupId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
 					if (g != null)
 					{
 						groupPrefix = g.PrefixURL;

@@ -43,16 +43,9 @@ function amaf_openMove(mid, fid, tid) {
 };
 function amaf_loadForMove(mid, fid, tid) {
     var sf = $.ServicesFramework(mid);
-    var params = {
-        forumId: fid,
-        topicId: tid
-    };
     $.ajax({
-        type: "POST",
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load',
+        type: "GET",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load?forumId=' + fid + '&topicId=' + tid,
         beforeSend: sf.setModuleHeaders
     }).done(function (data) {
         amaf_bindLoadMoveTopic(data);
@@ -60,12 +53,11 @@ function amaf_loadForMove(mid, fid, tid) {
         alert('error moving post');
     });
 };
-function amaf_bindLoadMoveTopic(result) { 
-    var t = data[0].Item1;
-    var f = data[0].Item2;
+function amaf_bindLoadMoveTopic(data) { 
+    var t = data[0];
     $('#aftopicmove-topicid').val(t.TopicId);
     $('#aftopicmove-subject').val(t.Content.Subject);
-    $('#aftopicmove-currentforum').val(f.ForumName);
+    $('#aftopicmove-currentforum').val(t.Forum.ForumName);
 };
 function amaf_modMove(mid, fid, tid) {
     var sf = $.ServicesFramework(mid);

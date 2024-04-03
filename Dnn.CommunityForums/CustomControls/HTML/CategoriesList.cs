@@ -180,8 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string forumPrefix = string.Empty;
 			if (ForumId > 0)
 			{
-				ForumController fc = new ForumController();
-				forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, ForumId);
+				forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId);
 				if (forumInfo != null)
 				{
 					groupPrefix = forumInfo.ForumGroup.PrefixURL;

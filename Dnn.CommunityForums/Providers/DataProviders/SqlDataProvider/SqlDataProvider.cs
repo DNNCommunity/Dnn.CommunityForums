@@ -480,7 +480,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Delete", ForumId, TopicId, DelBehavior, true);
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteForUser(int UserId)")]
         public override void Topics_Delete_For_User(int ModuleId, int UserId, int DelBehavior)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Delete_For_User", ModuleId, UserId, DelBehavior);

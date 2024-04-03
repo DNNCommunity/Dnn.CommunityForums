@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     };
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid, moduleInfo.ModuleID);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext 
                     // so any code that relies on HttpContext cannot be used...
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string permittedRolesCanView = string.Empty;
                     if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
-                        var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
+                        string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
                         permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
                         AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "07.00.11":
                     try
                     {
-                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.MoveSettings_070011();
                     }
                     catch (Exception ex)
                     {
@@ -239,6 +239,19 @@ namespace DotNetNuke.Modules.ActiveForums
                         fc.Install_Or_Upgrade_RenameThemeCssFiles();
                         fc.Install_Or_Upgrade_RelocateDefaultThemeToLegacy();
                         ForumsConfig.FillMissingTopicUrls(); /* for anyone upgrading from 07.00.12-> 08.00.00 */
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
+                case "08.01.00":
+                    try
+                    {
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_080100();
                     }
                     catch (Exception ex)
                     {

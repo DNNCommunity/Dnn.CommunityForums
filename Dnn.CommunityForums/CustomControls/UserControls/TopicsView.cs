@@ -30,6 +30,7 @@ using System.Xml;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -293,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             ForumSubscriberCount = Utilities.SafeConvertInt(drForum["ForumSubscriberCount"]);
                             if (UserId > 0)
                             {
-                                IsSubscribedForum = (Subscriptions.IsSubscribed(PortalId, ModuleId: ForumModuleId, ForumId, SubscriptionType: SubscriptionTypes.Instant, UserId: UserId));
+                                IsSubscribedForum = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
                             }
                             if (MainSettings.UseSkinBreadCrumb)
                             {
@@ -458,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ctlForumJump = new af_quickjump();
                 ctlForumJump.ForumModuleId = ForumModuleId;
-                ctlForumJump.dtForums = null;
                 ctlForumJump.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumJump.ForumId = ForumId;
                 ctlForumJump.ModuleId = ModuleId;
@@ -475,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumSubs = (ForumView)(LoadControl(typeof(ForumView), null));
                 ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumSubs.ForumId = ForumId;
-                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId).SubForums;
+                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId).SubForums;
                 ctlForumSubs.ForumTabId = ForumTabId;
                 ctlForumSubs.ForumModuleId = ForumModuleId;
                 ctlForumSubs.SubsOnly = true;
@@ -864,7 +864,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var @params = new List<string> { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + LastReplyId };
 
                     if (SocialGroupId > 0)
-                        @params.Add("GroupId=" + SocialGroupId.ToString());
+                        @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                     string sLastReplyURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -879,9 +879,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sUserJumpUrl = string.Empty;
                     if (UserLastReplyRead > 0)
                     {
-                        @params = new List<string> { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=topic", ParamKeys.FirstNewPost + "=" + UserLastReplyRead };
+                        @params = new List<string> { $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={TopicId}", $"{ParamKeys.ViewType}=topic", $"{ParamKeys.FirstNewPost}={UserLastReplyRead}" };
                         if (SocialGroupId > 0)
-                            @params.Add("GroupId=" + SocialGroupId.ToString());
+                            @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                         sLastReadURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -889,7 +889,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             @params = new List<string> { ParamKeys.TopicId + "=" + TopicId, ParamKeys.FirstNewPost + "=" + UserLastReplyRead };
                             if (SocialGroupId > 0)
-                                @params.Add("GroupId=" + SocialGroupId.ToString());
+                                @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                             sLastReadURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -1062,9 +1062,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
                     Pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
                     Pager1.View = Views.Topics;
-                    if (Request.Params["afsort"] != null)
+                    if (Request.Params[ParamKeys.Sort] != null)
                     {
-                        string[] Params = { "afsort=" + Request.Params["afsort"], "afcol=" + Request.Params["afcol"] };
+                        string[] Params = { $"{ParamKeys.Sort}={Request.Params[ParamKeys.Sort]}", "afcol=" + Request.Params["afcol"] };
                         Pager1.Params = Params;
                         if (Pager2 != null)
                         {
