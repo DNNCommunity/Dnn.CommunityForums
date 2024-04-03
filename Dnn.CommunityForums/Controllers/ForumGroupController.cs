@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
-using System.Reflection;
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
