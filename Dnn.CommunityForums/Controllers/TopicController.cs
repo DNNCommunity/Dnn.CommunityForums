@@ -35,26 +35,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int topicId)
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int TopicId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(topicId);
-            if (ti != null)
-            {
-                if (ti.Content == null)
-                {
-                    ti.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ti.ContentId);
-                }
-                if (ti.Forum == null)
-                {
-                    ti.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ti.ForumId);
-                }
-            }
-            return ti;
+            return base.GetById(TopicId);
         }
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
             int topicId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+            ti.ForumId = ForumId;
             ti.AnnounceEnd = Utilities.NullDate();
             ti.AnnounceStart = Utilities.NullDate();
             ti.Content.AuthorId = UserId;
