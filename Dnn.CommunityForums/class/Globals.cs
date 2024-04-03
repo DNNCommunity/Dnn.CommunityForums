@@ -400,8 +400,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string HostUrl = "AF-{0}-url";
         public const string MainSettings = "AF-{0}-ms";
         public const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
-        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}"; 
+        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}";
         public const string ForumList = "AF-{0}-fl";
+        public const string SubForumList = "AF-{0}-sfl-{1}";
         public const string ForumListXml = "AF-{0}-flx";
         public const string Tokens = "AF-{0}-tk-{1}";
         public const string ForumViewPrefix = "AF-{0}-FV-";
