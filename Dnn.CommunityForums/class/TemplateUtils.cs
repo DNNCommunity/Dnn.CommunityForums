@@ -32,13 +32,12 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Abstractions;
-using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public class TemplateUtils
     {
-        public static List<SubscriptionInfo> lstSubscriptionInfo { get; set; }
+        public static List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> lstSubscriptionInfo { get; set; }
 
         public static string ShowIcon(bool canView, int forumID, int userId, DateTime dateAdded, DateTime lastRead, int lastPostId)
         {
@@ -207,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
             body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request))));
 
             // load the forum information
-            var fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: portalID, moduleId: moduleID, forumId: forumID, useCache: true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumID, moduleId: moduleID);
 
             // Load the user if needed
             if (user == null)
@@ -370,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder userIds = new StringBuilder();
             userIds.Append("(");
 
-            SubscriptionInfo[] arrSubscriptionInfo = lstSubscriptionInfo.ToArray();
+            DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo[] arrSubscriptionInfo = lstSubscriptionInfo.ToArray();
             for (int i = 0; i < arrSubscriptionInfo.Length; i++)
             {
                 userIds.Append(arrSubscriptionInfo[i].UserId);

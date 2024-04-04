@@ -27,10 +27,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Groups")]
     [PrimaryKey("ForumGroupId", AutoIncrement = true)]
     [Scope("ModuleId")]
-    [Cacheable("activeforums_Groups", CacheItemPriority.Normal)]
+    //TODO [Cacheable("activeforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
+
     public partial class ForumGroupInfo
     {
-        private PermissionInfo _security;
         public int ForumGroupId { get; set; }
         public int ModuleId { get; set; }
         public string GroupName { get; set; }
@@ -43,14 +43,28 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         #region Settings & Security
 
+        private PermissionInfo _security;
+        private Hashtable _groupSettings;
         [IgnoreColumn()]
-        public PermissionInfo Security
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
         {
-            get => _security ?? (_security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId));
+            get => _security ?? (_security = LoadSecurity());
             set => _security = value;
         }
+        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId);
+        }
         [IgnoreColumn()]
-        public Hashtable GroupSettings { get; set; } = new Hashtable();
+        public Hashtable GroupSettings
+        {
+            get => _groupSettings ?? (_groupSettings = LoadSettings());
+            set => _groupSettings = value;
+        }
+        internal Hashtable LoadSettings()
+        {
+            return (Hashtable)DataCache.GetSettings(ModuleId, GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, ModuleId, GroupSettingsKey), true);
+        }
         [IgnoreColumn()]
         public bool AllowAttach
         {

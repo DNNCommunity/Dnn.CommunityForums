@@ -106,8 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 groupTemplate = TemplateUtils.GetTemplateSection(DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
-            var db = new Data.ForumsDB();
-            ForumData = db.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
+            ForumData = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
             if (ForumData != null)
             {
                 XmlNodeList xGroups;
@@ -137,8 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sCSSClass = "afforumrowbottom";
                         }
                         int fid = int.Parse(fNode.Attributes["forumid"].Value);
-                        //Dim viewRoles As String = fNode.Attributes["canview"].Value.ToString
-                        //Dim readRoles As String = fNode.Attributes["canread"].Value.ToString
                         string sForum = TemplateUtils.GetTemplateSection(sGroup, "[FORUMS]", "[/FORUMS]");
                         sForum = sForum.Replace("[CSS:ROWCLASS]", sCSSClass);
                         sForum = ParseForumRow(fNode, sForum, groupName);

@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")] 
         public DataTable ForumTable { get; set; }
         
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums { get; set; }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
         public string DisplayTemplate { get; set; } = "";
         public int CurrentUserId { get; set; } = -1;
         protected af_quickjump ctlForumJump = new af_quickjump();
@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                         foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
                         {
-                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"])));
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), ForumModuleId));
                         }
                     }
                     #endregion
@@ -195,11 +195,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                         foreach (string ForumId in ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
                         {
-                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId)));
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId),ForumModuleId));
                         }
                     }
+                    Forums = (Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList());
+                    
+
                     string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
-                    string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
+                    string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateURL(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
 
                     if (ParentForumId != -1)
                     {
@@ -421,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (canSubscribe)
                 {
-                    bool IsSubscribed = Subscriptions.IsSubscribed(PortalId, ForumModuleId, fi.ForumID, 0, SubscriptionTypes.Instant, CurrentUserId);
+                    bool IsSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
                     string sAlt = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
                     string sImg = ThemePath + "images/email_unchecked.png";
                     if (IsSubscribed)

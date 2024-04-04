@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
+            lblHeader.Text = Utilities.GetSharedResource("[RESX:PendingPosts]");
             cbMod.CallbackEvent += cbMod_Callback;
 
         }
@@ -56,7 +57,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!cbMod.IsCallback)
                 {
-                    lblHeader.Text = Utilities.GetSharedResource("[RESX:PendingPosts]");
                     BuildModList();
                 }
 
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ForumId < 1)
                 {
                     SetPermissions(Convert.ToInt32(e.Parameters[1]));
-                    fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ForumModuleId, Convert.ToInt32(e.Parameters[1]), true);
+                    fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: Convert.ToInt32(e.Parameters[1]), moduleId: ForumModuleId);
                 }
                 else
                 {
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SetPermissions(int fId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, fId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId,ForumModuleId );
             bModDelete = false;
             bModApprove = false;
             bModEdit = false;

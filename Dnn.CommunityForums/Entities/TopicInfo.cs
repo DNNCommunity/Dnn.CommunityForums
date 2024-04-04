@@ -41,17 +41,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [Cacheable("activeforums_Topics", CacheItemPriority.Low)]
     public class TopicInfo
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int forumId;
-        private string _tags = string.Empty;
+        [IgnoreColumn()]
         public class Category
         {
             public int id;
             public string name;
             public bool selected;
 
+            [IgnoreColumn()]
             public Category(int id, string name, bool selected)
             {
                 this.id = id;
@@ -59,19 +56,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 this.selected = selected;
             }
         }
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Author _Author;
+        private int _forumId = -1;
+        private string _tags = string.Empty;
+
+        private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> _forumCategories;
         private IEnumerable<Category> _categories;
 
-        private int _forumId;
         public int TopicId { get; set; }
+
         [IgnoreColumn()]
-        public int ForumId 
-        { 
+        public int ForumId
+        {
+            //TODO: Clean this up
             get
             {
                 //TODO : clean this up to use DAL2
-                if (_forumId < 1)
+                if (_forumId < 1 && TopicId > 0)
                 {
-                    _forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
+                    _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
                 return _forumId; 
             } 
@@ -115,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     if (ContentId > 0)
                     {
-                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId, Forum.ModuleId);
                     }
                     if (_contentInfo == null)
                     {
@@ -130,22 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get
-            {
-                if (_forumInfo == null)
-                {
-                    if (ForumId > 0)
-                    {
-                        _forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
-                    }
-                }
-                if (_forumInfo == null)
-                {
-                    _forumInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
-                }
-                return _forumInfo;
-            }
-
+            get => _forumInfo ?? (_forumInfo = ( ForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId) : null ));
             set => _forumInfo = value;
         }
         [IgnoreColumn()]
@@ -201,14 +191,15 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public IEnumerable<Category> Categories
         {
+            //TODO: Clean this up
             get
             {
                 if (_categories == null)
                 {
-                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); });
+                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }); ;
                     var topicCategories = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
                     topicCategories.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
-
+                    _categories = _categories.Where(c => c.selected).ToList();
                 }
                 return _categories;
             }
