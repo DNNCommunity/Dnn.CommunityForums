@@ -36,6 +36,12 @@ using DotNetNuke.Data;
 using System.Reflection;
 using DotNetNuke.Instrumentation;
 using System.Web.UI;
+using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
+using System.Globalization;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -64,7 +70,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 // templates are loaded; map new forumview template id
                 UpdateForumViewTemplateId(PortalId, ModuleId);
 
-                return true;
+                // Create "User Banned" core messaging notification type new in 08.01.00
+				ForumsConfig.Install_BanUser_NotificationType_080100();
+                
+				return true;
 			}
 			catch (Exception ex)
 			{
@@ -471,6 +480,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 dr.Close();
             } 
+		}
+		internal static void Install_BanUser_NotificationType_080100()
+        {
+            string notificationTypeName = "DCF-UserBanned";
+            string notificationTypeDescription = $"{Globals.ModuleFriendlyName} User Banned";
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+			{
+				NotificationsController.Instance.CreateNotificationType(type);
+			}
 		}
 	}
 }
