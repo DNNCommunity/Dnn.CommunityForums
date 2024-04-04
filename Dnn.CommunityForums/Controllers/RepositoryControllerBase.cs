@@ -22,11 +22,13 @@ using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using DotNetNuke.Collections;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Data;
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class RepositoryControllerBase<T> where T : class
-    {
+    { 
         private readonly IRepository<T> Repo;
         internal RepositoryControllerBase()
         {
