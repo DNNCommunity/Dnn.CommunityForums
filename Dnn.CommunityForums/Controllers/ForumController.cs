@@ -48,21 +48,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forum == null)
             {
                 forum = base.GetById(forumId, moduleId);
-                DataCache.SettingsCacheStore(forum.ModuleId, cachekey, forum);
+                if (forum != null)
+                {
+                    forum.LoadForumGroup();
+                    forum.LoadSubForums();
+                    forum.LoadProperties();
+                    forum.LoadSettings();
+                    forum.LoadSecurity();
+                }
+                DataCache.SettingsCacheStore(moduleId, cachekey, forum);
             }
             return forum;
         }
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int ModuleId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumList, ModuleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumList, moduleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(ModuleId))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId))
                 {
+                    forum.LoadForumGroup();
+                    forum.LoadSubForums();
+                    forum.LoadProperties();
+                    forum.LoadSettings();
+                    forum.LoadSecurity();
                     forums.Add(forum);
                 }
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumList, ModuleId), forums);
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumList, moduleId), forums);
+            }
+            return forums;
+        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(int forumId, int moduleId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
+            if (forums == null)
+            {
+                forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId))
+                {
+                    forum.LoadForumGroup();
+                    forum.LoadProperties();
+                    forum.LoadSettings();
+                    forum.LoadSecurity();
+                    forums.Add(forum);
+                }
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId), forums);
             }
             return forums;
         }
@@ -256,6 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 isNew = true;
             }
 
+            //TODO: When this method is updated to use DAL2 for update, uncomment Cacheable attribute on ForumInfo
             var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
             if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
             {
@@ -276,12 +308,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             // Clear the caches
-            DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumList, fi.ModuleId));
-            DataCache.SettingsCacheClear(fi.ModuleId, string.Format(CacheKeys.ForumInfo, fi.ModuleId, forumId));
-
+            DataCache.ClearSettingsCache(fi.ModuleId);
             return forumId;
         }
-   
+        public void Forums_Delete(int portalId, int forumId, int moduleId)
+        {
+            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
+            DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
+        }
+
         internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, User currentUser, 
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> groupAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forumAction,
