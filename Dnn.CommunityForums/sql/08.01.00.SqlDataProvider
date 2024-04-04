@@ -1261,24 +1261,3 @@ GO
 
 /* --------------------- */
 
-
-/* issue 721 - minor enhancements to banning user */
-
-/* add new notification type  */
-IF NOT EXISTS(SELECT * FROM  {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'DCF-UserBanned') 
-INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] (
-  [Name],
-  [Description],
-  [TTL],
-  [DesktopModuleID])
-VALUES (
-  N'DCF-UserBanned',
-  N'DCF-UserBanned',
-  -1,
-  NULL)
-GO
-
-/* issue 721 - minor enhancements to banning user */
-
-
-/* --------------------- */
