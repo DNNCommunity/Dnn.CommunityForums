@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int forumId;
+        private int _forumId = -1;
         private string _tags = string.Empty;
         private string _categories = string.Empty;
 
@@ -52,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             get
             {
                 //TODO : clean this up to use DAL2
-                if (forumId < 1)
+                if (_forumId < 1 && TopicId > 0)
                 {
-                    forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+                    _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
-                return forumId; 
+                return _forumId; 
             } 
-            set => forumId = value;
+            set => _forumId = value;
         }
         [IgnoreColumn()]
         public int PortalId { get => Forum.PortalId; }
