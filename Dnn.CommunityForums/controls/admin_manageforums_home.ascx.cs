@@ -221,8 +221,10 @@ namespace DotNetNuke.Modules.ActiveForums
 				case "f":
 					DataProvider.Instance().Forums_Move(ModuleId, objectId, dir);
 					break;
-			}
-			BindForums();
+            }
+            DataCache.ClearAllCache(ModuleId);
+            DataCache.ClearAllCacheForTabId(TabId);
+            BindForums();
 			litForums.RenderControl(e.Output);
 		}
 	}

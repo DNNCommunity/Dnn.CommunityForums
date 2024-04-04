@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             int topicId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+            ti.ForumId = ForumId;
             ti.AnnounceEnd = Utilities.NullDate();
             ti.AnnounceStart = Utilities.NullDate();
             ti.Content.AuthorId = UserId;
