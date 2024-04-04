@@ -162,7 +162,7 @@ am.UI = {
             modal: true,
             autoOpen: true,
             dialogClass: "dnnFormPopup",
-            position: "center",
+            position: { at: "center" },
             minWidth: width,
             minHeight: height,
             maxWidth: width,

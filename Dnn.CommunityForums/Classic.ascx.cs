@@ -61,9 +61,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			base.OnLoad(e);
 
             SocialGroupId = -1;
-            if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+            if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
             {
-                SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
             }
 
             SetupPage();
@@ -92,33 +92,36 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     string ctl = DefaultView;
                     string opts = string.Empty;
-                    if (Request.Params[ParamKeys.ViewType] != null)
+
+
+                    if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == Views.Grid && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MyPreferences)
+                    {
+                        ctl = Views.MyPreferences;
+                    }
+                    else if (Request.Params[ParamKeys.ViewType] != null)
                     {
                         ctl = Request.Params[ParamKeys.ViewType];
                     }
-                    else if (Request.Params["view"] != null)
+                    else if (Request.Params[Literals.view] != null)
                     {
-                        ctl = Request.Params["view"];
+                        ctl = Request.Params[Literals.view];
                     }
                     else if (Request.Params[ParamKeys.ViewType] == null & ForumId > 0 & TopicId <= 0)
                     {
                         ctl = Views.Topics;
                     }
-                    else if (Request.Params[ParamKeys.ViewType] == null && Request.Params["view"] == null & TopicId > 0)
+                    else if (Request.Params[ParamKeys.ViewType] == null && Request.Params[Literals.view] == null & TopicId > 0)
                     {
                         ctl = Views.Topic;
                     }
                     else if (Settings["amafDefaultView"] != null)
                     {
                         ctl = Settings["amafDefaultView"].ToString();
-                    }
-                    //ctl = "advanced"
-                    // If Not cbLoader.IsCallback Then
+                    } 
                     if (Request.QueryString[ParamKeys.PageJumpId] != null)
                     {
-                        opts = "PageId=" + Request.QueryString[ParamKeys.PageJumpId];
-                    }
-                    //End If
+                        opts = $"{Literals.PageId}={Request.QueryString[ParamKeys.PageJumpId]}";
+                    } 
                     currView = ctl;
                     GetControl(ctl, opts);
 
@@ -162,7 +165,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     plhLoader.Controls.Clear();
                 }
                 ForumBase ctl = null;
-                if (view.ToUpperInvariant() == "FORUMVIEW")
+                if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant())
+                {
+                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
+                }
+                else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
                     ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                 }
@@ -452,8 +459,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();
                 ctl.ControlId = "aftopicedit";
-                ctl.Height = "350px";
-                ctl.Width = "400px";
+                ctl.Height = "500px";
+                ctl.Width = "500px";
                 ctl.Name = Utilities.GetSharedResource("[RESX:TopicQuickEdit]");
                 ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/quickedit.ascx";
                 this.Controls.Add(ctl);
