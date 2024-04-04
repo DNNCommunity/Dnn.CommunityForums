@@ -18,35 +18,22 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using DotNetNuke.ComponentModel.DataAnnotations;
-using System.Web.Caching;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using System.Runtime.Remoting.Messaging;
-using static DotNetNuke.Modules.ActiveForums.Services.Controllers.TopicController;
-using System.Xml;
-using DotNetNuke.Common.Controls;
-using DotNetNuke.Modules.ActiveForums.Data;
 using System.Linq;
-using DotNetNuke.Modules.ActiveForums.API;
-using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
     [Scope("ModuleId")]
-    [Cacheable("activeforums_Forums", CacheItemPriority.Low)]
+    //TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public partial class ForumInfo
     {
         private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo _forumGroup;
-        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo _security;
         private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> _subforums;
-        private Hashtable forumSettings;
-        private DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo _properties;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -83,10 +70,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get => _forumGroup ?? (_forumGroup = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId));
+            get => _forumGroup ?? (_forumGroup = LoadForumGroup());
             set => _forumGroup = value;
         }
-
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo LoadForumGroup()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
+        }
         [IgnoreColumn()]
         public string GroupName => ForumGroup.GroupName;
 
@@ -101,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public string LastPostLastName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName : string.Empty;
-        
+
         [IgnoreColumn()]
         public string LastPostDisplayName => (PortalId > 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName : string.Empty;
 
@@ -116,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public string ParentForumName => ParentForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ParentForumId, ModuleId).ForumName : string.Empty;
-        
+
         [IgnoreColumn()]
         public int TabId => new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).TabID;
 
@@ -124,33 +114,56 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string ForumURL => URL.ForumLink(TabId, this);
 
         [IgnoreColumn()]
-        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums 
-        { 
-            get => _subforums ?? (_subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumID == ParentForumId).ToList());
-            set => _subforums = value; 
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums
+        {
+            get => _subforums ?? LoadSubForums();
+            set => _subforums = value;
         }
 
-        [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo Properties
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> LoadSubForums()
         {
-            get => _properties ?? (_properties = (DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo) new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2" ,PortalId, 1, ForumID));
+            return (_subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(ForumID, ModuleId).ToList());
+        }
+
+        private List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> _properties;
+        [IgnoreColumn()]
+        public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
+        {
+            get => _properties ?? (_properties = LoadProperties());
             set => _properties = value;
         }
+        internal List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> LoadProperties()
+        {
+            return (HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p=> p.PortalId == PortalId && p.ObjectType == 1 && p.ObjectOwnerId == ForumID).ToList() : new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>());
+        }
 
-        #region "Settings"
+        #region "Settings & Security"
+
+        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo _security;
+        private Hashtable _forumSettings;
 
         [IgnoreColumn()]
-        public PermissionInfo Security
+        public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
         {
-            get => _security ?? (_security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId));
+            get => _security ?? (_security = LoadSecurity());
             set => _security = value;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId);
         }
 
         [IgnoreColumn()]
         public Hashtable ForumSettings
         {
-            get => forumSettings ?? (forumSettings = (Hashtable)DataCache.GetSettings(ModuleId, ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, ModuleId, ForumSettingsKey), true));
-            set => forumSettings = value;
+            get => _forumSettings ?? (_forumSettings = LoadSettings());
+            set => _forumSettings = value;
+        }
+
+        internal Hashtable LoadSettings()
+        {
+            return (Hashtable)DataCache.GetSettings(ModuleId, ForumSettingsKey, string.Format(CacheKeys.ForumSettingsByKey, ModuleId, ForumSettingsKey), true);
         }
 
         [IgnoreColumn()]
@@ -197,13 +210,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public bool AttachInsertAllowed => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AttachInsertAllowed]);
-        
+
         [IgnoreColumn()]
         public bool ConvertingToJpegAllowed => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.ConvertingToJpegAllowed]);
-        
+
         [IgnoreColumn()]
         public string EditorHeight => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorHeight], "400");
-        
+
         [IgnoreColumn()]
         public EditorTypes EditorMobile
         {
@@ -215,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                            : EditorTypes.HTMLEDITORPROVIDER;
             }
         }
-        
+
         [IgnoreColumn()]
         public EditorTypes EditorType
         {
@@ -227,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                            : EditorTypes.HTMLEDITORPROVIDER;
             }
         }
-        
+
         [IgnoreColumn()]
         public HTMLPermittedUsers EditorPermittedUsers
         {
@@ -241,43 +254,43 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
         [IgnoreColumn()]
         public string EditorWidth => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EditorWidth], "100%");
-        
+
         [IgnoreColumn()]
         public string EmailAddress => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.EmailAddress], string.Empty);
-        
+
         [IgnoreColumn()]
         public bool IndexContent => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IndexContent]);
-        
+
         /// <summary>
         /// Indicates a moderated forum
         /// </summary>
         [IgnoreColumn()]
         public bool IsModerated => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.IsModerated]);
-        
+
         [IgnoreColumn()]
         public int TopicsTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicsTemplateId]);
-        
+
         [IgnoreColumn()]
         public int TopicTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicTemplateId]);
-        
+
         [IgnoreColumn()]
         public int TopicFormId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.TopicFormId]);
-        
+
         [IgnoreColumn()]
         public int ReplyFormId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyFormId]);
-        
+
         [IgnoreColumn()]
         public int QuickReplyFormId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.QuickReplyFormId]);
 
-        [IgnoreColumn()]        
+        [IgnoreColumn()]
         public int ProfileTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ProfileTemplateId]);
-        
+
         [IgnoreColumn()]
         public bool UseFilter => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.UseFilter]);
-        
+
         [IgnoreColumn()]
         public int AutoTrustLevel => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.AutoTrustLevel]);
-        
+
         [IgnoreColumn()]
         public TrustTypes DefaultTrustValue
         {
@@ -292,31 +305,31 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         [IgnoreColumn()]
         public int ModApproveTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModApproveTemplateId]);
-        
+
         [IgnoreColumn()]
         public int ModRejectTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModRejectTemplateId]);
-        
+
         [IgnoreColumn()]
         public int ModMoveTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModMoveTemplateId]);
-        
+
         [IgnoreColumn()]
         public int ModDeleteTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModDeleteTemplateId]);
-        
+
         [IgnoreColumn()]
         public int ModNotifyTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModNotifyTemplateId]);
-        
+
         [IgnoreColumn()]
         public bool AllowTags => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AllowTags]);
-        
+
         [IgnoreColumn()]
         public bool AutoSubscribeEnabled => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeEnabled]);
-        
+
         [IgnoreColumn()]
         public string AutoSubscribeRoles => Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.AutoSubscribeRoles], string.Empty);
-        
+
         [IgnoreColumn()]
         public bool AutoSubscribeNewTopicsOnly => Utilities.SafeConvertBool(ForumSettings[ForumSettingKeys.AutoSubscribeNewTopicsOnly]);
-        
+
         /// <summary>
         ///  Minimum posts required to create a topic in this forum if the user is not trusted
         /// </summary>

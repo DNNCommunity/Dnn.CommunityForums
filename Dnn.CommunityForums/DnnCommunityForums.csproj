@@ -892,7 +892,6 @@
     <Content Include="themes\_legacy\templates\_Master.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="userpref.css" />
     <Content Include="WhatsNew.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1186,7 +1185,6 @@
       <DependentUpon>af_searchadvanced.ascx</DependentUpon>
     </Compile>
     <Compile Include="Entities\PropertyInfo.cs" />
-    <Compile Include="Entities\PropertiesInfo.cs" />
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
     <Compile Include="DAL2\Content\ContentController.cs" />
@@ -1198,7 +1196,6 @@
     <Compile Include="Entities\TagInfo.cs" />
     <Compile Include="Entities\TopicCategoryInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
-    <Compile Include="Entities\TopicPropertiesInfo.cs" />
     <Compile Include="Entities\TopicPropertyInfo.cs" />
     <Compile Include="Entities\TopicRatingInfo.cs" />
     <Compile Include="Entities\TopicTagInfo.cs" />

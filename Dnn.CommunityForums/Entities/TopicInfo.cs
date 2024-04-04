@@ -59,13 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int forumId;
+        private int _forumId = -1;
         private string _tags = string.Empty;
 
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> _forumCategories;
         private IEnumerable<Category> _categories;
 
-        private int _forumId;
         public int TopicId { get; set; }
 
         [IgnoreColumn()]
@@ -214,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo TopicProperties
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties
         {
             set
             {

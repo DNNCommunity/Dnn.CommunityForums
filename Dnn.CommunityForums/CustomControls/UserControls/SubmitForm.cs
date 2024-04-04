@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int AuthorId { get; set; } = -1;
         public bool AllowHTML { get; set; }
         public bool RequireCaptcha { get; set; } = true;
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo TopicProperties { get; set; }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties { get; set; }
         #endregion
         #region Protected Controls
         protected TextBox txtSubject = new TextBox();
