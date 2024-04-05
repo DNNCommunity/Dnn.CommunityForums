@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
 		public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
 		{
-			return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(FilterId);
+			return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(FilterId, ModuleID);
 		}
 	}
 }

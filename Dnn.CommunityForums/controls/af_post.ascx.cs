@@ -33,6 +33,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Modules.ActiveForums.Extensions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Social.Notifications;
@@ -461,6 +462,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicEditor", _fi.TopicFormId);
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
+            }
             
             if (MainSettings.UseSkinBreadCrumb)
             {
@@ -490,7 +495,10 @@ namespace DotNetNuke.Modules.ActiveForums
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "ReplyEditor", _fi.ReplyFormId);
-            
+            if (_isEdit)
+            {
+                template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
+            }
             if (MainSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
@@ -511,6 +519,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
+                //TODO: Find out why Topic Get is called twice in this method
                 var tc = new TopicsController();
                 var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
@@ -663,10 +672,16 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 authorId = ti.Author.AuthorId;
+                ti.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
-                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+                ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+
+                ti.ForumId = ForumInfo.ForumID;
+                ti.Content.DateCreated = DateTime.UtcNow;
+                ti.Content.DateUpdated = DateTime.UtcNow;
             }
 
             ti.AnnounceEnd = ctlForm.AnnounceEnd;
@@ -807,14 +822,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 ti.TopicType = TopicTypes.Poll;
-                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-                if (UserPrefTopicSubscribe)
-                {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
-                }
-                Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             }
-
+            if ((UserPrefTopicSubscribe && authorId == UserId) || ctlForm.Subscribe)
+            {
+                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
+            }
+            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+            
             try
             {
                 DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId));
@@ -940,10 +954,14 @@ namespace DotNetNuke.Modules.ActiveForums
             if (PostId > 0)
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(PostId);
+                ri.Content.DateCreated = DateTime.UtcNow;
+                ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+                ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+                ri.Content.DateUpdated = DateTime.UtcNow;
             }
 
             if (!_isEdit)

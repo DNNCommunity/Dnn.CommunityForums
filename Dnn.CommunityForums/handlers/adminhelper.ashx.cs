@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			{
 				FilterId = Convert.ToInt32(Params["FilterId"]);
 			}
-            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId);
+            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId, ModuleId);
             string sOut = "{";
 			sOut += Utilities.JSON.Pair("FilterId", filter.FilterId.ToString());
 			sOut += ",";
@@ -291,10 +291,11 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				}
 
 			}
-		    new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
-			DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, pi.ObjectOwnerId, true);
+            new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
+			var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(pi.ObjectOwnerId, ModuleId);
 			fi.HasProperties = true;
-            new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, false, false, false);
+            fc.Forums_Save(PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
 
 		}
 		private string PropertyList()
@@ -337,12 +338,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 pc.DeleteById(Convert.ToInt32(Params["propertyid"]));
 				if (! (pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2" ,PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
-				{
-					DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForum(PortalId, ModuleId, prop.ObjectOwnerId, true);
+                {
+                    var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(prop.ObjectOwnerId, ModuleId);
 					fi.HasProperties = false;
-					new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, false, false, false);
-				}
-			}
+                    fc.Forums_Save(PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
+                }
+            }
 
 
 		}

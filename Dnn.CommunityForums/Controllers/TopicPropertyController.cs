@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class TopicPropertyController : DotNetNuke.Modules.ActiveForums.Controllers.ControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>
 
     {
-        public static string Serialize(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo properties)
+        public static string Serialize(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> properties)
         {
             StringBuilder tData = new StringBuilder();
             tData.Append("<topicdata>");
@@ -57,9 +57,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return tData.ToString();
         }
 
-        public static DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo Deserialize(string xmlString)
+        public static List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> Deserialize(string xmlString)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo tp = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo();
+            List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> tp = new List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>();
             XmlDocument xDoc = new XmlDocument();
             xDoc.LoadXml(xmlString);
             if (xDoc != null)

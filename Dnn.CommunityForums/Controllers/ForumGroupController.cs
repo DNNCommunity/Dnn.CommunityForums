@@ -17,66 +17,42 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 
-using System;
 using System.Collections;
-using System.Reflection;
-using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId)
-        {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = base.GetById(forumGroupId);
-            if (forumGroupInfo != null)
-            {
-                forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
-                forumGroupInfo.GroupSettings = (Hashtable)DataCache.GetSettings(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey), true);
-            }
-            var cachekey = string.Format(CacheKeys.ForumGroupInfo, forumGroupInfo.ModuleId, forumGroupId);
-            DataCache.SettingsCacheStore(forumGroupInfo.ModuleId, cachekey, forumGroupInfo);
-            return forumGroupInfo;
-        }
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetForumGroup(int moduleId, int forumGroupId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo GetById(int forumGroupId, int moduleId)
         {
             var cachekey = string.Format(CacheKeys.ForumGroupInfo, moduleId, forumGroupId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
-            if (forumGroupInfo == null)
+            DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo;
+            if (forumGroup == null)
             {
-                forumGroupInfo = base.GetById(forumGroupId); 
-                if (forumGroupInfo != null)
+                forumGroup = base.GetById(forumGroupId, moduleId);
+                if (forumGroup != null)
                 {
-                    forumGroupInfo.Security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(forumGroupInfo.PermissionsId);
-                    forumGroupInfo.GroupSettings = (Hashtable)DataCache.GetSettings(moduleId, forumGroupInfo.GroupSettingsKey, string.Format(CacheKeys.GroupSettingsByKey, moduleId, forumGroupInfo.GroupSettingsKey), true);
+                    forumGroup.LoadSecurity();
+                    forumGroup.LoadSettings();
                 }
-                DataCache.SettingsCacheStore(forumGroupInfo.ModuleId, cachekey, forumGroupInfo);
+                DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
-            return forumGroupInfo;
+            return forumGroup;
         }
         public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew)
         {
-            var rc = new DotNetNuke.Security.Roles.RoleController();
-            var db = new Data.Common();
-            var permissionsId = -1;
             if (forumGroupInfo.PermissionsId == -1)
             {
-                var ri = rc.GetRoleByName(portalId, "Administrators");
-                if (ri != null)
-                {
-                    forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(ri.RoleID.ToString()).PermissionsId;
-                    permissionsId = forumGroupInfo.PermissionsId;
-                }
+                forumGroupInfo.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
             }
-            if (forumGroupInfo.ForumGroupId <= 0)
-            {
-                Insert(forumGroupInfo);
-                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
-            }
-            Update(forumGroupInfo);
+
+            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
+            forumGroupInfo.ForumGroupId = DataProvider.Instance().Groups_Save(portalId, forumGroupInfo.ModuleId, forumGroupInfo.ForumGroupId, forumGroupInfo.GroupName, forumGroupInfo.SortOrder, forumGroupInfo.Active, forumGroupInfo.Hidden, forumGroupInfo.PermissionsId, forumGroupInfo.PrefixURL);
+
             if (isNew)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, permissionsId);
+                forumGroupInfo.GroupSettingsKey = $"G:{forumGroupInfo.ForumGroupId}";
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, forumGroupInfo.PermissionsId);
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicsTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicTemplateId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.TopicFormId, "0");
@@ -84,12 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "false");
             }
-            DataCache.SettingsCacheClear(forumGroupInfo.ModuleId, string.Format(CacheKeys.ForumList, forumGroupInfo.ModuleId));
+            DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }
-        public void Group_Delete(int moduleId, int forumGroupId)
+        public void Groups_Delete(int forumGroupId, int moduleId)
         {
-            Delete(GetById(id: forumGroupId));
+            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
+            DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
         }
     }
 }

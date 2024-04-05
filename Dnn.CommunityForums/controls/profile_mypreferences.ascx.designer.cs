@@ -7,11 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DotNetNuke.Modules.ActiveForums {
-    
-    
-    public partial class profile_mypreferences {
-        
+namespace DotNetNuke.Modules.ActiveForums
+{
+
+
+    public partial class profile_mypreferences
+    {
+
+        /// <summary>
+        /// lblHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UserControl lblHeader;
+
         /// <summary>
         /// drpPrefDefaultSort control.
         /// </summary>
@@ -20,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpPrefDefaultSort;
-        
+
         /// <summary>
         /// drpPrefPageSize control.
         /// </summary>
@@ -29,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList drpPrefPageSize;
-        
+
         /// <summary>
         /// chkPrefJumpToLastPost control.
         /// </summary>
@@ -38,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefJumpToLastPost;
-        
+
         /// <summary>
         /// chkPrefTopicSubscribe control.
         /// </summary>
@@ -47,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefTopicSubscribe;
-        
+
         /// <summary>
         /// chkPrefBlockAvatars control.
         /// </summary>
@@ -56,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockAvatars;
-        
+
         /// <summary>
         /// chkPrefBlockSignatures control.
         /// </summary>
@@ -65,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkPrefBlockSignatures;
-        
+
         /// <summary>
         /// txtSignature control.
         /// </summary>
@@ -74,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSignature;
-        
+
         /// <summary>
         /// btnSave control.
         /// </summary>

@@ -36,17 +36,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.GetById(ReplyId);
             if (ri != null)
             {
-                if (ri.Topic == null)
+                if (ri.Topic == null && ri.TopicId > 0)
                 {
                     ri.Topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ri.TopicId);
                 }
-                if (ri.Content == null)
+                if (ri.Content == null && ri.ContentId > 0)
                 {
                     ri.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ri.ContentId);
-                }
-                if (ri.Forum == null)
-                {
-                    ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.ForumId);
                 }
             }
             return ri;
@@ -85,17 +81,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             int replyId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
+            ri.TopicId = TopicId;
+            ri.ReplyToId = ReplyToId;
+            ri.IsApproved = IsApproved;
+            ri.IsDeleted = false;
+            ri.StatusId = -1;
+            ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = DisplayName;
             ri.Content.Subject = Subject;
             ri.Content.Body = Body;
             ri.Content.IPAddress = IPAddress;
             ri.Content.Summary = string.Empty;
-            ri.IsApproved = IsApproved;
-            ri.IsDeleted = false;
-            ri.ReplyToId = ReplyToId;
-            ri.StatusId = -1;
-            ri.TopicId = TopicId;
             replyId = Reply_Save(PortalId, ModuleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
@@ -114,8 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
 
             ReplyController rc = new ReplyController();
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
@@ -132,9 +128,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
             }
-
-            Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
-
+            Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, reply.Content.AuthorId);
+            
             try
             {
                 ControlUtils ctlUtils = new ControlUtils();
@@ -142,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                    fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 }
                 if (fullURL.EndsWith("/"))
                 {

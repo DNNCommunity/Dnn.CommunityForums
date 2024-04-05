@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
@@ -34,10 +35,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int TopicId)
+        {
+            return base.GetById(TopicId);
+        }
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
             int topicId = -1;
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+            ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+
+            ti.ForumId = ForumId;
             ti.AnnounceEnd = Utilities.NullDate();
             ti.AnnounceStart = Utilities.NullDate();
             ti.Content.AuthorId = UserId;
@@ -180,7 +188,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
-                base.DeleteById(TopicId);
+
+                DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
 

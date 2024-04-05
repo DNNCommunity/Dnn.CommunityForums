@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Reflection;
 using DotNetNuke.Services.Scheduling;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -95,8 +96,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return sl;
         }
     }
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
-
     public abstract class Subscriptions
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
@@ -112,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
             SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
         }
 

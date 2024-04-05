@@ -184,8 +184,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string StatsTemplate = "STATSTEMPLATE";
 		public const string StatsCache = "STATSCACHE";
 		public const string DateFormatString = "DATEFORMATSTRING";
-		public const string TimeFormatString = "TIMEFORMATSTRING";
-		public const string TimeZoneOffset = "TIMEZONEOFFSET";
+		public const string TimeFormatString = "TIMEFORMATSTRING"; 
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string TimeZoneOffset = "TIMEZONEOFFSET";
 		public const string UsersOnlineEnabled = "USERSONLINEENABLED";
 		public const string MemberListMode = "MEMBERLISTMODE";
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
@@ -197,8 +198,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string FloodInterval = "FLOODINTERVAL";
 		public const string EditInterval = "EDITINTERVAL";
 		public const string LoggingLevel = "LOGGINGLEVEL";
-		public const string DeleteBehavior = "DELETEBEHAVIOR";
-		public const string ProdKey = "AMFORUMS";
+		public const string DeleteBehavior = "DELETEBEHAVIOR"; 
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string ProdKey = "AMFORUMS";
 
 		public const string EnablePoints = "ENABLEPOINTS";
 		public const string TopicPointValue = "TOPICPOINTVALUE";
@@ -317,8 +319,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ReplyId = "afr";
 		public const string ViewType = "afv";
 		public const string QuoteId = "afq";
-		public const string PageId = "afpg";
-		public const string PostId = "postid";
+        public const string PageId = "afpg";
+        public const string PostId = "postid";
+        public const string UserId = "uid";
         public const string Sort = "afs";
         public const string PageJumpId = "afpgj";
 		public const string ContentJumpId = "afc";
@@ -330,6 +333,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Category = "act";
         public const string action = "action";
         public const string TimeSpan = "ts";
+        public const string mode = "mode";
+    }
+	public class Modes
+    {
+        public const string edit = "edit";
     }
     public class Literals
     {
@@ -360,6 +368,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Tags = "tags";
         public const string Post = "post";
         public const string Search = "search";
+        public const string Profile = "profile";
+        public const string MyPreferences = "afprofile";
     }
     internal static class GridTypes
     {
@@ -390,8 +400,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string HostUrl = "AF-{0}-url";
         public const string MainSettings = "AF-{0}-ms";
         public const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
-        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}"; 
+        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}";
         public const string ForumList = "AF-{0}-fl";
+        public const string SubForumList = "AF-{0}-sfl-{1}";
         public const string ForumListXml = "AF-{0}-flx";
         public const string Tokens = "AF-{0}-tk-{1}";
         public const string ForumViewPrefix = "AF-{0}-FV-";

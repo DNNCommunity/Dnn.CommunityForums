@@ -87,7 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
         public abstract IDataReader Groups_List(int ModuleId);
         public abstract void Groups_Move(int ModuleId, int ForumGroupId, int SortDirection);
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract int Groups_Save(int PortalId, int ModuleId, int ForumGroupId, string GroupName, int SortOrder, bool Active, bool Hidden, int PermissionsId, string PrefixURL);
         #endregion
 
@@ -195,9 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Topics
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")] 
         public abstract int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress);
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
         public abstract void Topics_Delete(int ForumId, int TopicId, int DelBehavior);
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteForUser(int UserId)")]
         public abstract void Topics_Delete_For_User(int ModuleId, int UserId, int DelBehavior);
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
         public abstract IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity);

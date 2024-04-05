@@ -525,24 +525,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
-        // Todo: Localize today and yesterday
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostTime()
         {
-            if (_currentRow == null)
-                return null;
-
-            var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
-            var currentDate = GetUserDate(DateTime.UtcNow);
-
-            var datePart = date.ToString(MainSettings.DateFormatString);
-
-            if (currentDate.Date == date.Date)
-                datePart = GetSharedResource("Today");
-            else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = GetSharedResource("Yesterday");
-
-            return string.Format(GetSharedResource("SearchPostTime"), datePart, date.ToString(MainSettings.TimeFormatString));
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
@@ -575,24 +560,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
-        // Todo: Localize today and yesterday
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetLastPostTime()
         {
-            if (_currentRow == null)
-                return null;
-
-            var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
-            var currentDate = GetUserDate(DateTime.UtcNow);
-
-            var datePart = date.ToString(MainSettings.DateFormatString);
-
-            if (currentDate.Date == date.Date)
-                datePart = GetSharedResource("Today");
-            else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = GetSharedResource("Yesterday");
-
-            return datePart + " @ " + date.ToString(MainSettings.TimeFormatString);
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
@@ -619,61 +589,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
-        public string GetMiniPager()
-        {
-            if (_currentRow == null)
-                return null;
-         
-            var replyCount = Convert.ToInt32(_currentRow["ReplyCount"]);
-            var pageCount = Convert.ToInt32(Math.Ceiling((double)(replyCount + 1) / _pageSize));
-            var forumId = _currentRow["ForumId"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public DataRow Get_currentRow() => _currentRow;
 
-            // No pager if there is only one page.
-            if (pageCount <= 1)
-                return null;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int GetSocialGroupId() => SocialGroupId;
 
-             List<string> @params;
-
-            var result = string.Empty;
-
-            if(pageCount <= 5)
-            {
-                for (var i = 1; i <= pageCount; i++)
-                {
-                    @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-
-                    if (SocialGroupId > 0)
-                        @params.Add("GroupId=" + SocialGroupId.ToString());
-
-                    result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";
-                }
-
-                return result;
-            }
-            
-            // 1 2 3 ... N
-
-            for(var i = 1; i <= 3; i++)
-            {
-                @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-                if (SocialGroupId > 0)
-                    @params.Add("GroupId=" + SocialGroupId.ToString());
-
-                result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";  
-            }
-
-            result += "<span>...</span>";
-
-            @params = new List<string>  { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
-            if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
-
-            result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + pageCount + "</a>";  
-
-            return result;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetMiniPager() => MiniPager.GetMiniPager(_currentRow, TabId, SocialGroupId, _pageSize);
 
         #endregion
 

@@ -30,6 +30,7 @@ using System.Xml;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -458,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ctlForumJump = new af_quickjump();
                 ctlForumJump.ForumModuleId = ForumModuleId;
-                ctlForumJump.dtForums = null;
                 ctlForumJump.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumJump.ForumId = ForumId;
                 ctlForumJump.ModuleId = ModuleId;
@@ -475,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumSubs = (ForumView)(LoadControl(typeof(ForumView), null));
                 ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumSubs.ForumId = ForumId;
-                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId).SubForums;
+                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId).SubForums;
                 ctlForumSubs.ForumTabId = ForumTabId;
                 ctlForumSubs.ForumModuleId = ForumModuleId;
                 ctlForumSubs.SubsOnly = true;

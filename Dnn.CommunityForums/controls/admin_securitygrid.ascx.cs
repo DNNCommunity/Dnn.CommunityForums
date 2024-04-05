@@ -309,11 +309,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			int secType = Convert.ToInt32(e.Parameters[3].ToString());
 			string key = e.Parameters[4].ToString();
 			string returnId = e.Parameters[5].ToString();
-			Data.Common db = new Data.Common();
 			string sOut = string.Empty;
 			if (action == "delete")
 			{
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(ModuleId,secId, secType, pId);
 
 			}
 			else if (action == "addobject")
@@ -340,25 +339,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				if (! (string.IsNullOrEmpty(secId)))
 				{
-					string permSet = db.GetPermSet(pId, "View");
-					permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(secId, secType, permSet);
-					db.SavePermSet(pId, "View", permSet);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, "View", secId, secType);
 				}
 
 
 			}
 			else
 			{
-				string permSet = db.GetPermSet(pId, key);
 				if (action == "remove")
-				{
-					permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(secId, secType, permSet);
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(ModuleId, pId, key, secId, secType);
 				}
 				else
-				{
-					permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(secId, secType, permSet);
-				}
-				db.SavePermSet(pId, key, permSet);
+                {
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, key, secId, secType);
+                }
 				sOut = action + "|" + returnId;
 			}
 			LiteralControl lit = new LiteralControl(sOut);

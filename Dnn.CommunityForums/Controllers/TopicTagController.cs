@@ -27,19 +27,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)
         {
-            return Repo.Find("WHERE TopicId = @0", topicId).Where(t => !t.Tag.IsCategory);
+            return base.Find("WHERE TopicId = @0", topicId).Where(t => !t.Tag.IsCategory);
         }
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
         {
-            return Repo.Find("WHERE TagId = @0", tagId).Where(t => !t.Tag.IsCategory);
+            return base.Find("WHERE TagId = @0", tagId).Where(t => !t.Tag.IsCategory);
         }
         public void DeleteForTagId(int tagId)
         {
-            Repo.Delete("WHERE TagId = @0", tagId);
+            base.Delete("WHERE TagId = @0", tagId);
         }
         public void DeleteForTopicId(int topicId)
         {
-            Repo.Delete("WHERE TopicId = @0", topicId);
+            base.Delete("WHERE TopicId = @0", topicId);
         }
     }
 }

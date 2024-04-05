@@ -170,19 +170,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public ForumsDB ForumsDB
         {
             get
             {
-                const string forumsDBContextKey = "AF|ForumsDB";
-                var forumsDB = HttpContext.Current.Items[forumsDBContextKey] as ForumsDB;
-                if (forumsDB == null)
-                {
-                    forumsDB = new ForumsDB();
-                    HttpContext.Current.Items[forumsDBContextKey] = forumsDB;
-                }
-                return forumsDB;
+                throw new NotImplementedException();
             }
         }
 
@@ -393,10 +386,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Methods        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return Utilities.GetUserDate(displayDate, ForumModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
+            return displayDate.AddMinutes(TimeZoneOffset.TotalMinutes);
         }
 
         #endregion
