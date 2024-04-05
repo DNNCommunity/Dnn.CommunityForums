@@ -36,18 +36,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.GetById(ReplyId);
             if (ri != null)
             {
-                if (ri.Topic == null)
-                {
-                    ri.Topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ri.TopicId);
-                }
-                if (ri.Content == null)
-                {
-                    ri.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ri.ContentId);
-                }
-                if (ri.Forum == null)
-                {
-                    ri.Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ri.ForumId);
-                }
+                ri.GetTopic();
+                ri.GetForum();
+                ri.GetContent();
+                ri.GetAuthor();
             }
             return ri;
         }

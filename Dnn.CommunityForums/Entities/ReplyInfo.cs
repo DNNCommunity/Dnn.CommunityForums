@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private int forumId; 
+        private int forumId;
         [IgnoreColumn()]
         public int ForumId
         {
@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 //TODO : clean this up to use DAL2
                 if (forumId < 1)
                 {
-                    forumId = new Data.ForumsDB().Forum_GetByTopicId(TopicId);
+                    forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
                 return forumId;
             }
@@ -47,46 +47,65 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
-            get => _topicInfo ?? (_topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId));
+            get => _topicInfo ?? (_topicInfo = GetTopic());
             set => _topicInfo = value;
         }
+        internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+        }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => _contentInfo ?? (_contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId));
+            get => _contentInfo ?? (_contentInfo = GetContent());
             set => _contentInfo = value;
         }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+        }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId));
+            get => _forumInfo ?? (_forumInfo = GetForum());
             set => _forumInfo = value;
         }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
+        }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get
+            get => _Author ?? (GetAuthor());
+            set => _Author = value;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
+        {
+            _Author = new DotNetNuke.Modules.ActiveForums.Author();
+            _Author.AuthorId = Content.AuthorId;
+            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
+            if (userInfo != null)
             {
-                if (_Author == null)
-                {
-                    _Author = new DotNetNuke.Modules.ActiveForums.Author();
-                    _Author.AuthorId = Content.AuthorId;
-                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
-                    if (userInfo != null)
-                    {
-                        _Author.Email = userInfo?.Email;
-                        _Author.FirstName = userInfo?.FirstName;
-                        _Author.LastName = userInfo?.LastName;
-                        _Author.DisplayName = userInfo?.DisplayName;
-                        _Author.Username = userInfo?.Username;
-                    }
-                    else
-                    {
-                        _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
-                    }
-                }
-                return _Author;
+                _Author.Email = userInfo?.Email;
+                _Author.FirstName = userInfo?.FirstName;
+                _Author.LastName = userInfo?.LastName;
+                _Author.DisplayName = userInfo?.DisplayName;
+                _Author.Username = userInfo?.Username;
             }
+            else
+            {
+                _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+            }
+                }
+            return _Author;
+        }
             set
             { _Author = value; }
         }

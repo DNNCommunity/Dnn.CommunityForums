@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
+using DotNetNuke.Modules.ActiveForums.API;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
