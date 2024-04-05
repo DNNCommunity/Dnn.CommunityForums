@@ -238,14 +238,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
             //End If
             sBody = Utilities.CleanString(PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, ModuleId, ThemePath, forumInfo.AllowEmoticons);
-            DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
-            ri.Content.DateCreated = createDate;
-            ri.Content.DateUpdated = createDate;
             ri.Content.IsDeleted = false;
             ri.Content.Subject = Subject;
             ri.Content.Summary = string.Empty;

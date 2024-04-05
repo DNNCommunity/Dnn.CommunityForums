@@ -33,11 +33,13 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-    [Scope("TopicId")]
-    [Cacheable("activeforums_Topics", CacheItemPriority.Normal)]
     public class TopicInfo
     {
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Author _Author;
         public int TopicId { get; set; }
+        public int ForumId { get; set; }
         public int ContentId { get; set; }
         public int ViewCount { get; set; }
         public int ReplyCount { get; set; }
@@ -60,48 +62,85 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int PrevTopic { get; set; }
         public string TopicData { get; set; } = string.Empty;
         [IgnoreColumn()]
-        public Content Content { get; set; }
-        [IgnoreColumn()]
-        public PermissionInfo Security { get; set; }
-        [IgnoreColumn()]
-        public Author Author { get; set; }
-        [IgnoreColumn()]
-        public string Tags { get; set; }
-        [IgnoreColumn()]
-        public string Categories { get; set; } = string.Empty;
-        [IgnoreColumn()]
-        public string ForumURL { get; set; } = string.Empty;
-
-        [IgnoreColumn()]
-        public TopicInfo()
-        {
-            Content = new Content();
-            Security = new PermissionInfo();
-            Author = new Author();
-        }
-        [IgnoreColumn()]
-        public string URL
+        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
             get
             {
-                if (!(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)))
+                if (_contentInfo == null)
                 {
-                    if (TopicUrl.StartsWith("/") & ForumURL.EndsWith("/"))
+                    if (ContentId > 0)
                     {
-                        ForumURL = ForumURL.Substring(0, ForumURL.Length - 1);
-                        if (!(ForumURL.StartsWith("/")))
-                        {
-                            ForumURL = "/" + ForumURL;
-                        }
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
                     }
-                    return ForumURL + TopicUrl;
+                    if (_contentInfo == null)
+                    {
+                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+                    }
+                }
+                return _contentInfo; }
+                
+                set => _contentInfo = value;
+            }
+            [IgnoreColumn()]
+            public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
+        {
+            get
+            {
+                if (_forumInfo == null)
+                {
+                    if (ForumId > 0)
+                    {
+                        _forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
+                    }
+                }
+                if (_forumInfo == null)
+                {
+                    _forumInfo = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
+                }
+                return _forumInfo;
+            }
+
+            set => _forumInfo = value;
+        }
+        [IgnoreColumn()]
+            public DotNetNuke.Modules.ActiveForums.Author Author
+        {
+            get
+            {
+                if (_Author == null)
+                {
+                    _Author = new DotNetNuke.Modules.ActiveForums.Author();
+                }
+                if (Content?.AuthorId != null)
+                {
+                    _Author.AuthorId = Content.AuthorId;
+                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(Forum.PortalId, Content.AuthorId);
+                    if (userInfo != null)
+                    {
+                        _Author.Email = userInfo?.Email;
+                        _Author.FirstName = userInfo?.FirstName;
+                        _Author.LastName = userInfo?.LastName;
+                        _Author.DisplayName = userInfo?.DisplayName;
+                        _Author.Username = userInfo?.Username;
+                    }
+                    else
+                    {
+                        _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                    }
                 }
                 else
                 {
-                    return string.Empty;
+                    _Author.DisplayName = "Unknown";
                 }
+                return _Author;
             }
+            set => _Author = value;
         }
+        [IgnoreColumn()]
+            public string Tags { get; set; }
+        [IgnoreColumn()]
+        public string Categories { get; set; } = string.Empty;
+       
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
         {

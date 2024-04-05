@@ -303,14 +303,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 AllowHTML = IsHtmlPermitted(ForumInfo.EditorPermittedUsers, IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles));
             }
             sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, ForumInfo.AllowEmoticons);
-            DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
+            ri.Content.DateCreated = DateTime.UtcNow;
+            ri.Content.DateUpdated = DateTime.UtcNow;
             ri.Content.Body = sBody;
-            ri.Content.DateCreated = createDate;
-            ri.Content.DateUpdated = createDate;
             ri.Content.IsDeleted = false;
             ri.Content.Subject = Subject;
             ri.Content.Summary = string.Empty;

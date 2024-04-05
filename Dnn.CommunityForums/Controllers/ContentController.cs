@@ -19,10 +19,11 @@
 //
 
 using System;
+using System.Web.UI.WebControls;
 
-namespace DotNetNuke.Modules.ActiveForums.DAL2
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
-    partial class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }
-
+    internal class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ContentInfo>
+    {
+    }
 }

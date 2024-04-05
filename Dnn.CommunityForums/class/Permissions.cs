@@ -1,4 +1,4 @@
-﻿//
+//
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -20,6 +20,11 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {

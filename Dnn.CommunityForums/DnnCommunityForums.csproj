@@ -1104,6 +1104,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Compile Include="class\Attachment.cs" />
+    <Compile Include="class\Content.cs" />
     <Compile Include="class\ForumController.cs" />
     <Compile Include="class\ForumGroups.cs" />
     <Compile Include="class\ForumInfo.cs" />
@@ -1111,6 +1112,7 @@
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\ForumController.cs" />
@@ -1124,6 +1126,7 @@
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Entities\ContentInfo.cs" />
     <Compile Include="Deprecated\API.cs" />
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
@@ -1171,7 +1174,6 @@
     <Compile Include="controls\af_searchadvanced.ascx.designer.cs">
       <DependentUpon>af_searchadvanced.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DAL2\Content\Content.cs" />
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
@@ -1431,7 +1433,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\Author.cs" />
-    <Compile Include="class\Content.cs" />
+    <Compile Include="DAL2\Content\Content.cs" />
     <Compile Include="class\Rewards.cs" />
     <Compile Include="class\Templates.cs" />
     <Compile Include="class\UsersOnline.cs" />

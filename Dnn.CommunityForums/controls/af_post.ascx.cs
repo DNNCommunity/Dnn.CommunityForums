@@ -586,7 +586,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (_editorType == EditorTypes.TEXTBOX)
                             userDisplay = "none";
 
-                        Content ci;
+                        DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
                         if (postId == TopicId)
                         {
                             ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
@@ -696,14 +696,12 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId);
                 ti.Content.DateUpdated = DateTime.UtcNow;
-                authorId = ti.Author.AuthorId;
             }
             else
             {
-                ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-                var dt = DateTime.UtcNow;
-                ti.Content.DateCreated = dt;
-                ti.Content.DateUpdated = dt;
+                ti = new DotNetNuke.Modules.ActiveForums.TopicInfo();
+                ti.Content.DateCreated = DateTime.UtcNow;
+                ti.Content.DateUpdated = DateTime.UtcNow;
             }
 
             ti.AnnounceEnd = ctlForm.AnnounceEnd;
@@ -977,14 +975,13 @@ namespace DotNetNuke.Modules.ActiveForums
             if (PostId > 0)
             {
                 ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, PostId);
+                ri.Content.DateCreated = DateTime.UtcNow;
                 ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
-                var dt = DateTime.UtcNow;
-                ri.Content.DateCreated = dt;
-                ri.Content.DateUpdated = dt;
+                ri.Content.DateUpdated = DateTime.UtcNow;
             }
 
             if (!_isEdit)

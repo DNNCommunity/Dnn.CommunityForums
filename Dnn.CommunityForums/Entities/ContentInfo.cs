@@ -18,11 +18,27 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
+using System.Web.Caching; 
 
-namespace DotNetNuke.Modules.ActiveForums.DAL2
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
-    partial class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }
-
+    [TableName("activeforums_Content")]
+    [PrimaryKey("ContentId", AutoIncrement = true)]
+    public class ContentInfo
+    {
+        public int ContentId { get; set; }
+        public string Subject { get; set; }
+        public string Summary { get; set; }
+        public string Body { get; set; }
+        public DateTime DateCreated { get; set; } /* TODO: Once Reply_Save etc. moved from stored procedures to DAL2 for saving, update this to auto-set dates */
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow; /* TODO: Once Reply_Save etc. moved from stored procedures to DAL2 for saving, update this to auto-set dates */
+        public int AuthorId { get; set; }
+        public string AuthorName { get; set; }
+        public bool IsDeleted { get; set; }
+        public string IPAddress { get; set; }
+        public int ContentItemId { get; set; }
+        public int ModuleId { get; set; }
+    }
 }
