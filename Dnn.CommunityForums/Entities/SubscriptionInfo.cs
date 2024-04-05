@@ -19,15 +19,18 @@
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
+using System.Globalization;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Subscriptions")]
     [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("Id")]
+    [Scope("ModuleId")]
     [Cacheable("activeforums_Subscriptions", CacheItemPriority.Normal)]
-    class SubscriptionInfo
+    public class SubscriptionInfo
     {
+        private string _email = string.Empty;
+        private DotNetNuke.Modules.ActiveForums.User _user;
         public int Id { get; set; }
         public int PortalId { get; set; }
         public int ModuleId { get; set; }
@@ -35,5 +38,25 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int TopicId { get; set; }
         public int Mode { get; set; }
         public int UserId { get; set; }
+        [IgnoreColumn()]
+        public bool TopicSubscriber { get => TopicId > 0; }
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.User User
+        {
+            get
+            {
+                if (_user == null)
+                {
+                    _user = new DotNetNuke.Modules.ActiveForums.UserController().GetUser(PortalId, ModuleId, UserId);
+                }
+                return _user;
+            }
+        }
+        [IgnoreColumn()]
+        public string Email { get => (_email = User?.Email); set => _email = value; }
+        [IgnoreColumn()]
+        public TimeSpan TimeZoneOffSet { get => Utilities.GetTimeZoneOffsetForUser(PortalId, UserId); }
+        [IgnoreColumn()]
+        public CultureInfo UserCulture { get => Utilities.GetCultureInfoForUser(PortalId, UserId); }
     }
 }

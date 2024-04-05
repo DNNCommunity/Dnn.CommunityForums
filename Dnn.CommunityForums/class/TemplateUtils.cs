@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public class TemplateUtils
     {
-        public static List<SubscriptionInfo> lstSubscriptionInfo { get; set; }
+        public static List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> lstSubscriptionInfo { get; set; }
 
         public static string ShowIcon(bool canView, int forumID, int userId, DateTime dateAdded, DateTime lastRead, int lastPostId)
         {
@@ -369,7 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder userIds = new StringBuilder();
             userIds.Append("(");
 
-            SubscriptionInfo[] arrSubscriptionInfo = lstSubscriptionInfo.ToArray();
+            DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo[] arrSubscriptionInfo = lstSubscriptionInfo.ToArray();
             for (int i = 0; i < arrSubscriptionInfo.Length; i++)
             {
                 userIds.Append(arrSubscriptionInfo[i].UserId);

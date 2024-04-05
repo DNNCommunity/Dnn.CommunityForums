@@ -1240,7 +1240,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 return null;
 
             var mods = new List<DotNetNuke.Entities.Users.UserInfo>();
-            SubscriptionInfo si = null;
             var modApprove = fi.Security.ModApprove;
             var modRoles = modApprove.Split('|')[0].Split(';');
 

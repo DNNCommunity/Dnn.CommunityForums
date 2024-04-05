@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             ForumSubscriberCount = Utilities.SafeConvertInt(drForum["ForumSubscriberCount"]);
                             if (UserId > 0)
                             {
-                                IsSubscribedForum = (Subscriptions.IsSubscribed(PortalId, ModuleId: ForumModuleId, ForumId, SubscriptionType: SubscriptionTypes.Instant, UserId: UserId));
+                                IsSubscribedForum = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
                             }
                             if (MainSettings.UseSkinBreadCrumb)
                             {
