@@ -1,0 +1,14 @@
+  .dcf-forum-view {
+  	.dcf-col-icon {
+  		width: 0; //make sure it uses as litte space as possible
+  	}
+
+	.bs-collapse{
+		&.collapsed{
+			.fa{
+			transform:rotate(180deg);
+		}
+		}
+
+	}
+  }
