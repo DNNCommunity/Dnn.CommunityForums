@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId, ForumModuleId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 if (ti != null)
                 {
                     ti.IsPinned = !ti.IsPinned;
@@ -163,7 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (topicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId, ForumModuleId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 if (ti != null)
                 {
                     ti.IsLocked = !ti.IsLocked;
@@ -347,9 +347,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             DataProvider.Instance().Tags_Save(ActiveModule.PortalID, ForumModuleId, -1, sTag, 0, 1, 0, topicId, false, -1, -1);
                         }
                     }
-                    if (!string.IsNullOrEmpty(dto.Topic.CategoriesAsString))
+                    if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
                     {
-                        string[] cats = dto.Topic.CategoriesAsString.Split(';');
+                        string[] cats = dto.Topic.SelectedCategoriesAsString.Split(';');
                         DataProvider.Instance().Tags_DeleteTopicToCategory(ActiveModule.PortalID, ForumModuleId, -1, topicId);
                         foreach (string c in cats)
                         {

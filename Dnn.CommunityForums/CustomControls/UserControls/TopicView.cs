@@ -1257,7 +1257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var avatarDisabled = dr.GetBoolean("AvatarDisabled");
             var userRoles = dr.GetString("UserRoles");
             var isUserOnline = dr.GetBoolean("IsUserOnline");
-            var replyStatusId = dr.GetInt("StatusId");
+            var replyStatusId = replyId > 0 ? dr.GetInt("StatusId") : 0;
             var totalPoints = _enablePoints ? dr.GetInt("UserTotalPoints") : 0;
             var answerCount = dr.GetInt("AnswerCount");
             var rewardPoints = dr.GetInt("RewardPoints");

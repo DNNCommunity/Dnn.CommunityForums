@@ -36,14 +36,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = base.GetById(ReplyId);
             if (ri != null)
             {
-                if (ri.Topic == null && ri.TopicId > 0)
-                {
-                    ri.Topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ri.TopicId);
-                }
-                if (ri.Content == null && ri.ContentId > 0)
-                {
-                    ri.Content = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ri.ContentId);
-                }
+                ri.GetTopic();
+                ri.GetForum();
+                ri.GetContent();
+                ri.GetAuthor();
             }
             return ri;
         }
@@ -99,6 +95,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri)
         {
+            ri.Content.DateUpdated = DateTime.UtcNow;
+            if (ri.ReplyId < 1)
+            { 
+                ri.Content.DateCreated = DateTime.UtcNow;
+            }
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
             UserProfileController.Profiles_ClearCache(ModuleId, ri.Content.AuthorId);
 
