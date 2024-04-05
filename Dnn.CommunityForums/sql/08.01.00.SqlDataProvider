@@ -1192,6 +1192,9 @@ GO
 /* issue 520 -- begin -- remove obsolete module definition creating duplicate modules when placing on page */
 
 SET NOCOUNT ON 
+UPDATE m SET ModuleDefID = (SELECT ModuleDefID FROM {databaseOwner}{objectQualifier}ModuleDefinitions WHERE DefinitionName = 'DNN Community Forums')
+FROM {databaseOwner}{objectQualifier}Modules m INNER JOIN {databaseOwner}{objectQualifier}ModuleDefinitions md ON md.ModuleDefID = m.ModuleDefID WHERE md.DefinitionName = 'Active Forums'
+GO
 DELETE {databaseOwner}{objectQualifier}ModuleDefinitions
 WHERE FriendlyName = 'Active Forums' AND DefinitionName = 'Active Forums'
 GO
