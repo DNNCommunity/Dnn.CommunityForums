@@ -307,6 +307,8 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.ReplyToId = TopicId;
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
+            ri.Content.DateCreated = DateTime.UtcNow;
+            ri.Content.DateUpdated = DateTime.UtcNow;
             ri.Content.Body = sBody;
             ri.Content.IsDeleted = false;
             ri.Content.Subject = Subject;

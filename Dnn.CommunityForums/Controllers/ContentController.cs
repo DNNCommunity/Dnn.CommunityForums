@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
