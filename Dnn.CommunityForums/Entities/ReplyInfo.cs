@@ -103,11 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
             }
-                }
             return _Author;
-        }
-            set
-            { _Author = value; }
         }
     }
 }

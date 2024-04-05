@@ -40,8 +40,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
-        private string _tags = string.Empty;
         private int _forumId = -1;
+        private string _tags = string.Empty;
+        private string _categories = string.Empty;
+
         public int TopicId { get; set; }
         [IgnoreColumn()]
         public int ForumId
@@ -137,10 +139,37 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             return _Author;
         }
         [IgnoreColumn()]
-        public string Tags { get; set; }
+        public string Tags
+        {
+            get
+            {
+                if (_tags == null)
+                {
+                    _tags = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId), ",");
+                    if (_tags == null)
+                    {
+                        _tags = string.Empty;
+                    }
+                }
+                return _tags;
+            }
+        }
         [IgnoreColumn()]
-        public string Categories { get; set; } = string.Empty;
-       
+        public string Categories 
+        { 
+            get
+            {
+                if (string.IsNullOrEmpty(_categories))
+                {
+                    _categories = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId), "|");
+                    if (string.IsNullOrEmpty(_categories))
+                    {
+                        _categories = string.Empty;
+                    }
+                }
+                return _categories;
+            } 
+        }
         [IgnoreColumn()]
         public List<PropertiesInfo> TopicProperties
         {

@@ -96,8 +96,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return sl;
         }
     }
-    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
-
     public abstract class Subscriptions
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]

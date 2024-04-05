@@ -106,7 +106,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
 
             ReplyController rc = new ReplyController();
@@ -124,9 +123,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
             }
-
-            Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
-
+            Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, reply.Content.AuthorId);
+            
             try
             {
                 ControlUtils ctlUtils = new ControlUtils();
@@ -134,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 if (fullURL.Contains("~/"))
                 {
-                    fullURL = Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                    fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 }
                 if (fullURL.EndsWith("/"))
                 {
