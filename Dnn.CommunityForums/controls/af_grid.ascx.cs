@@ -103,8 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
             _rowIndex = (PageId == 1) ? 0 : ((PageId * _pageSize) - _pageSize);
 
             var db = new Data.Common();
-            var fc = new ForumController();
-            var forumIds = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanRead");
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanRead");
             
             var sCrumb = "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
@@ -323,7 +322,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
             int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
-            Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
             return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
         }
 
@@ -334,7 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
             int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
             int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
-            Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
             return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, SocialGroupId);
 
         }
@@ -346,7 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
             int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
             int userLastRead = Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"].ToString());
-            Forum ForumInfo = new DotNetNuke.Modules.ActiveForums.ForumController().GetForum(PortalId, ForumModuleId, ForumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
             return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, SocialGroupId);
              
         }

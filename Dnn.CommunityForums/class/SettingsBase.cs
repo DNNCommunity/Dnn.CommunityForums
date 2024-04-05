@@ -58,8 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string forums;
                 if (string.IsNullOrEmpty(ForumUser.UserForums))
                 {
-                    var fc = new ForumController();
-                    forums = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
+                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
                     ForumUser.UserForums = forums;
                 }
                 else
@@ -171,33 +170,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public ForumController ForumController
-        {
-            get
-            {
-                const string forumControllerContextKey = "AF|ForumController";
-                var forumController = HttpContext.Current.Items[forumControllerContextKey] as ForumController;
-                if (forumController == null)
-                {
-                    forumController = new ForumController();
-                    HttpContext.Current.Items[forumControllerContextKey] = forumController;
-                }
-                return forumController;
-            }
-        }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public ForumsDB ForumsDB
         {
             get
             {
-                const string forumsDBContextKey = "AF|ForumsDB";
-                var forumsDB = HttpContext.Current.Items[forumsDBContextKey] as ForumsDB;
-                if (forumsDB == null)
-                {
-                    forumsDB = new ForumsDB();
-                    HttpContext.Current.Items[forumsDBContextKey] = forumsDB;
-                }
-                return forumsDB;
+                throw new NotImplementedException();
             }
         }
 

@@ -136,8 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Literal lit = new Literal();
             UserController upc = new UserController();
             User up = upc.GetUser(PortalId, ForumModuleId, UID);
-            ForumController fc = new ForumController();
-            up.UserForums = fc.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
+            up.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
             sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, false, false, false, string.Empty, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
 

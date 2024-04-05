@@ -19,6 +19,7 @@
 //
 using System;
 using System.Data;
+using System.Reflection;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 
@@ -195,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.StatusId = -1;
             ri.TopicId = TopicId;
             replyId = Reply_Save(PortalId, ModuleId, ri);
-            UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
@@ -240,7 +241,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
                 ri.StatusId = Convert.ToInt32(dr["StatusId"]);
                 ri.TopicId = Convert.ToInt32(dr["TopicId"]);
-                //tl.Add(ti)
             }
             dr.Close();
             return ri;
@@ -248,8 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            ForumController fc = new ForumController();
-            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
 
             ReplyController rc = new ReplyController();
             DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
@@ -292,15 +291,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return reply;
         }
+        [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
         {
-            // signal to platform that module has updated content in order to be included in incremental search crawls
-            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
-
-        #endregion
     }
     #endregion
-
+    #endregion
 }
 

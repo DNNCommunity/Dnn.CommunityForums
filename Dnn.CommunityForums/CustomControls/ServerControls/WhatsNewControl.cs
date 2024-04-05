@@ -180,10 +180,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             IDataReader dr;
             if (ForumIds == string.Empty && FilterByUserId > 0)
             {
-                var fc = new ForumController();
                 var uc = new UserController();
                 var u = uc.DNNGetCurrentUser(PortalId, -1);
-                ForumIds = fc.GetForumsForUser(u.UserRoles, PortalId, -1);
+                ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, -1);
                 ForumIds = ForumIds.Replace(";", ":");
                 dr = DataProvider.Instance().GetPostsByUser(PortalId, Rows, UserInfo.IsSuperUser, UserInfo.UserID, FilterByUserId, TopicsOnly, ForumIds);
             }

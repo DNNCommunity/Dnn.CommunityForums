@@ -212,7 +212,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
 
             return text;
         }
-        internal static bool HasFloodIntervalPassed(int floodInterval, User user, Forum forumInfo)
+        internal static bool HasFloodIntervalPassed(int floodInterval, User user, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             /* flood interval check passes if
             1) flood interval <= 0 (disabled)
@@ -1235,8 +1235,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         {
             var rp = RoleProvider.Instance();
             var uc = new DotNetNuke.Entities.Users.UserController();
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(portalId: portalId, moduleId: moduleId, forumId: forumId, useCache: true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
             if (fi == null)
                 return null;
 
@@ -1495,6 +1494,11 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             {
                 Exceptions.LogException(ex);
             }
+        }
+        internal static void UpdateModuleLastContentModifiedOnDate(int ModuleId)
+        {
+            // signal to platform that module has updated content in order to be included in incremental search crawls
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
     }
 }

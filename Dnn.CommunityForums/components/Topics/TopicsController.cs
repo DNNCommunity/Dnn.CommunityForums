@@ -26,7 +26,6 @@ using System.Text.RegularExpressions;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
@@ -247,11 +246,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 try
                 {
-                    Data.ForumsDB db = new Data.ForumsDB();
                     int oldForumId = -1;
-                    oldForumId = db.Forum_GetByTopicId(TopicId);
-                    ForumController fc = new ForumController();
-                    Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: oldForumId, useCache: true);
+                    oldForumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: oldForumId, moduleId: ModuleId); 
 
                     if (!(string.IsNullOrEmpty(fi.PrefixURL)))
                     {
@@ -338,10 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ApproveTopic(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId)
         {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            ForumController fc = new ForumController();
-            Forum fi = fc.Forums_Get(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, useCache: true);
-
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
             TopicsController tc = new TopicsController();
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
             if (topic == null)
@@ -399,7 +393,6 @@ namespace DotNetNuke.Modules.ActiveForums
             string primaryPortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(moduleInfo.PortalID).FirstOrDefault(x => x.IsPrimary).HTTPAlias;
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
-            ForumController fc = new ForumController();
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
@@ -440,7 +433,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     };
-                    Forum forumInfo = fc.GetForum(moduleInfo.PortalID, moduleInfo.ModuleID, forumid);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid, moduleInfo.ModuleID);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext 
                     // so any code that relies on HttpContext cannot be used...
@@ -454,7 +447,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string permittedRolesCanView = string.Empty;
                     if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
                     {
-                        var canView = new Data.Common().WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
+                        string canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleInfo.ModuleID, forumid, roleIds);
                         permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
                         AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }

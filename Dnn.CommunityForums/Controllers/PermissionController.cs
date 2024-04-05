@@ -24,6 +24,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Web.Razor.Parser.SyntaxTree;
+using System.Web.Security;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
@@ -282,33 +283,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return HasPerm(AuthorizedRoles, userRoles);
         }
 
-        public string GetPermSet(int PermissionsId, string requestedAccess)
+        public string GetPermSet(int ModuleId, int PermissionsId, string requestedAccess)
         {
-            var permission = base.GetById(PermissionsId);
+            var permission = GetById(PermissionsId, ModuleId);
             return GetRolesForRequestedAccess(permission, requestedAccess);
         }
-        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet)
+        public string SavePermSet(int ModuleId, int PermissionsId, string requestedAccess, string PermSet)
         {
-            var permission = base.GetById(PermissionsId);
+            var permission = GetById(PermissionsId);
             if (permission != null)
             {
                 SetRolesForRequestedAccess(permission, requestedAccess, PermSet);
             }
-            return GetPermSet(PermissionsId, requestedAccess);
+            return GetPermSet(ModuleId, PermissionsId, requestedAccess);
         }
         public static void AddObjectToPermissions(int ModuleId, int PermissionsId, string requestedAccess, string objectId, int objectType)
         {
             var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
-            string permSet = pc.GetPermSet(PermissionsId, requestedAccess);
+            string permSet = pc.GetPermSet(ModuleId, PermissionsId, requestedAccess);
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, permSet);
-            pc.SavePermSet(PermissionsId, requestedAccess, permSet);
+            pc.SavePermSet(ModuleId, PermissionsId, requestedAccess, permSet);
         }
         public static void RemoveObjectFromPermissions(int ModuleId, int PermissionsId, string requestedAccess, string objectId, int objectType)
         {
             var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
-            string permSet = pc.GetPermSet(PermissionsId, requestedAccess);
+            string permSet = pc.GetPermSet(ModuleId, PermissionsId, requestedAccess);
             permSet = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objectId, objectType, permSet);
-            pc.SavePermSet(PermissionsId, requestedAccess, permSet);
+            pc.SavePermSet(ModuleId, PermissionsId, requestedAccess, permSet);
         }
         public static bool HasPerm(string AuthorizedRoles, string UserPermSet)
         {
@@ -414,9 +415,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             for (int i = 0; i < values.Length; i++)
             {
                 string text = Convert.ToString(Enum.Parse(enumType, values.GetValue(i).ToString()));
-                string permSet = pc.GetPermSet(PermissionsId, text);
+                string permSet = pc.GetPermSet(ModuleId, PermissionsId, text);
                 permSet = RemovePermFromSet(objectId, objectType, permSet);
-                pc.SavePermSet(PermissionsId, text, permSet);
+                pc.SavePermSet(ModuleId, PermissionsId, text, permSet);
             }
             return true;
         }
@@ -657,6 +658,48 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 } 
                 Update(permission);
             };
+        }
+        public static string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
+        {
+            string cacheKey = string.Format(CacheKeys.ViewRolesForForum, ModuleId, ForumId);
+            string sRoles = (string) DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+
+            if (string.IsNullOrEmpty(sRoles))
+            {
+                var forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId);
+                int portalId = forum.PortalId;
+                int permissionId = forum.PermissionsId;
+
+                var permission = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(permissionId, ModuleId);
+
+                string canView = permission.View;
+                foreach (string role in UserRoles.Split(";".ToCharArray()))
+                {
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canView, string.Concat(role, ";||")))
+                    {
+                        sRoles += role + ":";
+                    }
+                }
+                DataCache.SettingsCacheStore(ModuleId, cacheKey, sRoles);
+            }
+            return sRoles;
+        }
+        public static string CheckForumIdsForViewForRSS(int ModuleId, string ForumIds, string UserRoles)
+        {
+            string cacheKey = string.Format(CacheKeys.ViewRolesForForumList, ModuleId, ForumIds);
+            string sForums = (string) DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+            if (string.IsNullOrEmpty(sForums))
+            {
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in (ModuleId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get()))
+                {
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.View, UserRoles))
+                    {
+                        sForums += forum.ForumID.ToString() + ":";
+                    }
+                }
+                DataCache.SettingsCacheStore(ModuleId, cacheKey, sForums);
+            }
+            return sForums;
         }
     }
 }

@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     for (int i = 0; i < xNodeList.Count; i++)
 					{
-						var gi = new ForumGroupInfo
+						var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
 						             {
 						                 ModuleId = ModuleId,
 						                 ForumGroupId = -1,
@@ -226,10 +226,9 @@ namespace DotNetNuke.Modules.ActiveForums
 						                 GroupSettingsKey = string.Empty,
 						                 PermissionsId = -1
 						             };
-					    var gc = new ForumGroupController();
-						int groupId;
-						groupId = gc.Groups_Save(PortalId, gi, true);
-						gi = gc.GetForumGroup(ModuleId, groupId);
+					    var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+						int groupId = gc.Groups_Save(PortalId, gi, true);
+						gi = gc.GetById(groupId, ModuleId);
 						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
@@ -293,8 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								System.Xml.XmlNodeList cNodes = xNodeList[i].ChildNodes;
 								for (int c = 0; c < cNodes.Count; c++)
 								{
-									var fi = new Forum();
-									var fc = new ForumController();
+									var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
 									fi.ForumID = -1;
 									fi.ModuleId = ModuleId;
 									fi.ForumGroupId = groupId;
@@ -307,7 +305,7 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
 									fi.PermissionsId = gi.PermissionsId;
-									fc.Forums_Save(PortalId, fi, true, true, true);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, true, true, true);
 								}
 							}
 						}
@@ -462,7 +460,6 @@ namespace DotNetNuke.Modules.ActiveForums
             string connectionString = new Connection().connectionString;
             string dbPrefix = new Connection().dbPrefix;
             var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
-			var fc = new DotNetNuke.Modules.ActiveForums.ForumController();
 
             using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}Topics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
             {
@@ -473,7 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     int forumId = (Utilities.SafeConvertInt(dr["ForumId"]));
                     int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
                     string subject = (Utilities.SafeConvertString(dr["Subject"]));
-                    Forum forumInfo = fc.GetForum(portalId, moduleId, forumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
 					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.Get(topicId);
 					topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
 					tc.Update(topicInfo); 

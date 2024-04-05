@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
@@ -39,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _authorid;
         private bool? _jumpToLastPost;
         private string _templatePath = string.Empty;
-        private Forum _foruminfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _foruminfo;
         private XmlDocument _forumData;
 
         private bool? _canRead;
@@ -53,15 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public XmlDocument ForumData
         {
-            get
-            {
-                if(_forumData == null)
-                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : ForumsDB.ForumListXML(PortalId, ModuleId); 
-
-                return _forumData;
-            }
-
-            set { _forumData = value; }
+            get => _forumData ?? (_forumData = (ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(PortalId, ModuleId)));
+            set => _forumData = value;
         }
 
         public ControlsConfig ControlConfig { get; set; }
@@ -272,7 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we still don't have a forum id, but we have a topic id, look up the forum id
                 if (_forumId < 1 & TopicId > 0)
                 {
-                   _forumId = ForumsDB.Forum_GetByTopicId(TopicId);
+                   _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
 
                 return _forumId.Value;
@@ -359,11 +353,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TemplateFile { get; set; } = string.Empty;
 
-        public Forum ForumInfo
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo
         {
             get 
             {
-                return _foruminfo ?? (_foruminfo = ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
+                return _foruminfo ?? (_foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
             }
             set
             {

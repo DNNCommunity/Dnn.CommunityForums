@@ -218,8 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SaveQuickReply()
         {
-            ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
                 UserProfileController upc = new UserProfileController();

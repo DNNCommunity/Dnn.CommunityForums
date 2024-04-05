@@ -21,7 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-
+using System.Linq;
 using System.Text;
 using System.Web;
 
@@ -98,22 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				return "Please specify a template";
 			}
 			StringBuilder sb = new StringBuilder();
-			Data.ForumsDB fdb = new Data.ForumsDB();
-			ForumCollection allForums = fdb.Forums_List(PortalId, ModuleId);
-			ForumCollection filteredForums = new ForumCollection();
-			foreach (Forum f in allForums)
-			{
-				if (f.ForumGroup.Active && f.Active && f.ParentForumId == 0)
-				{
-					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles))
-					{
-						f.TabId = TabId;
-						f.SubForums = GetSubForums(allForums, f.ForumID);
-						filteredForums.Add(f);
-					}
-				}
-			}
-			string groupTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
+            string groupTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
 			string forumTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
 			string subForumTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:SUBFORUM]", "[/AF:DIR:SUBFORUM]");
 			int currGroup = -1;
@@ -121,8 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string ftmp = string.Empty;
 			string subtmp = string.Empty;
 			StringBuilder list = new StringBuilder();
-			bool inprogress = false;
-			foreach (Forum f in filteredForums)
+			var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles));
+			foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
 			{
 				if (currGroup != f.ForumGroupId)
 				{
@@ -142,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				string forums = ParseForum(f, ftmp);
 				if (f.SubForums != null)
 				{
-					foreach (Forum s in f.SubForums)
+					foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in f.SubForums)
 					{
 						forums = forums.Replace("[SUBFORUMHOLDER]", ParseForum(s, subtmp) + "[SUBFORUMHOLDER]");
 					}
@@ -156,13 +141,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			Template = TemplateUtils.ReplaceSubSection(Template, list.ToString(), "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
 			return Template;
 		}
-		private string ParseForumGroup(ForumGroupInfo f, string template)
+		private string ParseForumGroup(DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo f, string template)
 		{
 			template = template.Replace("[AF:DIR:FORUMGROUPID]", f.ForumGroupId.ToString());
 			template = template.Replace("[AF:DIR:FORUMGROUPNAME]", f.GroupName);
 			return template;
 		}
-		private string ParseForum(Forum f, string template)
+		private string ParseForum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f, string template)
 		{
 			template = template.Replace("[AF:DIR:FORUMID]", f.ForumID.ToString());
 			template = template.Replace("[AF:DIR:FORUMNAME]", f.ForumName);
@@ -175,42 +160,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			string selected = string.Empty;
 			if (HttpContext.Current.Request.QueryString[ParamKeys.ForumId] != null)
 			{
-				if (int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.ForumId]) == f.ForumID)
-				{
-					selected = "afn-currentforum";
-				}
-				else
-				{
-					selected = string.Empty;
-				}
-			}
-			if (f.ParentForumId > 0)
-			{
-				template = template.Replace("[AF:DIR:SELECTEDSUBFORUM]", selected);
-			}
-			else
-			{
-				template = template.Replace("[AF:DIR:SELECTEDFORUM]", selected);
-			}
+				selected = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.ForumId]) == f.ForumID ? "afn-currentforum" : string.Empty;
+            }
+			template = f.ParentForumId > 0
+                ? template.Replace("[AF:DIR:SELECTEDSUBFORUM]", selected)
+                : template.Replace("[AF:DIR:SELECTEDFORUM]", selected);
 
-			return template;
-		}
-		private ForumCollection GetSubForums(ForumCollection forums, int forumId)
-		{
-			ForumCollection subforums = null;
-			foreach (Forum s in forums)
-			{
-				if (s.ParentForumId == forumId)
-				{
-					if (subforums == null)
-					{
-						subforums = new ForumCollection();
-					}
-					s.TabId = TabId;
-					subforums.Add(s);
-				}
-			}
-			return subforums;
+            return template;
 		}
 	}
 }

@@ -33,82 +33,22 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
         public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet.")]
-        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(PermissionsId, requestedAccess);
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet.")]
-        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(PermissionsId, requestedAccess, PermSet);
-        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions().")]
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
+        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, PermissionsId, requestedAccess);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
+        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, PermissionsId, requestedAccess, PermSet);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
         public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId)).PermissionsId;
-        public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles)
-		{
-			//TODO: This will get moved to PermissionController once ForumInfo is updated to DAL2
-			string cacheKey = string.Format(CacheKeys.ViewRolesForForumList,ModuleId, ForumIds);
-			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId  INNER JOIN " + dbPrefix + "Functions_Split('" + ForumIds + "',':') as ids on ids.id = f.ForumId";
-			string sForums = string.Empty;
-			DataTable dt = null;
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
+        public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(ModuleId, ForumIds, UserRoles);
+        [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum().")]
+        public string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(ModuleId, ForumId, UserRoles);
 
-			object data = DataCache.SettingsCacheRetrieve(ModuleId,cacheKey);
+        #endregion
 
-			if (data != null)
-			{
-				dt = (DataTable)data;
-			}
-			else
-			{
-				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
-				DataCache.SettingsCacheStore(ModuleId,cacheKey, dt);
-			}
+        #region Views
 
-			foreach (DataRow row in dt.Rows)
-			{
-				string canView = row["CanView"].ToString();
-				if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canView, UserRoles))
-				{
-					sForums += row["ForumId"].ToString() + ":";
-				}
-			}
-
-			return sForums;
-		}
-		public string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
-		{
-            //TODO: This will get moved to PermissionController once ForumInfo is updated to DAL2
-            string cacheKey = string.Format(CacheKeys.ViewRolesForForum,ModuleId, ForumId);
-			string sSQL = "SELECT f.ForumId, ISNULL(CanView,'') as CanView from " + dbPrefix + "Permissions as P INNER JOIN " + dbPrefix + "Forums as f on f.PermissionsID = P.PermissionsId WHERE f.ForumId = " + ForumId.ToString();
-			string sRoles = string.Empty;
-			DataTable dt = null;
-
-			object data = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
-
-			if (data != null)
-			{
-				dt = (DataTable)data;
-			}
-			else
-			{
-				dt = DotNetNuke.Common.Globals.ConvertDataReaderToDataTable(SqlHelper.ExecuteReader(_connectionString, CommandType.Text, sSQL));
-				DataCache.SettingsCacheStore(ModuleId, cacheKey, dt);
-			}
-			if (dt.Rows != null && dt.Rows.Count > 0)
-			{
-				string canView = dt.Rows[0]["CanView"].ToString();
-				foreach (string role in UserRoles.Split(";".ToCharArray()))
-				{
-					if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canView, string.Concat(role, ";||")))
-					{
-						sRoles += role + ":";
-					}
-				}
-			}
-			return sRoles;
-		}
-		
-
-		#endregion
-
-		#region Views
-
-		public DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
+        public DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
 		{
 			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_ActiveView", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
 		}
@@ -214,8 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 			try
 			{
 				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-				ForumGroupController fgc = new ForumGroupController();
-				ForumGroupInfo fg = fgc.GetForumGroup(ModuleId, ForumGroupId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
 				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
 				{
 					VanityName = fg.PrefixURL + "/" + VanityName;

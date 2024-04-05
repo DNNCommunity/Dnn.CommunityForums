@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class Classic : ForumBase
     {
 
-        private Forum fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members
@@ -239,8 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (SocialGroupId > 0)
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, ForumModuleId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
                     { 
@@ -253,8 +252,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).TabModuleSettings;
 
-                        fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
-                        ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
+                        ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, ForumModuleId, SocialGroupId);
                     }
                 }
                 ctl.ForumIds = ForumIds;

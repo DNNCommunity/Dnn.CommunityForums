@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool _isApproved;
         public string PreviewText = string.Empty;
         private bool _isEdit;
-        private Forum _fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _fi;
         private UserProfileInfo _ui = new UserProfileInfo();
         private string _themePath = string.Empty;
         private bool _userIsTrusted;
@@ -857,7 +857,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
 
                 if (bSend && !_isEdit)
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, 0, ti.Content.AuthorId);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, 0, ti.Content.AuthorId);
 
                 if (ti.IsApproved == false)
                 {
@@ -1018,7 +1018,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
-            rc.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
+            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
             DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
@@ -1027,7 +1027,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (bSend && !_isEdit)
                 {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi, TopicId, tmpReplyId, ri.Content.AuthorId);
+                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, tmpReplyId, ri.Content.AuthorId);
                 }
                 if (ri.IsApproved == false)
                 {

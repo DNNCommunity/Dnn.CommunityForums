@@ -40,9 +40,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using DotNetNuke.Modules.ActiveForums.DAL2;
+using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
-{
+{ 
     [DnnAuthorize]
     [ValidateAntiForgeryToken]
     public class ForumServiceController : DnnApiController
@@ -140,8 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Make sure that we can find the forum and that attachments are allowed
-                var fc = new ForumController();
-                var forum = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, true, -1);
+                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, true, -1);
 
                 if (forum == null || !forum.AllowAttach)
                 {
@@ -381,15 +381,11 @@ namespace DotNetNuke.Modules.ActiveForums
             var portalSettings = PortalSettings;
             var userInfo = portalSettings.UserInfo;
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
-            var fc = new ForumController();
-            var forumIds = fc.GetForumsForUser(forumUser.UserRoles, portalSettings.PortalId, ActiveModule.ModuleID, "CanView", true);
 
-            DataTable ForumTable = fc.GetForumView(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID, userInfo.IsSuperUser, forumIds);
-
-            Dictionary<string, string> rows = new Dictionary<string, string>();;
-            foreach (DataRow dr in ForumTable.Rows)
+            Dictionary<string, string> rows = new Dictionary<string, string>();
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
             {
-                rows.Add(dr["ForumId"].ToString(),dr["ForumName"].ToString());
+                rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
             return Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
         }
@@ -412,10 +408,8 @@ namespace DotNetNuke.Modules.ActiveForums
             var userInfo = portalSettings.UserInfo;
             var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
 
-            var fc = new ForumController();
-
-            var forum_out = fc.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
-            var forum_in = fc.GetForum(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId);
+            var forum_out = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
+            var forum_in = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, ActiveModule.ModuleID);
             if (forum_out != null && forum_in != null)
             {
                 var perm = false;
