@@ -310,6 +310,8 @@ namespace DotNetNuke.Modules.ActiveForums
             sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, ForumInfo.AllowEmoticons);
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
+            ri.Content.DateCreated = DateTime.UtcNow;
+            ri.Content.DateUpdated = DateTime.UtcNow;
             ri.Content.Body = sBody;
             ri.Content.IsDeleted = false;
             ri.Content.Subject = Subject;
