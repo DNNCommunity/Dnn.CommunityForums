@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ContentAlert");
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new TopicsController().Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;

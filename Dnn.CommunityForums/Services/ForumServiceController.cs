@@ -427,8 +427,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (perm && modSplit)
                 {
-                    var tc = new TopicsController();
-
                     int topicId;
 
                     if (dto.NewTopicId < 1)
@@ -438,13 +436,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         var rc = new DotNetNuke.Modules.ActiveForums.DAL2.ReplyController();
                         var firstReply = rc.Get(Convert.ToInt32(replies[0]));
                         var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId, ActiveModule.ModuleID);
-                        topicId = tc.Topic_QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
-                        tc.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
+                        topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
+                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
                     }
                     else
                     {
                         topicId = dto.NewTopicId;
-                        tc.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
+                        DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
                     }
                 }
             }
