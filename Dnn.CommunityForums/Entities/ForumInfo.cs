@@ -123,7 +123,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> LoadSubForums()
         {
-            //return (_subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ParentForumId == ForumID).ToList());
             return (_subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(ForumID, ModuleId).ToList());
         }
 
