@@ -89,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ForumController fc = new ForumController();
             Dictionary<int, string> AuthorizedRolesForForum = new Dictionary<int, string>();
+            Dictionary<int, string> ForumUrlPrefixes = new Dictionary<int, string>();
 
             List<string> roles = new List<string>();
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: moduleInfo.PortalID))

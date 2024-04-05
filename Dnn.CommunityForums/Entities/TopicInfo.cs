@@ -178,8 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     return pl;
                 }
             }
-        }
-         
+        }         
     } 
 
 }

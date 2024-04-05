@@ -7,21 +7,7 @@ using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.DAL2
 {
-    [TableName("activeforums_Replies")]
-    [PrimaryKey("ReplyId", AutoIncrement = true)]
-    [Scope("ModuleId")]
-    [Cacheable("activeforums_Replies", CacheItemPriority.Low)]
-    public partial class ReplyInfo
-    {
-        public int ReplyId { get; set; }
-        public int TopicId { get; set; }
-        public int ReplyToId { get; set; }
-        public int ContentId { get; set; }
-        public bool IsApproved { get; set; }
-        public bool IsRejected { get; set; }
-        public int StatusId { get; set; }
-        public bool IsDeleted { get; set; }
-        [IgnoreColumn]
-        public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content { get; set; }
-    }
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo.")]
+
+    public partial class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo { }
 }

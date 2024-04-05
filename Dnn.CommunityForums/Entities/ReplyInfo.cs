@@ -9,6 +9,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Replies")]
     [PrimaryKey("ReplyId")]
+    [Scope("ModuleId")]
+    [Cacheable("activeforums_Replies", CacheItemPriority.Low)]
     public partial class ReplyInfo
     {
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topicInfo;
@@ -101,7 +103,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
             }
+                }
             return _Author;
+        }
+            set
+            { _Author = value; }
         }
     }
 }

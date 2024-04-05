@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
         {
             try
             {
-                var rc = new ReplyController();
+                var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 return rc.Reply_QuickCreate(PortalId, ModuleId, ForumId, TopicId, ReplyToId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
             }
             catch (Exception ex)

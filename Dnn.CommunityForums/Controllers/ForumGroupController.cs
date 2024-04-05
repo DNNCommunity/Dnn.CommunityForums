@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (forumGroupInfo.PermissionsId == -1)
             {
-                    forumGroupInfo.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+                forumGroupInfo.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
             }
 
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumGroupInfo.ForumGroupId;
         }
         public void Groups_Delete(int forumGroupId, int moduleId)
-        {            
+        {
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo
             DataProvider.Instance().Groups_Delete(moduleId, forumGroupId);
         }

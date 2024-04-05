@@ -121,13 +121,12 @@ namespace DotNetNuke.Modules.ActiveForums
                                 }
                                 else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                                 {
-                                    ReplyController rc = new ReplyController();
-                                    DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(tmpReplyId);
                                     if (ri != null)
                                     {
                                         auth = ri.Author;
                                     }
-                                    rc.Reply_Delete(PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
                                 }
 
                             }
@@ -207,12 +206,11 @@ namespace DotNetNuke.Modules.ActiveForums
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                             {
                                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
-                                ReplyController rc = new ReplyController();
-                                DotNetNuke.Modules.ActiveForums.ReplyInfo ri = rc.Reply_Get(PortalId, ForumModuleId, tmpTopicId, tmpReplyId);
+                                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(tmpReplyId);
                                 if (ri != null)
                                 {
                                     ri.IsApproved = true;
-                                    rc.Reply_Save(PortalId, ForumModuleId, ri);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ForumModuleId, ri);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)

@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 isApproved = true;
             }
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             Data.Topics db = new Data.Topics();
             //im rc As New ReplyController
             int ReplyId = -1;

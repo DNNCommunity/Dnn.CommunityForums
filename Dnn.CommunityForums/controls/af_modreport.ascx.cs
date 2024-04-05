@@ -146,8 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTopicURL = topic.TopicUrl;
                 if (ReplyId > 0 & TopicId != ReplyId)
                 {
-                    ReplyController rc = new ReplyController();
-                    DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(ReplyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;

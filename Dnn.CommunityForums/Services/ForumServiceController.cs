@@ -433,9 +433,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorTypes.TEXTBOX, false, false, ActiveModule.ModuleID, string.Empty, false);
                         var replies = dto.Replies.Split('|');
-                        var rc = new DotNetNuke.Modules.ActiveForums.DAL2.ReplyController();
-                        var firstReply = rc.Get(Convert.ToInt32(replies[0]));
-                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId, ActiveModule.ModuleID);
+                        var firstReply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(Convert.ToInt32(replies[0]));
+                        var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
                         topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
                     }
