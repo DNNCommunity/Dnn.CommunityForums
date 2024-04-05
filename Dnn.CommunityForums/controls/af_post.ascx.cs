@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctlForm.Pinned = ti.IsPinned;
                 ctlForm.TopicIcon = ti.TopicIcon;
                 ctlForm.Tags = ti.Tags;
-                ctlForm.Categories = ti.CategoriesAsString;
+                ctlForm.Categories = ti.SelectedCategoriesAsString;
                 ctlForm.IsApproved = ti.IsApproved;
                 ctlForm.StatusId = ti.StatusId;
                 ctlForm.TopicPriority = ti.Priority;
@@ -696,16 +696,12 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 authorId = ti.Author.AuthorId;
-                ti.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
                 ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-
                 ti.ForumId = ForumInfo.ForumID;
-                ti.Content.DateCreated = DateTime.UtcNow;
-                ti.Content.DateUpdated = DateTime.UtcNow;
             }
 
             ti.AnnounceEnd = ctlForm.AnnounceEnd;
@@ -746,7 +742,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.StatusId = ctlForm.StatusId;
             ti.TopicIcon = ctlForm.TopicIcon;
             ti.TopicType = 0;
-            if (ForumInfo.Properties != null)
+            if (ForumInfo.Properties != null && ForumInfo.Properties.Count > 0)
             {
                 var tData = new StringBuilder();
                 tData.Append("<topicdata>");
@@ -777,16 +773,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-            if (ti != null)
-            {
-                TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
-                SaveAttachments(ti.ContentId);
-                if (ti.IsApproved && ti.Author.AuthorId > 0)
-                {//TODO: move this to more appropriate place and make consistent with reply count
-                    var uc = new Data.Profiles();
-                    uc.Profile_UpdateTopicCount(PortalId, ti.Author.AuthorId);
-                }
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
+
+            SaveAttachments(ti.ContentId);
+            if (ti.IsApproved && ti.Author.AuthorId > 0)
+            {//TODO: move this to more appropriate place and make consistent with reply count
+                var uc = new Data.Profiles();
+                uc.Profile_UpdateTopicCount(PortalId, ti.Author.AuthorId);
             }
 
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
@@ -842,10 +835,9 @@ namespace DotNetNuke.Modules.ActiveForums
                             DataProvider.Instance().Poll_Option_Save(-1, pollId, value.Trim(), TopicId);
                         }
                     }
+                    ti.TopicType = TopicTypes.Poll;
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                 }
-
-                ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-                ti.TopicType = TopicTypes.Poll;
             }
             if ((UserPrefTopicSubscribe && authorId == UserId) || ctlForm.Subscribe)
             {
@@ -978,14 +970,11 @@ namespace DotNetNuke.Modules.ActiveForums
             if (PostId > 0)
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(PostId);
-                ri.Content.DateCreated = DateTime.UtcNow;
-                ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
                 ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-                ri.Content.DateUpdated = DateTime.UtcNow;
             }
 
             if (!_isEdit)

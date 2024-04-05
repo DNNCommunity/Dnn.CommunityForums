@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				{
 					sb.Append("<li>");
 					sb.Append("<input type=\"checkbox\"");
-					if (IsSelected(dr["TagName"].ToString()))
+					if (IsSelected(Utilities.SafeConvertInt(dr["TagId"].ToString())))
 					{
 						sb.Append(" checked=\"checked\" ");
 						sSelected += dr["TagId"].ToString() + ";";
@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			return sb.ToString();
 		}
-		private bool IsSelected(string TagName)
+		private bool IsSelected(int CategoryId) /* Category is stored in Tag table with 'isCategory' = true */
 		{
 			if (string.IsNullOrEmpty(SelectedValues))
 			{
@@ -255,11 +255,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			}
 			else
 			{
-				foreach (string s in SelectedValues.Split('|'))
+				foreach (string s in SelectedValues.Split(';'))
 				{
 					if (! (string.IsNullOrEmpty(s)))
 					{
-						if (s.ToLowerInvariant().Trim() == TagName.ToLowerInvariant().Trim())
+						if (Utilities.SafeConvertInt(s.Trim()) == CategoryId)
 						{
 							return true;
 						}
