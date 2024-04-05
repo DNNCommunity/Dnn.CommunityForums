@@ -146,8 +146,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 ti.Content.AuthorName = dr["AuthorName"].ToString();
                 ti.Content.Body = dr["Body"].ToString();
                 ti.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-                //ti.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
-                //ti.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
+                ti.Content.DateCreated = Convert.ToDateTime(dr["DateCreated"]);
+                ti.Content.DateUpdated = Convert.ToDateTime(dr["DateUpdated"]);
                 ti.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
                 ti.Content.Subject = dr["Subject"].ToString();
                 ti.Content.Summary = dr["Summary"].ToString();
