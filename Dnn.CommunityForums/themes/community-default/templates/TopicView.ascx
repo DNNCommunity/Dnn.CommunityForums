@@ -40,7 +40,7 @@
     [AF:CONTROL:CALLBACK]
 
 
-    <div class="dcf-topic-content">
+    <div class="dcf-topic-wrap">
         <div class="dcf-topic-head">
 			<div class="dcf-cols dcf-topic-headings">
 				<div class="dcf-col-25 dcf-topic-heading-author">[TRESX:Author]
