@@ -28,19 +28,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("ContentId", AutoIncrement = true)]
     public class ContentInfo
     {
-        private DateTime _dateCreated = DateTime.UtcNow;
-        private DateTime _dateUpdated = DateTime.UtcNow;
-
         public int ContentId { get; set; }
         public string Subject { get; set; }
         public string Summary { get; set; }
         public string Body { get; set; }
-        public DateTime DateCreated
-        {
-            get => _dateCreated;
-            set { if (ContentId < 1) { _dateCreated = DateTime.UtcNow; } }
-        }        
-        public DateTime DateUpdated { get => _dateUpdated; set => _dateUpdated = DateTime.UtcNow; }
+        public DateTime DateCreated { get; set; } /* TODO: Once Reply_Save etc. moved from stored procedures to DAL2 for saving, update this to auto-set dates */
+        public DateTime DateUpdated { get; set; } = DateTime.UtcNow; /* TODO: Once Reply_Save etc. moved from stored procedures to DAL2 for saving, update this to auto-set dates */
         public int AuthorId { get; set; }
         public string AuthorName { get; set; }
         public bool IsDeleted { get; set; }
