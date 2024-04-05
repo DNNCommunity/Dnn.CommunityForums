@@ -251,6 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.DeleteObsoleteModuleSettings_080100();
+                        ForumsConfig.Install_BanUser_NotificationType_080100();
                     }
                     catch (Exception ex)
                     {
