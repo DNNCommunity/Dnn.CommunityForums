@@ -55,12 +55,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TestCase(200, 25, false, ExpectedResult = false)] // interval is 200, last post is 25, expect false
         public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isAdmin)
         {
-            //Arrange
+            //Arrangea
             var mockUser = new Mock<User>();
             mockUser.Object.IsAdmin = isAdmin;
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             mockUser.Object.Profile.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            mockForum.Object.ForumSettings = new System.Collections.Hashtable();
+            mockForum.Object.ForumSettings.Add(ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted);
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
             mockForum.Object.Security = mockPermissions.Object;
             //Act
