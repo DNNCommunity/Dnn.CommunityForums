@@ -28,11 +28,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class PropertyController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.PropertiesInfo Properties { get; set; }
+        private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties { get; set; }
         public PropertyController() : base()
         {
         }
-        public PropertyController(Entities.PropertiesInfo properties)
+        public PropertyController(IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties)
         {
             Properties = properties;
         }

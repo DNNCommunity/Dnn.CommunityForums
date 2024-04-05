@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicPropertiesInfo TopicProperties
+        public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties
         {
             set
             {

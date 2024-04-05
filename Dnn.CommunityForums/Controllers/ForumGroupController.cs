@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadSecurity();
                     forumGroup.LoadSettings();
                 }
-                DataCache.SettingsCacheStore(forumGroup.ModuleId, cachekey, forumGroup);
+                DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
             return forumGroup;
         }
