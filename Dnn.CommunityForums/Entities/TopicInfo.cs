@@ -38,7 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Topics")]
     [PrimaryKey("TopicId", AutoIncrement = true)]
-    [Cacheable("activeforums_Topics", CacheItemPriority.Low)]
     public class TopicInfo
     {
         [IgnoreColumn()]
@@ -56,21 +55,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 this.selected = selected;
             }
         }
+        private List<Category> _categories;
+
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
         private int _forumId = -1;
         private string _tags = string.Empty;
-
-        private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> _forumCategories;
-        private IEnumerable<Category> _categories;
+        private string _selectedcategories;
 
         public int TopicId { get; set; }
 
         [IgnoreColumn()]
         public int ForumId
         {
-            //TODO: Clean this up
             get
             {
                 //TODO : clean this up to use DAL2
@@ -78,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
-                return _forumId; 
-            } 
+                return _forumId;
+            }
             set => _forumId = value;
         }
         [IgnoreColumn()]
@@ -111,66 +109,55 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int NextTopic { get; set; }
         public int PrevTopic { get; set; }
         public string TopicData { get; set; } = string.Empty;
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get
-            {
-                if (_contentInfo == null)
-                {
-                    if (ContentId > 0)
-                    {
-                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId, Forum.ModuleId);
-                    }
-                    if (_contentInfo == null)
-                    {
-                        _contentInfo = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
-                    }
-                }
-                return _contentInfo; 
-            }
-                
-                set => _contentInfo = value;
-            }
+            get => _contentInfo ?? (_contentInfo = GetContent());
+            set => _contentInfo = value;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+        }
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? (_forumInfo = ( ForumId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId) : null ));
+            get => _forumInfo ?? (_forumInfo = GetForum());
             set => _forumInfo = value;
         }
+
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId); /* can't get using moduleId since ModuleId comes from Forum */
+        }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get
-            {
-                if (_Author == null)
-                {
-                    _Author = new DotNetNuke.Modules.ActiveForums.Author();
-                }
-                if (Content?.AuthorId != null)
-                {
-                    _Author.AuthorId = Content.AuthorId;
-                    var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(Forum.PortalId, Content.AuthorId);
-                    if (userInfo != null)
-                    {
-                        _Author.Email = userInfo?.Email;
-                        _Author.FirstName = userInfo?.FirstName;
-                        _Author.LastName = userInfo?.LastName;
-                        _Author.DisplayName = userInfo?.DisplayName;
-                        _Author.Username = userInfo?.Username;
-                    }
-                    else
-                    {
-                        _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
-                    }
-                }
-                else
-                {
-                    _Author.DisplayName = "Unknown";
-                }
-                return _Author;
-            }
+            get => _Author ?? (_Author = GetAuthor());
             set => _Author = value;
+        }
+
+        internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
+        {
+            _Author = new DotNetNuke.Modules.ActiveForums.Author();
+            _Author.AuthorId = Content.AuthorId;
+            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
+            if (userInfo != null)
+            {
+                _Author.Email = userInfo?.Email;
+                _Author.FirstName = userInfo?.FirstName;
+                _Author.LastName = userInfo?.LastName;
+                _Author.DisplayName = userInfo?.DisplayName;
+                _Author.Username = userInfo?.Username;
+            }
+            else
+            {
+                _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+            }
+            return _Author;
         }
         [IgnoreColumn()]
         public string Tags
@@ -188,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return _tags;
             }
         }
-        [IgnoreColumn()]
+       [IgnoreColumn()]
         public IEnumerable<Category> Categories
         {
             //TODO: Clean this up
@@ -196,22 +183,32 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (_categories == null)
                 {
-                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }); ;
-                    var topicCategories = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
-                    topicCategories.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
-                    _categories = _categories.Where(c => c.selected).ToList();
+                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList(); ;
+                    var topicCategoryIds = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
+                    topicCategoryIds.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
                 }
                 return _categories;
             }
         }
         [IgnoreColumn()]
-        public string CategoriesAsString
+        public IEnumerable<Category> SelectedCategories => Categories.Where(c => c.selected).ToList();
+        [IgnoreColumn()]
+        public string SelectedCategoriesAsString
         {
             get
             {
-                return string.Join("|",Categories.Select(c => c.name));
+                if (_selectedcategories == null)
+                {
+                    _selectedcategories = string.Join(";", SelectedCategories.Select(c => c.id.ToString()));
+                }
+                return _selectedcategories;
+            }
+            set
+            {
+                _selectedcategories = value;
             }
         }
+
         [IgnoreColumn()]
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties
         {

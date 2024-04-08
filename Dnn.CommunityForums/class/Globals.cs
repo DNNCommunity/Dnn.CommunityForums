@@ -140,7 +140,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public const string ModuleName = "Active Forums";
-		public const string ModulePath = "~/DesktopModules/ActiveForums/";
+		public const string ModuleFriendlyName = "DNN Community Forums";
+        public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string ModuleConfigPath = Globals.ModulePath + "config/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";

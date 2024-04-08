@@ -18,283 +18,29 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Data;
 using System.Reflection;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    #region ReplyInfo
-    public class ReplyInfo
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo.")]
+    public class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo { }
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
+    public class ReplyController 
     {
-        #region Private Members
-        private int _ReplyId;
-        private int _TopicId;
-        private int _ReplyToId;
-        private int _ContentId;
-        private int _StatusId;
-        private bool _IsApproved;
-        private bool _IsDeleted;
-        private Content _Content;
-        private Author _Author;
-        #endregion
-        #region Public Properties
-        public int ReplyId
-        {
-            get
-            {
-                return _ReplyId;
-            }
-            set
-            {
-                _ReplyId = value;
-            }
-        }
-        public int ReplyToId
-        {
-            get
-            {
-                return _ReplyToId;
-            }
-            set
-            {
-                _ReplyToId = value;
-            }
-        }
-        public int TopicId
-        {
-            get
-            {
-                return _TopicId;
-            }
-            set
-            {
-                _TopicId = value;
-            }
-        }
-        public int ContentId
-        {
-            get
-            {
-                return _ContentId;
-            }
-            set
-            {
-                _ContentId = value;
-            }
-        }
-        public int StatusId
-        {
-            get
-            {
-                return _StatusId;
-            }
-            set
-            {
-                _StatusId = value;
-            }
-        }
-        public bool IsApproved
-        {
-            get
-            {
-                return _IsApproved;
-            }
-            set
-            {
-                _IsApproved = value;
-            }
-        }
-        public bool IsDeleted
-        {
-            get
-            {
-                return _IsDeleted;
-            }
-            set
-            {
-                _IsDeleted = value;
-            }
-        }
-        public Content Content
-        {
-            get
-            {
-                return _Content;
-            }
-            set
-            {
-                _Content = value;
-            }
-        }
-        public Author Author
-        {
-            get
-            {
-                return _Author;
-            }
-            set
-            {
-                _Author = value;
-            }
-        }
-        #endregion
-        public ReplyInfo()
-        {
-            Content = new Content();
-            Author = new Author();
-        }
-    }
-    #endregion
-    #region Reply Controller
-    public class ReplyController
-    {
-        #region Public Methods
-        public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
-        {
-            DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
-            var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
-            JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
-
-            if (DelBehavior != 0)
-                return;
-
-            // If it's a hard delete, delete associated attachments
-            var attachmentController = new Data.AttachController();
-            var fileManager = FileManager.Instance;
-            var folderManager = FolderManager.Instance;
-            var attachmentFolder = folderManager.GetFolder(PortalId, "activeforums_Attach");
-
-            foreach (var attachment in attachmentController.ListForPost(TopicId, ReplyId))
-            {
-                attachmentController.Delete(attachment.AttachmentId);
-
-                var file = attachment.FileId.HasValue ? fileManager.GetFile(attachment.FileId.Value) : fileManager.GetFile(attachmentFolder, attachment.FileName);
-
-                // Only delete the file if it exists in the attachment folder
-                if (file != null && file.FolderId == attachmentFolder.FolderID)
-                    fileManager.DeleteFile(file);
-            }
-        }
-        public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
-        {
-            int replyId = -1;
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
-            ri.Content.AuthorName = DisplayName;
-            ri.Content.Subject = Subject;
-            ri.Content.Body = Body;
-            ri.Content.IPAddress = IPAddress;
-            ri.Content.Summary = string.Empty;
-            ri.IsApproved = IsApproved;
-            ri.IsDeleted = false;
-            ri.ReplyToId = ReplyToId;
-            ri.StatusId = -1;
-            ri.TopicId = TopicId;
-            replyId = Reply_Save(PortalId, ModuleId, ri);
-            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
-            return replyId;
-        }
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
+        public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(PortalId, ForumId, TopicId, ReplyId, DelBehavior);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
+        public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_QuickCreate(PortalId, ModuleId, ForumId, TopicId, ReplyToId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
-        public int Reply_Save(int PortalId, ReplyInfo ri)
-        {
-            return Reply_Save(PortalId, -1, ri);
-        }
-        public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri)
-        {
-            // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-            UserProfileController.Profiles_ClearCache(ModuleId, ri.Content.AuthorId);
-
-            return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
-        }
-        public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
-        {
-            IDataReader dr = DataProvider.Instance().Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri = null;
-            while (dr.Read())
-            {
-                ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
-                ri.ReplyId = Convert.ToInt32(dr["ReplyId"]);
-                ri.ReplyToId = Convert.ToInt32(dr["ReplyToId"]);
-                ri.Content.AuthorId = Convert.ToInt32(dr["AuthorId"]);
-                ri.Content.AuthorName = dr["AuthorName"].ToString();
-                ri.Content.Body = dr["Body"].ToString();
-                ri.Content.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ri.Content.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-                ri.Content.Subject = dr["Subject"].ToString();
-                ri.Content.Summary = dr["Summary"].ToString();
-                ri.Content.IPAddress = dr["IPAddress"].ToString();
-                ri.Author.AuthorId = ri.Content.AuthorId;
-                ri.Author.DisplayName = dr["DisplayName"].ToString();
-                ri.Author.Email = dr["Email"].ToString();
-                ri.Author.FirstName = dr["FirstName"].ToString();
-                ri.Author.LastName = dr["LastName"].ToString();
-                ri.Author.Username = dr["Username"].ToString();
-                ri.ContentId = Convert.ToInt32(dr["ContentId"]);
-                ri.IsApproved = Convert.ToBoolean(dr["IsApproved"]);
-                ri.IsDeleted = Convert.ToBoolean(dr["IsDeleted"]);
-                ri.StatusId = Convert.ToInt32(dr["StatusId"]);
-                ri.TopicId = Convert.ToInt32(dr["TopicId"]);
-            }
-            dr.Close();
-            return ri;
-        }
-        public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
-        {
-            SettingsInfo ms = SettingsBase.GetModuleSettings(ModuleId);
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
-
-            ReplyController rc = new ReplyController();
-            DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-            if (reply == null)
-            {
-                return null;
-            }
-            reply.IsApproved = true;
-            rc.Reply_Save(PortalId, ModuleId, reply);
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, ReplyId); 
-            if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
-			{
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
-			}
-
-			Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
-			{
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
-			}
-
-			Subscriptions.SendSubscriptions(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
-
-            try
-            {
-                string fullURL = new ControlUtils().BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
-
-                if (fullURL.Contains("~/"))
-                {
-                    fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
-                }
-                if (fullURL.EndsWith("/"))
-                {
-                    fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
-                }
-                Social amas = new Social();
-                amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, fi.Security.Read, fi.SocialGroupId);
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-            return reply;
-        }
+        public int Reply_Save(int PortalId, ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, -1, ri);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
+        public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId,ModuleId, ri);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
+        public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Get(PortalId,ModuleId,TopicId, ReplyId);
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
+        public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(PortalId,TabId,ModuleId,ForumId,TopicId, ReplyId);
         [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
-        public void UpdateModuleLastContentModifiedOnDate(int ModuleId)
-        {
-            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
-        }
+        public void UpdateModuleLastContentModifiedOnDate(int ModuleId) => Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
     }
-    #endregion
-    #endregion
 }
 

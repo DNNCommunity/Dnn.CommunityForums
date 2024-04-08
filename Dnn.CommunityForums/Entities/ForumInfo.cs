@@ -296,13 +296,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                TrustTypes parseValue;
-                return Enum.TryParse(Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.DefaultTrustLevel], "0"), true, out parseValue)
+                    TrustTypes parseValue;
+                    return Enum.TryParse(Utilities.SafeConvertString(ForumSettings[ForumSettingKeys.DefaultTrustLevel], "0"), true, out parseValue)
                            ? parseValue
                            : TrustTypes.NotTrusted;
             }
         }
-
         [IgnoreColumn()]
         public int ModApproveTemplateId => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ModApproveTemplateId]);
 

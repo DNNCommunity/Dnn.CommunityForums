@@ -61,6 +61,8 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             mockUser.Object.Profile.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
+            mockForum.Object.ForumSettings = new System.Collections.Hashtable();
+            mockForum.Object.ForumSettings.Add(ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted);
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
             mockForum.Object.Security = mockPermissions.Object;
             //Act

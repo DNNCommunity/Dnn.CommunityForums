@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ForumModuleId, topicId);
                 if (t != null)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, ForumModuleId);
                     if ((UserInfo.UserID == t.Author.AuthorId && !t.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, string.Join(";",UserInfo.Roles)))
                     {
                         DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, topicId, replyId, UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, string.Join(";", UserInfo.Roles)));

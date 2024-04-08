@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>

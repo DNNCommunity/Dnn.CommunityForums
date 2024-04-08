@@ -282,12 +282,12 @@ function amaf_saveTopic() {
     };
     var ul = document.getElementById('catlist');
     var cats = ul.getElementsByTagName('li');
-    t.CategoriesAsString = '';
+    t.SelectedCategoriesAsString = '';
     for (var i = 0; i < cats.length; i++) {
         var li = cats[i];
         var chk = document.getElementById('cat-' + li.id);
         if (chk.checked) {
-            t.CategoriesAsString += chk.value + ';';
+            t.SelectedCategoriesAsString += chk.value + ';';
         };
     };
     var sf = $.ServicesFramework(mid);

@@ -266,11 +266,8 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo(); 
             ri.ReplyToId = TopicId; 
             ri.TopicId = TopicId;
-
+            ri.StatusId = -1;
             ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo(); 
-
-
-            int ReplyId = -1;
             string sUsername = string.Empty;
             if (Request.IsAuthenticated)
             {
@@ -323,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
-            ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ModuleId, ri);
+            int ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ModuleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
