@@ -37,7 +37,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     {
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int TopicId)
         {
-            return base.GetById(TopicId);
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(TopicId);
+            if (ti != null)
+            {
+                ti.GetForum();
+                ti.GetContent();
+                ti.GetAuthor();
+            }
+            return ti;
         }
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
@@ -165,6 +172,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
+            ti.Content.DateUpdated = DateTime.UtcNow;
+            if (ti.TopicId < 1)
+            {
+                ti.Content.DateCreated = DateTime.UtcNow;
+            }
             UserProfileController.Profiles_ClearCache(ti.ModuleId, ti.Content.AuthorId);
             if (ti.IsApproved && ti.Author.AuthorId > 0)
             {   //TODO: put this in a better place and make it consistent with reply counter

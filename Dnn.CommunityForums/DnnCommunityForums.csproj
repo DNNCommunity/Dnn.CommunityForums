@@ -1112,6 +1112,7 @@
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
@@ -1803,7 +1804,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="class\API\" />
-    <Folder Include="components\Replies\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>

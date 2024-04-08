@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TestCase(200, 25, false, ExpectedResult = false)] // interval is 200, last post is 25, expect false
         public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isAdmin)
         {
-            //Arrangea
+            //Arrange
             var mockUser = new Mock<User>();
             mockUser.Object.IsAdmin = isAdmin;
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
