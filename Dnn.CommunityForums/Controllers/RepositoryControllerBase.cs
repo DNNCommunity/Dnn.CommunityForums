@@ -45,8 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal T GetById<TProperty>(TProperty id)
         {
-            var item = Repo.GetById(id);
-            return item;
+            return Repo.GetById(id);
         }
         internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
