@@ -61,8 +61,8 @@
 					[ANNOUNCEMENT]
 						<tbody>
 							<tr class="dcf-table-body-row">
-								<td class="dcf-col dcf-col-icon">[POSTICON]</td>
-								<td class="dcf-col dcf-col-subject" title="[BODYTITLE]">
+								<td class="dcf-col dcf-col-icon ">[POSTICON]</td>
+								<td class="dcf-col dcf-col-subject w-100" title="[BODYTITLE]">
 									<div class="dcf-subject">
 										<h4 class="dcf-title h5 mt-0 mb-2">[SUBJECTLINK][AF:ICONLINK:LASTREAD]</h4>
 										<div class="dcf-topic-started">Started by

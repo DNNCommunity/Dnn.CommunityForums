@@ -37,6 +37,59 @@
   margin-right: 0.25rem;
 }
 
+.afeditor {
+  background: #fff;
+  border: none;
+  font-size: 1em;
+}
+.afeditor * {
+  font-size: inherit;
+}
+.afeditor > table td {
+  padding: 0.25rem 0;
+}
+.afeditor .cke_top {
+  font-size: 12px;
+}
+.afeditor table table[width="99%"] > tbody > tr:nth-child(1) > td {
+  padding: 0.3em 0;
+}
+.afeditor table table[width="99%"] tr:nth-child(2) .aftextbox[readonly] {
+  border: none;
+  padding: 0;
+  background: transparent;
+  font-weight: bold;
+}
+.afeditor input[type=checkbox] {
+  margin-right: 0.25rem;
+}
+.afeditor .amtbwrapper > div {
+  max-width: 100% !important;
+  display: flex;
+  justify-content: center;
+}
+.afeditor .amtbwrapper > div .amimagebutton, .afeditor .amtbwrapper > div .amimagebutton_over {
+  text-align: center;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.25rem;
+  cursor: pointer;
+}
+.afeditor .amtbwrapper > div .amimagebutton_over {
+  opacity: 0.7;
+}
+.afeditor .cke_wysiwyg_frame {
+  font-family: sans serif;
+}
+.afeditor .afsection {
+  min-width: 100%;
+  border-bottom: solid 1px #ddd;
+}
+.afeditor .afsectionhd {
+  border: none !important;
+  padding: 0.3em;
+}
+
 .dcf-toolbar > ul {
   margin: 0;
   padding: 0;
@@ -50,6 +103,7 @@
   padding: 0;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .dcf-toolbars {
@@ -111,8 +165,28 @@
   margin-left: 0.25rem;
 }
 
+.dcf-sort select {
+  margin-left: 0.25rem;
+}
+
+.dcf-subscribe {
+  padding: 0.25rem 0;
+}
+.dcf-subscribe input {
+  margin-right: 0.25rem;
+}
+
 .dnn-community-forums .dcf-col-icon {
   font-size: 0.8em;
+}
+.dnn-community-forums input[type=text], .dnn-community-forums textarea {
+  border: solid 1px #aaa;
+}
+
+.dcf-breadcrumb .fa {
+  color: #888;
+  font-size: 0.8em;
+  margin: 0 0.5em;
 }
 
 .dcf-forum-view .dcf-col-icon {
@@ -122,6 +196,16 @@
   transform: rotate(180deg);
 }
 
+.dcf-topic-view .dcf-title .fa {
+  margin-right: 0.75rem;
+  font-size: 0.9em;
+}
+.dcf-topic-view .dcf-prev-next .fa-prev .fa {
+  margin-right: 0.5em;
+}
+.dcf-topic-view .dcf-prev-next .fa-next .fa {
+  margin-left: 0.5em;
+}
 .dcf-topic-view .dcf-topic-content {
   width: 100%;
 }

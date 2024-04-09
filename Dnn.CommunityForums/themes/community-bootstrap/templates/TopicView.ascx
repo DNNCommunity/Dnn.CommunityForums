@@ -2,7 +2,7 @@
 
 <div class="dcf-topic-view">
     <header>
-		<div class="fa-prev-next">
+		<div class="dcf-prev-next border-bottom border-top py-2">
 			<div class="d-flex">
 				<div class="w-50">
 				<span class="fa-prev">[PREVTOPIC]</span>
@@ -12,15 +12,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="dcf-breadcrumb">[FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK] <i class="fa fa-chevron-right"></i> [FORUMLINK]</div>
-		<div class="dcf-header-content">
+		<div class="dcf-breadcrumb py-2 border-bottom">[FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK] <i class="fa fa-chevron-right"></i> [FORUMLINK]</div>
+		<div class="dcf-header-content mt-4">
 
-			<div class="dcf-cols">
-				<div class="dcf-col dcf-col-50-md">
-					<h1 class="dcf-title dcf-title-1">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+			<div class="d-md-flex">
+				<div class="flex-grow-1">
+					<h1 class="dcf-title h2 mt-0 d-flex align-items-center">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
 				</div>
-				<div class="dcf-col dcf-col-50-md">
-					<div class="dcf-topic-controls">
+				<div class="">
+					<div class="dcf-topic-controls text-right text-end">
 						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
 						<div class="dcf-subscribe">[TOPICSUBSCRIBE]</div>
 						<div class="dcf-button-reply">[ADDREPLY]</div>
@@ -56,7 +56,7 @@
 				<div class="d-flex flex-wrap">
 
 			
-						<div class="dcf-topic-info bg-light px-3 pb-3 pb-md-0">
+						<div class="dcf-topic-info bg-light px-3 pb-2 mb-2 mb-md-0">
 							[POSTINFO]
 						</div>
 
@@ -107,7 +107,7 @@
 				<a id="[POSTID]"></a>
 				<div class="d-flex flex-wrap">
 
-						<div class="dcf-topic-info bg-light px-3 pb-3 pb-md-0">
+						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
 							[POSTINFO]
 						</div>
 

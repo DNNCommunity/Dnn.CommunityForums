@@ -1,4 +1,27 @@
 .dcf-topic-view{
+
+    // Thread Title
+
+    .dcf-title{
+       .fa{
+        margin-right: $spacer-md;
+        font-size: $font-sm;
+       }
+    }
+
+    .dcf-prev-next{
+        $fa-padding: 0.5em;
+        .fa-prev{
+           .fa{
+            margin-right: $fa-padding;
+           } 
+        }
+        .fa-next{
+            .fa{
+             margin-left: $fa-padding;
+            } 
+         }
+    }
     
     .dcf-topic-content{
         width: 100%;

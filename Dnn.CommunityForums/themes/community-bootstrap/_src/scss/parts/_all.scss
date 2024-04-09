@@ -3,6 +3,11 @@
 
     .dcf-col-icon{
 
-        font-size: 0.8em;
+        font-size: $font-xs;
     }
+
+    input[type=text], textarea{
+        @include text-input-border;
+    }
+
 }

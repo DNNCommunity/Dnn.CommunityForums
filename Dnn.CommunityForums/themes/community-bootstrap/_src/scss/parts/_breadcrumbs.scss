@@ -1,15 +1,12 @@
 .dcf-breadcrumb{
-
-    padding: @dist-sm;    
-    #sep-border-bottom;
-
+  
+    
 
     .fa{
-        color: @grey-medium;
+        color: $grey-700;
+        font-size: $font-xs;
+        margin: 0 0.5em;
     }
 
-    a{
-        color: @link-dim-col;
-    }
 
 }

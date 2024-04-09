@@ -1,7 +1,7 @@
 <div class="dcf-quick-reply">
 	<header class="dcf-quick-reply-header dcf-cols">
 		<div class="dcf-col-50">
-			<h3 class="dcf-title dcf-title-3">[RESX:QuickReply]</h3>
+			<h3 class="dcf-title h4 mb-3">[RESX:QuickReply]</h3>
 		</div>
 		<div class="dcf-col-50">
 			<div class="dcf-collapse">[AF:CONTROLS:GROUPTOGGLE]</div>
@@ -12,14 +12,14 @@
 				<asp:PlaceHolder ID="plhMessage" runat="server" />
 				<div>
 					<div class="dcf-qr-subject"> 
-						<h4 class="dcf-title dcf-title-4">[RESX:Subject]:</h4> 
+						<h4 class="dcf-title h5 mb-2">[RESX:Subject]:</h4> 
 						<input type="text" id="txtSubject" class="dcf-textbox" readonly="readonly" value="[SUBJECT]" />
 					</div> 
 					<div class="dcf-qr-text">
 						
 						<asp:Label ID="reqBody" runat="server" Visible="false" />
 												
-						<h4 class="dcf-title dcf-title-4">[RESX:Body]:</h4>
+						<h4 class="dcf-title h5 mb-2">[RESX:Body]:</h4>
 						
 							<div class="dcf-toolbar dcf-toolbar-buttons" id="btnToolBar" runat="server">	
 							
