@@ -1,8 +1,11 @@
-# About Dnn Community Forums "community-default" Theme
+# About Dnn Community Forums "community-bootstrap" Theme
 
-## New default Theme for Version 8.0.0
-This Theme replaces the old Modules default Theme. 
-We advise you to start using this Theme instead of the old one as the legacy Theme will not be supported any more in the Future.
+## New Bootstrap 4/5 Theme for Module Version 8.1.0
+
+You need to use a Bootstrap 4 or 5 based Theme for the styling of this Theme to work correctly.
+* The Xcillion Theme is based on Bootstrap 3. This Forum Theme will probably not render correctly on Xcillion
+
+
 When you find any issues, please [https://github.com/DNNCommunity/Dnn.CommunityForums/issues](report them).
 
 *Note: Please understand that this is the first version of this new Theme and there will probably be corrections / changes in the next releases.
