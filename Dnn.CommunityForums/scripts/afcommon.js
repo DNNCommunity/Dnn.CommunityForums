@@ -197,15 +197,25 @@ function amaf_hoverRate(obj, r) {
     };
     p.className = 'fa-rater fa-rate' + r;
 };
-function amaf_markAnswer(tid, rid) {
-    var d = {};
-    d.action = 10;
-    d.topicid = tid;
-    d.replyid = rid;
-    amaf.callback(d, amaf_markAnswerComplete);
-};
-function amaf_markAnswerComplete() {
-    afreload();
+function amaf_MarkAsAnswer(mid, fid, tid, rid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid,
+        replyId: rid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Reply/MarkAsAnswer',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        afreload();
+    }).fail(function (xhr, status) {
+        alert('error marking as answer');
+    });
 };
 function amaf_loadSuggest(field, prepop, type) {
     if (typeof (type) == 'undefined') {
@@ -231,30 +241,36 @@ function amaf_loadSuggest(field, prepop, type) {
         }
     });
 };
-function amaf_postDel(tid, rid) {
+function amaf_postDel(mid, fid, tid, rid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
-        var d = {};
-        d.action = 12;
-        d.topicid = tid;
-        d.replyid = rid;
-        amaf.callback(d, amaf_postDelComplete);
-    };
-
-};
-function amaf_postDelComplete(result) {
-    if (result[0].success == true) {
-        if (typeof (result[0].result) != 'undefined') {
-            var rid = result[0].result.split('|')[1];
-            if (rid > 0) {
-                afreload();
-            } else {
-                window.history.go(-1);
+        var sf = $.ServicesFramework(mid);
+        var params;
+        if (rid > 0) {
+            params = {
+                forumId: fid,
+                topicId: tid,
+                replyId: rid
             };
-        }
-
+        } else {
+            params = {
+                forumId: fid,
+                topicId: tid
+            };
+        };
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: "json",
+            url: dnn.getVar("sf_siteRoot", "/") + (rid > 0 ? 'API/ActiveForums/Reply/Delete' : 'API/ActiveForums/Topic/Delete'),
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error deleting post');
+        });
     };
 };
-
 function amaf_splitRestore() {
     var split_topicid = amaf_getParam('splitId');
     if (typeof (split_topicid) != 'undefined') {

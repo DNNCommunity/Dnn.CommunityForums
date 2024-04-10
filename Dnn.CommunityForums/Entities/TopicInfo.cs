@@ -24,6 +24,9 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Web.Caching;
 using DotNetNuke.UI.UserControls;
 using System.Runtime.Remoting.Messaging;
+using System.Linq;
+using DotNetNuke.Collections;
+using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -37,14 +40,32 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("TopicId", AutoIncrement = true)]
     public class TopicInfo
     {
+        [IgnoreColumn()]
+        public class Category
+        {
+            public int id;
+            public string name;
+            public bool selected;
+
+            [IgnoreColumn()]
+            public Category(int id, string name, bool selected)
+            {
+                this.id = id;
+                this.name = name;
+                this.selected = selected;
+            }
+        }
+        private List<Category> _categories;
+
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
         private DotNetNuke.Modules.ActiveForums.Author _Author;
         private int _forumId = -1;
         private string _tags = string.Empty;
-        private string _categories = string.Empty;
+        private string _selectedcategories;
 
         public int TopicId { get; set; }
+
         [IgnoreColumn()]
         public int ForumId
         {
@@ -109,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId); /* can't get using moduleId since ModuleId comes from Forum */
         }
 
         [IgnoreColumn()]
@@ -143,10 +164,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (_tags == null)
+                if (string.IsNullOrEmpty(_tags))
                 {
-                    _tags = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId), ",");
-                    if (_tags == null)
+                    _tags = string.Join(",",new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().GetForTopic(TopicId).Select(t => t.Tag.TagName));
+                    if (string.IsNullOrEmpty(_tags))
                     {
                         _tags = string.Empty;
                     }
@@ -154,28 +175,75 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return _tags;
             }
         }
-        [IgnoreColumn()]
-        public string Categories 
-        { 
+       [IgnoreColumn()]
+        public IEnumerable<Category> Categories
+        {
+            //TODO: Clean this up
             get
             {
-                if (string.IsNullOrEmpty(_categories))
+                if (_categories == null)
                 {
-                    _categories = string.Concat(new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId), "|");
-                    if (string.IsNullOrEmpty(_categories))
-                    {
-                        _categories = string.Empty;
-                    }
+                    _categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", ForumId, Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList(); ;
+                    var topicCategoryIds = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
+                    topicCategoryIds.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
                 }
                 return _categories;
-            } 
+            }
         }
         [IgnoreColumn()]
-        public List<PropertiesInfo> TopicProperties
+        public IEnumerable<Category> SelectedCategories => Categories.Where(c => c.selected).ToList();
+        [IgnoreColumn()]
+        public string SelectedCategoriesAsString
         {
             get
             {
-                if (TopicData == string.Empty)
+                if (_selectedcategories == null)
+                {
+                    _selectedcategories = string.Join(";", SelectedCategories.Select(c => c.id.ToString()));
+                }
+                return _selectedcategories;
+            }
+            set
+            {
+                _selectedcategories = value;
+            }
+        }
+
+        [IgnoreColumn()]
+        public List<PropertiesInfo> TopicProperties
+        {
+            set
+            {
+                StringBuilder tData = new StringBuilder();
+                tData.Append("<topicdata>");
+                tData.Append("<properties>");
+                foreach (PropertiesInfo p in Forum.Properties)
+                {
+                    //string pkey = "prop-" + p.PropertyId.ToString();
+
+                    tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
+                    tData.Append("<name><![CDATA[");
+                    tData.Append(p.Name);
+                    tData.Append("]]></name>");
+                    if (!string.IsNullOrEmpty(value.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue))
+                    {
+                        tData.Append("<value><![CDATA[");
+                        tData.Append(Utilities.XSSFilter(value.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue));
+                        tData.Append("]]></value>");
+                    }
+                    else
+                    {
+                        tData.Append("<value></value>");
+                    }
+                    tData.Append("</property>");
+                }
+                tData.Append("</properties>");
+                tData.Append("</topicdata>");
+                TopicData = tData.ToString();
+            }
+            get
+            {
+                    if (TopicData == string.Empty)
                 {
                     return null;
                 }

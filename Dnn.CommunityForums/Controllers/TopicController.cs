@@ -1,4 +1,4 @@
-﻿//
+﻿//T
 // Community Forums
 // Copyright (c) 2013-2021
 // by DNN Community
@@ -49,7 +49,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
             int topicId = -1;
-            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+            ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+
             ti.ForumId = ForumId;
             ti.AnnounceEnd = Utilities.NullDate();
             ti.AnnounceStart = Utilities.NullDate();
@@ -170,6 +172,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
+            ti.Content.DateUpdated = DateTime.UtcNow;
+            if (ti.TopicId < 1)
+            {
+                ti.Content.DateCreated = DateTime.UtcNow;
+            }
             UserProfileController.Profiles_ClearCache(ti.ModuleId, ti.Content.AuthorId);
             if (ti.IsApproved && ti.Author.AuthorId > 0)
             {   //TODO: put this in a better place and make it consistent with reply counter

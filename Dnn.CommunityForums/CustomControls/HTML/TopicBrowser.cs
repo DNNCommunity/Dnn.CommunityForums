@@ -428,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				if (_canEdit)
 				{
-					tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + row["TopicId"].ToString() + ");\"></span>");
+					tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + ModuleId + "," + ForumId + row["TopicId"].ToString() + ");\"></span>");
 				}
 				else
 				{

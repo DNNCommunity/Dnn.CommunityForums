@@ -55,10 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (_topicInfo == null)
                 {
-                    _topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId, Tag.ModuleId);
+                    _topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                     if (_topicInfo == null)
                     {
-                        _topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+                        _topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
+                        _topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+
                     }
                 }
                 return _topicInfo;

@@ -17,29 +17,11 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 
-namespace DotNetNuke.Modules.ActiveForums
+using System.Collections.Generic;
+using System.Linq;
+
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-	public class PropertiesInfo
-	{
-		public int PropertyId {get; set;}
-		public int PortalId {get; set;}
-		public int ObjectType {get; set;}
-		public int ObjectOwnerId {get; set;}
-		public string Name {get; set;}
-		public string DataType {get; set;}
-		public int DefaultAccessControl {get; set;}
-		public bool IsHidden {get; set;}
-		public bool IsRequired {get; set;}
-		public bool IsReadOnly {get; set;}
-        public string ValidationExpression { get; set; } = string.Empty;
-        public string EditTemplate { get; set; } = string.Empty;
-        public string ViewTemplate { get; set; } = string.Empty;
-        public int SortOrder {get; set;}
-		public string DefaultValue {get; set;}
-	}
+    internal partial class CategoryController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.CategoryInfo> { }
 }

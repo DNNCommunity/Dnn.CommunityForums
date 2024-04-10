@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int tmpGroupCount = 0;
                     if (Forums != null)
                     {
-                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).Take(Globals.ForumCount))
+                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
                             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
                             if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
@@ -710,7 +710,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
-        #endregion
+    #endregion
     }
 
 }

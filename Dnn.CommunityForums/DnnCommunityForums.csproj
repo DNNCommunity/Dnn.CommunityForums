@@ -1138,6 +1138,8 @@
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="components\Replies\Replies.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ContentController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
@@ -1158,6 +1160,7 @@
     <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
+    <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="Entities\ContentInfo.cs" />
     <Compile Include="Deprecated\API.cs" />
     <Compile Include="Entities\ForumCollection.cs" />
@@ -1223,6 +1226,7 @@
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
     <Compile Include="Services\Controllers\ForumController.cs" />
+    <Compile Include="Services\Controllers\ReplyController.cs" />
     <Compile Include="Services\Controllers\TopicController.cs" />
     <Compile Include="Services\Controllers\UserController.cs" />
     <Compile Include="Services\Controllers\LikeController.cs" />
@@ -1868,7 +1872,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="class\API\" />
-    <Folder Include="components\Replies\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
