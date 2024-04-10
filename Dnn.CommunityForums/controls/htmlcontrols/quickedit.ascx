@@ -48,7 +48,6 @@
             <li><a href="#" onclick="am.UI.CloseDiv('aftopicedit'); return false;" class="dnnSecondaryAction">
             [RESX:Cancel]</a></li>
         </ul>
-        <input type="hidden" id="aftopicedit-topic" value="" />
         <input type="hidden" id="aftopicedit-moduleid" value="" />
         <input type="hidden" id="aftopicedit-forumid" value="" />
         <input type="hidden" id="aftopicedit-topicid" value="" />

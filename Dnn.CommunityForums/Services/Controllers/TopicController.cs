@@ -296,20 +296,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo originalTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                 if (originalTopic != null)
                 {
-
-                    /*
-                     * TODO: 
-                     * don't update body until we have a more cohesive editing strategy; current "cleaner" methods depend on which editor is used, and we need to make sure we don't allow bad content 
-                     * 
-                        string body = Utilities.CleanString(ActiveModule.PortalID, dto.Topic.Content.Body, _allowHTML, _editorType, originalTopic.Forum.UseFilter, originalTopic.Forum.AllowScript, ForumModuleId, _themePath, originalTopic.Forum.AllowEmoticons);
-                        originalTopic.Content.Body = body; 
-                    */
-                    
-                    string summary = Utilities.XSSFilter(dto.Topic.Content.Summary, true);
-                    originalTopic.Content.Summary = summary;
                     string subject = Utilities.XSSFilter(dto.Topic.Content.Subject, true);
                     originalTopic.Content.Subject = subject;
-
                     originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: ActiveModule.PortalID, ModuleId: ForumModuleId, TopicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
                     if (dto.Topic.IsLocked != originalTopic.IsLocked &&
@@ -330,28 +318,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         originalTopic.IsLocked = dto.Topic.IsLocked;
                     };
 
-                    if (dto.Topic.IsApproved != originalTopic.IsApproved &&
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.ModApprove, string.Join(";", UserInfo.Roles))
-                        )
-                    {
-                        originalTopic.IsApproved = dto.Topic.IsApproved;
-                    };
-
-                    if ((dto.Topic.IsAnnounce != originalTopic.IsAnnounce) || (dto.Topic.AnnounceStart != originalTopic.AnnounceStart) || (dto.Topic.AnnounceEnd != originalTopic.AnnounceEnd) &&
-                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Announce, string.Join(";", UserInfo.Roles))
-                        )
-                    {
-                        originalTopic.IsAnnounce = dto.Topic.IsAnnounce;
-                        originalTopic.AnnounceStart = dto.Topic.AnnounceStart;
-                        originalTopic.AnnounceEnd = dto.Topic.AnnounceEnd;
-                    };
-
-                    originalTopic.IsArchived = dto.Topic.IsArchived;
-                    originalTopic.IsRejected = dto.Topic.IsRejected;
                     originalTopic.Priority = dto.Topic.Priority;
                     originalTopic.StatusId = dto.Topic.StatusId;
-                    originalTopic.TopicIcon = dto.Topic.TopicIcon;
-                    originalTopic.TopicType = dto.Topic.TopicType;
 
                     if (originalTopic.Forum.Properties != null && originalTopic.Forum.Properties.Count > 0)
                     {

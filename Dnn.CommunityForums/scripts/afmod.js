@@ -148,7 +148,6 @@ function amaf_quickEdit(mid, fid, tid) {
     });
 };
 function amaf_resetQuickEdit() {
-    document.getElementById('aftopicedit-topic').value = '';
     document.getElementById('aftopicedit-moduleid').value = '';
     document.getElementById('aftopicedit-forumid').value = '';
     document.getElementById('aftopicedit-topicid').value = '';
@@ -164,7 +163,6 @@ function amaf_resetQuickEdit() {
 };
 function amaf_loadTopicComplete(data) {
     var t = data[0];
-    document.getElementById('aftopicedit-topic').value = JSON.stringify(t);
     document.getElementById('aftopicedit-topicid').value = t.TopicId;
     document.getElementById('aftopicedit-forumid').value = t.ForumId;
     document.getElementById('aftopicedit-moduleid').value = t.ModuleId;
@@ -245,11 +243,11 @@ function amaf_loadProperties(propdefs, props) {
 
 
 function amaf_saveTopic() {
-    var t = JSON.parse(document.getElementById('aftopicedit-topic').value);
-
+    var t = {};
     var mid = document.getElementById('aftopicedit-moduleid').value;
     var fid = document.getElementById('aftopicedit-forumid').value;
     t.Topicid = document.getElementById('aftopicedit-topicid').value;
+    t.Content = {};
     t.Content.Subject = document.getElementById('aftopicedit-subject').value;
     t.Tags = document.getElementById('aftopicedit-tags').value;
     t.Priority = document.getElementById('aftopicedit-priority').value;
