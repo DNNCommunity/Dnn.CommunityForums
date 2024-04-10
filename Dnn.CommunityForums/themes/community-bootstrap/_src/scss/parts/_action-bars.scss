@@ -1,0 +1,52 @@
+// Mobile hide and show
+// Icon texts
+  		
+    .dcf-link-text {
+
+        display: none;
+        margin-left: $spacer-xs;
+        white-space: nowrap;
+
+        @media screen and (min-width: $break-desktop) {
+
+            display: inline;
+
+        }
+    }
+        
+    .dcf-actions{
+    padding: $spacer-md 0;
+
+    &-top{
+        display: flex;
+        flex-wrap: wrap;
+        .dcf-forum-title{
+            flex-grow: 1;
+        }
+    }
+
+    &-bottom{
+        display: flex;
+        flex-wrap: wrap;
+    
+        .dcf-action-add{
+            flex-grow: 1;
+        }
+    
+        .amaf-chk-subs{ // Subscribe checkbox distance to label
+            margin-right: $spacer-sm;
+    
+        }
+    }
+
+    .dcf-forum-search{
+        display:flex;
+        justify-content: end;
+
+        span{ // Search label
+            margin-right: $spacer-sm;
+        }
+    }
+}
+
+
