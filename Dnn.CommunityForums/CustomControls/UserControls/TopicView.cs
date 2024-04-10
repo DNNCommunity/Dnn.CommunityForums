@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             if (ForumInfo == null)
-                ForumInfo = new ForumController().Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
+                ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // first make sure we have read permissions, otherwise we need to redirect
-            _bRead = Permissions.HasPerm(_drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
+            _bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
 
             if (!_bRead)
             {
@@ -350,25 +350,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
 
-            //bCreate = Permissions.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
-            _bEdit = Permissions.HasPerm(_drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
-            _bDelete = Permissions.HasPerm(_drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
-            //bReply = Permissions.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
-            //bPoll = Permissions.HasPerm(_drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
-            _bAttach = Permissions.HasPerm(_drSecurity["CanAttach"].ToString(), ForumUser.UserRoles);
-            _bSubscribe = Permissions.HasPerm(_drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
-            // bModMove = Permissions.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bModSplit = Permissions.HasPerm(_drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
-            _bModDelete = Permissions.HasPerm(_drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
-            _bModApprove = Permissions.HasPerm(_drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
-            _bTrust = Permissions.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
-            _bModEdit = Permissions.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
-            _bModMove = Permissions.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bModPin = Permissions.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
-            _bModLock = Permissions.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
-            _bModUser = Permissions.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
+            //bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
+            _bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
+            _bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
+            //bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
+            //bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
+            _bAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanAttach"].ToString(), ForumUser.UserRoles);
+            _bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
+            // bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+            _bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
+            _bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
+            _bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+            _bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
+            _bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
+            _bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+            _bModPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
+            _bModLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
+            _bModUser = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
 
-            _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
+            _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
             _forumName = _drForum["ForumName"].ToString();
             _groupName = _drForum["GroupName"].ToString();
@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _topicURL = _drForum["URL"].ToString();
             _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
-            _isSubscribedTopic = (Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId)); 
+            _isSubscribedTopic = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId)); 
 
             if (Page.IsPostBack)
                 return;
@@ -436,17 +436,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(sURL))
             {
 
-                var @params = new List<string> { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=" + Views.Topic };
+                var @params = new List<string> { 
+                    $"{ParamKeys.ForumId}={ForumId}", 
+                    $"{ParamKeys.TopicId}={TopicId}", 
+                    $"{ParamKeys.ViewType}={Views.Topic}"
+                };
                 if (MainSettings.UseShortUrls)
                     @params = new List<string> { ParamKeys.TopicId + "=" + TopicId };
 
                 var intPages = Convert.ToInt32(Math.Ceiling(_rowCount / (double)_pageSize));
                 if (intPages > 1)
-                    @params.Add(ParamKeys.PageJumpId + "=" + intPages);
+                    @params.Add($"{ParamKeys.PageJumpId}={intPages}");
 
                 if (SocialGroupId > 0)
-                    @params.Add("GroupId=" + SocialGroupId.ToString());
-
+                {
+                    @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                }
                 sURL = Utilities.NavigateURL(TabId, "", @params.ToArray()) + sTarget;
             }
 
@@ -920,10 +925,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //TODO: Check for owner
                 if (CanReply)
                 {
-                    var @params = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.TopicId + "=" + TopicId, ParamKeys.ForumId + "=" + ForumId };
+                    var @params = new List<string> {
+                        $"{ParamKeys.ViewType}={Views.Post}", 
+                        $"{ParamKeys.TopicId}={TopicId}", 
+                        $"{ParamKeys.ForumId}={ForumId}",
+                    };                    
                     if (SocialGroupId > 0)
-                        @params.Add("GroupId=" + SocialGroupId);
-
+                    {
+                        @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                    }
                     sbOutput.Replace("[ADDREPLY]", "<a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\" class=\"dnnPrimaryAction\">[RESX:AddReply]</a>");
                     sbOutput.Replace("[QUICKREPLY]", "<asp:placeholder id=\"plhQuickReply\" runat=\"server\" />");
                 }
@@ -955,7 +965,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ForumInfo.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
-                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace("oldValue: [PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                     else
                         sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
@@ -1079,7 +1089,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string nextTopic;
                 if (MainSettings.UseShortUrls)
                 {
-                    if (SocialGroupId > 0) nextTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _nextTopic + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    if (SocialGroupId > 0) nextTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _nextTopic + "&" + Literals.GroupId + "=" + SocialGroupId);
                     else nextTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _nextTopic);
                 }
                 else
@@ -1098,12 +1108,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string prevTopic;
                 if (MainSettings.UseShortUrls)
                 {
-                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _prevTopic + "&" + Literals.GroupId + "=" + SocialGroupId);
                     else prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.TopicId + "=" + _prevTopic);
                 }
                 else
                 {
-                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId + "&" + ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.ViewType + "=" + Views.Topic + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    if (SocialGroupId > 0) prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId + "&" + ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.ViewType + "=" + Views.Topic + "&" + Literals.GroupId + "=" + SocialGroupId);
                     else prevTopic = Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId + "&" + ParamKeys.TopicId + "=" + _prevTopic + "&" + ParamKeys.ViewType + "=" + Views.Topic);
                 }
                 sbOutput.Replace("[PREVTOPIC]", "<a href=\"" + prevTopic + "\" rel=\"nofollow\" title=\"[RESX:PrevTopic]\"><i class=\"fa fa-chevron-left\" aria-hidden=\"true\"></i><span>[RESX:PrevTopic]</span></a>");
@@ -1247,7 +1257,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var avatarDisabled = dr.GetBoolean("AvatarDisabled");
             var userRoles = dr.GetString("UserRoles");
             var isUserOnline = dr.GetBoolean("IsUserOnline");
-            var replyStatusId = dr.GetInt("StatusId");
+            var replyStatusId = replyId > 0 ? dr.GetInt("StatusId") : 0;
             var totalPoints = _enablePoints ? dr.GetInt("UserTotalPoints") : 0;
             var answerCount = dr.GetInt("AnswerCount");
             var rewardPoints = dr.GetInt("RewardPoints");
@@ -1362,9 +1372,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (_bModDelete || ((_bDelete && authorId == UserId && !_bLocked) && ((replyId == 0 && _replyCount == 0) || replyId > 0)))
             {
                 if (_useListActions)
-                    sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
+                    sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + ForumModuleId + "," + ForumId + "," + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
                 else
-                    sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
+                    sbOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0);\" class=\"af-actions\" onclick=\"amaf_postDel(" + ForumModuleId + "," + ForumId + "," + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></a>");
             }
             else
             {
@@ -1390,13 +1400,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Edit Action
             if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
             {
-                var sAction = "re";
+                var sAction = PostActions.ReplyEdit;
                 if (replyId == 0)
-                    sAction = "te";
+                    sAction = PostActions.TopicEdit;
 
                 //var editParams = new[] { ParamKeys.ViewType + "=post", "action=" + sAction, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, "postid=" + postId };
-                var editParams = new List<string>() { ParamKeys.ViewType + "=post", "action=" + sAction, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, "postid=" + postId };
-                if (SocialGroupId > 0) editParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
+                var editParams = new List<string>() { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.action}={sAction}", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.PostId}={postId}" };
+                if (SocialGroupId > 0) editParams.Add(Literals.GroupId + "=" + SocialGroupId);
                 if (_useListActions)
                     sbOutput.Replace("[ACTIONS:EDIT]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(TabId, "", editParams.ToArray()) + "';\" title=\"[RESX:Edit]\"><i class=\"fa fa-pencil fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Edit]</span></li>");
                 else
@@ -1410,12 +1420,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Reply and Quote Actions
             if (!_bLocked && CanReply)
             {
-                var quoteParams = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.QuoteId + "=" + postId };
-                var replyParams = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
+                var quoteParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.QuoteId}={postId}" };
+                var replyParams = new List<string> { $"{ParamKeys.ViewType}={Views.Post}", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.ReplyId}={postId}" };
                 if (SocialGroupId > 0)
                 {
-                    quoteParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
-                    replyParams.Add(ParamKeys.GroupIdName + "=" + SocialGroupId);
+                    quoteParams.Add(Literals.GroupId + "=" + SocialGroupId);
+                    replyParams.Add(Literals.GroupId + "=" + SocialGroupId);
                 }
                 if (_useListActions)
                 {
@@ -1436,7 +1446,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModMove)
             {
-                sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove([TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
+                sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove(" + ModuleId + "," + ForumId + ",[TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
             }
             else
             {
@@ -1483,9 +1493,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     // Can mark answer
                     if (_useListActions)
-                        sbOutput.Replace("[ACTIONS:ANSWER]", "<li class=\"af-markanswer\" onclick=\"amaf_markAnswer(" + topicId.ToString() + "," + replyId.ToString() + ");\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</li>");
+                        sbOutput.Replace("[ACTIONS:ANSWER]", "<li class=\"af-markanswer\" onclick=\"amaf_MarkAsAnswer(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + topicId.ToString() + "," + replyId.ToString() + ");\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</li>");
                     else
-                        sbOutput.Replace("[ACTIONS:ANSWER]", "<a class=\"af-actions af-markanswer\" href=\"#\" onclick=\"amaf_markAnswer(" + topicId.ToString() + "," + replyId.ToString() + "); return false;\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</a>");
+                        sbOutput.Replace("[ACTIONS:ANSWER]", "<a class=\"af-actions af-markanswer\" href=\"#\" onclick=\"amaf_MarkAsAnswer(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + topicId.ToString() + "," + replyId.ToString() + "); return false;\" title=\"[RESX:Status:SelectAnswer]\"><em></em>[RESX:Status:SelectAnswer]</a>");
                 }
                 else
                 {
@@ -1557,8 +1567,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             // Mod Alert
             //var alertParams = new[] { ParamKeys.ViewType + "=modreport", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
-            var alertParams = new List<string> { ParamKeys.ViewType + "=modreport", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + postId };
-            if (SocialGroupId > 0) alertParams.Add(String.Format("{0}={1}", ParamKeys.GroupIdName, SocialGroupId));
+            var alertParams = new List<string> { $"{ParamKeys.ViewType}=modreport", $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={topicId}", "${ParamKeys.ReplyId}={postId}" };
+            if (SocialGroupId > 0) alertParams.Add($"{Literals.GroupId}={SocialGroupId}");
             if (Request.IsAuthenticated)
             {
                 if (_useListActions)
@@ -1575,7 +1585,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (string.IsNullOrEmpty(body))
                 body = " <br />";
 
-            var sBody = Utilities.ManageImagePath(body);
+            var sBody = Utilities.ManageImagePath(body, HttpContext.Current.Request.Url);
 
             sBody = sBody.Replace("[", "&#91;");
             sBody = sBody.Replace("]", "&#93;");

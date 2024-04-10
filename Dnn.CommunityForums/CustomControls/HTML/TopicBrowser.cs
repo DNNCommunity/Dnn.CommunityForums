@@ -285,8 +285,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int UserId { get; set; } = -1;
         public string Render()
 		{
-			ForumController fc = new ForumController();
-			string fs = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
+			string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
 			if (! (string.IsNullOrEmpty(fs)))
 			{
 				_canEdit = true;
@@ -299,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (ForumId > 0)
 				{
-					Forum f = fc.GetForum(PortalId, ModuleId, ForumId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId);
 					if (f != null)
 					{
 						forumPrefix = f.PrefixURL;
@@ -308,8 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				}
 				else if (ForumGroupId > 0)
 				{
-					ForumGroupController grp = new ForumGroupController();
-					ForumGroupInfo g = grp.Groups_Get(ModuleId, ForumGroupId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
 					if (g != null)
 					{
 						groupPrefix = g.PrefixURL;
@@ -430,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				if (_canEdit)
 				{
-					tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + row["TopicId"].ToString() + ");\"></span>");
+					tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + ModuleId + "," + ForumId + row["TopicId"].ToString() + ");\"></span>");
 				}
 				else
 				{

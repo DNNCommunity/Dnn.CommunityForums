@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, userPostCount);
             //Assert
-            Assert.IsFalse(isTrusted);
+            Assert.That(isTrusted, Is.False);
         }
 
         [Test()]
@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             var actualResult = Utilities.NullDate();
             //Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
         [Test()]
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.CleanStringForUrl(input);
             //Assert
-            Assert.AreEqual(expectedResult, actualResult);
+            Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
         [Test()]
         [TestCase(0, 0, false, ExpectedResult = true)] // flood interval disables
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             mockUser.Object.IsAdmin = isAdmin;
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             mockUser.Object.Profile.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
-            var mockForum = new Mock<Forum>();
+            var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
             //Act
             bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
             //Assert
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlEncode(string.Empty);
             //Assert
-            Assert.IsEmpty(actualResult);
+            Assert.That(actualResult, Is.Empty);
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlEncode(tag);
             //Assert
-            Assert.AreEqual(actualResult, expectedResult);
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlDecode(string.Empty);
             //Assert
-            Assert.IsEmpty(actualResult);
+            Assert.That(actualResult, Is.Empty);
         }
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Act
             string actualResult = Utilities.HtmlDecode(tag);
             //Assert
-            Assert.AreEqual(actualResult, expectedResult);
+            Assert.That(expectedResult, Is.EqualTo(actualResult));
         }
         [Test()]
         [TestCase("", ExpectedResult = false)]

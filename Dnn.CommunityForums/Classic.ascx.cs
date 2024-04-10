@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class Classic : ForumBase
     {
 
-        private Forum fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         private string currView = string.Empty;
 
         #region Private Members
@@ -61,9 +61,9 @@ namespace DotNetNuke.Modules.ActiveForums
 			base.OnLoad(e);
 
             SocialGroupId = -1;
-            if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+            if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
             {
-                SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
             }
 
             SetupPage();
@@ -92,7 +92,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     string ctl = DefaultView;
                     string opts = string.Empty;
-                    if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == "grid" && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MySubscriptions)
+
+
+                    if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == Views.Grid && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MyPreferences)
+                    {
+                        ctl = Views.MyPreferences;
+                    }
+                    else if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == Views.Grid && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MySubscriptions)
                     {
                         ctl = Views.MySubscriptions;
                     }
@@ -100,29 +106,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Request.Params[ParamKeys.ViewType];
                     }
-                    else if (Request.Params["view"] != null)
+                    else if (Request.Params[Literals.view] != null)
                     {
-                        ctl = Request.Params["view"];
+                        ctl = Request.Params[Literals.view];
                     }
                     else if (Request.Params[ParamKeys.ViewType] == null & ForumId > 0 & TopicId <= 0)
                     {
                         ctl = Views.Topics;
                     }
-                    else if (Request.Params[ParamKeys.ViewType] == null && Request.Params["view"] == null & TopicId > 0)
+                    else if (Request.Params[ParamKeys.ViewType] == null && Request.Params[Literals.view] == null & TopicId > 0)
                     {
                         ctl = Views.Topic;
                     }
                     else if (Settings["amafDefaultView"] != null)
                     {
                         ctl = Settings["amafDefaultView"].ToString();
-                    }
-                    //ctl = "advanced"
-                    // If Not cbLoader.IsCallback Then
+                    } 
                     if (Request.QueryString[ParamKeys.PageJumpId] != null)
                     {
-                        opts = "PageId=" + Request.QueryString[ParamKeys.PageJumpId];
-                    }
-                    //End If
+                        opts = $"{Literals.PageId}={Request.QueryString[ParamKeys.PageJumpId]}";
+                    } 
                     currView = ctl;
                     GetControl(ctl, opts);
 
@@ -166,7 +169,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     plhLoader.Controls.Clear();
                 }
                 ForumBase ctl = null;
-                if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant())
+                if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant())
+                { 
+                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
+                }
+                else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant())
                 {
                     ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx")));
                 }
@@ -190,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_profile.ascx";
-                    if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
+                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                     }
@@ -204,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     // this is where af_post.ascx is used
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_" + view + ".ascx";
-                    if (!(System.IO.File.Exists(Server.MapPath(ctlPath))))
+                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
                     {
                         ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
                     }
@@ -240,8 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (SocialGroupId > 0)
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, ForumModuleId, SocialGroupId);
 
                     if (string.IsNullOrEmpty(ForumIds))
                     { 
@@ -254,8 +260,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).TabModuleSettings;
 
-                        fc.CreateGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
-                        ForumIds = fc.GetForumIdsBySocialGroup(PortalId, SocialGroupId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
+                        ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, ForumModuleId, SocialGroupId);
                     }
                 }
                 ctl.ForumIds = ForumIds;
@@ -276,8 +282,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 cc.ModuleId = ModuleId;
                 cc.User = ForumUser;
                 string authorizedViewRoles = ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(TabId, PortalId).ToString("VIEW") : ModuleConfiguration.ModulePermissions.ToString("VIEW");
-                cc.DefaultViewRoles = Permissions.GetRoleIds(authorizedViewRoles.Split(';'), PortalId);
-                cc.AdminRoles = Permissions.GetRoleIds(this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'), PortalId);
+                cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, authorizedViewRoles.Split(';'));
+                cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
                 cc.ProfileLink = ""; //GetProfileLink()
                 cc.MembersLink = ""; // GetMembersLink()
                 this.ControlConfig = cc;
@@ -324,35 +330,35 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SetupPage()
         {
             //register style sheets
-            if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.min.css", priority: 11);
             }
             else
             {
-                if (System.IO.File.Exists(Server.MapPath(Globals.ThemesPath + "themes.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.css")))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css", priority: 11);
                 }
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.min.css", priority: 12);
             }
             else
             {
-                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.css")))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css", priority: 12);
                 }
             }
-            if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
+            if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
             }
             else
             {
-                if (System.IO.File.Exists(Server.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
+                if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.css")))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.css", priority: 13);
                 }
@@ -391,7 +397,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute(Globals.ModulePath + "images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
-            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Server.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
+            sb.AppendLine(Utilities.LocalizeControl(Utilities.GetFile(Utilities.MapPath(Globals.ModulePath + "scripts/resx.js")), false, true));
             if (HttpContext.Current.Request.IsAuthenticated && MainSettings.UsersOnlineEnabled)
             {
                 sb.AppendLine("setInterval('amaf_updateuseronline(" + ModuleId.ToString() + ")',120000);");
@@ -461,8 +467,8 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Controls.HtmlControlLoader ctl = new Controls.HtmlControlLoader();
                 ctl.ControlId = "aftopicedit";
-                ctl.Height = "350px";
-                ctl.Width = "400px";
+                ctl.Height = "500px";
+                ctl.Width = "500px";
                 ctl.Name = Utilities.GetSharedResource("[RESX:TopicQuickEdit]");
                 ctl.FilePath = Globals.ModulePath + "controls/htmlcontrols/quickedit.ascx";
                 this.Controls.Add(ctl);

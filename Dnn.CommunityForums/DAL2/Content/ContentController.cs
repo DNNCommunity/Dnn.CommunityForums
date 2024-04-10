@@ -6,21 +6,17 @@ using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.DAL2
 {
-    class ContentController
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ContentController.")]
+    class ContentController : DotNetNuke.Modules.ActiveForums.Controllers.ContentController
     {
-        IDataContext ctx;
-        IRepository<Content> repo;
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ContentController.")]
         public ContentController()
         {
-            ctx = DataContext.Instance();
-            repo = ctx.GetRepository<Content>();
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ContentController.")]
         public Content Get(int contentId)
         {
-            var content = repo.GetById(contentId);
-            return content;
+            return (Content)base.GetById(contentId);
         }
     }
 }

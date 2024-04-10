@@ -20,6 +20,7 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
@@ -46,9 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -59,15 +58,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_replyId > 0)
             {
-                var rc = new ReplyController();
-                var reply = rc.ApproveReply(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId, _replyId);
+                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId, _replyId);
                 if (reply == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
             }
             else
             {
-                var tc = new TopicsController();
-                var topic = tc.ApproveTopic(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
             }
@@ -84,8 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -100,8 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_replyId > 0)
             {
-                var rc = new ReplyController();
-                var reply = rc.Reply_Get(PortalSettings.PortalId, _moduleId, _topicId, _replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(_replyId);
 
                 if (reply == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
@@ -111,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 var tc = new TopicsController();
-                var topic = tc.Topics_Get(PortalSettings.PortalId, _moduleId, _topicId);
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
 
@@ -148,9 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
-
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -162,28 +155,27 @@ namespace DotNetNuke.Modules.ActiveForums
             var ms = SettingsBase.GetModuleSettings(_moduleId);
             if (_replyId > 0 & _replyId != _topicId)
             {
-                var rc = new ReplyController();
-                var reply = rc.Reply_Get(PortalSettings.PortalId, _moduleId, _topicId, _replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(_replyId);
 
                 if (reply == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
 
                 authorId = reply.Content.AuthorId;
-
+                var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 rc.Reply_Delete(PortalSettings.PortalId, _forumId, _topicId, _replyId, ms.DeleteBehavior);
-                rc.UpdateModuleLastContentModifiedOnDate(_moduleId);
+                Utilities.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
             else
             {
                 var tc = new TopicsController();
-                var topic = tc.Topics_Get(PortalSettings.PortalId, _moduleId, _topicId);
-                if (topic == null)
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
+                if (ti == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
 
-                authorId = topic.Content.AuthorId;
+                authorId = ti.Content.AuthorId;
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(_topicId);
 
-                tc.Topics_Delete(PortalSettings.PortalId, _moduleId, _forumId, _topicId, ms.DeleteBehavior);
-                tc.UpdateModuleLastContentModifiedOnDate(_moduleId);
+                
             }
 
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)
@@ -217,8 +209,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 

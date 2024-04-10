@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sUrl;
                 if (SocialGroupId > 0)
                 {
-                    sUrl = Utilities.NavigateURL(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + ParamKeys.GroupIdName + "=" + SocialGroupId });
+                    sUrl = Utilities.NavigateURL(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + SocialGroupId });
                 }
                 else
                 {
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ContentAlert");
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new TopicsController().Topics_Get(PortalId, ModuleId, TopicId, ForumId, -1, false);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;
@@ -146,8 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTopicURL = topic.TopicUrl;
                 if (ReplyId > 0 & TopicId != ReplyId)
                 {
-                    ReplyController rc = new ReplyController();
-                    DotNetNuke.Modules.ActiveForums.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(ReplyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;

@@ -68,7 +68,7 @@
     <Reference Include="DotNetNuke, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetNuke.Core.9.9.0\lib\net45\DotNetNuke.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetNuke.Abstractions">
+    <Reference Include="DotNetNuke.Abstractions, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetNuke.Abstractions.9.9.0\lib\netstandard2.0\DotNetNuke.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="DotNetNuke.DependencyInjection, Version=9.9.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -94,6 +94,10 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Extensions.DependencyInjection, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.1.1\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
       <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.2.1.1\lib\net461\Microsoft.Extensions.DependencyInjection.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
@@ -406,6 +410,167 @@
     <Content Include="scripts\usereditor.js" />
     <Content Include="scripts\splitmanager.js" />
     <Content Include="sql\CoreForumsToActiveForums.sql" />
+    <Content Include="themes\community-bootstrap\.gitignore" />
+    <Content Include="themes\community-bootstrap\emoticons\angry.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\arrow.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\biggrin.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\blink.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\blush.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\confused.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\cool.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\crazy.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\cry.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\crying.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\doze.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\ermm.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\explanationmark.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\hazard.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\hehe.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\kiss.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\laugh.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\mad.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\nutty.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\pinch.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\plain.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\questionmark.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\rolleyes.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\sad.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\satisfied.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\shocked.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\sick.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\smile.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\tongue.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\tongue2.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\unsure.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\w00t.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\whistling.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\wink.gif" />
+    <Content Include="themes\community-bootstrap\emoticons\wow.gif" />
+    <Content Include="themes\community-bootstrap\gulpfile.js" />
+    <Content Include="themes\community-bootstrap\images\add16.png" />
+    <Content Include="themes\community-bootstrap\images\afgrouprow.png" />
+    <Content Include="themes\community-bootstrap\images\ambtnbk24.png" />
+    <Content Include="themes\community-bootstrap\images\ambuttonback.gif" />
+    <Content Include="themes\community-bootstrap\images\amtab_back_norm.gif" />
+    <Content Include="themes\community-bootstrap\images\amwhiteback.png" />
+    <Content Include="themes\community-bootstrap\images\arrows_down.png" />
+    <Content Include="themes\community-bootstrap\images\arrows_left.png" />
+    <Content Include="themes\community-bootstrap\images\arrows_up.png" />
+    <Content Include="themes\community-bootstrap\images\arrow_left_blue.gif" />
+    <Content Include="themes\community-bootstrap\images\arrow_right_blue.gif" />
+    <Content Include="themes\community-bootstrap\images\cancel32.png" />
+    <Content Include="themes\community-bootstrap\images\check16.png" />
+    <Content Include="themes\community-bootstrap\images\default_avatar.png" />
+    <Content Include="themes\community-bootstrap\images\delete12.png" />
+    <Content Include="themes\community-bootstrap\images\delete16.png" />
+    <Content Include="themes\community-bootstrap\images\delete_new.gif" />
+    <Content Include="themes\community-bootstrap\images\edit16.png" />
+    <Content Include="themes\community-bootstrap\images\edit32.png" />
+    <Content Include="themes\community-bootstrap\images\email16.png" />
+    <Content Include="themes\community-bootstrap\images\Email32.png" />
+    <Content Include="themes\community-bootstrap\images\email_checked.png" />
+    <Content Include="themes\community-bootstrap\images\email_disabled.png" />
+    <Content Include="themes\community-bootstrap\images\email_unchecked.png" />
+    <Content Include="themes\community-bootstrap\images\favorites16.png" />
+    <Content Include="themes\community-bootstrap\images\favorites16_add.png" />
+    <Content Include="themes\community-bootstrap\images\folder.png" />
+    <Content Include="themes\community-bootstrap\images\folder16.png" />
+    <Content Include="themes\community-bootstrap\images\folder16_closed.png" />
+    <Content Include="themes\community-bootstrap\images\folder16_forbidden.png" />
+    <Content Include="themes\community-bootstrap\images\folder16_new.png" />
+    <Content Include="themes\community-bootstrap\images\folder_closed.png" />
+    <Content Include="themes\community-bootstrap\images\folder_forbidden.png" />
+    <Content Include="themes\community-bootstrap\images\folder_new.png" />
+    <Content Include="themes\community-bootstrap\images\help16.png" />
+    <Content Include="themes\community-bootstrap\images\icon_multipage.png" />
+    <Content Include="themes\community-bootstrap\images\icon_pm.png" />
+    <Content Include="themes\community-bootstrap\images\loading.gif" />
+    <Content Include="themes\community-bootstrap\images\lock.gif" />
+    <Content Include="themes\community-bootstrap\images\miniarrow_down.png" />
+    <Content Include="themes\community-bootstrap\images\miniarrow_right.png" />
+    <Content Include="themes\community-bootstrap\images\modal_border.png" />
+    <Content Include="themes\community-bootstrap\images\modal_bottom_left.png" />
+    <Content Include="themes\community-bootstrap\images\modal_bottom_right.png" />
+    <Content Include="themes\community-bootstrap\images\modal_top_left.png" />
+    <Content Include="themes\community-bootstrap\images\modal_top_right.png" />
+    <Content Include="themes\community-bootstrap\images\offline.png" />
+    <Content Include="themes\community-bootstrap\images\online.png" />
+    <Content Include="themes\community-bootstrap\images\poll.png" />
+    <Content Include="themes\community-bootstrap\images\preview32.png" />
+    <Content Include="themes\community-bootstrap\images\print16.png" />
+    <Content Include="themes\community-bootstrap\images\profile_bottom_border.png" />
+    <Content Include="themes\community-bootstrap\images\profile_left_back.png" />
+    <Content Include="themes\community-bootstrap\images\profile_left_border.png" />
+    <Content Include="themes\community-bootstrap\images\profile_left_bottom.png" />
+    <Content Include="themes\community-bootstrap\images\profile_mid_back.png" />
+    <Content Include="themes\community-bootstrap\images\profile_right_back.png" />
+    <Content Include="themes\community-bootstrap\images\profile_right_border.png" />
+    <Content Include="themes\community-bootstrap\images\profile_right_bottom.png" />
+    <Content Include="themes\community-bootstrap\images\quote16.png" />
+    <Content Include="themes\community-bootstrap\images\reply16.png" />
+    <Content Include="themes\community-bootstrap\images\rss.gif" />
+    <Content Include="themes\community-bootstrap\images\rss.png" />
+    <Content Include="themes\community-bootstrap\images\rss_disabled.png" />
+    <Content Include="themes\community-bootstrap\images\save32.png" />
+    <Content Include="themes\community-bootstrap\images\search.gif" />
+    <Content Include="themes\community-bootstrap\images\Search.png" />
+    <Content Include="themes\community-bootstrap\images\spacer.gif" />
+    <Content Include="themes\community-bootstrap\images\status0.png" />
+    <Content Include="themes\community-bootstrap\images\status1.png" />
+    <Content Include="themes\community-bootstrap\images\status3.png" />
+    <Content Include="themes\community-bootstrap\images\topic.png" />
+    <Content Include="themes\community-bootstrap\images\topic_delete.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_edit.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_lock.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_lock.png" />
+    <Content Include="themes\community-bootstrap\images\topic_move.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_new.png" />
+    <Content Include="themes\community-bootstrap\images\topic_pin.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_pin.png" />
+    <Content Include="themes\community-bootstrap\images\topic_pinlocked.png" />
+    <Content Include="themes\community-bootstrap\images\topic_split.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_subscriptions.gif" />
+    <Content Include="themes\community-bootstrap\images\topic_whosread.gif" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="themes\community-bootstrap\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="themes\community-bootstrap\images\ui-icons_222222_256x240.png" />
+    <Content Include="themes\community-bootstrap\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="themes\community-bootstrap\images\ui-icons_454545_256x240.png" />
+    <Content Include="themes\community-bootstrap\images\ui-icons_888888_256x240.png" />
+    <Content Include="themes\community-bootstrap\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="themes\community-bootstrap\images\upload16.png" />
+    <Content Include="themes\community-bootstrap\images\warning.gif" />
+    <Content Include="themes\community-bootstrap\images\warning.png" />
+    <Content Include="themes\community-bootstrap\images\yellow_star_00.gif" />
+    <Content Include="themes\community-bootstrap\images\yellow_star_01.gif" />
+    <Content Include="themes\community-bootstrap\images\yellow_star_02.gif" />
+    <Content Include="themes\community-bootstrap\images\yellow_star_03.gif" />
+    <Content Include="themes\community-bootstrap\images\yellow_star_04.gif" />
+    <Content Include="themes\community-bootstrap\images\yellow_star_05.gif" />
+    <Content Include="themes\community-bootstrap\templates\AdminWatchEmail.ascx" />
+    <Content Include="themes\community-bootstrap\templates\ForumView.ascx" />
+    <Content Include="themes\community-bootstrap\templates\ModAlert.ascx" />
+    <Content Include="themes\community-bootstrap\templates\PostApproved.ascx" />
+    <Content Include="themes\community-bootstrap\templates\PostDeleted.ascx" />
+    <Content Include="themes\community-bootstrap\templates\PostMoved.ascx" />
+    <Content Include="themes\community-bootstrap\templates\PostPending.ascx" />
+    <Content Include="themes\community-bootstrap\templates\PostRejected.ascx" />
+    <Content Include="themes\community-bootstrap\templates\ProfileInfo.ascx" />
+    <Content Include="themes\community-bootstrap\templates\QuickReply.ascx" />
+    <Content Include="themes\community-bootstrap\templates\ReplyEditor.ascx" />
+    <Content Include="themes\community-bootstrap\templates\SubscribedEmail.ascx" />
+    <Content Include="themes\community-bootstrap\templates\ToolBar.ascx" />
+    <Content Include="themes\community-bootstrap\templates\TopicEditor.ascx" />
+    <Content Include="themes\community-bootstrap\templates\TopicsView.ascx" />
+    <Content Include="themes\community-bootstrap\templates\TopicView.ascx" />
+    <Content Include="themes\community-bootstrap\theme.css" />
+    <Content Include="themes\community-bootstrap\theme.min.css" />
     <Content Include="themes\community-default\.gitignore" />
     <Content Include="themes\community-default\emoticons\angry.gif" />
     <Content Include="themes\community-default\emoticons\arrow.gif" />
@@ -566,142 +731,7 @@
     <Content Include="themes\community-default\templates\TopicsView.ascx" />
     <Content Include="themes\community-default\templates\TopicView.ascx" />
     <Content Include="themes\community-default\theme.css" />
-    <Content Include="themes\community\custom\theme.css" />
-    <Content Include="themes\community\emoticons\angry.gif" />
-    <Content Include="themes\community\emoticons\arrow.gif" />
-    <Content Include="themes\community\emoticons\biggrin.gif" />
-    <Content Include="themes\community\emoticons\blink.gif" />
-    <Content Include="themes\community\emoticons\blush.gif" />
-    <Content Include="themes\community\emoticons\confused.gif" />
-    <Content Include="themes\community\emoticons\cool.gif" />
-    <Content Include="themes\community\emoticons\crazy.gif" />
-    <Content Include="themes\community\emoticons\cry.gif" />
-    <Content Include="themes\community\emoticons\crying.gif" />
-    <Content Include="themes\community\emoticons\doze.gif" />
-    <Content Include="themes\community\emoticons\ermm.gif" />
-    <Content Include="themes\community\emoticons\explanationmark.gif" />
-    <Content Include="themes\community\emoticons\hazard.gif" />
-    <Content Include="themes\community\emoticons\hehe.gif" />
-    <Content Include="themes\community\emoticons\kiss.gif" />
-    <Content Include="themes\community\emoticons\laugh.gif" />
-    <Content Include="themes\community\emoticons\mad.gif" />
-    <Content Include="themes\community\emoticons\nutty.gif" />
-    <Content Include="themes\community\emoticons\pinch.gif" />
-    <Content Include="themes\community\emoticons\plain.gif" />
-    <Content Include="themes\community\emoticons\questionmark.gif" />
-    <Content Include="themes\community\emoticons\rolleyes.gif" />
-    <Content Include="themes\community\emoticons\sad.gif" />
-    <Content Include="themes\community\emoticons\satisfied.gif" />
-    <Content Include="themes\community\emoticons\shocked.gif" />
-    <Content Include="themes\community\emoticons\sick.gif" />
-    <Content Include="themes\community\emoticons\smile.gif" />
-    <Content Include="themes\community\emoticons\tongue.gif" />
-    <Content Include="themes\community\emoticons\tongue2.gif" />
-    <Content Include="themes\community\emoticons\unsure.gif" />
-    <Content Include="themes\community\emoticons\w00t.gif" />
-    <Content Include="themes\community\emoticons\whistling.gif" />
-    <Content Include="themes\community\emoticons\wink.gif" />
-    <Content Include="themes\community\emoticons\wow.gif" />
-    <Content Include="themes\community\images\add16.png" />
-    <Content Include="themes\community\images\afgrouprow.png" />
-    <Content Include="themes\community\images\ambtnbk24.png" />
-    <Content Include="themes\community\images\ambuttonback.gif" />
-    <Content Include="themes\community\images\amtab_back_norm.gif" />
-    <Content Include="themes\community\images\amwhiteback.png" />
-    <Content Include="themes\community\images\arrows_down.png" />
-    <Content Include="themes\community\images\arrows_left.png" />
-    <Content Include="themes\community\images\arrows_up.png" />
-    <Content Include="themes\community\images\arrow_left_blue.gif" />
-    <Content Include="themes\community\images\arrow_right_blue.gif" />
-    <Content Include="themes\community\images\cancel32.png" />
-    <Content Include="themes\community\images\check16.png" />
-    <Content Include="themes\community\images\default_avatar.png" />
-    <Content Include="themes\community\images\delete12.png" />
-    <Content Include="themes\community\images\delete16.png" />
-    <Content Include="themes\community\images\delete_new.gif" />
-    <Content Include="themes\community\images\edit16.png" />
-    <Content Include="themes\community\images\edit32.png" />
-    <Content Include="themes\community\images\email16.png" />
-    <Content Include="themes\community\images\Email32.png" />
-    <Content Include="themes\community\images\email_checked.png" />
-    <Content Include="themes\community\images\email_disabled.png" />
-    <Content Include="themes\community\images\email_unchecked.png" />
-    <Content Include="themes\community\images\favorites16.png" />
-    <Content Include="themes\community\images\favorites16_add.png" />
-    <Content Include="themes\community\images\folder.png" />
-    <Content Include="themes\community\images\folder16.png" />
-    <Content Include="themes\community\images\folder16_closed.png" />
-    <Content Include="themes\community\images\folder16_forbidden.png" />
-    <Content Include="themes\community\images\folder16_new.png" />
-    <Content Include="themes\community\images\folder_closed.png" />
-    <Content Include="themes\community\images\folder_forbidden.png" />
-    <Content Include="themes\community\images\folder_new.png" />
-    <Content Include="themes\community\images\help16.png" />
-    <Content Include="themes\community\images\icon_multipage.png" />
-    <Content Include="themes\community\images\icon_pm.png" />
-    <Content Include="themes\community\images\loading.gif" />
-    <Content Include="themes\community\images\lock.gif" />
-    <Content Include="themes\community\images\miniarrow_down.png" />
-    <Content Include="themes\community\images\miniarrow_right.png" />
-    <Content Include="themes\community\images\modal_border.png" />
-    <Content Include="themes\community\images\modal_bottom_left.png" />
-    <Content Include="themes\community\images\modal_bottom_right.png" />
-    <Content Include="themes\community\images\modal_top_left.png" />
-    <Content Include="themes\community\images\modal_top_right.png" />
-    <Content Include="themes\community\images\offline.png" />
-    <Content Include="themes\community\images\online.png" />
-    <Content Include="themes\community\images\poll.png" />
-    <Content Include="themes\community\images\preview32.png" />
-    <Content Include="themes\community\images\print16.png" />
-    <Content Include="themes\community\images\profile_bottom_border.png" />
-    <Content Include="themes\community\images\profile_left_back.png" />
-    <Content Include="themes\community\images\profile_left_border.png" />
-    <Content Include="themes\community\images\profile_left_bottom.png" />
-    <Content Include="themes\community\images\profile_mid_back.png" />
-    <Content Include="themes\community\images\profile_right_back.png" />
-    <Content Include="themes\community\images\profile_right_border.png" />
-    <Content Include="themes\community\images\profile_right_bottom.png" />
-    <Content Include="themes\community\images\quote16.png" />
-    <Content Include="themes\community\images\reply16.png" />
-    <Content Include="themes\community\images\rss.gif" />
-    <Content Include="themes\community\images\rss.png" />
-    <Content Include="themes\community\images\rss_disabled.png" />
-    <Content Include="themes\community\images\save32.png" />
-    <Content Include="themes\community\images\search.gif" />
-    <Content Include="themes\community\images\Search.png" />
-    <Content Include="themes\community\images\status0.png" />
-    <Content Include="themes\community\images\status1.png" />
-    <Content Include="themes\community\images\status3.png" />
-    <Content Include="themes\community\images\topic.png" />
-    <Content Include="themes\community\images\topic_delete.gif" />
-    <Content Include="themes\community\images\topic_edit.gif" />
-    <Content Include="themes\community\images\topic_lock.gif" />
-    <Content Include="themes\community\images\topic_lock.png" />
-    <Content Include="themes\community\images\topic_move.gif" />
-    <Content Include="themes\community\images\topic_new.png" />
-    <Content Include="themes\community\images\topic_pin.gif" />
-    <Content Include="themes\community\images\topic_pin.png" />
-    <Content Include="themes\community\images\topic_pinlocked.png" />
-    <Content Include="themes\community\images\topic_split.gif" />
-    <Content Include="themes\community\images\topic_subscriptions.gif" />
-    <Content Include="themes\community\images\topic_whosread.gif" />
-    <Content Include="themes\community\images\upload16.png" />
-    <Content Include="themes\community\images\warning.gif" />
-    <Content Include="themes\community\images\warning.png" />
-    <Content Include="themes\community\images\yellow_star_00.gif" />
-    <Content Include="themes\community\images\yellow_star_01.gif" />
-    <Content Include="themes\community\images\yellow_star_02.gif" />
-    <Content Include="themes\community\images\yellow_star_03.gif" />
-    <Content Include="themes\community\images\yellow_star_04.gif" />
-    <Content Include="themes\community\images\yellow_star_05.gif" />
-    <Content Include="themes\community\templates\ForumView.ascx" />
-    <Content Include="themes\community\templates\ProfileInfo.ascx" />
-    <Content Include="themes\community\templates\QuickReply.ascx" />
-    <Content Include="themes\community\templates\ReplyEditor.ascx" />
-    <Content Include="themes\community\templates\TopicEditor.ascx" />
-    <Content Include="themes\community\templates\TopicsView.ascx" />
-    <Content Include="themes\community\templates\TopicView.ascx" />
-    <Content Include="themes\community\theme.css" />
+    <Content Include="themes\community-default\theme.min.css" />
     <Content Include="themes\themes.css" />
     <Content Include="themes\_legacy-module.css" />
     <Content Include="themes\_legacy\custom\theme.css" />
@@ -889,7 +919,6 @@
     <Content Include="themes\_legacy\templates\_Master.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
-    <Content Include="userpref.css" />
     <Content Include="WhatsNew.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1102,13 +1131,31 @@
       <SubType>ASPXCodeBehind</SubType>
     </Content>
     <Compile Include="class\Attachment.cs" />
+    <Compile Include="class\Content.cs" />
+    <Compile Include="class\ForumController.cs" />
+    <Compile Include="class\ForumGroups.cs" />
+    <Compile Include="class\ForumInfo.cs" />
     <Compile Include="class\HashtableExtensions.cs" />
     <Compile Include="class\DataRowExtensions.cs" />
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
+    <Compile Include="components\Replies\Replies.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\ContentController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\ControllerBase.cs" />
+    <Compile Include="Controllers\ForumController.cs" />
+    <Compile Include="Controllers\ForumGroupController.cs" />
+    <Compile Include="Controllers\PermissionController.cs" />
+    <Compile Include="Controllers\EmoticonController.cs" />
+    <Compile Include="Controllers\FilterController.cs" />
+    <Compile Include="Controllers\RepositoryControllerBase.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
+    <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TopicCategoryController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\TopicRatingController.cs" />
+    <Compile Include="Controllers\TopicTagController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="controls\profile_mysubscriptions.ascx.cs">
@@ -1118,9 +1165,29 @@
     <Compile Include="controls\profile_mysubscriptions.ascx.designer.cs">
       <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Entities\CategoryInfo.cs" />
+    <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="DAL2\Reply\Reply.cs" />
+    <Compile Include="Entities\CategoryInfo.cs" />
+    <Compile Include="Entities\ContentInfo.cs" />
+    <Compile Include="Deprecated\API.cs" />
+    <Compile Include="Entities\ForumCollection.cs" />
+    <Compile Include="Entities\ForumGroupInfo.cs" />
+    <Compile Include="Entities\ForumInfo.cs" />
     <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
+    <Compile Include="class\Permissions.cs" />
     <Compile Include="Entities\Like.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="class\Permissions.cs" />
+    <Compile Include="Deprecated\Cache.cs" />
+    <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Entities\FilterInfo.cs" />
+    <Compile Include="Deprecated\MiniPager.cs" />
+    <Compile Include="Entities\Like.cs" />
+    <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="class\ParamBuilder.cs" />
     <Compile Include="class\StringExtensions.cs" />
@@ -1150,17 +1217,24 @@
     <Compile Include="controls\af_searchadvanced.ascx.designer.cs">
       <DependentUpon>af_searchadvanced.ascx</DependentUpon>
     </Compile>
-    <Compile Include="DAL2\Content\Content.cs" />
+    <Compile Include="Entities\ReplyInfo.cs" />
+    <Compile Include="Controllers\ReplyController.cs" />
+    <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
+    <Compile Include="Entities\PermissionInfo.cs" />
     <Compile Include="Entities\SubscriptionInfo.cs" />
+    <Compile Include="Entities\TagInfo.cs" />
+    <Compile Include="Entities\TopicCategoryInfo.cs" />
     <Compile Include="Entities\TopicInfo.cs" />
     <Compile Include="Entities\TopicRatingInfo.cs" />
+    <Compile Include="Entities\TopicTagInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Entities\Token.cs" />
     <Compile Include="Services\Controllers\ForumController.cs" />
+    <Compile Include="Services\Controllers\ReplyController.cs" />
     <Compile Include="Services\Controllers\TopicController.cs" />
     <Compile Include="Services\Controllers\UserController.cs" />
     <Compile Include="Services\Controllers\LikeController.cs" />
@@ -1199,7 +1273,6 @@
       <DependentUpon>Classic.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Deprecated\API.cs" />
     <Compile Include="components\Common\Exceptions.cs" />
     <Compile Include="components\Common\ForumSettingsBase.cs">
       <SubType>ASPXCodeBehind</SubType>
@@ -1229,6 +1302,8 @@
     <Compile Include="components\Filters\FilterController.cs" />
     <Compile Include="components\Filters\FilterInfo.cs" />
     <Compile Include="components\Forums\ForumCollection.cs" />
+    <Compile Include="components\Filters\FilterController.cs" />
+    <Compile Include="components\Filters\FilterInfo.cs" />
     <Compile Include="components\Helpers\Environment.cs" />
     <Compile Include="components\Helpers\JSON.cs" />
     <Compile Include="components\Helpers\Localization.cs" />
@@ -1237,7 +1312,6 @@
     <Compile Include="components\Helpers\URL.cs" />
     <Compile Include="components\Properties\PropertiesController.cs" />
     <Compile Include="components\Properties\PropertiesInfo.cs" />
-    <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="components\Scheduler\DailyDigest.cs" />
     <Compile Include="components\Social\ActiveSocial.cs" />
     <Compile Include="components\Users\User.cs" />
@@ -1408,7 +1482,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="class\Author.cs" />
-    <Compile Include="class\Content.cs" />
+    <Compile Include="DAL2\Content\Content.cs" />
     <Compile Include="class\Rewards.cs" />
     <Compile Include="class\Templates.cs" />
     <Compile Include="class\UsersOnline.cs" />
@@ -1641,22 +1715,10 @@
     <Compile Include="class\ForumBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="class\ForumController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="class\ForumGroups.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="class\ForumInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="class\Images.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Utilities.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="class\Permissions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="class\Polls.cs">
@@ -1727,6 +1789,8 @@
       <DependentUpon>feeds.aspx.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="themes\community-bootstrap\theme-source.zip.resources" />
+    <EmbeddedResource Include="themes\community-default\theme-source.zip.resources" />
     <EmbeddedResource Include="viewer.aspx.resx">
       <DependentUpon>viewer.aspx.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1742,8 +1806,30 @@
     <Content Include="config\templates\BlogsView.ascx" />
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
+    <None Include="themes\community-bootstrap\custom\README.md" />
+    <None Include="themes\community-bootstrap\package-lock.json" />
+    <None Include="themes\community-bootstrap\package.json" />
+    <None Include="themes\community-bootstrap\README.md" />
+    <None Include="themes\community-bootstrap\theme.css.map" />
+    <None Include="themes\community-bootstrap\theme.min.css.map" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_action-bars.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_all.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_breadcrumbs.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_collapse.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_columns.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_edit.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_forum-view.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_toolbar.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_topic-view.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\parts\_topics-view.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\theme.scss" />
+    <None Include="themes\community-bootstrap\_src\scss\_variables.scss" />
+    <None Include="themes\community-default\custom\README.md" />
     <None Include="themes\community-default\package-lock.json" />
     <None Include="themes\community-default\package.json" />
+    <None Include="themes\community-default\README.md" />
+    <None Include="themes\community-default\theme.css.map" />
+    <None Include="themes\community-default\theme.min.css.map" />
     <None Include="themes\community-default\_less\parts\_action-bars.less" />
     <None Include="themes\community-default\_less\parts\_breadcrumbs.less" />
     <None Include="themes\community-default\_less\parts\_collapse.less" />
@@ -1767,12 +1853,37 @@
     <None Include="themes\community-default\_less\_mixins.less" />
     <None Include="themes\community-default\_less\_utilities.less" />
     <None Include="themes\community-default\_less\_variables.less" />
+    <None Include="themes\community-default\_src\less\parts\_action-bars.less" />
+    <None Include="themes\community-default\_src\less\parts\_breadcrumbs.less" />
+    <None Include="themes\community-default\_src\less\parts\_collapse.less" />
+    <None Include="themes\community-default\_src\less\parts\_columns.less" />
+    <None Include="themes\community-default\_src\less\parts\_edit.less" />
+    <None Include="themes\community-default\_src\less\parts\_forum-view.less" />
+    <None Include="themes\community-default\_src\less\parts\_group-title.less" />
+    <None Include="themes\community-default\_src\less\parts\_old\_control-panel.less" />
+    <None Include="themes\community-default\_src\less\parts\_old\_controlpanel.less" />
+    <None Include="themes\community-default\_src\less\parts\_pager.less" />
+    <None Include="themes\community-default\_src\less\parts\_quick-reply.less" />
+    <None Include="themes\community-default\_src\less\parts\_search-advanced.less" />
+    <None Include="themes\community-default\_src\less\parts\_search-results.less" />
+    <None Include="themes\community-default\_src\less\parts\_subscribe.less" />
+    <None Include="themes\community-default\_src\less\parts\_table-responsive.less" />
+    <None Include="themes\community-default\_src\less\parts\_table.less" />
+    <None Include="themes\community-default\_src\less\parts\_toolbar.less" />
+    <None Include="themes\community-default\_src\less\parts\_topic-view.less" />
+    <None Include="themes\community-default\_src\less\parts\_topics-view.less" />
+    <None Include="themes\community-default\_src\less\theme.less" />
+    <None Include="themes\community-default\_src\less\_mixins.less" />
+    <None Include="themes\community-default\_src\less\_utilities.less" />
+    <None Include="themes\community-default\_src\less\_variables.less" />
     <None Include="themes\README.md" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
     <Folder Include="Legacy\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

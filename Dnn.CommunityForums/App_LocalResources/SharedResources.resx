@@ -1696,10 +1696,37 @@ From,
   <data name="[RESX:Community-Message-Help].Text" xml:space="preserve">
     <value>Module manual / wiki</value>
   </data>
+  <data name="[RESX:EditingExistingReply].Text" xml:space="preserve">
+    <value>Editing Existing Reply</value>
+  </data>
+  <data name="[RESX:EditingExistingTopic].Text" xml:space="preserve">
+    <value>Editing Existing Topic</value>
+  </data>
+  <data name="[RESX:ReplyToMessage].Text" xml:space="preserve">
+    <value>Reply To Topic</value>
+  </data>
+  <data name="RESX:BanAlertBody.Text" xml:space="preserve">
+    <value>&lt;div&gt;[Subject] &lt;br /&gt;&lt;br /&gt;[Post] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="RESX:BanAlertSubject.Text" xml:space="preserve">
+    <value>User [Username] has been banned by [BannedBy]</value>
+  </data>
+  <data name="RESX:UserBanned.Text" xml:space="preserve">
+    <value>User: {0} has been banned, and all posts deleted.</value>
+  </data>
   <data name="[RESX:NoSubscriptions].Text" xml:space="preserve">
     <value>No Subscriptions</value>
   </data>
   <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve">
     <value>Subscribe to All Forums</value>
+  </data>
+  <data name="ForumsTracked.Text" xml:space="preserve">
+    <value>Forums you are tracking:</value>
+  </data>
+  <data name="Subscriptions.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="ThreadsTracked.Text" xml:space="preserve">
+    <value>Threads you are tracking:</value>
   </data>
 </root>

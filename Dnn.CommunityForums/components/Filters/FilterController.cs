@@ -27,33 +27,33 @@ using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class FilterController
-	{
-		public FilterInfo Filter_Save(FilterInfo filter)
-		{
-			int filterId = DataProvider.Instance().Filters_Save(filter.PortalId, filter.ModuleId, filter.FilterId, filter.Find, filter.Replace, filter.FilterType);
-			return Filter_Get(filter.PortalId, filter.ModuleId, filterId);
-		}
-		public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
-		{
-			DataProvider.Instance().Filters_Delete(PortalId, ModuleId, FilterId);
-		}
-		public FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
-		{
-			FilterInfo fi = new FilterInfo();
-			IDataReader dr = DataProvider.Instance().Filters_Get(PortalId, ModuleID, FilterId);
-			while (dr.Read())
-			{
-				fi.FilterId = Convert.ToInt32(dr["FilterId"].ToString());
-				fi.Find = dr["Find"].ToString();
-				fi.Replace = dr["Replace"].ToString();
-				fi.FilterType = dr["FilterType"].ToString();
-				fi.ModuleId = ModuleID;
-				fi.PortalId = PortalId;
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController")]
+    public class FilterController 
+    {
+		private DotNetNuke.Modules.ActiveForums.Controllers.FilterController filterController = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController();
 
-			}
-			dr.Close();
-			return fi;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Update()")]
+        public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Save(DotNetNuke.Modules.ActiveForums.FilterInfo filter)
+		{
+            if (filter.FilterId > 0)
+            {
+                filterController.Update(filter);
+            }
+            else
+            {
+                filterController.Insert(filter);
+            }
+            return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(filter.FilterId);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
+        public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
+		{
+			filterController.DeleteById(FilterId);
+		}
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
+		public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
+		{
+			return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(FilterId, ModuleID);
 		}
 	}
 }

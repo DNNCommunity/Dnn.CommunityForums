@@ -66,10 +66,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             ModuleId = ControlConfig.ModuleId;
             PortalId = ControlConfig.PortalId;
-            ForumController fc = new ForumController();
             if (ForumInfo == null)
             {
-                ForumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
+                ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
             }
 
             string sTemp = string.Empty;
@@ -87,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 sTemp = Utilities.LocalizeControl(sTemp);
                 string SubscribedChecked = string.Empty;
-                if (ControlConfig.User.PrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ModuleId, ForumId, TopicId, SubscriptionTypes.Instant, this.UserId))
+                if (ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId))
                 {
                     SubscribedChecked = " checked=true";
                 }
@@ -176,8 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void SaveQuickReply()
         {
-            ForumController fc = new ForumController();
-            Forum forumInfo = fc.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
             {
                 UserProfileController upc = new UserProfileController();
@@ -212,14 +210,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             //End If
              bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
+            UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
-            if (UserIsTrusted || Permissions.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
-            DotNetNuke.Modules.ActiveForums.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.ReplyInfo();
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             Data.Topics db = new Data.Topics();
             //im rc As New ReplyController
             int ReplyId = -1;
@@ -240,14 +238,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
             //End If
             sBody = Utilities.CleanString(PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, ModuleId, ThemePath, forumInfo.AllowEmoticons);
-            DateTime createDate = DateTime.UtcNow;
             ri.TopicId = TopicId;
             ri.ReplyToId = TopicId;
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
-            ri.Content.DateCreated = createDate;
-            ri.Content.DateUpdated = createDate;
             ri.Content.IsDeleted = false;
             ri.Content.Subject = Subject;
             ri.Content.Summary = string.Empty;
@@ -255,19 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ri.IsDeleted = false;
             ri.Content.IPAddress = HttpContext.Current.Request.UserHostAddress;
             ReplyId = db.Reply_Save(ri);
-            //Check if is subscribed
-            if (HttpContext.Current.Request.Params["chkSubscribe"] != null)
-            {
-                if (HttpContext.Current.Request.Params["chkSubscribe"] == "1" && UserId > 0)
-                {
-                    if (!(Subscriptions.IsSubscribed(PortalId, ModuleId, ForumId, TopicId, SubscriptionTypes.Instant, UserId)))
-                    {
-                        //TODO: Fix Subscriptions
-                        //Dim sc As New Data.Tracking
-                        //sc.Subscription_Update(PortalId, ModuleId, ForumId, TopicId, 1, UserId)
-                    }
-                }
-            }
+
             if (isApproved)
             {
                 //Send Subscriptions

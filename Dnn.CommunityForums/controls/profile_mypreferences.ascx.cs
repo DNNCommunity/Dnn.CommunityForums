@@ -26,7 +26,7 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public partial class profile_mypreferences : SettingsBase
+    public partial class profile_mypreferences : ForumBase
     {
         public int UID { get; set; }
 
@@ -37,13 +37,13 @@ namespace DotNetNuke.Modules.ActiveForums
             btnSave.Click += new System.EventHandler(btnSave_Click);
 
 
-            if (Request.QueryString["UserId"] == null)
+            if (Request.QueryString[Literals.UserId] == null)
             {
                 UID = UserInfo.UserID;
             }
             else
             {
-                UID = Convert.ToInt32(Request.QueryString["UserId"]);
+                UID = Convert.ToInt32(Request.QueryString[Literals.UserId]);
             }
            
             if (UID > 0 && !Page.IsPostBack)

@@ -136,8 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Literal lit = new Literal();
             UserController upc = new UserController();
             User up = upc.GetUser(PortalId, ForumModuleId, UID);
-            ForumController fc = new ForumController();
-            up.UserForums = fc.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
+            up.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
             sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, false, false, false, string.Empty, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
 
@@ -145,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileMyPreferences]", "<asp:placeholder id=\"plhProfilePrefs\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileUserAccount]", "<asp:placeholder id=\"plhProfileUserAccount\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileForumTracker]", "<asp:placeholder id=\"plhTracker\" runat=\"server\" />");
-            sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ViewType + "=search&uid=" + UID.ToString()) + "\">[RESX:ViewPostsByUser]</a>");
+            sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + NavigateUrl(TabId, "", $"{ParamKeys.ViewType}={Views.Search}&{ParamKeys.UserId}={UID}") + "\">[RESX:ViewPostsByUser]</a>");
 
 
 
@@ -261,7 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (!(CurrentUserType == CurrentUserTypes.Anon) && (UID == this.UserId || (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)))
             {
-                Response.Redirect(NavigateUrl(TabId, "", new string[] { ParamKeys.ViewType + "=profile", "uid=" + UID, "mode=edit" }));
+                Response.Redirect(NavigateUrl(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={UID}", $"{ParamKeys.mode}={Modes.edit}" }));
             }
         }
         private void btnProfileCancel_Click(object sender, System.EventArgs e)
@@ -279,7 +278,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void GoViewURL()
         {
-            Response.Redirect(NavigateUrl(TabId, "", new string[] { ParamKeys.ViewType + "=profile", "uid=" + UID }));
+            Response.Redirect(NavigateUrl(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={UID}" }));
         }
         private bool CanEditMode()
         {

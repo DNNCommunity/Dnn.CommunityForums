@@ -23,7 +23,6 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
 using DotNetNuke.Modules.ActiveForums.Constants;
-using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -69,23 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void  OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (Request.QueryString["afgt"] == "afprofile" || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
-            {
-                int userId;
-
-                userId = int.TryParse(Request.QueryString["UserId"], out userId) ? userId : UserInfo.UserID;
-
-                // Users can only view thier own settings unless they are admin.
-                if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                {
-                    var userPrefsCtl = (SettingsBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
-                    userPrefsCtl.ModuleConfiguration = ModuleConfiguration;
-                    userPrefsCtl.LocalResourceFile = Page.ResolveUrl(Globals.SharedResourceFile);
-                    plhAF.Controls.Add(userPrefsCtl);
-                }
-
-                return;
-            }
             var ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "classic.ascx")));
             ctl.ModuleConfiguration = ModuleConfiguration;
             plhAF.Controls.Add(ctl);

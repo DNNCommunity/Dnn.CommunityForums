@@ -2,7 +2,8 @@
     function amaf_moveTopic() {
         var fid = $('#drpForums').val();
         var tid = $('#aftopicmove-topicid').val();
-        amaf_modMove(tid, fid);
+        var mid = $('#aftopicmove-moduleid').val();
+        amaf_modMove(mid, fid, tid);
     };
 </script>
 <div id="aftopicmove" style="width:500px;height:350px;display:none;" title="[RESX:MoveTopicTitle]">
@@ -25,5 +26,6 @@
             [RESX:Cancel]</a></li>
         </ul>
         <input type="hidden" id="aftopicmove-topicid" value="" />
+        <input type="hidden" id="aftopicmove-moduleid" value="" />
     </div>
 </div>

@@ -130,8 +130,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
-                bView = Permissions.HasPerm(drSecurity["CanView"].ToString(), u.UserRoles);
-                bRead = Permissions.HasPerm(drSecurity["CanRead"].ToString(), u.UserRoles);
+                bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanView"].ToString(), u.UserRoles);
+                bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanRead"].ToString(), u.UserRoles);
                 StringBuilder sb = new StringBuilder(1024);
                 if (bRead)
                 {
