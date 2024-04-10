@@ -1,0 +1,101 @@
+
+// Working around Topic editors HTML limitations ;-)
+
+	.afeditor {
+		background: #fff;
+		border: none;
+		font-size: 1em;
+
+		* {
+			font-size: inherit;
+		}
+
+		> table{
+			td{
+				padding: $spacer-sm 0;
+			}
+		}
+
+
+
+		.cke_top {
+			font-size: 12px;
+		}
+
+		// Styling of the subject
+		table table[width="99%"] {
+
+			>tbody>tr:nth-child(1) {
+
+				>td {
+					padding: 0.3em 0;
+				}
+
+			}
+
+			tr:nth-child(2) {
+
+				.aftextbox[readonly] {
+					border: none;
+					padding: 0;
+					background: transparent;
+					font-weight: bold;
+				}
+
+			}
+
+		}
+
+		
+			input {
+				&[type='checkbox']{
+				margin-right: $spacer-sm;
+			}
+			}
+		
+
+		.amtbwrapper {
+			
+			
+			> div{
+				max-width: 100% !important;
+				display:flex;
+				justify-content: center;
+				.amimagebutton {
+					&, &_over{
+						text-align: center;
+						width: auto !important;
+						height: auto !important;
+						padding: $spacer-sm;
+						cursor: pointer;
+					}
+
+					&_over{
+
+						opacity: 0.7;
+					}
+
+
+				}
+			}
+		}
+
+
+		.cke_wysiwyg_frame {
+			font-family: sans serif;
+		}
+
+		.afsection{
+			min-width: 100%;
+			border-bottom: solid 1px $border-inner-color;
+		}
+
+
+		.afsectionhd {
+
+			border: none !important;
+			padding: 0.3em;
+		}
+
+	}
+	

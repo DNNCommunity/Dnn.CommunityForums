@@ -1,0 +1,13 @@
+
+.dnn-community-forums{
+
+    .dcf-col-icon{
+
+        font-size: $font-xs;
+    }
+
+    input[type=text], textarea{
+        @include text-input-border;
+    }
+
+}
