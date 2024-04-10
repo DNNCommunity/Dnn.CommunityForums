@@ -474,7 +474,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, IpAddress: IPAddress);
         }
-        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.DeleteById(int TopicId)")]
         public override void Topics_Delete(int ForumId, int TopicId, int DelBehavior)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Delete", ForumId, TopicId, DelBehavior, true);
