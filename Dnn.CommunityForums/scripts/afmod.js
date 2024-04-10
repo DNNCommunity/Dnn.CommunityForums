@@ -1,16 +1,9 @@
 ﻿function amaf_modDel(mid, fid, tid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
         var sf = $.ServicesFramework(mid);
-        var params = {
-            forumId: fid,
-            topicId: tid
-        };
         $.ajax({
-            type: "POST",
-            data: JSON.stringify(params),
-            contentType: "application/json",
-            dataType: "json",
-            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete',
+            type: "DELETE",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete?forumId=' + fid + '&topicId=' + tid,
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             afreload();
@@ -155,6 +148,7 @@ function amaf_quickEdit(mid, fid, tid) {
     });
 };
 function amaf_resetQuickEdit() {
+    document.getElementById('aftopicedit-topic').value = '';
     document.getElementById('aftopicedit-moduleid').value = '';
     document.getElementById('aftopicedit-forumid').value = '';
     document.getElementById('aftopicedit-topicid').value = '';
@@ -170,6 +164,7 @@ function amaf_resetQuickEdit() {
 };
 function amaf_loadTopicComplete(data) {
     var t = data[0];
+    document.getElementById('aftopicedit-topic').value = JSON.stringify(t);
     document.getElementById('aftopicedit-topicid').value = t.TopicId;
     document.getElementById('aftopicedit-forumid').value = t.ForumId;
     document.getElementById('aftopicedit-moduleid').value = t.ModuleId;
@@ -201,58 +196,60 @@ function amaf_loadCatList(cats) {
     };
 };
 function amaf_loadProperties(propdefs, props) {
-    var iCount = props.length;
-    var ul = document.getElementById('proplist');
-    am.Utils.RemoveChildNodes('proplist');
-    for (var j = 0; j < propdefs.length; j++) {
-        var pd = propdefs[j];
-        var li = document.createElement('li');
-        li.setAttribute('id', pd.PropertyId);
-        var lbl = document.createElement('label');
-        lbl.setAttribute('for', 'prop-' + pd.PropertyId);
-        lbl.appendChild(document.createTextNode(pd.Name));
-        li.appendChild(lbl);
-        for (var i = 0; i < iCount; i++) {
-            if (props[i].PropertyId === pd.PropertyId) {
-                pd.DefaultValue = props[i].DefaultValue;
+    if (props != null) {
+        var iCount = props.length;
+        var ul = document.getElementById('proplist');
+        am.Utils.RemoveChildNodes('proplist');
+        for (var j = 0; j < propdefs.length; j++) {
+            var pd = propdefs[j];
+            var li = document.createElement('li');
+            li.setAttribute('id', pd.PropertyId);
+            var lbl = document.createElement('label');
+            lbl.setAttribute('for', 'prop-' + pd.PropertyId);
+            lbl.appendChild(document.createTextNode(pd.Name));
+            li.appendChild(lbl);
+            for (var i = 0; i < iCount; i++) {
+                if (props[i].PropertyId === pd.PropertyId) {
+                    pd.DefaultValue = props[i].DefaultValue;
+                };
             };
-        };
-        switch (pd.DataType) {
-            case 'text':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + pd.PropertyId);
-                txt.setAttribute('type', 'text');
-                txt.value = pd.DefaultValue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            case 'yesno':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + pd.PropertyId);
-                txt.setAttribute('type', 'checkbox');
-                txt.value = pd.DefaultValue;
-                txt.checked = pd.DefaultValue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            default:
-                var sel = document.createElement('select');
-                sel.setAttribute('id', 'prop-' + pd.PropertyId);
-                li.appendChild(sel);
-                ul.appendChild(li);
-                am.Utils.FillSelect(p.listdata, sel);
-                am.Utils.SetSelected(sel, p.DefaultValue);
+            switch (pd.DataType) {
+                case 'text':
+                    var txt = document.createElement('input');
+                    txt.setAttribute('id', 'prop-' + pd.PropertyId);
+                    txt.setAttribute('type', 'text');
+                    txt.value = pd.DefaultValue;
+                    li.appendChild(txt);
+                    ul.appendChild(li);
+                    break;
+                case 'yesno':
+                    var txt = document.createElement('input');
+                    txt.setAttribute('id', 'prop-' + pd.PropertyId);
+                    txt.setAttribute('type', 'checkbox');
+                    txt.value = pd.DefaultValue;
+                    txt.checked = pd.DefaultValue;
+                    li.appendChild(txt);
+                    ul.appendChild(li);
+                    break;
+                default:
+                    var sel = document.createElement('select');
+                    sel.setAttribute('id', 'prop-' + pd.PropertyId);
+                    li.appendChild(sel);
+                    ul.appendChild(li);
+                    am.Utils.FillSelect(p.listdata, sel);
+                    am.Utils.SetSelected(sel, p.DefaultValue);
+            };
         };
     };
 };
 
 
 function amaf_saveTopic() {
-    var t = {};
+    var t = JSON.parse(document.getElementById('aftopicedit-topic').value);
+
     var mid = document.getElementById('aftopicedit-moduleid').value;
     var fid = document.getElementById('aftopicedit-forumid').value;
     t.Topicid = document.getElementById('aftopicedit-topicid').value;
-    t.Content = {};
     t.Content.Subject = document.getElementById('aftopicedit-subject').value;
     t.Tags = document.getElementById('aftopicedit-tags').value;
     t.Priority = document.getElementById('aftopicedit-priority').value;
