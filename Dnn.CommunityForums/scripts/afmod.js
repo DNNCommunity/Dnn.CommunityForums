@@ -1,16 +1,9 @@
 ﻿function amaf_modDel(mid, fid, tid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
         var sf = $.ServicesFramework(mid);
-        var params = {
-            forumId: fid,
-            topicId: tid
-        };
         $.ajax({
-            type: "POST",
-            data: JSON.stringify(params),
-            contentType: "application/json",
-            dataType: "json",
-            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete',
+            type: "DELETE",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete?forumId=' + fid + '&topicId=' + tid,
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             afreload();
@@ -201,47 +194,49 @@ function amaf_loadCatList(cats) {
     };
 };
 function amaf_loadProperties(propdefs, props) {
-    var iCount = props.length;
-    var ul = document.getElementById('proplist');
-    am.Utils.RemoveChildNodes('proplist');
-    for (var j = 0; j < propdefs.length; j++) {
-        var pd = propdefs[j];
-        var li = document.createElement('li');
-        li.setAttribute('id', pd.PropertyId);
-        var lbl = document.createElement('label');
-        lbl.setAttribute('for', 'prop-' + pd.PropertyId);
-        lbl.appendChild(document.createTextNode(pd.Name));
-        li.appendChild(lbl);
-        for (var i = 0; i < iCount; i++) {
-            if (props[i].PropertyId === pd.PropertyId) {
-                pd.DefaultValue = props[i].DefaultValue;
+    if (props != null) {
+        var iCount = props.length;
+        var ul = document.getElementById('proplist');
+        am.Utils.RemoveChildNodes('proplist');
+        for (var j = 0; j < propdefs.length; j++) {
+            var pd = propdefs[j];
+            var li = document.createElement('li');
+            li.setAttribute('id', pd.PropertyId);
+            var lbl = document.createElement('label');
+            lbl.setAttribute('for', 'prop-' + pd.PropertyId);
+            lbl.appendChild(document.createTextNode(pd.Name));
+            li.appendChild(lbl);
+            for (var i = 0; i < iCount; i++) {
+                if (props[i].PropertyId === pd.PropertyId) {
+                    pd.DefaultValue = props[i].DefaultValue;
+                };
             };
-        };
-        switch (pd.DataType) {
-            case 'text':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + pd.PropertyId);
-                txt.setAttribute('type', 'text');
-                txt.value = pd.DefaultValue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            case 'yesno':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + pd.PropertyId);
-                txt.setAttribute('type', 'checkbox');
-                txt.value = pd.DefaultValue;
-                txt.checked = pd.DefaultValue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            default:
-                var sel = document.createElement('select');
-                sel.setAttribute('id', 'prop-' + pd.PropertyId);
-                li.appendChild(sel);
-                ul.appendChild(li);
-                am.Utils.FillSelect(p.listdata, sel);
-                am.Utils.SetSelected(sel, p.DefaultValue);
+            switch (pd.DataType) {
+                case 'text':
+                    var txt = document.createElement('input');
+                    txt.setAttribute('id', 'prop-' + pd.PropertyId);
+                    txt.setAttribute('type', 'text');
+                    txt.value = pd.DefaultValue;
+                    li.appendChild(txt);
+                    ul.appendChild(li);
+                    break;
+                case 'yesno':
+                    var txt = document.createElement('input');
+                    txt.setAttribute('id', 'prop-' + pd.PropertyId);
+                    txt.setAttribute('type', 'checkbox');
+                    txt.value = pd.DefaultValue;
+                    txt.checked = pd.DefaultValue;
+                    li.appendChild(txt);
+                    ul.appendChild(li);
+                    break;
+                default:
+                    var sel = document.createElement('select');
+                    sel.setAttribute('id', 'prop-' + pd.PropertyId);
+                    li.appendChild(sel);
+                    ul.appendChild(li);
+                    am.Utils.FillSelect(p.listdata, sel);
+                    am.Utils.SetSelected(sel, p.DefaultValue);
+            };
         };
     };
 };
