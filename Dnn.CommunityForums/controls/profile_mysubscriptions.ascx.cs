@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void BindTopicSubs()
         {
-            var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(PortalId, ForumModuleId, this.UID);
+            var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(PortalId, ForumModuleId, this.UID).OrderBy(s => s.Forum.ForumGroup.SortOrder).ThenBy(s => s.Forum.SortOrder);
             subscribedTopics.ForEach(s =>
             {
                 s.Subscribed = true;
@@ -97,11 +97,24 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void BindForumSubs()
         {
+            dgrdForumSubs.DataSource = GetSubscriptions().ToList();
+            dgrdForumSubs.DataBind();
+        }
+        private void btnSubscribeAll_Click(object sender, System.EventArgs e)
+        {
+            GetSubscriptions().Where(s => !s.Subscribed).ForEach(s =>
+            {
+               new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, UID, s.ForumId);
+            });
+            BindForumSubs();
+        }
+        private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
+        {
             var roles = new UserController().GetUser(PortalId, ForumModuleId, UID).UserRoles;
             var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(roles, PortalId, ForumModuleId);
             var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
             {
-            var Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forum), ForumModuleId);
+                var Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forum), ForumModuleId);
                 return new { ForumId = int.Parse(forum), Forum };
             });
 
@@ -116,8 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                       from ms in merged.DefaultIfEmpty()
                                       where (af.Forum.AllowSubscribe || ms == null || ms.Id != 0)
                                       select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0), PortalId, ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, (ms != null));
-            dgrdForumSubs.DataSource = mergedSubscriptions.ToList();
-            dgrdForumSubs.DataBind();
+            return mergedSubscriptions;
         }
         protected void OnForumSubsGridRowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -172,33 +184,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             dgrdTopicSubs.PageIndex = e.NewPageIndex;
             dgrdTopicSubs.DataBind();
-        }
-        private void btnSubscribeAll_Click(object sender, System.EventArgs e)
-        {
-            var roles = new UserController().GetUser(PortalId, ForumModuleId, UID).UserRoles;
-            var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(roles, PortalId, ForumModuleId);
-            var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
-            {
-                var Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forum), ForumModuleId);
-                return new { ForumId = int.Parse(forum), Forum };
-            });
-
-            var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(PortalId, ForumModuleId, UID);
-            var subscribedForums = forumSubscriptions.Select(forumSubscription =>
-            {
-                return new { forumSubscription.Id, forumSubscription.ForumId };
-            });
-            var mergedSubscriptions = from af in availableForums
-                                      join sf in subscribedForums
-                                      on af.ForumId equals sf.ForumId into merged
-                                      from ms in merged.DefaultIfEmpty()
-                                      where (af.Forum.AllowSubscribe || ms == null || ms.Id != 0)
-                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0), PortalId, ForumModuleId, af.ForumId, 0, 1, UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, (ms != null));
-            mergedSubscriptions.Where(s => !s.Subscribed).ForEach(s =>
-            {
-               new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, UID, s.ForumId);
-            });
-            BindForumSubs();
         }
     }
 }
