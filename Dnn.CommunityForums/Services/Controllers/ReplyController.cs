@@ -32,73 +32,60 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class ReplyController : ControllerBase<ReplyController>
     {
-        public struct ReplyDto
-        {
-            public int ForumId { get; set; }
-            public int TopicId { get; set; }
-            public int ReplyId { get; set; }
-        }
-
         /// <summary>
         /// Marks a reply as the answer to a topic
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="replyId" type="int"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/MarkAsAnswer</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/MarkAsAnswer?forumId=xxx&replyId=yyy</remarks>
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModEdit)]
         [ForumsAuthorize(SecureActions.Edit)]
-        public HttpResponseMessage MarkAsAnswer(ReplyDto dto)
+        public HttpResponseMessage MarkAsAnswer(int forumId, int replyId)
         {
-            int forumId = dto.ForumId;
-            int topicId = dto.TopicId;
-            int replyId = dto.ReplyId; 
-            if (forumId > 0 && topicId > 0 && replyId > 0)
+            if (forumId > 0 && replyId > 0)
             {
-                TopicsController tc = new DotNetNuke.Modules.ActiveForums.TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = tc.Topics_Get(ActiveModule.PortalID, ForumModuleId, topicId);
-                if (t != null)
+                var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
+                if (r != null)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, ForumModuleId);
-                    if ((UserInfo.UserID == t.Author.AuthorId && !t.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, string.Join(";",UserInfo.Roles)))
+                    if ((UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";",UserInfo.Roles)))
                     {
-                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, topicId, replyId, UserInfo.UserID, 1, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(f.Security.ModEdit, string.Join(";", UserInfo.Roles)));
+                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, r.TopicId, replyId, UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", UserInfo.Roles)));
                         DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
                         return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
                     return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.NotFound);
             }
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
         /// <summary>
         /// Deletes a Reply
         /// </summary>
-        /// <param name="dto"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="replyId" type="int"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/Delete</remarks>
-        [HttpPost]
+        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/Delete?forumId=xxx&replyId=zzz</remarks>
+        [HttpDelete]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Delete)]
         [ForumsAuthorize(SecureActions.ModDelete)]
-        public HttpResponseMessage Delete(ReplyDto dto)
+        public HttpResponseMessage Delete(int forumId, int replyId)
         {
-            int forumId = dto.ForumId;
-            int topicId = dto.TopicId;
-            int replyId = dto.ReplyId;
-            if (forumId > 0 && topicId > 0 && replyId > 0)
+            if (forumId > 0 && replyId > 0)
             {
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 var r = rc.GetById(replyId);
                 if (r != null)
                 {
-                    rc.Reply_Delete(ActiveModule.PortalID, forumId, topicId,replyId, SettingsBase.GetModuleSettings(ForumModuleId).DeleteBehavior);
+                    rc.Reply_Delete(ActiveModule.PortalID, forumId, r.TopicId,replyId, SettingsBase.GetModuleSettings(ForumModuleId).DeleteBehavior);
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
             }
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }
