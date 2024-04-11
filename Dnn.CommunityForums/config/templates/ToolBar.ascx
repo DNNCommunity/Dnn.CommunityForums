@@ -11,7 +11,6 @@
 		<li>[AF:TB:Unanswered]</li>
 		<li>[AF:TB:NotRead]</li>
 		<li>[AF:TB:MyTopics]</li>
-		<li>[AF:TB:MySubscriptions]</li>
 		<li>[AF:TB:ActiveTopics]</li>
 		<li>[AF:TB:MostLiked]</li>
 		<li>[AF:TB:MostReplies]</li>
