@@ -208,7 +208,7 @@ function amaf_loadProperties(propdefs, props) {
             li.appendChild(lbl);
             for (var i = 0; i < iCount; i++) {
                 if (props[i].PropertyId === pd.PropertyId) {
-                    pd.DefaultValue = props[i].DefaultValue;
+                    pd.DefaultValue = props[i].Value;
                 };
             };
             switch (pd.DataType) {
@@ -234,8 +234,8 @@ function amaf_loadProperties(propdefs, props) {
                     sel.setAttribute('id', 'prop-' + pd.PropertyId);
                     li.appendChild(sel);
                     ul.appendChild(li);
-                    am.Utils.FillSelect(p.listdata, sel);
-                    am.Utils.SetSelected(sel, p.DefaultValue);
+                    am.Utils.FillSelect(pd.listdata, sel);
+                    am.Utils.SetSelected(sel, pd.DefaultValue);
             };
         };
     };
@@ -267,12 +267,12 @@ function amaf_saveTopic() {
         var el = document.getElementById(pname);
         if (el.tagName == 'INPUT') {
             if (el.type == 'text') {
-                t.TopicProperties[i].DefaultValue = el.value;
+                t.TopicProperties[i].Value = el.value;
             } else {
-                t.TopicProperties[i].DefaultValue = el.checked;
+                t.TopicProperties[i].Value = el.checked;
             };
         } else {
-            t.TopicProperties[i].DefaultValue = el.options[el.selectedIndex].value;
+            t.TopicProperties[i].Value = el.options[el.selectedIndex].value;
         };
     };
     var ul = document.getElementById('catlist');

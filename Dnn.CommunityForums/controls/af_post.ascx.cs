@@ -391,31 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!(string.IsNullOrEmpty(ti.TopicData)))
                 {
-                    var pl = new List<PropertiesInfo>();
-                    var xDoc = new XmlDocument();
-                    xDoc.LoadXml(ti.TopicData);
-
-                    XmlNode xRoot = xDoc.DocumentElement;
-                    if (xRoot != null)
-                    {
-                        var xNodeList = xRoot.SelectNodes("//properties/property");
-                        if (xNodeList != null && xNodeList.Count > 0)
-                        {
-                            for (var i = 0; i < xNodeList.Count; i++)
-                            {
-                                var pName = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = System.Web.HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                                var xmlAttributeCollection = xNodeList[i].Attributes;
-                                if (xmlAttributeCollection == null)
-                                    continue;
-                                var pId = Convert.ToInt32(xmlAttributeCollection["id"].Value);
-                                var p = new PropertiesInfo { Name = pName, DefaultValue = pValue, PropertyId = pId };
-                                pl.Add(p);
-                            }
-                        }
-                    }
-
-                    ctlForm.TopicProperties = pl;
+                    ctlForm.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(ti.TopicData);
                 }
 
                 if (ti.TopicType == TopicTypes.Poll)
@@ -696,12 +672,15 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 authorId = ti.Author.AuthorId;
+                ti.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
                 ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
                 ti.ForumId = ForumInfo.ForumID;
+                ti.Content.DateCreated = DateTime.UtcNow;
+                ti.Content.DateUpdated = DateTime.UtcNow;
             }
 
             ti.AnnounceEnd = ctlForm.AnnounceEnd;
@@ -970,11 +949,14 @@ namespace DotNetNuke.Modules.ActiveForums
             if (PostId > 0)
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(PostId);
+                ri.Content.DateCreated = DateTime.UtcNow;
+                ri.Content.DateUpdated = DateTime.UtcNow;
             }
             else
             {
                 ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
                 ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+                ri.Content.DateUpdated = DateTime.UtcNow;
             }
 
             if (!_isEdit)

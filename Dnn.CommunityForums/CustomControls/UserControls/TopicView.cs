@@ -527,28 +527,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     try
                     {
-                        var xDoc = new XmlDocument();
-                        xDoc.LoadXml(_topicData);
-                        var xRoot = xDoc.DocumentElement;
-                        var xNodeList = (xRoot != null) ? xRoot.SelectNodes("//properties/property") : null;
-                        if (xNodeList != null && xNodeList.Count > 0)
+                        var pl = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(_topicData);
+                        foreach (var p in pl)
                         {
-                            for (var i = 0; i < xNodeList.Count; i++)
-                            {
-                                var pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                var pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
+                            var pName = HttpUtility.HtmlDecode(p.Name);
+                            var pValue = HttpUtility.HtmlDecode(p.Value);
+                            // This builds the replacement text for the properties template
+                            var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
+                            tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
+                            sProps += tmp;
 
-                                // This builds the replacement text for the properties template
-                                var tmp = sPropTemplate.Replace("[AF:PROPERTY:LABEL]", "[RESX:" + pName + "]");
-                                tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
-                                sProps += tmp;
-
-                                // This deals with any specific property tokens that may be present outside of the normal properties template
-                                sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
-                                sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
-                                var pValueKey = string.IsNullOrWhiteSpace(pValue) ? string.Empty : Utilities.CleanName(pValue).ToLowerInvariant();
-                                sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
-                            }
+                            // This deals with any specific property tokens that may be present outside of the normal properties template
+                            sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
+                            sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
+                            var pValueKey = string.IsNullOrWhiteSpace(pValue) ? string.Empty : Utilities.CleanName(pValue).ToLowerInvariant();
+                            sOutput = sOutput.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
                         }
                     }
                     catch (XmlException)

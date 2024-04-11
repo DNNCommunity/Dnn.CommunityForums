@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="class\UtilitiesTests.cs" />
     <Compile Include="Controllers\PermissionControllerTests.cs" />
+    <Compile Include="Controllers\TopicPropertyControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -766,37 +766,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         string sPropTemplate = TemplateUtils.GetTemplateSection(sTopicsTemplate, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                         string sProps = string.Empty;
-                        XmlDocument xDoc = new XmlDocument();
-                        xDoc.LoadXml(topicData);
-                        if (xDoc != null)
+                        var pl = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(topicData);
+                        foreach (var p in pl)
                         {
-                            System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                            System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//properties/property");
-                            if (xNodeList.Count > 0)
+                            string tmp = sPropTemplate;
+                            var pName = HttpUtility.HtmlDecode(p.Name);
+                            var pValue = HttpUtility.HtmlDecode(p.Value); tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
+                            tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
+                            sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
+                            sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
+                            string pValueKey = string.Empty;
+                            if (!(string.IsNullOrEmpty(pValue)))
                             {
-                                int i = 0;
-                                for (i = 0; i < xNodeList.Count; i++)
-                                {
-                                    string tmp = sPropTemplate;
-                                    string pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                    string pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                                    tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
-                                    tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
-                                    sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
-                                    sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
-                                    string pValueKey = string.Empty;
-                                    if (!(string.IsNullOrEmpty(pValue)))
-                                    {
-                                        pValueKey = Utilities.CleanName(pValue).ToLowerInvariant();
-                                    }
-                                    sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
-                                    sProps += tmp;
-                                }
+                                pValueKey = Utilities.CleanName(pValue).ToLowerInvariant();
                             }
-                            if (sTopicsTemplate.Contains("[AF:PROPERTY:"))
-                            {
-
-                            }
+                            sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
+                            sProps += tmp;
                         }
                         sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
 
@@ -805,7 +790,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[AUTHORID]", AuthorId.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[FORUMID]", ForumId.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[USERID]", UserId.ToString());
-                    //sTopicsTemplate = sTopicsTemplate.Replace("[POSTICON]", GetIcon(UserLastTopicRead, UserLastReplyRead, TopicId, LastReplyId, drTopic["TopicIcon"].ToString(), isPinned, isLocked));
 
                     if (UserLastTopicRead == 0 || (UserLastTopicRead > 0 & UserLastReplyRead < ReplyId))
                     {

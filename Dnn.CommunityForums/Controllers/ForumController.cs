@@ -18,24 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Web.UI.WebControls;
 using System.Xml;
-using DotNetNuke.Common.Controls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Search.Controllers;
-using Microsoft.ApplicationBlocks.Data;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>

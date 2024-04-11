@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int AuthorId { get; set; } = -1;
         public bool AllowHTML { get; set; }
         public bool RequireCaptcha { get; set; } = true;
-        public List<PropertiesInfo> TopicProperties { get; set; }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties { get; set; }
         #endregion
         #region Protected Controls
         protected TextBox txtSubject = new TextBox();
@@ -427,16 +427,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 string pTemplate = TemplateUtils.GetTemplateSection(template, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 string propList = string.Empty;
-                foreach (PropertiesInfo p in ForumInfo.Properties)
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo p in ForumInfo.Properties)
                 {
                     string pValue = string.Empty;
                     if (TopicProperties != null && TopicProperties.Count > 0)
                     {
-                        foreach (PropertiesInfo tp in TopicProperties)
+                        foreach (DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo tp in TopicProperties)
                         {
                             if (tp.PropertyId == p.PropertyId)
                             {
-                                pValue = tp.DefaultValue;
+                                pValue = tp.Value;
                             }
                         }
                     }

@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     throw new NotImplementedException();
                 case Actions.SaveTopic:
                     throw new NotImplementedException();
-                case Actions.ForumList:
+				case Actions.ForumList:
                     throw new NotImplementedException();
                 case Actions.LikePost:
                     throw new NotImplementedException();
