@@ -384,14 +384,11 @@
   <data name="NoProfile.Text" xml:space="preserve">
     <value>User has not created a profile.</value>
   </data>
-  <data name="Subscriptions.Text" xml:space="preserve">
-    <value>Subscriptions</value>
+  <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
+    <value>Topics you are subscribed to:</value>
   </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Threads you are tracking: </value>
-  </data>
-  <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Forums you are tracking:</value>
+  <data name="[RESX:ForumsTracked].Text" xml:space="preserve">
+    <value>Forums you are subscribed to:</value>
   </data>
   <data name="Banned.Text" xml:space="preserve">
     <value>Banned:</value>
@@ -1716,5 +1713,20 @@ From,
   </data>
   <data name="RESX:UserBanned.Text" xml:space="preserve">
     <value>User: {0} has been banned, and all posts deleted.</value>
+  </data>
+  <data name="[RESX:NoSubscriptions].Text" xml:space="preserve">
+    <value>No Subscriptions</value>
+  </data>
+  <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve">
+    <value>Subscribe to All Forums</value>
+  </data>
+  <data name="ForumsTracked.Text" xml:space="preserve">
+    <value>Forums you are tracking:</value>
+  </data>
+  <data name="Subscriptions.Text" xml:space="preserve">
+    <value>Subscriptions</value>
+  </data>
+  <data name="ThreadsTracked.Text" xml:space="preserve">
+    <value>Threads you are tracking:</value>
   </data>
 </root>

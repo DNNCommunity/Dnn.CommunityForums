@@ -371,6 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Search = "search";
         public const string Profile = "profile";
         public const string MyPreferences = "afprofile";
+        public const string MySubscriptions = "afsubscriptions";
     }
     internal static class GridTypes
     {
@@ -379,6 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ActiveTopics = "activetopics";
         public const string MyTopics = "mytopics";
         public const string MySettings = "afprofile";
+        public const string MySubscriptions = "afsubscriptions";
         public const string MostLiked = "mostlikes";
         public const string MostReplies = "mostreplies";
     }

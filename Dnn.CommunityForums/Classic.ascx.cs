@@ -98,6 +98,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Views.MyPreferences;
                     }
+                    else if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == Views.Grid && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MySubscriptions)
+                    {
+                        ctl = Views.MySubscriptions;
+                    }
                     else if (Request.Params[ParamKeys.ViewType] != null)
                     {
                         ctl = Request.Params[ParamKeys.ViewType];
@@ -166,8 +170,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 ForumBase ctl = null;
                 if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant())
-                {
+                { 
                     ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
+                }
+                else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant())
+                {
+                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx")));
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
