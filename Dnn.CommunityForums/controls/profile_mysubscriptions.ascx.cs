@@ -59,9 +59,22 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
             try
-            {   // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
-                UID = Request.QueryString[Literals.UserId] == null ? UserInfo.UserID : Convert.ToInt32(Request.QueryString[Literals.UserId]);
-                if (this.UserId == UID | UserIsMod)
+            { 
+                int _pageSize = MainSettings.PageSize;
+                if (UserInfo.UserID > 0)
+                {
+                    _pageSize = UserDefaultPageSize;
+                }
+                if (_pageSize < 5)
+                {
+                    _pageSize = 10;
+                }
+                dgrdForumSubs.PageSize = _pageSize;
+                dgrdTopicSubs.PageSize = _pageSize;
+
+                // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
+                UID = Request.QueryString[Literals.UserId] != null ? Convert.ToInt32(Request.QueryString[Literals.UserId]) : UserInfo.UserID;
+                if (UserId == UID | UserIsMod)
                 {
                     BindTopicSubs();
                     BindForumSubs();
