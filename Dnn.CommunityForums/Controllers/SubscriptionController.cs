@@ -104,5 +104,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId);
         }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
+        {
+            return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId = 0", portalId, moduleId, userId).ToList();
+        }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
+        {
+            return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId <> 0", portalId, moduleId, userId).ToList();
+        }
     }
 }

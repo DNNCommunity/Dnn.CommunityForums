@@ -3,6 +3,7 @@
 		<li>[AF:TB:ModList]</li>
 		<li>[AF:TB:Forums]</li>
 		<li>[AF:TB:MySettings]</li>
+		<li>[AF:TB:MySubscriptions]</li>
 		<li>[AF:TB:Search]</li>
 		<li>[AF:TB:ControlPanel]</li>
 	</ul>

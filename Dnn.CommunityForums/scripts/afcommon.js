@@ -244,25 +244,9 @@ function amaf_loadSuggest(field, prepop, type) {
 function amaf_postDel(mid, fid, tid, rid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
         var sf = $.ServicesFramework(mid);
-        var params;
-        if (rid > 0) {
-            params = {
-                forumId: fid,
-                topicId: tid,
-                replyId: rid
-            };
-        } else {
-            params = {
-                forumId: fid,
-                topicId: tid
-            };
-        };
         $.ajax({
-            type: "POST",
-            data: JSON.stringify(params),
-            contentType: "application/json",
-            dataType: "json",
-            url: dnn.getVar("sf_siteRoot", "/") + (rid > 0 ? 'API/ActiveForums/Reply/Delete' : 'API/ActiveForums/Topic/Delete'),
+            type: "DELETE",
+            url: dnn.getVar("sf_siteRoot", "/") + (rid > 0 ? 'API/ActiveForums/Reply/Delete?forumId=' + fid + '&replyId=' + rid : 'API/ActiveForums/Topic/Delete?forumId=' + fid + '&topicId=' + tid),
             beforeSend: sf.setModuleHeaders
         }).done(function (data) {
             afreload();

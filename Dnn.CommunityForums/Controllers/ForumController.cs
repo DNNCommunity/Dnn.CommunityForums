@@ -18,24 +18,9 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections;
 using System.Data;
-using System.IO;
 using System.Linq;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Web.UI.WebControls;
 using System.Xml;
-using DotNetNuke.Common.Controls;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Search.Controllers;
-using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -66,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
@@ -85,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
