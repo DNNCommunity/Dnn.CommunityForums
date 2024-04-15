@@ -26,59 +26,33 @@ using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public class EmailNotificationQueueController
+    internal class EmailNotificationQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo>
     {
-        public static void Add(int portalId, int moduleId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
+        public void Add(int portalId, int moduleId, string emailFrom, string emailTo, string emailSubject, string emailBody)
         {
             try
             {
-                using (IDataContext ctx = DataContext.Instance())
+                Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo
                 {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
-                    repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue
-                    {
-                        PortalId = portalId,
-                        ModuleId = moduleId,
-                        EmailFrom = emailFrom,
-                        EmailTo = emailTo,
-                        EmailCC = emailCC,
-                        EmailBCC = emailBcc,
-                        EmailBody = emailBody,
-                        EmailBodyPlainText = emailBodyPlainText,
-                        EmailSubject = emailSubject,
-                        DateCreated = DateTime.UtcNow
-                    });
-                }
+                    PortalId = portalId,
+                    ModuleId = moduleId,
+                    EmailFrom = emailFrom,
+                    EmailTo = emailTo,
+                    EmailBody = emailBody,
+                    EmailSubject = emailSubject,
+                    DateCreated = DateTime.UtcNow
+                });
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
-        public static void Delete(int Id)
+        public List<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo> GetBatch()
         {
             try
             {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
-                    repo.Delete(repo.GetById(Id));
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        public static List<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue> GetBatch()
-        {
-            try
-            {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
-                    return repo.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
-                }
+                return Get().OrderBy(m => m.DateCreated).Take(200).ToList();
             }
             catch (Exception ex)
             {

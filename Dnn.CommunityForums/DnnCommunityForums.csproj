@@ -250,6 +250,7 @@
     </Content>
     <Content Include="controls\af_polls.ascx" />
     <Content Include="controls\af_pollvote.ascx" />
+    <Content Include="controls\profile_mysubscriptions.ascx" />
     <Content Include="controls\af_sendto.ascx">
       <SubType>ASPXCodeBehind</SubType>
     </Content>
@@ -1313,6 +1314,13 @@
     <Compile Include="Controllers\TopicTagController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="controls\profile_mysubscriptions.ascx.cs">
+      <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controls\profile_mysubscriptions.ascx.designer.cs">
+      <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
@@ -1345,7 +1353,6 @@
     <Compile Include="Constants\SEOConstants.cs" />
     <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\EmailNotificationQueueController.cs" />
-    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="controls\af_modban.ascx.cs">
       <DependentUpon>af_modban.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1374,9 +1381,8 @@
     <Compile Include="DAL2\Content\ContentController.cs" />
     <Compile Include="DAL2\Reply\Reply.cs" />
     <Compile Include="DAL2\Reply\ReplyController.cs" />
-    <Compile Include="Entities\Email.cs" />
-    <Compile Include="Entities\EmailNotificationQueue.cs" />
-    <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\EmailInfo.cs" />
+    <Compile Include="Entities\EmailNotificationQueueInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Services\Controllers\ControllerBase.cs" />
     <Compile Include="Services\EmailNotificationQueue.cs" />

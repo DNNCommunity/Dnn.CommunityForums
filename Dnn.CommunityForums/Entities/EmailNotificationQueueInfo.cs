@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_EmailNotificationQueue")]
     [PrimaryKey("Id", AutoIncrement = true)] 
-    public class EmailNotificationQueue
+    public class EmailNotificationQueueInfo
     {
         public int Id { get; set; }
         public int PortalId { get; set; }
@@ -34,9 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string EmailTo { get; set; }
         public string EmailSubject { get; set; }
         public string EmailBody { get; set; }
-        public string EmailBodyPlainText { get; set; }
-        public string EmailCC { get; set; }
-        public string EmailBCC { get; set; }
         public DateTime DateCreated { get; set; }
     }
 }

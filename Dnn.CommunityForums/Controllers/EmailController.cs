@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             var recipients = new List<string>();
             recipients.Add(author.Email);
-            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
             {
                 Body = body,
                 From = sFrom,
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     string sTemplate = string.Empty;
                     string sFrom = fi.EmailAddress != string.Empty ? fi.EmailAddress : portalSettings.Email;
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
                     {
                         From = sFrom,
                         PortalId = portalId,
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     if (subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && !s.TopicSubscriber).ToList().Count > 0)
                     {
                         //new System.Threading.Thread(oEmail.Send).Start();
-                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
+                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
                         {
                             From = sFrom,
                             ModuleId = moduleID,
@@ -175,19 +175,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                         smtpEnableSSL: EnableSMTPSSL(portalId));
         }
 
-        public static void Send(DotNetNuke.Modules.ActiveForums.Entities.Email message)
+        public static void Send(DotNetNuke.Modules.ActiveForums.Entities.EmailInfo message)
         {
             try
             {
                 message.Subject = message.Subject.Replace("&#91;", "[");
                 message.Subject = message.Subject.Replace("&#93;", "]");
-
+                var mc = new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController();
                 foreach (var r in message.Recipients.Where(r => !string.IsNullOrEmpty(r)))
                 {
-                    if (SettingsBase.GetModuleSettings(message.ModuleId).MailQueue)
-                        DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Add(portalId: message.PortalId, moduleId: message.ModuleId, message.From, emailTo: r, emailSubject: message.Subject, emailBody: message.Body, emailBodyPlainText: message.Body, emailCC: string.Empty, emailBcc: string.Empty);
-                    else
-                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(message.PortalId, message.ModuleId, fromEmail: message.From, toEmail: r, subject: message.Subject, bodyText: message.Body, bodyHTML: message.Body);
+                    mc.Add(portalId: message.PortalId, moduleId: message.ModuleId, message.From, emailTo: r, emailSubject: message.Subject, emailBody: message.Body);                 
                 }
             }
             catch (Exception ex)
@@ -280,12 +277,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
         public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
         {
-            SendNotification(-1, -1, fromEmail, toEmail, subject, bodyText, bodyHTML);
+            SendNotification(-1, -1, fromEmail, toEmail, subject, bodyHTML);
         }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
         public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
         {
-            SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyText, bodyHTML);
+            SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyHTML);
         }
 
 

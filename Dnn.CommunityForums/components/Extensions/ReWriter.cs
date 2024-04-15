@@ -447,6 +447,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 7:
                             v = GridTypes.MostReplies;
                             break;
+                        case 8:
+                            v = GridTypes.MySubscriptions;
+                            break;
 
                     }
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);

@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
