@@ -20,8 +20,19 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    internal partial class TagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo> {}
+    internal partial class TagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TagInfo> 
+    {
+        public void DeleteForTagId(int tagId)
+        {
+            base.Delete("WHERE TagId = @0", tagId);
+        }
+        public void DeleteForTopicId(int topicId)
+        {
+            base.Delete("WHERE TopicId = @0", topicId);
+        }
+    }
 }

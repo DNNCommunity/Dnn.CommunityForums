@@ -412,6 +412,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Tags
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override void Tags_Delete(int PortalId, int ModuleId, int TagId)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Delete", PortalId, ModuleId, TagId, -1);
@@ -421,6 +422,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Delete", PortalId, ModuleId, -1, TopicId);
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Tags_Get(int PortalId, int ModuleId, int TagId)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Get", PortalId, ModuleId, TagId));
@@ -433,6 +435,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Save", PortalId, ModuleId, TagId, TagName, Clicks, Items, Priority, TopicId, IsCategory, ForumId, ForumGroupId));
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Tags_Search(int PortalId, int ModuleId, string Search)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Search", PortalId, ModuleId, Search));

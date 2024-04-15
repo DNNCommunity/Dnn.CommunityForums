@@ -763,7 +763,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
-                DataProvider.Instance().Tags_DeleteByTopicId(PortalId, ForumModuleId, TopicId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicTagController().DeleteForTopicId(TopicId);
                 var tagForm = string.Empty;
                 if (Request.Form["txtTags"] != null)
                     tagForm = Request.Form["txtTags"];

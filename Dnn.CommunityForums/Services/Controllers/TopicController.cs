@@ -326,16 +326,16 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         StringBuilder tData = new StringBuilder();
                         tData.Append("<topicdata>");
                         tData.Append("<properties>");
-                        foreach (PropertiesInfo p in originalTopic.Forum.Properties)
+                        foreach (var p in originalTopic.Forum.Properties)
                         {
                             tData.Append("<property id=\"" + p.PropertyId.ToString() + "\">");
                             tData.Append("<name><![CDATA[");
                             tData.Append(p.Name);
                             tData.Append("]]></name>");
-                            if (!string.IsNullOrEmpty(dto.Topic.TopicProperties?.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue))
+                            if (!string.IsNullOrEmpty(dto.Topic.TopicProperties?.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().Value))
                             {
                                 tData.Append("<value><![CDATA[");
-                                tData.Append(Utilities.XSSFilter(dto.Topic.TopicProperties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().DefaultValue));
+                                tData.Append(Utilities.XSSFilter(dto.Topic.TopicProperties.Where(pl => pl.PropertyId == p.PropertyId).FirstOrDefault().Value));
                                 tData.Append("]]></value>");
                             }
                             else
