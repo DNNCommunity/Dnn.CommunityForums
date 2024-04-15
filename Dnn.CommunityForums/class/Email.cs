@@ -37,7 +37,7 @@ using DotNetNuke.Security.Roles;
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Email.")]
-    public class Email : DotNetNuke.Modules.ActiveForums.Entities.Email
+    public class Email : DotNetNuke.Modules.ActiveForums.Entities.EmailInfo
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
         public string BodyText { get => Body; set => Body = value; }
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.Send().")]
         public void Send()
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.Email()
+            DotNetNuke.Modules.ActiveForums.Controllers.EmailController.Send(new DotNetNuke.Modules.ActiveForums.Entities.EmailInfo()
             {
                 Body = this.Body,
                 From = this.From,

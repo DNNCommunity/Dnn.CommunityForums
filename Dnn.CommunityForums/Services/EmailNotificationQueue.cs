@@ -52,33 +52,17 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             var intQueueCount = 0;
             try
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.GetBatch().ForEach(m =>
+                new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().GetBatch().ForEach(m =>
                 {
                     intQueueCount += 1;
-                    var message = new DotNetNuke.Modules.ActiveForums.Entities.Message
+                    try
                     {
-                        PortalId = m.PortalId,
-                        ModuleId = m.ModuleId,
-                        Subject = m.EmailSubject,
-                        SendFrom = m.EmailFrom,
-                        SendTo = m.EmailTo,
-                        Body = m.EmailBody,
-                    };
-
-                    var canDelete = DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(message);
-                    if (canDelete)
-                    {
-                        try
-                        {
-                            DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Delete(m.Id);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
+                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(m.PortalId, m.ModuleId, m.EmailFrom, m.EmailTo, m.EmailSubject, m.EmailBody);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().DeleteById(m.Id);
                     }
-                    else
+                    catch (Exception ex)
                     {
+                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                         intQueueCount = intQueueCount - 1;
                     }
                 });

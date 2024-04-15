@@ -17,21 +17,31 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Modules.ActiveForums;
-using System.Collections.Generic;
+
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Net.Mail;
+using System.Threading;
+using System.Web;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Entities.Controllers;
+using DotNetNuke.Entities.Host;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-
-    public class Message
+    public class EmailInfo
     {
         public int PortalId;
         public int ModuleId;
         public string Subject;
-        public string SendFrom;
-        public string SendTo;
+        public string From;
         public string Body;
 
+        public List<string> Recipients;
     }
 }
