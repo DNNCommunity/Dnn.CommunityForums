@@ -1,0 +1,85 @@
+<style>
+	div.uv-install-wrapper h1, div.uv-install-wrapper h1 em, div.uv-install-wrapper h1 pre, div.uv-install-wrapper h1 strong { font-size: 16px; }
+	div.uv-install-wrapper h2, div.uv-install-wrapper h2 em, div.uv-install-wrapper h2 pre, div.uv-install-wrapper h2 strong { font-size: 15px; }
+	div.uv-install-wrapper h3, div.uv-install-wrapper h3 em, div.uv-install-wrapper h3 pre, div.uv-install-wrapper h3 strong { font-size: 14px; }
+	div.uv-install-wrapper h4, div.uv-install-wrapper h4 em, div.uv-install-wrapper h4 pre, div.uv-install-wrapper h4 strong { font-size: 12px; }
+	div.uv-install-wrapper h3, div.uv-install-wrapper h4, div.uv-install-wrapper p, div.uv-install-wrapper hr, div.uv-install-wrapper ul { margin-bottom: 0.5em; }
+	div.uv-install-wrapper ul { padding-left: 2em; }
+	.muy-importante { color:red;font-weight:bold; }
+	div.uv-install-wrapper pre { font-family: Courier New; font-weight: 11pt; margin-bottom: 4px; display: inline; }
+	div.uv-install-wrapper ol { padding-left: 24px; margin-bottom: 6px; }
+</style>
+<div class="uv-install-wrapper">
+	<h3>The Official <strong>Community Forums</strong> Module for DNN CMS</h3>
+	<hr />
+
+	<div class="dnnClear">
+		<h2 class="muy-importante">IMPORTANT: Upgrade Notes</h2>
+		<p>
+			The release notes will follow, below these important notes.
+		</p>
+
+		<h3><strong>NEW</strong> CSS Loading Order</h3>
+		<p>
+			CSS loading has been improved to deliver robust CSS both within the module, across all themes, and then theme-specific with a custom override.
+		</p>
+		<p>
+			New Community Forum's CSS Load order:
+		</p>
+		<ol>
+			<li>
+				<pre>~/DesktopModules/ActiveForums/module.css</pre> (<em>already existing</em>)
+			</li>
+			<li>
+				<pre>~/DesktopModules/ActiveForums/themes/themes.css</pre> (<em>new name and CSS content / used across all themes</em>)
+			</li>
+			<li>
+				<pre>~/DesktopModules/ActiveForums/themes/_currenttheme_/theme{.min}.css</pre> (<em>already existing / new name</em>). Can now have a .min.css variant.
+			</li>
+			<li>
+				<pre>~/DesktopModules/ActiveForums/themes/_currenttheme_/custom/theme{.min}.css</pre> (new) has been updated. Can now have a .min.css variant.
+			</li>
+		</ol>
+
+		<h3>Orphaned Web.Config Update</h3>
+		<p>
+			If you have previously installed the Community Forums module --and its URL rewriter in order to use friendly URLs-- that process inserted 
+			the attribute <em>runAllManagedModulesForAllRequests="true"</em> into the <em>&lt;configuration&gt;&lt;system.webServer&gt;&lt;modules&gt;</em> 
+			tag in the main <em>web.config</em>.
+		</p>
+		<p>
+			Per <a href="https://learn.microsoft.com/en-us/iis/configuration/system.webserver/modules/" target="_blank">Microsoft 
+			documentation</a>, this attribute is obsolete if you are running IIS 7 (plus a patch), or IIS 8+.
+		</p>
+		<p>
+			Since you <em>may</em> have other modules 
+			that require it, we have chosen to <strong>NOT</strong> remove it automatically. If you have no other modules that require it, you many 
+			remove it manually.
+		</p>
+	</div>
+	<hr/>
+	<div class="dnnClear">
+		<h2>Release Notes</h2>
+		<hr />
+		<h3>08.00.01</h3>
+		<h4>New Features &amp; Enhancements</h4>
+		<ul>
+			<li>None at this time.</li>
+			<!--<li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
+		
+		<h4>Bug Fixes</h4>
+		<ul>
+			<li>FIXED: Quick Reply &gt; Submit Button Missing for the Legacy Theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/641">Issue 641</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>FIXED: Flood Interval Not Working on Quick Reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/639">Issue 639</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
+		
+		<h4>Tasks / Development Updates (and Technical Debt)</h4>
+		<ul>
+			<li>None at this time.</li>
+			<!--<li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
+	</div>
+	</div>
+</div>

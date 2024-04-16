@@ -1,0 +1,628 @@
+﻿/* issue 97 - begin - delete module instance not removing data from database */
+
+SET NOCOUNT ON
+GO
+
+/* Remove orphaned URL rewrite records */
+DELETE u FROM {databaseOwner}[{objectQualifier}activeforums_URL] u  
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t  
+ON t.TopicId = u.TopicId  
+WHERE t.TopicId IS NULL  
+
+/* remove obsolete license key from activeforums_Settings with ModuleId = -1 to avoid missing row in CONSTRAINT from activeforums_Settings to Modules */
+DELETE FROM {databaseOwner}[{objectQualifier}activeforums_Settings] WHERE ModuleId = -1 AND SettingName = 'AFKEY'
+GO
+
+/* add row(s) for modules that were deleted but left orphaned data; any modules will show up in default portal recycle bin */
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Modules] ON
+INSERT INTO {databaseOwner}[{objectQualifier}Modules] (ModuleID, ModuleDefID,IsDeleted,PortalID) 
+SELECT af.ModuleID,(SELECT ModuleDefID from {databaseOwner}[{objectQualifier}ModuleDefinitions] WHERE DefinitionName = 'Active Forums'),1,(SELECT CAST(SettingValue AS int) AS PortalId FROM {databaseOwner}[{objectQualifier}HostSettings] where SettingName = 'HostPortalId') 
+FROM (
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Filters] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Forums] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Groups]  
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Ranks] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Settings] 
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Subscriptions]
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Tags]
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Templates]
+UNION
+SELECT DISTINCT ModuleID FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Related]
+) af
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}Modules] m
+ON m.ModuleID = af.ModuleId
+WHERE m.ModuleID IS NULL
+SET IDENTITY_INSERT {databaseOwner}[{objectQualifier}Modules] OFF
+
+/* delete any orphan tracking for topics that don't exist */
+DELETE FROM tt
+FROM {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] tt
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t
+ON t.TopicId = tt.TopicId
+WHERE t.topicId IS NULL
+
+/* delete any orphan attachments for content that does not exist */
+DELETE a
+FROM {databaseOwner}[{objectQualifier}activeforums_Attachments] a
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c
+ON c.ContentId = a.ContentId
+WHERE c.ContentId IS NULL
+
+DELETE ca 
+FROM {databaseOwner}[{objectQualifier}activeforums_Content_Attachments] ca
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c
+ON c.ContentId = ca.ContentId
+WHERE c.ContentId IS NULL
+
+/* delete any orphan likes for content that does not exist */
+DELETE l
+FROM {databaseOwner}[{objectQualifier}activeforums_Likes] l
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c
+ON c.ContentId = l.PostId
+WHERE c.ContentId IS NULL
+
+/* add ModuleId to activeforums_Content */
+IF NOT EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'ModuleId' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content]'))    
+BEGIN
+	ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content] ADD
+	ModuleId INT NULL
+END
+GO
+
+/* populate ModuleId in activeforums_Content */
+UPDATE c
+SET c.ModuleId = f.ModuleId
+FROM {databaseOwner}[{objectQualifier}activeforums_Content] c
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t
+ON t.ContentId = c.ContentId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r
+ON r.ContentId = c.ContentId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ftt 
+ON ftt.TopicId = t.TopicId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ftr 
+ON ftr.TopicId = r.TopicId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+ON f.ForumId = COALESCE(ftr.ForumId,ftt.ForumId)
+WHERE c.ModuleId IS NULL
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Content') AND name = N'IX_{objectQualifier}activeforums_Content_ModuleId')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Content_ModuleId 
+ON {databaseOwner}[{objectQualifier}activeforums_Content] (ModuleId) 
+GO
+
+/* Begin - update activeforums_Topics_SaveToForum procedure to populate ModuleId in activeforums_Content when saving new topic */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]
+GO
+
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Topics_SaveToForum]
+@ForumId int,
+@TopicId int,
+@LastReplyId int
+AS
+BEGIN
+DECLARE @LastPostId int 
+DECLARE @tmpLastPostId int
+SET @LastPostId = 0
+SET @tmpLastPostId = -1
+DECLARE @Subject nvarchar(250)
+DECLARE @AuthorName nvarchar(150)
+DECLARE @AuthorId int
+DECLARE @PostDate datetime
+DECLARE @LastTopicId int
+DECLARE @ReplyId int
+
+IF EXISTS (SELECT TopicId FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] WHERE ForumId = @ForumId AND TopicId = @TopicId)
+	BEGIN
+			
+		IF @LastReplyId > 0
+			BEGIN
+			SET @tmpLastPostId = (SELECT MAX(ReplyId) from {databaseOwner}[{objectQualifier}activeforums_Replies] WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
+			DECLARE @LastReplyDate int
+			SET @LastReplyDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',rc.DATECREATED) FROM {databaseOwner}[{objectQualifier}activeforums_Content] as rc INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] as r ON r.ContentId = rc.ContentId WHERE ReplyId = @tmpLastPostId)
+			UPDATE {databaseOwner}[{objectQualifier}activeforums_ForumTopics]
+			SET LastReplyId = @tmpLastPostId,
+			 LastReplyDate = @LastReplyDate 
+			 WHERE ForumId = @ForumId AND TopicId = @TopicId
+
+
+			END
+	END
+ELSE
+	BEGIN
+	
+	IF @LastReplyId = -1
+		SET @LastReplyId = Null
+		DECLARE @LastTopicDate int
+		SET @LastTopicDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',tc.DATECREATED) FROM {databaseOwner}[{objectQualifier}activeforums_Content] as tc INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] as t ON t.ContentId = tc.ContentId WHERE TopicId = @TopicId)
+		INSERT INTO {databaseOwner}[{objectQualifier}activeforums_ForumTopics]
+			(ForumId, TopicId, LastReplyId, LastTopicDate, LastReplyDate)
+			VALUES
+			(@ForumId, @TopicId, @LastReplyId, @LastTopicDate, @LastTopicDate)
+
+		/* populate ModuleId in activeforums_Content */
+		UPDATE c
+		SET c.ModuleId =  f.ModuleId
+		FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t
+		ON t.ContentId = c.ContentId 
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
+		ON ft.TopicId = t.TopicId
+		LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+		ON f.ForumId = ft.ForumId
+		WHERE c.ModuleId IS NULL AND t.TopicId = @TopicId
+		
+	END
+END
+
+ 
+exec {databaseOwner}{objectQualifier}activeforums_Forums_LastUpdates @ForumId
+
+
+-- reset thread order
+EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+
+
+GO
+ 
+/* End - update activeforums_Topics_SaveToForum procedure to populate ModuleId in activeforums_Content when saving new topic */
+
+
+/* Begin - update activeforums_Reply_Save procedure to populate ModuleId in activeforums_Content when saving reply */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Reply_Save]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+GO
+ 
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Reply_Save]
+@PortalId int,
+@TopicId int,
+@ReplyId int,
+@ReplyToId int,
+@StatusId int,
+@IsApproved bit,
+@IsDeleted bit,
+@Subject nvarchar(255),
+@Body ntext,
+@DateCreated datetime,
+@DateUpdated datetime,
+@AuthorId int,
+@AuthorName nvarchar(150),
+@IPAddress nvarchar(50)
+AS
+DECLARE @ContentId int
+DECLARE @IsEdit bit
+SET @IsEdit = 0
+DECLARE @ApprovedStatus bit
+SET @ApprovedStatus = @IsApproved
+
+-- This part is a work around for Quick Reply feature not working for Tapatalk STARTS
+
+DECLARE @TopicSubject NVARCHAR(255) =	(
+											SELECT top 1 afc.Subject FROM {databaseOwner}[{objectQualifier}activeforums_Topics] aft
+												JOIN {databaseOwner}[{objectQualifier}activeforums_Content] afc ON aft.ContentId = afc.ContentId
+											WHERE TopicId = @TopicId
+										)	
+										
+SET @Subject = ISNULL(NULLIF(@Subject, ''), 'RE: ' + @TopicSubject)	
+
+IF (@Subject NOT LIKE 'RE:%')
+BEGIN
+	SET @Subject = 'RE: ' + @Subject
+END
+-- This part is a work around for Quick Reply feature not working for Tapatalk ENDS
+
+
+IF EXISTS(SELECT ContentId FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE ReplyId = @ReplyId)
+	BEGIN
+		SELECT @ContentId = ContentId, @ApprovedStatus = IsApproved FROM {databaseOwner}{objectQualifier}activeforums_Replies WHERE ReplyId = @ReplyId
+		
+		BEGIN
+			SET @IsEdit = 1
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Content
+				SET Subject = @Subject,
+					Body = @Body,
+					DateCreated = @DateCreated,
+					DateUpdated = @DateUpdated,
+					AuthorId = @AuthorId,
+					AuthorName = @AuthorName,
+					IsDeleted = @IsDeleted,
+					IPAddress = @IPAddress
+				WHERE ContentId = @ContentId
+			UPDATE {databaseOwner}{objectQualifier}activeforums_Replies
+				SET StatusId = @StatusId,
+					TopicId = @TopicId,
+					IsApproved = @IsApproved,
+					IsDeleted = @IsDeleted,
+					ReplyToId = @ReplyToId					
+				WHERE ReplyId = @ReplyId	
+		END
+	END
+ELSE
+--INSERT
+BEGIN
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Content
+			(Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IsDeleted, IPAddress)
+			VALUES
+			(@Subject, @Body, @DateCreated, @DateUpdated, @AuthorId, @AuthorName, @IsDeleted, @IPAddress)
+		SET @ContentId = SCOPE_IDENTITY()
+	END
+	BEGIN
+		INSERT INTO {databaseOwner}{objectQualifier}activeforums_Replies
+			(ContentId, TopicId, StatusId, IsApproved, IsDeleted, ReplyToId)
+			VALUES
+			(@ContentId, @TopicId, @StatusId, @IsApproved, @IsDeleted, @ReplyToId)
+		SET @ReplyId = SCOPE_IDENTITY()
+		
+	END
+	
+
+END
+IF @IsApproved = 1
+	BEGIN
+		DECLARE @ForumId int
+		SELECT @ForumId = ForumId FROM {databaseOwner}{objectQualifier}activeforums_ForumTopics WHERE TopicId = @TopicId
+		DECLARE @TotalReplies int
+		SET @TotalReplies = (SELECT Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_replies as r inner join {databaseOwner}{objectQualifier}activeforums_topics as t on t.topicid = r.topicid and r.isapproved = 1 and r.isdeleted = 0 INNER JOIN {databaseOwner}{objectQualifier}activeforums_forumtopics as ft on t.topicid = ft.topicid WHERE ft.forumid = @ForumId)
+		DECLARE @LastReplyDate int
+		SET @LastReplyDate = (SELECT DATEDIFF(ss,'01/01/1970 00:00:00 AM',rc.DATECREATED) FROM {databaseOwner}{objectQualifier}activeforums_Content as rc INNER JOIN {databaseOwner}{objectQualifier}activeforums_Replies as r ON r.ContentId = rc.ContentId WHERE ReplyId = @ReplyId)
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Forums 
+		SET LastPostSubject = @Subject, LastPostAuthorName = @AuthorName, LastPostAuthorId = IsNull(@AuthorId,-1), 
+			LastPostDate = @DateCreated, LastTopicId = IsNull(@TopicId,0), LastReplyId = IsNull(@ReplyId,0),
+			TotalReplies = ISNULL(@TotalReplies,0)
+		WHERE ForumId = @ForumId
+		UPDATE {databaseOwner}{objectQualifier}activeforums_Topics
+			SET ReplyCount = (Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies WHERE TopicId = @TopicId AND IsDeleted = 0 AND IsApproved = 1)
+			WHERE TopicId = @TopicId
+			If @IsEdit = 0
+				UPDATE {databaseOwner}{objectQualifier}activeforums_ForumTopics SET LastReplyId = @ReplyId, LastReplyDate = @LastReplyDate 	WHERE TopicId = @TopicId
+			IF @AuthorId > 0
+				UPDATE {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+					SET ReplyCount = ISNULL((Select Count(ReplyId) from {databaseOwner}{objectQualifier}activeforums_Replies as r INNER JOIN 
+							{databaseOwner}{objectQualifier}activeforums_Content as c ON r.ContentId = c.ContentId AND c.AuthorId=@AuthorId INNER JOIN
+							{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = r.TopicId INNER JOIN
+							{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId
+							WHERE r.IsApproved = 1 AND r.IsDeleted=0 AND f.PortalId=@PortalId),0)
+					WHERE UserId = @AuthorId AND PortalId = @PortalId					
+			
+		
+		-- reset thread order
+		EXEC {databaseOwner}{objectQualifier}activeforums_SaveTopicNextPrev @ForumId
+	END
+
+
+
+/* populate ModuleId in activeforums_Content */
+UPDATE c
+SET c.ModuleId = f.ModuleId
+FROM {databaseOwner}[{objectQualifier}activeforums_Content] c 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r
+ON r.ContentId = c.ContentId 
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft 
+ON ft.TopicId = r.TopicId
+LEFT OUTER JOIN {databaseOwner}[{objectQualifier}activeforums_Forums] f 
+ON f.ForumId = ft.ForumId
+WHERE c.ModuleId IS NULL AND r.ReplyId = @ReplyId
+
+
+
+
+SELECT @ReplyId
+GO
+/* End - update activeforums_Reply_Save procedure to populate ModuleId in activeforums_Content when saving reply */
+
+
+/* activeforums_Content - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Content_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Content_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Content_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+
+
+/* activeforums_Filters - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Filters_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Filters]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Filters] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Filters_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Filters] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Filters_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Forums_Tracking - cascade delete from Modules */ 
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Forums_Tracking_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums_Tracking]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Forums_Tracking_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums_Tracking] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Forums_Tracking_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Groups - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Groups_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Groups]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Groups] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Groups_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Groups] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Groups_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Ranks - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Ranks_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Ranks]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Ranks] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Ranks_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Ranks] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Ranks_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Settings - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Settings_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Settings]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Settings] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Settings_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Settings] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Settings_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Subscriptions - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Subscriptions_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Subscriptions] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Subscriptions_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Subscriptions] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Subscriptions_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Tags - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Tags_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Tags]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Tags] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Tags_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Tags] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Tags_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Templates - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Templates_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Templates] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Templates_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Templates] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Templates_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Topics_Related - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Related_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Related]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Related]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Related_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Related ]ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Related_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Forums - cascade delete from Modules */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Forums_Modules]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Forums]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_Forums_Modules]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Forums] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Forums_Modules] FOREIGN KEY (ModuleId) 
+	REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) 
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_ForumTopics - cascade delete from activeforums_Forums */
+/* remove existing constraint */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_ForumTopics_activeforums_Forums]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_ForumTopics_activeforums_Forums]
+GO
+/* replace with simpler name */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_ForumTopics_Forums]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP CONSTRAINT 
+[FK_{objectQualifier}activeforums_ForumTopics_Forums]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_ForumTopics_Forums] FOREIGN KEY (ForumId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Forums] (ForumId)
+	ON DELETE CASCADE 
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'IX_{objectQualifier}activeforums_Topics_ContentId')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_ContentId ON {databaseOwner}[{objectQualifier}activeforums_Topics]
+	(
+	ContentId,
+	TopicId
+	) 
+GO
+
+/* activeforums_Topics - cascade delete from activeforums_Content */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Content]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Content] FOREIGN KEY (ContentId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Content] (ContentId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Replies - cascade delete from activeforums_Content */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Replies_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Replies_Content]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Replies_Content] FOREIGN KEY (ContentId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Content] (ContentId)
+	ON DELETE CASCADE 
+GO
+ 
+/* activeforums_Likes - cascade delete from activeforums_Content */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Likes_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Likes]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Likes]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Likes_Content]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Likes] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Likes_Content] FOREIGN KEY (PostId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Content] (ContentId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Attachments - cascade delete from activeforums_Content */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Attachments_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Attachments]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Attachments_Content]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Attachments] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Attachments_Content] FOREIGN KEY (ContentId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Content] (ContentId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Content_Attachments - cascade delete from activeforums_Content */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Content_Attachments_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content_Attachments]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content_Attachments]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Content_Attachments_Content]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Content_Attachments] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Content_Attachments_Content] FOREIGN KEY (ContentId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Content] (ContentId)
+	ON DELETE CASCADE 
+GO 
+
+/* activeforums_Topics_Ratings - cascade delete from activeforums_Topics */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Ratings_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Ratings_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings ]ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Ratings_Topics] FOREIGN KEY (TopicId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (TopicId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Topics_Tracking - cascade delete from activeforums_Topics */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Tracking_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Tracking_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Tracking_Topics] FOREIGN KEY (TopicId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (TopicId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Topics_Tags - cascade delete from activeforums_Topics */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Tags_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Tags_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Tags_Topics] FOREIGN KEY (TopicId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (TopicId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Topics_Tags - create relationship but NOT cascade delete from activeforums_Tags */
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics_Tags') AND name = N'IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_Topics_Tags_UniqueAlt ON {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	(
+	TagId,
+	TopicId
+	) 
+GO
+
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_Tags_Tags]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_Tags_Tags]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Topics_Tags_Tags] FOREIGN KEY (TagId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Tags] (TagId)
+	ON DELETE NO ACTION 
+GO
+
+/* activeforums_URL - cascade delete from activeforums_Topics */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_URL_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_URL]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_URL]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_URL_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_URL] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_URL_Topics] FOREIGN KEY (TopicId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (TopicId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Poll - cascade delete from activeforums_Topics */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Poll_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Poll]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Poll]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Poll_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Poll] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Poll_Topics] FOREIGN KEY (TopicId) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] (TopicId)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Poll_Options - cascade delete from activeforums_Poll */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Poll_Options_Poll]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Poll_Options]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Poll_Options]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Poll_Options_Poll]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Poll_Options] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Poll_Options_Poll] FOREIGN KEY (PollID) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Poll] (PollID)
+	ON DELETE CASCADE 
+GO
+
+/* activeforums_Poll_Results - cascade delete from activeforums_Poll */
+IF EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Poll_Results_Poll]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Poll_Results]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Poll_Results]
+	DROP CONSTRAINT [FK_{objectQualifier}activeforums_Poll_Results_Poll]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Poll_Results] ADD CONSTRAINT
+	[FK_{objectQualifier}activeforums_Poll_Results_Poll] FOREIGN KEY (PollID) 
+	REFERENCES {databaseOwner}[{objectQualifier}activeforums_Poll] (PollID)
+	ON DELETE CASCADE 
+GO
+
+/* issue 97 - end - delete module instance not removing data from database */

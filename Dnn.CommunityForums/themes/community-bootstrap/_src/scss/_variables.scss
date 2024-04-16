@@ -1,0 +1,21 @@
+$break-tablet: 768px;
+$break-desktop: 992px;
+
+$spacer: 1rem;
+
+$spacer-xs: (0.25 * $spacer);
+$spacer-sm: (0.25 * $spacer);
+$spacer-md: (0.75 * $spacer);
+
+$grey-300: #ddd;
+$grey-500: #aaa;
+$grey-700: #888;
+
+$font-sm: 0.9em;
+$font-xs: 0.8em;
+
+$border-inner-color: $grey-300;
+
+@mixin text-input-border {
+    border: solid 1px $grey-500;
+}
