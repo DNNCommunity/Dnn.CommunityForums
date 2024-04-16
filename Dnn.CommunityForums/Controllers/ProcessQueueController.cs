@@ -21,22 +21,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    public class ProcessQueueController
+    internal class ProcessQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo>
     {
-        public static void Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId)
+        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId, string requestUrl)
         {
             try
             {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue>();
-                    repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue
+               Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
                     {
                         PortalId = portalId,
                         ModuleId = moduleId,
@@ -48,54 +45,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         ReplyId=replyId,   
                         AuthorId=authorId,
                         DateCreated=DateTime.UtcNow,
+                        RequestUrl=requestUrl,
                     });
-                }
-                
+                return true;                
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
             }
         }
-        public static void Delete(int Id)
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo> GetBatch()
         {
             try
             {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue>();
-                    repo.Delete(repo.GetById(Id));
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        public static void Update(DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue item)
-        {
-            try
-            {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue>();
-                    repo.Update(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        public static List<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue> GetBatch()
-        {
-            try
-            {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueue>();
-                    return repo.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
-                }
+                    return Get().OrderBy(m => m.DateCreated).Take(200).ToList();
             }
             catch (Exception ex)
             {

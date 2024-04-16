@@ -32,6 +32,7 @@ using System.Web;
 using DotNetNuke.Entities.Portals;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Abstractions;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -117,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, int timeZoneOffset)
         {
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: user, userId: userId, userCultureInfo: Utilities.GetCultureInfoForUser(portalID, userId), timeZoneOffset: new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), topicSubscriber: false);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: user, userId: userId, userCulture: Utilities.GetCultureInfoForUser(portalID, userId), timeZoneOffset: new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0), topicSubscriber: false);
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
@@ -127,39 +128,42 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
+            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: null, userId: -1, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: comments, user: null, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
+            return ParseEmailTemplate(template: string.Empty, templateName: templateName, portalID: portalID, moduleID: moduleID, tabID: tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: comments, user: null, userId: -1, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo user, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
-            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: user, userId: -1, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
+            return ParseEmailTemplate(string.Empty, templateName, portalID, moduleID, tabID, forumID: forumID, topicId: topicId, replyId: replyId, comments: string.Empty, user: user, userId: -1, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
 
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset)
         {
             var uc = new DotNetNuke.Entities.Users.UserController();
             var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: false);
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
         {
-            var uc = new DotNetNuke.Entities.Users.UserController();
-            var usr = uc.GetUser(portalID, userId);
-            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCultureInfo: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: topicSubscriber);
+            var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalID, userId);
+            return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber, new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url); 
         }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber)
-        { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCultureInfo, timeZoneOffset, topicSubscriber, null); }
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
+        { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber,new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url); }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCultureInfo, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl)
         {
-            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            if (navigationManager == null)
+            {
+                navigationManager = (INavigationManager)new Services.URLNavigator();
+            }
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalID);
             var ms = SettingsBase.GetModuleSettings(moduleID);
             var sOut = template;
 
@@ -181,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (topicId > 0 && replyId > 0)
             {
-                var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(replyId);
+                var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                 if (ri != null)
                 {
                     subject = ri.Content.Subject;
@@ -203,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            body = Utilities.ManageImagePath(body, new Uri(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request))));
+            body = Utilities.ManageImagePath(body, requestUrl);
 
             // load the forum information
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumID, moduleId: moduleID);
@@ -242,16 +246,16 @@ namespace DotNetNuke.Modules.ActiveForums
             if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
-                    link = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL( tabID,  new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
-                        : new Services.URLNavigator().NavigateURL( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
+                    link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, string.Empty,  new[] { string.Concat(ParamKeys.TopicId, "=", topicId) })
+                        : navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId });
                 else
-                    link = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
-                        : new Services.URLNavigator().NavigateURL( tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
+                    link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, string.Empty, new[] { string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
+                        : navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topic), string.Concat(ParamKeys.TopicId, "=", topicId), string.Concat(ParamKeys.ContentJumpId, "=", replyId) });
             }
             else
             {
                 var contentId = (replyId > 0) ? replyId : -1;
-                link = string.Concat(new Services.URLNavigator().NavigateURL(tabID, (string[])null), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
+                link = string.Concat(navigationManager.NavigateURL(tabID, portalSettings, string.Empty, (string[])null), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
             if (!(link.StartsWith("http")))
@@ -259,19 +263,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!link.StartsWith("/"))
                     link = string.Concat("/", link);
 
-                if (HttpContext.Current != null && link.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
-                    link = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + link;
+                if (HttpContext.Current != null && link.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
+                    link = Common.Globals.AddHTTP(requestUrl.Host) + link;
             }
 
 
             // Build the forum Url
-            var forumURL = ms.UseShortUrls ? new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
-                : new Services.URLNavigator().NavigateURL(tabID, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
+            var forumURL = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID) })
+                : navigationManager.NavigateURL(tabID, portalSettings,string.Empty, new[] { string.Concat(ParamKeys.ForumId, "=", forumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) });
 
             // Build Moderation url
-            var modLink = new Services.URLNavigator().NavigateURL(tabID, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
-            if (HttpContext.Current != null && modLink.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.Ordinal) == -1)
-                modLink = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + modLink;
+            var modLink = navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { ParamKeys.ViewType + "=modtopics", string.Concat(ParamKeys.ForumId, "=", forumID) });
+            if (HttpContext.Current != null && modLink.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
+                modLink = Common.Globals.AddHTTP(requestUrl.Host) + modLink;
 
             var result = new StringBuilder(sOut);
 
@@ -284,7 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums
             result.Replace("[LASTNAME]", sLastName);
             result.Replace("[FULLNAME]", string.Concat(sFirstName, " ", sLastName));
             result.Replace("[GROUPNAME]", fi.GroupName);
-            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, userCultureInfo, timeZoneOffset));
+            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, userCulture, timeZoneOffset));
             result.Replace("[COMMENTS]", comments);
             result.Replace("[PORTALNAME]", portalSettings.PortalName);
             result.Replace("[MODLINK]", string.Concat("<a href=\"", modLink, "\">", modLink, "</a>"));

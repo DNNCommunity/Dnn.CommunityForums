@@ -74,15 +74,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     if (MainSettings.UseSkinBreadCrumb)
                     {
-                        string sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + forum.GroupName + "</a>|";
+                        string sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + ForumInfo.GroupName + "</a>|";
                         if (MainSettings.UseShortUrls)
                         {
-                            sCrumb += "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ForumId + "=" + ForumId) + "\">" + forum.ForumName + "</a>";
+                            sCrumb += "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ForumId + "=" + ForumId) + "\">" + ForumInfo.ForumName + "</a>";
                             sCrumb += "|<a href=\"" + NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId) + "\">" + TopicSubject + "</a>";
                         }
                         else
                         {
-                            sCrumb += "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + forum.ForumName + "</a>";
+                            sCrumb += "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>";
                             sCrumb += "|<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }) + "\">" + TopicSubject + "</a>";
                         }
                         if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
@@ -111,8 +111,8 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 html = html.Replace("[AF:LINK:FORUMMAIN]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:FORUMS]</a>");
-                html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + forum.ForumGroupId) + "\">" + forum.GroupName + "</a>");
-                html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + forum.ForumName + "</a>");
+                html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId) + "\">" + ForumInfo.GroupName + "</a>");
+                html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>");
             }
 
 

@@ -25,11 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_EmailNotificationQueue")]
     [PrimaryKey("Id", AutoIncrement = true)] 
-<<<<<<<< HEAD:Dnn.CommunityForums/Entities/EmailNotificationQueue.cs
-    public class EmailNotificationQueue
-========
     public class EmailNotificationQueueInfo
->>>>>>>> dev81/5-queuing/1-mail-queue-164:Dnn.CommunityForums/Entities/EmailNotificationQueueInfo.cs
     {
         public int Id { get; set; }
         public int PortalId { get; set; }

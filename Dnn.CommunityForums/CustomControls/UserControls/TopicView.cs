@@ -709,7 +709,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     dtForums = null,
                     ForumId = ForumId,
                     EnableViewState = false,
-                    forum = ForumId > 0 ? forum : null
+                    ForumInfo = ForumId > 0 ? ForumInfo : null
                 };
 
                 if (!(plh.Controls.Contains(ctlForumJump)))
@@ -755,7 +755,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.RequireCaptcha = true;
 
                     if (ForumId > 0)
-                        ctlQuickReply.forum = forum;
+                        ctlQuickReply.ForumInfo = ForumInfo;
 
                     plh.Controls.Add(ctlQuickReply);
                 }
@@ -771,7 +771,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlTopicSort.ForumId = ForumId;
                 ctlTopicSort.DefaultSort = _defaultSort;
                 if (ForumId > 0)
-                    ctlTopicSort.forum = forum;
+                    ctlTopicSort.ForumInfo = ForumInfo;
 
                 plh.Controls.Add(ctlTopicSort);
             }
@@ -786,7 +786,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlTopicStatus.Status = _statusId;
                 ctlTopicStatus.ForumId = ForumId;
                 if (ForumId > 0)
-                    ctlTopicStatus.forum = forum;
+                    ctlTopicStatus.ForumInfo = ForumInfo;
 
                 plh.Controls.Add(ctlTopicStatus);
             }
@@ -955,7 +955,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Parent Forum Link
             if (sOutput.Contains("[PARENTFORUMLINK]"))
             {
-                if (forum.ParentForumId > 0)
+                if (ForumInfo.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
                         sbOutput.Replace("oldValue: [PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
@@ -967,8 +967,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Parent Forum Name
-            if (string.IsNullOrEmpty(forum.ParentForumName))
-                sbOutput.Replace("[PARENTFORUMNAME]", forum.ParentForumName);
+            if (string.IsNullOrEmpty(ForumInfo.ParentForumName))
+                sbOutput.Replace("[PARENTFORUMNAME]", ForumInfo.ParentForumName);
 
             // ForumLinks
 

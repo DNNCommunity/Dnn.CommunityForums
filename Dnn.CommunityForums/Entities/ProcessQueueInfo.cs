@@ -19,19 +19,19 @@
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Modules.ActiveForums;
+using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using System;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_ProcessQueue")]
     [PrimaryKey("Id", AutoIncrement = true)] 
-    [Cacheable("activeforums_ProcessQueue", CacheItemPriority.Normal)]
-    public class ProcessQueue
+    public class ProcessQueueInfo
     {
         public int Id { get; set; }
         public int PortalId { get; set; }
         public int ModuleId { get; set; }
-        public DotNetNuke.Modules.ActiveForums.Entities.ProcessType ProcessType { get; set; }
+        public ProcessType ProcessType { get; set; }
         public int ForumGroupId { get; set; }
         public int ForumId { get; set; }
         public int TopicId { get; set; }
@@ -39,5 +39,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public int ReplyId { get; set; }
         public int AuthorId { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public string RequestUrl { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             catch (Exception ex)
             {
                 ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
+                ScheduleHistoryItem.AddLogNote(string.Concat("Email Notification Queue Failed. ", ex));
                 Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
@@ -52,40 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             var intQueueCount = 0;
             try
             {
-<<<<<<<< HEAD:Services/MailQueue.cs
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.GetBatch().ForEach(m =>
-========
                 new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().GetBatch().ForEach(m =>
->>>>>>>> dev81/5-queuing/1-mail-queue-164:Dnn.CommunityForums/Services/EmailNotificationQueue.cs
                 {
                     intQueueCount += 1;
                     try
                     {
-<<<<<<<< HEAD:Services/MailQueue.cs
-                        PortalId = m.PortalId,
-                        ModuleId = m.ModuleId,
-                        Subject = m.EmailSubject,
-                        SendFrom = m.EmailFrom,
-                        SendTo = m.EmailTo,
-                        Body = m.EmailBody,
-                        BodyText = m.EmailBodyPlainText,
-                    };
-
-                    var canDelete = DotNetNuke.Modules.ActiveForums.Controllers.MessageController.Send(message);
-                    if (canDelete)
-                    {
-                        try
-                        {
-                            DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController.Delete(m.Id);
-                        }
-                        catch (Exception ex)
-                        {
-                            DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                        }
-========
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(m.PortalId, m.ModuleId, m.EmailFrom, m.EmailTo, m.EmailSubject, m.EmailBody);
                         new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().DeleteById(m.Id);
->>>>>>>> dev81/5-queuing/1-mail-queue-164:Dnn.CommunityForums/Services/EmailNotificationQueue.cs
                     }
                     catch (Exception ex)
                     {

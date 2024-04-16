@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using DotNetNuke.Modules.ActiveForums.DAL2;
 using DotNetNuke.Modules.ActiveForums.Data;
 using System.Reflection;
-using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.Scheduling;
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
@@ -56,27 +55,23 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
             var intQueueCount = 0;
             try
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.GetBatch().ForEach(item =>
+                new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().GetBatch().ForEach(item =>
                 {
                     intQueueCount += 1;
                     bool completed = false;
                     switch (item.ProcessType)
                     { 
                         case ProcessType.ApprovedTopicCreated:
-                            DotNetNuke.Modules.ActiveForums.TopicsController.ProcessApprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
-                            completed = true;
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessApprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId,item.RequestUrl);
                             break;
                         case ProcessType.ApprovedReplyCreated:
-                            DotNetNuke.Modules.ActiveForums.ReplyController.ProcessApprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
-                            completed = true;
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessApprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId, item.RequestUrl);
                             break;
                         case ProcessType.UnapprovedTopicCreated:
-                            DotNetNuke.Modules.ActiveForums.TopicsController.ProcessUnapprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
-                            completed = true;
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.ProcessUnapprovedTopicAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId, item.RequestUrl);
                             break;
                         case ProcessType.UnapprovedReplyCreated:
-                            DotNetNuke.Modules.ActiveForums.ReplyController.ProcessUnapprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId);
-                            completed = true;
+                            completed = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.ProcessUnapprovedReplyAfterAction(item.PortalId, item.TabId, item.ModuleId, item.ForumId, item.TopicId, item.ReplyId, item.AuthorId, item.RequestUrl);
                             break;
                         default:
                             DotNetNuke.Services.Exceptions.Exceptions.LogException(new NotImplementedException("invalid ProcessType"));
@@ -87,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
                     {
                         try
                         {
-                            DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController.Delete(item.Id);
+                            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().DeleteById(item.Id);
                         }
                         catch (Exception ex)
                         {

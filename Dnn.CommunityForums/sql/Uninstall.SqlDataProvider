@@ -941,10 +941,11 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_ProcessQueue]
 GO
  
-IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler,DotNetNuke.Modules.ActiveForums')
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums'
 GO
 IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
 	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums'
 GO
-/* end 08.01.00 */ 
+
+/* end 08.01.00 */

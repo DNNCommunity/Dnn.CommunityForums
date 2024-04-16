@@ -167,18 +167,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     Response.Redirect(NavigateUrl(TabId));
                 }
-                if (forum == null)
+                if (ForumInfo == null)
                 {
                     Response.Redirect(NavigateUrl(TabId));
                 }
-                if (forum.Active == false)
+                if (ForumInfo.Active == false)
                 {
                     Response.Redirect(NavigateUrl(TabId));
                 }
                 this.AppRelativeVirtualPath = "~/";
                 MyTheme = MainSettings.Theme;
                 MyThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
-                int defaultTemplateId = forum.TopicsTemplateId;
+                int defaultTemplateId = ForumInfo.TopicsTemplateId;
                 if (DefaultTopicsViewTemplateId >= 0)
                 {
                     defaultTemplateId = DefaultTopicsViewTemplateId;
@@ -339,17 +339,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     foreach (Match m in matches)
                                     {
                                         int iLen = Convert.ToInt32(m.Groups[2].Value);
-                                        if (forum.ForumDesc.Length > iLen)
+                                        if (ForumInfo.ForumDesc.Length > iLen)
                                         {
-                                            MetaTemplate = MetaTemplate.Replace(m.Value, forum.ForumDesc.Substring(0, iLen) + "...");
+                                            MetaTemplate = MetaTemplate.Replace(m.Value, ForumInfo.ForumDesc.Substring(0, iLen) + "...");
                                         }
                                         else
                                         {
-                                            MetaTemplate = MetaTemplate.Replace(m.Value, forum.ForumDesc);
+                                            MetaTemplate = MetaTemplate.Replace(m.Value, ForumInfo.ForumDesc);
                                         }
                                     }
                                 }
-                                MetaTemplate = MetaTemplate.Replace("[BODY]", Utilities.StripHTMLTag(forum.ForumDesc));
+                                MetaTemplate = MetaTemplate.Replace("[BODY]", Utilities.StripHTMLTag(ForumInfo.ForumDesc));
 
                                 MetaTitle = TemplateUtils.GetTemplateSection(MetaTemplate, "[TITLE]", "[/TITLE]").Replace("[TITLE]", string.Empty).Replace("[/TITLE]", string.Empty);
                                 MetaTitle = MetaTitle.TruncateAtWord(SEOConstants.MaxMetaTitleLength);
@@ -464,7 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumJump.ModuleId = ModuleId;
                 if (ForumId > 0)
                 {
-                    ctlForumJump.forum = forum;
+                    ctlForumJump.ForumInfo = ForumInfo;
                 }
                 plh.Controls.Add(ctlForumJump);
             }
@@ -482,7 +482,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumSubs.DisplayTemplate = subTemplate;
                 if (ForumId > 0)
                 {
-                    ctlForumSubs.forum = forum;
+                    ctlForumSubs.ForumInfo = ForumInfo;
                 }
                 plh.Controls.Add(ctlForumSubs);
             }
@@ -592,17 +592,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[PAGER2]", "<am:pagernav id=\"Pager2\" runat=\"server\" EnableViewState=\"False\" />");
             if (sOutput.Contains("[PARENTFORUMLINK]"))
             {
-                if (forum.ParentForumId > 0)
+                if (ForumInfo.ParentForumId > 0)
                 {
                     sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
-                else if (forum.ForumGroupId > 0)
+                else if (ForumInfo.ForumGroupId > 0)
                 {
                     sOutput = sOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.GroupName + "</a>");
                 }
             }
             // If String.IsNullOrEmpty(ForumInfo.ParentForumName) Then
-            sOutput = sOutput.Replace("[PARENTFORUMNAME]", forum.ParentForumName);
+            sOutput = sOutput.Replace("[PARENTFORUMNAME]", ForumInfo.ParentForumName);
             //End If
 
             sOutput = sOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");

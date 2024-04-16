@@ -832,7 +832,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                            TopicTemplate = _topicReviewTemplate,
                                            OptPageSize = int.MaxValue,
                                            OptDefaultSort = "DESC",
-                                           forum = ForumInfo
+                    ForumInfo = ForumInfo
                                        };
                 plhTopicReview.Controls.Add(ctlTopicView);
             }
@@ -996,7 +996,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             afpolledit.PollType = _pollType;
             afpolledit.PollOptions = _pollOptions;
             afpolledit.ModuleConfiguration = ModuleConfiguration;
-            afpolledit.forum = ForumInfo;
+            afpolledit.ForumInfo = ForumInfo;
 
             reqSubject.ErrorMessage = string.Format("<img src=\"{0}/images/warning.png\" align=\"absmiddle\" />", MyThemePath);
             reqSubject.EnableClientScript = false;
@@ -1126,7 +1126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         ctlAttach = (DotNetNuke.Modules.ActiveForums.Controls.af_attach)ctrl;
                         ctlAttach.ModuleConfiguration = this.ModuleConfiguration;
                         ctlAttach.ModuleId = ModuleId;
-                        ctlAttach.forum = ForumInfo;
+                        ctlAttach.ForumInfo = ForumInfo;
                         break;
                     case "chkSubscribe":
                         chkSubscribe = (CheckBox)ctrl;

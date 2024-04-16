@@ -33,37 +33,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             try
             {
                 Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
-                    repo.Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue
                     {
                     PortalId = portalId,
                     ModuleId = moduleId,
                     EmailFrom = emailFrom,
                     EmailTo = emailTo,
-                        EmailCC = emailCC,
-                        EmailBCC = emailBcc,
                     EmailBody = emailBody,
-                        EmailBodyPlainText = emailBodyPlainText,
                     EmailSubject = emailSubject,
                     DateCreated = DateTime.UtcNow
                 });
-            }
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-        }
-        public static void Delete(int Id)
-        {
-            try
-            {
-                using (IDataContext ctx = DataContext.Instance())
-                {
-                    var repo = ctx.GetRepository<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueue>();
-                    repo.Delete(repo.GetById(Id));
-                }
             }
             catch (Exception ex)
             {

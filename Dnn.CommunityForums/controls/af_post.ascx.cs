@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (oCSS != null)
                 oCSS.Controls.Add(oLink);
 
-            _fi = forum;
+            _fi = ForumInfo;
             _authorId = UserId;
             _canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.ModEdit, ForumUser.UserRoles);
             _canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles);
@@ -285,9 +285,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool ValidateProperties()
         {
-            if (forum.Properties != null && forum.Properties.Count > 0)
+            if (ForumInfo.Properties != null && ForumInfo.Properties.Count > 0)
             {
-                foreach (var p in forum.Properties)
+                foreach (var p in ForumInfo.Properties)
                 {
                     if (p.IsRequired)
                     {
@@ -468,8 +468,8 @@ namespace DotNetNuke.Modules.ActiveForums
             
             if (MainSettings.UseSkinBreadCrumb)
             {
-                var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + forum.ForumGroupId.ToString()) + "\">" + forum.GroupName + "</a>|";
-                sCrumb += "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ForumId + "=" + forum.ForumID.ToString()) + "\">" + forum.ForumName + "</a>";
+                var sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId.ToString()) + "\">" + ForumInfo.GroupName + "</a>|";
+                sCrumb += "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ForumId + "=" + ForumInfo.ForumID.ToString()) + "\">" + ForumInfo.ForumName + "</a>";
                 if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
                     template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
             }
@@ -723,7 +723,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tData = new StringBuilder();
                 tData.Append("<topicdata>");
                 tData.Append("<properties>");
-                foreach (var p in forum.Properties)
+                foreach (var p in ForumInfo.Properties)
                 {
                     var pkey = "afprop-" + p.PropertyId.ToString();
 
@@ -828,19 +828,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (ti.IsApproved == false)
                 {
-                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(NavigateUrl(ForumTabId, "", @params), false);
                 }
                 if (!_isEdit)
                 {
-                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueApprovedTopicAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, TabId, ModuleId, ForumInfo.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
                 }
 
                 if (ti.IsApproved == false)
                 {
-                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(NavigateUrl(TabId, "", @params), false);
@@ -855,7 +855,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
-                        sUrl = Utilities.NavigateUrl(ForumTabId, PortalId, "", ParamKeys.TopicId + "=" + TopicId);
+                        sUrl = Utilities.NavigateURL(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
                     }
                     Response.Redirect(sUrl, false);
                 }
@@ -984,10 +984,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
                     }
                 }
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 if (ri.IsApproved == false)
                 {
-                    DotNetNuke.Modules.ActiveForums.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(Utilities.NavigateURL(TabId, "", @params), false);
@@ -995,8 +994,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_isEdit)
                 {
                     var ctlUtils = new ControlUtils();
-                    var ti = tc.Topics_Get(PortalId, ForumModuleId, TopicId, ForumId, -1, false);
-                    var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
+                    var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
 
                     if (fullURL.Contains("~/"))
                     {

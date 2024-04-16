@@ -18,12 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Modules.ActiveForums;
 using System;
 using System.Web.Caching;
-namespace DotNetNuke.Modules.ActiveForums.Entities { 
+namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
+{
     public enum ProcessType
-    { 
+    {
         ApprovedTopicCreated = 1,
         UnapprovedTopicCreated = 2,
         ApprovedReplyCreated = 3,

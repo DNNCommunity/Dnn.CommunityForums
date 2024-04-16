@@ -1424,7 +1424,7 @@ IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFull
 GO
 
 /* create scheduler */
-IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
+IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
 	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,Servers,FriendlyName)
 	VALUES('DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums',1,'m',1,'m',5,'',0,1,'','','DNN Community Forums Email Notification Queue')
 GO
@@ -1451,7 +1451,8 @@ CREATE TABLE {databaseOwner}{objectQualifier}activeforums_ProcessQueue (
 	[TopicId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_TopicId] DEFAULT(-1), 
 	[ReplyId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_ReplyId] DEFAULT(-1), 
 	[AuthorId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_AuthorId] DEFAULT(-1), 
-	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_DateCreated] DEFAULT(GETUTCDATE())  ,
+	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_ProcessQueue_DateCreated] DEFAULT(GETUTCDATE())   ,
+	[RequestUrl] [nvarchar](255) NULL,
     CONSTRAINT [PK_{objectQualifier}activeforums_ProcessQueue] PRIMARY KEY CLUSTERED 
 	(
 	[Id] ASC

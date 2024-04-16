@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = sTemp.Replace("[USERROLES]", ForumUser.UserRoles);
                 sTemp = sTemp.Replace("[THEMEPATH]", ThemePath);
                 sTemp = sTemp.Replace("[SUBJECT]", Subject);
-                sTemp = sTemp.Replace("[REPLYROLES]", forum.Security.Reply);
+                sTemp = sTemp.Replace("[REPLYROLES]", ForumInfo.Security.Reply);
                 if (!HttpContext.Current.Request.IsAuthenticated)
                 {
                     sTemp = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + sTemp;
@@ -181,9 +181,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
             }
-            bool UserIsTrusted = Utilities.IsTrusted((int)forum.DefaultTrustValue, ControlConfig.User.TrustLevel, Permissions.HasPerm(forum.Security.Trust, ForumUser.UserRoles), forum.AutoTrustLevel, ControlConfig.User.PostCount);
-            bool isApproved = Convert.ToBoolean(((forum.IsModerated == true) ? false : true));
-            if (UserIsTrusted || Permissions.HasPerm(forum.Security.ModApprove, ForumUser.UserRoles))
+            bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
+            bool isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -223,14 +223,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (isApproved)
             {
-                DotNetNuke.Modules.ActiveForums.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forumInfo.ForumGroupId, ForumId, TopicId, ReplyId, ri.Content.AuthorId);
                 //Redirect to show post
                 string fullURL = Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forum.ModNotifyTemplateId, PortalId, ForumId, reply.TopicId, ReplyId, ModuleId, PageId, string.Empty);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, PortalId, ForumId, ri.TopicId, ReplyId, ModuleId, PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(PageId, "", Params), false);
             }

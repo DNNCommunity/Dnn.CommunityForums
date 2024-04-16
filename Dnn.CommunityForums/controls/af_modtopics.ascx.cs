@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    fi = forum;
+                    fi = ForumInfo;
                 }
                 switch (e.Parameters[0].ToLowerInvariant())
                 {
@@ -174,6 +174,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                 if (ti != null)
+                                { 
                                     ti.IsApproved = true;
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
@@ -182,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
                                     }
-                                    DotNetNuke.Modules.ActiveForums.TopicsController.QueueApprovedTopicAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, ForumId, tmpTopicId, -1, ti.Content.AuthorId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, ForumId, tmpTopicId, -1, ti.Content.AuthorId);
                                 }
                             }
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
@@ -200,7 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
                                     }
 
-                                    DotNetNuke.Modules.ActiveForums.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, -tmpReplyId, ri.Content.AuthorId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, -tmpReplyId, ri.Content.AuthorId);
 
                                 }
 

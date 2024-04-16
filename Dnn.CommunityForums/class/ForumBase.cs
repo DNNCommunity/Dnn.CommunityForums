@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = true;
 
                     // If CreatePostCount is not set, no need to go further
-                    else if (forum.CreatePostCount <= 0)
+                    else if (ForumInfo.CreatePostCount <= 0)
                         _canCreate = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
@@ -391,7 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = false;
 
                     else
-                        _canCreate = ForumUser.PostCount >= forum.CreatePostCount; 
+                        _canCreate = ForumUser.PostCount >= ForumInfo.CreatePostCount; 
                 }
 
                 return _canCreate.Value;
@@ -413,7 +413,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = true;
 
                     // If ReplyPostCount is not set, no need to go further
-                    else if (forum.ReplyPostCount <= 0)
+                    else if (ForumInfo.ReplyPostCount <= 0)
                         _canReply = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
@@ -421,7 +421,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = false;
 
                     else
-                        _canReply = ForumUser.PostCount >= forum.ReplyPostCount;   
+                        _canReply = ForumUser.PostCount >= ForumInfo.ReplyPostCount;   
                 }
 
                 return _canReply.Value;

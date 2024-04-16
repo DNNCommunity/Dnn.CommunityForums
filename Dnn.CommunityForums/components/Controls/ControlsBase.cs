@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				{
 					((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
 					((Controls.ControlsBase)ctrl).ForumData = ForumData;
-					((Controls.ControlsBase)ctrl).forum = forum;
+					((Controls.ControlsBase)ctrl).ForumInfo = ForumInfo;
 				}
 				if (ctrl.Controls.Count > 0)
 				{
