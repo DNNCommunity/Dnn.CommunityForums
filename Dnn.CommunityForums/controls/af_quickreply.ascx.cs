@@ -93,11 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 btnToolBar.Visible = UseFilter;
                 divSubscribe.Visible = AllowSubscribe;
-                if (AllowSubscribe)
+                divSubscribe.Visible = !UserPrefTopicSubscribe; /* if user has preference set for auto subscribe, no need to show them the subscribe option */
+                if (divSubscribe.Visible)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
                     subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId, TopicId);
-                    subControl.Text = "[RESX:TopicSubscribe:" + (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId, TopicId)).ToString().ToUpper() + "]";
+                    subControl.Text = "[RESX:TopicSubscribe]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))

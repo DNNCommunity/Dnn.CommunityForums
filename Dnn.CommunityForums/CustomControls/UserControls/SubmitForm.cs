@@ -710,18 +710,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 bHasOptions = true;
             }
 
-            if (canSubscribe)
+            if (canSubscribe && !UserPrefTopicSubscribe) /* if user has preference set for auto subscribe, no need to show them the subscribe option */
             {
                 if (TopicId > 0)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
                     subControl.Checked = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId));
-                    subControl.Text = "[RESX:TopicSubscribe:" + (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId)).ToString().ToUpper() + "]";
+                    subControl.Text = "[RESX:TopicSubscribe]";
                     sb.Append("<tr><td colspan=\"2\">" + subControl.Render() + "</td></tr>");
                 }
                 else
                 {
-                    sb.Append("<tr><td colspan=\"2\"><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:TopicSubscribe:FALSE]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
+                    sb.Append("<tr><td colspan=\"2\"><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:TopicSubscribe]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
                 }
                 bHasOptions = true;
             }

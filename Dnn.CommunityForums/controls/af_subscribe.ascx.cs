@@ -49,11 +49,11 @@ namespace DotNetNuke.Modules.ActiveForums
             string SubscribeText = null;
             if (mode == 0)
             {
-                SubscribeText = GetSharedResource("[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]");
+                SubscribeText = GetSharedResource("[RESX:ForumSubscribe]");
             }
             else
             {
-                SubscribeText = GetSharedResource("[RESX:TopicSubscribe:" + IsSubscribed.ToString().ToUpper() + "]");
+                SubscribeText = GetSharedResource("[RESX:TopicSubscribe]");
             }
             chkSubscribe.Text = SubscribeText;
             chkSubscribe.Checked = IsSubscribed;
@@ -100,11 +100,11 @@ namespace DotNetNuke.Modules.ActiveForums
             chkSubscribe.Checked = IsSubscribed;
             if (mode == 0)
             {
-                chkSubscribe.Text = GetSharedResource("[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]");
+                chkSubscribe.Text = GetSharedResource("[RESX:ForumSubscribe]");
             }
             else
             {
-                chkSubscribe.Text = GetSharedResource("[RESX:TopicSubscribe:" + IsSubscribed.ToString().ToUpper() + "]");
+                chkSubscribe.Text = GetSharedResource("[RESX:TopicSubscribe]");
             }
 
 

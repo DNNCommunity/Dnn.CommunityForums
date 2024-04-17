@@ -16,8 +16,10 @@ amaf.resx = {
     UnLockConfirm: '[RESX:Confirm:UnLock]',
     TopicSubscribeTrue: '[RESX:TopicSubscribe:TRUE]',
     TopicSubscribeFalse: '[RESX:TopicSubscribe:FALSE]',
+    TopicSubscribe: '[RESX:TopicSubscribe]',
     ForumSubscribeTrue: '[RESX:ForumSubscribe:TRUE]',
-    ForumSubscribeFalse: '[RESX:ForumSubscribe:FALSE]'
+    ForumSubscribeFalse: '[RESX:ForumSubscribe:FALSE]',
+    ForumSubscribe: '[RESX:ForumSubscribe]'
 };
 
 

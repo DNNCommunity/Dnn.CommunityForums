@@ -1729,4 +1729,10 @@ From,
   <data name="ThreadsTracked.Text" xml:space="preserve">
     <value>Threads you are tracking:</value>
   </data>
+  <data name="[RESX:ForumSubscribe].Text" xml:space="preserve">
+    <value>Subscribe to this forum</value>
+  </data>
+  <data name="[RESX:TopicSubscribe].Text" xml:space="preserve">
+    <value>Subscribe to this discussion thread</value>
+  </data>
 </root>
