@@ -21,10 +21,12 @@ using DotNetNuke.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
+using DotNetNuke.UI.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -50,6 +52,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
         {
             DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
+            var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+            DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ForumId));
+            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
+            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
+            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
+
             var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
             JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
 
@@ -100,9 +108,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             { 
                 ri.Content.DateCreated = DateTime.UtcNow;
             }
+            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
             UserProfileController.Profiles_ClearCache(ModuleId, ri.Content.AuthorId);
 
+            DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ri.ForumId));
+            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
+            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
+            DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
+            DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.TopicViewForUser, ri.ModuleId, ri.TopicId, ri.Content.AuthorId));
             return Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
         }
         public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
@@ -115,21 +129,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
 
             ReplyController rc = new ReplyController();
-            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
-            if (reply == null)
+            DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = rc.Reply_Get(PortalId, ModuleId, TopicId, ReplyId);
+            if (ri == null)
             {
                 return null;
             }
-            reply.IsApproved = true;
-            rc.Reply_Save(PortalId, ModuleId, reply);
+            ri.IsApproved = true;
+            rc.Reply_Save(PortalId, ModuleId, ri);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, ReplyId);
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
-            if (fi.ModApproveTemplateId > 0 & reply.Author.AuthorId > 0)
+            if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
             {
-                Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
+                Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, ri.Author);
             }
-            Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, reply.Content.AuthorId);
+            Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, ri.Content.AuthorId);
             
             try
             {
@@ -145,13 +159,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
                 }
                 Social amas = new Social();
-                amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, fi.Security.Read, fi.SocialGroupId);
+                amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body, fi.Security.Read, fi.SocialGroupId);
+
+                DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ri.ForumId));
+                DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
+                DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
+                DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
-            return reply;
+            return ri;
         }
     }
 }

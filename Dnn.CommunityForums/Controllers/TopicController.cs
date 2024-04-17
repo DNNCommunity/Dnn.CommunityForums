@@ -118,6 +118,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ti.ModuleId, ti.ForumId, TopicId);
 
+            DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
+
             if (ti.Forum.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
                 Email.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, 0, string.Empty, ti.Author);
@@ -164,10 +169,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, NewForumId, TopicId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
+            DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
         }
         public static int SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId = -1)
         {
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
+            DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.ForumInfo, ModuleId, ForumId));
+            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
+            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicViewPrefix, ModuleId));
+            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ModuleId));
             return Convert.ToInt32(DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId));
         }
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
@@ -183,6 +196,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var uc = new Data.Profiles();
                 uc.Profile_UpdateTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
             }
+            Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
+            DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
+            DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
             //TODO: convert to use DAL2?
             return Convert.ToInt32(DataProvider.Instance().Topics_Save(ti.Forum.PortalId, ti.TopicId, ti.ViewCount, ti.ReplyCount, ti.IsLocked, ti.IsPinned, ti.TopicIcon, ti.StatusId, ti.IsApproved, ti.IsDeleted, ti.IsAnnounce, ti.IsArchived, ti.AnnounceStart, ti.AnnounceEnd, ti.Content.Subject.Trim(), ti.Content.Body.Trim(), ti.Content.Summary.Trim(), ti.Content.DateCreated, ti.Content.DateUpdated, ti.Content.AuthorId, ti.Content.AuthorName, ti.Content.IPAddress, (int)ti.TopicType, ti.Priority, ti.TopicUrl, ti.TopicData));
         }
@@ -203,7 +221,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 DataProvider.Instance().Topics_Delete(ti.ForumId, TopicId, SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior );
                 Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
+                DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
                 DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
+                DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
+                DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
 
                 if (SettingsBase.GetModuleSettings(ti.ModuleId).DeleteBehavior != 0)
                     return;

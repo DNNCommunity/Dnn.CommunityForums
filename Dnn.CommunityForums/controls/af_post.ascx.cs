@@ -822,13 +822,9 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
             }
-            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             
             try
-            {
-                DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId));
-                DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
-
+            { 
                 if (bSend && !_isEdit)
                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, _fi.ForumID, TopicId, 0, ti.Content.AuthorId);
 
@@ -990,11 +986,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
             var tmpReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ForumModuleId, ri);
-            Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
-            DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
-            DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
             try
             {
                 if (bSend && !_isEdit)
