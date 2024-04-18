@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [PrimaryKey("Id", AutoIncrement = true)] 
     public class ProcessQueueInfo
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public int PortalId { get; set; }
         public int ModuleId { get; set; }
         public ProcessType ProcessType { get; set; }
