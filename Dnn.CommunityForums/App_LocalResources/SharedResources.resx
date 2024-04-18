@@ -657,18 +657,6 @@
   <data name="[RESX:Preview].Text" xml:space="preserve">
     <value>Preview</value>
   </data>
-  <data name="[RESX:ForumSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Subscribe to this forum</value>
-  </data>
-  <data name="[RESX:ForumSubscribe:TRUE].Text" xml:space="preserve">
-    <value>Unsubscribe from forum</value>
-  </data>
-  <data name="[RESX:TopicSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Subscribe to this topic</value>
-  </data>
-  <data name="[RESX:TopicSubscribe:TRUE].Text" xml:space="preserve">
-    <value>Unsubscribe from topic</value>
-  </data>
   <data name="[RESX:Avatar].Text" xml:space="preserve">
     <value>Avatar</value>
   </data>

@@ -31,11 +31,13 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Modules.ActiveForums.Queue;
 using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -324,7 +326,13 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         }
         public static string NavigateURL(int tabId, string controlKey, params string[] additionalParameters)
         {
-            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
+            var ti = DotNetNuke.Entities.Tabs.TabController.Instance.GetTab(tabId, -1, false);
+            DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(ti.PortalID);
+            return Utilities.NavigateURL(tabId, portalSettings, controlKey, additionalParameters);
+        }
+        public static string NavigateURL(int tabId, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string controlKey, params string[] additionalParameters)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, portalSettings, controlKey, additionalParameters);
         }
         public static string NavigateURL(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
