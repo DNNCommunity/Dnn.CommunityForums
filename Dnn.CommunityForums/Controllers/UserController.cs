@@ -18,16 +18,53 @@
 // DEALINGS IN THE SOFTWARE.
 //
 // 
-using System.Diagnostics.Contracts;
+using System.Linq;
+using DotNetNuke.Data;
+using DotNetNuke.Services.Journal;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal static class UserController
     {
+        private class ContentForUser
+        {
+            internal int ForumId { get; set; }
+            internal int TopicId { get; set; }
+            internal int ReplyId { get; set; }
+        }
         internal static void BanUser(int PortalId, int ModuleId, int UserId)
         {
             if (UserId > -1)
             {
+                string sql = "SELECT ft.ForumId, ft.TopicId, r.ReplyId " +
+                    "FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft " +
+                    "INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t " +
+                    "ON t.TopicId = ft.TopicId " +
+                    "INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r " +
+                    "ON r.TopicId = t.TopicId " +
+                    "INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c " +
+                    "ON c.ContentId = r.ContentId " +
+                    "WHERE c.AuthorId = @0 AND c.ModuleId = @1 " +
+                    "UNION " +
+                    "SELECT ft.ForumId, ft.TopicId, 0 AS ReplyId " +
+                    "FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft " +
+                    "INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t " +
+                    "ON t.TopicId = ft.TopicId " +
+                    "INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c " +
+                    "ON c.ContentId = t.ContentId " +
+                    "WHERE c.AuthorId = @0 AND c.ModuleId = @1";
+
+                var contentForBannedUser = DataContext.Instance().ExecuteQuery<ContentForUser>(System.Data.CommandType.Text, sql, UserId, ModuleId).ToList();
+                string objectKey;
+                contentForBannedUser.ForEach(c =>
+                {
+                    objectKey = c.ReplyId < 1 ? $"{c.ForumId}:{c.TopicId}" : $"{c.ForumId}:{c.TopicId}:{c.ReplyId}";
+                    if (JournalController.Instance.GetJournalItemByKey(PortalId, objectKey) != null)
+                    {
+                        JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
+                    }
+                });
+               
                 DataProvider.Instance().Topics_Delete_For_User(ModuleId: ModuleId, UserId: UserId, DelBehavior: SettingsBase.GetModuleSettings(ModuleId).DeleteBehavior);
                 DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: PortalId, userId: UserId);
                 user.Membership.Approved = false;

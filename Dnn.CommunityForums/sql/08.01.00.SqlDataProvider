@@ -1358,4 +1358,23 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
 GO
 /* issue 593 end - add 'afsubscriptions' as a valid view for URL search to support 'my subscriptions' view */
 
+
+/* --------------------- */
+
+/* issue 741 begin - remove journal items when deleting post; for banned users, need additional index on Content */
+
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Content') AND name = N'idx_{objectQualifier}activeforums_Content_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_Content_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Content 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Content_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Content
+(
+	[AuthorId] ASC,
+	[ModuleId] ASC,
+	[ContentId] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+/* issue 741 end - remove journal items when deleting post; for banned users, need additional index on Content */
+
 /* --------------------- */

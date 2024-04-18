@@ -28,8 +28,9 @@ using DotNetNuke.Web.Models;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class Social : DataConfig
+    public class Social
     {
+        [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
         public void AddTopicToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
         {
             AddTopicToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
