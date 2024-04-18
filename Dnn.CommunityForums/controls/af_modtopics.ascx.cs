@@ -100,8 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     try
                                     {
-                                        //Email.SendEmail(fi.ModDeleteTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, auth);
-                                        Email.SendEmailToModerators(fi.ModDeleteTemplateId, PortalId, tmpForumId, tmpTopicId, tmpReplyId, ForumModuleId, TabId, string.Empty);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, PortalId, tmpForumId, tmpTopicId, tmpReplyId, ForumModuleId, ForumTabId, string.Empty);
                                     }
                                     catch (Exception ex)
                                     {
@@ -156,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     au.FirstName = ui.FirstName;
                                     au.LastName = ui.LastName;
                                     au.Username = ui.Username;
-                                    Email.SendEmail(fi.ModRejectTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, au);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, au);
                                 }
 
                             }
@@ -176,13 +175,13 @@ namespace DotNetNuke.Modules.ActiveForums
                                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                 if (ti != null)
                                     ti.IsApproved = true;
-                                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-                                DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                //TODO: Add Audit log for who approved topic
-                                if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
-                                {
-                                    Email.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
-                                }
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+                                    //TODO: Add Audit log for who approved topic
+                                    if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
+                                    {
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
+                                    }
 
                                 Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, 0, ti.Content.AuthorId);
 
@@ -215,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {
-                                        Email.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
+                                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
                                     }
 
                                     Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Content.AuthorId);

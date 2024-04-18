@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (subs.Count > 0)
             {
-                Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
             }
         }
 
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         GroupCount = 0;
                         tmpEmail = newEmail;
-                        Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, string.Empty, string.Empty);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1,FromEmail, tmpEmail, TemplateSubject, sMessageBody);
                         i = 0;
                     }
                 }
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
-                Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, string.Empty, string.Empty);
+              new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
             }
         }
     }

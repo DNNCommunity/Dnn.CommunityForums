@@ -120,15 +120,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ui != null)
                 {
                     var au = new Author
-                    {
-                        AuthorId = authorId,
-                        DisplayName = ui.DisplayName,
-                        Email = ui.Email,
-                        FirstName = ui.FirstName,
-                        LastName = ui.LastName,
-                        Username = ui.Username
-                    };
-                    Email.SendEmail(fi.ModRejectTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, au);
+                                 {
+                                     AuthorId = authorId,
+                                     DisplayName = ui.DisplayName,
+                                     Email = ui.Email,
+                                     FirstName = ui.FirstName,
+                                     LastName = ui.LastName,
+                                     Username = ui.Username
+                                 };
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, au);
                 }
 
             }
@@ -193,9 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         LastName = ui.LastName,
                         Username = ui.Username
                     };
-
-                    //Email.SendEmail(fi.ModDeleteTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, null);
-                    Email.SendEmailToModerators(fi.ModDeleteTemplateId, PortalSettings.PortalId, _forumId, _topicId, _replyId, _moduleId, _tabId, string.Empty);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, PortalSettings.PortalId, _forumId, _topicId, _replyId, _moduleId, _tabId, string.Empty);
                 }
             }
 

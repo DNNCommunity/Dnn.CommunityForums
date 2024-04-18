@@ -1358,6 +1358,80 @@ SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,Url
 GO
 /* issue 593 end - add 'afsubscriptions' as a valid view for URL search to support 'my subscriptions' view */
 
+/* --------------------- */
+
+
+
+/* issue 164 begin - implement new mail queue */
+SET NOCOUNT ON
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
+GO
+CREATE TABLE {databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue (
+	[Id] [int] IDENTITY (1, 1) NOT NULL,
+	[PortalId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_PortalId] DEFAULT(-1),
+	[ModuleId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_ModuleId] DEFAULT(-1),
+	[EmailFrom] [nvarchar] (255) NULL ,
+	[EmailTo] [nvarchar] (255) NULL ,
+	[EmailSubject] [nvarchar] (255) NULL ,
+	[EmailBody] [ntext] NULL ,
+	[DateCreated] [datetime] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_DateCreated] DEFAULT(GETUTCDATE()) ,
+    CONSTRAINT [PK_{objectQualifier}activeforums_EmailNotificationQueue] PRIMARY KEY CLUSTERED 
+	(
+	[Id] ASC
+	) WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ,
+	CONSTRAINT [FK_{objectQualifier}activeforums_EmailNotificationQueue_Modules] FOREIGN KEY (ModuleId) REFERENCES {databaseOwner}[{objectQualifier}Modules] (ModuleID) ON DELETE CASCADE ,
+) 
+GO
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue') AND name = N'IX_{objectQualifier}activeforums_EmailNotificationQueue_DateCreated')
+CREATE NONCLUSTERED INDEX IX_{objectQualifier}activeforums_EmailNotificationQueue_DateCreated ON {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
+	(
+	DateCreated
+	) 
+GO
+
+/* import existing queued mail, if any */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
+INSERT INTO {databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue
+SELECT PortalId, -1, EmailFrom, EmailTo, EmailSubject, EmailBody, DateCreated
+FROM {databaseOwner}{objectQualifier}activeforums_Queue
+GO
+
+/* remove queue objects */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_Add') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_Add
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_List') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_List
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Queue_DeleteItem') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Queue_DeleteItem
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Queue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Queue]
+GO
+
+/* remove old scheduler -- note that it is here twice on purpose; old version didn't have space between class and assembly name */
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler ,DotNetNuke.Modules.ActiveForums')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler, DotNetNuke.Modules.ActiveForums'
+GO
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler,DotNetNuke.Modules.ActiveForums')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Queue.Scheduler,DotNetNuke.Modules.ActiveForums'
+GO
+
+/* create scheduler */
+IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
+	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,Servers,FriendlyName)
+	VALUES('DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums',1,'m',1,'m',5,'',0,1,'','','DNN Community Forums Email Notification Queue')
+GO
+
+/* issue 164 end - implement new mail queue */
+
+/* --------------------- */
 
 /* --------------------- */
 

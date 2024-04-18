@@ -707,9 +707,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Subscriptions]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Subscriptions]
 GO
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Tags]') AND type in (N'U'))
-DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Tags]
-GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Templates]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Templates]
 GO
@@ -721,6 +718,9 @@ DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Ratings]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tags]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tags]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Tags]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Tags]
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]') AND type in (N'U'))
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_Topics_Tracking]
@@ -922,8 +922,7 @@ DROP PROCEDURE {databaseOwner}{objectQualifier}activeforums_Search_GetSearchItem
 GO
 /* end 07.00.00 */
 
-
-
+ 
 /* begin 07.00.08 */
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_ForumTopics') AND name = N'IX_{objectQualifier}activeforums_ForumTopics_Opt1')
 DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt1] ON {databaseOwner}{objectQualifier}activeforums_ForumTopics 
@@ -933,3 +932,15 @@ DROP INDEX [IX_{objectQualifier}activeforums_ForumTopics_Opt2] ON {databaseOwner
 GO
 /* end 07.00.08 */
 
+
+/* begin 08.01.00 */
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]') AND type in (N'U'))
+DROP TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
+GO
+ 
+IF EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
+	DELETE FROM {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums'
+GO
+
+/* end 08.01.00 */

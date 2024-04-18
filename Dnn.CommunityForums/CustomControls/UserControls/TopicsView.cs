@@ -523,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Controls.ToggleSubscribe subControl = new Controls.ToggleSubscribe(ForumModuleId, ForumId, -1, 0);
                 subControl.Checked = IsSubscribedForum;
-                subControl.Text = "[RESX:ForumSubscribe:" + IsSubscribedForum.ToString().ToUpper() + "]";
+                subControl.Text = "[RESX:Subscribe]";
                 sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", subControl.Render());
             }
             else

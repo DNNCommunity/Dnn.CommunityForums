@@ -26,6 +26,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Microsoft.ApplicationBlocks.Data;
 using DotNetNuke.Common.Utilities;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
 
@@ -612,29 +613,16 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region MailQueue
-
-        public override IDataReader Queue_List()
-        {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Queue_List"));
-        }
-        public override void Queue_Delete(int EmailId)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Queue_DeleteItem", EmailId);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC).")]
-        public override void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Queue_Add", -1, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC);
-        }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC).")]
-        public override void Queue_Add(int PortalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Queue_Add", PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, EmailBodyPlainText, EmailCC, EmailBCC);
-        }
-        public override void Queue_Add(int PortalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC)
-        {
-            SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Queue_Add", PortalId, EmailFrom, EmailTo, EmailSubject, EmailBody, string.Empty, EmailCC, EmailBCC);
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. No longer used.")]
+        public override IDataReader Queue_List() => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. No longer used.")]
+        public override void Queue_Delete(int EmailId) => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public override void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC) => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public override void Queue_Add(int PortalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC) => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public override void Queue_Add(int PortalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC) => throw new NotImplementedException();
 
         #endregion
         #region Maintenance
