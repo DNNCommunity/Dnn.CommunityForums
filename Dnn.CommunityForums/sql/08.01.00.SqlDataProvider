@@ -1433,10 +1433,10 @@ GO
 
 /* --------------------- */
 
-/* --------------------- */
 
-/* issue 741 begin - remove journal items when deleting post; for banned users, need additional index on Content */
+/* issue 741 begin - remove journal items when deleting posts for banned users*/
 
+/* need additional index on Content */
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Content') AND name = N'idx_{objectQualifier}activeforums_Content_Opt3')
 DROP INDEX [idx_{objectQualifier}activeforums_Content_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Content 
 GO
@@ -1449,6 +1449,33 @@ CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Content_Opt3] ON {d
 WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
 GO
 
-/* issue 741 end - remove journal items when deleting post; for banned users, need additional index on Content */
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]
+	@UserId int,
+	@ModuleId int
+AS
+
+SELECT ft.ForumId, ft.TopicId, r.ReplyId, c.Subject, c.DateUpdated
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = ft.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r 
+		ON r.TopicId = t.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = r.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId AND c.IsDeleted = 0
+UNION
+SELECT ft.ForumId, ft.TopicId, 0 AS ReplyId, c.Subject, c.DateUpdated
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = ft.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId AND c.IsDeleted = 0
+GO
+
+/* issue 741 end - remove journal items when deleting posts for banned users */
 
 /* --------------------- */
