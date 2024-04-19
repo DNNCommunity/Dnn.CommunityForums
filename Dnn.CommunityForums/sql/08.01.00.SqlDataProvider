@@ -1369,7 +1369,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
 GO
 CREATE TABLE {databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue (
-	[Id] [long] IDENTITY (1, 1) NOT NULL,
+	[Id] [bigint] IDENTITY (1, 1) NOT NULL,
 	[PortalId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_PortalId] DEFAULT(-1),
 	[ModuleId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_ModuleId] DEFAULT(-1),
 	[EmailFrom] [nvarchar] (255) NULL ,
@@ -1434,7 +1434,53 @@ GO
 /* --------------------- */
 
 
-/* begin - implement new process queue */
+/* issue 741 begin - remove journal items when deleting posts for banned users*/
+
+/* need additional index on Content */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Content') AND name = N'idx_{objectQualifier}activeforums_Content_Opt3')
+DROP INDEX [idx_{objectQualifier}activeforums_Content_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Content 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_Content_Opt3] ON {databaseOwner}{objectQualifier}activeforums_Content
+(
+	[AuthorId] ASC,
+	[ModuleId] ASC,
+	[ContentId] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]') AND type in (N'P', N'PC'))
+DROP PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}activeforums_Content_GetJournalKeysForUser]
+	@UserId int,
+	@ModuleId int
+AS
+
+SELECT ft.ForumId, ft.TopicId, r.ReplyId, c.Subject, c.DateUpdated
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = ft.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Replies] r 
+		ON r.TopicId = t.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = r.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId AND c.IsDeleted = 0
+UNION
+SELECT ft.ForumId, ft.TopicId, 0 AS ReplyId, c.Subject, c.DateUpdated
+		FROM {databaseOwner}[{objectQualifier}activeforums_ForumTopics] ft
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Topics] t 
+		ON t.TopicId = ft.TopicId
+		INNER JOIN {databaseOwner}[{objectQualifier}activeforums_Content] c 
+		ON c.ContentId = t.ContentId
+		WHERE c.AuthorId = @UserId AND c.ModuleId = @ModuleId AND c.IsDeleted = 0
+GO
+
+/* issue 741 end - remove journal items when deleting posts for banned users */
+
+/* --------------------- */
+
+/* issue 376 begin - implement new process queue */
 SET NOCOUNT ON
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ProcessQueue]') AND type in (N'U'))
@@ -1475,5 +1521,5 @@ IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE Type
 GO
 
  
-/* end - implement new process queue */
+/* issue 376 end - implement new process queue */
 /* --------------------- */
