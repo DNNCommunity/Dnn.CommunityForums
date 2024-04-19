@@ -1369,7 +1369,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwn
 DROP TABLE {databaseOwner}[{objectQualifier}activeforums_EmailNotificationQueue]
 GO
 CREATE TABLE {databaseOwner}{objectQualifier}activeforums_EmailNotificationQueue (
-	[Id] [int] IDENTITY (1, 1) NOT NULL,
+	[Id] [bigint] IDENTITY (1, 1) NOT NULL,
 	[PortalId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_PortalId] DEFAULT(-1),
 	[ModuleId] [int] NOT NULL CONSTRAINT [DF_{objectQualifier}activeforums_EmailNotificationQueue_ModuleId] DEFAULT(-1),
 	[EmailFrom] [nvarchar] (255) NULL ,
