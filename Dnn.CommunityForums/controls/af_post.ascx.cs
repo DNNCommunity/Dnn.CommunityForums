@@ -992,15 +992,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_isEdit)
                 {
                     var ctlUtils = new ControlUtils();
-                    var fullURL = ctlUtils.BuildUrl(ForumTabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
+                    var fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
 
                     if (fullURL.Contains("~/"))
                     {
                         fullURL = Utilities.NavigateURL(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     }
                     if (fullURL.EndsWith("/"))
-                        fullURL += "?" + ParamKeys.ContentJumpId + "=" + tmpReplyId;
-
+                    {
+                        fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
+                    }
                     if (!_isEdit)
 
                     Response.Redirect(fullURL);
