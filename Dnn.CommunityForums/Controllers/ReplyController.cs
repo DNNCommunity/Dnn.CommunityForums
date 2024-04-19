@@ -53,10 +53,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
         {
+            var ri = GetById(ReplyId);
             DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
             var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
             JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
 
+            Utilities.UpdateModuleLastContentModifiedOnDate(ri.ModuleId);
             if (DelBehavior != 0)
                 return;
 
@@ -145,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedReplyCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
-        internal static bool ProcessApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        internal static bool ProcessApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
             try
             {
@@ -165,6 +167,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 Social amas = new Social();
                 amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
+                var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
+                pqc.Add(ProcessType.UpdateForumTopicPointers, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: RequestUrl);
+                pqc.Add(ProcessType.UpdateForumLastUpdated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: RequestUrl);
+
                 Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
                 return true;
             }
@@ -174,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return false;
             }
         }
-        internal static bool ProcessUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        internal static bool ProcessUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
             try
             {

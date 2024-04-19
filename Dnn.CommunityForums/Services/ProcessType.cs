@@ -27,7 +27,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
         ApprovedTopicCreated = 1,
         UnapprovedTopicCreated = 2,
         ApprovedReplyCreated = 3,
-        UnapprovedReplyCreated = 4,
+        UnapprovedReplyCreated = 4, 
+        UpdateForumLastUpdated = 5, 
+        UpdateForumTopicPointers = 6,
 
     }
 }
