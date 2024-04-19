@@ -32,6 +32,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         {
             this.navigationManager = DependencyProvider.GetService<INavigationManager>();
         }
+        internal INavigationManager NavigationManager()
+        {
+           return this.navigationManager;
+        }
         internal URLNavigator(INavigationManager navigationManager)
         {
             this.navigationManager = navigationManager;

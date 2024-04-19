@@ -437,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (canSubscribe)
                 {
                     bool IsSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
-                    string sAlt = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
+                    string sAlt = "[RESX:Subscribe]";
                     string sImg = ThemePath + "images/email_unchecked.png";
                     if (IsSubscribed)
                     {
@@ -448,7 +448,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     subControl.DisplayMode = 1;
                     subControl.UserId = CurrentUserId;
                     subControl.ImageURL = sImg;
-                    subControl.Text = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
+                    subControl.Text = "[RESX:Subscribe]";
 
                     Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subControl.Render());
                 }

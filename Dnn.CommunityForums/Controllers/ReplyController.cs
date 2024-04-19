@@ -18,16 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
-using DotNetNuke.UI.UserControls;
+using DotNetNuke.Services.Log.EventLog;
+using DotNetNuke.Services.Social.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reflection;
+using System.Security.Policy;
 using System.Text;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -51,6 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
         {
+            var ri = GetById(ReplyId);
             DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
             var ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
             DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ForumId));
@@ -61,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var objectKey = string.Format("{0}:{1}:{2}", ForumId, TopicId, ReplyId);
             JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
 
+            Utilities.UpdateModuleLastContentModifiedOnDate(ri.ModuleId);
             if (DelBehavior != 0)
                 return;
 
@@ -143,12 +147,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Email.SendEmail(fi.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, ri.Author);
             }
-            Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, ri.Content.AuthorId);
-            
+            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, fi.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
+
+            return reply;
+        }
+        internal static bool QueueApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedReplyCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
+        }
+        internal static bool QueueUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedReplyCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
+        }
+        internal static bool ProcessApprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        {
             try
             {
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+                Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, reply.Forum, TopicId, ReplyId, AuthorId, new Uri(RequestUrl));
+
                 ControlUtils ctlUtils = new ControlUtils();
-                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, fi.SocialGroupId);
+                string fullURL = ctlUtils.BuildUrl(TabId, ModuleId, reply.Forum.ForumGroup.PrefixURL, reply.Forum.PrefixURL, reply.Forum.ForumGroupId, ForumId, TopicId, reply.Topic.TopicUrl, -1, -1, string.Empty, 1, ReplyId, reply.Forum.SocialGroupId);
 
                 if (fullURL.Contains("~/"))
                 {
@@ -159,18 +178,56 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
                 }
                 Social amas = new Social();
-                amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body, fi.Security.Read, fi.SocialGroupId);
+                amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
 
                 DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ri.ForumId));
                 DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
                 DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
                 DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
+                var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
+                pqc.Add(ProcessType.UpdateForumTopicPointers, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: RequestUrl);
+                pqc.Add(ProcessType.UpdateForumLastUpdated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: RequestUrl);
+
+                Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
+                return true;
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
             }
-            return ri;
+        }
+        internal static bool ProcessUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        {
+            try
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId); 
+                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ModuleId, ForumId);
+                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
+                string subject = Utilities.GetSharedResource("NotificationSubjectReply");
+                subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
+                subject = subject.Replace("[TopicSubject]", reply.Topic.Content.Subject);
+                string body = Utilities.GetSharedResource("NotificationBodyReply");
+                body = body.Replace("[Post]", reply.Content.Body);
+                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ModuleId, ForumId, TopicId, ReplyId);
+
+                Notification notification = new Notification();
+                notification.NotificationTypeID = notificationType.NotificationTypeId;
+                notification.Subject = subject;
+                notification.Body = body;
+                notification.IncludeDismissAction = false;
+                notification.SenderUserID = reply.Content.AuthorId;
+                notification.Context = notificationKey;
+
+                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
+            }
+            return reply;
         }
     }
 }

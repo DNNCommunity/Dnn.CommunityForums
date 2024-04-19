@@ -108,7 +108,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController.")]
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
@@ -117,17 +116,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
         {
-            SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
+            SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId, null);
         }
 
-        public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
+        public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId, Uri requestUrl)
         {
             var sc = new SubscriptionController();
             List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
 
             if (subs.Count > 0)
             {
-                Email.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs, requestUrl);
             }
         }
 
@@ -204,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         GroupCount = 0;
                         tmpEmail = newEmail;
-                        Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, string.Empty, string.Empty);
+                        new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1,FromEmail, tmpEmail, TemplateSubject, sMessageBody);
                         i = 0;
                     }
                 }
@@ -301,7 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
-                Queue.Controller.Add(portalId, FromEmail, tmpEmail, TemplateSubject, sMessageBody, string.Empty, string.Empty);
+              new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
             }
         }
     }

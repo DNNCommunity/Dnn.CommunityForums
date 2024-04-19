@@ -18,11 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
+using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
+using DotNetNuke.Services.Social.Notifications;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,6 +32,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -127,31 +130,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Email.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, 0, string.Empty, ti.Author);
             }
-
-            Subscriptions.SendSubscriptions(ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, 0, ti.Content.AuthorId);
-
-            try
-            {
-                ControlUtils ctlUtils = new ControlUtils();
-                string sUrl = ctlUtils.BuildUrl(ti.Forum.TabId, ti.ModuleId, ti.Forum.ForumGroup.PrefixURL, ti.Forum.PrefixURL, ti.Forum.ForumGroupId, ti.Forum.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, ti.Forum.SocialGroupId);
-                Social amas = new Social();
-                amas.AddTopicToJournal(ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, ti.Author.AuthorId, sUrl, ti.Content.Subject, string.Empty, ti.Content.Body, ti.Forum.Security.Read, ti.Forum.SocialGroupId);
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
+            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, TopicId, -1, ti.Content.AuthorId);
             return ti;
         }
         public static void Move(int TopicId, int NewForumId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+            int oldForumId = (int)ti.ForumId;
             SettingsInfo settings = SettingsBase.GetModuleSettings(ti.ModuleId);
             if (settings.URLRewriteEnabled)
             {
                 try
                 {
-                    int oldForumId = (int)ti.ForumId;
                     if (!(string.IsNullOrEmpty(ti.Forum.PrefixURL)))
                     {
                         Data.Common dbC = new Data.Common();
@@ -167,7 +157,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
+            var oldForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(oldForumId);
+            var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(NewForumId);
+
             DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, NewForumId, TopicId);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: TopicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
+            new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: TopicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));
@@ -282,6 +277,80 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     return $"{themePath}/images/topic_new.png";
                 }
+            }
+        }
+
+        internal static bool QueueApprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        { 
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedTopicCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
+        }
+        internal static bool QueueUnapprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        {
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedTopicCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
+        }
+        internal static bool ProcessApprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        {
+            try
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, topic.Forum, TopicId, 0, topic.Content.AuthorId, new Uri(RequestUrl));
+
+                ControlUtils ctlUtils = new ControlUtils();
+                string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
+
+                Social amas = new Social(); 
+                amas.AddTopicToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, topic.Forum.Security.Read, topic.Forum.SocialGroupId);
+
+                var pqc = new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController();
+                pqc.Add(ProcessType.UpdateForumTopicPointers, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: RequestUrl);
+                pqc.Add(ProcessType.UpdateForumLastUpdated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: RequestUrl);
+
+                Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
+            }
+        }
+        internal static bool ProcessUnapprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        {
+            try
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+
+                List<UserInfo> mods = Utilities.GetListOfModerators(PortalId, ModuleId, ForumId);
+                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
+
+                string notifySubject = Utilities.GetSharedResource("NotificationSubjectTopic");
+                notifySubject = notifySubject.Replace("[DisplayName]", topic.Content.AuthorName);
+                notifySubject = notifySubject.Replace("[TopicSubject]", topic.Content.Subject);
+
+                var notifyBody = Utilities.GetSharedResource("NotificationBodyTopic");
+                notifyBody = notifyBody.Replace("[Post]", topic.Content.Body);
+
+                var notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ModuleId, ForumId, TopicId, ReplyId);
+
+                var notification = new Notification
+                {
+                    NotificationTypeID = notificationType.NotificationTypeId,
+                    Subject = notifySubject,
+                    Body = notifyBody,
+                    IncludeDismissAction = false,
+                    SenderUserID = AuthorId,
+                    Context = notificationKey
+                };
+
+                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
             }
         }
     }

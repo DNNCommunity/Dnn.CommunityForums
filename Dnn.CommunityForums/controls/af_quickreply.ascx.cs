@@ -93,11 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 btnToolBar.Visible = UseFilter;
                 divSubscribe.Visible = AllowSubscribe;
-                if (AllowSubscribe)
+                divSubscribe.Visible = !UserPrefTopicSubscribe; /* if user has preference set for auto subscribe, no need to show them the subscribe option */
+                if (divSubscribe.Visible)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
                     subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId, TopicId);
-                    subControl.Text = "[RESX:TopicSubscribe:" + (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId, TopicId)).ToString().ToUpper() + "]";
+                    subControl.Text = "[RESX:Subscribe]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
@@ -319,7 +320,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
             int ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ModuleId, ri);
-            Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
+
+            DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, ri.Forum.ForumGroupId, ForumId, TopicId, ReplyId, ri.Content.AuthorId);
+            DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
+            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
 
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
@@ -335,50 +339,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (isApproved)
             {
-
-                //Send Subscriptions
-
-                try
-                {
-                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId);
-                    try
-                    {
-                        Social amas = new Social();
-                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, ri.Content.Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
-                    }
-                    catch (Exception ex)
-                    {
-                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
-                }
                 //Redirect to show post
-
                 Response.Redirect(fullURL, false);
             }
-            else if (isApproved == false)
+            else
             {
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
-                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-                string subject = Utilities.GetSharedResource("NotificationSubjectReply");
-                subject = subject.Replace("[DisplayName]", UserInfo.DisplayName);
-                subject = subject.Replace("[TopicSubject]", ti.Content.Subject);
-                string body = Utilities.GetSharedResource("NotificationBodyReply");
-                body = body.Replace("[Post]", sBody);
-                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);
-
-                Notification notification = new Notification();
-                notification.NotificationTypeID = notificationType.NotificationTypeId;
-                notification.Subject = subject;
-                notification.Body = body;
-                notification.IncludeDismissAction = false;
-                notification.SenderUserID = UserId;
-                notification.Context = notificationKey;
-
-                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ModuleId, ri.Forum.ForumGroupId, ForumId, TopicId, ReplyId, ri.Content.AuthorId);
 
                 var @params = new List<string> { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
                 if (SocialGroupId > 0)
@@ -386,23 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     @params.Add("GroupId=" + SocialGroupId);
                 }
                 Response.Redirect(Utilities.NavigateURL(TabId, "", @params.ToArray()), false);
-            }
-            else
-            {
-                try
-                {
-                    Social amas = new Social();
-                    amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, TopicId, ReplyId, UserId, fullURL, Subject, string.Empty, sBody, ForumInfo.Security.Read, SocialGroupId);
-                }
-                catch (Exception ex)
-                {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                }
-                Response.Redirect(fullURL, false);
-            }
-             
-
-
+            };
         }
 
 

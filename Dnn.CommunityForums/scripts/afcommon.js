@@ -97,8 +97,7 @@ function amaf_topicSubscribe(mid, fid, tid) {
         }).done(function (data) {
             amaf_UpdateTopicSubscriberCount(mid, fid, tid);
             $('input[type=checkbox].amaf-chk-subs')
-                .prop('checked', data)
-                .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.TopicSubscribeTrue : amaf.resx.TopicSubscribeFalse);
+                .prop('checked', data);
         }).fail(function (xhr, status) {
             alert('error subscribing to topic');
         });
@@ -134,8 +133,7 @@ function amaf_forumSubscribe(mid, fid) {
     }).done(function (data) {
         amaf_UpdateForumSubscriberCount(mid, fid);
         $('input[type=checkbox].amaf-chk-subs')
-            .prop('checked', data)
-            .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.ForumSubscribeTrue : amaf.resx.ForumSubscribeFalse);
+            .prop('checked', data);
         $('img#amaf-sub-' + fid).each(function () {
             var imgSrc = $(this).attr('src');
             if (data) {

@@ -888,7 +888,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 var subControl = new ToggleSubscribe(ForumModuleId, ForumId, TopicId, 1);
                 subControl.Checked = _isSubscribedTopic;
-                subControl.Text = "[RESX:TopicSubscribe:" + _isSubscribedTopic.ToString().ToUpper() + "]";
+                subControl.Text = "[RESX:Subscribe]";
                 sbOutput.Replace("[TOPICSUBSCRIBE]", subControl.Render());
             }
             else
