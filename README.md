@@ -17,7 +17,7 @@ There are no steps unique to this module to install it.  You're able to install 
 
 When using this module, it's important to know that it can be set-up in numerous ways.  To make your initial experience easier, there is a wizard that will pre-configure the module for you with the most common settings, as well as adding some starter modules for you to use (or not).  
 
-1. There are 3 modules that you'll find installed.  The primary one that you should be using is simply named `Community Forums`.  The other two modules are companion modules that server other complimentary purposes.  
+1. There are 3 modules that you'll find installed.  The primary one that you should be using is simply named `Community Forums`.  The other two modules are companion modules that serve other complementary purposes.  
 
 2. When you add the `Community Forums` module to the page, it will show you a welcome message.  Click the `Continue` button to proceed.  
 
