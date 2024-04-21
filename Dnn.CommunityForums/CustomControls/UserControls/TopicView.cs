@@ -958,7 +958,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ForumInfo.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
-                        sbOutput.Replace("oldValue: [PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace(oldValue: "[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                     else
                         sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
@@ -979,11 +979,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sbOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");
             sbOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + groupUrl + "\">" + _groupName + "</a>");
-            if (MainSettings.UseShortUrls)
-                sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-            else
-                sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-
+            sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
+            
             // Names and Ids
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[FORUMNAME]", _forumName);
