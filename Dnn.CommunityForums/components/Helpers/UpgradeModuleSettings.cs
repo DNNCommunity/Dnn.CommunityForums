@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
         internal static void DeleteObsoleteModuleSettings_080100()
         {
 
-            /* remove TIMEZONEOFFSET and AMFORUMS */
+            /* remove TIMEZONEOFFSE, AMFORUMS, MAILQUEUE */
 
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
             {
@@ -128,6 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "TIMEZONEOFFSET");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "AMFORUMS");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "MAILQUEUE");
                     }
                 }
             }

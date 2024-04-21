@@ -145,13 +145,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     Utilities.SelectListItemByValue(rdFullTextSearch, FullTextSearch && FullTextStatus == 1); // 1 = Enabled Status
 
-                //rdFullTextSearch.SelectedIndex = FullTextSearch 
-                //    ? rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("True"))
-                //    : rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("False"));
-
-                Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
-                Utilities.SelectListItemByValue(rdMailQueue, MailQueue);
-                Utilities.SelectListItemByValue(rdPoints, EnablePoints);
+    				Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
+	                Utilities.SelectListItemByValue(rdPoints, EnablePoints);
                     Utilities.SelectListItemByValue(rdUsersOnline, EnableUsersOnline);
                     Utilities.SelectListItemByValue(rdUseSkinBreadCrumb, UseSkinBreadCrumb);
 
@@ -231,7 +226,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 FullTextSearch = Utilities.SafeConvertBool(rdFullTextSearch.SelectedValue);
-                MailQueue = Utilities.SafeConvertBool(rdMailQueue.SelectedValue);
                 CacheTemplates = Utilities.SafeConvertBool(rdCacheTemplates.SelectedValue);
 
                 MessagingType = Utilities.SafeConvertInt(drpMessagingType.SelectedValue);
