@@ -17,6 +17,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System;
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -311,17 +312,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 		}
 
-        public bool MailQueue
-        {
-            get
-            {
-                return Settings.GetBoolean(SettingKeys.MailQueue);
-            }
-            set
-            {
-                UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public bool MailQueue => true;
         public bool CacheTemplates
         {
             get
