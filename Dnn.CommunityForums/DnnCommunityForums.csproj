@@ -217,6 +217,7 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="config\templates\ToolbarSearchPopup.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
     <Content Include="config\templates\BlogList.ascx" />
     <Content Include="config\templates\DailyDigest.ascx" />

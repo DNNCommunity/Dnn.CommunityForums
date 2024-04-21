@@ -25,6 +25,10 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     internal static class TemplateCache
     {
+        public static string GetCachedTemplate(int ModuleId, string TemplateType)
+        {
+            return GetCachedTemplate(ModuleId, TemplateType, -1);
+        }
         public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
         {
             string sTemplate = string.Empty;

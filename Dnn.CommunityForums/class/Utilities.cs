@@ -171,32 +171,15 @@ namespace DotNetNuke.Modules.ActiveForums
             var advancedSearchUrl = NavigateURL(tabId, string.Empty, new[] { ParamKeys.ViewType + "=searchadvanced", "f=" + forumId });
             var searchText = forumId > 0 ? "[RESX:SearchSingleForum]" : "[RESX:SearchAllForums]";
 
-
-            template = template.Replace("[AF:TB:Search]", string.Format(@"
-<div class='dcf-quick-search aftb-search' data-searchUrl='{0}'>
-    <span class='dcf-search-link aftb-search-link'>
-        <span>
-            <i class='fa fa-search fa-fw fa-blue'></i>&nbsp;{2}
-        </span>
-        <span class='ui-icon ui-icon-triangle-1-s'>
-        </span>
-    </span>
-    <div class='dcf-search-popup aftb-search-popup'>
-        <div class='dcf-search-input'>
-            <input class='dcf-search-input' type='text' placeholder='Search for...' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
-        </div>
-        <div class='dcf-search-options'>
-            <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
-            <span class='dcf-search-option-topics'>
-                <input type='radio' name='afsrt' value='0' checked='checked' /><span class='dcf-search-option-text'>[RESX:SearchByTopics]</span>
-            </span>
-            <span class='dcf-search-option-posts'>
-                <input type='radio' name='afsrt' value='1' /><span class='dcf-search-option-text'>[RESX:SearchByPosts]</span>
-            </span>
-        </div>
-    </div>
-</div>", 
-HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
+            if (template.Contains("[AF:TB:Search]"))
+            {
+                string searchPopupTemplate = TemplateCache.GetCachedTemplate(forumModuleId, "ToolbarSearchPopup");
+                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchURL]", HttpUtility.HtmlEncode(searchUrl));
+                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:AdvancedSearchURL]", HttpUtility.HtmlEncode(advancedSearchUrl));
+                searchPopupTemplate = searchPopupTemplate.Replace("[AF:TB:SearchText]", searchText);
+                searchPopupTemplate = Utilities.LocalizeControl(searchPopupTemplate);
+                template = template.Replace("[AF:TB:Search]", searchPopupTemplate);
+            }
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);
