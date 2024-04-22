@@ -174,8 +174,6 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string GeneralSettingsKey = "GEN";
 		public const string Mode = "MODE";
 		public const string PageSize = "PAGESIZE";
-		public const string AllowUserPhotos = "ALLOWUSERPHOTOS";
-		public const string AllowUserBio = "ALLOWUSERBIO";
 		public const string AllowSubscribe = "ALLOWSUBSCRIBE";
 		public const string UserNameDisplay = "USERNAMEDISPLAY";
 		public const string DisableUserProfiles = "DISABLEUSERPROFILES";

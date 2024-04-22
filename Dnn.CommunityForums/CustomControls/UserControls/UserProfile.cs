@@ -70,16 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected PlaceHolder plhProfileSaveButton = new PlaceHolder();
         protected PlaceHolder plhProfileCancelButton = new PlaceHolder();
         protected DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs amTabs = new DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs();
-        //Edit Mode
-        protected global::System.Web.UI.WebControls.TextBox txtWebSite;
-        protected global::System.Web.UI.WebControls.TextBox txtOccupation;
-        protected global::System.Web.UI.WebControls.TextBox txtLocation;
-        protected global::System.Web.UI.WebControls.TextBox txtInterests;
 
-        protected global::System.Web.UI.WebControls.TextBox txtYahoo;
-        protected global::System.Web.UI.WebControls.TextBox txtMSN;
-        protected global::System.Web.UI.WebControls.TextBox txtICQ;
-        protected global::System.Web.UI.WebControls.TextBox txtAOL;
         protected global::System.Web.UI.WebControls.TextBox txtSignature;
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnProfileEdit;
         protected global::DotNetNuke.Modules.ActiveForums.Controls.ImageButton btnProfileSave;
@@ -318,36 +309,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     case "plhProfileCancelButton":
                         plhProfileCancelButton = (PlaceHolder)ctrl;
                         break;
-                    case "txtWebSite":
-                        txtWebSite = (TextBox)ctrl;
-                        break;
-                    case "txtOccupation":
-                        txtOccupation = (TextBox)ctrl;
-                        break;
-                    case "txtLocation":
-                        txtLocation = (TextBox)ctrl;
-                        break;
-                    case "txtInterests":
-                        txtInterests = (TextBox)ctrl;
-
-                        break;
                     case "trAvatarLinks":
                         trAvatarLinks = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
                         break;
                     case "tblAvatars":
                         tblAvatars = (System.Web.UI.HtmlControls.HtmlTable)ctrl;
-                        break;
-                    case "txtYahoo":
-                        txtYahoo = (TextBox)ctrl;
-                        break;
-                    case "txtMSN":
-                        txtMSN = (TextBox)ctrl;
-                        break;
-                    case "txtICQ":
-                        txtICQ = (TextBox)ctrl;
-                        break;
-                    case "txtAOL":
-                        txtAOL = (TextBox)ctrl;
                         break;
                     case "txtSignature":
                         txtSignature = (TextBox)ctrl;
@@ -381,14 +347,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 UserProfileInfo upi = uc.GetUser(PortalId, ForumModuleId, UID).Profile;
                 if (upi != null)
                 {
-                    upi.WebSite = Utilities.XSSFilter(txtWebSite.Text, true);
-                    upi.Occupation = Utilities.XSSFilter(txtOccupation.Text, true);
-                    upi.Location = Utilities.XSSFilter(txtLocation.Text, true);
-                    upi.Interests = Utilities.XSSFilter(txtInterests.Text, true);
-                    upi.Yahoo = Utilities.XSSFilter(txtYahoo.Text, true);
-                    upi.MSN = Utilities.XSSFilter(txtMSN.Text, true);
-                    upi.ICQ = Utilities.XSSFilter(txtICQ.Text, true);
-                    upi.AOL = Utilities.XSSFilter(txtAOL.Text, true);
                     if (MainSettings.AllowSignatures == 1)
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);

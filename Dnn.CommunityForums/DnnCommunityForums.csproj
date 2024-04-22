@@ -299,7 +299,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.es-ES.resx" />
-    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx" />
+    <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.de-DE.resx" />
     <EmbeddedResource Include="App_LocalResources\SharedResources.de-DE.resx">
@@ -1230,6 +1232,7 @@
     <None Include="sql\07.00.00.SqlDataProvider" />
     <None Include="sql\07.00.02.SqlDataProvider" />
     <None Include="sql\07.00.11.SqlDataProvider" />
+    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\08.01.00.SqlDataProvider" />
     <None Include="sql\08.00.00.SqlDataProvider" />
     <None Include="sql\07.00.05.SqlDataProvider" />
