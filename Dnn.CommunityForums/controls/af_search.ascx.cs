@@ -22,14 +22,42 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using DotNetNuke.Entities.Portals;
+using System.Xml.Linq;
 using DotNetNuke.Modules.ActiveForums.Controls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class af_search : ForumBase
     {
+        protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
+        protected System.Web.UI.WebControls.PlaceHolder phKeywords = new PlaceHolder();
+        protected System.Web.UI.WebControls.PlaceHolder phTag = new PlaceHolder();
+        protected System.Web.UI.WebControls.PlaceHolder phUsername = new PlaceHolder();
+        protected System.Web.UI.WebControls.Repeater rptTopics = new Repeater();
+        protected System.Web.UI.WebControls.Repeater rptPosts = new Repeater();
+        protected System.Web.UI.WebControls.Repeater rptKeywords = new Repeater(); 
+        protected System.Web.UI.WebControls.Panel pnlMessage = new Panel();
+        protected System.Web.UI.WebControls.Literal litTag = new Literal();
+        protected System.Web.UI.WebControls.Literal litUserName = new Literal();
+        protected System.Web.UI.WebControls.Literal litMessage = new Literal();
+        protected System.Web.UI.WebControls.Literal litSearchDuration = new Literal();
+        protected System.Web.UI.WebControls.Literal litSearchAge = new Literal();
+        protected System.Web.UI.WebControls.Literal litRecordCount = new Literal();
+        protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerTop = new PagerNav();
+        protected DotNetNuke.Modules.ActiveForums.Controls.PagerNav PagerBottom = new PagerNav();
+
+        protected System.Web.UI.HtmlControls.HtmlLink rptPostsForumUrl = new HtmlLink();
+        protected System.Web.UI.HtmlControls.HtmlLink rptPostsTopicUrl = new HtmlLink();
+        protected System.Web.UI.HtmlControls.HtmlLink rptPostsContentUrl = new HtmlLink();
+
+        protected System.Web.UI.HtmlControls.HtmlLink rptTopicsForumUrl = new HtmlLink();
+        protected System.Web.UI.HtmlControls.HtmlLink rptTopicsTopicUrl1 = new HtmlLink();
+        protected System.Web.UI.HtmlControls.HtmlLink rptTopicsTopicUrl2 = new HtmlLink();
+        protected System.Web.UI.WebControls.Image rptTopicsTopicIconImage = new Image();
+
         #region Private Members
 
         private string _searchText;
@@ -55,9 +83,120 @@ namespace DotNetNuke.Modules.ActiveForums
         private int? _searchDuration;
 
         private DataRow _currentRow;
-        
+
         #endregion
 
+        #region Event Handlers
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            string template = TemplateCache.GetCachedTemplate(ForumModuleId, "SearchResults", -1);
+
+            try
+            {
+                template = Globals.ForumsControlsRegisterAMTag + template;
+                //if (template.Contains("[SUBJECT]"))
+                //{
+                //    template = template.Replace("[SUBJECT]", Subject);
+                //}
+                template = Utilities.LocalizeControl(template);
+                Control ctl = this.ParseControl(template);
+                LinkControls(ctl.Controls);
+                Search.Controls.Add(ctl);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+
+
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            rptPosts.ItemCreated += PostRepeaterOnItemCreated;
+            rptTopics.ItemCreated += TopicRepeaterOnItemCreated;
+
+            try
+            {
+
+                if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
+                {
+                    SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
+                }
+
+
+                List<string> keywords;
+
+                // Note: Filter out any keywords that are not at least 3 characters in length
+
+                if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
+                    keywords = new List<string> { SearchText.Trim() };
+                else
+                    keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToList();
+
+                if (keywords.Count > 0)
+                {
+                    phKeywords.Visible = true;
+                    rptKeywords.DataSource = keywords;
+                    rptKeywords.DataBind();
+                }
+
+                if (!string.IsNullOrWhiteSpace(AuthorUsername))
+                {
+                    phUsername.Visible = true;
+                    litUserName.Text = Server.HtmlEncode(AuthorUsername);
+                }
+
+                if (!string.IsNullOrWhiteSpace(Tags))
+                {
+                    phTag.Visible = true;
+                    litTag.Text = Server.HtmlEncode(Tags);
+                }
+
+                BindPosts();
+
+                // Update Meta Data
+                var tempVar = BasePage;
+                Environment.UpdateMeta(ref tempVar, "[VALUE] - " + GetSharedResource("[RESX:Search]") + " - " + SearchText, "[VALUE]", "[VALUE]");
+            }
+            catch (Exception ex)
+            {
+                Controls.Clear();
+                RenderMessage("[RESX:ERROR]", "[RESX:ERROR:Search]", ex.Message, ex);
+            }
+        }
+
+
+        private void PostRepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
+        {
+            RepeaterOnItemCreated(sender, repeaterItemEventArgs);
+            if (_currentRow != null)
+            {
+                rptPostsForumUrl.Href = GetForumUrl();
+                rptPostsTopicUrl.Href = GetThreadUrl();
+                rptPostsContentUrl.Href = GetPostUrl();
+            }
+        }
+        private void TopicRepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
+        {
+            RepeaterOnItemCreated(sender, repeaterItemEventArgs);
+            if (_currentRow != null)
+            {
+                rptTopicsForumUrl.Href = GetForumUrl();
+                rptTopicsTopicUrl1.Href = GetThreadUrl();
+                rptTopicsTopicUrl2.Href = GetThreadUrl();
+                rptTopicsTopicIconImage.ImageUrl = GetIcon();
+            }
+        }
+        private void RepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
+        {
+            _currentRow = repeaterItemEventArgs.Item.DataItem is DataRowView dataRowView ? dataRowView.Row : null;
+        }
+        #endregion
         #region Properties
 
         private string SearchText
@@ -280,77 +419,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-        #region Event Handlers
-
-        protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-            rptPosts.ItemCreated += RepeaterOnItemCreated;
-            rptTopics.ItemCreated += RepeaterOnItemCreated;
-
-            try
-            {
-
-                if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
-                {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
-                }
-
-                litSearchTitle.Text = GetSharedResource("[RESX:SearchTitle]");
-
-                List<string> keywords;
-
-                // Note: Filter out any keywords that are not at least 3 characters in length
-
-                if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
-                    keywords = new List<string> { SearchText.Trim() };
-                else
-                    keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToList();
-
-                if(keywords.Count > 0)
-                {
-                    phKeywords.Visible = true;
-                    rptKeywords.DataSource = keywords;
-                    rptKeywords.DataBind();  
-                }
-
-                if (!string.IsNullOrWhiteSpace(AuthorUsername))
-                {
-                    phUsername.Visible = true;
-                    litUserName.Text = Server.HtmlEncode(AuthorUsername);
-                }
-
-                if(!string.IsNullOrWhiteSpace(Tags))
-                {
-                    phTag.Visible = true;
-                    litTag.Text = Server.HtmlEncode(Tags);
-                }
-
-                BindPosts();
-
-                // Update Meta Data
-                var tempVar = BasePage;
-                Environment.UpdateMeta(ref tempVar, "[VALUE] - " + GetSharedResource("[RESX:Search]") + " - " + SearchText, "[VALUE]", "[VALUE]");
-            }
-            catch (Exception ex)
-            {
-                Controls.Clear();
-                RenderMessage("[RESX:ERROR]", "[RESX:ERROR:Search]", ex.Message, ex);
-            }
-        }
-
-        private void RepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
-        {
-            var dataRowView = repeaterItemEventArgs.Item.DataItem as DataRowView;
-
-            if (dataRowView == null)
-                return;
-
-            _currentRow = dataRowView.Row;
-        }
-
-        #endregion
 
         #region Private Methods
 
@@ -437,6 +505,89 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
+        private void LinkControls(ControlCollection ctrls)
+        {
+            foreach (Control ctrl in ctrls)
+            {
+                switch (ctrl.ID)
+                {
+                    case "litTag":
+                        litTag = (Literal)ctrl;
+                        break;
+                    case "litUserName":
+                        litUserName = (Literal)ctrl;
+                        break;
+                    case "litMessage":
+                        litMessage = (Literal)ctrl;
+                        break;
+                    case "litSearchDuration":
+                        litSearchDuration = (Literal)ctrl;
+                        break;
+                    case "litSearchAge":
+                        litSearchAge = (Literal)ctrl;
+                        break;
+                    case "litRecordCount":
+                        litRecordCount = (Literal)ctrl;
+                        break;
+                    case "rptTopics":
+                        rptTopics = (Repeater)ctrl;
+                        break;
+                    case "rptPosts":
+                        rptPosts = (Repeater)ctrl;
+                        break;
+                    case "rptKeywords":
+                        rptKeywords = (Repeater)ctrl;
+                        break;
+                    case "phKeywords":
+                        phKeywords = (PlaceHolder)ctrl;
+                        break;
+                    case "phTag":
+                        phKeywords = (PlaceHolder)ctrl;
+                        break;
+                    case "phUsername":
+                        phKeywords = (PlaceHolder)ctrl;
+                        break;
+                    case "plhMessage":
+                        plhMessage = (PlaceHolder)ctrl;
+                        break;
+                    case "PagerTop":
+                        PagerTop = (PagerNav)ctrl;
+                        break;
+                    case "PagerBottom":
+                        PagerBottom = (PagerNav)ctrl;
+                        break;
+                    case "rptPostsForumUrl":
+                        rptPostsForumUrl = (HtmlLink)ctrl;
+                        break;
+                    case "rptPostsTopicUrl":
+                        rptPostsTopicUrl = (HtmlLink)ctrl;
+                        break;
+                    case "rptPostsContentUrl":
+                        rptPostsContentUrl = (HtmlLink)ctrl;
+                        break;
+                    case "rptTopicsForumUrl":
+                        rptTopicsForumUrl = (HtmlLink)ctrl;
+                        break;
+                    case "rptTopicsTopicUrl1":
+                        rptTopicsTopicUrl1 = (HtmlLink)ctrl;
+                        break;
+                    case "rptTopicsTopicUrl2":
+                        rptPostsContentUrl = (HtmlLink)ctrl;
+                        break;
+                    case "rptTopicsTopicIconImage":
+                        rptTopicsTopicIconImage = (Image)ctrl;
+                        break;
+    }
+                if (ctrl is Controls.ControlsBase)
+                {
+                    ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
+                }
+                if (ctrl.Controls.Count > 0)
+                {
+                    LinkControls(ctrl.Controls);
+                }
+            }
+        }
         private void BuildPager(PagerNav pager)
         {
             var intPages = Convert.ToInt32(Math.Ceiling(_rowCount / (double)_pageSize));
@@ -457,7 +608,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Public Methods
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetSearchUrl()
         {
             var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
@@ -469,7 +619,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetForumUrl()
         {
             if (_currentRow == null)
@@ -486,7 +635,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetThreadUrl()
         {
             if (_currentRow == null)
@@ -506,7 +654,6 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Jumps to post for post view, or last reply for topics view
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostUrl() 
         {
             if (_currentRow == null)
@@ -529,8 +676,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetAuthor()
         {
             if (_currentRow == null)
@@ -544,8 +689,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetLastPostAuthor()
         {
             if (_currentRow == null)
@@ -565,7 +708,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostSnippet()
         {
             var post = _currentRow["Body"].ToString();
@@ -578,12 +720,19 @@ namespace DotNetNuke.Modules.ActiveForums
             return post;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetIcon()
         {
+            // Unread has to be calculated based on a few fields
+            var topicId = Convert.ToInt32(_currentRow["TopicId"]);
+            var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
+            var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
+            var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
+            var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
+            var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
+
             return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
                 Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
-                Utilities.SafeConvertBool(_currentRow["IsRead"]),
+                !unread,
                 ThemePath,
                 Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
                 Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
@@ -599,7 +748,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string GetMiniPager() => MiniPager.GetMiniPager(_currentRow, TabId, SocialGroupId, _pageSize);
 
         #endregion
-
+        #region "Deprecated"
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced with List<string>")]
         public class Keyword
         {
@@ -611,6 +760,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 get { return string.IsNullOrWhiteSpace(Value) ? Value : HttpUtility.HtmlEncode(Value); }
             }
         }
-
+        #endregion
     }
 }

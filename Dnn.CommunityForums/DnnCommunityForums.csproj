@@ -217,6 +217,7 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="config\templates\SearchResults.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
     <Content Include="config\templates\BlogList.ascx" />
     <Content Include="config\templates\DailyDigest.ascx" />
@@ -1749,7 +1750,6 @@
     </Compile>
     <Compile Include="controls\af_search.ascx.cs">
       <DependentUpon>af_search.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_topicsort.ascx.designer.cs">
       <DependentUpon>af_topicsort.ascx</DependentUpon>

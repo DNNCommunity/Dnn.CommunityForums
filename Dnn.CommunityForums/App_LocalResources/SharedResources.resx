@@ -141,9 +141,6 @@
   <data name="ReplyHeader.Text" xml:space="preserve">
     <value>Replies</value>
   </data>
-  <data name="By.Text" xml:space="preserve">
-    <value>by</value>
-  </data>
   <data name="TopicHeader.Text" xml:space="preserve">
     <value>Topics</value>
   </data>
@@ -1534,31 +1531,25 @@ From,
   <data name="[RESX:SearchTitle].Text" xml:space="preserve">
     <value>Search Results</value>
   </data>
-  <data name="SearchBy.Text" xml:space="preserve">
+  <data name="[RESX:SearchBy].Text" xml:space="preserve">
     <value>By:</value>
   </data>
-  <data name="SearchForum.Text" xml:space="preserve">
+  <data name="[RESX:SearchForum].Text" xml:space="preserve">
     <value>Forum:</value>
   </data>
   <data name="SearchLastPost.Text" xml:space="preserve">
     <value>Last Post:</value>
   </data>
-  <data name="SearchModify.Text" xml:space="preserve">
-    <value>Modify Search</value>
-  </data>
-  <data name="SearchPosted.Text" xml:space="preserve">
-    <value>Posted:</value>
-  </data>
   <data name="SearchPostTime.Text" xml:space="preserve">
     <value>{0} @ {1}</value>
   </data>
-  <data name="SearchReplies.Text" xml:space="preserve">
+  <data name="[RESX:SearchReplies].Text" xml:space="preserve">
     <value>Replies:</value>
   </data>
-  <data name="SearchTopic.Text" xml:space="preserve">
+  <data name="[RESX:SearchTopic].Text" xml:space="preserve">
     <value>Topic:</value>
   </data>
-  <data name="SearchViews.Text" xml:space="preserve">
+  <data name="[RESX:SearchViews].Text" xml:space="preserve">
     <value>Views:</value>
   </data>
   <data name="Started.Text" xml:space="preserve">
@@ -1716,5 +1707,32 @@ From,
   </data>
   <data name="ThreadsTracked.Text" xml:space="preserve">
     <value>Threads you are tracking:</value>
+  </data>
+  <data name="SearchBy.Text" xml:space="preserve">
+    <value>By:</value>
+  </data>
+  <data name="SearchForum]Text" xml:space="preserve">
+    <value>Forum:</value>
+  </data>
+  <data name="SearchPosted.Text" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="SearchReplies.Text" xml:space="preserve">
+    <value>Replies:</value>
+  </data>
+  <data name="SearchTopicText" xml:space="preserve">
+    <value>Topic:</value>
+  </data>
+  <data name="SearchViews.Text" xml:space="preserve">
+    <value>Views:</value>
+  </data>
+  <data name="[RESX:SearchModify].Text" xml:space="preserve">
+    <value>Modify Search</value>
+  </data>
+  <data name="[RESX:SearchPosted].Text" xml:space="preserve">
+    <value>Posted:</value>
+  </data>
+  <data name="[RESX:Started].Text" xml:space="preserve">
+    <value>Started</value>
   </data>
 </root>
