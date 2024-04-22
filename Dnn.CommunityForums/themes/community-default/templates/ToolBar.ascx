@@ -16,6 +16,7 @@
         <ul>
             <li>[AF:TB:ModList]</li>
             <li>[AF:TB:MySettings]</li>
+            <li>[AF:TB:MySubscriptions]</li>
             <li>[AF:TB:ControlPanel]</li>
             <li>[AF:TB:Search]</li>
         </ul>

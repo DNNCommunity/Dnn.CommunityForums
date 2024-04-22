@@ -257,9 +257,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 					//_isValid = DotNetNuke.Security.PortalSecurity.IsInRole(_ps.AdministratorRoleName)
 					DotNetNuke.Entities.Modules.ModuleController objMC = new DotNetNuke.Entities.Modules.ModuleController();
 					DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(ModuleId, TabId);
-					string roleIds = Permissions.GetRoleIds(objM.ModulePermissions.ToString("EDIT").Split(';'), PortalId);
-					_isValid = Modules.ActiveForums.Permissions.HasAccess(roleIds, ForumUser.UserRoles);
-				}
+                    string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
+                    _isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds, ForumUser.UserRoles);
+                }
 				else if (AdminRequired & ! context.Request.IsAuthenticated)
 				{
 					_isValid = false;

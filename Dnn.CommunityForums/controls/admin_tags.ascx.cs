@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 int TagId = Convert.ToInt32(e.Parameters[4].Split(':')[1]);
                                 if (SimulateIsNumeric.IsNumeric(TagId))
                                 {
-                                    DataProvider.Instance().Tags_Delete(PortalId, ModuleId, TagId);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(TagId);
                                 }
                                 break;
                             }

@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Make sure the user has read access
             var u = new UserController().GetUser(portalId, moduleId);
-            if (u == null || !Permissions.HasAccess(attachment.CanRead, u.UserRoles))
+            if (u == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(attachment.CanRead, u.UserRoles))
             {
                 Response.StatusCode = 401;
                 Response.Write("Unauthorized");
@@ -127,12 +127,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Otherwise check the attachments directory (current and legacy)
             else
             {
-                filePath = Server.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
+                filePath = Utilities.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
 
                 // This is another check to support legacy attachments.
                 if (!File.Exists(filePath))
                 {
-                    filePath = Server.MapPath(PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
+                    filePath = Utilities.MapPath(PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
                 }
             }
 

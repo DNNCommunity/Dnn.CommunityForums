@@ -1,50 +1,75 @@
-﻿function amaf_modDel(tid) {
+﻿function amaf_modDel(mid, fid, tid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
-        var d = {};
-        d.action = 6;
-        d.topicid = tid;
-        amaf.callback(d, amaf_modDelComplete);
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "DELETE",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Delete?forumId=' + fid + '&topicId=' + tid,
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error deleting topic');
+        });
     };
 };
-function amaf_modDelComplete(result) {
-    if (result[0].success == true) {
-        afreload();
-    };
-};
-function amaf_openMove(tid) {
-    var d = {};
-    d.action = 15;
+function amaf_openMove(mid, fid, tid) {
     $('#aftopicmove-topicid').val(tid);
-    amaf.callback(d, amaf_loadMoveTopic);
-};
-function amaf_loadMoveTopic(result) {
-    am.UI.LoadDiv('aftopicmove');
-    $('#drpForums').append($(result));
-    var d = {};
-    d.action = 13;
-    d.topicid = $('#aftopicmove-topicid').val();
-    amaf.callback(d, amaf_bindLoadMoveTopic);
-
-};
-function amaf_bindLoadMoveTopic(result) {
-    if (result[0].success == true) {
-        var t = result[0].result;
-        $('#aftopicmove-topicid').val(t.topicid);
-        $('#aftopicmove-subject').val(t.subject);
-        $('#aftopicmove-currentforum').val(t.forumname);
+    $('#aftopicmove-moduleid').val(mid);
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid
     };
-}
-function amaf_modMove(tid, fid) {
-    var d = {};
-    d.action = 7;
-    d.topicid = tid;
-    d.forumid = fid;
-    amaf.callback(d, amaf_modMoveComplete);
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Forum/ListForHtml',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        am.UI.LoadDiv('aftopicmove');
+        $('#drpForums').empty().append($(data));
+        amaf_loadForMove(mid, fid, tid);
+    }).fail(function (xhr, status) {
+        alert('error moving post');
+    });
 };
-function amaf_modMoveComplete(result) {
-    if (result[0].success == true) {
+function amaf_loadForMove(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load?forumId=' + fid + '&topicId=' + tid,
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_bindLoadMoveTopic(data);
+    }).fail(function (xhr, status) {
+        alert('error moving post');
+    });
+};
+function amaf_bindLoadMoveTopic(data) { 
+    var t = data[0];
+    $('#aftopicmove-topicid').val(t.TopicId);
+    $('#aftopicmove-subject').val(t.Content.Subject);
+    $('#aftopicmove-currentforum').val(t.Forum.ForumName);
+};
+function amaf_modMove(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Move',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
         afreload();
-    };
+    }).fail(function (xhr, status) {
+        alert('error moving post');
+    });
 };
 function amaf_modPin(mid, fid, tid) {
     var sf = $.ServicesFramework(mid);
@@ -108,15 +133,23 @@ function amaf_modLock(mid, fid, tid) {
         alert('error locking post');
     });
 };
-function amaf_quickEdit(tid) {
+function amaf_quickEdit(mid, fid, tid) {
     amaf_resetQuickEdit();
     am.UI.LoadDiv('aftopicedit');
-    var d = {};
-    d.action = 13;
-    d.topicid = tid;
-    amaf.callback(d, amaf_loadTopicComplete);
+    var sf = $.ServicesFramework(mid);
+    $.ajax({
+        type: "GET",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Load?forumId=' + fid + '&topicId=' + tid,
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_loadTopicComplete(data);
+    }).fail(function (xhr, status) {
+        alert('error loading post');
+    });
 };
 function amaf_resetQuickEdit() {
+    document.getElementById('aftopicedit-moduleid').value = '';
+    document.getElementById('aftopicedit-forumid').value = '';
     document.getElementById('aftopicedit-topicid').value = '';
     document.getElementById('aftopicedit-subject').value = '';
     document.getElementById('aftopicedit-tags').value = '';
@@ -128,19 +161,19 @@ function amaf_resetQuickEdit() {
     am.Utils.RemoveChildNodes('proplist');
 
 };
-function amaf_loadTopicComplete(result) {
-    if (result[0].success == true) {
-        var t = result[0].result;
-        document.getElementById('aftopicedit-topicid').value = t.topicid;
-        document.getElementById('aftopicedit-subject').value = t.subject;
-        document.getElementById('aftopicedit-tags').value = t.tags;
-        document.getElementById('aftopicedit-priority').value = t.priority;
-        am.Utils.SetSelected('aftopicedit-status', t.status);
-        document.getElementById('aftopicedit-locked').checked = t.locked;
-        document.getElementById('aftopicedit-pinned').checked = t.pinned;
-        amaf_loadCatList(t.categories);
-        amaf_loadProperties(t.properties);
-    };
+function amaf_loadTopicComplete(data) {
+    var t = data[0];
+    document.getElementById('aftopicedit-topicid').value = t.TopicId;
+    document.getElementById('aftopicedit-forumid').value = t.ForumId;
+    document.getElementById('aftopicedit-moduleid').value = t.ModuleId;
+    document.getElementById('aftopicedit-subject').value = t.Content.Subject;
+    document.getElementById('aftopicedit-tags').value = t.Tags;
+    document.getElementById('aftopicedit-priority').value = t.Priority;
+    am.Utils.SetSelected('aftopicedit-status', t.StatusId);
+    document.getElementById('aftopicedit-locked').checked = t.IsLocked;
+    document.getElementById('aftopicedit-pinned').checked = t.IsPinned;
+    amaf_loadCatList(t.Categories);
+    amaf_loadProperties(t.Forum.Properties, t.TopicProperties);
 };
 function amaf_loadCatList(cats) {
     var iCount = cats.length;
@@ -160,88 +193,115 @@ function amaf_loadCatList(cats) {
         ul.appendChild(li);
     };
 };
-function amaf_loadProperties(props) {
-    var iCount = props.length;
-    var ul = document.getElementById('proplist');
-    am.Utils.RemoveChildNodes('proplist');
-    for (var i = 0; i < iCount; i++) {
-        var p = props[i];
-        var li = document.createElement('li');
-        li.setAttribute('id', p.propertyid);
-        var lbl = document.createElement('label');
-        lbl.setAttribute('for', 'prop-' + p.propertyid);
-        lbl.appendChild(document.createTextNode(p.propertyname));
-        li.appendChild(lbl);
-        switch (p.datatype) {
-            case 'text':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + p.propertyid);
-                txt.setAttribute('type', 'text');
-                txt.value = p.propertyvalue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            case 'yesno':
-                var txt = document.createElement('input');
-                txt.setAttribute('id', 'prop-' + p.propertyid);
-                txt.setAttribute('type', 'checkbox');
-                txt.value = p.propertyvalue;
-                txt.checked = p.propertyvalue;
-                li.appendChild(txt);
-                ul.appendChild(li);
-                break;
-            default:
-                var sel = document.createElement('select');
-                sel.setAttribute('id', 'prop-' + p.propertyid);
-                li.appendChild(sel);
-                ul.appendChild(li);
-                am.Utils.FillSelect(p.listdata, sel);
-                am.Utils.SetSelected(sel, p.propertyvalue);
-
+function amaf_loadProperties(propdefs, props) {
+    if (props != null) {
+        var iCount = props.length;
+        var ul = document.getElementById('proplist');
+        am.Utils.RemoveChildNodes('proplist');
+        for (var j = 0; j < propdefs.length; j++) {
+            var pd = propdefs[j];
+            var li = document.createElement('li');
+            li.setAttribute('id', pd.PropertyId);
+            var lbl = document.createElement('label');
+            lbl.setAttribute('for', 'prop-' + pd.PropertyId);
+            lbl.appendChild(document.createTextNode(pd.Name));
+            li.appendChild(lbl);
+            for (var i = 0; i < iCount; i++) {
+                if (props[i].PropertyId === pd.PropertyId) {
+                    pd.DefaultValue = props[i].Value;
+                };
+            };
+            switch (pd.DataType) {
+                case 'text':
+                    var txt = document.createElement('input');
+                    txt.setAttribute('id', 'prop-' + pd.PropertyId);
+                    txt.setAttribute('type', 'text');
+                    txt.value = pd.DefaultValue;
+                    li.appendChild(txt);
+                    ul.appendChild(li);
+                    break;
+                case 'yesno':
+                    var txt = document.createElement('input');
+                    txt.setAttribute('id', 'prop-' + pd.PropertyId);
+                    txt.setAttribute('type', 'checkbox');
+                    txt.value = pd.DefaultValue;
+                    txt.checked = pd.DefaultValue;
+                    li.appendChild(txt);
+                    ul.appendChild(li);
+                    break;
+                default:
+                    var sel = document.createElement('select');
+                    sel.setAttribute('id', 'prop-' + pd.PropertyId);
+                    li.appendChild(sel);
+                    ul.appendChild(li);
+                    am.Utils.FillSelect(pd.listdata, sel);
+                    am.Utils.SetSelected(sel, pd.DefaultValue);
+            };
         };
-
-
     };
 };
+
+
 function amaf_saveTopic() {
-    var d = {};
-    d.action = 14;
-    d.topicid = document.getElementById('aftopicedit-topicid').value;
-    d.subject = document.getElementById('aftopicedit-subject').value;
-    d.tags = document.getElementById('aftopicedit-tags').value;
-    d.priority = document.getElementById('aftopicedit-priority').value;
+    var t = {};
+    var mid = document.getElementById('aftopicedit-moduleid').value;
+    var fid = document.getElementById('aftopicedit-forumid').value;
+    t.Topicid = document.getElementById('aftopicedit-topicid').value;
+    t.Content = {};
+    t.Content.Subject = document.getElementById('aftopicedit-subject').value;
+    t.Tags = document.getElementById('aftopicedit-tags').value;
+    t.Priority = document.getElementById('aftopicedit-priority').value;
     var stat = document.getElementById('aftopicedit-status');
-    d.status = stat.options[stat.selectedIndex].value;
-    d.locked = document.getElementById('aftopicedit-locked').checked;
-    d.pinned = document.getElementById('aftopicedit-pinned').checked;
+    t.StatusId = stat.options[stat.selectedIndex].value;
+    t.IsLocked = document.getElementById('aftopicedit-locked').checked;
+    t.IsPinned = document.getElementById('aftopicedit-pinned').checked;
     var ul = document.getElementById('proplist');
     var props = ul.getElementsByTagName('li');
+    t.TopicProperties = new Array();
     for (var i = 0; i < props.length; i++) {
         var l = props[i];
         var pname = 'prop-' + l.id;
+        t.TopicProperties[i] = {};
+        t.TopicProperties[i].Name = pname;
+        t.TopicProperties[i].PropertyId = l.id;
         var el = document.getElementById(pname);
         if (el.tagName == 'INPUT') {
             if (el.type == 'text') {
-                d[pname] = el.value;
+                t.TopicProperties[i].Value = el.value;
             } else {
-                d[pname] = el.checked;
+                t.TopicProperties[i].Value = el.checked;
             };
         } else {
-            d[pname] = el.options[el.selectedIndex].value;
+            t.TopicProperties[i].Value = el.options[el.selectedIndex].value;
         };
-
     };
     var ul = document.getElementById('catlist');
     var cats = ul.getElementsByTagName('li');
-    d.categories = '';
+    t.SelectedCategoriesAsString = '';
     for (var i = 0; i < cats.length; i++) {
         var li = cats[i];
         var chk = document.getElementById('cat-' + li.id);
         if (chk.checked) {
-            d.categories += chk.value + ';';
+            t.SelectedCategoriesAsString += chk.value + ';';
         };
     };
-    amaf.callback(d, amaf_saveTopicComplete);
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topic: t
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Update',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        amaf_saveTopicComplete(data);
+    }).fail(function (xhr, status) {
+        alert('error saving post');
+    });
 };
 function amaf_saveTopicComplete(result) {
     am.UI.CloseDiv('aftopicedit');

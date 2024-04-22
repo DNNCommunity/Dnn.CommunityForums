@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if(_searchText == null)
                 {
-                    _searchText = Request.Params["q"] + string.Empty;
+                    _searchText = Request.Params[SearchParamKeys.Query] + string.Empty;
                     _searchText = Utilities.XSSFilter(_searchText);
                     _searchText = Utilities.StripHTMLTag(_searchText);
                     _searchText = Utilities.CheckSqlString(_searchText);
@@ -84,11 +84,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_tags == null)
                 {
-                    _tags = Request.Params["tg"] + string.Empty;
+                    _tags = Request.Params[SearchParamKeys.Tag] + string.Empty;
 
                     // The tag links are generated with "aftg"
                     if (_tags == string.Empty)
-                        _tags = Request.Params["aftg"] + string.Empty;
+                        _tags = Request.Params[ParamKeys.Tags] + string.Empty;
 
                     _tags = Utilities.XSSFilter(_tags);
                     _tags = Utilities.StripHTMLTag(_tags);
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if(!_searchType.HasValue)
                 {
                     int parsedSearchType;
-                    _searchType = int.TryParse(Request.Params["k"], out parsedSearchType) ? parsedSearchType : 0;
+                    _searchType = int.TryParse(Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
                 }
 
                 return _searchType.Value;
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_authorUsername == null)
                 {
-                    _authorUsername = Request.Params["author"] + string.Empty;
+                    _authorUsername = Request.Params[SearchParamKeys.Author] + string.Empty;
                     _authorUsername = Utilities.XSSFilter(_authorUsername);
                     _authorUsername = Utilities.StripHTMLTag(_authorUsername);
                     _authorUsername = Utilities.CheckSqlString(_authorUsername);
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_authorUserId.HasValue)
                 {
                     int parsedValue;
-                    _authorUserId = int.TryParse(Request.Params["uid"], out parsedValue) ? parsedValue : 0;
+                    _authorUserId = int.TryParse(Request.Params[SearchParamKeys.User], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _authorUserId.Value;
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchColumns.HasValue)
                 {
                     int parsedSearchColumns;
-                    _searchColumns = int.TryParse(Request.Params["c"], out parsedSearchColumns) ? parsedSearchColumns : 0;
+                    _searchColumns = int.TryParse(Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
                 }
 
                 return _searchColumns.Value;
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_forums == null)
                 {
-                    _forums = Request.Params["f"] + string.Empty;
+                    _forums = Request.Params[SearchParamKeys.Forums] + string.Empty;
                     _forums = Utilities.XSSFilter(_forums);
                     _forums = Utilities.StripHTMLTag(_forums);
                     _forums = Utilities.CheckSqlString(_forums);
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchDays.HasValue)
                 {
                     int parsedValue;
-                    _searchDays = int.TryParse(Request.Params["ts"], out parsedValue) ? parsedValue : 0;
+                    _searchDays = int.TryParse(Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _searchDays.Value;
@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_resultType.HasValue)
                 {
                     int parsedValue;
-                    _resultType = int.TryParse(Request.Params["rt"], out parsedValue) ? parsedValue : 0;
+                    _resultType = int.TryParse(Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _resultType.Value;
@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchId.HasValue)
                 {
                     int parsedValue;
-                    _searchId = int.TryParse(Request.Params["sid"], out parsedValue) ? parsedValue : 0;
+                    _searchId = int.TryParse(Request.Params[SearchParamKeys.Search], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _searchId.Value;
@@ -225,7 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_sort.HasValue)
                 {
                     int parsedValue;
-                    _sort = int.TryParse(Request.Params["srt"], out parsedValue) ? parsedValue : 0;
+                    _sort = int.TryParse(Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _sort.Value;
@@ -241,37 +241,37 @@ namespace DotNetNuke.Modules.ActiveForums
                     _parameters = new List<string>();
 
                     if (!string.IsNullOrWhiteSpace(SearchText))
-                        _parameters.Add("q=" + System.Web.HttpUtility.UrlEncode(SearchText));
+                        _parameters.Add($"{SearchParamKeys.Query}=" + System.Web.HttpUtility.UrlEncode(SearchText));
 
                     if (!string.IsNullOrWhiteSpace(Tags))
-                        _parameters.Add("tg=" + System.Web.HttpUtility.UrlEncode(Tags));
+                        _parameters.Add($"{SearchParamKeys.Tag}=" + System.Web.HttpUtility.UrlEncode(Tags));
 
                     if (SearchId > 0)
-                        _parameters.Add("sid=" + SearchId);
+                        _parameters.Add($"{SearchParamKeys.Search}=" + SearchId);
 
                     if (SearchType > 0)
-                        _parameters.Add("k=" + SearchType);
+                        _parameters.Add($"{SearchParamKeys.SearchType}=" + SearchType);
 
                     if (ResultType > 0)
-                        _parameters.Add("rt=" + ResultType);
+                        _parameters.Add($"{SearchParamKeys.ResultType}=" + ResultType);
 
                     if (SearchColumns > 0)
-                        _parameters.Add("c=" + SearchColumns);
+                        _parameters.Add($"{SearchParamKeys.Columns}=" + SearchColumns);
 
                     if (SearchDays > 0)
-                        _parameters.Add("ts=" + SearchDays);
+                        _parameters.Add($"{SearchParamKeys.TimeSpan}=" + SearchDays);
 
                     if (AuthorUserId > 0)
-                        _parameters.Add("uid=" + AuthorUserId);
+                        _parameters.Add($"{SearchParamKeys.User}=" + AuthorUserId);
 
                     if (Sort > 0)
-                        _parameters.Add("srt=" + Sort);
+                        _parameters.Add($"{SearchParamKeys.Sort}=" + Sort);
 
                     if (!string.IsNullOrWhiteSpace(AuthorUsername))
-                        _parameters.Add("author=" + System.Web.HttpUtility.UrlEncode(AuthorUsername));
+                        _parameters.Add($"{SearchParamKeys.Author}=" + System.Web.HttpUtility.UrlEncode(AuthorUsername));
 
                     if (!string.IsNullOrWhiteSpace(Forums))
-                        _parameters.Add("f=" + System.Web.HttpUtility.UrlEncode(Forums));
+                        _parameters.Add($"{SearchParamKeys.Forums}=" + System.Web.HttpUtility.UrlEncode(Forums));
                 }
 
                 return _parameters;
@@ -292,21 +292,21 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
 
-                if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+                if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
                 {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                    SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
                 }
 
                 litSearchTitle.Text = GetSharedResource("[RESX:SearchTitle]");
 
-                List<Keyword> keywords;
+                List<string> keywords;
 
                 // Note: Filter out any keywords that are not at least 3 characters in length
 
                 if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
-                    keywords = new List<Keyword> { new Keyword { Value = "\"" + SearchText.Trim() + "\"" } };
+                    keywords = new List<string> { SearchText.Trim() };
                 else
-                    keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).Select(kw => new Keyword { Value = kw }).ToList();
+                    keywords = SearchText.Split(' ').Where(kw => !string.IsNullOrWhiteSpace(kw) && kw.Trim().Length >= 3).ToList();
 
                 if(keywords.Count > 0)
                 {
@@ -372,9 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var parseId = 0;
 
-            var fc = new ForumController();
-
-            var sForumsAllowed = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead", true); // Make sure and pass strict = true here
+            var sForumsAllowed = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanRead", true); // Make sure and pass strict = true here
             var forumsAllowed = sForumsAllowed.Split(new [] {':',';'}).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
             var forumsRequested = Forums.Split(new[] { ':', ';' }).Where(f => int.TryParse(f, out parseId)).Select(f => parseId).ToList();
 
@@ -459,6 +457,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Public Methods
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetSearchUrl()
         {
             var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
@@ -470,6 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetForumUrl()
         {
             if (_currentRow == null)
@@ -486,6 +486,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetThreadUrl()
         {
             if (_currentRow == null)
@@ -505,6 +506,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Jumps to post for post view, or last reply for topics view
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostUrl() 
         {
             if (_currentRow == null)
@@ -523,25 +525,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
-        // Todo: Localize today and yesterday
         public string GetPostTime()
         {
-            if (_currentRow == null)
-                return null;
-
-            var date = GetUserDate(Convert.ToDateTime(_currentRow["DateCreated"]));
-            var currentDate = GetUserDate(DateTime.UtcNow);
-
-            var datePart = date.ToString(MainSettings.DateFormatString);
-
-            if (currentDate.Date == date.Date)
-                datePart = GetSharedResource("Today");
-            else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = GetSharedResource("Yesterday");
-
-            return string.Format(GetSharedResource("SearchPostTime"), datePart, date.ToString(MainSettings.TimeFormatString));
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetAuthor()
         {
             if (_currentRow == null)
@@ -556,6 +545,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetLastPostAuthor()
         {
             if (_currentRow == null)
@@ -570,25 +560,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
-        // Todo: Localize today and yesterday
         public string GetLastPostTime()
         {
-            if (_currentRow == null)
-                return null;
-
-            var date = GetUserDate(Convert.ToDateTime(_currentRow["LastReplyDate"]));
-            var currentDate = GetUserDate(DateTime.UtcNow);
-
-            var datePart = date.ToString(MainSettings.DateFormatString);
-
-            if (currentDate.Date == date.Date)
-                datePart = GetSharedResource("Today");
-            else if (currentDate.AddDays(-1).Date == date.Date)
-                datePart = GetSharedResource("Yesterday");
-
-            return datePart + " @ " + date.ToString(MainSettings.TimeFormatString);
+            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostSnippet()
         {
             var post = _currentRow["Body"].ToString();
@@ -601,107 +578,34 @@ namespace DotNetNuke.Modules.ActiveForums
             return post;
         }
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetIcon()
         {
-            if (_currentRow == null)
-                return null;
-
-            var theme = MainSettings.Theme;
-
-            // If we have a post icon, use it
-            var icon = _currentRow["TopicIcon"].ToString();
-            if (!string.IsNullOrWhiteSpace(icon))
-                return Page.ResolveUrl(MainSettings.ThemeLocation + "/emoticons/" + icon);
-
-            // Otherwise, chose the icons based on the post stats
-
-            var pinned = Convert.ToBoolean(_currentRow["IsPinned"]);
-            var locked = Convert.ToBoolean(_currentRow["IsLocked"]);
-
-            if(pinned && locked)
-                return MainSettings.ThemeLocation + "/images/topic_pinlocked.png";
-
-            if(pinned)
-                return MainSettings.ThemeLocation + "/images/topic_pin.png";
-
-            if(locked)
-                return MainSettings.ThemeLocation + "/images/topic_lock.png";
-
-            // Unread has to be calculated based on a few fields
-            var topicId = Convert.ToInt32(_currentRow["TopicId"]);
-            var replyCount = Convert.ToInt32(_currentRow["replyCount"]);
-            var lastReplyId = Convert.ToInt32(_currentRow["LastReplyId"]);
-            var userLastTopicRead = Convert.ToInt32(_currentRow["UserLastTopicRead"]);
-            var userLastReplyRead = Convert.ToInt32(_currentRow["UserLastReplyRead"]);
-            var unread = (replyCount <= 0 && topicId > userLastTopicRead) || (lastReplyId > userLastReplyRead);
-
-            if(unread)
-                return MainSettings.ThemeLocation + "/images/topic.png";
-
-            return MainSettings.ThemeLocation + "/images/topic_new.png";
+            return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
+                Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
+                Utilities.SafeConvertBool(_currentRow["IsRead"]),
+                ThemePath,
+                Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
+                Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
         }
 
-        public string GetMiniPager()
-        {
-            if (_currentRow == null)
-                return null;
-         
-            var replyCount = Convert.ToInt32(_currentRow["ReplyCount"]);
-            var pageCount = Convert.ToInt32(Math.Ceiling((double)(replyCount + 1) / _pageSize));
-            var forumId = _currentRow["ForumId"].ToString();
-            var topicId = _currentRow["TopicId"].ToString();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public DataRow Get_currentRow() => _currentRow;
 
-            // No pager if there is only one page.
-            if (pageCount <= 1)
-                return null;
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public int GetSocialGroupId() => SocialGroupId;
 
-             List<string> @params;
-
-            var result = string.Empty;
-
-            if(pageCount <= 5)
-            {
-                for (var i = 1; i <= pageCount; i++)
-                {
-                    @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-
-                    if (SocialGroupId > 0)
-                        @params.Add("GroupId=" + SocialGroupId.ToString());
-
-                    result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";
-                }
-
-                return result;
-            }
-            
-            // 1 2 3 ... N
-
-            for(var i = 1; i <= 3; i++)
-            {
-                @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + i };
-                if (SocialGroupId > 0)
-                    @params.Add("GroupId=" + SocialGroupId.ToString());
-
-                result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + i + "</a>";  
-            }
-
-            result += "<span>...</span>";
-
-            @params = new List<string>  { ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.PageId + "=" + pageCount };
-            if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
-
-            result += "<a href=\"" + NavigateUrl(TabId, string.Empty, @params.ToArray()) + "\">" + pageCount + "</a>";  
-
-            return result;
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetMiniPager() => MiniPager.GetMiniPager(_currentRow, TabId, SocialGroupId, _pageSize);
 
         #endregion
 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced with List<string>")]
         public class Keyword
         {
+            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Replaced with List<string>")]
             public string Value { get; set; }
-
+            [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Replaced with List<string>")]
             public string HtmlEncodedValue
             {
                 get { return string.IsNullOrWhiteSpace(Value) ? Value : HttpUtility.HtmlEncode(Value); }

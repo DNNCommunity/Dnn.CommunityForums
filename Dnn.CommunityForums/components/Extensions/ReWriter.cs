@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
 					newSearchURL = newSearchURL.Replace(tagString, string.Empty);
 				}
 			}
-			if ((sUrl.Contains("afv") && sUrl.Contains("post")) | (sUrl.Contains("afv") && sUrl.Contains("confirmaction")) | (sUrl.Contains("afv") && sUrl.Contains("sendto")) | (sUrl.Contains("afv") && sUrl.Contains("modreport")) | (sUrl.Contains("afv") && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains("afv") && sUrl.Contains("modtopics")))
+			if ((sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("post")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("confirmaction")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("sendto")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modreport")) | (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("search")) | sUrl.Contains("dnnprintmode") || (sUrl.Contains(ParamKeys.ViewType) && sUrl.Contains("modtopics")))
 			{
 				return;
 			}
@@ -392,7 +392,7 @@ namespace DotNetNuke.Modules.ActiveForums
 						_page = Convert.ToInt32(urlTail);
 					}
 				}
-				string sPage = (_page != 0 ? $"&afpg={_page}" : string.Empty);
+				string sPage = (_page != 0 ? $"&{ParamKeys.PageId}={_page}" : string.Empty);
                 string qs = string.Empty;
 				if (sUrl.Contains("?"))
 				{
@@ -401,25 +401,25 @@ namespace DotNetNuke.Modules.ActiveForums
 				string catQS = string.Empty;
 				if (_categoryId > 0)
 				{
-					catQS = "&act=" + _categoryId.ToString();
+					catQS = $"&{ParamKeys.Category}=" + _categoryId.ToString();
 				}
 				string sendTo = string.Empty;
 				if ((_topicId > 0) || (_forumId > 0) || (_forumgroupId > 0))
 				{
 					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, $"~/default.aspx?tabid={_tabId}" +
-								(_forumgroupId > 0 ? $"&afg={_forumgroupId}" : string.Empty) +
-								(_forumId > 0 ? $"&aff={_forumId}" : string.Empty) +
-								(_topicId > 0 ? $"&aft={_topicId}" : string.Empty) +
+								(_forumgroupId > 0 ? $"&{ParamKeys.GroupId}={_forumgroupId}" : string.Empty) +
+								(_forumId > 0 ? $"&{ParamKeys.ForumId}={_forumId}" : string.Empty) +
+								(_topicId > 0 ? $"&{ParamKeys.TopicId}={_topicId}" : string.Empty) +
                                 sPage + qs +
 								((_forumgroupId > 0 || _forumId > 0) ? catQS : string.Empty));
 				}
                 else if (_urlType == 2 && _otherId > 0)
 				{
-					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&act=" + _otherId + sPage + qs);
+					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.Category}=" + _otherId + sPage + qs);
 				}
 				else if (_urlType == 3 && _otherId > 0)
 				{
-					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=tags&aftg=" + _otherId + sPage + qs);
+					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Tags}&{ParamKeys.Tags}=" + _otherId + sPage + qs);
 				}
 				else if (_urlType == 1)
 				{
@@ -427,25 +427,28 @@ namespace DotNetNuke.Modules.ActiveForums
 					switch (_otherId)
 					{
 						case 1:
-							v = "unanswered";
+							v = GridTypes.Unanswered;
 							break;
 						case 2:
-							v = "notread";
+							v = GridTypes.NotRead;
 							break;
 						case 3:
-							v = "mytopics";
+							v = GridTypes.MyTopics;
 							break;
 						case 4:
-							v = "activetopics";
+							v = GridTypes.ActiveTopics;
 							break;
 						case 5:
-							v = "afprofile";
+							v = GridTypes.MySettings;
 							break;
                         case 6:
-                            v = "mostliked";
+                            v = GridTypes.MostLiked;
                             break;
                         case 7:
-                            v = "mostreplies";
+                            v = GridTypes.MostReplies;
+                            break;
+                        case 8:
+                            v = GridTypes.MySubscriptions;
                             break;
                         case 8:
                             v = "announcements";
@@ -455,7 +458,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             break;
 
                     }
-					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + "&afv=grid&afgt=" + v + sPage + qs);
+					sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);
 				}
 				else if (_tabId > 0)
 				{

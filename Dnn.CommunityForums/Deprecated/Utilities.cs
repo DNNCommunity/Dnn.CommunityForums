@@ -20,7 +20,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -69,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (System.Text.RegularExpressions.Match match in matches)
             {
                 var sRoles = match.Groups[3].Value;
-                if (Permissions.HasAccess(sRoles, userRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(sRoles, userRoles))
                 {
                     template = template.Replace(match.Groups[1].Value, string.Empty);
                     template = template.Replace(match.Groups[5].Value, string.Empty);
@@ -88,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </summary>
         public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
         {
-            var newDate = DateTime.Parse(GetDate(displayDate, ModuleId, timeZoneOffset));
+            var newDate = displayDate.AddMinutes( timeZoneOffset);
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);
             var delta = ts.TotalSeconds;
             if (delta <= 1)
@@ -126,6 +128,55 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return string.Format(GetSharedResource("[RESX:TimeSpan:YearsAgo]"), Math.Ceiling(ts.Days / 365.0));
 
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public static DateTime GetUserDate(DateTime displayDate, int mid, int offset)
+        {
+            var mainSettings = SettingsBase.GetModuleSettings(mid);
+            var mServerOffSet = mainSettings.TimeZoneOffset;
+            var newDate = displayDate.AddMinutes(-mServerOffSet);
+
+            return newDate.AddMinutes(offset);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public string GetUserFormattedDate(DateTime date, DotNetNuke.Entities.Portals.PortalInfo portalInfo, DotNetNuke.Entities.Users.UserInfo userInfo)
+        {
+            return GetUserFormattedDateTime(date, portalInfo.PortalID, userInfo.UserID);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public static string GetDate(DateTime displayDate, int mid, int offset)
+        {
+            string dateStr;
+
+            try
+            {
+                var mUserOffSet = 0;
+                var mainSettings = SettingsBase.GetModuleSettings(mid);
+                var mServerOffSet = mainSettings.TimeZoneOffset;
+                var newDate = displayDate.AddMinutes(-mServerOffSet);
+
+                newDate = newDate.AddMinutes(offset);
+
+                var dateFormat = mainSettings.DateFormatString;
+                var timeFormat = mainSettings.TimeFormatString;
+                var formatString = string.Concat(dateFormat, " ", timeFormat);
+
+                try
+                {
+                    dateStr = newDate.ToString(formatString);
+                }
+                catch
+                {
+                    dateStr = displayDate.ToString();
+                }
+
+                return dateStr;
+            }
+            catch (Exception ex)
+            {
+                dateStr = displayDate.ToString();
+                return dateStr;
+            }
         }
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public static string HtmlEncode(string strMessage = "") => HttpUtility.HtmlEncode(strMessage);

@@ -30,6 +30,7 @@ using System.Xml;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
+using System.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -249,23 +250,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             dtAnnounce = ds.Tables[4];
                         }
 
-                        bView = Permissions.HasPerm(drSecurity["CanView"].ToString(), ForumUser.UserRoles);
-                        bRead = Permissions.HasPerm(drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
-                        //bCreate = Permissions.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
-                        bEdit = Permissions.HasPerm(drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
-                        bDelete = Permissions.HasPerm(drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
-                        //bReply = Permissions.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
-                        bPoll = Permissions.HasPerm(drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
+                        bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanView"].ToString(), ForumUser.UserRoles);
+                        bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanRead"].ToString(), ForumUser.UserRoles);
+                        //bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
+                        bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
+                        bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
+                        //bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
+                        bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
 
-                        bSubscribe = Permissions.HasPerm(drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
-                        bModMove = Permissions.HasPerm(drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-                        bModSplit = Permissions.HasPerm(drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
-                        bModDelete = Permissions.HasPerm(drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
-                        bModApprove = Permissions.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
-                        bModEdit = Permissions.HasPerm(drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
-                        bModPin = Permissions.HasPerm(drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
-                        bModLock = Permissions.HasPerm(drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
-                        bModApprove = Permissions.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+                        bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
+                        bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
+                        bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
+                        bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
+                        bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+                        bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
+                        bModPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
+                        bModLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModLock"].ToString(), ForumUser.UserRoles);
+                        bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
 
                         ControlUtils ctlUtils = new ControlUtils();
                         sGroupURL = ctlUtils.BuildUrl(TabId, ModuleId, ForumInfo.ForumGroup.PrefixURL, string.Empty, ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
@@ -293,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             ForumSubscriberCount = Utilities.SafeConvertInt(drForum["ForumSubscriberCount"]);
                             if (UserId > 0)
                             {
-                                IsSubscribedForum = (Subscriptions.IsSubscribed(PortalId, ModuleId: ForumModuleId, ForumId, SubscriptionType: SubscriptionTypes.Instant, UserId: UserId));
+                                IsSubscribedForum = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
                             }
                             if (MainSettings.UseSkinBreadCrumb)
                             {
@@ -388,8 +389,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    ForumController fc = new ForumController();
-                    string fs = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanEdit");
+                    string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanEdit");
                     if (!(string.IsNullOrEmpty(fs)))
                     {
                         bModEdit = true;
@@ -459,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ctlForumJump = new af_quickjump();
                 ctlForumJump.ForumModuleId = ForumModuleId;
-                ctlForumJump.dtForums = null;
                 ctlForumJump.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumJump.ForumId = ForumId;
                 ctlForumJump.ModuleId = ModuleId;
@@ -476,7 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForumSubs = (ForumView)(LoadControl(typeof(ForumView), null));
                 ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumSubs.ForumId = ForumId;
-                ctlForumSubs.ForumTable = dtSubForums;
+                ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId).SubForums;
                 ctlForumSubs.ForumTabId = ForumTabId;
                 ctlForumSubs.ForumModuleId = ForumModuleId;
                 ctlForumSubs.SubsOnly = true;
@@ -524,7 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Controls.ToggleSubscribe subControl = new Controls.ToggleSubscribe(ForumModuleId, ForumId, -1, 0);
                 subControl.Checked = IsSubscribedForum;
-                subControl.Text = "[RESX:ForumSubscribe:" + IsSubscribedForum.ToString().ToUpper() + "]";
+                subControl.Text = "[RESX:Subscribe]";
                 sOutput = sOutput.Replace("[FORUMSUBSCRIBE]", subControl.Render());
             }
             else
@@ -614,7 +613,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[GROUPNAME]", GroupName);
             if (bModDelete)
             {
-                sOutput = sOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel([TOPICID]);\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
+                sOutput = sOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + ModuleId + "," + ForumId + ",[TOPICID]);\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
             }
             else
             {
@@ -625,7 +624,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string[] EditParams = { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=0-0" };
                 sOutput = sOutput.Replace("[ACTIONS:EDIT]", "<a title=\"[RESX:EditTopic]\" href=\"" + NavigateUrl(TabId, "", EditParams) + "\"><i class=\"fa fa-pencil-square-o fa-fw fa-blue\"></i></a>");
                 sOutput = sOutput.Replace("0-0", "[TOPICID]");
-                sOutput = sOutput.Replace("[AF:QUICKEDITLINK]", "<a href=\"javascript:void(0)\" title=\"[RESX:TopicQuickEdit]\" onclick=\"amaf_quickEdit([TOPICID]);\"><i class=\"fa fa-cog fa-fw fa-blue\"></i></a>");
+                sOutput = sOutput.Replace("[AF:QUICKEDITLINK]", "<a href=\"javascript:void(0)\" title=\"[RESX:TopicQuickEdit]\" onclick=\"amaf_quickEdit(" + ModuleId + "," + ForumId + ",[TOPICID]);\"><i class=\"fa fa-cog fa-fw fa-blue\"></i></a>");
             }
             else
             {
@@ -634,7 +633,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (bModMove)
             {
-                sOutput = sOutput.Replace("[ACTIONS:MOVE]", "<a href=\"javascript:void(0)\" onclick=\"javascript:amaf_openMove([TOPICID]);\" title=\"[RESX:MoveTopic]\" style=\"vertical-align:middle;\" /><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i></a>");
+                sOutput = sOutput.Replace("[ACTIONS:MOVE]", "<a href=\"javascript:void(0)\" onclick=\"javascript:amaf_openMove(" + ModuleId + "," + ForumId + ",[TOPICID]);\" title=\"[RESX:MoveTopic]\" style=\"vertical-align:middle;\" /><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i></a>");
             }
             else
             {
@@ -767,37 +766,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         string sPropTemplate = TemplateUtils.GetTemplateSection(sTopicsTemplate, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                         string sProps = string.Empty;
-                        XmlDocument xDoc = new XmlDocument();
-                        xDoc.LoadXml(topicData);
-                        if (xDoc != null)
+                        var pl = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(topicData);
+                        foreach (var p in pl)
                         {
-                            System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                            System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes("//properties/property");
-                            if (xNodeList.Count > 0)
+                            string tmp = sPropTemplate;
+                            var pName = HttpUtility.HtmlDecode(p.Name);
+                            var pValue = HttpUtility.HtmlDecode(p.Value); tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
+                            tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
+                            sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
+                            sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
+                            string pValueKey = string.Empty;
+                            if (!(string.IsNullOrEmpty(pValue)))
                             {
-                                int i = 0;
-                                for (i = 0; i < xNodeList.Count; i++)
-                                {
-                                    string tmp = sPropTemplate;
-                                    string pName = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
-                                    string pValue = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[1].InnerText);
-                                    tmp = tmp.Replace("[AF:PROPERTY:LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
-                                    tmp = tmp.Replace("[AF:PROPERTY:VALUE]", pValue);
-                                    sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
-                                    sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
-                                    string pValueKey = string.Empty;
-                                    if (!(string.IsNullOrEmpty(pValue)))
-                                    {
-                                        pValueKey = Utilities.CleanName(pValue).ToLowerInvariant();
-                                    }
-                                    sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
-                                    sProps += tmp;
-                                }
+                                pValueKey = Utilities.CleanName(pValue).ToLowerInvariant();
                             }
-                            if (sTopicsTemplate.Contains("[AF:PROPERTY:"))
-                            {
-
-                            }
+                            sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUEKEY]", pValueKey);
+                            sProps += tmp;
                         }
                         sTopicsTemplate = TemplateUtils.ReplaceSubSection(sTopicsTemplate, sProps, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
 
@@ -806,7 +790,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[AUTHORID]", AuthorId.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[FORUMID]", ForumId.ToString());
                     sTopicsTemplate = sTopicsTemplate.Replace("[USERID]", UserId.ToString());
-                    //sTopicsTemplate = sTopicsTemplate.Replace("[POSTICON]", GetIcon(UserLastTopicRead, UserLastReplyRead, TopicId, LastReplyId, drTopic["TopicIcon"].ToString(), isPinned, isLocked));
 
                     if (UserLastTopicRead == 0 || (UserLastTopicRead > 0 & UserLastReplyRead < ReplyId))
                     {
@@ -881,7 +864,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var @params = new List<string> { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + LastReplyId };
 
                     if (SocialGroupId > 0)
-                        @params.Add("GroupId=" + SocialGroupId.ToString());
+                        @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                     string sLastReplyURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -896,9 +879,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sUserJumpUrl = string.Empty;
                     if (UserLastReplyRead > 0)
                     {
-                        @params = new List<string> { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=topic", ParamKeys.FirstNewPost + "=" + UserLastReplyRead };
+                        @params = new List<string> { $"{ParamKeys.ForumId}={ForumId}", $"{ParamKeys.TopicId}={TopicId}", $"{ParamKeys.ViewType}=topic", $"{ParamKeys.FirstNewPost}={UserLastReplyRead}" };
                         if (SocialGroupId > 0)
-                            @params.Add("GroupId=" + SocialGroupId.ToString());
+                            @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                         sLastReadURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -906,7 +889,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             @params = new List<string> { ParamKeys.TopicId + "=" + TopicId, ParamKeys.FirstNewPost + "=" + UserLastReplyRead };
                             if (SocialGroupId > 0)
-                                @params.Add("GroupId=" + SocialGroupId.ToString());
+                                @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                             sLastReadURL = NavigateUrl(TabId, "", @params.ToArray());
 
@@ -1079,9 +1062,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
                     Pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
                     Pager1.View = Views.Topics;
-                    if (Request.Params["afsort"] != null)
+                    if (Request.Params[ParamKeys.Sort] != null)
                     {
-                        string[] Params = { "afsort=" + Request.Params["afsort"], "afcol=" + Request.Params["afcol"] };
+                        string[] Params = { $"{ParamKeys.Sort}={Request.Params[ParamKeys.Sort]}", "afcol=" + Request.Params["afcol"] };
                         Pager1.Params = Params;
                         if (Pager2 != null)
                         {

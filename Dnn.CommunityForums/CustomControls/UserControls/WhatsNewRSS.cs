@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _authorizedForums ??
                        (_authorizedForums =
-                        new Data.Common().CheckForumIdsForView(ModuleId, Settings.Forums, CurrentUser.UserRoles));
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, Settings.Forums, CurrentUser.UserRoles));
             }
         }
 
