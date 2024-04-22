@@ -450,11 +450,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         case 8:
                             v = GridTypes.MySubscriptions;
                             break;
-                        case 8:
-                            v = "announcements";
-                            break;
                         case 9:
-                            v = "unresolved";
+                            v = GridTypes.Announcements;
+                            break;
+                        case 10:
+                            v = GridTypes.Unresolved;
                             break;
 
                     }

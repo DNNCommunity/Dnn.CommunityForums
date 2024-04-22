@@ -1504,8 +1504,9 @@ INSERT INTO @views (id,viewname) VALUES (4,'activetopics');
 INSERT INTO @views (id,viewname) VALUES (5,'afprofile');
 INSERT INTO @views (id,viewname) VALUES (6,'mostliked');
 INSERT INTO @views (id,viewname) VALUES (7,'mostreplies');
-INSERT INTO @views (id,viewname) VALUES (8,'announcements');
-INSERT INTO @views (id,viewname) VALUES (9,'unresolved');
+INSERT INTO @views (id,viewname) VALUES (8,'afsubscriptions');
+INSERT INTO @views (id,viewname) VALUES (9,'announcements');
+INSERT INTO @views (id,viewname) VALUES (10,'unresolved');
 SELECT TabId, ModuleID, ForumGroupId, ForumId, TopicId, Url,Archived,OtherId,UrlType FROM 
 	(
 		SELECT tb.TabID,m.ModuleId, g.ForumGroupId,f.ForumId,t.TopicId, 

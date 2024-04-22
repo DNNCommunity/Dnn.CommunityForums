@@ -1720,4 +1720,7 @@ From,
   <data name="[RESX:Unresolved].Text" xml:space="preserve">
     <value>Unresolved</value>
   </data>
+  <data name="[RESX:Filters].Text" xml:space="preserve">
+    <value>Filters</value>
+  </data>
 </root>
