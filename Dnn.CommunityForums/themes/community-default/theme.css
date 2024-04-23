@@ -125,6 +125,16 @@
 .dnn-community-forums .dcf-subscribe label {
   margin-left: 0.5em;
 }
+.dnn-community-forums .dcf-forum-subscribers,
+.dnn-community-forums .dcf-forum-subscribe {
+  margin-top: 0.25rem;
+}
+@media screen and (min-width: 768px) {
+  .dnn-community-forums .dcf-forum-subscribers,
+  .dnn-community-forums .dcf-forum-subscribe {
+    text-align: right;
+  }
+}
 .dnn-community-forums .dcf-link-text {
   display: none;
   margin-left: 0.25rem;
@@ -475,6 +485,9 @@
 }
 .dnn-community-forums .dcf-topic-view .dcf-header-content {
   padding-top: 1rem;
+}
+.dnn-community-forums .dcf-topic-view .dcf-header-content .dcf-topic-controls {
+  margin-top: 0.5rem;
 }
 @media screen and (min-width: 768px) {
   .dnn-community-forums .dcf-topic-view .dcf-header-content .dcf-topic-controls {
