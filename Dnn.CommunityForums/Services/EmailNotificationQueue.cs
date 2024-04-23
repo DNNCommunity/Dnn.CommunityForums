@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             catch (Exception ex)
             {
                 ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
+                ScheduleHistoryItem.AddLogNote(string.Concat("Email Notification Queue Failed. ", ex));
                 Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }

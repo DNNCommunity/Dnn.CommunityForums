@@ -832,7 +832,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                            TopicTemplate = _topicReviewTemplate,
                                            OptPageSize = int.MaxValue,
                                            OptDefaultSort = "DESC",
-                                           ForumInfo = ForumInfo
+                    ForumInfo = ForumInfo
                                        };
                 plhTopicReview.Controls.Add(ctlTopicView);
             }

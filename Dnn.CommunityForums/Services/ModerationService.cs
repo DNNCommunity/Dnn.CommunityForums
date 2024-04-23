@@ -163,7 +163,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = reply.Content.AuthorId;
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 rc.Reply_Delete(PortalSettings.PortalId, _forumId, _topicId, _replyId, ms.DeleteBehavior);
-                Utilities.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
             else
             {
