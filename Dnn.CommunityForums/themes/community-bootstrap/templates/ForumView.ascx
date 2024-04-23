@@ -15,7 +15,7 @@
 				<table class="dcf-table dcf-table-100 table table-responsive-md">
 					<thead>
 						<tr class="dcf-table-head-row">
-							<th scope="col" colspan="2" class="dcf-th dcf-col-text">
+							<th scope="col" class="dcf-th dcf-col-text w-75">
 								<div class="dcf-th-text">[RESX:FORUMHEADER]</div>
 							</th>
 							<th scope="col" class="dcf-th dcf-col-topics">
@@ -27,7 +27,7 @@
 							<th scope="col" class="dcf-th dcf-col-subscribers">
 								<div class="dcf-icon-text"><i class="fa fa-envelope-o"></i><span class="dcf-link-text">[RESX:SUBSCRIBERS]</span></div>
 							</th>
-							<th scope="col" class="dcf-th dcf-col-last-post">
+							<th scope="col" class="dcf-th dcf-col-last-post w-25">
 								<div class="dcf-icon-text"><i class="fa fa-file-o"></i><span class="dcf-link-text">[RESX:LASTPOSTHEADER]</span></div>
 							</th>
 						</tr>
@@ -35,12 +35,16 @@
 					[FORUMS]
 					<tbody>
 					<tr class="dcf-table-body-row">
-						<td class="dcf-col dcf-col-icon pr-0">[FORUMICONCSS]</td>
-						<td class="dcf-col dcf-col-text w-70">
+						
+						<td class="dcf-col dcf-col-text d-flex border-0">
+							[FORUMICONCSS]
+						<div class="dcf-forum-title-text">
 							<h4 class="dcf-forum-title h5 mt-0 mb-2">[FORUMNAME]</h4>
-							<span class="dcf-forum-description">[FORUMDESCRIPTION]</span>
+							<div class="dcf-forum-description">[FORUMDESCRIPTION]</div>
+						</div>
+							
 						</td>
-						<td class="dcf-col dcf-col-topics">[TOTALTOPICS] </td>
+						<td class="dcf-col dcf-col-topics border-0">[TOTALTOPICS] </td>
 						<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>
 						<td class="dcf-col dcf-col-subscribers">[FORUMSUBSCRIBERCOUNT]</td>
 						<td class="dcf-col dcf-col-last-post">
