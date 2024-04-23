@@ -457,7 +457,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Public Methods
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetSearchUrl()
         {
             var @params = new List<string> { ParamKeys.ViewType + "=searchadvanced" };
@@ -469,7 +468,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray());
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetForumUrl()
         {
             if (_currentRow == null)
@@ -486,7 +484,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return NavigateUrl(TabId, string.Empty, @params.ToArray()); 
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetThreadUrl()
         {
             if (_currentRow == null)
@@ -506,7 +503,6 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         // Jumps to post for post view, or last reply for topics view
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostUrl() 
         {
             if (_currentRow == null)
@@ -530,7 +526,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetAuthor()
         {
             if (_currentRow == null)
@@ -545,7 +540,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetLastPostAuthor()
         {
             if (_currentRow == null)
@@ -565,7 +559,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetPostSnippet()
         {
             var post = _currentRow["Body"].ToString();
@@ -578,12 +571,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return post;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00.  Not Used.")]
         public string GetIcon()
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
                 Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
-                Utilities.SafeConvertBool(_currentRow["IsRead"]),
                 ThemePath,
                 Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
                 Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
