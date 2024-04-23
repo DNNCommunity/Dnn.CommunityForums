@@ -2,7 +2,7 @@
 
 <div class="dcf-topic-view">
     <header>
-		<div class="fa-prev-next">
+		<div class="dcf-prev-next">
 			<div class="dcf-cols">
 				<div class="dcf-col-50"><span class="fa-prev">[PREVTOPIC]</span>
 				</div>

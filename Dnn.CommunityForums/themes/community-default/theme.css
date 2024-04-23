@@ -461,16 +461,16 @@
 .dnn-community-forums .dcf-topic-view .dcf-title-1 .fa {
   margin-right: 0.5rem;
 }
-.dnn-community-forums .dcf-topic-view .fa-prev-next {
+.dnn-community-forums .dcf-topic-view .dcf-prev-next {
   margin-top: 0.5rem;
   padding-bottom: 0.5rem;
   border-bottom: solid 1px #ccc;
   border-style: dashed;
 }
-.dnn-community-forums .dcf-topic-view .fa-prev-next a {
+.dnn-community-forums .dcf-topic-view .dcf-prev-next a {
   color: #222;
 }
-.dnn-community-forums .dcf-topic-view .fa-prev-next a .fa {
+.dnn-community-forums .dcf-topic-view .dcf-prev-next a .fa {
   margin: 0 0.5em;
 }
 .dnn-community-forums .dcf-topic-view .dcf-header-content {
