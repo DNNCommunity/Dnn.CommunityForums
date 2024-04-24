@@ -21,38 +21,45 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    internal class EmailNotificationQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo>
+    internal class ProcessQueueController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo>
     {
-        public void Add(int portalId, int moduleId, string emailFrom, string emailTo, string emailSubject, string emailBody)
+        public bool Add(ProcessType processType, int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int authorId, string requestUrl)
         {
             try
             {
-                Insert(new DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo
+               Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
                     {
-                    PortalId = portalId,
-                    ModuleId = moduleId,
-                    EmailFrom = emailFrom,
-                    EmailTo = emailTo,
-                    EmailBody = emailBody,
-                    EmailSubject = emailSubject,
-                    DateCreated = DateTime.UtcNow
-                });
+                        PortalId = portalId,
+                        ModuleId = moduleId,
+                        ProcessType = processType,
+                        ForumGroupId=forumGroupId,
+                        ForumId = forumId,
+                        TabId = tabId,
+                        TopicId =topicId,
+                        ReplyId=replyId,   
+                        AuthorId=authorId,
+                        DateCreated=DateTime.UtcNow,
+                        RequestUrl=requestUrl,
+                    });
+                return true;                
             }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                return false;
             }
         }
-        public List<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo> GetBatch()
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo> GetBatch()
         {
             try
             {
-                return Get().OrderBy(m => m.DateCreated).Take(200).ToList();
+                    return Get().OrderBy(m => m.DateCreated).Take(200).ToList();
             }
             catch (Exception ex)
             {

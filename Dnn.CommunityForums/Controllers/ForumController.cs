@@ -20,7 +20,11 @@
 using System;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
+using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.Data;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -445,6 +449,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static int Forum_GetByTopicId(int TopicId)
         {
             return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>( "activeforums_ForumGetByTopicId", TopicId);
+        }
+        internal static bool RecalculateTopicPointers(int forumId)
+        {
+            try
+            {
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "activeforums_SaveTopicNextPrev", forumId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return false;
+            }
+        }
+        internal static bool UpdateForumLastUpdates(int forumId)
+        {
+            try
+            {
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "activeforums_Forums_LastUpdates", forumId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return false;
+            }
         }
     }
 }
