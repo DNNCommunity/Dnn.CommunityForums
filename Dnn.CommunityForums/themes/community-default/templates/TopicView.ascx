@@ -23,7 +23,7 @@
                     <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 					
 					<div class="dcf-topic-controls">
-						<div class="dcf-subscribe">[TOPICSUBSCRIBE]</div>
+						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
 						<div class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</div>
 						<div class="dcf-button-reply">[ADDREPLY]</div>
 						
