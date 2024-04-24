@@ -10,7 +10,7 @@
 		
 		<div class="dcf-forum-search-subscribe">
 			<div class="dcf-forum-search">[MINISEARCH]</div>
-			<div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i> &nbsp;<span id="af-topicsview-forumsubscribercount">[FORUMSUBSCRIBERCOUNT]</span>&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
+			<div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i><span id="af-topicsview-forumsubscribercount">[FORUMSUBSCRIBERCOUNT]</span>&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
 			<div class="dcf-subscribe-forum">[FORUMSUBSCRIBE]</div>
 		</div>
 		
