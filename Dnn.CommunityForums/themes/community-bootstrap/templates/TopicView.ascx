@@ -22,7 +22,7 @@
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
 						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
-						<div class="dcf-subscribe">[TOPICSUBSCRIBE]</div>
+						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
 						<div class="dcf-button-reply">[ADDREPLY]</div>
 						
 					</div>
