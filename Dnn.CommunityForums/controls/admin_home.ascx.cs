@@ -66,7 +66,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindRecentTopics(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
-            int rows = 0;
             sb.Append("<table class=\"dashInner\" cellpadding=\"2\" width=\"100%\">");
             sb.Append("<tr><td class=\"dashHD\">[RESX:Topic]</td><td class=\"dashHD\">[RESX:Author]</td></tr>");
             if (dt.Rows.Count > 0)
@@ -89,7 +88,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindRecentMembers(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
-            int rows = 0;
             sb.Append("<table class=\"dashInner\" cellpadding=\"2\" width=\"100%\">");
             sb.Append("<tr><td class=\"dashHD\">[RESX:Date]</td><td class=\"dashHD\">[RESX:Name]</td><td class=\"dashHD\">[RESX:UserName]</td></tr>");
             if (dt.Rows.Count > 0)
@@ -114,7 +112,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindTopForums(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
-            int rows = 0;
             sb.Append("<table class=\"dashInner\" cellpadding=\"2\" width=\"100%\">");
             sb.Append("<tr><td class=\"dashHD\">[RESX:ForumName]</td><td class=\"dashHD\" align=\"center\" style=\"text-align:center;\">[RESX:Topics]</td><td class=\"dashHD\" align=\"center\" style=\"text-align:center;\">[RESX:Replies]</td></tr>");
             if (dt.Rows.Count > 0)
@@ -138,7 +135,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindTopMembers(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
-            int rows = 0;
             sb.Append("<table class=\"dashInner\" cellpadding=\"2\" width=\"100%\">");
             if (dt.Rows.Count > 0)
             {
@@ -160,7 +156,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindQuickStats(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
-            int rows = 0;
             sb.Append("<table class=\"dashInner\" cellpadding=\"2\" width=\"100%\">");
             if (dt.Rows.Count > 0)
             {

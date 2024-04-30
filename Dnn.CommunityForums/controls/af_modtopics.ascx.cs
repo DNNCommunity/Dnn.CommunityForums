@@ -344,7 +344,6 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (DataRow dr in dtAttach.DefaultView.ToTable().Rows)
             {
                 sb.Append("<br />");
-                string tmpPath = null;
                 int attachId = Convert.ToInt32(dr["AttachId"]);
                 string Filename = dr["Filename"].ToString();
                 string contentType = dr["ContentType"].ToString();

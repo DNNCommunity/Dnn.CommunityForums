@@ -105,7 +105,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TopicsController();
                 var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -166,7 +165,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TopicsController();
                 var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (ti == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });

@@ -149,7 +149,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage ToggleSecurity(ToggleSecurityDTO dto)
         {
-            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
             switch (dto.Action)
             {
                 case "delete":

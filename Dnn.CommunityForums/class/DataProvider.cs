@@ -171,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Tags
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_Delete(int PortalId, int ModuleId, int TagId);
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_DeleteByTopicId(int PortalId, int ModuleId, int TopicId);
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Tags_Get(int PortalId, int ModuleId, int TagId);

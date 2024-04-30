@@ -193,7 +193,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
                 var rc = new RewardController();
-                var i = 0;
                 var sRank = string.Empty;
                 foreach (var ri in rc.Reward_List(portalId, moduleID, true).Where(ri => ri.MinPosts <= posts && ri.MaxPosts > posts))
                 {

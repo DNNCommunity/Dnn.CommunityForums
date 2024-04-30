@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         public HttpResponseMessage ListForHtml(ForumDto dto)
         {
             DotNetNuke.Modules.ActiveForums.User user = new DotNetNuke.Modules.ActiveForums.UserController().LoadUser(UserInfo);
-            return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.ForumController().GetForumsHtmlOption(ActiveModule.PortalID, ForumModuleId, user));
+            return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(ForumModuleId, user));
         }
     }
 }

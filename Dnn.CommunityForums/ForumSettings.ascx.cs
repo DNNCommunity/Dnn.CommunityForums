@@ -398,12 +398,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				dt.Load(dr);
 				dr.Close();
 
-				int totalGroupForum = 0;
 				string tmpGroup = string.Empty;
-				int i = 0;
-				int groupCount = 0;
-				int forumCount = 0;
-				bool hasChildren = false;
 				foreach (DataRow row in dt.Rows)
 				{
 					if (tmpGroup != row["ForumGroupId"].ToString())

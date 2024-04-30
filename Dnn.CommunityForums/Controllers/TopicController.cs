@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             if (ti.Forum.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
             {
-                Email.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, 0, string.Empty, ti.Author);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, 0, string.Empty, ti.Author);
             }
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, TopicId, -1, ti.Content.AuthorId);
             return ti;

@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
 
 
             //Assert
-            Assert.That(actualResult.Count, Is.EqualTo((mockPropertyList.Object).Count));
+            Assert.That(actualResult, Has.Count.EqualTo((mockPropertyList.Object).Count));
             Assert.That(actualResult.First().PropertyId, Is.EqualTo((mockPropertyList.Object)[0].PropertyId));
             Assert.That(actualResult.First().Name, Is.EqualTo((mockPropertyList.Object)[0].Name));
             Assert.That(actualResult.First().Value, Is.EqualTo((mockPropertyList.Object)[0].Value));
