@@ -1,0 +1,8 @@
+// Yes some of these could be done using Bootstrap classes, but are more efficient by overruling them
+
+.table {
+    .dcf-th,
+    tbody+tbody {
+        border-width: 1px !important;
+    }
+}

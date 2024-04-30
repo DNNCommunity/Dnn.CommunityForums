@@ -1426,7 +1426,7 @@ GO
 /* create scheduler */
 IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
 	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,Servers,FriendlyName)
-	VALUES('DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums',1,'m',1,'m',100,'',0,1,'','','DNN Community Forums Email Notification Queue')
+	VALUES('DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler, DotNetNuke.Modules.ActiveForums',1,'m',1,'m',100,'',1,1,'','','DNN Community Forums Email Notification Queue')
 GO
 
 /* issue 164 end - implement new mail queue */
@@ -1517,7 +1517,7 @@ GO
 
 IF NOT EXISTS (Select * From {databaseOwner}{objectQualifier}Schedule WHERE TypeFullName = 'DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums')
 	INSERT INTO {databaseOwner}{objectQualifier}Schedule (TypeFullName,TimeLapse,TimeLapseMeasurement,RetryTimeLapse,RetryTimeLapseMeasurement,RetainHistoryNum,AttachToEvent,CatchUpEnabled,Enabled,ObjectDependencies,FriendlyName,Servers)
-	VALUES('DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums',1,'m',1,'m',100,'',0,1,'',N'DNN Community Forums Process Queue',NULL)
+	VALUES('DotNetNuke.Modules.ActiveForums.Services.ProcessQueue.Scheduler, DotNetNuke.Modules.ActiveForums',1,'m',1,'m',100,'',1,1,'',N'DNN Community Forums Process Queue',NULL)
 GO
 
  

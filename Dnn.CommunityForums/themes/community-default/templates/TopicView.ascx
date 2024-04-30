@@ -2,7 +2,7 @@
 
 <div class="dcf-topic-view">
     <header>
-		<div class="fa-prev-next">
+		<div class="dcf-prev-next">
 			<div class="dcf-cols">
 				<div class="dcf-col-50"><span class="fa-prev">[PREVTOPIC]</span>
 				</div>
@@ -21,9 +21,10 @@
                     <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
                     <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[TOPICSUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
                     <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
+					
 					<div class="dcf-topic-controls">
-						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
 						<div class="dcf-subscribe">[TOPICSUBSCRIBE]</div>
+						<div class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</div>
 						<div class="dcf-button-reply">[ADDREPLY]</div>
 						
 					</div>
