@@ -193,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
 		public const string Theme = "THEME";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string MailQueue = "MAILQUEUE";
         public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
