@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums
 			base.OnLoad(e);
 
             lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
-            bool bCanLoad = false;
             string sMode = MainSettings.MemberListMode;
             if (!UserInfo.IsSuperUser)
             {

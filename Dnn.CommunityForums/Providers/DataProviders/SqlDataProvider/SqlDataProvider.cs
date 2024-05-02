@@ -394,6 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion
         #region Subscriptions
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override int Subscriptions_IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_IsSubscribed", PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
@@ -418,7 +419,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Delete", PortalId, ModuleId, TagId, -1);
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override void Tags_DeleteByTopicId(int PortalId, int ModuleId, int TopicId)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Delete", PortalId, ModuleId, -1, TopicId);

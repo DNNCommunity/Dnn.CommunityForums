@@ -213,7 +213,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		{
 			System.Text.StringBuilder sb = new System.Text.StringBuilder();
 			Data.Topics db = new Data.Topics();
-			int i = 0;
 
 			using (IDataReader dr = db.TopicWithReplies(PortalId, TopicId, PageIndex, PageSize))
 			{

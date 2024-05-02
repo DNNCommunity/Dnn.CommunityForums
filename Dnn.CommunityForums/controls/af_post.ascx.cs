@@ -342,7 +342,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private void LoadTopic()
         {
             ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.EditTopic;
-            var tc = new TopicsController();
             var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             if (ti == null)
             {
@@ -518,8 +517,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                //TODO: Find out why Topic Get is called twice in this method
-                var tc = new TopicsController();
                 var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
                 if (ti == null)
@@ -565,7 +562,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Entities.ContentInfo ci;
                         if (postId == TopicId)
                         {
-                            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                             ci = ti.Content;
                             sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
                         }
@@ -664,7 +660,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
             }
 
-            var tc = new TopicsController();
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti;
 
             if (TopicId > 0)
@@ -911,9 +906,12 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri;
 
 
+            var sc = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController();
+            var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
+
             if (PostId > 0)
             {
-                ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(PostId);
+                ri = rc.GetById(PostId);
             }
             else
             {
@@ -948,30 +946,28 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.TopicId = TopicId; 
             if (UserPrefTopicSubscribe)
             {
-                new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
+                sc.Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
-            var tmpReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ForumModuleId, ri);
-            ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
+            var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
+            ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
             SaveAttachments(ri.ContentId);
-            DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, ri.TopicId, ri.Content.AuthorId));
-            DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
             try
             {
                 if (ctlForm.Subscribe && authorId == UserId)
                 {
-                    if (!(Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId)))
+                    if (!(sc.Subscribed(PortalId, ForumModuleId, authorId, ForumId, TopicId)))
                     {
-                        var sc = new SubscriptionController();
-                        sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
+                        //TODO: move to new DAL2 subscription controller
+                        new SubscriptionController().Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
                     }
                 }
                 else if (_isEdit)
                 {
-                    var isSub = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, authorId);
+                    var isSub = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, authorId, ForumId, TopicId);
                     if (isSub && !ctlForm.Subscribe)
                     {
-                        var sc = new SubscriptionController();
-                        sc.Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
+                        //TODO: move to new DAL2 subscription controller
+                        new SubscriptionController().Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
                     }
                 }
                 if (ri.IsApproved == false)

@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     public class TagController : ControllerBase<TagController>
     {
 
+#pragma warning disable CS1570
         /// <summary>
         /// Gets Tags matching a string anywhere in string
         /// </summary>
@@ -45,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="MatchString" type="string"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Tag/Matches?ForumId=xxx&MatchString=xxx</remarks>
+#pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Tag)]
@@ -53,6 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             return Match($"%{CleanAndChopString(MatchString, 20)}%");
         }
 
+#pragma warning disable CS1570
         /// <summary>
         /// Gets Tags with names matching string from beginning
         /// </summary>
@@ -60,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="MatchString" type="string"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Tag/BeginsWith?ForumId=xxx&MatchString=xxx</remarks>
+#pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Tag)]

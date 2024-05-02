@@ -1126,9 +1126,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
 
-            var i = 0;
-            var intStart = 0;
-            var intEnd = 0;
             const string pattern = @"(\[RESX:.+?\])";
             var regExp = new Regex(pattern);
             var matches = regExp.Matches(controlText);

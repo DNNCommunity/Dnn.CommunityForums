@@ -29,6 +29,8 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.IO;
+using System.Web.Http.Results;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -179,11 +181,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string tmpGroup = string.Empty;
 
                     #region "backward compatibilty - remove when removing ForumTable property" 
-                    /* this is for backward compatibility -- remove when removing ForumTable property */
+#pragma warning disable CS0618
+                    /* this is for backward compatibility -- remove when removing ForumTable property in 10.00.00 */
                     if (ForumTable != null)
+#pragma warning restore CS0618
                     {
                         Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+#pragma warning disable CS0618
                         foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
+#pragma warning restore CS0618
                         {
                             Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), ForumModuleId));
                         }
@@ -192,10 +198,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (Forums == null)
                     {
-                        Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                        foreach (string ForumId in ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
+                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds);
+                        var obj = DataCache.ContentCacheRetrieve(ForumModuleId, cachekey);
+                        if (obj == null)
                         {
-                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId),ForumModuleId));
+                            Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                            foreach (string ForumId in ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId), ForumModuleId));
+                            }
+                            DataCache.ContentCacheStore(ForumModuleId, cachekey, Forums);
+                        }
+                        else
+                        {
+                            Forums = (List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>)obj;
                         }
                     }
                     Forums = (Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList());
@@ -483,7 +499,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Template = Template.Replace("[DISPLAYNAME]", string.Empty);
                 Template = Template.Replace("[LASTPOSTDATE]", string.Empty);
                 Template = Template.Replace(ReplaceTag, string.Empty);
-                //Template = TemplateUtils.ParseUserDetails(PortalId, -1, Template, String.Empty)
             }
             else
             {
@@ -491,16 +506,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (fi.LastPostUserID <= 0)
                     {
-                        //Template = Template.Replace("[RESX:BY]", String.Empty)
                         Template = Template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + fi.LastPostDisplayName);
-                        //Template = TemplateUtils.ParseUserDetails(PortalId, -1, Template, "FG")
                     }
                     else
                     {
                         bool isMod = CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.ForumMod || CurrentUserType == CurrentUserTypes.SuperUser;
                         bool isAdmin = CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser;
                         Template = Template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + UserProfiles.GetDisplayName(ForumModuleId, true, isMod, isAdmin, fi.LastPostUserID, fi.LastPostUserName, fi.LastPostFirstName, fi.LastPostLastName, fi.LastPostDisplayName));
-                        //Template = TemplateUtils.ParseUserDetails(PortalId, .LastPostUserID, Template, "FG")
                     }
                     DateTime dtLastPostDate = fi.LastPostDateTime;
                     Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate,PortalId, CurrentUserId));
@@ -511,12 +523,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     if (Subject != string.Empty)
                     {
-                        string sDots = "";
-                        if (Subject.Length > intLength)
-                        {
-                            sDots = "...";
-                        }
-
                         Template = Template.Replace(ReplaceTag, GetLastPostSubject(fi.LastPostID, fi.LastTopicId, fi.ForumID, TabId, Subject, intLength, MainSettings.PageSize, fi));
                     }
                     else
