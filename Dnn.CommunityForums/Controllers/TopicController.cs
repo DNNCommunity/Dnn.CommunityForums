@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
         }
 
-        public static string GetTopicIcon(int topicId, bool isRead, string themePath, int userLastTopicRead, int userLastReplyRead)
+        internal static string GetTopicIcon(int topicId, string themePath, int userLastTopicRead, int userLastReplyRead)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
             if (!string.IsNullOrWhiteSpace(ti.TopicIcon))
@@ -241,11 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return $"{themePath}/images/topic_lock.png";
             }
-            else if (isRead)
-            {
-                return $"{themePath}/images/topic.png";
-            }
-            else
+           else
             {
                 // Unread has to be calculated based on a few fields
                 if ((ti.ReplyCount <= 0 && topicId > userLastTopicRead) || (ti.Forum.LastReplyId > userLastReplyRead))
