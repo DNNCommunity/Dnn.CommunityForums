@@ -29,22 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
         /// </summary>
         /// <param name="key"></param>
         /// <param name="newValue"></param>
-        private void UpdateTabModuleSettingCaseSensitive(string key, string newValue)
-        {
-            var oldValue = Settings.GetString(key);
-            if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
-            {
-                // changed but case-insensitive identical: empty the setting first
-                UpdateTabModuleSettingCaseSensitive(key, "");
-            }
-            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, key, newValue);
-        }
-
-        /// <summary>
-        /// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="newValue"></param>
         private void UpdateModuleSettingCaseSensitive(string key, string newValue)
         {
             var oldValue = Settings.GetString(key);
@@ -64,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				UpdateTabModuleSettingCaseSensitive(SettingKeys.Mode, value);
+                UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
 			}
 		}
 
@@ -407,8 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				//Use Tab Module Setting
-				UpdateTabModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
+                UpdateModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
 			}
 		}
 
@@ -420,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				UpdateTabModuleSettingCaseSensitive("ForumConfig", value);
+                UpdateModuleSettingCaseSensitive("ForumConfig", value);
 			}
 		}
 
