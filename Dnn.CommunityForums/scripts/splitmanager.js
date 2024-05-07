@@ -74,8 +74,8 @@
                 resizable: false,
                 title: opts.titleText,
                 buttons: [
-                    { text: opts.splitText, click: splitStart },
-                    { text: opts.cancelText, click: function () { $(this).dialog("close"); } }
+                    { text: opts.splitText, click: splitStart, class: "dnnPrimaryAction" },
+                    { text: opts.cancelText, click: function () { $(this).dialog("close"); }, class: "dnnSecondaryAction" }
                 ],
                 close: function () { }
             });
@@ -118,13 +118,15 @@
                 alert(errorChk);
                 return;
             }
+            var replies = amaf_getParam('splitValue');
 
+            if (replies == '') errorChk = 'No replies selected';
             var params = {
                 OldTopicId: oTopicId,
                 NewTopicId: topicId,
                 NewForumId: forumId,
                 Subject: subject,
-                Replies: amaf_getParam('splitValue')
+                Replies: replies
             };
 
             $.ajax({
@@ -183,7 +185,7 @@
 
     $.fn.afSplitManager.defaultOptions = {
         openTriggerScope: 'body', // defines parent scope for openTriggerSelector, allows for event delegation
-        openTriggerSelector: '.af-button-split', // opens dialog
+        openTriggerSelector: '.dcf-split-button-save', // opens dialog
         titleText: 'Add selected posts to',
         typeTopicText: "Add selected posts to:",
         exTopicText: "Existing Topic",
