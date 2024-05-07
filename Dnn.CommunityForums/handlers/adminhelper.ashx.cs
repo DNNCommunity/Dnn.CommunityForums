@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			sOut += ",";
 			sOut += Utilities.JSON.Pair("MaxPosts", rank.MaxPosts.ToString());
 			sOut += ",";
-			sOut += Utilities.JSON.Pair("Display", rank.Display.ToLowerInvariant().Replace("activeforums/ranks", "activeforums/images/ranks"));
+			sOut += Utilities.JSON.Pair("Display", rank.Display.ToLowerInvariant().Replace("activeforums/ranks", "ActiveForums/images/ranks"));
 			sOut += "}";
 			return sOut;
 		}
