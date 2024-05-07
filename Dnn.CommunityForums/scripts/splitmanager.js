@@ -120,7 +120,9 @@
                 alert(errorChk);
                 return;
             }
+            var replies = amaf_getParam('splitValue');
 
+            if (replies == '') errorChk = 'No replies selected';
             var params = {
                 OldTopicId: oTopicId,
                 NewTopicId: topicId,
