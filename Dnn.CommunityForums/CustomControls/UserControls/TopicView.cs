@@ -932,11 +932,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    sbOutput.Replace("[ADDREPLY]", "<span class=\"afnormal\">[RESX:NotAuthorizedReply]</span>");
+                    if (!Request.IsAuthenticated)
+                    { 
+                        DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                        string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
+                        sbOutput.Replace("[ADDREPLY]", string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl));
+                    }
+                    else
+                    {
+                        sbOutput.Replace("[ADDREPLY]", "<span class=\"afnormal\">[RESX:NotAuthorizedReply]</span>");
+                    }
                     sbOutput.Replace("[QUICKREPLY]", string.Empty);
                 }
 
-                //TODO: Check for owner
             }
 
             if (_bModSplit && (_replyCount > 0))
