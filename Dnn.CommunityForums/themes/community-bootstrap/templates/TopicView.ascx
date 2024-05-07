@@ -23,6 +23,7 @@
 					<div class="dcf-topic-controls text-right text-end">
 						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
 						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+                        <div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
 						<div class="dcf-button-reply">[ADDREPLY]</div>
 						
 					</div>
@@ -108,6 +109,7 @@
 				<div class="d-flex flex-wrap">
 
 						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
+                            [SPLITCHECKBOX]
 							[POSTINFO]
 						</div>
 

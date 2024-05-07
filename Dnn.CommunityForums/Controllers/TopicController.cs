@@ -33,6 +33,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -51,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
             int topicId = -1;
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo(); 
             ti.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
@@ -76,7 +78,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             ti.StatusId = -1;
             ti.TopicIcon = string.Empty;
             ti.TopicType = TopicTypes.Topic;
-            ti.ViewCount = 0;
+            ti.ViewCount = 0; 
+            ti.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: PortalId, ModuleId: ModuleId, TopicId: topicId, subject: Subject, forumInfo: forumInfo);
+
             topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
 
 

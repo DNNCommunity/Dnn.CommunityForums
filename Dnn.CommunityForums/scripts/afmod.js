@@ -342,11 +342,12 @@ function amaf_splitCreate(el, tid) {
 };
 
 function amaf_splitButtons(opt) {
-    var btns = document.getElementById('dcf-split-buttons');
-    if (typeof (btns) == 'undefined') return;
+    var btn1 = document.getElementById('dcf-split-buttons-create');
+    var btn2 = document.getElementById('dcf-split-buttons');
+    if (typeof (btn1) == 'undefined' || typeof (btn2) == 'undefined') return;
     if (opt) {
-        btns.childNodes[0].style.display = 'none';
-        btns.childNodes[1].style.display = 'block';
+        btn1.style.display = 'none';
+        btn2.style.display = 'block';
         var objs = am.Utils.GetElementsByClassName('dcf-split-checkbox', 'afgrid');
         for (var i = 0; i < objs.length; i++) {
             objs[i].style.display = 'block';
@@ -354,8 +355,8 @@ function amaf_splitButtons(opt) {
         };
     }
     else {
-        btns.childNodes[0].style.display = 'block';
-        btns.childNodes[1].style.display = 'none';
+        btn1.style.display = 'block';
+        btn2.style.display = 'none';
         var objs = am.Utils.GetElementsByClassName('dcf-split-checkbox', 'afgrid');
         for (var i = 0; i < objs.length; i++) {
             objs[i].style.display = 'none';

@@ -44,7 +44,7 @@
 
         // Split selected posts
         $.fn.afSplitManager({
-            openTriggerSelector: ".af-button-split",
+            openTriggerSelector: ".dcf-split-button-save",
             servicesFramework: $.ServicesFramework(<%=ModuleId%>)
         });
         if ($.browser.mozilla) {
