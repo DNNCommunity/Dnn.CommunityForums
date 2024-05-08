@@ -43,7 +43,7 @@
 							-->
 								
 							</div>
-							<textarea id="txtBody" name="txtBody" class="dcf-textbox" rows="5" cols="250"></textarea>
+							<textarea id="txtBody" name="txtBody" class="dcf-textbox w-100" rows="5"></textarea>
 						</div>
 					
 					[AF:UI:ANON]
@@ -57,13 +57,13 @@
 							<div>[AF:INPUT:CAPTCHA]</div> 
 						</div>
 					[/AF:UI:ANON]
-					<div class="dcf-subscribe">
+					<div class="dcf-subscribe mt-2">
 						<div id="divSubscribe" runat="server" />
 					</div> 
 					
 				</div>
 			</div>
-			<div class="dcf-buttons">
+			<div class="dcf-buttons mt-3">
 				[AF:BUTTON:SUBMIT]
 			</div>
 
