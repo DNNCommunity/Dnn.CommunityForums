@@ -1,13 +1,15 @@
 <div class="dcf-quick-reply">
-	<header class="dcf-quick-reply-header dcf-cols">
-		<div class="dcf-col-50">
-			<h3 class="dcf-title h4 mb-3">[RESX:QuickReply]</h3>
+	<header class="dcf-quick-reply-header d-flex mt-4">
+		<div class="w-50">
+			<h3 class="dcf-title h4 m-0">[RESX:QuickReply]</h3>
 		</div>
-		<div class="dcf-col-50">
-			<div class="dcf-collapse">[AF:CONTROLS:GROUPTOGGLE]</div>
+		<div class="w-50 text-right text-end">
+			<a class="dcf-collapse bs-collapse" data-toggle="collapse" href="#groupQR" role="button" data-bs-toggle="collapse">
+				<i class="fa fa-chevron-circle-down fa-lg"></i>
+			</a>
 		</div>
 	</header>
-	<section class="dcf-section" id="groupQR">
+	<section class="dcf-section collapse show" id="groupQR">
 			<div class="dcf-group">
 				<asp:PlaceHolder ID="plhMessage" runat="server" />
 				<div>
@@ -55,7 +57,7 @@
 							<div>[AF:INPUT:CAPTCHA]</div> 
 						</div>
 					[/AF:UI:ANON]
-					<div class="dcf-subscribe-topic">
+					<div class="dcf-subscribe">
 						<div id="divSubscribe" runat="server" />
 					</div> 
 					
