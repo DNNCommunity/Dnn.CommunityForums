@@ -1454,3 +1454,11 @@ div.dcf-mod-edit-wrap {
 }
 .dcf-split-button-cancel {
 }
+.dcf-split-checkbox-wrap {
+	float:right;
+}
+.dcf-split-checkbox {
+}
+.dcf-split-checkbox-label {
+	margin-left:3px;
+}

@@ -1297,7 +1297,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModSplit)
             {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /></div>");
+                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + replyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /><label for=\"dcf-split-checkbox-" + replyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
             }
             else
             {

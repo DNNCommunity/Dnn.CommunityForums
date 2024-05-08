@@ -109,7 +109,6 @@
 				<div class="d-flex flex-wrap">
 
 						<div class="dcf-topic-info bg-light px-3 pb-2  mb-2 mb-md-0">
-                            [SPLITCHECKBOX]
 							[POSTINFO]
 						</div>
 
@@ -117,7 +116,7 @@
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
 									<div class="dcf-postdate">[POSTDATE] </div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]</div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">

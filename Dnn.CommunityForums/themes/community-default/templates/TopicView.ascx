@@ -118,7 +118,6 @@
 				<div class="dcf-cols">
 					<div class="dcf-col-25">
 						<div class="dcf-topic-info">
-							[SPLITCHECKBOX]
 							[POSTINFO]
 						</div>
 					</div>
@@ -131,7 +130,8 @@
 										
 									</div>
 									<div class="dcf-col-75">
-										<div class="dcf-toolbar dcf-topic-actions">[AF:CONTROL:TOPICACTIONS]</div>
+										<div class="dcf-toolbar dcf-topic-actions">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
+                                        
 									</div>
 								</div>
 							</header>
