@@ -172,7 +172,7 @@
     <value>You must be logged in to post a reply.</value>
   </data>
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
-    <value>Please &lt;a href="{0}"&gt;login&lt;/a&gt; to post a reply.</value>
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to post a reply.</value>
   </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>

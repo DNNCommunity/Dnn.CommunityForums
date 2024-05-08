@@ -38,6 +38,8 @@ using DotNetNuke.Instrumentation;
 using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Authentication;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -881,7 +883,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     { 
                         DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
                         string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
-                        sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl)}</span>");
+
+                        string onclick = string.Empty;
+                        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
+                        {
+                            onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
+                        }
+                        sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl, onclick)}</span>");
                     }
                     else
                     {
