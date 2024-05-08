@@ -48,8 +48,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool Hidden { get; set; }
         public int TotalTopics { get; set; }
         public int TotalReplies { get; set; }
-        [ColumnName("LastPostId")]
-        public int LastPostID { get; set; }
+        [IgnoreColumn]
+        public int LastPostID => LastReplyId == 0 ? LastTopicId : LastReplyId;
         public string ForumSettingsKey { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
