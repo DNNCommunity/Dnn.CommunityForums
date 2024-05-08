@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (returnType == 0)
                     {
-                        sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "activeforums/images/Ranks"), ri.RankName);
+                        sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "ActiveForums/images/Ranks"), ri.RankName);
                         break;
                     }
                     sRank = ri.RankName;

@@ -74,8 +74,8 @@
                 resizable: false,
                 title: opts.titleText,
                 buttons: [
-                    { text: opts.splitText, click: splitStart },
-                    { text: opts.cancelText, click: function () { $(this).dialog("close"); } }
+                    { text: opts.splitText, click: splitStart, class: "dnnPrimaryAction" },
+                    { text: opts.cancelText, click: function () { $(this).dialog("close"); }, class: "dnnSecondaryAction" }
                 ],
                 close: function () { }
             });
@@ -99,6 +99,7 @@
         }
 
         function splitStart() {
+            if (oTopicId == topicId) return;
             var errorChk = '';
             if (forumId == -1) errorChk = '"Location" is not selected';
             else {
@@ -112,7 +113,8 @@
                     if (subject == '') errorChk = '"Subject" is empty';
                 }
             }
-            if (oTopicId == topicId) return;
+            var replies = amaf_getParam('splitValue');
+            if (replies == '') errorChk = 'No replies selected';
 
             if (errorChk != '') {
                 alert(errorChk);
@@ -124,7 +126,7 @@
                 NewTopicId: topicId,
                 NewForumId: forumId,
                 Subject: subject,
-                Replies: amaf_getParam('splitValue')
+                Replies: replies
             };
 
             $.ajax({
@@ -183,7 +185,7 @@
 
     $.fn.afSplitManager.defaultOptions = {
         openTriggerScope: 'body', // defines parent scope for openTriggerSelector, allows for event delegation
-        openTriggerSelector: '.af-button-split', // opens dialog
+        openTriggerSelector: '.dcf-split-button-save', // opens dialog
         titleText: 'Add selected posts to',
         typeTopicText: "Add selected posts to:",
         exTopicText: "Existing Topic",

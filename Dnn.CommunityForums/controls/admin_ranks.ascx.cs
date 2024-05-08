@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		public string GetDisplay(string Display, string RankName)
 		{
-			return "<img src=\"" + HostURL + Display.Replace("activeforums/Ranks", "activeforums/images/Ranks") + "\" border=\"0\" alt=\"" + RankName + "\" />";
+			return "<img src=\"" + HostURL + Display.Replace("activeforums/Ranks", "ActiveForums/images/ranks") + "\" border=\"0\" alt=\"" + RankName + "\" />";
 		}
 		private void BindRankImages()
 		{
@@ -66,12 +66,12 @@ namespace DotNetNuke.Modules.ActiveForums
 			System.IO.FileInfo myFileInfo = null;
 			int i = 0;
 
-            FileCollection = System.IO.Directory.GetFiles(Utilities.MapPath(Globals.ModulePath + "Images/ranks"));
+            FileCollection = System.IO.Directory.GetFiles(Utilities.MapPath(Globals.ModulePath + "images/ranks"));
             for (i = 0; i < FileCollection.Length; i++)
 			{
 				string path = null;
 				myFileInfo = new System.IO.FileInfo(FileCollection[i]);
-				path = "DesktopModules/activeforums/Images/Ranks/" + myFileInfo.Name;
+				path = "DesktopModules/ActiveForums/images/ranks/" + myFileInfo.Name;
 				drpRankImages.Items.Insert(i, new ListItem(myFileInfo.Name, path.ToLowerInvariant()));
 
 			}
