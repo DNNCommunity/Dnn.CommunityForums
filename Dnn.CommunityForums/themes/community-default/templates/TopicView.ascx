@@ -25,7 +25,8 @@
 					<div class="dcf-topic-controls">
 						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
 						<div class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</div>
-						<div class="dcf-button-reply">[ADDREPLY]</div>
+                        <div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
+                        <div class="dcf-button-reply">[ADDREPLY]</div>
 						
 					</div>
 				</div>
@@ -35,7 +36,7 @@
 
     <div class="dcf-tools dcf-tools-top">
         
-       	<div class="dcf-pager"> [PAGER1]</div>
+       	<div class="dcf-pager">[PAGER1]</div>
     </div>
 
     [AF:CONTROL:CALLBACK]
@@ -129,7 +130,8 @@
 										
 									</div>
 									<div class="dcf-col-75">
-										<div class="dcf-toolbar dcf-topic-actions">[AF:CONTROL:TOPICACTIONS]</div>
+										<div class="dcf-toolbar dcf-topic-actions">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
+                                        
 									</div>
 								</div>
 							</header>

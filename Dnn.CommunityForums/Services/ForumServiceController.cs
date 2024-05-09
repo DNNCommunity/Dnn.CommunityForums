@@ -443,9 +443,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         topicId = dto.NewTopicId;
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
                     }
+                    return Request.CreateResponse(HttpStatusCode.OK, topicId);
                 }
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
 

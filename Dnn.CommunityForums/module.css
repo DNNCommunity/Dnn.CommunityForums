@@ -1437,4 +1437,28 @@ div.dcf-mod-edit-wrap {
 	border: 1px solid #333;
 	font-weight: bold;
 	background-color: #cdcdcd;
-} 
+}
+
+
+/* placeholders for topic splitter */
+
+.dcf-split-buttons-wrap {
+}
+#dcf-split-buttons {
+}
+.dcf-split-buttons {
+}
+.dcf-split-button-header {
+}
+.dcf-split-button-save {
+}
+.dcf-split-button-cancel {
+}
+.dcf-split-checkbox-wrap {
+	float:right;
+}
+.dcf-split-checkbox {
+}
+.dcf-split-checkbox-label {
+	margin-left:3px;
+}
