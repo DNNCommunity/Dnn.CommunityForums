@@ -5,13 +5,13 @@
 <div class="dcf-forums">
 		<div class="dcf-group-title-wrap d-flex align-items-center py-2">
 			<h3 class="dcf-group-title h5 flex-grow-1">[RESX:Group]: [GROUPNAME]</h3>
-			<a class="bs-collapse" data-toggle="collapse" href="#forum-group-1" role="button" data-bs-toggle="collapse">
+			<a class="bs-collapse" data-toggle="collapse" href="#forum-group-[FORUMGROUPID]" role="button" data-bs-toggle="collapse">
 				<i class="fa fa-chevron-circle-down fa-lg"></i>
 			</a>
 		</div>
 		
 			[GROUP]
-			<div id="forum-group-1"  class="dcf-forums-group collapse show">
+			<div id="forum-group-[FORUMGROUPID]"  class="dcf-forums-group collapse show">
 				<table class="dcf-table dcf-table-100 table table-responsive-md">
 					<thead>
 						<tr class="dcf-table-head-row">
