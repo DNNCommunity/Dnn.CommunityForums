@@ -570,9 +570,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         private string GetLastPostSubject(int LastPostID, int ParentPostID, int ForumID, int TabID, string Subject, int Length, int PageSize, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
-            //TODO: Verify that this will still jump to topics on page 2
+            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ParentPostID);
             var sb = new StringBuilder();
-            int PostId = LastPostID;
             Subject = Utilities.StripHTMLTag(Subject);
             Subject = Subject.Replace("[", "&#91");
             Subject = Subject.Replace("]", "&#93");
@@ -580,38 +579,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Subject = Subject.Substring(0, Length) + "...";
             }
-            if (LastPostID != 0)
+            string sURL = new ControlUtils().TopicURL(TabId, ForumModuleId, ParentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti.TopicUrl);
+            if (sURL.Contains("~/"))
             {
-                string sTopicURL;
-                var ctlUtils = new ControlUtils();
-                sTopicURL = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumID, ParentPostID, fi.LastTopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
-
-                string sURL;
-                if (ParentPostID == 0 || LastPostID == ParentPostID)
-                {
-                    sURL = sTopicURL;
-                }
-                else
-                {
-                    if (sTopicURL.EndsWith("/"))
-                    {
-                        sURL = sTopicURL + "?" + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", PostId) : String.Concat("?", ParamKeys.ContentJumpId, "=", PostId));
-                    }
-                    else
-                    {
-                        var @params = new List<string> { ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId };
-
-                        if (SocialGroupId > 0)
-                            @params.Add("GroupId=" + SocialGroupId.ToString());
-
-                        sURL = Utilities.NavigateURL(TabID, "", @params.ToArray());
-                    }
-
-
-
-                }
-                sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
+                sURL = Utilities.NavigateURL(TabId, "", new[] { ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + LastPostID });
             }
+            if (sURL.EndsWith("/") && LastPostID != ParentPostID)
+            {
+                sURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", LastPostID) : String.Concat("?", ParamKeys.ContentJumpId, "=", LastPostID);
+            }
+            sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
             return sb.ToString();
         }
         private string GetSubForums(string Template, int ForumId, int TabId, string ThemePath)
