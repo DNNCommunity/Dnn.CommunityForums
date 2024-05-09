@@ -217,7 +217,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             const int indent = 2;
 
-            var counter = 0;
 
             var sb = new StringBuilder(1024);
 

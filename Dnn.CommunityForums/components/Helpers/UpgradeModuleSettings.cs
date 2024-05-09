@@ -18,6 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
+using System.Reflection;
+using System.Web.UI;
+using System.Xml;
+using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
@@ -118,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
         internal static void DeleteObsoleteModuleSettings_080100()
         {
 
-            /* remove TIMEZONEOFFSET and AMFORUMS */
+            /* remove TIMEZONEOFFSE, AMFORUMS, MAILQUEUE */
 
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
             {
@@ -128,6 +132,51 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                     {
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "TIMEZONEOFFSET");
                         DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "AMFORUMS");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "MAILQUEUE");
+                    }
+                }
+            }
+        }
+        internal static void UpgradeSocialGroupForumConfigModuleSettings_080100()
+        {
+            foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())
+            {
+                foreach (ModuleInfo module in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portal.PortalId))
+                {
+                    if (module.DesktopModule.ModuleName.Trim().ToLowerInvariant() == Globals.ModuleName.ToLowerInvariant())
+                    {
+						/*remove four settings previously stored in both TabModuleSettings *and* ModuleSettings -- just store in ModuleSettings */
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "ForumConfig");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "ForumGroupTemplate");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "MODE");
+                        DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteTabModuleSetting(module.TabModuleID, "AllowIndex");
+                        DataCache.ClearAllCacheForTabId(module.TabID);
+                        DataCache.ClearAllCache(module.ModuleID);
+                        var ForumConfig = module.ModuleSettings.GetString("ForumConfig", string.Empty);
+						if (!string.IsNullOrEmpty(ForumConfig))
+                        {
+                            var xDoc = new XmlDocument();
+                            xDoc.LoadXml(ForumConfig);
+							if (xDoc != null)
+							{
+								string[] secTypes = { "groupadmin", "groupmember", "registereduser", "anon" };
+								foreach (string secType in secTypes)
+								{
+									string xpath = $"//defaultforums/forum/security[@type='{secType}']";
+
+									if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 16)
+									{
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).AddElement("moduser", string.Empty);
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moduser").AddAttribute("value", "false");
+                                    }
+								}
+								ForumConfig = xDoc.OuterXml;
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
+                                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);
+								DataCache.ClearAllCacheForTabId(module.TabID);
+                                DataCache.ClearAllCache(module.ModuleID);
+                            }
+                        }
                     }
                 }
             }

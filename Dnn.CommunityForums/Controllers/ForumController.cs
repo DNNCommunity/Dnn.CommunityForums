@@ -20,7 +20,12 @@
 using System;
 using System.Data;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Xml;
+using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.Data;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -140,6 +145,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forumIds;
         }
+        public static string GetForumsHtmlOption(int moduleId, User currentUser)
+        {
+            var sb = new StringBuilder();
+            int index = 1;
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, currentUser.UserRoles)));
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser,
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
+                    index += 1;
+                },
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">{1}</option>", fi.ForumID.ToString(), "--" + fi.ForumName);
+                    index += 1;
+                },
+                fi =>
+                {
+                    sb.AppendFormat("<option value=\"{0}\">----{1}</option>", fi.ForumID.ToString(), fi.ForumName);
+                    index += 1;
+                }
+                );
+            return sb.ToString();
+        }
         public XmlDocument GetForumListXML(int PortalId, int ModuleId)
         {
             XmlDocument xDoc = new XmlDocument();
@@ -244,7 +273,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 xDoc = (XmlDocument)obj;
             }
-            //Logger.Log(xDoc.OuterXml)
             return xDoc;
         }
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
@@ -445,6 +473,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public static int Forum_GetByTopicId(int TopicId)
         {
             return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>( "activeforums_ForumGetByTopicId", TopicId);
+        }
+        internal static bool RecalculateTopicPointers(int forumId)
+        {
+            try
+            {
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "activeforums_SaveTopicNextPrev", forumId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return false;
+            }
+        }
+        internal static bool UpdateForumLastUpdates(int forumId)
+        {
+            try
+            {
+                DataContext.Instance().Execute(System.Data.CommandType.StoredProcedure, "activeforums_Forums_LastUpdates", forumId);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return false;
+            }
         }
     }
 }

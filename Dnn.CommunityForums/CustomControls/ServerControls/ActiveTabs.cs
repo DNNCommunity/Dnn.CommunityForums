@@ -216,7 +216,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
                 int i = 0;
-                string controlToLoad = "";
                 writer = new HtmlTextWriter(writer, string.Empty);
                 AddAttributesToRender(writer);
                 foreach (Tab tab in Tabs)

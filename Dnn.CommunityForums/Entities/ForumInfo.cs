@@ -48,8 +48,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool Hidden { get; set; }
         public int TotalTopics { get; set; }
         public int TotalReplies { get; set; }
-        [ColumnName("LastPostId")]
-        public int LastPostID { get; set; }
+        [IgnoreColumn]
+        public int LastPostID => LastReplyId == 0 ? LastTopicId : LastReplyId;
         public string ForumSettingsKey { get; set; }
         public DateTime DateCreated { get; set; }
         public DateTime DateUpdated { get; set; }
@@ -335,10 +335,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public int CreatePostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.CreatePostCount]);
 
-        [IgnoreColumn()]
         /// <summary>
         /// Minimum posts required to reply to a topic in this forum if the user is not trusted
         /// </summary>
+        [IgnoreColumn()]
         public int ReplyPostCount => Utilities.SafeConvertInt(ForumSettings[ForumSettingKeys.ReplyPostCount]);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Not Used.")]

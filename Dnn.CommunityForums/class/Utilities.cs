@@ -338,19 +338,15 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         }
         public static string NavigateURL(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
-            var currParams = additionalParameters.ToList();
-            string s = new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
-                return s;
+                return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
 
-            var tc = new TabController();
-            var ti = tc.GetTab(tabId, portalId, false);
-            var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
+            var ti = new TabController().GetTab(tabId, portalId, false);
+            var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
             pageName = CleanStringForUrl(pageName);
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
-            s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
-            return s;
+            return Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
         }
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)
         {
@@ -933,28 +929,48 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             {
                 return dateTime.Add(timeZoneOffset).ToString(format, userCultureInfo);
             }
-            catch (Exception ex)
+            catch
             {
                 return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
         }
-
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
         }
         public static CultureInfo GetCultureInfoForUser(UserInfo userInfo)
         {
+            CultureInfo cultureInfo = null;
             try
             {
-                if (userInfo != null && userInfo.UserID > 0 && userInfo.Profile.PreferredLocale != null)
+                string cacheKey = string.Format(CacheKeys.CultureInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey);
+                if (obj == null)
                 {
-                    return CultureInfo.GetCultureInfo(userInfo.Profile.PreferredLocale);
+                    if (userInfo?.Profile?.PreferredLocale != null)
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(userInfo?.Profile?.PreferredLocale);
+                    }
+                    if (cultureInfo == null && userInfo?.PortalID >= 0)
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(Utilities.GetPortalSettings(userInfo.PortalID)?.CultureCode);
+                    }
+                    if (cultureInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.CultureCode);
+                    }
+                    if (cultureInfo == null)
+                    {
+                        cultureInfo = CultureInfo.CurrentCulture;
+                    }
+                    DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: cultureInfo);
                 }
                 else
                 {
-                    return CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().CultureCode);
+                    cultureInfo = (CultureInfo)obj;
                 }
+                return cultureInfo;
+               
             }
             catch
             {
@@ -969,20 +985,41 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         {
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
 
+            TimeZoneInfo timeZoneInfo = null;
             try
             {
-                if (userInfo != null && userInfo.Profile != null && userInfo.Profile.PreferredTimeZone != null)
+                string cacheKey = string.Format(CacheKeys.TimeZoneInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey);
+                if (obj == null)
                 {
-                    return userInfo.Profile.PreferredTimeZone;
+                    if (userInfo?.Profile?.PreferredTimeZone != null)
+                    {
+                        timeZoneInfo = userInfo?.Profile?.PreferredTimeZone;
+                    }
+                    if (timeZoneInfo == null && userInfo?.PortalID >= 0)
+                    {
+                        timeZoneInfo = Utilities.GetPortalSettings(userInfo.PortalID)?.TimeZone;
+                    }
+                    if (timeZoneInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
+                    {
+                        timeZoneInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.TimeZone;
+                    }
+                    if (timeZoneInfo == null)
+                    {
+                        timeZoneInfo = TimeZoneInfo.Utc;
+                    }
+                    DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: timeZoneInfo);
                 }
                 else
                 {
-                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().TimeZone;
+                    timeZoneInfo = (TimeZoneInfo)obj;
                 }
+                return timeZoneInfo;
+
             }
             catch
             {
-                return TimeZoneInfo.Utc;
+                return timeZoneInfo = TimeZoneInfo.Utc;
             }
         }
         public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
@@ -1091,9 +1128,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
 
-            var i = 0;
-            var intStart = 0;
-            var intEnd = 0;
             const string pattern = @"(\[RESX:.+?\])";
             var regExp = new Regex(pattern);
             var matches = regExp.Matches(controlText);

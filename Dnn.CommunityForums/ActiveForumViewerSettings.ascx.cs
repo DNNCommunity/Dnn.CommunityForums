@@ -97,7 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				objModules.UpdateModuleSetting(ModuleId, ForumViewerSettingsKeys.AFForumGroup, drpForum.SelectedItem.Value);
 				//objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
 				string ForumGroup;
-				int ForumGroupID = 0;
 				ForumGroup = drpForum.SelectedItem.Value;
 				if ((ForumGroup.IndexOf("GROUPID:", 0) + 1) > 0)
 				{

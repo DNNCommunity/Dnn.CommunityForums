@@ -105,7 +105,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TopicsController();
                 var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -163,11 +162,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = reply.Content.AuthorId;
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 rc.Reply_Delete(PortalSettings.PortalId, _forumId, _topicId, _replyId, ms.DeleteBehavior);
-                Utilities.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
             else
             {
-                var tc = new TopicsController();
                 var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (ti == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });

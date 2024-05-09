@@ -17,7 +17,7 @@
 								<div class="dcf-forum-subscribers">
 									<i class="fa fa-envelope fa-fw fa-grey"></i> [FORUMSUBSCRIBERCOUNT] [RESX:FORUMSUBSCRIBERCOUNT]
 								</div>
-								<div class="dcf-forum-subscribe">[FORUMSUBSCRIBE]</div>
+								<div class="dcf-subscribe-forum">[FORUMSUBSCRIBE]</div>
 							</div>
 						</div>
 					</div>

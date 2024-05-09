@@ -17,22 +17,19 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using DotNetNuke.ComponentModel.DataAnnotations;
 using System;
-using DotNetNuke.Framework;
-
-namespace DotNetNuke.Modules.ActiveForums.Controls
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
-    public partial class af_topicscripts : SettingsBase
+    public enum ProcessType
     {
-        protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        ApprovedTopicCreated = 1,
+        UnapprovedTopicCreated = 2,
+        ApprovedReplyCreated = 3,
+        UnapprovedReplyCreated = 4, 
+        UpdateForumLastUpdated = 5, 
+        UpdateForumTopicPointers = 6,
 
-            ServicesFramework.Instance.RequestAjaxScriptSupport();
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AFUserEditor")))
-                Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/usereditor.js"));
-        }
     }
 }

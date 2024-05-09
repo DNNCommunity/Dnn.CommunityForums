@@ -17,28 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System;
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
 	public class ForumSettingsBase : ModuleSettingsBase
 	{
-        /// <summary>
-        /// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="newValue"></param>
-        private void UpdateTabModuleSettingCaseSensitive(string key, string newValue)
-        {
-            var oldValue = Settings.GetString(key);
-            if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
-            {
-                // changed but case-insensitive identical: empty the setting first
-                UpdateTabModuleSettingCaseSensitive(key, "");
-            }
-            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, key, newValue);
-        }
-
         /// <summary>
         /// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
         /// </summary>
@@ -63,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				UpdateTabModuleSettingCaseSensitive(SettingKeys.Mode, value);
+                UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
 			}
 		}
 
@@ -311,17 +296,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 		}
 
-        public bool MailQueue
-        {
-            get
-            {
-                return Settings.GetBoolean(SettingKeys.MailQueue);
-            }
-            set
-            {
-                UpdateModuleSettingCaseSensitive(SettingKeys.MailQueue, value.ToString());
-            }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public bool MailQueue => true;
         public bool CacheTemplates
         {
             get
@@ -415,8 +391,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				//Use Tab Module Setting
-				UpdateTabModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
+                UpdateModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
 			}
 		}
 
@@ -428,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums
 			}
 			set
 			{
-				UpdateTabModuleSettingCaseSensitive("ForumConfig", value);
+                UpdateModuleSettingCaseSensitive("ForumConfig", value);
 			}
 		}
 

@@ -308,3 +308,66 @@ function amaf_saveTopicComplete(result) {
     window.location.href = window.location.href;
 
 };
+function amaf_splitRestore() {
+    var split_topicid = amaf_getParam('splitId');
+    if (typeof (split_topicid) != 'undefined') {
+        if (split_topicid == current_topicid) {
+            var sv = amaf_getParam('splitValue');
+            if (sv != '') splitposts = sv.split('|');
+            amaf_splitButtons(true);
+            return;
+        }
+    }
+    amaf_splitButtons(false);
+}
+
+function amaf_splitCheck(el) {
+    if (el.checked) {
+        if (splitposts.indexOf(el.value) < 0) splitposts.push(el.value);
+        var saved_split = splitposts.join('|');
+        amaf_setParam('splitValue', saved_split, 0);
+    }
+    else {
+        var index = splitposts.indexOf(el.value);
+        splitposts.splice(index, 1);
+        var saved_split = splitposts.join('|');
+        amaf_setParam('splitValue', saved_split, 0);
+    }
+};
+function amaf_splitCreate(el, tid) {
+    amaf_setParam('splitId', tid, 0);
+    amaf_setParam('splitValue', '', 0);
+    splitposts = new Array();
+    amaf_splitButtons(true);
+};
+
+function amaf_splitButtons(opt) {
+    var btn1 = document.getElementById('dcf-split-buttons-create');
+    var btn2 = document.getElementById('dcf-split-buttons');
+    if (typeof (btn1) == 'undefined' || typeof (btn2) == 'undefined') return;
+    if (opt) {
+        btn1.style.display = 'none';
+        btn2.style.display = 'block';
+        var objs = am.Utils.GetElementsByClassName('dcf-split-checkbox', 'afgrid');
+        for (var i = 0; i < objs.length; i++) {
+            objs[i].style.display = 'block';
+            if (splitposts.indexOf(objs[i].firstChild.value) > -1) objs[i].firstChild.checked = true;
+        };
+    }
+    else {
+        btn1.style.display = 'block';
+        btn2.style.display = 'none';
+        var objs = am.Utils.GetElementsByClassName('dcf-split-checkbox', 'afgrid');
+        for (var i = 0; i < objs.length; i++) {
+            objs[i].style.display = 'none';
+            objs[i].firstChild.checked = false;
+        };
+    }
+};
+
+function amaf_splitCancel() {
+    amaf_setParam('splitId', '', 0);
+    amaf_setParam('splitValue', '', 0);
+    splitposts = new Array();
+    amaf_splitButtons(false);
+};

@@ -84,10 +84,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return template;
         }
 
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         /// <summary>
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
         {
             var newDate = displayDate.AddMinutes( timeZoneOffset);

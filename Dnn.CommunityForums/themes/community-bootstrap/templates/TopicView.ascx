@@ -7,7 +7,7 @@
 				<div class="w-50">
 				<span class="fa-prev">[PREVTOPIC]</span>
 				</div>
-				<div class="w-50 text-right">
+				<div class="w-50 text-right text-end">
 				<span class="fa-next">[NEXTTOPIC]</span>
 				</div>
 			</div>
@@ -22,7 +22,8 @@
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
 						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
-						<div class="dcf-subscribe">[TOPICSUBSCRIBE]</div>
+						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
+                        <div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
 						<div class="dcf-button-reply">[ADDREPLY]</div>
 						
 					</div>
@@ -115,7 +116,7 @@
 							<header class="dcf-topic-content-top ">
 								<div class="d-flex flex-wrap pb-2">
 									<div class="dcf-postdate">[POSTDATE] </div>
-									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]</div>
+									<div class="dcf-toolbar dcf-topic-actions flex-grow-1 text-right text-end">[AF:CONTROL:TOPICACTIONS]<span class="dcf-split-checkbox-wrap">[SPLITCHECKBOX]</span></div>
 								</div>
 							</header>
 							<section class="dcf-topic-content-main py-4">

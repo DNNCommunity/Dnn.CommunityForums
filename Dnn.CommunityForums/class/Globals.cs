@@ -193,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
 		public const string Theme = "THEME";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string MailQueue = "MAILQUEUE";
         public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
@@ -438,8 +439,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
-        public const string Roles = "AF-roles-{0}"; 
-        public const string UserRoles  = "AF-userroles-{0}";
+        public const string Roles = "AF-roles-{0}";
+        public const string UserRoles = "AF-userroles-{0}";
+        public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
+        public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
 
         //public const string ForumView = "AF-{0}-FV-{1}";
         //public const string AllSettings = "AF-afset{0}";

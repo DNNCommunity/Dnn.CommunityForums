@@ -414,7 +414,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
                 Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
-                Utilities.SafeConvertBool(_currentRow["IsRead"]), 
                 ThemePath, 
                 Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
                 Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));

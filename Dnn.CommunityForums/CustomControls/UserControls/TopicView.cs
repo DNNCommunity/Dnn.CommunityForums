@@ -915,7 +915,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                //TODO: Check for owner
                 if (CanReply)
                 {
                     var @params = new List<string> {
@@ -936,21 +935,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sbOutput.Replace("[QUICKREPLY]", string.Empty);
                 }
 
-                //TODO: Check for owner
             }
-
-            if (_bModSplit && (_replyCount > 0))
+            if ((sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0)))
             {
-                /*var @params = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.TopicId + "=" + TopicId, ParamKeys.ForumId + "=" + ForumId };*/
-                sbOutput.Replace("[SPLITBUTTONS]", "<div id=\"splitbuttons\"><div><a href=\"javascript:void(0);\" onclick=\"amaf_splitCreate(this," + TopicId + ");\" title=\"[RESX:SplitCreate]\" class=\"dnnPrimaryAction\">[RESX:SplitCreate]</a></div><div><span class=\"NormalBold\">[RESX:SplitHeader]</span> <a href=\"javascript:void(0);\" title=\"[RESX:SplitSave]\" class=\"dnnPrimaryAction af-button-split\" data-id='" + TopicId + "'>[RESX:SplitSave]</a>  <a href=\"javascript:void(0);\" onclick=\"amaf_splitCancel();\" title=\"[RESX:SplitCancel]\" class=\"dnnPrimaryAction\">[RESX:SplitCancel]</a></div></div><script type=\"text/javascript\">var splitposts=new Array();var current_topicid = " + TopicId + ";</script>");
-
-                //sbOutput.Replace("[QUICKREPLY]", "<asp:placeholder id=\"plhQuickReply\" runat=\"server\" />");
+                sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(ForumModuleId, "TopicSplitButtons"));
+                sbOutput.Replace("[TOPICID]", TopicId.ToString());
             }
             else
             {
-                //sbOutput.Replace("[SPLIT]", "<span class=\"afnormal\">[RESX:NotAuthorizedSplit]</span>");
                 sbOutput.Replace("[SPLITBUTTONS]", string.Empty);
             }
+            // no longer using this
+            sbOutput.Replace("[SPLITBUTTONS2]", string.Empty);
 
             // Parent Forum Link
             if (sOutput.Contains("[PARENTFORUMLINK]"))
@@ -958,7 +954,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ForumInfo.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
-                        sbOutput.Replace("oldValue: [PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace(oldValue: "[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                     else
                         sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
@@ -979,11 +975,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sbOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");
             sbOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + groupUrl + "\">" + _groupName + "</a>");
-            if (MainSettings.UseShortUrls)
-                sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-            else
-                sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-
+            sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
+            
             // Names and Ids
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[FORUMNAME]", _forumName);
@@ -1040,16 +1033,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(ForumModuleId, _topicAuthorId, _topicAuthorDisplayName, string.Empty, string.Empty, _topicAuthorDisplayName));
             sbOutput.Replace("[AF:LABEL:TopicDateCreated]", _topicDateCreated);
 
-            if (_bModSplit && (_replyCount > 0))
-            {
-                /*var @params = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.TopicId + "=" + TopicId, ParamKeys.ForumId + "=" + ForumId };*/
-
-                sbOutput.Replace("[SPLITBUTTONS2]", "<script type=\"text/javascript\">amaf_splitRestore();</script>");
-            }
-            else
-            {
-                sbOutput.Replace("[SPLITBUTTONS2]", string.Empty);
-            }
 
             // Pagers
             if (_pageSize == int.MaxValue)
@@ -1314,7 +1297,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModSplit)
             {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"split-checkbox\" style=\"display:none;\"><input type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /></div>");
+                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + replyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /><label for=\"dcf-split-checkbox-" + replyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
             }
             else
             {

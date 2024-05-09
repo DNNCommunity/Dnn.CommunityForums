@@ -17,22 +17,28 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Modules.ActiveForums;
+using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using System;
-using DotNetNuke.Framework;
-
-namespace DotNetNuke.Modules.ActiveForums.Controls
+using System.Web.Caching;
+namespace DotNetNuke.Modules.ActiveForums.Entities
 {
-    public partial class af_topicscripts : SettingsBase
+    [TableName("activeforums_ProcessQueue")]
+    [PrimaryKey("Id", AutoIncrement = true)] 
+    public class ProcessQueueInfo
     {
-        protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
-
-            ServicesFramework.Instance.RequestAjaxScriptSupport();
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AFUserEditor")))
-                Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/usereditor.js"));
-        }
+        public long Id { get; set; }
+        public int PortalId { get; set; }
+        public int ModuleId { get; set; }
+        public ProcessType ProcessType { get; set; }
+        public int ForumGroupId { get; set; }
+        public int ForumId { get; set; }
+        public int TopicId { get; set; }
+        public int TabId { get; set; }
+        public int ReplyId { get; set; }
+        public int AuthorId { get; set; }
+        public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        public string RequestUrl { get; set; }
     }
 }
