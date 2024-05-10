@@ -20,6 +20,8 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
@@ -197,6 +199,45 @@ namespace DotNetNuke.Modules.ActiveForums
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
+        [HttpPost]
+        [DnnAuthorize]
+        public HttpResponseMessage BanUser(ModerationDTO dto)
+        {
+            var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
+            ParseNotificationContext(notify.Context);
+
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
+            if (fi == null)
+                return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
+
+            if (!(IsMod(_forumId)))
+                return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
+
+
+            int authorId;
+            if (_replyId > 0 & _replyId != _topicId)
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(_replyId);
+
+                if (reply == null)
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
+
+                authorId = reply.Content.AuthorId;
+            }
+            else
+            {
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
+                if (ti == null)
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
+
+                authorId = ti.Content.AuthorId;
+            }
+            string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(_moduleId, _tabId, true).ModuleTitle;
+            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: ActiveModule.PortalID, ModuleId: _moduleId, ModuleTitle: moduleTitle, TabId: _tabId, ForumId: _forumId, TopicId: _topicId, ReplyId: _replyId, BannedBy: UserInfo, AuthorId: authorId);
+
+            NotificationsController.Instance.DeleteNotification(dto.NotificationId);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+        }
 
         [DnnAuthorize]
         public HttpResponseMessage IgnorePost(ModerationDTO dto)
@@ -219,7 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool IsMod(int forumId)
         {
-            var mods = Utilities.GetListOfModerators(ActiveModule.PortalID, ActiveModule.ModuleID, forumId);
+            var mods = Utilities.GetListOfModerators(ActiveModule.PortalID, _moduleId, forumId);
 
             return mods.Any(i => i.UserID == UserInfo.UserID);
         }

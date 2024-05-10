@@ -18,7 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Net;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -29,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool bModEdit = false;
         private bool bModApprove = false;
         private bool bModMove = false;
+        private bool bModBan = false;
         private bool bCanMod = false;
 
         #endregion
@@ -260,27 +264,42 @@ namespace DotNetNuke.Modules.ActiveForums
                     sb.Append("<div class=\"afmodrow\">");
                     sb.Append("<table width=\"99%\">");
                     sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
-                    sb.Append("<td align=\"right\">");
+                    sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
                     if (bModApprove)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Approve]</span>");
+                        sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                     }
                     //If bModApprove And bModMove And CInt(dr("ReplyId")) = 0 Then
                     //    sb.Append("<span class=""afminibtn"" onmouseover=""this.className='afminibtn_over';"" onmouseout=""this.className='afminibtn';"">[RESX:MoveApprove]</span>")
                     //End If
                     if (bModApprove || bModEdit)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Reject]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                     }
                     if (bModDelete)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Delete]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                     }
                     if (bModEdit)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Edit]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
                     }
-
+                    if (bModBan)
+                    {
+                        int authorId;
+                        if (Convert.ToInt32(dr["ReplyId"]) > 0 & Convert.ToInt32(dr["ReplyId"]) != Convert.ToInt32(dr["TopicId"]))
+                        {
+                            var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(Convert.ToInt32(dr["ReplyId"]));
+                            authorId = ri.Content.AuthorId;
+                        }
+                        else
+                        {
+                            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(Convert.ToInt32(dr["TopicId"]));
+                            authorId = ti.Content.AuthorId;
+                        }
+                        var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + dr["ReplyId"].ToString(), ParamKeys.AuthorId + "=" + authorId };
+                        sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\">[RESX:Ban]</a>");
+                    }
 
                     sb.Append("</td></tr>");
                     sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + dr["AuthorName"].ToString() + "</td>");
@@ -312,6 +331,7 @@ namespace DotNetNuke.Modules.ActiveForums
             bModApprove = false;
             bModEdit = false;
             bModMove = false;
+            bModBan = false;
             bCanMod = false;
             if (f != null)
             {
@@ -319,6 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles);
                 bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModMove, ForumUser.UserRoles);
                 bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles);
+                bModBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModUser, ForumUser.UserRoles);
                 if (bModDelete || bModApprove || bModMove || bModEdit)
                 {
                     bCanMod = true;
