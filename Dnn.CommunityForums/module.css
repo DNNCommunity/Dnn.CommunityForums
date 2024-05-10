@@ -1423,9 +1423,6 @@ div.dcf-mod-edit-wrap {
 }
 
 
-/* /Post preview Div, shown by adding element Styling using JS */
-
-
 /* subscription pager */
 
 .dcf-pager * {
@@ -1442,7 +1439,6 @@ div.dcf-mod-edit-wrap {
 	background-color: #cdcdcd;
 }
 
-/* /subscription pager */
 
 /* placeholders for topic splitter */
 
@@ -1467,42 +1463,3 @@ div.dcf-mod-edit-wrap {
 	margin-left:3px;
 }
 
-/* /placeholders for topic splitter */
-
-
-/* moderator */
-
-
-.afmodrow {
-	border-bottom: solid 1px #666;
-	border-left: solid 1px #666;
-	border-right: solid 1px #666;
-}
-
-.afminibtn, .afminibtn_over {
-	font-size: 11px;
-	font-family: Tahoma;
-	color: #666;
-	height: 20px;
-	border: solid 1px #666;
-	background-image: url(images/ambuttonback.gif);
-	padding: 2px 2px 4px 2px !important;
-	padding: 0px 2px 0px 2px;
-	margin: 5px 0px 0px 5px;
-	cursor: pointer;
-	position: static;
-	text-decoration: none;
-	display: inline;
-}
-
-.afminibutton, .afminibutton a, .afminibutton a:link, .afminibutton a:active, .afminibutton a:visited {
-	font-size: 10px;
-	color: #000080;
-	text-decoration: none;
-}
-
-.afminibtn a:link, .afminibtn a:visited, .afminibtn a:active, .afminibtn a:hover, .afminibtn_over a:link, .afminibtn_over a:visited, .afminibtn_over a:active, .afminibtn_over a:hover {
-	text-decoration: none;
-}
-
-/* /moderator */
