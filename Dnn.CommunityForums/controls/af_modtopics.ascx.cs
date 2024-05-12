@@ -260,25 +260,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     sb.Append("<div class=\"afmodrow\">");
                     sb.Append("<table width=\"99%\">");
                     sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
-                    sb.Append("<td align=\"right\">");
+                    sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
                     if (bModApprove)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Approve]</span>");
+                        sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                     }
-                    //If bModApprove And bModMove And CInt(dr("ReplyId")) = 0 Then
-                    //    sb.Append("<span class=""afminibtn"" onmouseover=""this.className='afminibtn_over';"" onmouseout=""this.className='afminibtn';"">[RESX:MoveApprove]</span>")
-                    //End If
                     if (bModApprove || bModEdit)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Reject]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                     }
                     if (bModDelete)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Delete]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                     }
                     if (bModEdit)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Edit]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
                     }
 
 
