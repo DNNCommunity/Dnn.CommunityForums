@@ -38,6 +38,8 @@ using DotNetNuke.Instrumentation;
 using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Authentication;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -48,10 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Members
 
-        private string _metaTemplate = "[META][TITLE][TOPICSUBJECT] - [PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
-        private string _metaTitle = string.Empty;
-        private string _metaDescription = string.Empty;
-        private string _metaKeywords = string.Empty;
         private string _forumName;
         private string _groupName;
         private int _topicTemplateId;
@@ -110,7 +108,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _editInterval;
         private string _tags = string.Empty;
         private string _topicURL = string.Empty;
-        private string _template = string.Empty;
         private string _topicData = string.Empty;
         private bool _useListActions;
 
@@ -118,64 +115,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Public Properties
 
-        public string TopicTemplate
-        {
-            get
-            {
-                return _template;
-            }
-            set
-            {
-                _template = value;
-            }
-        }
+        public string TopicTemplate { get; set; } = string.Empty;
 
         public int OptPageSize { get; set; }
         public string OptDefaultSort { get; set; }
-        public string MetaTemplate
-        {
-            get
-            {
-                return _metaTemplate;
-            }
-            set
-            {
-                _metaTemplate = value;
-            }
-        }
-        public string MetaTitle
-        {
-            get
-            {
-                return _metaTitle;
-            }
-            set
-            {
-                _metaTitle = value;
-            }
-        }
-        public string MetaDescription
-        {
-            get
-            {
-                return _metaDescription;
-            }
-            set
-            {
-                _metaDescription = value;
-            }
-        }
-        public string MetaKeywords
-        {
-            get
-            {
-                return _metaKeywords;
-            }
-            set
-            {
-                _metaKeywords = value;
-            }
-        }
+        public string MetaTemplate { get; set; } = "[META][TITLE][TOPICSUBJECT] - [PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
+        public string MetaTitle { get; set; } = string.Empty;
+        public string MetaDescription { get; set; } = string.Empty;
+        public string MetaKeywords { get; set; } = string.Empty;
         #endregion
 
         #region Event Handlers
@@ -931,7 +878,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    sbOutput.Replace("[ADDREPLY]", "<span class=\"afnormal\">[RESX:NotAuthorizedReply]</span>");
+                    if (!Request.IsAuthenticated)
+                    { 
+                        DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                        string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
+
+                        string onclick = string.Empty;
+                        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
+                        {
+                            onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
+                        }
+                        sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl, onclick)}</span>");
+                    }
+                    else
+                    {
+                        sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-auth-false\">[RESX:NotAuthorizedReply]</span>");
+                    }
                     sbOutput.Replace("[QUICKREPLY]", string.Empty);
                 }
 
