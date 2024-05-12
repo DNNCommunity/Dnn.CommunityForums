@@ -265,6 +265,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                                         //any replacements on the group
                                         string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
+                                        sNewGroup = sNewGroup.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
+                                        sNewGroup = sNewGroup.Replace("[GROUPNAME]", fi.GroupName);
                                         sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
                                         sGroupSection += sGroupSectionTemp;
                                         tmpGroup = fi.GroupName;
