@@ -1439,6 +1439,46 @@ div.dcf-mod-edit-wrap {
 	background-color: #cdcdcd;
 }
 
+/* toolbar drop down */
+
+.dcf-toolbar-drop-down-menu {
+	position: relative;
+	display: inline-block;
+}
+
+.dcf-toolbar-drop-down-menu-button {
+	border: none;
+	cursor: pointer;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dcf-toolbar-drop-down-menu-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	width: 180px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+}
+
+	/* Links inside the dropdown */
+	.dcf-toolbar-drop-down-menu-content a {
+		padding: 2px 2px;
+		text-decoration: none;
+		display: block;
+	}
+
+		.dcf-toolbar-drop-down-menu-content a:hover {
+			background-color: #f1f1f1
+		}
+
+.dcf-toolbar-drop-down-menu:hover .dcf-toolbar-drop-down-menu-button {
+	background-color: #7da8cc;
+}
+
+.dcf-toolbar-drop-down-menu:hover .dcf-toolbar-drop-down-menu-content {
+	display: block;
+}
 
 /* placeholders for topic splitter */
 

@@ -248,6 +248,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet UI_ActiveView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
         public abstract DataSet UI_MostLiked(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
         public abstract DataSet UI_MostReplies(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
+        public abstract DataSet UI_Announcements(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper);
+        public abstract DataSet UI_Unresolved(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper);
         #endregion
 
         #region Utility Items

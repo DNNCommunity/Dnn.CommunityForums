@@ -384,6 +384,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string MySubscriptions = "afsubscriptions";
         public const string MostLiked = "mostlikes";
         public const string MostReplies = "mostreplies";
+        public const string Unresolved = "unresolved";
+        public const string Announcements = "announcements";
+        public const string Tags = "tags";
     }
     public class PostActions
     {

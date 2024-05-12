@@ -131,6 +131,23 @@ namespace DotNetNuke.Modules.ActiveForums
                             Response.Redirect(Utilities.NavigateURL(TabId), true);
                         break;
 
+                    case GridTypes.Announcements:
+
+                        lblHeader.Text = GetSharedResource("[RESX:Announcements]");
+                        _dtResults = db.UI_Announcements(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                        if (_dtResults.Rows.Count > 0)
+                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+
+                        break;
+
+                    case GridTypes.Unresolved:
+
+                        lblHeader.Text = GetSharedResource("[RESX:Unresolved]");
+                        _dtResults = db.UI_Unresolved(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
+                        if (_dtResults.Rows.Count > 0)
+                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+
+                        break;
                     case GridTypes.Unanswered:
 
                         lblHeader.Text = GetSharedResource("[RESX:Unanswered]");
@@ -139,8 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
 
                         break;
-
-                    case "tags":
+                    case GridTypes.Tags:
 
                         var tagId = -1;
                         if (Request.QueryString[ParamKeys.Tags] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Tags]))
