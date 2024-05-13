@@ -165,33 +165,37 @@ namespace DotNetNuke.Modules.ActiveForums
             return sURL + "/";
         }
 
-        public string TopicURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)
+        internal string TopicURL(int tabId, int moduleId, int topicId, string forumGroupPrefixUrl, string forumPrefixUrl, string topicUrl, int pageId = 1)
         {
             var mainSettings = SettingsBase.GetModuleSettings(moduleId);
 
             var sURL = string.Empty;
 
-            if (!(string.IsNullOrEmpty(row["PrefixURL"].ToString())) && !(string.IsNullOrEmpty(row["URL"].ToString())) && mainSettings.URLRewriteEnabled)
+            if (!(string.IsNullOrEmpty(forumPrefixUrl)) && !(string.IsNullOrEmpty(topicUrl)) && mainSettings.URLRewriteEnabled)
             {
                 if (!(string.IsNullOrWhiteSpace(mainSettings.PrefixURLBase)))
                     sURL += "/" + mainSettings.PrefixURLBase;
 
-                if (!(string.IsNullOrWhiteSpace(row["GroupPrefixURL"].ToString())))
-                    sURL += "/" + row["GroupPrefixURL"];
+                if (!(string.IsNullOrWhiteSpace(forumGroupPrefixUrl)))
+                    sURL += "/" + forumGroupPrefixUrl;
 
-                sURL += "/" + row["PrefixURL"] + "/" + row["URL"] + "/";
+                sURL += "/" + forumPrefixUrl + "/" + topicUrl + "/";
                 if (pageId > 1)
                     sURL += "/" + pageId.ToString() + "/";
             }
             else
             {
                 if (pageId == 1)
-                    sURL = Utilities.NavigateURL(tabId, "", ParamKeys.TopicId + "=" + row["TopicId"]);
+                    sURL = Utilities.NavigateURL(tabId, "", ParamKeys.TopicId + "=" + topicId);
 
                 else
-                    sURL = Utilities.NavigateURL(tabId, "", new[] { ParamKeys.TopicId + "=" + row["TopicId"], ParamKeys.PageId + "=" + pageId });
+                    sURL = Utilities.NavigateURL(tabId, "", new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageId });
             }
             return sURL;
+        }
+        public string TopicURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)
+        {
+            return TopicURL(tabId, moduleId, Convert.ToInt32(row["TopicId"].ToString()), row["GroupPrefixURL"].ToString(), row["PrefixURL"].ToString(), row["URL"].ToString(), pageId);
         }
 
         public string ForumURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)

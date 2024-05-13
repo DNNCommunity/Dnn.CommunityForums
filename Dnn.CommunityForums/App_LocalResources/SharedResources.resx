@@ -171,6 +171,9 @@
   <data name="[RESX:NotAuthorized].Text" xml:space="preserve">
     <value>You must be logged in to post a reply.</value>
   </data>
+  <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to post a reply.</value>
+  </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>
   </data>
@@ -1716,5 +1719,11 @@ From,
   </data>
   <data name="ThreadsTracked.Text" xml:space="preserve">
     <value>Threads you are tracking:</value>
+  </data>
+  <data name="[RESX:Unresolved].Text" xml:space="preserve">
+    <value>Unresolved</value>
+  </data>
+  <data name="[RESX:Filters].Text" xml:space="preserve">
+    <value>Filters</value>
   </data>
 </root>

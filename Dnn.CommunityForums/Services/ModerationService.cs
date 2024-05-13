@@ -21,7 +21,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
@@ -43,13 +42,14 @@ namespace DotNetNuke.Modules.ActiveForums
         // In both cases, it must return an 200 "OK" response.
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage ApprovePost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
 
             ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -77,13 +77,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage RejectPost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
 
             ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -139,12 +140,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage DeletePost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -240,12 +242,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage IgnorePost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, ActiveModule.ModuleID);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
