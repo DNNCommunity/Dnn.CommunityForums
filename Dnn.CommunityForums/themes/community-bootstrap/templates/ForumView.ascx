@@ -36,13 +36,11 @@
 					<tbody>
 					<tr class="dcf-table-body-row">
 						
-						<td class="dcf-col dcf-col-text border-0">
-						<div class="d-flex">
+						<td class="dcf-col dcf-col-text d-flex border-0">
 							[FORUMICONCSS]
-							<div class="dcf-forum-title-text">
-								<h4 class="dcf-forum-title h5 mt-0 mb-2">[FORUMNAME]</h4>
-								<div class="dcf-forum-description">[FORUMDESCRIPTION]</div>
-							</div>
+						<div class="dcf-forum-title-text">
+							<h4 class="dcf-forum-title h5 mt-0 mb-2">[FORUMNAME]</h4>
+							<div class="dcf-forum-description">[FORUMDESCRIPTION]</div>
 						</div>
 							
 						</td>
