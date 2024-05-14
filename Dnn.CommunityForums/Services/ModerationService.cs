@@ -263,9 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool IsMod(int forumId)
         {
-            var mods = Utilities.GetListOfModerators(ActiveModule.PortalID, _moduleId, forumId);
-
-            return mods.Any(i => i.UserID == UserInfo.UserID);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(ActiveModule.PortalID, _moduleId, forumId).Any(i => i.UserID == UserInfo.UserID);
         }
 
         private void ParseNotificationContext(string context)
