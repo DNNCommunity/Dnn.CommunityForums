@@ -71,6 +71,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     body = body.Replace("[Post]", topic.Content.Body);
                     authorId = topic.Content.AuthorId;
                 }
+                else
+                {
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+                    subject = Utilities.GetSharedResource("NotificationSubjectReply");
+                    subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
+                    subject = subject.Replace("[TopicSubject]", reply.Topic.Content.Subject);
+                    body = Utilities.GetSharedResource("NotificationBodyReply");
+                    body = body.Replace("[DisplayName]", reply.Content.AuthorName);
+                    body = body.Replace("[TopicSubject]", reply.Content.Subject);
+                    authorId = reply.Content.AuthorId;
+                }
                 string modLink = Utilities.NavigateURL(TabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={ForumId}" });
                 body = body.Replace("[MODLINK]", modLink);
 
@@ -112,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         mods.Add(ui);
                     }
                 }
-            }
+    }
             return mods;
         }
         internal static List<DotNetNuke.Security.Roles.RoleInfo> GetModeratorRoles(int portalId, int moduleId, int forumId)

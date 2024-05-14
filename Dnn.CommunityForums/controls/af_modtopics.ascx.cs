@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Members
         private bool bModDelete = false;
         private bool bModEdit = false;
+        private bool bModBan = false;
         private bool bModApprove = false;
         private bool bModMove = false;
         private bool bModBan = false;
