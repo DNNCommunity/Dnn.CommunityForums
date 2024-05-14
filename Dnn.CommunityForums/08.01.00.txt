@@ -1,0 +1,6 @@
+﻿DesktopModules/ActiveForums/Documentation/images/af6_icon.jpg
+DesktopModules/ActiveForums/Documentation/images/
+DesktopModules/ActiveForums/Documentation/License.txt
+DesktopModules/ActiveForums/Documentation/old_ReleaseNotes.txt
+DesktopModules/ActiveForums/Documentation/ReleaseNotes.txt
+DesktopModules/ActiveForums/Documentation/

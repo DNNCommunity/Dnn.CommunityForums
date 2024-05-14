@@ -22,7 +22,15 @@
             } 
          }
     }
-    
+
+    .dcf-post-likes{
+        .fa{
+            font-size: 1.5rem;
+        }
+        
+    }
+
+   
     .dcf-topic-content{
         width: 100%;
 
@@ -59,6 +67,22 @@
         max-width: 50px;
         @media screen and (min-width: $break-tablet) {
             max-width: 80%
+        }
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+
+
+    .dcf-quick-reply {
+        .dcf-subscribe{
+            .amaf-chk-subs{
+                margin-right: $spacer-xs;
+            }
         }
     }
  }

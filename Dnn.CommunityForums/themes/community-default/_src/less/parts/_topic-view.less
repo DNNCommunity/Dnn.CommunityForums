@@ -1,77 +1,85 @@
+.dcf-topic-view {
 
-
-.dcf-topic-view{
-
-    .dcf-title-1{
+    .dcf-title-1 {
         #title-1;
-        display:flex;
-        align-items:center;
-        .fa{
+        display: flex;
+        align-items: center;
+
+        .fa {
             margin-right: @dist-sm;
         }
     }
 
 
-	/* Forums previous and next Topic */
-	.dcf-prev-next {
+    /* Forums previous and next Topic */
+    .dcf-prev-next {
 
         @prev-next-bg: #eee;
         @prev-next-bg-hover: #ddd;
         @prev-next-color: @link-dim-col;
 
-		
-		margin-top: @dist-sm;
-		padding-bottom: @dist-sm;
-		#sep-border-bottom;
+
+        margin-top: @dist-sm;
+        padding-bottom: @dist-sm;
+        #sep-border-bottom;
         border-style: dashed;
 
-		a {
+        a {
 
-			color: @link-dim-col;
+            color: @link-dim-col;
 
-			.fa{
+            .fa {
                 margin: 0 0.5em;
             }
 
 
 
-		}
+        }
 
-	}
-    
-    
-    
+    }
+
+
+
     // Header content
 
-    .dcf-header-content{
+    .dcf-header-content {
 
-        padding-top:@dist-md;
+        padding-top: @dist-md;
 
-        .dcf-topic-controls{
+        .dcf-topic-buttons {
+
+            padding-top: @dist-md;
+
+
+        }
+
+        .dcf-topic-controls {
 
             margin-top: @dist-sm;
-            
-            @media screen and (min-width: @break-tablet){
-                text-align:right;
+
+            @media screen and (min-width: @break-tablet) {
+                text-align: right;
             }
 
-            .dcf-sort{
-                display:inline-block;
+            .dcf-sort {
+                display: inline-block;
                 padding-bottom: @dist-sm;
-                select{
+
+                select {
                     margin-left: 0.5em;
                 }
             }
 
-            .dcf-subscribe-topic{
+            .dcf-subscribe-topic {
                 padding-bottom: @dist-md;
-                label{
-                    margin-bottom:0;
+
+                label {
+                    margin-bottom: 0;
                 }
             }
         }
 
-        
+
 
 
 
@@ -79,28 +87,30 @@
 
     }
 
-    .dcf-pager{
+    .dcf-pager {
         padding: 0.3em 0;
         flex-grow: 1;
-        display:flex;
+        display: flex;
         justify-content: flex-end;
-        
+
     }
 
-    .dcf-tools{
-        display:flex;
-        flex-wrap:wrap;
+    .dcf-tools {
+        display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        .dnnPrimaryAction{
-            margin-bottom:0;
+
+        .dnnPrimaryAction {
+            margin-bottom: 0;
         }
 
-        &-top{
+        &-top {
             padding-top: @dist-sm;
         }
-        &-bottom{
+
+        &-bottom {
             padding-bottom: @dist-sm;
-         }
+        }
     }
 
     // Posts
@@ -110,60 +120,61 @@
 
     @post-signature-bg: #fff;
 
-    .dcf-topic-headings{
+    .dcf-topic-headings {
         padding: @dist-sm;
         #sep-border-bottom;
         font-size: @title-3-size;
 
-        display:none;
-        
-        @media screen and (min-width: @break-tablet){
+        display: none;
+
+        @media screen and (min-width: @break-tablet) {
             display: flex;
 
         }
     }
 
 
-    .dcf-topic-post{
+    .dcf-topic-post {
 
         margin: @dist-lg 0 @dist-xl;
 
-        .dcf-topic-info{ 
+        .dcf-topic-info {
 
 
             // Toipic Info
             background: @post-info-bg;
             min-height: 100%;
-           
+
             #block-responsive-pad-md;
 
             // Post info block
 
-            .dcf-avatar{
+            .dcf-avatar {
 
                 #block-responsive-pad-md;
             }
 
             // Making the avatar rectangular and cover with the image
-            .dcf-avatar-img-wrap{
+            .dcf-avatar-img-wrap {
 
-                
-                
+
+
                 //padding-top: 100%;  > See below for responsive values
-                position:relative;
+                position: relative;
 
-                .dcf-avatar-img{
-                    position:absolute;
+                .dcf-avatar-img {
+                    position: absolute;
                     width: 100%;
                     height: 100%;
-                    top:0;
-                    left:0;
-                    
+                    top: 0;
+                    left: 0;
+
                     border-radius: 50%;
-                    overflow :hidden;
+                    overflow: hidden;
                 }
-                img{
-                    
+
+                img {
+
                     width: 100%;
                     height: 100% !important;
                     object-fit: cover;
@@ -173,112 +184,120 @@
 
             // Mobile vs Desktop
             .dcf-post-user-rank,
-            .dcf-post-user-data{
+            .dcf-post-user-data {
                 display: none;
-                @media screen and (min-width: @break-desktop){
+
+                @media screen and (min-width: @break-desktop) {
                     display: block;
                 }
             }
 
 
-            .dcf-post-user{
-                display:flex;
+            .dcf-post-user {
+                display: flex;
                 align-items: center;
 
-                @media screen and (min-width: @break-desktop){
+                @media screen and (min-width: @break-desktop) {
                     display: block;
                 }
 
-                .dcf-user{
+                .dcf-user {
                     order: 1;
                 }
-                .dcf-avatar-img-wrap{
+
+                .dcf-avatar-img-wrap {
                     width: 50px;
                     padding-top: 50px;
-                    margin:  0 @dist-sm 0 0 ;
+                    margin: 0 @dist-sm 0 0;
 
-                    @media screen and (min-width: @break-desktop){
+                    @media screen and (min-width: @break-desktop) {
                         width: 100%;
                         padding-top: 100%;
                         margin: @dist-md 0;
                     }
-                    
-                }
-             }
 
-           
+                }
+            }
+
+
         }
 
 
 
 
 
-        .dcf-topic-content{
+        .dcf-topic-content {
             background: @post-content-bg;
             min-height: 100%;
-            
+
             // Used so we can push the like div to the bottom
-            display:flex;
+            display: flex;
             flex-direction: column;
 
 
         }
 
-        .dcf-toolbar{ // Loaded from gerenal central definition
-            li{
+        .dcf-toolbar {
+
+            // Loaded from gerenal central definition
+            li {
                 cursor: pointer;
             }
         }
 
-        .dcf-topic-content-top{
-            .dcf-postdate, .dcf-topic-actions{
+        .dcf-topic-content-top {
+
+            .dcf-postdate,
+            .dcf-topic-actions {
                 #block-responsive-pad-md;
             }
         }
 
-        .dcf-topic-content-main{
+        .dcf-topic-content-main {
             //push footer tho the end
             #block-responsive-pad-md;
             #sep-border-top;
             flex-grow: 1;
 
-            .dcf-post-body{
+            .dcf-post-body {
                 padding-bottom: @dist-lg;
+
+                .img-responsive;
             }
 
-        }        
-        
-       
+        }
 
- 
 
-        .dcf-post-footer{
+
+
+
+        .dcf-post-footer {
             #sep-border-top;
         }
 
-        .dcf-post-signature{
-           
+        .dcf-post-signature {
+
             margin: @dist-md;
 
-            *{
+            * {
                 font-size: 1em !important;
                 margin: 0 !important;
             }
-           
+
         }
 
-        .dcf-post-footer-bottom{
+        .dcf-post-footer-bottom {
             margin: @dist-md;
             align-items: center;
 
-            .dcf-post-likes{
+            .dcf-post-likes {
                 font-size: 0.8em;
-               
+
             }
         }
 
 
-}
+    }
 
 
 }

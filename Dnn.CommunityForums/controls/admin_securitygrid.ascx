@@ -124,8 +124,9 @@ function securityToggle(obj,pid,secId,secName,secType,key) {
                     </tr>
                 </table>
             </td>
-            <td style="width: 5%"></td>
-            <td class="amroles" align="right">
+            <!-- Note: this is an artifact from where there used to be user-specific security -- leaving this here for now  but setting display:none to remove ugly gap -->
+            <td style="display: none; width: 5%"></td>
+            <td style="display: none;" class="amroles" align="right">
                 <div style="display: none;">
                     <table cellpadding="0" cellspacing="2">
                         <tr>

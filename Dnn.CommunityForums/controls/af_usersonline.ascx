@@ -6,7 +6,7 @@
             <table width="100%">
                 <tr>
                     <td class="afgrouprow af-groupname">
-                        <div class="afgroupsectiontitle">Who's Online</div>
+                        <div class="afgroupsectiontitle">[RESX:WhosOnline]</div>
                         <span class="dcf-collapsible" id="dcf-collapsible-groupWHOS" onclick="dcf_collapsible_toggle('groupWHOS');">
 	                        <i class="fa"></i>
                         </span>

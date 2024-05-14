@@ -21,7 +21,7 @@ function afmodReject(fid,tid,pid,uid){
 	<%=cbMod.ClientID%>.Callback('modReject',fid,tid,pid,uid);
 };
 function cbModComplete(){
-
+    af_clearLoad();
 };
 </script>
 <h3 class="dcf-heading-3"><asp:Label ID="lblHeader" CssClass="aftitlelg" runat="server" /></h3>

@@ -31,26 +31,25 @@
 								</tr>
 							</table>
 							[/AF:UI:ANON]
-							<table class="table">
-								<tr>
-									<td style="text-align:left;">[RESX:Subject]:[AF:REQ:SUBJECT]</td>
-									<td style="text-align:left;">[RESX:TopicStatus]:</td>
-								</tr>
-								<tr>
-									<td style="text-align:left;"><div style="width:300px;">[AF:INPUT:SUBJECT]</div></td>
-									<td style="text-align:left;">[AF:CONTROL:STATUS]</td>
+							<table cellpadding="0" cellspacing="4" border="0" width="99%">
+                <tr>
+                    <td style="text-align: left; width: 99%;"><span class="aftitle">[RESX:Subject]:[AF:REQ:SUBJECT]</span>[AF:INPUT:SUBJECT]</td>
+                    <td style="text-align:right;"><span class="aftitle">[RESX:TopicStatus]:</span>&nbsp;[AF:CONTROL:STATUS]</td>
 								</tr>
 							</table>
 						</td>
 					</tr>
+                    [AF:UI:SECTION:POSTICONS]
 					<tr>
-						<td style="text-align:left;">
+                        <td style="text-align:left;">
 							[AF:UI:FIELDSET:POSTICONS]
 								[AF:CONTROL:POSTICONS]
 							[/AF:UI:FIELDSET:POSTICONS]
-						</td>
-						<td></td>
-					</tr>
+                        </td>
+                        <td></td>
+                    </tr>
+                    [/AF:UI:SECTION:POSTICONS]
+					[AF:UI:SECTION:PROPERTIES]
 					<tr>
 						<td colspan="2">
 							<table class="afprop-table">
@@ -67,17 +66,10 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="text-align:left;">[RESX:Summary]:</td>
+						<td style="text-align:left;"><span class="aftitle">[RESX:Message]:</span>[AF:REQ:BODY]</td>
 						<td></td>
 					</tr>
-					<tr>
-						<td>[AF:INPUT:SUMMARY]</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td style="text-align:left;">[RESX:Message]:[AF:REQ:BODY]</td>
-						<td></td>
-					</tr>
+                    [/AF:UI:SECTION:PROPERTIES]
 					<tr>
 						<td width="100%">[AF:INPUT:BODY]
 						
@@ -86,7 +78,9 @@
 					</tr>
 					<tr>
 						<td style="text-align:left;">
-							
+							[AF:UI:SECTION:SUMMARY]
+								[AF:INPUT:SUMMARY]
+                            [/AF:UI:SECTION:SUMMARY]
 							[AF:UI:SECTION:TAGS]
 								[AF:CONTROL:TAGS]
 							[/AF:UI:SECTION:TAGS]

@@ -1,0 +1,1438 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:About].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Circa</value>
+  </data>
+  <data name="[RESX:Actions:Complete].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Completo</value>
+  </data>
+  <data name="[RESX:Actions:DeleteComplete].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>L'articolo è stato eliminato</value>
+  </data>
+  <data name="[RESX:Actions:DeleteConfirm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sei sicuro di voler eliminare questo elemento?</value>
+  </data>
+  <data name="[RESX:Actions:FinalConfirm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Giusto per essere sicuri, vuoi davvero eliminare questo elemento e tutti i dati correlati?</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleteConfirm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>AVVERTIMENTO! - L'eliminazione di questo elemento comporta l'eliminazione definitiva di tutti i contenuti correlati. Non continuare a meno che non si disponga di un backup.\n Fare clic su OK per eliminare tutto il contenuto correlato.  Fare clic su Annulla per uscire.</value>
+  </data>
+  <data name="[RESX:Actions:ForumDeleted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>L'articolo è stato eliminato</value>
+  </data>
+  <data name="[RESX:Actions:ForumSaved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Forum salvato con successo</value>
+  </data>
+  <data name="[RESX:Actions:GenericSaved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Salvataggio completato!</value>
+  </data>
+  <data name="[RESX:Actions:GroupDeleted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Il gruppo e tutti i contenuti correlati sono stati eliminati.</value>
+  </data>
+  <data name="[RESX:Actions:GroupSaved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gruppo salvato con successo</value>
+  </data>
+  <data name="[RESX:Actions:MinMax].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Il punteggio minimo deve essere inferiore al punteggio massimo</value>
+  </data>
+  <data name="[RESX:Actions:RequiredFields].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Inserisci i valori per i campi obbligatori</value>
+  </data>
+  <data name="[RESX:Actions:RestoreConfirm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Si è sicuri di voler eliminare tutti i filtri correnti e caricare il set di filtri predefinito?</value>
+  </data>
+  <data name="[RESX:Actions:SettingsSaved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Le impostazioni sono state aggiornate!</value>
+  </data>
+  <data name="[RESX:Actions:Warning].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>AVVERTIMENTO</value>
+  </data>
+  <data name="[RESX:Active].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Attivo</value>
+  </data>
+  <data name="[RESX:Activity].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Attività</value>
+  </data>
+  <data name="[RESX:AddFilter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Aggiungi elemento filtro</value>
+  </data>
+  <data name="[RESX:AddProperty].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Aggiungi nuova proprietà</value>
+  </data>
+  <data name="[RESX:AddRole].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Aggiungi ruolo</value>
+  </data>
+  <data name="[RESX:AddTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Aggiungi modello</value>
+  </data>
+  <data name="[RESX:AddUserName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Aggiungi nome utente</value>
+  </data>
+  <data name="[RESX:Administrators].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gli amministratori</value>
+  </data>
+  <data name="[RESX:AdminNotification].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Notifica amministratore</value>
+  </data>
+  <data name="[RESX:All].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tutto</value>
+  </data>
+  <data name="[RESX:AllowAttach].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Allegati</value>
+  </data>
+  <data name="[RESX:AllowBrowseSite].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti sfoglia sito</value>
+  </data>
+  <data name="[RESX:AllowedTypes].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tipi consentiti</value>
+  </data>
+  <data name="[RESX:AllowHTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>HTML Input</value>
+  </data>
+  <data name="[RESX:AllowLikes].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti Mi piace</value>
+  </data>
+  <data name="[RESX:AllowPostIcon].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Icone dei post</value>
+  </data>
+  <data name="[RESX:AllowRSS].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>RSS</value>
+  </data>
+  <data name="[RESX:AllowScripts].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Script</value>
+  </data>
+  <data name="[RESX:AllUsers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tutti gli utenti</value>
+  </data>
+  <data name="[RESX:AlwaysApprove].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Approva sempre</value>
+  </data>
+  <data name="[RESX:AlwaysModerate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sempre moderata</value>
+  </data>
+  <data name="[RESX:AnswerPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Fornisci post di risposta</value>
+  </data>
+  <data name="[RESX:Approved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Approvato</value>
+  </data>
+  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Inserire file come token</value>
+  </data>
+  <data name="[RESX:AuditLog].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Registrazione e monitoraggio</value>
+  </data>
+  <data name="[RESX:Author].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Autore</value>
+  </data>
+  <data name="[RESX:AutoLink:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa opzione per i forum della community DNN per convertire automaticamente gli indirizzi dei siti Web in collegamenti ipertestuali.</value>
+  </data>
+  <data name="[RESX:AutoLink].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Collegamenti ipertestuali automatici</value>
+  </data>
+  <data name="[RESX:AutoResponse].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Risposta automatica</value>
+  </data>
+  <data name="[RESX:AutoSubscribe].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abbonamenti automatici</value>
+  </data>
+  <data name="[RESX:AutoTrustLevel].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Livello di attendibilità automatica</value>
+  </data>
+  <data name="[RESX:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Avatar predefinito abilitato</value>
+  </data>
+  <data name="[RESX:AvatarDimensions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Dimensioni dell'avatar</value>
+  </data>
+  <data name="[RESX:AvatarOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzioni avatar</value>
+  </data>
+  <data name="[RESX:Button:Cancel].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Annulla</value>
+  </data>
+  <data name="[RESX:Button:Delete].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Cancellare</value>
+  </data>
+  <data name="[RESX:Button:Save].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Salvare</value>
+  </data>
+  <data name="[RESX:Captcha:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa funzionalità per richiedere agli utenti anonimi di immettere un codice di sicurezza casuale per impedire contenuti spam.</value>
+  </data>
+  <data name="[RESX:Captcha].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Captcha (Prevenzione dello spam)</value>
+  </data>
+  <data name="[RESX:Categories].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Categorie</value>
+  </data>
+  <data name="[RESX:CategoryName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome della categoria</value>
+  </data>
+  <data name="[RESX:ClickToAdd].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Fai clic per aggiungere</value>
+  </data>
+  <data name="[RESX:Close].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Chiudere</value>
+  </data>
+  <data name="[RESX:Community].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Comunità</value>
+  </data>
+  <data name="[RESX:CommunityOptions:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Le impostazioni seguenti ti consentono di controllare le funzionalità della community all'interno dei tuoi forum.</value>
+  </data>
+  <data name="[RESX:CommunityOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzioni della community</value>
+  </data>
+  <data name="[RESX:CommunitySettings].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Impostazioni della community</value>
+  </data>
+  <data name="[RESX:ConfigureProperties].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Configura opzioni</value>
+  </data>
+  <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Attenzione: l'installazione o la disinstallazione del gestore URL dei forum della community DNN richiederà una modifica al file web.config.  \n\nSei sicuro di voler apportare questa modifica in questo momento?</value>
+  </data>
+  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Converti *.png in *.jpg</value>
+  </data>
+  <data name="[RESX:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Crea conteggio post</value>
+  </data>
+  <data name="[RESX:CreateUsers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Creazione automatica utenti</value>
+  </data>
+  <data name="[RESX:CustomFields].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Campi personalizzati</value>
+  </data>
+  <data name="[RESX:Dashboard].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Cruscotto</value>
+  </data>
+  <data name="[RESX:Database].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Banca dati</value>
+  </data>
+  <data name="[RESX:DataType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tipo di dati</value>
+  </data>
+  <data name="[RESX:Date].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Dattero</value>
+  </data>
+  <data name="[RESX:DateCreated].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Data di creazione</value>
+  </data>
+  <data name="[RESX:DateFormat].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Formato data</value>
+  </data>
+  <data name="[RESX:DateTime].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Impostazioni di data e ora</value>
+  </data>
+  <data name="[RESX:DateUpdated].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Data di aggiornamento</value>
+  </data>
+  <data name="[RESX:Default].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Default</value>
+  </data>
+  <data name="[RESX:DefaultCache].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Archiviazione cache</value>
+  </data>
+  <data name="[RESX:DefaultDisabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>--Disabile--</value>
+  </data>
+  <data name="[RESX:DefaultPageSize].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Formato pagina predefinito</value>
+  </data>
+  <data name="[RESX:DefaultTrust].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Attendibilità predefinita</value>
+  </data>
+  <data name="[RESX:Delete].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Cancellare</value>
+  </data>
+  <data name="[RESX:DeleteAction:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli cosa succede al contenuto quando viene eliminato. &lt;b&gt;Rimuovi&lt;/b&gt;: rimuove il contenuto dal database.  &lt;b&gt;Ricicla&lt;/b&gt;: il contenuto viene contrassegnato come eliminato e rimane nel database.</value>
+  </data>
+  <data name="[RESX:DeleteAction].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Elimina comportamento</value>
+  </data>
+  <data name="[RESX:DeleteActionSelect].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona Azione</value>
+  </data>
+  <data name="[RESX:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Eliminato</value>
+  </data>
+  <data name="[RESX:DesignAndTemplates:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Le impostazioni seguenti ti aiuteranno a regolare l'aspetto del forum.</value>
+  </data>
+  <data name="[RESX:DesignAndTemplates].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Design e layout</value>
+  </data>
+  <data name="[RESX:Details].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Dettagli</value>
+  </data>
+  <data name="[RESX:Disabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Spento</value>
+  </data>
+  <data name="[RESX:Display].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Esporre</value>
+  </data>
+  <data name="[RESX:DisplayName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome visualizzato</value>
+  </data>
+  <data name="[RESX:DropDownDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>--SELEZIONARE--</value>
+  </data>
+  <data name="[RESX:DropDownDisabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>--DISABILE--</value>
+  </data>
+  <data name="[RESX:EditControl:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consente all'utente di modificare il proprio post solo entro un determinato numero di minuti dal momento in cui è stato creato.  L'utente deve inoltre disporre dell'autorizzazione di modifica.  Impostare questo valore su 0 per disabilitare questa funzione.</value>
+  </data>
+  <data name="[RESX:EditControl].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Controllo di modifica del contenuto</value>
+  </data>
+  <data name="[RESX:EditorHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Altezza</value>
+  </data>
+  <data name="[RESX:EditorMobile].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Utenti di dispositivi mobili</value>
+  </data>
+  <data name="[RESX:EditorStyle].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Stile</value>
+  </data>
+  <data name="[RESX:EditorToolBar].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Barra degli strumenti</value>
+  </data>
+  <data name="[RESX:EditorType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Editore</value>
+  </data>
+  <data name="[RESX:EditorWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Larghezza</value>
+  </data>
+  <data name="[RESX:EditTimeLimit].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Intervallo di modifica</value>
+  </data>
+  <data name="[RESX:Email].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>E-mail</value>
+  </data>
+  <data name="[RESX:EmailAddress].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Indirizzo email</value>
+  </data>
+  <data name="[RESX:EmailTemplates].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modelli di e-mail</value>
+  </data>
+  <data name="[RESX:Emoticon].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Emoticon</value>
+  </data>
+  <data name="[RESX:Emoticons].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Emoticon</value>
+  </data>
+  <data name="[RESX:EnableAutoLink].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita collegamenti automatici</value>
+  </data>
+  <data name="[RESX:EnableAvatars].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Avatar</value>
+  </data>
+  <data name="[RESX:EnableAvatarsLinks].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Collegamenti avatar</value>
+  </data>
+  <data name="[RESX:Enabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Su</value>
+  </data>
+  <data name="[RESX:EnableFilter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Filtri</value>
+  </data>
+  <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita testo completo</value>
+  </data>
+  <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sistema a punti</value>
+  </data>
+  <data name="[RESX:EnableProfiles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilitato</value>
+  </data>
+  <data name="[RESX:EnableSubscriptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sottoscrizioni</value>
+  </data>
+  <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita URL brevi</value>
+  </data>
+  <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>ALL - Obbligatorio</value>
+  </data>
+  <data name="[RESX:EOMOptional].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzionale</value>
+  </data>
+  <data name="[RESX:EOMReplies].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Risposte - Obbligatorie</value>
+  </data>
+  <data name="[RESX:EOMTag].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>EOM Tag</value>
+  </data>
+  <data name="[RESX:Everyone].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ciascuno</value>
+  </data>
+  <data name="[RESX:Exit].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Uscita</value>
+  </data>
+  <data name="[RESX:Feature].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tratti somatici</value>
+  </data>
+  <data name="[RESX:Features].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tratti somatici</value>
+  </data>
+  <data name="[RESX:FileStore].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Archivio file</value>
+  </data>
+  <data name="[RESX:FileSystem].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sistema di lima</value>
+  </data>
+  <data name="[RESX:Filters].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Filtri</value>
+  </data>
+  <data name="[RESX:FilterType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tipo di filtro</value>
+  </data>
+  <data name="[RESX:Find].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Testo da trovare</value>
+  </data>
+  <data name="[RESX:FirstName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome di battesimo</value>
+  </data>
+  <data name="[RESX:FloodControl:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Numero di secondi che un utente deve attendere tra un post e l'altro.</value>
+  </data>
+  <data name="[RESX:FloodControl].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Post duplicati e prevenzione degli abusi</value>
+  </data>
+  <data name="[RESX:FloodInterval].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Intervallo di inondazione</value>
+  </data>
+  <data name="[RESX:Forum].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Forum</value>
+  </data>
+  <data name="[RESX:ForumDesc].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Descrizione</value>
+  </data>
+  <data name="[RESX:ForumGroup].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gruppo / Forum</value>
+  </data>
+  <data name="[RESX:ForumName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome del forum</value>
+  </data>
+  <data name="[RESX:ForumOwner].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Proprietario del forum</value>
+  </data>
+  <data name="[RESX:Forums].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Forum</value>
+  </data>
+  <data name="[RESX:ForumsGroups].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Elenco dei forum</value>
+  </data>
+  <data name="[RESX:ForumStatSettings].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Impostazioni statistiche</value>
+  </data>
+  <data name="[RESX:ForumTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sagoma</value>
+  </data>
+  <data name="[RESX:ForumTheme].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tema</value>
+  </data>
+  <data name="[RESX:ForumView].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visualizzazione del forum</value>
+  </data>
+  <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzioni URL brevi</value>
+  </data>
+  <data name="[RESX:FriendsOnly].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Solo Amici</value>
+  </data>
+  <data name="[RESX:Full].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Pieno</value>
+  </data>
+  <data name="[RESX:FullName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome e Cognome</value>
+  </data>
+  <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>La ricerca full-text offre prestazioni migliori e risultati più accurati.</value>
+  </data>
+  <data name="[RESX:FullTextSearch].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ricerca full-text</value>
+  </data>
+  <data name="[RESX:GetSupport].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Clicca per il supporto dei forum della community DNN</value>
+  </data>
+  <data name="[RESX:GetUpdates].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Verifica la disponibilità di aggiornamenti del prodotto</value>
+  </data>
+  <data name="[RESX:GroupName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gruppo Forum</value>
+  </data>
+  <data name="[RESX:Groups].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gruppi</value>
+  </data>
+  <data name="[RESX:Hidden].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nascosto</value>
+  </data>
+  <data name="[RESX:HTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>HTML</value>
+  </data>
+  <data name="[RESX:IndexContent].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Contenuto dell'indice</value>
+  </data>
+  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ereditare le impostazioni del gruppo</value>
+  </data>
+  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ereditare la sicurezza del gruppo</value>
+  </data>
+  <data name="[RESX:IsHidden].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nascosto</value>
+  </data>
+  <data name="[RESX:IsReadOnly].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sola lettura</value>
+  </data>
+  <data name="[RESX:IsRequired].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Obbligatorio</value>
+  </data>
+  <data name="[RESX:Label].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Etichetta</value>
+  </data>
+  <data name="[RESX:LastName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Cognome</value>
+  </data>
+  <data name="[RESX:List].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Lista</value>
+  </data>
+  <data name="[RESX:ListCheckBoxes].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Elenco - Selezione multipla </value>
+  </data>
+  <data name="[RESX:ListDropDown].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Elenco - Selezione singola</value>
+  </data>
+  <data name="[RESX:ListName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli l'elenco</value>
+  </data>
+  <data name="[RESX:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Livello di registrazione</value>
+  </data>
+  <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Le funzionalità riportate di seguito sono utilizzate in tutti i forum.  È possibile abilitare o disabilitare determinate funzionalità di seguito.</value>
+  </data>
+  <data name="[RESX:MainFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Caratteristiche principali</value>
+  </data>
+  <data name="[RESX:MainSettings:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value> </value>
+  </data>
+  <data name="[RESX:MainSettings].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Impostazioni principali</value>
+  </data>
+  <data name="[RESX:Maint:Days].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Giorni</value>
+  </data>
+  <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>{0} topic verranno rimossi.</value>
+  </data>
+  <data name="[RESX:Maint:Execute].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Eseguire</value>
+  </data>
+  <data name="[RESX:Maint:NoActivityPast].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomenti Ultima attività finita</value>
+  </data>
+  <data name="[RESX:Maint:RequiredCriteria].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Controlla i criteri selezionati e riprova.</value>
+  </data>
+  <data name="[RESX:Maint:TestRun].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Esecuzione dei test</value>
+  </data>
+  <data name="[RESX:Maint:TopicsByUser].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomenti per utente</value>
+  </data>
+  <data name="[RESX:Maint:TopicsOlderThan].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomenti più vecchi di</value>
+  </data>
+  <data name="[RESX:Maint:WithoutReplies].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomenti senza risposte</value>
+  </data>
+  <data name="[RESX:Maintenance].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Manutenzione</value>
+  </data>
+  <data name="[RESX:MaintenanceInstruct].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Specifica i criteri riportati di seguito per rimuovere i contenuti dai tuoi forum.  Fare clic sul pulsante "Esecuzione test" per ricevere il conteggio del numero di argomenti interessati.  Fare clic sul pulsante "Esegui" per avviare la manutenzione.  Il completamento di questo processo potrebbe richiedere alcuni minuti.  Attendi il completamento del processo prima di chiudere questa pagina.</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle:Desc].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>contrassegnato come eliminato</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Recycle].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Riciclare</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove:Desc].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Eliminato definitivamente</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning:Remove].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Togliere</value>
+  </data>
+  <data name="[RESX:MaintenanceWarning].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Assicurati di aver creato un backup del tuo database prima di procedere.  Gli argomenti verranno eliminati in base al metodo di rimozione specificato nella scheda delle impostazioni principali.&lt;br /&gt;&lt;br /&gt;
+Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verranno {1} in base ai criteri specificati di seguito.</value>
+  </data>
+  <data name="[RESX:ManageForums].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gestire i forum</value>
+  </data>
+  <data name="[RESX:ManageTags].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Gestire i tag</value>
+  </data>
+  <data name="[RESX:MarkAnswerPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Contrassegna il post come risposta</value>
+  </data>
+  <data name="[RESX:MarkUp].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Annotazione/Testo</value>
+  </data>
+  <data name="[RESX:MaxAttach].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value># di file</value>
+  </data>
+  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Altezza max.</value>
+  </data>
+  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Larghezza max.</value>
+  </data>
+  <data name="[RESX:MaxFileSize].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Dimensione massima del file (KB)</value>
+  </data>
+  <data name="[RESX:MaxImageHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Max. Altezza</value>
+  </data>
+  <data name="[RESX:MaxImageWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Max. Larghezza</value>
+  </data>
+  <data name="[RESX:MaxPoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Numero massimo di punti</value>
+  </data>
+  <data name="[RESX:MemberListMode].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modalità elenco membri</value>
+  </data>
+  <data name="[RESX:MemberListModeDisabledAll].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Disabilitato - Tutti gli utenti</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledAll].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilitato - Tutti gli utenti</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledMod].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilitato - Moderatori</value>
+  </data>
+  <data name="[RESX:MemberListModeEnabledReg].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilitato - Utenti registrati</value>
+  </data>
+  <data name="[RESX:Members:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Le impostazioni seguenti ti permetteranno di controllare il modo in cui i membri interagiscono all'interno dei tuoi forum.</value>
+  </data>
+  <data name="[RESX:Members].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Membri</value>
+  </data>
+  <data name="[RESX:MinPoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Numero minimo di punti</value>
+  </data>
+  <data name="[RESX:Mod].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Moderazione</value>
+  </data>
+  <data name="[RESX:ModEmail].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>ModEmail (Indirizzo e-mail)</value>
+  </data>
+  <data name="[RESX:Moderate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Moderato</value>
+  </data>
+  <data name="[RESX:Moderated].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Moderato</value>
+  </data>
+  <data name="[RESX:ModerateType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Moderato</value>
+  </data>
+  <data name="[RESX:Moderators].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Moderatori</value>
+  </data>
+  <data name="[RESX:ModPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Moderare un post</value>
+  </data>
+  <data name="[RESX:Moved].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Trasferito</value>
+  </data>
+  <data name="[RESX:MoveDown].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Retrocedere</value>
+  </data>
+  <data name="[RESX:MoveUp].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Promuovere</value>
+  </data>
+  <data name="[RESX:Name].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome</value>
+  </data>
+  <data name="[RESX:NewForum].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nuovo Forum</value>
+  </data>
+  <data name="[RESX:NewForumGroup].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nuovo gruppo del forum</value>
+  </data>
+  <data name="[RESX:NewTopicsOnly].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Solo nuovi argomenti</value>
+  </data>
+  <data name="[RESX:No].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>No</value>
+  </data>
+  <data name="[RESX:NoData].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nessun dato trovato</value>
+  </data>
+  <data name="[RESX:NoForums].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nessun forum trovato</value>
+  </data>
+  <data name="[RESX:NoMembers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nessun membro trovato</value>
+  </data>
+  <data name="[RESX:None].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nessuno</value>
+  </data>
+  <data name="[RESX:NoTopics].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nessun argomento trovato</value>
+  </data>
+  <data name="[RESX:NotTrusted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Non attendibile</value>
+  </data>
+  <data name="[RESX:OtherOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Altre opzioni</value>
+  </data>
+  <data name="[RESX:Parent].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Genitore:</value>
+  </data>
+  <data name="[RESX:PermittedRoles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Utenti consentiti</value>
+  </data>
+  <data name="[RESX:PlainText].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Testo normale</value>
+  </data>
+  <data name="[RESX:PleaseWait].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Caricamento...  Attendere prego.</value>
+  </data>
+  <data name="[RESX:PMPage].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Pagina di messaggistica privata</value>
+  </data>
+  <data name="[RESX:PointsOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzioni per il sistema di punti</value>
+  </data>
+  <data name="[RESX:PointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scambio ferroviario</value>
+  </data>
+  <data name="[RESX:POP3Password].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>POP3 Password</value>
+  </data>
+  <data name="[RESX:POP3UserName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome utente POP3</value>
+  </data>
+  <data name="[RESX:PostInfo].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>PostInfo</value>
+  </data>
+  <data name="[RESX:PostingOptions:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Le impostazioni seguenti ti consentono di controllare vari aspetti della creazione di contenuti all'interno dei tuoi forum.</value>
+  </data>
+  <data name="[RESX:PostingOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzioni di contenuto</value>
+  </data>
+  <data name="[RESX:ProcessComplete].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Processo completato con successo!</value>
+  </data>
+  <data name="[RESX:Profile].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Profilo utente</value>
+  </data>
+  <data name="[RESX:ProfileAdvanced].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Avanzato</value>
+  </data>
+  <data name="[RESX:ProfileBasic].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Basico</value>
+  </data>
+  <data name="[RESX:ProfileDisabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Disabile</value>
+  </data>
+  <data name="[RESX:ProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modello di profilo</value>
+  </data>
+  <data name="[RESX:ProfileType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tipo di profilo</value>
+  </data>
+  <data name="[RESX:Properties].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Proprietà</value>
+  </data>
+  <data name="[RESX:PropertyName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome proprietà</value>
+  </data>
+  <data name="[RESX:QuickLinks].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Collegamenti rapidi</value>
+  </data>
+  <data name="[RESX:QuickReplyForm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modulo di risposta rapida</value>
+  </data>
+  <data name="[RESX:QuickStats].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Statistiche rapide</value>
+  </data>
+  <data name="[RESX:RankName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome</value>
+  </data>
+  <data name="[RESX:Ranks].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ranghi</value>
+  </data>
+  <data name="[RESX:RanksNew].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nuovo livello di rango</value>
+  </data>
+  <data name="[RESX:RanksRecognition].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ranghi</value>
+  </data>
+  <data name="[RESX:RecentMembers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Membri recenti</value>
+  </data>
+  <data name="[RESX:RecentTopics].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomenti recenti</value>
+  </data>
+  <data name="[RESX:Recycle].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Riciclare</value>
+  </data>
+  <data name="[RESX:RegEx].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Espressione regolare</value>
+  </data>
+  <data name="[RESX:RegisteredUsers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Utenti registrati</value>
+  </data>
+  <data name="[RESX:Rejected].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Respinto</value>
+  </data>
+  <data name="[RESX:RejectMessage].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Notifica di rifiuto</value>
+  </data>
+  <data name="[RESX:Remove].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Togliere</value>
+  </data>
+  <data name="[RESX:RemoveHTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Rimuovi HTML</value>
+  </data>
+  <data name="[RESX:Replace].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Rimpiazzo</value>
+  </data>
+  <data name="[RESX:Replies].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Risposte</value>
+  </data>
+  <data name="[RESX:ReplyForm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modulo di risposta</value>
+  </data>
+  <data name="[RESX:ReplyPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Risposta</value>
+  </data>
+  <data name="[RESX:ReplyPostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Conteggio dei post di risposta</value>
+  </data>
+  <data name="[RESX:RequireCaptcha].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Captcha per utenti Anon</value>
+  </data>
+  <data name="[RESX:RequireEOM].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Richiedi tag EOM</value>
+  </data>
+  <data name="[RESX:RestoreDefaults].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Carica filtri predefiniti</value>
+  </data>
+  <data name="[RESX:RestrictAlias].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Limita per indirizzo e-mail</value>
+  </data>
+  <data name="[RESX:Roles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ruoli</value>
+  </data>
+  <data name="[RESX:Save].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Salvare</value>
+  </data>
+  <data name="[RESX:SecureObjects].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ruoli/Utenti</value>
+  </data>
+  <data name="[RESX:Security].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sicurezza</value>
+  </data>
+  <data name="[RESX:SecurityOption].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sicurezza del journal</value>
+  </data>
+  <data name="[RESX:SelectRoles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona Ruoli</value>
+  </data>
+  <data name="[RESX:ServerTimeZone].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Offset fuso orario</value>
+  </data>
+  <data name="[RESX:Settings].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Impostazioni</value>
+  </data>
+  <data name="[RESX:SigDisable].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Disabile</value>
+  </data>
+  <data name="[RESX:SigHTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti HTML e testo normale</value>
+  </data>
+  <data name="[RESX:Signatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Firme</value>
+  </data>
+  <data name="[RESX:SigPlainText].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti solo testo normale</value>
+  </data>
+  <data name="[RESX:SiteAlias].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Indirizzo sito</value>
+  </data>
+  <data name="[RESX:Stats].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Statistiche</value>
+  </data>
+  <data name="[RESX:StatsEnabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilitato</value>
+  </data>
+  <data name="[RESX:StatsInterval].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Intervallo di aggiornamento</value>
+  </data>
+  <data name="[RESX:StatsTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sagoma</value>
+  </data>
+  <data name="[RESX:Status].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita e/o disabilita le funzionalità</value>
+  </data>
+  <data name="[RESX:Subject].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Oggetto</value>
+  </data>
+  <data name="[RESX:SubscriberNotification].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Notifica abbonato</value>
+  </data>
+  <data name="[RESX:SubscriptionOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Opzioni di abbonamento:</value>
+  </data>
+  <data name="[RESX:System].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sistema</value>
+  </data>
+  <data name="[RESX:TagClicks].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Clic</value>
+  </data>
+  <data name="[RESX:TagItems].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Elementi</value>
+  </data>
+  <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome tag</value>
+  </data>
+  <data name="[RESX:Tags].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:Template].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sagoma</value>
+  </data>
+  <data name="[RESX:Templates].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modelli</value>
+  </data>
+  <data name="[RESX:TemplateType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Digitare</value>
+  </data>
+  <data name="[RESX:Text].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Testo</value>
+  </data>
+  <data name="[RESX:Theme].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Tema</value>
+  </data>
+  <data name="[RESX:TimeFormat].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Formato dell'ora</value>
+  </data>
+  <data name="[RESX:Tips:Active].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona questa casella per attivare o disattivare facilmente un forum.</value>
+  </data>
+  <data name="[RESX:Tips:AddRoles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare il ruolo che si desidera aggiungere alla griglia di sicurezza, quindi fare clic sull'icona più.  </value>
+  </data>
+  <data name="[RESX:Tips:AddUser].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il nome utente della persona che si desidera aggiungere alla griglia di sicurezza, quindi fare clic sull'icona più.</value>
+  </data>
+  <data name="[RESX:Tips:AdminNotify].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Questo è un modello facoltativo che verrà inviato ai moderatori di questo forum quando viene creato un argomento o una risposta via e-mail.  Questo modello verrà utilizzato solo quando il messaggio non è moderato.</value>
+  </data>
+  <data name="[RESX:Tips:AllowHTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti agli utenti di creare post utilizzando i tag HTML.  Fare clic sull'icona delle proprietà per ulteriori dettagli.</value>
+  </data>
+  <data name="[RESX:Tips:AnswerPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Punti da assegnare a un membro per aver fornito la risposta a un argomento.</value>
+  </data>
+  <data name="[RESX:Tips:Attachments].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti agli utenti di caricare allegati con i loro post.   Fare clic sull'icona delle proprietà per ulteriori dettagli.</value>
+  </data>
+  <data name="[RESX:Tips:AutoCreateUsers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa opzione per creare automaticamente nuovi utenti quando non è possibile trovare l'account utente in base al loro indirizzo e-mail.</value>
+  </data>
+  <data name="[RESX:Tips:AutoRepsonse].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Si tratta di un modello facoltativo che può essere inviato all'utente per informarlo che l'e-mail è stata ricevuta.</value>
+  </data>
+  <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona i ruoli che verranno iscritti automaticamente e riceverai notifiche via e-mail per i nuovi contenuti pubblicati su questo forum.</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Attivare questa opzione per visualizzare l'avatar predefinito dalla directory dei temi quando un utente non ha ancora specificato un avatar.</value>
+  </data>
+  <data name="[RESX:Tips:AvatarDimensions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value> Scegli l'altezza e la larghezza massime per gli avatar</value>
+  </data>
+  <data name="[RESX:Tips:CacheStore].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegliere la posizione in cui si desidera archiviare gli elementi memorizzati nella cache.  </value>
+  </data>
+  <data name="[RESX:Tips:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Il numero minimo di post che un utente deve avere per creare un nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere l'indirizzo e-mail che verrà utilizzato come indirizzo e-mail del mittente durante l'invio delle notifiche. </value>
+  </data>
+  <data name="[RESX:Tips:EMORequired].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Attivare questa opzione per rifiutare i messaggi che non includono il tag Fine messaggio specificato in precedenza.</value>
+  </data>
+  <data name="[RESX:Tips:Emoticons].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti agli utenti di aggiungere emoticon (faccine) ai loro post.</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatarLinks].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti ai tuoi utenti di collegarsi ad avatar ospitati su un altro server.</value>
+  </data>
+  <data name="[RESX:Tips:EnableAvatars].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli se abilitare o meno gli avatar e le opzioni appropriate.</value>
+  </data>
+  <data name="[RESX:Tips:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilitare o disabilitare i sistemi di punti e impostare i valori di punti appropriati.</value>
+  </data>
+  <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare la modalità di visualizzazione dei profili&lt;br /&gt;Basic - il profilo predefinito dei forum della comunità DNN&lt;br /&gt;Advanced - Visualizza il profilo del profilo della community DNN, se installato.&lt;br /&gt;Disabled - i profili saranno disabilitati.</value>
+  </data>
+  <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa funzione e i forum della community DNN includeranno solo i parametri minimi necessari.</value>
+  </data>
+  <data name="[RESX:Tips:EOMTag].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Il tag EOM (End of Message) è un metodo per includere nuove informazioni solo quando un utente risponde tramite e-mail.  L'utente deve aggiungere questo tag dopo il messaggio e prima del testo del messaggio precedente.</value>
+  </data>
+  <data name="[RESX:Tips:Filters].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Usa i filtri per sostituire il testo da un post dell'utente quando viene inviato.</value>
+  </data>
+  <data name="[RESX:Tips:ForumDesc].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Inserisci una breve descrizione del forum.</value>
+  </data>
+  <data name="[RESX:Tips:ForumGroup].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona il gruppo principale per questo forum o seleziona un forum per creare un forum secondario</value>
+  </data>
+  <data name="[RESX:Tips:ForumName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il nome del forum.</value>
+  </data>
+  <data name="[RESX:Tips:ForumTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona il modello per la pagina che visualizzerà tutti i tuoi forum.</value>
+  </data>
+  <data name="[RESX:Tips:ForumTheme].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona il tema grafico per il tuo forum.</value>
+  </data>
+  <data name="[RESX:Tips:Hidden].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare questa casella per nascondere questo forum dall'elenco dei forum per gli utenti che non hanno accesso.</value>
+  </data>
+  <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consente di includere il contenuto di questo forum nella ricerca nel sito DNN.</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare questa casella per ereditare le impostazioni della feature dal gruppo.</value>
+  </data>
+  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare questa casella per ereditare la protezione dal gruppo.</value>
+  </data>
+  <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli il livello di registrazione per i tuoi forum.&lt;br /&gt;Disabled - Nessuna attività viene registrata&lt;br /&gt;Moderate - Move e Delete vengono registrati.&lt;br /&gt;Full - Tutte le attività vengono registrate.</value>
+  </data>
+  <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consente agli utenti di rispondere ai post via e-mail.  Fare clic sull'icona delle proprietà per ulteriori dettagli.</value>
+  </data>
+  <data name="[RESX:Tips:MaintActivityOlderThan].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il numero di giorni.  Questo si applicherà agli argomenti che non hanno ricevuto risposta entro il numero di giorni specificato.</value>
+  </data>
+  <data name="[RESX:Tips:MaintOlderThan].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il numero di giorni. Questo si applicherà agli argomenti più vecchi del numero di giorni specificato.</value>
+  </data>
+  <data name="[RESX:Tips:MaintTopicsByUser].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere l'ID utente.  In questo modo il processo verrà limitato ai soli argomenti creati dall'ID utente specificato.</value>
+  </data>
+  <data name="[RESX:Tips:MaintWithOutReplies].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa opzione per rimuovere semplicemente tutti gli argomenti che non hanno mai ricevuto risposta.</value>
+  </data>
+  <data name="[RESX:Tips:MarkAnswerPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Punti da assegnare all'autore dell'argomento quando seleziona una risposta.</value>
+  </data>
+  <data name="[RESX:Tips:MemberListMode].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli chi deve essere in grado di accedere all'elenco dei membri.</value>
+  </data>
+  <data name="[RESX:Tips:Moderated].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa funzione se desideri approvare gli argomenti e le risposte prima che appaiano nel forum.</value>
+  </data>
+  <data name="[RESX:Tips:ModPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Punti per premiare un moderatore per la moderazione di un post.</value>
+  </data>
+  <data name="[RESX:Tips:ModType].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consente di ignorare le impostazioni di moderazione predefinite per il forum.</value>
+  </data>
+  <data name="[RESX:Tips:PageSize].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il numero predefinito di elementi che si desidera visualizzare nella pagina degli argomenti e delle risposte.</value>
+  </data>
+  <data name="[RESX:Tips:PMTabId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona la pagina in cui hai installato il modulo di messaggistica privata.</value>
+  </data>
+  <data name="[RESX:Tips:POP3Address].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Indirizzo e-mail specifico per questo forum.  Questo sovrascriverà l'indirizzo e-mail del sito e l'indirizzo e-mail che potrebbe essere stato inserito nelle impostazioni del forum.</value>
+  </data>
+  <data name="[RESX:Tips:POPMailServer].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il dominio o l'indirizzo IP del server POP3.  cioè mail.mycompany.com</value>
+  </data>
+  <data name="[RESX:Tips:POPPassword].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere la password per l'account specificato in precedenza.</value>
+  </data>
+  <data name="[RESX:Tips:POPUserName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Immettere il nome utente che verrà utilizzato per connettersi al server di posta POP3.</value>
+  </data>
+  <data name="[RESX:Tips:PostIcon].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti all'utente di selezionare dall'elenco di icone per aiutare a identificare il proprio post.</value>
+  </data>
+  <data name="[RESX:Tips:QuickReplyForm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare il modello per visualizzare il modulo di risposta rapida.</value>
+  </data>
+  <data name="[RESX:Tips:RejectNotify].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Questo modello verrà inviato all'utente quando il messaggio di posta elettronica viene rifiutato.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyForm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Seleziona il modello per il modulo che gli utenti utilizzeranno durante la creazione di una risposta.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Punti da assegnare a un membro per la creazione di una nuova risposta.</value>
+  </data>
+  <data name="[RESX:Tips:ReplyPostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Il numero minimo di post che un utente deve avere per rispondere a un argomento.</value>
+  </data>
+  <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa opzione per importare solo i messaggi che sono stati inviati direttamente all'indirizzo e-mail specificato in precedenza.  Disabilitare questa funzione se si desidera importare tutti i messaggi presenti nella cassetta postale per questo account.</value>
+  </data>
+  <data name="[RESX:Tips:RSS].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti agli utenti di iscriversi a questo forum con RSS.  Solo i ruoli di sicurezza con accesso in lettura possono sottoscrivere.</value>
+  </data>
+  <data name="[RESX:Tips:Scripts].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti agli utenti di inserire javascript con i loro post.  Non consigliato.</value>
+  </data>
+  <data name="[RESX:Tips:ServerTimeZone].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>La differenza di fuso orario consente di regolare i calcoli dell'ora in base alle esigenze.  Nella maggior parte delle situazioni questo valore viene lasciato impostato su 0.</value>
+  </data>
+  <data name="[RESX:Tips:Signatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli se abilitare le firme e come visualizzarle.</value>
+  </data>
+  <data name="[RESX:Tips:SiteURL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Questo dovrebbe essere l'indirizzo del sito Web predefinito per il portale.</value>
+  </data>
+  <data name="[RESX:Tips:StripHTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare questa opzione per rimuovere il codice HTML dai messaggi di posta elettronica.</value>
+  </data>
+  <data name="[RESX:Tips:SubNotify].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>In questo modo è possibile selezionare un modello diverso dal modello di sottoscrizione e-mail predefinito da inviare agli utenti tramite posta elettronica.</value>
+  </data>
+  <data name="[RESX:Tips:SubscriptionOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare i metodi di abbonamento disponibili per gli utenti.</value>
+  </data>
+  <data name="[RESX:Tips:Subscriptions].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli se gli utenti possono iscriversi o meno ai forum e quali tipi di iscrizioni sono consentiti.</value>
+  </data>
+  <data name="[RESX:Tips:Tags].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti agli autori di inserire tag durante la creazione di post.</value>
+  </data>
+  <data name="[RESX:Tips:TopicForm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare il modello per il modulo che gli utenti utilizzeranno durante la creazione di un nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Punti da assegnare a un membro per la creazione di un nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:TopicPriority].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>La priorità dell'argomento consente agli argomenti di apparire più in alto nell'elenco anziché ordinati per data.  La priorità predefinita per tutti gli argomenti è 0.  Maggiore è la priorità, più alto sarà l'aspetto di un argomento nell'elenco.</value>
+  </data>
+  <data name="[RESX:Tips:TopicsTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare il modello per visualizzare l'elenco degli argomenti</value>
+  </data>
+  <data name="[RESX:Tips:TopicTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare il modello per la visualizzazione dell'argomento e delle risposte</value>
+  </data>
+  <data name="[RESX:Tips:UserDisplayMode].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Scegli come vuoi che appaia il nome del membro.</value>
+  </data>
+  <data name="[RESX:Tips:UserProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Selezionare il modello per visualizzare le informazioni sull'autore per un argomento o una risposta.</value>
+  </data>
+  <data name="[RESX:Tips:UsersOnlineEnabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa funzione per indicare quando l'utente è online e visita i forum.</value>
+  </data>
+  <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Abilita questa funzione e DNN Community Forums aggiornerà l'elemento di navigazione breadcrumb all'interno della tua skin.  Questa operazione è supportata solo con l'oggetto interfaccia di navigazione DNN.</value>
+  </data>
+  <data name="[RESX:Tips:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Inserisci il nome che desideri venga utilizzato all'interno dell'url quando accedi a questo forum.  </value>
+  </data>
+  <data name="[RESX:Title].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Titolo</value>
+  </data>
+  <data name="[RESX:TopForums].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>I migliori forum</value>
+  </data>
+  <data name="[RESX:Topic].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomento</value>
+  </data>
+  <data name="[RESX:TopicForm].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modulo dell'argomento</value>
+  </data>
+  <data name="[RESX:TopicPointValue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nuovo argomento</value>
+  </data>
+  <data name="[RESX:TopicPriority].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Consenti priorità argomento</value>
+  </data>
+  <data name="[RESX:TopicProperties:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Ulteriori informazioni sulle proprietà dell'argomento</value>
+  </data>
+  <data name="[RESX:TopicProperties].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Proprietà dell'argomento</value>
+  </data>
+  <data name="[RESX:Topics].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Argomenti</value>
+  </data>
+  <data name="[RESX:TopicsTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visualizzazione degli argomenti</value>
+  </data>
+  <data name="[RESX:TopicsView].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visualizzazione Argomenti</value>
+  </data>
+  <data name="[RESX:TopicTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visualizzazione dell'argomento</value>
+  </data>
+  <data name="[RESX:TopicView].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visualizzazione dell'argomento</value>
+  </data>
+  <data name="[RESX:TopMembers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Membri Top</value>
+  </data>
+  <data name="[RESX:TotalActiveMembers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Totale Membri Attivi</value>
+  </data>
+  <data name="[RESX:TotalForums].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Totale Forum</value>
+  </data>
+  <data name="[RESX:TotalMembers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Totale Membri</value>
+  </data>
+  <data name="[RESX:TotalReplies].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Risposte totali</value>
+  </data>
+  <data name="[RESX:TotalTopics].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Totale Argomenti</value>
+  </data>
+  <data name="[RESX:Trusted].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Fidato</value>
+  </data>
+  <data name="[RESX:TrustedUsers].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Utenti fidati</value>
+  </data>
+  <data name="[RESX:UniqueFileNames].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nomi di file univoci</value>
+  </data>
+  <data name="[RESX:URLPrefixBase].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Percorso di base</value>
+  </data>
+  <data name="[RESX:URLPrefixCategory].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Percorso categoria</value>
+  </data>
+  <data name="[RESX:URLPrefixOther].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Percorso viste</value>
+  </data>
+  <data name="[RESX:URLPrefixTag].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Percorso tag</value>
+  </data>
+  <data name="[RESX:UserDisplayMode].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Modalità di visualizzazione utente</value>
+  </data>
+  <data name="[RESX:UserName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome utente</value>
+  </data>
+  <data name="[RESX:UserNameNotFound].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Il nome utente inserito non è stato trovato.</value>
+  </data>
+  <data name="[RESX:UserProfiles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Impostazioni del profilo utente</value>
+  </data>
+  <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visualizzazione del profilo</value>
+  </data>
+  <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Mostra utenti online</value>
+  </data>
+  <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Aggiorna Skin Breadcrumb</value>
+  </data>
+  <data name="[RESX:ValidationExpression].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Convalida dell'input</value>
+  </data>
+  <data name="[RESX:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Nome della vanità</value>
+  </data>
+  <data name="[RESX:ViewRoles].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Può leggere il ruolo</value>
+  </data>
+  <data name="[RESX:Visibility].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Visibilità</value>
+  </data>
+  <data name="[RESX:WARN:DeleteProperty].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sei sicuro di voler eliminare questa proprietà?</value>
+  </data>
+  <data name="[RESX:Warning:Maint].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sei sicuro di voler eseguire questo processo?</value>
+  </data>
+  <data name="[RESX:Yes].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sì</value>
+  </data>
+  <data name="[RESX:YesNo].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Sì/No</value>
+  </data>
+  <data name="ControlTitle_edit.Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <value>Pannello di controllo</value>
+  </data>
+  <data name="[RESX:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Spilla</value>
+  </data>
+  <data name="[RESX:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Allegare</value>
+  </data>
+  <data name="[RESX:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Vietare</value>
+  </data>
+  <data name="[RESX:SecGrid:Create].Text" xml:space="preserve">
+    <value>Creare</value>
+  </data>
+  <data name="[RESX:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Cancellare</value>
+  </data>
+  <data name="[RESX:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Redigere</value>
+  </data>
+  <data name="[RESX:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Serratura</value>
+  </data>
+  <data name="[RESX:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Moderato</value>
+  </data>
+  <data name="[RESX:SecGrid:Move].Text" xml:space="preserve">
+    <value>Sposta</value>
+  </data>
+  <data name="[RESX:SecGrid:Read].Text" xml:space="preserve">
+    <value>Leggere</value>
+  </data>
+  <data name="[RESX:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Risposta</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe]Text" xml:space="preserve">
+    <value>Abbonarsi</value>
+  </data>
+  <data name="[RESX:SecGrid:View].Text" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="[RESX:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Annuncio</value>
+  </data>
+  <data name="[RESX:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Abbonarsi</value>
+  </data>
+  <data name="[RESX:SecGrid:Trust].Text" xml:space="preserve">
+    <value>Attendibilità</value>
+  </data>
+  <data name="[RESX:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="[RESX:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Assegna priorità</value>
+  </data>
+  <data name="[RESX:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Categorizzare</value>
+  </data>
+  <data name="[RESX:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Scrutinio</value>
+  </data>
+  <data name="[RESX:SecGrid:Split].Text" xml:space="preserve">
+    <value>Diviso</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Announce].Text" xml:space="preserve">
+    <value>Può contrassegnare i propri argomenti come annunci. Gli annunci vengono visualizzati sopra l'elenco degli argomenti normali.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Attach].Text" xml:space="preserve">
+    <value>Può caricare e allegare file a nuovi argomenti e risposte.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Ban].Text" xml:space="preserve">
+    <value>Può bandire un utente non autorizzato, eliminando tutti i contenuti per l'utente e disabilitando il suo account utente DNN. Non può essere utilizzato su utenti con privilegi avanzati o amministratori. Deve essere concesso solo ai moderatori attendibili o ai ruoli di amministratore.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Categorize].Text" xml:space="preserve">
+    <value>Consente di specificare le categorie a cui appartiene un nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Create].Text" xml:space="preserve">
+    <value>Può vedere il pulsante Nuovo argomento.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Delete].Text" xml:space="preserve">
+    <value>Può eliminare i propri post. Gli utenti con Moderazione + Elimina possono eliminare qualsiasi argomento o rispondere nel forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Edit].Text" xml:space="preserve">
+    <value>Possono modificare i propri post. Potrebbe esserci o meno un limite di tempo su questo. Gli utenti con Moderate + Edit possono modificare qualsiasi argomento o rispondere.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Lock].Text" xml:space="preserve">
+    <value>Può bloccare gli argomenti creati. Gli utenti con Moderate + Lock possono bloccare qualsiasi argomento in un forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Moderate].Text" xml:space="preserve">
+    <value>Dà accesso all'interfaccia di moderazione. Può approvare, rifiutare o eliminare argomenti e risposte moderati. Può anche essere combinato con Modifica, Elimina, Blocca, Blocca e Dividi per eseguire queste azioni su qualsiasi argomento in un forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Move].Text" xml:space="preserve">
+    <value>Gli utenti possono spostare il proprio argomento in un forum diverso. Gli utenti con Moderate + Move possono spostare qualsiasi argomento in un forum diverso.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Pin].Text" xml:space="preserve">
+    <value>Può appuntare gli argomenti che ha creato. Bloccando un argomento, questo rimane in cima all'elenco degli argomenti. Gli utenti con Moderazione + Pin possono appuntare qualsiasi argomento.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Poll].Text" xml:space="preserve">
+    <value>Può aggiungere un sondaggio ai nuovi argomenti creati.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Prioritize].Text" xml:space="preserve">
+    <value>Può impostare il numero di priorità su un argomento. Il numero di priorità determina la posizione dell'argomento nell'elenco degli argomenti. È simile all'aggiunta di un argomento, ma consente una specifica più dettagliata.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Read].Text" xml:space="preserve">
+    <value>Può vedere l'argomento dell'argomento e fare clic su di esso per vedere il contenuto.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Split].Text" xml:space="preserve">
+    <value>L'utente può dividere il proprio argomento e le sue risposte in diversi argomenti. L'utente con Moderato + Dividi può dividere qualsiasi argomento e le sue risposte in diversi argomenti.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Subscribe].Text" xml:space="preserve">
+    <value>Può iscriversi per ricevere notifiche via e-mail su nuovi argomenti e risposte.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Tag].Text" xml:space="preserve">
+    <value>Può aggiungere tag agli argomenti e alle risposte.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Trust].Text" xml:space="preserve">
+    <value>L'utente con sicurezza Attendibile ignora automaticamente la moderazione se configurato per un forum.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:View].Text" xml:space="preserve">
+    <value>Riesce a visualizzare l'argomento nell'elenco, ma non ad aprirlo.</value>
+  </data>
+  <data name="[RESX:Tips:SecGrid:Reply].Text" xml:space="preserve">
+    <value>Può rispondere a un argomento creato in precedenza.</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Basics].Text" xml:space="preserve">
+    <value>Informazioni di base</value>
+  </data>
+  <data name="[RESX:SecurityGrid:Advanced].Text" xml:space="preserve">
+    <value>Avanzato</value>
+  </data>
+  <data name="[RESX:SecurityGrid:SuperUser].Text" xml:space="preserve">
+    <value>Amministratori/Moderatori</value>
+  </data>
+</root>

@@ -15,5 +15,5 @@ Make sure work on a you copy the folder of this Theme as your custom Theme.
 This folder will be overwritten on Module upgrade and your changes lost.
 
 ## Custom CSS
-The Theme's CSS is based on Less.
-When you want to use the Less files for your own Theme, please download them from GitHub or unzip the "theme-source.zip.resources" file.
+The Theme's CSS is based on SCSS.
+When you want to use the SCSS files for your own Theme, please download them from GitHub or unzip the "theme-source.zip.resources" file.

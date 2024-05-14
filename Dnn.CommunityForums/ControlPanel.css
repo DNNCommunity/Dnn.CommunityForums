@@ -141,7 +141,8 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afsecactionelem{font-size:11px;font-family:Tahoma;text-align:center;padding:0;border-left:dashed 1px #dcdcdc;height:22px;}
 .amtbwrapper {text-decoration:none;text-align:center !important;display:block;padding:0px;margin:0px;height:60px;}
 .amnavbar {height:61px;text-decoration:none;text-align:center;display:block;padding:0px;margin:0px;background:#eee;}
-.amcpmdtoolbarbtm{text-align:center;padding:0px; margin-left:auto;margin-right:auto;height:55px;}
+.amcpmdtoolbarbtm{display:flex; justify-content: center;}
+.amcpmdtoolbarbtm .amtoolbaritem{width: auto; padding: 0.5em;}
 .amcpmdtoolbarbtm a, .amcpmdtoolbarbtm a:link{text-decoration:none;text-align:center !important;}
 .amcpmdtoolbar{width:610px;text-align:center;padding:0px;margin:0 auto;height:50px;padding-top:2px;text-decoration:none;}
 .amcpmdtoolbar a, .amcpmdtoolbar a:link{text-decoration:none;text-align:center !important;}
@@ -418,3 +419,15 @@ ul.amcpformlist li div.amcpradiorow input[type="checkbox"]{font-size:14px;margin
 
 #afRankEdit .dnnForm, #afFilterEdit .dnnForm{min-width:inherit;}
 
+
+
+.dcf-controlpanel .dcf-controlpanel-tooltip {
+	--tooltip-color: #fff;
+	--tooltip-bg-color: rgba(0,0,0, .8);
+	--tooltip-icon-color: #ccc;
+	display:block; text-decoration: none; cursor: help; position:relative;}
+.dcf-controlpanel .dcf-controlpanel-tooltip::before { content: attr(data-tooltip); position: absolute; white-space:wrap; top: 1.8em; left: 0; color: var(--tooltip-color); background: var(--tooltip-bg-color); border-radius: 0.3em; padding: 0.2em 0.5em; }
+.dcf-controlpanel .dcf-controlpanel-tooltip::before { opacity: 0; visibility: hidden; transition: opacity .3s ease-in-out; width: 20em; display: inline-block;}
+.dcf-controlpanel .dcf-controlpanel-tooltip:hover::before { opacity: 1; visibility: visible; }
+.dcf-controlpanel .dcf-controlpanel-tooltip::after{content: "?"; display:inline-block; line-height: 1.5em; width: 1.6em; text-align:center; color: var(--tooltip-icon-color); border: solid 1px var(--tooltip-icon-color); border-radius: 50%; margin-left: 0.5em;}
+.dcf-controlpanel .dcf-controlpanel-tooltip:hover::after{ background: var(--tooltip-bg-color); border-color: var(--tooltip-bg-color); color: var(--tooltip-color);}

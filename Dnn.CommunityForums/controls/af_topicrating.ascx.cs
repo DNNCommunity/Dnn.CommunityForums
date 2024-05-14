@@ -1,44 +1,44 @@
-﻿//
-// Community Forums
-// Copyright (c) 2013-2021
-// by DNN Community
+﻿// Copyright (c) 2013-2024 by DNN Community
 //
-// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-// documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and 
+// DNN Community licenses this file to you under the MIT license.
+//
+// See the LICENSE file in the project root for more information.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+// documentation files (the "Software"), to deal in the Software without restriction, including without limitation
+// the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
 // to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-// The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions
 // of the Software.
 //
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+// TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+// THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+// CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
-//
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web.UI.WebControls;
+
     public partial class af_topicrating : ForumBase
     {
         public string RatingClass = "rating0";
         #region Private Members
-        private int _Rating = -1;
-        private bool _Enabled = false;
+        private int rating = -1;
+        private bool enabled = false;
         #endregion
         #region Controls
-        protected ImageButton Rate1 = new ImageButton();
-        protected ImageButton Rate2 = new ImageButton();
-        protected ImageButton Rate3 = new ImageButton();
-        protected ImageButton Rate4 = new ImageButton();
-        protected ImageButton Rate5 = new ImageButton();
+        protected ImageButton rate1 = new ImageButton();
+        protected ImageButton rate2 = new ImageButton();
+        protected ImageButton rate3 = new ImageButton();
+        protected ImageButton rate4 = new ImageButton();
+        protected ImageButton rate5 = new ImageButton();
 
         #endregion
         #region Public Properties
@@ -46,22 +46,25 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _Rating;
+                return this.rating;
             }
+
             set
             {
-                _Rating = value;
+                this.rating = value;
             }
         }
+
         public bool Enabled
         {
             get
             {
-                return _Enabled;
+                return this.enabled;
             }
+
             set
             {
-                _Enabled = value;
+                this.enabled = value;
             }
         }
         #endregion
@@ -71,48 +74,48 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            Rate1.Click += Rate1_Click;
-            Rate2.Click += Rate2_Click;
-            Rate3.Click += Rate3_Click;
-            Rate4.Click += Rate4_Click;
-            Rate5.Click += Rate5_Click;
-            cbRating.CallbackEvent += cbRating_Callback;
-
+            this.rate1.Click += this.Rate1_Click;
+            this.rate2.Click += this.Rate2_Click;
+            this.rate3.Click += this.Rate3_Click;
+            this.rate4.Click += this.Rate4_Click;
+            this.rate5.Click += this.Rate5_Click;
+            this.cbRating.CallbackEvent += this.cbRating_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
-            RenderRating();
+            this.RenderRating();
             string sRating = "function afchangerate(rate){var rd = document.getElementById('ratingdiv');rd.className=rate;};";
-            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "afratescript", sRating, true);
+            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "afratescript", sRating, true);
         }
 
         private void Rate1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 1, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 1, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 2, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 2, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 3, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 3, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate4_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 4, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 4, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate5_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 5, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 5, ipAddress: this.Request.UserHostAddress.ToString());
         }
+
         private void cbRating_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
             if (e.Parameters.Length > 0)
@@ -120,86 +123,87 @@ namespace DotNetNuke.Modules.ActiveForums
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: rate, IpAddress: Request.UserHostAddress.ToString());
+                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, ipAddress: this.Request.UserHostAddress.ToString());
                 }
             }
-            Rating = -1;
-            RenderRating();
-            plhRating.RenderControl(e.Output);
+
+            this.Rating = -1;
+            this.RenderRating();
+            this.plhRating.RenderControl(e.Output);
         }
+
         #endregion
         #region Private Methods
         private void RenderRating()
         {
-            if (Rating == -1)
+            if (this.Rating == -1)
             {
-                Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
+                this.Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: this.TopicId);
             }
-            RatingClass = "rating" + Rating.ToString();
-            plhRating.Controls.Clear();
-            Rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");
-            Rate1.Enabled = Enabled;
-            Rate2.Attributes.Add("onmouseover", "afchangerate('rating2');");
-            Rate2.Enabled = Enabled;
-            Rate3.Attributes.Add("onmouseover", "afchangerate('rating3');");
-            Rate3.Enabled = Enabled;
-            Rate4.Attributes.Add("onmouseover", "afchangerate('rating4');");
-            Rate4.Enabled = Enabled;
-            Rate5.Attributes.Add("onmouseover", "afchangerate('rating5');");
-            Rate5.Enabled = Enabled;
+
+            this.RatingClass = "rating" + this.Rating.ToString();
+            this.plhRating.Controls.Clear();
+            this.rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");
+            this.rate1.Enabled = this.Enabled;
+            this.rate2.Attributes.Add("onmouseover", "afchangerate('rating2');");
+            this.rate2.Enabled = this.Enabled;
+            this.rate3.Attributes.Add("onmouseover", "afchangerate('rating3');");
+            this.rate3.Enabled = this.Enabled;
+            this.rate4.Attributes.Add("onmouseover", "afchangerate('rating4');");
+            this.rate4.Enabled = this.Enabled;
+            this.rate5.Attributes.Add("onmouseover", "afchangerate('rating5');");
+            this.rate5.Enabled = this.Enabled;
 
             Literal lit = new Literal();
-            lit.Text = "<div class=\"" + RatingClass + "\" id=\"ratingdiv\" onmouseout=\"this.className='" + RatingClass + "'\">";
-            plhRating.Controls.Add(lit);
-            Rate1.ID = "Rate1";
-            Rate1.CausesValidation = false;
-            Rate1.Width = 13;
-            Rate1.Height = 14;
-            Rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate1);
-            Rate2.ID = "Rate2";
-            Rate2.CausesValidation = false;
-            Rate2.Width = 14;
-            Rate2.Height = 14;
-            Rate2.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate2);
-            Rate3.ID = "Rate3";
-            Rate3.CausesValidation = false;
-            Rate3.Width = 14;
-            Rate3.Height = 14;
-            Rate3.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate3);
-            Rate4.ID = "Rate4";
-            Rate4.CausesValidation = false;
-            Rate4.Width = 14;
-            Rate4.Height = 14;
-            Rate4.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate4);
-            Rate5.ID = "Rate5";
-            Rate5.CausesValidation = false;
-            Rate5.Width = 14;
-            Rate5.Height = 14;
-            Rate5.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            lit.Text = "<div class=\"" + this.RatingClass + "\" id=\"ratingdiv\" onmouseout=\"this.className='" + this.RatingClass + "'\">";
+            this.plhRating.Controls.Add(lit);
+            this.rate1.ID = "Rate1";
+            this.rate1.CausesValidation = false;
+            this.rate1.Width = 13;
+            this.rate1.Height = 14;
+            this.rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate1);
+            this.rate2.ID = "Rate2";
+            this.rate2.CausesValidation = false;
+            this.rate2.Width = 14;
+            this.rate2.Height = 14;
+            this.rate2.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate2);
+            this.rate3.ID = "Rate3";
+            this.rate3.CausesValidation = false;
+            this.rate3.Width = 14;
+            this.rate3.Height = 14;
+            this.rate3.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate3);
+            this.rate4.ID = "Rate4";
+            this.rate4.CausesValidation = false;
+            this.rate4.Width = 14;
+            this.rate4.Height = 14;
+            this.rate4.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate4);
+            this.rate5.ID = "Rate5";
+            this.rate5.CausesValidation = false;
+            this.rate5.Width = 14;
+            this.rate5.Height = 14;
+            this.rate5.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
 
-            plhRating.Controls.Add(Rate5);
+            this.plhRating.Controls.Add(this.rate5);
             lit = new Literal();
             lit.Text = "</div>";
-            plhRating.Controls.Add(lit);
-            if (UseAjax)
-            {
-                Rate1.OnClientClick = "af_rateTopic(1);return false;";
-                Rate2.OnClientClick = "af_rateTopic(2);return false;";
-                Rate3.OnClientClick = "af_rateTopic(3);return false;";
-                Rate4.OnClientClick = "af_rateTopic(4);return false;";
-                Rate5.OnClientClick = "af_rateTopic(5);return false;";
-                AddRatingScript();
-            }
+            this.plhRating.Controls.Add(lit);
+            this.rate1.OnClientClick = "af_rateTopic(1);return false;";
+            this.rate2.OnClientClick = "af_rateTopic(2);return false;";
+            this.rate3.OnClientClick = "af_rateTopic(3);return false;";
+            this.rate4.OnClientClick = "af_rateTopic(4);return false;";
+            this.rate5.OnClientClick = "af_rateTopic(5);return false;";
+            this.AddRatingScript();
         }
+
         private void AddRatingScript()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.Append("function af_rateTopic(rate){" + cbRating.ClientID + ".Callback(rate);};");
-            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "afrate", sb.ToString(), true);
+            sb.Append("function af_rateTopic(rate){" + this.cbRating.ClientID + ".Callback(rate);};");
+            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "afrate", sb.ToString(), true);
         }
         #endregion
 

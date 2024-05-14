@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Admins.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Amministratori</value>
+  </data>
+  <data name="AdvancedOptions.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Opzioni avanzate</value>
+  </data>
+  <data name="Anon.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Utente anonimo</value>
+  </data>
+  <data name="AnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Fornisci una risposta</value>
+  </data>
+  <data name="ApplicationRestart.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Riavvio dell'applicazione dopo la modifica delle impostazioni del modulo</value>
+  </data>
+  <data name="AuthenticatedUsers.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Utenti autenticati</value>
+  </data>
+  <data name="AutoLink.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Abilita questa opzione per i forum della community DNN per convertire automaticamente gli indirizzi dei siti Web in collegamenti ipertestuali.</value>
+  </data>
+  <data name="AutoLink.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Collegamenti ipertestuali automatici</value>
+  </data>
+  <data name="AvatarSize.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Inserisci l'altezza e la larghezza massime per un avatar.</value>
+  </data>
+  <data name="AvatarSize.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Dimensione dell'avatar</value>
+  </data>
+  <data name="CacheTemplates.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Normalmente dovrebbe essere abilitato; Disabilita se stai modificando i modelli e desideri vedere risultati immediati.</value>
+  </data>
+  <data name="CacheTemplates.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Abilita la memorizzazione nella cache dei modelli</value>
+  </data>
+  <data name="CommunityOptions.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Opzioni della community</value>
+  </data>
+  <data name="ContentOptions.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Opzioni di contenuto</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Impostazioni dei forum della community DNN</value>
+  </data>
+  <data name="DateFormat.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Stringa di formato utilizzata per visualizzare i valori di data.</value>
+  </data>
+  <data name="DateFormat.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Formato data</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Default</value>
+  </data>
+  <data name="DefaultDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>--Disabile--</value>
+  </data>
+  <data name="DefaultPageSize.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Immettere il numero predefinito di elementi che si desidera visualizzare nella pagina degli argomenti e delle risposte.</value>
+  </data>
+  <data name="DefaultPageSize.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Formato pagina predefinito</value>
+  </data>
+  <data name="DefaultProfile.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Profilo predefinito</value>
+  </data>
+  <data name="DeleteBehavior.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Scegli cosa succede al contenuto quando viene eliminato. &lt;b&gt;Rimuovi&lt;/b&gt;: rimuove il contenuto dal database.  &lt;b&gt;Ricicla&lt;/b&gt;: il contenuto viene contrassegnato come eliminato e rimane nel database. Scegliere questa opzione se si desidera sfruttare la ricerca incrementale DNN.</value>
+  </data>
+  <data name="DeleteBehavior.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Elimina comportamento</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Disabile</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Nome visualizzato</value>
+  </data>
+  <data name="DisplaySettings.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Impostazioni di visualizzazione</value>
+  </data>
+  <data name="EditInterval.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Consente all'utente di modificare il proprio post solo entro un determinato numero di minuti dal momento in cui è stato creato.  L'utente deve inoltre disporre dell'autorizzazione di modifica.  Impostare questo valore su 0 per disabilitare questa funzione.</value>
+  </data>
+  <data name="EditInterval.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Intervallo di modifica</value>
+  </data>
+  <data name="EnablePoints.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Il sistema di punti consente agli utenti di ricevere punti per determinate azioni all'interno del forum per aumentare il proprio rango.</value>
+  </data>
+  <data name="EnablePoints.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Sistema a punti</value>
+  </data>
+  <data name="EnableURLRewriter.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Scegliere questa opzione se si desidera abilitare il riscrittore di URL descrittivo per questo modulo.  </value>
+  </data>
+  <data name="EnableURLRewriter.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Abilita URL brevi</value>
+  </data>
+  <data name="Everyone.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Ciascuno</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Nome di battesimo</value>
+  </data>
+  <data name="FloodInterval.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Numero di secondi che un utente deve attendere tra un post e l'altro.</value>
+  </data>
+  <data name="FloodInterval.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Intervallo di inondazione</value>
+  </data>
+  <data name="ForumGroupTemplate.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Selezionare il gruppo di forum che verrà utilizzato per i nuovi forum.  Questa opzione è applicabile solo ai forum creati automaticamente per i gruppi social.</value>
+  </data>
+  <data name="ForumGroupTemplate.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Gruppo di forum per nuovi forum</value>
+  </data>
+  <data name="ForumTemplate.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Seleziona il modello per la pagina che visualizzerà tutti i tuoi forum.</value>
+  </data>
+  <data name="ForumTemplate.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Sagoma</value>
+  </data>
+  <data name="ForumTheme.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Seleziona il tema grafico per il tuo forum.</value>
+  </data>
+  <data name="ForumTheme.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Tema</value>
+  </data>
+  <data name="FullName.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Nome e Cognome</value>
+  </data>
+  <data name="FullTextAzure.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>La ricerca full-text non è supportata in SQL Azure.</value>
+  </data>
+  <data name="FullTextNotInstalled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>La ricerca full-text non è installata in SQL Server.</value>
+  </data>
+  <data name="FullTextSearch.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>La ricerca full-text offre prestazioni migliori e risultati più accurati.  Contattare il provider di hosting per assicurarsi che la ricerca full-text sia abilitata per il database.</value>
+  </data>
+  <data name="FullTextSearch.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Abilitare la ricerca full-text</value>
+  </data>
+  <data name="GroupAdmin.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Proprietari di gruppi</value>
+  </data>
+  <data name="GroupMember.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Membri del gruppo</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Altezza</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Cognome</value>
+  </data>
+  <data name="MainFeatures.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Caratteristiche principali</value>
+  </data>
+  <data name="MarkAnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Segna la risposta</value>
+  </data>
+  <data name="MessagingCore.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Messaggistica predefinita</value>
+  </data>
+  <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Disabile</value>
+  </data>
+  <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Seleziona la scheda contenente il modulo di messaggistica privata</value>
+  </data>
+  <data name="MessagingTab.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Scheda Messaggi</value>
+  </data>
+  <data name="MessagingType.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Seleziona un sistema di messaggistica privato.</value>
+  </data>
+  <data name="MessagingType.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Tipo di messaggistica</value>
+  </data>
+  <data name="MessagingVentrian.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Messaggi Ventriani</value>
+  </data>
+  <data name="Mode.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Utilizzare sempre la modalità Standard, a meno che non si stia utilizzando il modulo in una pagina per i gruppi social.  La modalità Gruppo social deve essere utilizzata solo quando si sa che un GroupId sarà sempre presente nell'URL.</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Modalità Forum</value>
+  </data>
+  <data name="ModeratorPermissions.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Autorizzazioni del moderatore</value>
+  </data>
+  <data name="Moderators.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Moderatori</value>
+  </data>
+  <data name="ModPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Modera come post</value>
+  </data>
+  <data name="No.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>No</value>
+  </data>
+  <data name="ProfileDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Collegamenti al profilo disabilitati</value>
+  </data>
+  <data name="ProfileType.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Scegli il tipo di profilo che utilizzerai. Il profilo predefinito è identico al profilo del sito standard.</value>
+  </data>
+  <data name="ProfileType.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Tipo di profilo</value>
+  </data>
+  <data name="ProfileVisibility.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Determina quali utenti possono fare clic per visualizzare un profilo utente.</value>
+  </data>
+  <data name="ProfileVisibility.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Visibilità del profilo</value>
+  </data>
+  <data name="Recycle.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Segna come eliminato</value>
+  </data>
+  <data name="RegisteredUser.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Utente Registrato</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Rimuovi immediatamente i contenuti</value>
+  </data>
+  <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Risposta</value>
+  </data>
+  <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Disabile</value>
+  </data>
+  <data name="SignatureHTML.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Consenti testo normale e HTML</value>
+  </data>
+  <data name="SignaturePlainText.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Consenti solo testo normale</value>
+  </data>
+  <data name="SocialGroups.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Gruppi sociali</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Standard</value>
+  </data>
+  <data name="TimeFormat.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Stringa di formato utilizzata per visualizzare i valori dell'ora.</value>
+  </data>
+  <data name="TimeFormat.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Formato dell'ora</value>
+  </data>
+  <data name="TopicPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Nuovo argomento</value>
+  </data>
+  <data name="URLPrefixBase.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Questo è il testo che verrà utilizzato come parte iniziale di tutti gli URL del forum.  Nella maggior parte dei casi vorrai solo entrare in "forum"</value>
+  </data>
+  <data name="URLPrefixBase.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Percorso di base</value>
+  </data>
+  <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Questo è il testo che verrà utilizzato come parte dell'URL per identificare le categorie del forum.</value>
+  </data>
+  <data name="URLPrefixCategory.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Percorso categoria</value>
+  </data>
+  <data name="URLPrefixOther.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Questo è il testo che verrà utilizzato come parte dell'URL all'interno di altre visualizzazioni del forum.  </value>
+  </data>
+  <data name="URLPrefixOther.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Percorso viste</value>
+  </data>
+  <data name="URLPrefixTag.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Questo è il testo che verrà utilizzato come parte dell'URL per identificare i tag del forum.</value>
+  </data>
+  <data name="URLPrefixTag.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Percorso tag</value>
+  </data>
+  <data name="UserDisplayMode.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Selezionare il formato che si desidera utilizzare per visualizzare i nomi dei membri all'interno dei forum.</value>
+  </data>
+  <data name="UserDisplayMode.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Formato di visualizzazione del nome del membro</value>
+  </data>
+  <data name="UserName.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Nome utente</value>
+  </data>
+  <data name="UserPermissions.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Autorizzazioni utente</value>
+  </data>
+  <data name="UserSignatures.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Selezionare se abilitare o meno le firme insieme al formato che può essere utilizzato.</value>
+  </data>
+  <data name="UserSignatures.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Firme utente</value>
+  </data>
+  <data name="UsersOnline.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Abilita o disabilita la visualizzazione degli utenti che attualmente utilizzano il modulo forum.</value>
+  </data>
+  <data name="UsersOnline.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Abilita visualizzazione online degli utenti</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Help" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Utilizzare il breadcrumb skin per la visualizzazione del breadcrumb superiore anziché il breadcrumb AF.  Si noti che questa impostazione non influisce sul breadcrumb AF inferiore.</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Usa Skin Breadcrumb</value>
+  </data>
+  <data name="Width.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Larghezza</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+    <value>Sì</value>
+  </data>
+  <data name="[RESX:Ban].Text" xml:space="preserve">
+    <value>Vietare</value>
+  </data>
+</root>

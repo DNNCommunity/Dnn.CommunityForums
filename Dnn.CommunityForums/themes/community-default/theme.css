@@ -20,6 +20,12 @@
     display: initial;
   }
 }
+.dcf-text-end {
+  text-align: end;
+}
+.dcf-break-word {
+  word-break: break-all;
+}
 .dnn-community-forums .afeditor {
   background: #fff;
   border: none;
@@ -72,6 +78,10 @@
 .dnn-community-forums .afeditor .afsectionhd {
   border: none !important;
   padding: 0.3em;
+}
+.dnn-community-forums .dcf-topic-edit-subject input,
+.dnn-community-forums .dcf-topic-edit-summary input {
+  width: 95%;
 }
 .dnn-community-forums .dcf-cols {
   display: flex;
@@ -143,6 +153,9 @@
   .dnn-community-forums .dcf-link-text {
     display: inline;
   }
+}
+.dnn-community-forums .dcf-toolbar-drop-down-menu-content .dcf-link-text {
+  display: inline-block;
 }
 .dnn-community-forums .dcf-actions {
   padding: 1rem 0;
@@ -349,7 +362,7 @@
 .dnn-community-forums .dcf-group-title-wrap .dcf-group-title {
   font-size: 1.4em;
   color: black;
-  text-rowansform: uppercase;
+  text-transform: uppercase;
   margin: 0;
   flex-grow: 1;
 }
@@ -378,16 +391,18 @@
   margin: 0;
   color: black;
 }
-.dnn-community-forums .dcf-topics-view .dcf-forum-title {
-  margin-top: 0;
-  font-size: 1.2em;
+.dnn-community-forums .dcf-topics-view .dcf-forum-title-wrap {
   flex-grow: 1;
   width: 100%;
 }
 @media screen and (min-width: 768px) {
-  .dnn-community-forums .dcf-topics-view .dcf-forum-title {
+  .dnn-community-forums .dcf-topics-view .dcf-forum-title-wrap {
     width: auto;
   }
+}
+.dnn-community-forums .dcf-topics-view .dcf-forum-title {
+  margin-top: 0;
+  font-size: 1.2em;
 }
 .dnn-community-forums .dcf-topics-view .dcf-forum-search-subscribe .dcf-forum-search {
   padding-bottom: 1rem;
@@ -438,6 +453,7 @@
   max-height: 7.5em;
   overflow: hidden;
   text-overflow: ellipsis;
+  word-break: break-all;
 }
 .dnn-community-forums .dcf-topics-view .dcf-topics .dcf-subject .dcf-topic-tools {
   display: flex;
@@ -497,6 +513,9 @@
   margin: 0 0.5em;
 }
 .dnn-community-forums .dcf-topic-view .dcf-header-content {
+  padding-top: 1rem;
+}
+.dnn-community-forums .dcf-topic-view .dcf-header-content .dcf-topic-buttons {
   padding-top: 1rem;
 }
 .dnn-community-forums .dcf-topic-view .dcf-header-content .dcf-topic-controls {
@@ -654,6 +673,10 @@
 }
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-content-main .dcf-post-body {
   padding-bottom: 1.5rem;
+}
+.dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-topic-content-main .dcf-post-body img {
+  max-width: 100% !important;
+  height: auto !important;
 }
 .dnn-community-forums .dcf-topic-view .dcf-topic-post .dcf-post-footer {
   border-top: solid 1px #ccc;
