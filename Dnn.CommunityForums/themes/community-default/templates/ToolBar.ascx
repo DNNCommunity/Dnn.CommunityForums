@@ -5,7 +5,7 @@
             <li>[AF:TB:Forums]</li>
             <li>
                 <div class="dcf-toolbar-drop-down-menu">
-                    <button class="dcf-toolbar-drop-down-menu-button"><i class="fa fa-filter fa-fw fa-grey"></i><span class="dcf-link-text">[RESX:Filters]</span><i class="fa fa-chevron-down fa-fw fa-grey"></i></button>
+                    <button class="dcf-toolbar-drop-down-menu-button"><i class="fa fa-filter fa-fw fa-grey"></i><span class="dcf-link-text">[RESX:FilteredTopics]</span><i class="fa fa-chevron-down fa-fw fa-grey"></i></button>
                     <div class="dcf-toolbar-drop-down-menu-content">
                         [AF:TB:MyTopics]
                         [AF:TB:NotRead]
