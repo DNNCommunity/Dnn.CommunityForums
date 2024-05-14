@@ -74,10 +74,10 @@
 						</td>
 					</tr> -->
 						<tr class="dcf-table-body-row dcf-sub-forums">
-							<td class="dcf-col dcf-col-icon"></td>
+							
 							<td class="dcf-col dcf-col-text">
-								<span class="aftopictitle">[FORUMNAME]</span>
-								<span class="aftopicsubtitle">[FORUMDESCRIPTION]</span>
+								<span class="dcf-forum-title h6">[FORUMNAME]</span>
+								<span class="dcf-forum-description">[FORUMDESCRIPTION]</span>
 							</td>
 							<td class="dcf-col dcf-col-topics">[TOTALTOPICS]</td>
 							<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>
