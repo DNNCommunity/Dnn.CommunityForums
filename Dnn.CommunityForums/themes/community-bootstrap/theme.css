@@ -244,6 +244,11 @@
     max-width: 80%;
   }
 }
+.dnn-community-forums .dcf-topic-view .dcf-avatar-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 .dnn-community-forums .dcf-topic-view .dcf-quick-reply .dcf-subscribe .amaf-chk-subs {
   margin-right: 0.25rem;
 }
