@@ -20,7 +20,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Net;
 using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -30,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Members
         private bool bModDelete = false;
         private bool bModEdit = false;
+        private bool bModBan = false;
         private bool bModApprove = false;
         private bool bModMove = false;
         private bool bModBan = false;
@@ -283,20 +283,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     if (bModBan)
                     {
-                        int authorId;
-                        if (Convert.ToInt32(dr["ReplyId"]) > 0 & Convert.ToInt32(dr["ReplyId"]) != Convert.ToInt32(dr["TopicId"]))
-                        {
-                            var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(Convert.ToInt32(dr["ReplyId"]));
-                            authorId = ri.Content.AuthorId;
-                        }
-                        else
-                        {
-                            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(Convert.ToInt32(dr["TopicId"]));
-                            authorId = ti.Content.AuthorId;
-                        }
-                        var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + dr["ReplyId"].ToString(), ParamKeys.AuthorId + "=" + authorId };
-                        sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"Deletes all posts for this user and unauthorizes the user.\" title=\"[RESX:Ban]\">[RESX:Ban]</a>");
+                        var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
+                        sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
                     }
+
 
                     sb.Append("</td></tr>");
                     sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + dr["AuthorName"].ToString() + "</td>");

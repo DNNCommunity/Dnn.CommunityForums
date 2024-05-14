@@ -373,6 +373,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Profile = "profile";
         public const string MyPreferences = "afprofile";
         public const string MySubscriptions = "afsubscriptions";
+        public const string ModerateTopics = "modtopics";
+        public const string ModerateBan = "modban";
     }
     internal static class GridTypes
     {

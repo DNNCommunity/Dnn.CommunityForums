@@ -1472,16 +1472,18 @@ From,
     <value>A post by [DisplayName] has been flagged for review by [FlaggedBy]</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>[Post]</value>
+    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] has posted a reply to [TopicSubject]</value>
+    <value>[DisplayName] has posted content requiring moderation</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>[Post]</value>
+    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] has created a new topic: [TopicSubject]</value>
+    <value>[DisplayName] has posted content requiring moderation</value>
   </data>
   <data name="ForumEditor.Text" xml:space="preserve">
     <value>Forum Editor</value>
@@ -1725,5 +1727,8 @@ From,
   </data>
   <data name="[RESX:Filters].Text" xml:space="preserve">
     <value>Filters</value>
+  </data>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
+    <value>Deletes all posts for this user and unauthorizes the user.</value>
   </data>
 </root>
