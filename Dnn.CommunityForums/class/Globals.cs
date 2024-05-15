@@ -382,7 +382,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string MyTopics = "mytopics";
         public const string MySettings = "afprofile";
         public const string MySubscriptions = "afsubscriptions";
-        public const string MostLiked = "mostlikes";
+        public const string MostLiked = "mostliked";
         public const string MostReplies = "mostreplies";
         public const string Unresolved = "unresolved";
         public const string Announcements = "announcements";
