@@ -1,6 +1,8 @@
-.dnn-community-forums .table .dcf-th,
 .dnn-community-forums .table tbody + tbody {
-  border-width: 1px !important;
+  border-width: 0 !important;
+}
+.dnn-community-forums .table thead th {
+  border-bottom-width: 1px !important;
 }
 .dnn-community-forums .dcf-link-text {
   display: none;
@@ -241,5 +243,13 @@
   .dnn-community-forums .dcf-topic-view .dcf-avatar-img {
     max-width: 80%;
   }
+}
+.dnn-community-forums .dcf-topic-view .dcf-avatar-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.dnn-community-forums .dcf-topic-view .dcf-quick-reply .dcf-subscribe .amaf-chk-subs {
+  margin-right: 0.25rem;
 }
 /*# sourceMappingURL=theme.css.map */

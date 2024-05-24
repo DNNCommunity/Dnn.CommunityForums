@@ -31,20 +31,18 @@ using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Search.Entities;
+using log4net;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
     #region Topics Controller
     public class TopicsController : DotNetNuke.Entities.Modules.ModuleSearchBase, DotNetNuke.Entities.Modules.IUpgradeable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
+        private static readonly DotNetNuke.Instrumentation.ILog Logger = LoggerSource.Instance.GetLogger(typeof(TopicsController));
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate()")]
         public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(PortalId, ModuleId, ForumId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
-
-        public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew)
-        {
-            DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(OldTopicId,NewTopicId, listreplies, isNew);
-        }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split()")]
+        public void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(OldTopicId, NewTopicId, listreplies, isNew);
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
         public int TopicSave(int PortalId, TopicInfo ti) => DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(TopicInfo ti)")]
@@ -95,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 roles.Add(r.RoleName);
             }
             string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
-
+            roleIds = string.Concat(roleIds, DotNetNuke.Common.Globals.glbRoleAllUsers, ";", DotNetNuke.Common.Globals.glbRoleUnauthUser);
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
             List<SearchDocument> searchDocuments = new List<SearchDocument>();

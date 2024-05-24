@@ -38,10 +38,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return ManageImagePath(sHTML, new Uri(hostWithScheme));
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetListOfModerators(int portalId, int ModuleId, int forumId).")]
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int forumId)
         {
-            return GetListOfModerators(portalId, -1, forumId);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, -1, forumId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)")]
