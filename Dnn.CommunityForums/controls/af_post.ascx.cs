@@ -819,14 +819,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (ti.IsApproved == false)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, 0, ti.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     Response.Redirect(NavigateUrl(ForumTabId, "", @params), false);
                 }
                 if (!_isEdit)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, TabId, ModuleId, ForumInfo.ForumGroupId, ForumId, TopicId, -1, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, TabId, ModuleId, ForumInfo.ForumGroupId, ForumId, TopicId, 0, ti.Content.AuthorId);
                 }
 
                 if (ti.IsApproved == false)

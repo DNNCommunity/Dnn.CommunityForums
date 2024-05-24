@@ -295,8 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 Subscriptions.SendSubscriptions(-1, PortalId, ModuleId, TabId, topic.Forum, TopicId, 0, topic.Content.AuthorId, new Uri(RequestUrl));
 
-                ControlUtils ctlUtils = new ControlUtils();
-                string sUrl = ctlUtils.BuildUrl(TabId, ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
+                string sUrl = new ControlUtils().BuildUrl(TabId, ModuleId, topic.Forum.ForumGroup.PrefixURL, topic.Forum.PrefixURL, topic.Forum.ForumGroupId, ForumId, TopicId, topic.TopicUrl, -1, -1, string.Empty, 1, -1, topic.Forum.SocialGroupId);
 
                 Social amas = new Social(); 
                 amas.AddTopicToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, topic.Author.AuthorId, sUrl, topic.Content.Subject, string.Empty, topic.Content.Body, topic.Forum.Security.Read, topic.Forum.SocialGroupId);
@@ -317,41 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal static bool ProcessUnapprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
-            try
-            {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-
-                List<UserInfo> mods = Utilities.GetListOfModerators(PortalId, ModuleId, ForumId);
-                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-
-                string notifySubject = Utilities.GetSharedResource("NotificationSubjectTopic");
-                notifySubject = notifySubject.Replace("[DisplayName]", topic.Content.AuthorName);
-                notifySubject = notifySubject.Replace("[TopicSubject]", topic.Content.Subject);
-
-                var notifyBody = Utilities.GetSharedResource("NotificationBodyTopic");
-                notifyBody = notifyBody.Replace("[Post]", topic.Content.Body);
-
-                var notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ModuleId, ForumId, TopicId, ReplyId);
-
-                var notification = new Notification
-                {
-                    NotificationTypeID = notificationType.NotificationTypeId,
-                    Subject = notifySubject,
-                    Body = notifyBody,
-                    IncludeDismissAction = false,
-                    SenderUserID = AuthorId,
-                    Context = notificationKey
-                };
-
-                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
-                return true;
-
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return false;
-            }
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(PortalId, TabId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId, RequestUrl);
         }
     }
 }

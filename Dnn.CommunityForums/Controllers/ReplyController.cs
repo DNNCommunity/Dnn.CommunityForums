@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.FileSystem;
@@ -202,36 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         internal static bool ProcessUnapprovedReplyAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
-            try
-            {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId); 
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ModuleId, ForumId);
-                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ForumModeration");
-                string subject = Utilities.GetSharedResource("NotificationSubjectReply");
-                subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
-                subject = subject.Replace("[TopicSubject]", reply.Topic.Content.Subject);
-                string body = Utilities.GetSharedResource("NotificationBodyReply");
-                body = body.Replace("[Post]", reply.Content.Body);
-                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ModuleId, ForumId, TopicId, ReplyId);
-
-                Notification notification = new Notification
-                {
-                    NotificationTypeID = notificationType.NotificationTypeId,
-                    Subject = subject,
-                    Body = body,
-                    IncludeDismissAction = false,
-                    SenderUserID = reply.Content.AuthorId,
-                    Context = notificationKey
-                };
-
-                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return false;
-            }
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(PortalId, TabId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId, RequestUrl);
         }
     }
 }

@@ -31,6 +31,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -146,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
 
                 if (currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser || currentUserType == CurrentUserTypes.Admin)
-                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=modtopics")));
+                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=" + Views.ModerateTopics)));
                 else
                     template = template.Replace("[AF:TB:ModList]", string.Empty);
             }
@@ -1277,39 +1278,12 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
             }
             return contents;
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
-            var rp = RoleProvider.Instance();
-            var uc = new DotNetNuke.Entities.Users.UserController();
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
-            if (fi == null)
-                return null;
-
-            var mods = new List<DotNetNuke.Entities.Users.UserInfo>();
-            var modApprove = fi.Security.ModApprove;
-            var modRoles = modApprove.Split('|')[0].Split(';');
-
-            foreach (var r in modRoles)
-            {
-                if (string.IsNullOrEmpty(r))
-                    continue;
-
-                var rid = Convert.ToInt32(r);
-                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
-                foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
-                {
-                    var ui = uc.GetUser(portalId, usr.UserID);
-
-                    if (!(mods.Contains(ui)))
-                    {
-                        mods.Add(ui);
-                    }
-                }
-            }
-
-            return mods;
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
         }
-
+        
         public static bool SafeConvertBool(object value, bool defaultValue = false)
         {
             if (value == null)
