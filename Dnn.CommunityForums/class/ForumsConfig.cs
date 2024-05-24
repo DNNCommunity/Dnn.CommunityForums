@@ -480,8 +480,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		internal static void Install_BanUser_NotificationType_080100()
         {
-            string notificationTypeName = "DCF-UserBanned";
-            string notificationTypeDescription = $"{Globals.ModuleFriendlyName} User Banned";
+            string notificationTypeName = Globals.BanUserNotificationType;
+            string notificationTypeDescription = Globals.BanUserNotificationTypeDescription;
             int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
 
             NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };

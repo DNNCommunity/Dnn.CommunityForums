@@ -1305,6 +1305,7 @@
     <Compile Include="Controllers\ForumController.cs" />
     <Compile Include="Controllers\ForumGroupController.cs" />
     <Compile Include="Controllers\FilterController.cs" />
+    <Compile Include="Controllers\ModerationController.cs" />
     <Compile Include="Controllers\PermissionController.cs" />
     <Compile Include="Controllers\ProcessQueueController.cs" />
     <Compile Include="Controllers\PropertyController.cs" />
