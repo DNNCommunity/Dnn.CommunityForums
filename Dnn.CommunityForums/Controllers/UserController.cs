@@ -67,7 +67,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 notificationSubject = notificationSubject.Replace("[BannedBy]", BannedBy.DisplayName);
                 string body = Utilities.GetSharedResource("[RESX:BanAlertBody]");
                 body = body.Replace("[Subject]", sSubject);
-                body = body.Replace("[Post]", sBody);
 
                 StringBuilder postsRemoved = new StringBuilder();
 
@@ -81,32 +80,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
                     }
                     postsRemoved.AppendLine($"{Utilities.GetUserFriendlyDateTimeString(c.DateUpdated, ModuleId, BannedBy)}\t{c.Subject}");
+                    DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(TabId, ModuleId, c.ForumId, c.TopicId, c.ReplyId);
                 });
                 body = body.Replace("[PostsRemoved]", postsRemoved.ToString());
 
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ModuleId, ForumId);
-
-                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ModuleId, ForumId, TopicId, ReplyId);
-
                 Notification notification = new Notification();
-                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("DCF-UserBanned");
-
-                notification.NotificationTypeID = notificationType.NotificationTypeId;
+                notification.NotificationTypeID = NotificationsController.Instance.GetNotificationType(Globals.BanUserNotificationType).NotificationTypeId;
                 notification.Subject = notificationSubject;
                 notification.Body = body;
-
                 notification.IncludeDismissAction = true;
                 notification.SenderUserID = BannedBy.UserID;
-                notification.Context = notificationKey;
+                notification.Context = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.BuildNotificationContextKey(TabId, ModuleId, ForumId, TopicId, ReplyId);
 
-                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
+                var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(PortalId, ModuleId, ForumId);
+                NotificationsController.Instance.SendNotification(notification, PortalId, modRoles, null);
 
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", ModuleTitle));
                 string userBannedMsg = String.Format(Utilities.GetSharedResource("[RESX:UserBanned]"), bannedUser.Username);
                 log.AddProperty("Message", userBannedMsg);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-
                
                 DataProvider.Instance().Topics_Delete_For_User(ModuleId: ModuleId, UserId: bannedUser.UserID, DelBehavior: SettingsBase.GetModuleSettings(ModuleId).DeleteBehavior);
                 bannedUser.Membership.Approved = false;
