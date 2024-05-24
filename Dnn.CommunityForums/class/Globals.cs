@@ -162,6 +162,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
+
+        public const string ModerationNotificationType = "AF-ForumModeration";
+        public const string ContentAlertNotificationType = "AF-ContentAlert";
+        public const string BanUserNotificationType = "DCF-UserBanned";
+        public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + "User Banned";
     }
 
 	public class SettingKeys
@@ -373,6 +378,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Profile = "profile";
         public const string MyPreferences = "afprofile";
         public const string MySubscriptions = "afsubscriptions";
+        public const string ModerateTopics = "modtopics";
+        public const string ModerateBan = "modban";
     }
     internal static class GridTypes
     {
@@ -382,7 +389,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string MyTopics = "mytopics";
         public const string MySettings = "afprofile";
         public const string MySubscriptions = "afsubscriptions";
-        public const string MostLiked = "mostlikes";
+        public const string MostLiked = "mostliked";
         public const string MostReplies = "mostreplies";
         public const string Unresolved = "unresolved";
         public const string Announcements = "announcements";

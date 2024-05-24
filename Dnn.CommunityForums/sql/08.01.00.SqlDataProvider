@@ -2325,3 +2325,26 @@ GO
 /* --------------------- */
 
 /* issue 701 end -- announcements and unresolved UI */
+
+
+
+/*  begin - add banuser action to forum moderation notifications */
+DECLARE @NotificationTypeId int
+ SET @NotificationTypeId = (SELECT NotificationTypeID from {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypes] WHERE Name = N'AF-ForumModeration')
+INSERT INTO {databaseOwner}[{objectQualifier}CoreMessaging_NotificationTypeActions] (
+  [NotificationTypeID],
+  [NameResourceKey],
+  [DescriptionResourceKey],
+  [Order],
+  [APICall])
+VALUES (
+  @NotificationTypeID,
+  N'Ban',
+  N'BanUser',
+  4,
+  N'DesktopModules/ActiveForums/API/ModerationService/BanUser')
+GO
+
+/* end - add banuser action to forum moderation notifications */
+
+/* --------------------- */

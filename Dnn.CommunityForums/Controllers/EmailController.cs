@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return;
 
             var subs = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            Utilities.GetListOfModerators(portalId, moduleID, forumId).ForEach(moderator =>
+            DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleID, forumId).ForEach(moderator =>
             {
                 var si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                 {

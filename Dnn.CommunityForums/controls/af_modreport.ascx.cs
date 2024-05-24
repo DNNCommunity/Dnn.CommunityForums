@@ -128,7 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 string sUrl = SocialGroupId > 0
                     ? Utilities.NavigateURL(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent + "&" + Literals.GroupId + "=" + SocialGroupId })
                     : Utilities.NavigateURL(Convert.ToInt32(Request.QueryString["TabId"]), "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.AlertSent });
-                NotificationType notificationType = NotificationsController.Instance.GetNotificationType("AF-ContentAlert");
                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
@@ -160,23 +159,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 body = body.Replace("[Comment]", Comments);
                 body = body.Replace("[URL]", fullURL);
                 body = body.Replace("[Reason]", drpReasons.SelectedItem.Value);
-                List<DotNetNuke.Entities.Users.UserInfo> mods = Utilities.GetListOfModerators(PortalId, ForumModuleId, ForumId);
-
-
-                string notificationKey = string.Format("{0}:{1}:{2}:{3}:{4}", TabId, ForumModuleId, ForumId, TopicId, ReplyId);
 
                 Notification notification = new Notification();
+                NotificationType notificationType = NotificationsController.Instance.GetNotificationType(Globals.ContentAlertNotificationType);
                 notification.NotificationTypeID = notificationType.NotificationTypeId;
                 notification.Subject = subject;
                 notification.Body = body;
                 notification.IncludeDismissAction = false;
                 notification.SenderUserID = UserInfo.UserID;
-                notification.Context = notificationKey;
+                notification.Context = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.BuildNotificationContextKey(TabId, ForumModuleId, ForumId, TopicId, ReplyId);
 
-
-                NotificationsController.Instance.SendNotification(notification, PortalId, null, mods);
-
-
+                var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(PortalId, ForumModuleId, ForumId);
+                NotificationsController.Instance.SendNotification(notification, PortalId, modRoles, null);
 
                 Response.Redirect(sUrl);
             }
