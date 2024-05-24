@@ -4,8 +4,8 @@
 
       <friendlyName>DNN Community Forums Symbols</friendlyName>
       <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
-		<iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
-		<owner>
+      <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
+      <owner>
         <name>DNN Community</name>
         <organization>DNN Community</organization>
         <url>dnncommunity.org</url>
