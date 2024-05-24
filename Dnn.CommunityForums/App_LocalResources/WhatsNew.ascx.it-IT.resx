@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:AllowURLParams].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Consenti parametri URL</value>
+  </data>
+  <data name="[RESX:CacheTimeOut].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Timeout della cache</value>
+  </data>
+  <data name="[RESX:EnableRSS].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Abilita RSS</value>
+  </data>
+  <data name="[RESX:FilterByTag].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Filtra per tag</value>
+  </data>
+  <data name="[RESX:HTMLFooter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Piè di pagina HTML</value>
+  </data>
+  <data name="[RESX:HTMLHeader].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Intestazione HTML</value>
+  </data>
+  <data name="[RESX:HTMLTemplate].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Sagoma</value>
+  </data>
+  <data name="[RESX:IgnoreSecurity].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Ignora sicurezza</value>
+  </data>
+  <data name="[RESX:IncludeBody].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Includi corpo</value>
+  </data>
+  <data name="[RESX:Minutes].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>verbale</value>
+  </data>
+  <data name="[RESX:NumberOfItems].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Numero di articoli</value>
+  </data>
+  <data name="[RESX:RandomOrder].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Ordine casuale</value>
+  </data>
+  <data name="[RESX:Token:AuthorDisplayName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il nome selezionato dall'utente della persona che ha creato il post.</value>
+  </data>
+  <data name="[RESX:Token:AuthorFirstName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il nome della persona che ha creato il post.</value>
+  </data>
+  <data name="[RESX:Token:AuthorId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza l'ID utente della persona che ha creato il post.</value>
+  </data>
+  <data name="[RESX:Token:AuthorLastName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il cognome della persona che ha creato il post.</value>
+  </data>
+  <data name="[RESX:Token:AuthorUserName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il nome utente della persona che ha creato il post.</value>
+  </data>
+  <data name="[RESX:Token:BodyHTML].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il testo completo del post con formattazione HTML.</value>
+  </data>
+  <data name="[RESX:Token:BodyText].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Rimuove tutta la formattazione HTML dal post.</value>
+  </data>
+  <data name="[RESX:Token:BodyXX].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Sostituisci XX con il numero di caratteri di testo normale che desideri visualizzare.</value>
+  </data>
+  <data name="[RESX:Token:Date].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza la data in cui è stato creato il post.</value>
+  </data>
+  <data name="[RESX:Token:FooterOnly].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>I seguenti token possono essere utilizzati nella sezione Piè di pagina.</value>
+  </data>
+  <data name="[RESX:Token:ForumGroupId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'ID univoco per il gruppo del forum per il post.</value>
+  </data>
+  <data name="[RESX:Token:ForumGroupName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il nome del gruppo del forum per il post.</value>
+  </data>
+  <data name="[RESX:Token:ForumId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza l'ID univoco per il forum in cui si trova il post.</value>
+  </data>
+  <data name="[RESX:Token:ForumName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza il nome del forum per il post.</value>
+  </data>
+  <data name="[RESX:Token:ForumURL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'URL del forum in cui si trova il post.</value>
+  </data>
+  <data name="[RESX:Token:PostURL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'URL completo del post specificato.</value>
+  </data>
+  <data name="[RESX:Token:ReplyCount].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering del numero di risposte per l'argomento.</value>
+  </data>
+  <data name="[RESX:Token:ReplyId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'ID di risposta del post, se si tratta di una risposta visualizzata.</value>
+  </data>
+  <data name="[RESX:Token:RSSICON].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza l'icona RSS predefinita.</value>
+  </data>
+  <data name="[RESX:Token:RSSIconLink].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza l'icona RSS predefinita come collegamento ipertestuale al feed RSS.</value>
+  </data>
+  <data name="[RESX:Token:RSSURL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza l'URL del feed RSS.</value>
+  </data>
+  <data name="[RESX:Token:Subject].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Visualizza l'oggetto del post.</value>
+  </data>
+  <data name="[RESX:Token:SubjectLink].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'oggetto come collegamento ipertestuale al post.</value>
+  </data>
+  <data name="[RESX:Token:TemplateOnly].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>I token seguenti possono essere usati nella sezione Modello.</value>
+  </data>
+  <data name="[RESX:Token:TopicId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'ID argomento univoco del post.</value>
+  </data>
+  <data name="[RESX:Token:TopicModuleId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'ID modulo per l'istanza dei forum in cui si trova il post.</value>
+  </data>
+  <data name="[RESX:Token:TopicsURL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'URL dell'argomento.</value>
+  </data>
+  <data name="[RESX:Token:TopicTabId].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Esegue il rendering dell'ID scheda per la pagina in cui si trova il post.</value>
+  </data>
+  <data name="[RESX:TopicsOnly].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Solo argomenti</value>
+  </data>
+  <data name="[RESX:Update].Text" xml:space="preserve" lastModified="2024-05-16 19:42:24">
+    <value>Aggiornare</value>
+  </data>
+</root>
