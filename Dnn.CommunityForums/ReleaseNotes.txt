@@ -71,7 +71,17 @@
 	<div class="dnnClear">
 		<h2>Release Notes</h2>
 		<hr />
-		<h3>08.01.00</h3>
+		<h3>08.01.00 <span class="muy-importante">RELEASE CANDIDATE 1</span></h3>
+
+		<p class="muy-importante">
+			<strong>IMPORTANT!!!</strong> This is a release candidate (RC).  Please <strong>DO NOT</strong> use this installation/upgrade package for any production 
+			websites of any kind.  
+		</p>
+
+		<p class="muy-importante">This release is <strong>not supported</strong> and is <strong>only provided for testing purposes</strong>, to allow others to test 
+			their websites first, before we deploy an official release.  
+		</p>
+
 		<h4>New Features &amp; Enhancements</h4>
 		<ul>
 			<li>NEW: Adds a new Bootstrap 5 theme/template for the forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/734">Issue 734</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
