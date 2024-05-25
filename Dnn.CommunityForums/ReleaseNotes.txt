@@ -32,7 +32,7 @@
 			Dutch already had a language pack, but now there are language packs for German, French, Spanish, and Italian. They were generated though, so we could use your help from the community to make sure the translations are indeed accurate.  
 		</p>
 		<p>
-			We reccommend that you use Peter Donker's translation software (below) to make things easier for you.  
+			We recommend that you use Peter Donker's translation software (below) to make things easier for you.  
 		</p>
 		<ul>
 			<li>
@@ -107,25 +107,25 @@
 		<h4>New Features &amp; Enhancements</h4>
 		<ul>
 			<li>NEW: Adds a new Bootstrap 4 &amp; 5 theme/template for the forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/734">Issue 734</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>NEW: A new process queue has beeb added to offload front-end page loads from running backend logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/376">Issue 376</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: A new process queue has been added to offload front-end page loads from running backend logic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/376">Issue 376</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Now able to independently inherit security settings into forums from the forum group (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/611">Issue 611</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Added a button to allow a person to easily subscribe to all of the forums (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/593">Issue 593</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Major enhancements made to how the module caches data (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/724">Issue 724</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Adds 'ban user' options to forum moderation (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/800">Pull 800</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Adds Announcements and Unresolved topic views to the toolbar (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/701">Issue 701</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>NEW: Add subscriber counts to topics / topic view in Bootstrap Template (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/707">Issue 707</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-			<li>NEW: Added lagnuage pack files to support German (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/811">Pull 811</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>NEW: Added lagnuage pack files to support French (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/812">Pull 812</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>NEW: Added lagnuage pack files to support Spanish (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/813">Pull 813</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>NEW: Added lagnuage pack files to support Italian (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/814">Pull 814</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>UPDATED: Added lagnuage pack files to support Dutch (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/815">Pull 815</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added language pack files to support German (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/811">Pull 811</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added language pack files to support French (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/812">Pull 812</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added language pack files to support Spanish (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/813">Pull 813</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>NEW: Added language pack files to support Italian (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/814">Pull 814</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>UPDATED: Updated language pack files to support Dutch (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/815">Pull 815</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>UPDATE: Improved moderator notifications when banning a user account (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/721">Issue 721</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>UPDATE: Adds support for [GROUPNAME] &amp; [FORUMGROUPID] tokens in the [GROUP] section in ForumView (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/795">Pull 795</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>UPDATE: Numerous usability improvements to Mark as Answer features (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/400">Issue 400</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>UPDATE: Added subscriber counts to topics / topic view in community-default theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/706">Pull 706</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>UPDATE: Replace NavigateUrl() with an INavigationManager implementation (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/378">Issue 378</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>UPDATE: Removed the now legacy mail options from the view (all notifications now uses the DNN mail queue) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/635">Issue 635</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>USABILITY: Change 'Filters' in toolbar to 'Filtered Topics' (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/810">Pulls 810</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>UPDATE: Removed the now legacy mail options from the view (all notifications now use the DNN mail queue) (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/635">Issue 635</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>USABILITY: Change 'Filters' in the toolbar to 'Filtered Topics' (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/810">Pulls 810</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>USABILITY: Numerous improvements to the overall experience when working with topic ratings (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/398">Issue 398</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>USABILITY: Moderator actions were not styled as buttons (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/661">Issue 661</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>USABILITY: Adds the ability for end-users to change which forums they're looking at (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/703">Issue 703</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
@@ -155,7 +155,7 @@
 			<li>BUG: Forum collapse doesn't work in a Bootstrap 5 theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/788">Issue 788</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>BUG: Quick reply layout incorrect in Bootstrap 5 themes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/789">Issue 789</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>BUG: Error occurs when attempting to delete a post from the Activity Feed (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/798">Issue 798</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>BUG: Fix friendly url for latest post on Forums View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/794">Pull 794</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Fixed friendly URLs for the latest posts in the Forums View (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/794">Pull 794</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Next topic button incorrectly aligned in Bootstrap 5 themes (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/786">Issue 786</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
 			<li>BUG: Quick Reply not posting (correct) ReplyId to Process Queue (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/782">Pull 782</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Resolved data retrieval issues with search results (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/770">Pull 770</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
@@ -174,11 +174,11 @@
 			<li>BUG: JavaScript error when using moderator tools in topics view (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/699">Issue 699</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Companion 'viewer' module was displaying the wrong view to end-users (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/692">Issue 692</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Error from the browser while subscribing to a new topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/697">Issue 697</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>BUG: Missing spaces in 08.01.00.SqlDataProvider causing installer error (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/696">Issue 696</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Missing spaces in the 08.01.00.SqlDataProvider file causing installer error (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/696">Issue 696</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: ModuleId not populated in activeforums_Content for replies (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/680">Issue 680</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Incorrect results on 'Most Liked' page (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/666">Issue 666</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Broken header image in the Control Panel (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/657">Issue 657</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-			<li>BUG: Unable to see labels on post when editing as the moderator (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/654">Issue 654</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Unable to see labels on posts when editing as the moderator (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/654">Issue 654</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
 		</ul>
 		
