@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool bModBan = false;
         private bool bModApprove = false;
         private bool bModMove = false;
-        private bool bModBan = false;
         private bool bCanMod = false;
 
         #endregion

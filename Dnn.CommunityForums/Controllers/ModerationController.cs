@@ -60,19 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-                    subject = Utilities.GetSharedResource("NotificationSubjectTopic");
-                    subject = subject.Replace("[DisplayName]", topic.Content.AuthorName);
-                    subject = subject.Replace("[TopicSubject]", topic.Content.Subject);
-
-                    body = Utilities.GetSharedResource("NotificationBodyTopic");
-                    body = body.Replace("[DisplayName]", topic.Content.AuthorName);
-                    body = body.Replace("[TopicSubject]", topic.Content.Subject);
-                    body = body.Replace("[Post]", topic.Content.Body);
-                    authorId = topic.Content.AuthorId;
-                }
-                else
-                {
                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
                     subject = Utilities.GetSharedResource("NotificationSubjectReply");
                     subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
