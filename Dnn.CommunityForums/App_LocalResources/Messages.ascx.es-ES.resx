@@ -18,8 +18,8 @@
   <data name="[RESX:Email:Sent].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
     <value>Su mensaje ha sido enviado.</value>
   </data>
-  <data name="[RESX:Reply:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>La respuesta ha sido suprimida.</value>
+  <data name="[RESX:Reply:Deleted].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>La respuesta ha sido eliminada.</value>
   </data>
   <data name="[RESX:Reply:Saved].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
     <value>La respuesta ha sido creada.</value>
@@ -27,22 +27,22 @@
   <data name="[RESX:Topic:Alert].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
     <value>Gracias por su mensaje.  Nuestros moderadores han sido notificados y revisarán su mensaje lo antes posible.</value>
   </data>
-  <data name="[RESX:Topic:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>El tema ha sido eliminado.</value>
+  <data name="[RESX:Topic:Deleted].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>El tema se ha eliminado.</value>
   </data>
-  <data name="[RESX:Topic:Moved].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>Su tema ha sido movido.</value>
+  <data name="[RESX:Topic:Moved].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>El tema se ha movido.</value>
   </data>
-  <data name="[RESX:Topic:PendingMod].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>Has publicado en un foro moderado. &lt;br&gt; Su mensaje no estará disponible hasta que haya sido aprobado. &lt;br&gt;&lt;br&gt;Un moderador revisará tu publicación en breve.&lt;br&gt;&lt;br&gt;Gracias.</value>
+  <data name="[RESX:Topic:PendingMod].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>Ha publicado en un foro moderado. &lt;br&gt; Su mensaje no estará disponible hasta que haya sido aprobado. &lt;br&gt;&lt;br&gt;Un moderador revisará su publicación en breve.&lt;br&gt;&lt;br&gt;Gracias.</value>
   </data>
-  <data name="[RESX:Topic:Saved].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>El tema ha sido creado.</value>
+  <data name="[RESX:Topic:Saved].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>El tema se ha creado.</value>
   </data>
-  <data name="[RESX:Topic:Submit].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>Su tema ha sido enviado.</value>
+  <data name="[RESX:Topic:Submit].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>El tema se ha enviado.</value>
   </data>
-  <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-05-16 19:52:27">
-    <value>El contenido del usuario ha sido eliminado y el usuario no ha sido autorizado.</value>
+  <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-05-27 11:27:42">
+    <value>El contenido del usuario se ha eliminado y el usuario se ha desautorizado.</value>
   </data>
 </root>

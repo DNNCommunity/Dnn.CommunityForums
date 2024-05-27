@@ -15,8 +15,8 @@
   <data name="[RESX:About].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Acerca de</value>
   </data>
-  <data name="[RESX:Actions:Complete].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Íntegro</value>
+  <data name="[RESX:Actions:Complete].Text" xml:space="preserve" lastModified="2024-05-27 12:05:33">
+    <value>Completado</value>
   </data>
   <data name="[RESX:Actions:CreateThumbnail].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Crear miniatura</value>
@@ -36,20 +36,20 @@
   <data name="[RESX:ActiveTopics].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Temas activos</value>
   </data>
-  <data name="[RESX:AddAttach].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Agregar archivo a la publicación</value>
+  <data name="[RESX:AddAttach].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Añadir archivo a la publicación</value>
   </data>
   <data name="[RESX:AdditionalOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Opciones adicionales</value>
   </data>
-  <data name="[RESX:AddReply].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Agregar respuesta</value>
+  <data name="[RESX:AddReply].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Añadir respuesta</value>
   </data>
-  <data name="[RESX:AddToFavorites].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Agregue esto a los favoritos de su navegador</value>
+  <data name="[RESX:AddToFavorites].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Añadir a los favoritos de su navegador</value>
   </data>
-  <data name="[RESX:AddTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Agregar nuevo tema</value>
+  <data name="[RESX:AddTopic].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Añadir nuevo tema</value>
   </data>
   <data name="[RESX:Alert].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Alerta</value>
@@ -96,14 +96,14 @@
   <data name="[RESX:Attachments:BrowseSite:Title].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Seleccione un archivo para adjuntar</value>
   </data>
-  <data name="[RESX:Attachments:Confirm:Remove].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¿Estás seguro de que quieres eliminar este archivo adjunto?</value>
+  <data name="[RESX:Attachments:Confirm:Remove].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>¿Está seguro de que desea eliminar el archivo adjunto?</value>
   </data>
   <data name="[RESX:Attachments:Error].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Se ha producido un error del servidor.</value>
   </data>
-  <data name="[RESX:Attachments].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Accesorios</value>
+  <data name="[RESX:Attachments].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Adjuntos</value>
   </data>
   <data name="[RESX:Attacments:Note].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Explicación de los archivos adjuntos</value>
@@ -120,17 +120,17 @@
   <data name="[RESX:Avatar].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Avatar</value>
   </data>
-  <data name="[RESX:Ban].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Prohibición</value>
+  <data name="[RESX:Ban].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Bloquear</value>
   </data>
-  <data name="[RESX:BanAlertBody].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>&lt;div&gt;[Asunto] &lt;br /&gt;&lt;br /&gt;[Publicación] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;Publicado eliminado:&lt;br /&gt;&lt;br /&gt;[Mensajes eliminados] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+  <data name="[RESX:BanAlertBody].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>&lt;div&gt;[Subject]&lt;/div&gt;&lt;div&gt;Entradas eliminadas:&lt;br /&gt;&lt;br /&gt;[PostsRemoved] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
   </data>
-  <data name="[RESX:BanAlertSubject].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>El usuario [Nombre de usuario] ha sido baneado por [BannedBy]</value>
+  <data name="[RESX:BanAlertSubject].Text" xml:space="preserve" lastModified="2024-05-27 11:58:24">
+    <value>El usuario [Username] ha sido bloqueado por [BannedBy]</value>
   </data>
-  <data name="[RESX:BanUser].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Prohibir usuario (eliminar contenido y desautorizar usuario)</value>
+  <data name="[RESX:BanUser].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Blquear usuario (eliminar contenido y desautorizar usuario)</value>
   </data>
   <data name="[RESX:Body].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Cuerpo</value>
@@ -145,7 +145,7 @@
     <value> &gt; </value>
   </data>
   <data name="[RESX:BrowseFromSite].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Navegar desde el sitio</value>
+    <value>Buscar en el sitio</value>
   </data>
   <data name="[RESX:Button:Cancel].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Cancelar</value>
@@ -165,8 +165,8 @@
   <data name="[RESX:Categories].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Categorías</value>
   </data>
-  <data name="[RESX:Cell].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Celda</value>
+  <data name="[RESX:Cell].Text" xml:space="preserve" lastModified="2024-05-27 11:53:57">
+    <value>Móvil</value>
   </data>
   <data name="[RESX:City].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Ciudad</value>
@@ -174,8 +174,8 @@
   <data name="[RESX:Code].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Código</value>
   </data>
-  <data name="[RESX:CodeDesc].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Visualización de código:[código]código[/código]</value>
+  <data name="[RESX:CodeDesc].Text" xml:space="preserve" lastModified="2024-05-27 12:10:17">
+    <value>Código de visualización:[code]código[/code]</value>
   </data>
   <data name="[RESX:Comments].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Comentarios</value>
@@ -198,20 +198,20 @@
   <data name="[RESX:Confirm:Lock].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>¿Está seguro de que desea bloquear este tema?</value>
   </data>
-  <data name="[RESX:Confirm:Pin].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¿Estás seguro de que deseas anclar este tema?</value>
+  <data name="[RESX:Confirm:Pin].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>¿Está seguro de que desea anclar este tema?</value>
   </data>
-  <data name="[RESX:Confirm:Reject].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¿Estás seguro de que deseas rechazar este mensaje?</value>
+  <data name="[RESX:Confirm:Reject].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>¿Está seguro de que desea rechazar este mensaje?</value>
   </data>
-  <data name="[RESX:Confirm:UnLock].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¿Estás seguro de que deseas desbloquear este tema?</value>
+  <data name="[RESX:Confirm:UnLock].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>¿Está seguro de que desea desbloquear este tema?</value>
   </data>
-  <data name="[RESX:Confirm:UnPin].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¿Estás seguro de que deseas desanclar este tema?</value>
+  <data name="[RESX:Confirm:UnPin].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>¿Está seguro de que desea desanclar este tema?</value>
   </data>
-  <data name="[RESX:ConfirmCancel].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¿Estás seguro de que deseas cancelar?</value>
+  <data name="[RESX:ConfirmCancel].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>¿Está seguro de que desea cancelar?</value>
   </data>
   <data name="[RESX:Contact].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Contacto</value>
@@ -261,11 +261,11 @@
   <data name="[RESX:Edit].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Editar</value>
   </data>
-  <data name="[RESX:EditingExistingReply].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Edición de la respuesta existente</value>
+  <data name="[RESX:EditingExistingReply].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Edición de respuestas existentes</value>
   </data>
-  <data name="[RESX:EditingExistingTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Edición de un tema existente</value>
+  <data name="[RESX:EditingExistingTopic].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Edición de temas existentes</value>
   </data>
   <data name="[RESX:EditTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Haga clic para editar este tema</value>
@@ -279,18 +279,18 @@
   <data name="[RESX:EmailMessage].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mensaje</value>
   </data>
-  <data name="[RESX:EmailMessageDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
+  <data name="[RESX:EmailMessageDefault].Text" xml:space="preserve" lastModified="2024-05-27 12:08:21">
     <value>Pensé que podría estar interesado en leer esta página web:
-[ENLACE TEMÁTICO]
+[TOPICLINK]
 
 De
-[NOMBRE PARA MOSTRAR]</value>
+[DISPLAYNAME]</value>
   </data>
   <data name="[RESX:EmailSubject].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Asunto del correo electrónico</value>
   </data>
-  <data name="[RESX:EmailSubjectDefault].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>[ASUNTO]</value>
+  <data name="[RESX:EmailSubjectDefault].Text" xml:space="preserve" lastModified="2024-05-27 12:11:35">
+    <value>[SUBJECT]</value>
   </data>
   <data name="[RESX:EmailThis].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Enviar un correo electrónico a un amigo</value>
@@ -301,8 +301,8 @@ De
   <data name="[RESX:Error:FileTooLarge].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>El tamaño máximo de archivo permitido es de {0} kb.</value>
   </data>
-  <data name="[RESX:Error:FloodControl].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Debes esperar al menos {0} segundos entre publicaciones</value>
+  <data name="[RESX:Error:FloodControl].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Tiene que esperar al menos {0} segundos entre publicaciones</value>
   </data>
   <data name="[RESX:ERROR:Search].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>El proceso de búsqueda ha encontrado un error.  Póngase en contacto con el administrador del sitio.</value>
@@ -326,7 +326,7 @@ De
     <value>Tipo de archivo</value>
   </data>
   <data name="[RESX:FilteredTopics].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Temas filtrados</value>
+    <value>Filtrar temas</value>
   </data>
   <data name="[RESX:FirstName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nombre</value>
@@ -358,8 +358,8 @@ De
   <data name="[RESX:ForumSubscribe:Disabled].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Las notificaciones por correo electrónico están deshabilitadas.</value>
   </data>
-  <data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Suscríbete a este foro</value>
+  <data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve" lastModified="2024-05-27 12:33:21">
+    <value>Suscritos a este foro</value>
   </data>
   <data name="[RESX:Group].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Grupo</value>
@@ -368,7 +368,7 @@ De
     <value>Actualmente hay [GUESTCOUNT] huésped(es) conectado(s).</value>
   </data>
   <data name="[RESX:Height].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Altura</value>
+    <value>Alto</value>
   </data>
   <data name="[RESX:ICQ].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>ICQ</value>
@@ -391,8 +391,8 @@ De
   <data name="[RESX:Interests].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Intereses</value>
   </data>
-  <data name="[RESX:Italics].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value> Yo </value>
+  <data name="[RESX:Italics].Text" xml:space="preserve" lastModified="2024-05-27 11:36:16">
+    <value> I </value>
   </data>
   <data name="[RESX:ItalicsDesc].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Poner el texto en cursiva</value>
@@ -400,23 +400,23 @@ De
   <data name="[RESX:Joined].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Unido</value>
   </data>
-  <data name="[RESX:JumpToLastRead].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Saltar a la primera publicación nueva</value>
+  <data name="[RESX:JumpToLastRead].Text" xml:space="preserve" lastModified="2024-05-27 12:17:31">
+    <value>Ir a la primera publicación nueva</value>
   </data>
-  <data name="[RESX:JumpToLastReply].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Saltar al último post</value>
+  <data name="[RESX:JumpToLastReply].Text" xml:space="preserve" lastModified="2024-05-27 12:17:31">
+    <value>Ir al último post</value>
   </data>
   <data name="[RESX:Label:AboutMe].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Acerca de mí</value>
   </data>
-  <data name="[RESX:Label:AdminSettings].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Configuración del administrador</value>
+  <data name="[RESX:Label:AdminSettings].Text" xml:space="preserve" lastModified="2024-05-27 11:54:38">
+    <value>Configuración de administración</value>
   </data>
   <data name="[RESX:Label:ForumTracking].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Seguimiento del foro</value>
   </data>
-  <data name="[RESX:Label:HelpDesk].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Mesa de ayuda</value>
+  <data name="[RESX:Label:HelpDesk].Text" xml:space="preserve" lastModified="2024-05-27 12:06:50">
+    <value>Ayuda</value>
   </data>
   <data name="[RESX:Label:MyOrders].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mis Pedidos</value>
@@ -424,8 +424,8 @@ De
   <data name="[RESX:Label:MyPreferences].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mis preferencias</value>
   </data>
-  <data name="[RESX:Label:OrderHistory].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Historial de pedidos</value>
+  <data name="[RESX:Label:OrderHistory].Text" xml:space="preserve" lastModified="2024-05-27 12:04:24">
+    <value>Orden</value>
   </data>
   <data name="[RESX:Label:RecentPosts].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Publicaciones recientes</value>
@@ -460,14 +460,14 @@ De
   <data name="[RESX:Location].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Ubicación</value>
   </data>
-  <data name="[RESX:Lock].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Cerradura</value>
+  <data name="[RESX:Lock].Text" xml:space="preserve" lastModified="2024-05-27 11:53:57">
+    <value>Bloquear</value>
   </data>
   <data name="[RESX:Locked:Note].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Marque la casilla para bloquear este tema.  </value>
   </data>
-  <data name="[RESX:Locked].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Cerrado con llave</value>
+  <data name="[RESX:Locked].Text" xml:space="preserve" lastModified="2024-05-27 11:53:57">
+    <value>Bloqueado</value>
   </data>
   <data name="[RESX:LockedOut].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Bloqueado</value>
@@ -490,8 +490,8 @@ De
   <data name="[RESX:MemberSince].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Miembro desde</value>
   </data>
-  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Este foro solo te permite editar tu publicación en {0} minutos desde el momento en que creaste tu publicación.</value>
+  <data name="[RESX:Message:EditIntervalReached].Text" xml:space="preserve" lastModified="2024-05-27 12:01:09">
+    <value>Este foro solo te permite editar una publicación durante {0} minutos desde el momento en que se publicó.</value>
   </data>
   <data name="[RESX:Message].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mensaje</value>
@@ -499,20 +499,20 @@ De
   <data name="[RESX:Messages].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mensajes</value>
   </data>
-  <data name="[RESX:Moderate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Moderado</value>
+  <data name="[RESX:Moderate].Text" xml:space="preserve" lastModified="2024-05-27 12:06:50">
+    <value>Moderar</value>
   </data>
-  <data name="[RESX:Moderator-Editor].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Editando actualmente el contenido de otro miembro de la comunidad</value>
+  <data name="[RESX:Moderator-Editor].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Está editando el contenido de otro miembro de la comunidad</value>
   </data>
   <data name="[RESX:MonitorActivity].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Supervisar la actividad</value>
   </data>
-  <data name="[RESX:MostLiked].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Lo que más gustó</value>
+  <data name="[RESX:MostLiked].Text" xml:space="preserve" lastModified="2024-05-27 12:06:10">
+    <value>Más populares</value>
   </data>
-  <data name="[RESX:MostReplies].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>La mayoría de las respuestas</value>
+  <data name="[RESX:MostReplies].Text" xml:space="preserve" lastModified="2024-05-27 12:05:33">
+    <value>Más respuestas</value>
   </data>
   <data name="[RESX:Move].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mover</value>
@@ -553,8 +553,8 @@ De
   <data name="[RESX:Name].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nombre</value>
   </data>
-  <data name="[RESX:NewestFirst].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Lo más nuevo primero</value>
+  <data name="[RESX:NewestFirst].Text" xml:space="preserve" lastModified="2024-05-27 12:06:10">
+    <value>Más nuevos</value>
   </data>
   <data name="[RESX:NewPost].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>NUEVA PUBLICACIÓN</value>
@@ -562,8 +562,8 @@ De
   <data name="[RESX:NewReply].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nueva respuesta</value>
   </data>
-  <data name="[RESX:NextTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Próximo</value>
+  <data name="[RESX:NextTopic].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Sig</value>
   </data>
   <data name="[RESX:No].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>No</value>
@@ -574,17 +574,17 @@ De
   <data name="[RESX:NoSubscriptions].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Sin suscripciones</value>
   </data>
-  <data name="[RESX:NotAuthorized].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Debe iniciar sesión para publicar una respuesta.</value>
+  <data name="[RESX:NotAuthorized].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Tiene que iniciar sesión para publicar una respuesta.</value>
   </data>
   <data name="[RESX:NotAuthorizedReply].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>No está autorizado a publicar una respuesta.</value>
   </data>
-  <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Por favor, &lt;a href="{0}"{1}&gt;login&lt;/a&gt; para publicar una respuesta.</value>
+  <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Por favor, &lt;a href="{0}"{1}&gt;inicie sesión&lt;/a&gt; para publicar una respuesta.</value>
   </data>
-  <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>&lt;span class="afnotauthorized"&gt;No está autorizado a crear un nuevo tema&lt;/span&gt;</value>
+  <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>&lt;span class="afnotauthorized"&gt;No está autorizado para crear un nuevo tema&lt;/span&gt;</value>
   </data>
   <data name="[RESX:Notify].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Notificación</value>
@@ -628,8 +628,8 @@ De
   <data name="[RESX:Pinned:Note].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Marque la casilla para anclar este tema.  Los temas anclados aparecerán antes que todos los demás.</value>
   </data>
-  <data name="[RESX:Pinned].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Fijado</value>
+  <data name="[RESX:Pinned].Text" xml:space="preserve" lastModified="2024-05-27 12:02:02">
+    <value>Clavado</value>
   </data>
   <data name="[RESX:PinTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Haga clic para anclar este tema</value>
@@ -637,11 +637,11 @@ De
   <data name="[RESX:Poll:MultipleSelect].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Selección múltiple</value>
   </data>
-  <data name="[RESX:Poll:Note].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Crea una encuesta introduciendo una pregunta corta seguida de 2 o más respuestas.  Escriba una respuesta por línea en el cuadro de texto a continuación.</value>
+  <data name="[RESX:Poll:Note].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Puede crear una encuesta introduciendo una pregunta corta seguida de 2 o más respuestas.  Escriba una respuesta por línea en el cuadro de texto a continuación.</value>
   </data>
-  <data name="[RESX:Poll:Options].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Opciones de sondeo</value>
+  <data name="[RESX:Poll:Options].Text" xml:space="preserve" lastModified="2024-05-27 12:07:43">
+    <value>Opciones de encuestas</value>
   </data>
   <data name="[RESX:Poll:Question].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Pregunta de la encuesta</value>
@@ -649,8 +649,8 @@ De
   <data name="[RESX:Poll:SingleSelect].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Selección única</value>
   </data>
-  <data name="[RESX:Poll:Type].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Tipo de sondeo</value>
+  <data name="[RESX:Poll:Type].Text" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Tipo de encuesta</value>
   </data>
   <data name="[RESX:Polls].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Encuestas</value>
@@ -670,8 +670,8 @@ De
   <data name="[RESX:PostIconNone].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Ninguno</value>
   </data>
-  <data name="[RESX:PostIcons:Note].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Selecciona un icono de publicación para ayudar a clasificar tu tema.</value>
+  <data name="[RESX:PostIcons:Note].Text" xml:space="preserve" lastModified="2024-05-27 12:17:54">
+    <value>Seleccione un icono de publicación para ayudar a clasificar el tema.</value>
   </data>
   <data name="[RESX:PostIcons].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Íconos de publicaciones</value>
@@ -706,17 +706,17 @@ De
   <data name="[RESX:PrefDefaultSort].Help" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Especifique el orden en el que desea que se muestren los elementos.</value>
   </data>
-  <data name="[RESX:PrefDefaultSort].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Criterio de clasificación</value>
+  <data name="[RESX:PrefDefaultSort].Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Ordenación</value>
   </data>
-  <data name="[RESX:PrefJumpToLastPost].Help" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Siempre se le dirigirá a la última respuesta que leyó para el tema que está eligiendo ver.</value>
+  <data name="[RESX:PrefJumpToLastPost].Help" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Ir a la última respuesta que leída del tema que esté viendo.</value>
   </data>
-  <data name="[RESX:PrefJumpToLastPost].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Saltar a la primera publicación no leída</value>
+  <data name="[RESX:PrefJumpToLastPost].Text" xml:space="preserve" lastModified="2024-05-27 12:17:31">
+    <value>Ir a la primera publicación no leída</value>
   </data>
-  <data name="[RESX:PrefPageSize].Help" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Elija el número de elementos que desea que se muestren a la vez.</value>
+  <data name="[RESX:PrefPageSize].Help" xml:space="preserve" lastModified="2024-05-27 11:58:58">
+    <value>Seleccione el número de elementos que desea que se muestren a la vez.</value>
   </data>
   <data name="[RESX:PrefPageSize].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Elementos por página</value>
@@ -730,8 +730,8 @@ De
   <data name="[RESX:PrefTopicSubscribe].Help" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Esta será su configuración predeterminada cuando cree un tema o agregue una respuesta.  Esto no afecta a las suscripciones a nivel de foro.</value>
   </data>
-  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Suscríbete a Temas</value>
+  <data name="[RESX:PrefTopicSubscribe].Text" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Suscribirse a Temas</value>
   </data>
   <data name="[RESX:PrefTopicSubscribeType].Help" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Es posible que el administrador del foro le haya permitido elegir diferentes formas de suscripción.  Puede seleccionar su preferencia deseada.</value>
@@ -742,11 +742,11 @@ De
   <data name="[RESX:Preview].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Vista previa</value>
   </data>
-  <data name="[RESX:PrevTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Prev</value>
+  <data name="[RESX:PrevTopic].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Ant</value>
   </data>
-  <data name="[RESX:PrinterFriendly].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Fácil de imprimir</value>
+  <data name="[RESX:PrinterFriendly].Text" xml:space="preserve" lastModified="2024-05-27 12:02:02">
+    <value>Imprimir</value>
   </data>
   <data name="[RESX:Priority].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Prioridad</value>
@@ -781,11 +781,11 @@ De
   <data name="[RESX:RankDisplay].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nivel</value>
   </data>
-  <data name="[RESX:RankName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Rango</value>
+  <data name="[RESX:RankName].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Nivel</value>
   </data>
-  <data name="[RESX:Rating].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Clasificación</value>
+  <data name="[RESX:Rating].Text" xml:space="preserve" lastModified="2024-05-27 11:54:18">
+    <value>Nivel</value>
   </data>
   <data name="[RESX:RE].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>RE:</value>
@@ -796,8 +796,8 @@ De
   <data name="[RESX:ReadMoreSmall].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>(leer más)</value>
   </data>
-  <data name="[RESX:Reason].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Razón</value>
+  <data name="[RESX:Reason].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Motivo</value>
   </data>
   <data name="[RESX:ReasonOptions].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Fuera de tema; Spam; Profanidad; Amenazas; Acoso; Trolling</value>
@@ -835,11 +835,11 @@ De
   <data name="[RESX:ReplyToTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Responder al tema</value>
   </data>
-  <data name="[RESX:ReportContent].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Contenido del informe</value>
+  <data name="[RESX:ReportContent].Text" xml:space="preserve" lastModified="2024-05-27 11:54:59">
+    <value>Reportar contenido</value>
   </data>
-  <data name="[RESX:Reset].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Restablecimiento</value>
+  <data name="[RESX:Reset].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Restablecer</value>
   </data>
   <data name="[RESX:Resolved].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Resuelto</value>
@@ -869,7 +869,7 @@ De
     <value> - Generado hace {0:0.0} minutos.</value>
   </data>
   <data name="[RESX:SearchAllForums].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Foros de búsqueda</value>
+    <value>Buscar</value>
   </data>
   <data name="[RESX:SearchArea].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Área de búsqueda</value>
@@ -919,8 +919,8 @@ De
   <data name="[RESX:SearchResultType].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Mostrar resultados como:</value>
   </data>
-  <data name="[RESX:SearchSingleForum].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Foro de búsqueda</value>
+  <data name="[RESX:SearchSingleForum].Text" xml:space="preserve" lastModified="2024-05-27 12:02:02">
+    <value>Búscar en el foro</value>
   </data>
   <data name="[RESX:SearchSort].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Ordenar resultados por:</value>
@@ -946,8 +946,8 @@ De
   <data name="[RESX:SendPM].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Enviar mensaje privado</value>
   </data>
-  <data name="[RESX:Signature].Help" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Ingrese una firma que le gustaría agregar incluida en sus publicaciones.</value>
+  <data name="[RESX:Signature].Help" xml:space="preserve" lastModified="2024-05-27 12:04:24">
+    <value>Introduzca la firma que le quiera añadir a sus publicaciones.</value>
   </data>
   <data name="[RESX:Signature].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Firma</value>
@@ -964,8 +964,8 @@ De
   <data name="[RESX:SplitCancelConfirm].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>¿Cancelar la división?</value>
   </data>
-  <data name="[RESX:SplitCreate].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Partir</value>
+  <data name="[RESX:SplitCreate].Text" xml:space="preserve" lastModified="2024-05-27 12:07:55">
+    <value>Dividir</value>
   </data>
   <data name="[RESX:SplitHeader].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Modo dividido:</value>
@@ -997,26 +997,26 @@ De
   <data name="[RESX:Submit].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Enviar</value>
   </data>
-  <data name="[RESX:SubmitVote].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Envía tu voto</value>
+  <data name="[RESX:SubmitVote].Text" xml:space="preserve" lastModified="2024-05-27 12:00:04">
+    <value>Enviar voto</value>
   </data>
   <data name="[RESX:SubPages].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Páginas:</value>
   </data>
-  <data name="[RESX:Subscribe:Note].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Si se selecciona, está suscrito a este tema</value>
+  <data name="[RESX:Subscribe:Note].Text" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Indica si está suscrito a este tema</value>
   </data>
   <data name="[RESX:Subscribe].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Subscribir</value>
   </data>
-  <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Suscríbete a todos los foros</value>
+  <data name="[RESX:SubscribeAllForums].Text" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Suscribirse a todos los foros</value>
   </data>
   <data name="[RESX:SubscribedForum].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Foro suscrito</value>
   </data>
-  <data name="[RESX:SubscribedForumName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Suscribirse al foro {0}</value>
+  <data name="[RESX:SubscribedForumName].Text" xml:space="preserve" lastModified="2024-05-27 12:33:21">
+    <value>Suscrito al foro {0}</value>
   </data>
   <data name="[RESX:SubscribedForumTopicForumName].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Tema {0} en el foro suscrito {1}</value>
@@ -1096,11 +1096,14 @@ De
   <data name="[RESX:TimeSpan:Yesterday].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Ayer</value>
   </data>
-  <data name="[RESX:TimeZone].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Huso horario</value>
+  <data name="[RESX:TimeZone].Text" xml:space="preserve" lastModified="2024-05-27 12:04:24">
+    <value>Zona horaria</value>
   </data>
-  <data name="[RESX:Tips:EnablePrivateMessaging].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Elija habilitar la mensajería privada y el módulo de mensajería privada apropiado que haya instalado.</value>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve" lastModified="2024-05-27 11:36:16">
+    <value>Elimina todas las entradas del usuario y desautoriza al usuario.</value>
+  </data>
+  <data name="[RESX:Tips:EnablePrivateMessaging].Text" xml:space="preserve" lastModified="2024-05-27 11:58:58">
+    <value>Maque esta opción para habilitar la mensajería privada y el módulo de mensajería privada apropiado que haya instalado.</value>
   </data>
   <data name="[RESX:Tips:PrefShowReplies].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Al seleccionar esta opción, podrá ver todas las respuestas de un tema determinado mientras redacta una respuesta.</value>
@@ -1120,8 +1123,8 @@ De
   <data name="[RESX:TopicLocked].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>El tema está bloqueado</value>
   </data>
-  <data name="[RESX:TopicPriority].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Prioridad de ordenación</value>
+  <data name="[RESX:TopicPriority].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Orden de prioridad</value>
   </data>
   <data name="[RESX:TopicQuickEdit].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Editor de opciones de tema</value>
@@ -1144,8 +1147,8 @@ De
   <data name="[RESX:TopicStatus].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Estado del tema</value>
   </data>
-  <data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Suscrito a este tema</value>
+  <data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Suscritos a este tema</value>
   </data>
   <data name="[RESX:Trusted].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Confianza</value>
@@ -1153,8 +1156,8 @@ De
   <data name="[RESX:TrustedUser].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nivel de confianza</value>
   </data>
-  <data name="[RESX:Unanswered].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Por contestar</value>
+  <data name="[RESX:Unanswered].Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Sin respuesta</value>
   </data>
   <data name="[RESX:Underline].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value> U </value>
@@ -1171,23 +1174,23 @@ De
   <data name="[RESX:UnPinTopic].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Haga clic para desanclar este tema</value>
   </data>
-  <data name="[RESX:Unresolved].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Pendiente</value>
+  <data name="[RESX:Unresolved].Text" xml:space="preserve" lastModified="2024-05-27 12:08:05">
+    <value>No resueltos</value>
   </data>
   <data name="[RESX:Upload].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Subir</value>
   </data>
-  <data name="[RESX:UploadButton].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Elija Archivo</value>
+  <data name="[RESX:UploadButton].Text" xml:space="preserve" lastModified="2024-05-27 11:58:24">
+    <value>Seleccionar archivo</value>
   </data>
-  <data name="[RESX:Uploading].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Cargar</value>
+  <data name="[RESX:Uploading].Text" xml:space="preserve" lastModified="2024-05-27 11:53:57">
+    <value>Cargando</value>
   </data>
   <data name="[RESX:UserAccount].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Cuenta de usuario</value>
   </data>
-  <data name="[RESX:UserBanned].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Usuario: {0} ha sido baneado y todas las publicaciones eliminadas.</value>
+  <data name="[RESX:UserBanned].Text" xml:space="preserve" lastModified="2024-05-27 12:22:37">
+    <value>Usuario: {0} ha sido bloqueado y todas sus publicaciones eliminadas.</value>
   </data>
   <data name="[RESX:UserCaption].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Leyenda de usuario</value>
@@ -1225,7 +1228,7 @@ De
   <data name="[RESX:WhosOnline].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Quién está en línea:</value>
   </data>
-  <data name="[RESX:Width].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
+  <data name="[RESX:Width].Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
     <value>Ancho</value>
   </data>
   <data name="[RESX:Yahoo].Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
@@ -1315,11 +1318,11 @@ De
   <data name="ActiveTopics-80640min.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Últimos 2 meses</value>
   </data>
-  <data name="AddText.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Agregar nuevo</value>
+  <data name="AddText.Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Añadir nuevo</value>
   </data>
-  <data name="AlertBody.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>&lt;div&gt;&lt;b&gt;Motivo:&lt;/b&gt; [Motivo]&lt;br /&gt;&lt;b&gt;Comentarios:&lt;/b&gt; [Comentario]&lt;hr noshade /&gt;[Publicación] &lt;br /&gt;&lt;br /&gt;&lt;a href="[URL]" target="_blank"&gt;[URL]&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+  <data name="AlertBody.Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>&lt;div&gt;&lt;b&gt;Motivo:&lt;/b&gt; [Reason]&lt;br /&gt;&lt;b&gt;Comentarios:&lt;/b&gt; [Comment]&lt;hr noshade /&gt;[Post] &lt;br /&gt;&lt;br /&gt;&lt;a href="[URL]" target="_blank"&gt;[URL]&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
   </data>
   <data name="AlertSubject.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Una publicación de [DisplayName] ha sido marcada para su revisión por [FlaggedBy]</value>
@@ -1336,8 +1339,8 @@ De
   <data name="AuditAction.Edit.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>EDITAR</value>
   </data>
-  <data name="AuditAction.Lock.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>CERRADURA</value>
+  <data name="AuditAction.Lock.Text" xml:space="preserve" lastModified="2024-05-27 11:53:57">
+    <value>BLOQUEADO</value>
   </data>
   <data name="AuditAction.Move.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>MOVER</value>
@@ -1348,8 +1351,8 @@ De
   <data name="Back.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Atrás</value>
   </data>
-  <data name="Banned.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Proscrito:</value>
+  <data name="Banned.Text" xml:space="preserve" lastModified="2024-05-27 12:16:13">
+    <value>Bloqueado:</value>
   </data>
   <data name="By.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>por</value>
@@ -1372,8 +1375,8 @@ De
   <data name="DisplaynameDrop.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nombre para mostrar</value>
   </data>
-  <data name="DropDownSelect.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>&lt; SELECCIONE &gt; GRUPO O FORO</value>
+  <data name="DropDownSelect.Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>&lt; SELECCIONE GRUPO O FORO &gt;</value>
   </data>
   <data name="drpSearchType.AllKeywords.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>TODAS las palabras clave</value>
@@ -1402,11 +1405,11 @@ De
   <data name="ForumHeader.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Nombre del foro</value>
   </data>
-  <data name="ForumsTracked.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Foros que estás rastreando:</value>
+  <data name="ForumsTracked.Text" xml:space="preserve" lastModified="2024-05-27 12:03:15">
+    <value>Foros que está siguiendo:</value>
   </data>
-  <data name="ForumSubscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Envíame un correo electrónico cuando alguien publique en este foro.</value>
+  <data name="ForumSubscribe.Text" xml:space="preserve" lastModified="2024-05-27 12:00:04">
+    <value>Recibir un correo electrónico cuando alguien publique en este foro.</value>
   </data>
   <data name="GuestSuffix.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>(invitado)</value>
@@ -1420,8 +1423,8 @@ De
   <data name="Instant.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Instante</value>
   </data>
-  <data name="Lock.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Cerradura</value>
+  <data name="Lock.Text" xml:space="preserve" lastModified="2024-05-27 11:53:57">
+    <value>Bloquear</value>
   </data>
   <data name="MarkAllReadConfirm.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>¿Marcar todos los elementos como leídos?</value>
@@ -1435,11 +1438,13 @@ De
   <data name="NoResults.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>No se han encontrado resultados</value>
   </data>
-  <data name="NotificationBodyReply.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>[Publicación]</value>
+  <data name="NotificationBodyReply.Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>&lt;p&gt;[DisplayName] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
+&lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
   </data>
-  <data name="NotificationBodyTopic.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>[Publicación]</value>
+  <data name="NotificationBodyTopic.Text" xml:space="preserve" lastModified="2024-05-27 11:40:50">
+    <value>&lt;p&gt;[DisplayName] ha publicado contenido que require moderación.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Asunto:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Por favor revise el contenido y verifique su validez.&lt;/p&gt;
+&lt;p&gt;Puede:&lt;ol&gt;&lt;li&gt;aprobar el tema,&lt;/li&gt;&lt;li&gt;rechazar el tema (y solicitar correcciones al autor),&lt;/li&gt;&lt;li&gt;eliminar el tema, o&lt;/li&gt;&lt;li&gt;bloquear al usuario, eliminanado este tema y otros que haya enviado&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Si no puede determinar si el contenido es apropiado a partir del asunto, utilize &lt;a href="[MODLINK]"&gt;este enlace&lt;/a&gt; para revisar y moderar temas.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>[DisplayName] ha publicado una respuesta a [TopicSubject]</value>
@@ -1531,11 +1536,11 @@ De
   <data name="SendEmail.Cancel.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Cancelar</value>
   </data>
-  <data name="SendEmail.MessageSent.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>¡Tu mensaje ha sido enviado!</value>
+  <data name="SendEmail.MessageSent.Text" xml:space="preserve" lastModified="2024-05-27 11:48:09">
+    <value>Su mensaje se ha enviado</value>
   </data>
-  <data name="SendEmail.NotLoggedIn.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Debe ser un usuario registrado e iniciar sesión para enviar un correo electrónico.</value>
+  <data name="SendEmail.NotLoggedIn.Text" xml:space="preserve" lastModified="2024-05-27 11:57:33">
+    <value>Tiene que ser un usuario registrado e iniciar sesión para enviar un correo electrónico.</value>
   </data>
   <data name="SendEmail.SendEmail.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Enviar correo electrónico</value>
@@ -1555,17 +1560,17 @@ De
   <data name="Stats.LastCreated.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Estadísticas creadas por última vez</value>
   </data>
-  <data name="Stats.MostActive.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Más activo</value>
+  <data name="Stats.MostActive.Text" xml:space="preserve" lastModified="2024-05-27 12:06:10">
+    <value>Más activos</value>
   </data>
-  <data name="Stats.MostReplies.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>La mayoría de las respuestas</value>
+  <data name="Stats.MostReplies.Text" xml:space="preserve" lastModified="2024-05-27 12:05:33">
+    <value>Más respuestas</value>
   </data>
-  <data name="Stats.MostViews.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>La mayoría de las vistas</value>
+  <data name="Stats.MostViews.Text" xml:space="preserve" lastModified="2024-05-27 12:05:33">
+    <value>Más vistas</value>
   </data>
-  <data name="Stats.StatsHeader.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Estadística:</value>
+  <data name="Stats.StatsHeader.Text" xml:space="preserve" lastModified="2024-05-27 12:01:09">
+    <value>Estadísticas:</value>
   </data>
   <data name="Stats.TotalForums.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Total de foros</value>
@@ -1585,14 +1590,14 @@ De
   <data name="Street.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Calle:</value>
   </data>
-  <data name="Subscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Envíame un correo electrónico cuando alguien responda a este hilo.</value>
+  <data name="Subscribe.Text" xml:space="preserve" lastModified="2024-05-27 12:00:04">
+    <value>Recibir un correo electrónico cuando alguien responda a este hilo.</value>
   </data>
   <data name="Subscriptions.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Suscripciones</value>
   </data>
-  <data name="ThreadsTracked.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
-    <value>Hilos de los que realiza un seguimiento:</value>
+  <data name="ThreadsTracked.Text" xml:space="preserve" lastModified="2024-05-27 12:03:15">
+    <value>Hilos que está siguiendo:</value>
   </data>
   <data name="Title.Text" xml:space="preserve" lastModified="2024-05-16 19:52:14">
     <value>Acción completada</value>
