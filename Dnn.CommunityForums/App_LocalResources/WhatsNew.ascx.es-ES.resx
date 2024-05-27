@@ -39,17 +39,17 @@
   <data name="[RESX:IncludeBody].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Incluir cuerpo</value>
   </data>
-  <data name="[RESX:Minutes].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
-    <value>acta</value>
+  <data name="[RESX:Minutes].Text" xml:space="preserve" lastModified="2024-05-27 11:28:27">
+    <value>minutos</value>
   </data>
-  <data name="[RESX:NumberOfItems].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
-    <value>Número de artículos</value>
+  <data name="[RESX:NumberOfItems].Text" xml:space="preserve" lastModified="2024-05-27 11:28:28">
+    <value>Número de elementos</value>
   </data>
   <data name="[RESX:RandomOrder].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Orden aleatorio</value>
   </data>
-  <data name="[RESX:Token:AuthorDisplayName].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
-    <value>Muestra el nombre seleccionado por el usuario de la persona que creó la publicación.</value>
+  <data name="[RESX:Token:AuthorDisplayName].Text" xml:space="preserve" lastModified="2024-05-27 11:30:26">
+    <value>Muestra el nombre seleccionado por el usuario que creó la publicación.</value>
   </data>
   <data name="[RESX:Token:AuthorFirstName].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Muestra el nombre de la persona que creó la publicación.</value>
@@ -69,8 +69,8 @@
   <data name="[RESX:Token:BodyText].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Elimina todo el formato HTML de la publicación.</value>
   </data>
-  <data name="[RESX:Token:BodyXX].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
-    <value>Reemplace el XX con el número de caracteres de texto sin formato que desea que se muestren.</value>
+  <data name="[RESX:Token:BodyXX].Text" xml:space="preserve" lastModified="2024-05-27 11:30:26">
+    <value>Reemplace XX con el número de caracteres de texto sin formato que desea que se muestren.</value>
   </data>
   <data name="[RESX:Token:Date].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Muestra la fecha en que se creó la publicación.</value>
@@ -93,8 +93,8 @@
   <data name="[RESX:Token:ForumURL].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Representa la URL del foro donde se encuentra la publicación.</value>
   </data>
-  <data name="[RESX:Token:PostURL].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
-    <value>Representa la URL completa de la publicación dada.</value>
+  <data name="[RESX:Token:PostURL].Text" xml:space="preserve" lastModified="2024-05-27 11:31:32">
+    <value>Representa la URL completa de la publicación.</value>
   </data>
   <data name="[RESX:Token:ReplyCount].Text" xml:space="preserve" lastModified="2024-05-16 20:08:13">
     <value>Representa el número de respuestas del tema.</value>
