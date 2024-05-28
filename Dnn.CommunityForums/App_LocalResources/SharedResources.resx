@@ -286,7 +286,7 @@
     <value>Statistics Last Created</value>
   </data>
   <data name="[RESX:WhosOnline].Text" xml:space="preserve">
-    <value>Who is online:</value>
+    <value>Who's Online</value>
   </data>
   <data name="[RESX:GuestsOnline].Text" xml:space="preserve">
     <value>There are currently [GUESTCOUNT] guests(s) online.</value>
