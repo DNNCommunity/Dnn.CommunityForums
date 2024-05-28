@@ -59,7 +59,7 @@
             </EmptyDataTemplate>
         </asp:GridView>
         <div style="float: right;">
-            <asp:button id="btnSubscribeAll" cssclass="dnnPrimaryAction" runat="server" text="Subscribe to All Forums" resourcekey="[RESX:SubscribeAllForums]" />
+            <asp:Button ID="btnSubscribeAll" CssClass="dnnPrimaryAction" runat="server" Text="[RESX:SubscribeAllForums]" />
         </div>
         </ContentTemplate>
     </asp:UpdatePanel>
