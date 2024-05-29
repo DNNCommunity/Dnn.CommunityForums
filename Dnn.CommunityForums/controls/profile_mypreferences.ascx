@@ -6,19 +6,19 @@
 	.dcf-search-popup{z-index:9 !important;}
 </style>
 <h3 class="dcf-heading-3">
-    <dnn:label id="lblHeader" cssclass="aftitlelg" runat="server" resourcekey="[RESX:MySettings]" />
+    <dnn:label id="lblHeader" cssclass="aftitlelg" runat="server" text="[RESX:MySettings]" />
 </h3>
 <div class="dnnForm afpref">
 
     <div class="dnnFormItem">
-        <dnn:label controlname="drpPrefDefaultSort" resourcekey="[RESX:PrefDefaultSort]" text="Default Sort" suffix=":" runat="server" />
+        <dnn:label controlname="drpPrefDefaultSort" text="[RESX:PrefDefaultSort]" suffix=":" runat="server" />
         <asp:dropdownlist id="drpPrefDefaultSort" runat="server">
-            <asp:listitem value="ASC" resourcekey="[RESX:OldestFirst]"></asp:listitem>
-            <asp:listitem value="DESC" resourcekey="[RESX:NewestFirst]"></asp:listitem>
+            <asp:ListItem Value="ASC" Text="[RESX:OldestFirst]"></asp:listitem>
+            <asp:ListItem Value="DESC" Text="[RESX:NewestFirst]"></asp:listitem>
         </asp:dropdownlist>
     </div>
     <div class="dnnFormItem">
-        <dnn:label controlname="drpPrefPageSize" resourcekey="[RESX:PrefPageSize]" text="Page Size" suffix=":" runat="server" />
+        <dnn:label controlname="drpPrefPageSize" text="[RESX:PrefPageSize]" suffix=":" runat="server" />
         <asp:dropdownlist id="drpPrefPageSize" runat="server">
             <asp:listitem>5</asp:listitem>
             <asp:listitem>10</asp:listitem>
@@ -29,28 +29,28 @@
         </asp:dropdownlist>
     </div>
     <div class="dnnFormItem">
-        <dnn:label controlname="chkPrefJumpToLastPost" resourcekey="[RESX:PrefJumpToLastPost]" text="Jump to last post" suffix=":" runat="server" />
+        <dnn:label controlname="chkPrefJumpToLastPost" text="[RESX:PrefJumpToLastPost]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefJumpToLastPost" runat="server" />
     </div>
     <div class="dnnFormItem">
-        <dnn:label controlname="chkPrefTopicSubscribe" resourcekey="[RESX:PrefTopicSubscribe]" text="Subscribe" suffix=":" runat="server" />
+        <dnn:label controlname="chkPrefTopicSubscribe" text="[RESX:PrefTopicSubscribe]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefTopicSubscribe" runat="server" />
     </div>
     <div class="dnnFormItem">
-        <dnn:label controlname="chkPrefBlockAvatars" resourcekey="[RESX:PrefBlockAvatars]" text="Block Avatars" suffix=":" runat="server" />
+        <dnn:label controlname="chkPrefBlockAvatars" text="[RESX:PrefBlockAvatars]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefBlockAvatars" runat="server" />
     </div>
     <div class="dnnFormItem">
-        <dnn:label controlname="chkPrefBlockSignatures" resourcekey="[RESX:PrefBlockSignatures]" text="Block Signatures" suffix=":" runat="server" />
+        <dnn:label controlname="chkPrefBlockSignatures" text="[RESX:PrefBlockSignatures]" suffix=":" runat="server" />
         <asp:checkbox id="chkPrefBlockSignatures" runat="server" />
     </div>
     <div class="dnnFormItem">
-        <dnn:label controlname="txtSignature" resourcekey="[RESX:Signature]" text="Signature" suffix=":" runat="server" />
+        <dnn:label controlname="txtSignature" text="[RESX:Signature]" suffix=":" runat="server" />
         <asp:textbox id="txtSignature" runat="server" textmode="MultiLine" />
     </div>
     <ul class="dnnActions dnnClear">
         <li>
-            <asp:linkbutton id="btnSave" cssclass="dnnPrimaryAction" runat="server" text="Save" resourcekey="[RESX:Save]" />
+            <asp:LinkButton ID="btnSave" CssClass="dnnPrimaryAction" runat="server" Text="[RESX:Save]" />
         </li>
     </ul>
 </div>
