@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.Toolbar, ForumModuleId, UserInfo?.Profile?.PreferredLocale ));
                 if (obj == null)
                 {
                     sTemp = ParseTemplate();

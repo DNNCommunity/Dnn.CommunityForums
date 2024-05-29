@@ -40,6 +40,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Modules.ActiveForums.Queue;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -117,9 +118,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sContents;
         }
-        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType, string locale)
         {
-            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType);
+            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType,locale);
             string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(sToolbar))
             {
@@ -129,8 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sToolbar;
         }
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
-            CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 

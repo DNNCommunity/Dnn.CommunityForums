@@ -233,11 +233,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 TopicsTemplate = TopicsTemplate.Replace("[AF:SORT:REPLYCREATED]", string.Empty);
                 if (TopicsTemplate.Contains("[TOPICS]"))
                 {
-                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId));
+                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
                     if (ds == null)
                     {
                         ds = DataProvider.Instance().UI_TopicsView(PortalId, ForumModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
-                        DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId,ForumId, UserId), ds); 
+                        DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId,ForumId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value), ds); 
                     }
                     if (ds.Tables.Count > 0)
                     {

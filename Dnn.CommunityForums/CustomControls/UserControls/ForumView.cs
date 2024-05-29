@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (template.Contains("[TOOLBAR"))
                         {
-                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
+                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
                         }
                         Control tmpCtl = null;
                         try
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (Forums == null)
                     {
-                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds);
+                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
                         var obj = DataCache.ContentCacheRetrieve(ForumModuleId, cachekey);
                         if (obj == null)
                         {
