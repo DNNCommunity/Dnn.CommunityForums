@@ -3,7 +3,6 @@
 <%@ Register TagName="label" TagPrefix="dnn" Src="~/controls/labelcontrol.ascx" %>
 <style>
     .afpref{min-width:inherit !important}
-	.dcf-search-popup{z-index:9 !important;}
 </style>
 <h3 class="dcf-heading-3">
     <dnn:label id="lblHeader" cssclass="aftitlelg" runat="server" text="[RESX:MySettings]" />
