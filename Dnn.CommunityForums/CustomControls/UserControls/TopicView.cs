@@ -325,8 +325,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bLocked = Utilities.SafeConvertBool(_drForum["IsLocked"]);
             _topicType = Utilities.SafeConvertInt(_drForum["TopicType"]);
             _statusId = Utilities.SafeConvertInt(_drForum["StatusId"]);
-            _topicSubject = _drForum["Subject"].ToString();
-            _topicDescription = Utilities.StripHTMLTag(_drForum["Body"].ToString());
+            _topicSubject = HttpUtility.HtmlDecode(_drForum["Subject"].ToString());
+            _topicDescription = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(_drForum["Body"].ToString()));
             _tags = _drForum["Tags"].ToString();
             _viewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
             _replyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
@@ -1186,8 +1186,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var userReplyCount = dr.GetInt("ReplyCount");
             var postCount = userTopicCount + userReplyCount;
             var userCaption = dr.GetString("UserCaption");
-            var body = dr.GetString("Body");
-            var subject = dr.GetString("Subject");
+            var body = HttpUtility.HtmlDecode(dr.GetString("Body"));
+            var subject = HttpUtility.HtmlDecode(dr.GetString("Subject"));
             var tags = dr.GetString("Tags");
             var signature = dr.GetString("Signature");
             var ipAddress = dr.GetString("IPAddress");
