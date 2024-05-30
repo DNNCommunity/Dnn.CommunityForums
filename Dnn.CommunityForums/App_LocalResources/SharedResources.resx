@@ -286,7 +286,7 @@
     <value>Statistics Last Created</value>
   </data>
   <data name="[RESX:WhosOnline].Text" xml:space="preserve">
-    <value>Who is online:</value>
+    <value>Who's Online</value>
   </data>
   <data name="[RESX:GuestsOnline].Text" xml:space="preserve">
     <value>There are currently [GUESTCOUNT] guests(s) online.</value>
@@ -1725,10 +1725,13 @@ From,
   <data name="[RESX:Unresolved].Text" xml:space="preserve">
     <value>Unresolved</value>
   </data>
-	<data name="[RESX:FilteredTopics].Text" xml:space="preserve">
+  <data name="[RESX:FilteredTopics].Text" xml:space="preserve">
     <value>Filtered Topics</value>
   </data>
   <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
     <value>Deletes all posts for this user and unauthorizes the user.</value>
+  </data>
+  <data name="[RESX:SearchFor].Text" xml:space="preserve">
+    <value>Search for...</value>
   </data>
 </root>

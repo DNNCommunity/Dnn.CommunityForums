@@ -40,6 +40,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Modules.ActiveForums.Queue;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -117,9 +118,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sContents;
         }
-        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType, string locale)
         {
-            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType);
+            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType,locale);
             string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(sToolbar))
             {
@@ -129,8 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sToolbar;
         }
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
-            CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 
@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
     </span>
     <div class='dcf-search-popup aftb-search-popup'>
         <div class='dcf-search-input'>
-            <input class='dcf-search-input' type='text' placeholder='Search for...' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
+            <input class='dcf-search-input' type='text' placeholder='{3}' maxlength='50'><button class='dcf-search-button'>[RESX:Search]</button>
         </div>
         <div class='dcf-search-options'>
             <a class='dcf-search-option-advanced' href = '{1}'>[RESX:SearchAdvanced]</a>
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums
         </div>
     </div>
 </div>", 
-HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText));
+HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), searchText, GetSharedResource("[RESX:SearchFor]")));
 
             // These are no longer used in 5.0
             template = template.Replace("[AF:TB:MyProfile]", string.Empty);
@@ -512,10 +512,8 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
         }
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
-
-            var strMessage = HttpUtility.HtmlEncode(text);
-
-            if (strMessage != string.Empty)
+            string strMessage = text;
+            if (!String.IsNullOrEmpty(strMessage))
             {
                 if (strMessage.ToUpper().Contains("[CODE]") | strMessage.ToUpper().Contains("<CODE"))
                 {
@@ -533,7 +531,7 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
-                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url); 
+                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                     strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
@@ -560,7 +558,6 @@ HttpUtility.HtmlEncode(searchUrl), HttpUtility.HtmlEncode(advancedSearchUrl), se
                 strMessage = strMessage.Replace("[", "&#91;");
                 strMessage = strMessage.Replace("]", "&#93;");
             }
-
             return strMessage;
         }
 

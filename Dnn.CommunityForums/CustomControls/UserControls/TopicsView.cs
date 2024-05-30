@@ -31,6 +31,7 @@ using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
 using System.Linq;
+using System.Net;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -233,11 +234,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 TopicsTemplate = TopicsTemplate.Replace("[AF:SORT:REPLYCREATED]", string.Empty);
                 if (TopicsTemplate.Contains("[TOPICS]"))
                 {
-                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId));
+                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
                     if (ds == null)
                     {
                         ds = DataProvider.Instance().UI_TopicsView(PortalId, ForumModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
-                        DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId,ForumId, UserId), ds); 
+                        DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicsViewForUser, ModuleId,ForumId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value), ds); 
                     }
                     if (ds.Tables.Count > 0)
                     {
@@ -690,9 +691,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     string sTopicsTemplate = sOutput;
                     int TopicId = Convert.ToInt32(drTopic["TopicId"]);
-                    string Subject = Convert.ToString(drTopic["Subject"]);
-                    string Summary = Convert.ToString(drTopic["Summary"]);
-                    string Body = Convert.ToString(drTopic["Body"]);
+                    string Subject = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Subject"]));
+                    string Summary = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Summary"]));
+                    string Body = HttpUtility.HtmlDecode(Convert.ToString(drTopic["Body"]));
                     //Strip comments
 
                     int AuthorId = Convert.ToInt32(drTopic["AuthorId"]);
@@ -712,12 +713,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int StatusId = Convert.ToInt32(drTopic["StatusId"]);
                     //LastReply info
                     int LastReplyId = Convert.ToInt32(drTopic["LastReplyId"]);
-                    string LastReplySubject = Convert.ToString(drTopic["LastReplySubject"]);
+                    string LastReplySubject = HttpUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySubject"]));
                     if (LastReplySubject == "")
                     {
                         LastReplySubject = "RE: " + Subject;
                     }
-                    string LastReplySummary = Convert.ToString(drTopic["LastReplySummary"]);
+                    string LastReplySummary = HttpUtility.HtmlDecode(Convert.ToString(drTopic["LastReplySummary"]));
                     if (LastReplySummary == "")
                     {
                         LastReplySummary = Summary;
@@ -938,8 +939,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     sTopicsTemplate = sTopicsTemplate.Replace("[TOPICURL]", sTopicURL);
                     Subject = Utilities.StripHTMLTag(Subject);
-                    Subject = Subject.Replace("&#91;", "[");
-                    Subject = Subject.Replace("&#93;", "]");
+
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECT]", Subject + sPollImage);
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", GetTopic(TabId, ForumId, TopicId, Subject, sBodyTitle, UserId, AuthorId, ReplyCount, -1, sTopicURL) + sPollImage);
 
@@ -1129,9 +1129,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (bRead || AuthorId == this.UserId)
             {
+                Body = HttpUtility.HtmlDecode(Body);
                 Body = Body.Replace("<br>", System.Environment.NewLine);
-                Body = Body.Replace("[", "&#91");
-                Body = Body.Replace("]", "&#93");
                 Body = Utilities.StripHTMLTag(Body);
                 Body = Body.Length > 500 ? Body.Substring(0, 500) + "..." : Body;
                 Body = Body.Replace("\"", "'");
@@ -1152,9 +1151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (bRead || AuthorId == this.UserId)
             {
-                Body = Body.Replace("[", "&#91");
-                Body = Body.Replace("]", "&#93");
-                return Body;
+                return HttpUtility.HtmlDecode(Body);
             }
             else
             {
@@ -1165,8 +1162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string GetTopic(int TabID, int ForumID, int PostID, string Subject, string BodyTitle, int UserID, int PostUserID, int Replies, int ForumOwnerID, string sLink)
         {
             string sOut = null;
-            //Subject = Replace(Subject, "[", "&#91")
-            //Subject = Replace(Subject, "]", "&#93")
+            Subject = HttpUtility.HtmlDecode(Subject);
             Subject = Utilities.StripHTMLTag(Subject);
             Subject = Subject.Replace("\"", string.Empty);
             //Subject = Subject.Replace("'", string.Empty);

@@ -363,12 +363,12 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 //User has acccess
-                var sBody = ti.Content.Body;
-                var sSubject = ti.Content.Subject;
+                var sBody = HttpUtility.HtmlDecode(ti.Content.Body);
+                var sSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
                 sBody = Utilities.PrepareForEdit(PortalId, ForumModuleId, ImagePath, sBody, _allowHTML, _editorType);
                 sSubject = Utilities.PrepareForEdit(PortalId, ForumModuleId, ImagePath, sSubject, false, EditorTypes.TEXTBOX);
                 ctlForm.Subject = sSubject;
-                ctlForm.Summary = ti.Content.Summary;
+                ctlForm.Summary = HttpUtility.HtmlDecode(ti.Content.Summary);
                 ctlForm.Body = sBody;
                 ctlForm.AnnounceEnd = ti.AnnounceEnd;
                 ctlForm.AnnounceStart = ti.AnnounceStart;
@@ -439,8 +439,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var sBody = ri.Content.Body;
-                var sSubject = ri.Content.Subject;
+                var sBody = HttpUtility.HtmlDecode(ri.Content.Body);
+                var sSubject = HttpUtility.HtmlDecode(ri.Content.Subject);
                 sBody = Utilities.PrepareForEdit(PortalId, ForumModuleId, ImagePath, sBody, _allowHTML, _editorType);
                 sSubject = Utilities.PrepareForEdit(PortalId, ForumModuleId, ImagePath, sSubject, false, EditorTypes.TEXTBOX);
                 ctlForm.Subject = sSubject;
@@ -522,8 +522,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ti == null)
                     Response.Redirect(NavigateUrl(TabId));
 
-                ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + ti.Content.Subject;
-                ctlForm.TopicSubject = ti.Content.Subject;
+                ctlForm.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + HttpUtility.HtmlDecode(ti.Content.Subject);
+                ctlForm.TopicSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
                 var body = string.Empty;
 
                 if (ti.IsLocked && (CurrentUserType == CurrentUserTypes.Anon || CurrentUserType == CurrentUserTypes.Auth))
@@ -741,8 +741,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
-            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
+            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
             SaveAttachments(ti.ContentId);
             if (ti.IsApproved && ti.Author.AuthorId > 0)
@@ -815,7 +815,7 @@ namespace DotNetNuke.Modules.ActiveForums
             
             try
             {
-                DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId));
+                DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
 
                 if (ti.IsApproved == false)

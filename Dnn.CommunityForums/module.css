@@ -1502,3 +1502,8 @@ div.dcf-mod-edit-wrap {
 .dcf-split-checkbox-label {
 	margin-left:3px;
 }
+
+/* need z-index on search popup */
+.dnn-community-forums * .dcf-search-popup {
+	z-index: 9 !important;
+}

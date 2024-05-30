@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (template.Contains("[TOOLBAR"))
                         {
-                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
+                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
                         }
                         Control tmpCtl = null;
                         try
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (Forums == null)
                     {
-                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds);
+                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
                         var obj = DataCache.ContentCacheRetrieve(ForumModuleId, cachekey);
                         if (obj == null)
                         {
@@ -518,11 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     DateTime dtLastPostDate = fi.LastPostDateTime;
                     Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate,PortalId, CurrentUserId));
-                    string Subject = fi.LastPostSubject;
-                    if (Subject == "")
-                    {
-                        Subject = GetSharedResource("[RESX:SubjectPrefix]") + " " + fi.LastPostSubject;
-                    }
+                    string Subject = HttpUtility.HtmlDecode(fi.LastPostSubject);
                     if (Subject != string.Empty)
                     {
                         Template = Template.Replace(ReplaceTag, GetLastPostSubject(fi.LastPostID, fi.LastTopicId, fi.ForumID, TabId, Subject, intLength, MainSettings.PageSize, fi));
@@ -574,6 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ParentPostID);
             var sb = new StringBuilder();
+            Subject = HttpUtility.HtmlDecode(Subject);
             Subject = Utilities.StripHTMLTag(Subject);
             Subject = Subject.Replace("[", "&#91");
             Subject = Subject.Replace("]", "&#93");

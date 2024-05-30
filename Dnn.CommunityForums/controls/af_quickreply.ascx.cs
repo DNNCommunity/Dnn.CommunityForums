@@ -28,6 +28,7 @@ using System.Web.UI.HtmlControls;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.UI.UserControls;
 using System.Reflection;
+using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -322,7 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums
             int ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
             DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, ri.Forum.ForumGroupId, ForumId, TopicId, ReplyId, ri.Content.AuthorId);
-            DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId));
+            DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, ri.TopicId, ri.Content.AuthorId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
 

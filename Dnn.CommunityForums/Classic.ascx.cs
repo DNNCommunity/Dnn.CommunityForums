@@ -34,6 +34,7 @@ using DotNetNuke.UI.Utilities;
 using System.Linq;
 using DotNetNuke.Entities.Modules;
 using System.Reflection;
+using DotNetNuke.Services.Localization;
 
 //using DotNetNuke.Framework.JavaScriptLibraries;
 
@@ -456,7 +457,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
                     }
-                    lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType);
+                    lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);
                 }
