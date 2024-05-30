@@ -679,7 +679,7 @@
     <value>Choose the level of logging for your forums.&lt;br /&gt;Disabled - No activities are logged&lt;br /&gt;Moderate - Move and Delete are logged.&lt;br /&gt;Full - All activities are logged.</value>
   </data>
   <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve">
-    <value>Recommended for sites with large numbers of subscribers.  Requires DotNetNuke scheduler.  See documentation for more details.</value>
+    <value>Recommended for sites with large numbers of subscribers.  Requires DNN scheduler.  See documentation for more details.</value>
   </data>
   <data name="[RESX:Tips:Moderated].Text" xml:space="preserve">
     <value>Enable this feature if you would like to approve topics and replies before they appear in the forum.</value>
@@ -961,7 +961,7 @@
     <value>Use filters to replace text from a users post when it is submitted.</value>
   </data>
   <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve">
-    <value>Allows content from this forum to be included in the DotNetNuke site search.</value>
+    <value>Allows content from this forum to be included in the DNN site search.</value>
   </data>
   <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve">
     <value>Allows users to reply to posts via email.  Click the properties icon for more details.</value>
@@ -1196,7 +1196,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
     <value>Enable this feature to require anonymous users to enter a random security code to help prevent spam content.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve">
-    <value>Enable this feature and DNN Community Forums will update the breadcrumb navigation element within your skin.  This is only supported with the DotNetNuke Breadcrumb skin object.</value>
+    <value>Enable this feature and DNN Community Forums will update the breadcrumb navigation element within your skin.  This is only supported with the DNN Breadcrumb skin object.</value>
   </data>
   <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve">
     <value>Update Skin Breadcrumb</value>
