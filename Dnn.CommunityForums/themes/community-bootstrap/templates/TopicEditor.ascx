@@ -1,7 +1,7 @@
 <div class="afcrumb">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>
 <div style="text-align:center;padding-top:10px;">
 <div class="afeditor">
-	<table class="table">
+	<table cellpadding="10" cellspacing="0" width="100%">
 		<tr>
 			<td style="border-bottom:solid 1px #cdcdcd;text-align:left;"><span class="aftitle">[RESX:CreateNewTopic]</span></td>
 			<td style="border-bottom:solid 1px #cdcdcd;text-align:right;"><span style="font-weight:bold;">[RESX:Forum]</span>:[AF:LINK:FORUMNAME]</td>
@@ -12,7 +12,7 @@
 					<tr>
 						<td>
 							[AF:UI:ANON]
-							<table class="table">
+							<table cellpadding="0" cellspacing="4" border="0" width="99%">
 								<tr>
 									<td style="text-align:left;">[RESX:Username]:[AF:REQ:USERNAME]</td>
 									<td></td>
@@ -31,13 +31,13 @@
 								</tr>
 							</table>
 							[/AF:UI:ANON]
-							<table class="table">
+							<table cellpadding="0" cellspacing="4" border="0" width="99%">
 								<tr>
 									<td style="text-align:left;">[RESX:Subject]:[AF:REQ:SUBJECT]</td>
 									<td style="text-align:left;">[RESX:TopicStatus]:</td>
 								</tr>
 								<tr>
-									<td style="text-align:left;"><div style="width:300px;">[AF:INPUT:SUBJECT]</div></td>
+									<td style="text-align:left;"><div class="dcf-topic-edit-subject">[AF:INPUT:SUBJECT]</div></td>
 									<td style="text-align:left;">[AF:CONTROL:STATUS]</td>
 								</tr>
 							</table>
@@ -71,7 +71,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td>[AF:INPUT:SUMMARY]</td>
+						<td><div class="dcf-topic-edit-summary">[AF:INPUT:SUMMARY]</div></td>
 						<td></td>
 					</tr>
 					<tr>

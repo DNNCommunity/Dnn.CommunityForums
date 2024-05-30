@@ -93,6 +93,9 @@
   border: none !important;
   padding: 0.3em;
 }
+.dnn-community-forums .dcf-topic-edit-subject input, .dnn-community-forums .dcf-topic-edit-summary input {
+  width: 95%;
+}
 .dnn-community-forums .dcf-icon-text {
   white-space: nowrap;
 }

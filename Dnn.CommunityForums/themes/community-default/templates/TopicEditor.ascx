@@ -37,7 +37,7 @@
 									<td style="text-align:left;">[RESX:TopicStatus]:</td>
 								</tr>
 								<tr>
-									<td style="text-align:left;"><div style="width:300px;">[AF:INPUT:SUBJECT]</div></td>
+									<td style="text-align:left;"><div class="dcf-topic-edit-subject">[AF:INPUT:SUBJECT]</div></td>
 									<td style="text-align:left;">[AF:CONTROL:STATUS]</td>
 								</tr>
 							</table>
@@ -71,7 +71,7 @@
 						<td></td>
 					</tr>
 					<tr>
-						<td>[AF:INPUT:SUMMARY]</td>
+						<td><div class="dcf-topic-edit-summary">[AF:INPUT:SUMMARY]</div></td>
 						<td></td>
 					</tr>
 					<tr>
