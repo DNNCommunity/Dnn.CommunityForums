@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,6 +38,8 @@ using DotNetNuke.Instrumentation;
 using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Authentication;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -48,10 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Members
 
-        private string _metaTemplate = "[META][TITLE][TOPICSUBJECT] - [PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
-        private string _metaTitle = string.Empty;
-        private string _metaDescription = string.Empty;
-        private string _metaKeywords = string.Empty;
         private string _forumName;
         private string _groupName;
         private int _topicTemplateId;
@@ -110,7 +108,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _editInterval;
         private string _tags = string.Empty;
         private string _topicURL = string.Empty;
-        private string _template = string.Empty;
         private string _topicData = string.Empty;
         private bool _useListActions;
 
@@ -118,64 +115,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Public Properties
 
-        public string TopicTemplate
-        {
-            get
-            {
-                return _template;
-            }
-            set
-            {
-                _template = value;
-            }
-        }
+        public string TopicTemplate { get; set; } = string.Empty;
 
         public int OptPageSize { get; set; }
         public string OptDefaultSort { get; set; }
-        public string MetaTemplate
-        {
-            get
-            {
-                return _metaTemplate;
-            }
-            set
-            {
-                _metaTemplate = value;
-            }
-        }
-        public string MetaTitle
-        {
-            get
-            {
-                return _metaTitle;
-            }
-            set
-            {
-                _metaTitle = value;
-            }
-        }
-        public string MetaDescription
-        {
-            get
-            {
-                return _metaDescription;
-            }
-            set
-            {
-                _metaDescription = value;
-            }
-        }
-        public string MetaKeywords
-        {
-            get
-            {
-                return _metaKeywords;
-            }
-            set
-            {
-                _metaKeywords = value;
-            }
-        }
+        public string MetaTemplate { get; set; } = "[META][TITLE][TOPICSUBJECT] - [PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
+        public string MetaTitle { get; set; } = string.Empty;
+        public string MetaDescription { get; set; } = string.Empty;
+        public string MetaKeywords { get; set; } = string.Empty;
         #endregion
 
         #region Event Handlers
@@ -302,11 +249,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
-            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId));
+            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             if (ds == null)
             {
                 ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
-                DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId), ds); ;
+                DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value), ds); ;
             }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
@@ -378,8 +325,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bLocked = Utilities.SafeConvertBool(_drForum["IsLocked"]);
             _topicType = Utilities.SafeConvertInt(_drForum["TopicType"]);
             _statusId = Utilities.SafeConvertInt(_drForum["StatusId"]);
-            _topicSubject = _drForum["Subject"].ToString();
-            _topicDescription = Utilities.StripHTMLTag(_drForum["Body"].ToString());
+            _topicSubject = HttpUtility.HtmlDecode(_drForum["Subject"].ToString());
+            _topicDescription = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(_drForum["Body"].ToString()));
             _tags = _drForum["Tags"].ToString();
             _viewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
             _replyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
@@ -915,7 +862,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                //TODO: Check for owner
                 if (CanReply)
                 {
                     var @params = new List<string> {
@@ -932,25 +878,37 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    sbOutput.Replace("[ADDREPLY]", "<span class=\"afnormal\">[RESX:NotAuthorizedReply]</span>");
+                    if (!Request.IsAuthenticated)
+                    { 
+                        DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                        string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
+
+                        string onclick = string.Empty;
+                        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
+                        {
+                            onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
+                        }
+                        sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl, onclick)}</span>");
+                    }
+                    else
+                    {
+                        sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-auth-false\">[RESX:NotAuthorizedReply]</span>");
+                    }
                     sbOutput.Replace("[QUICKREPLY]", string.Empty);
                 }
 
-                //TODO: Check for owner
             }
-
-            if (_bModSplit && (_replyCount > 0))
+            if ((sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0)))
             {
-                /*var @params = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.TopicId + "=" + TopicId, ParamKeys.ForumId + "=" + ForumId };*/
-                sbOutput.Replace("[SPLITBUTTONS]", "<div id=\"splitbuttons\"><div><a href=\"javascript:void(0);\" onclick=\"amaf_splitCreate(this," + TopicId + ");\" title=\"[RESX:SplitCreate]\" class=\"dnnPrimaryAction\">[RESX:SplitCreate]</a></div><div><span class=\"NormalBold\">[RESX:SplitHeader]</span> <a href=\"javascript:void(0);\" title=\"[RESX:SplitSave]\" class=\"dnnPrimaryAction af-button-split\" data-id='" + TopicId + "'>[RESX:SplitSave]</a>  <a href=\"javascript:void(0);\" onclick=\"amaf_splitCancel();\" title=\"[RESX:SplitCancel]\" class=\"dnnPrimaryAction\">[RESX:SplitCancel]</a></div></div><script type=\"text/javascript\">var splitposts=new Array();var current_topicid = " + TopicId + ";</script>");
-
-                //sbOutput.Replace("[QUICKREPLY]", "<asp:placeholder id=\"plhQuickReply\" runat=\"server\" />");
+                sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(ForumModuleId, "TopicSplitButtons"));
+                sbOutput.Replace("[TOPICID]", TopicId.ToString());
             }
             else
             {
-                //sbOutput.Replace("[SPLIT]", "<span class=\"afnormal\">[RESX:NotAuthorizedSplit]</span>");
                 sbOutput.Replace("[SPLITBUTTONS]", string.Empty);
             }
+            // no longer using this
+            sbOutput.Replace("[SPLITBUTTONS2]", string.Empty);
 
             // Parent Forum Link
             if (sOutput.Contains("[PARENTFORUMLINK]"))
@@ -958,7 +916,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (ForumInfo.ParentForumId > 0)
                 {
                     if (MainSettings.UseShortUrls)
-                        sbOutput.Replace("oldValue: [PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
+                        sbOutput.Replace(oldValue: "[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                     else
                         sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
                 }
@@ -979,11 +937,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sbOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");
             sbOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + groupUrl + "\">" + _groupName + "</a>");
-            if (MainSettings.UseShortUrls)
-                sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-            else
-                sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-
+            sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
+            
             // Names and Ids
             sbOutput.Replace("[FORUMID]", ForumId.ToString());
             sbOutput.Replace("[FORUMNAME]", _forumName);
@@ -1040,16 +995,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(ForumModuleId, _topicAuthorId, _topicAuthorDisplayName, string.Empty, string.Empty, _topicAuthorDisplayName));
             sbOutput.Replace("[AF:LABEL:TopicDateCreated]", _topicDateCreated);
 
-            if (_bModSplit && (_replyCount > 0))
-            {
-                /*var @params = new List<string> { ParamKeys.ViewType + "=post", ParamKeys.TopicId + "=" + TopicId, ParamKeys.ForumId + "=" + ForumId };*/
-
-                sbOutput.Replace("[SPLITBUTTONS2]", "<script type=\"text/javascript\">amaf_splitRestore();</script>");
-            }
-            else
-            {
-                sbOutput.Replace("[SPLITBUTTONS2]", string.Empty);
-            }
 
             // Pagers
             if (_pageSize == int.MaxValue)
@@ -1241,8 +1186,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var userReplyCount = dr.GetInt("ReplyCount");
             var postCount = userTopicCount + userReplyCount;
             var userCaption = dr.GetString("UserCaption");
-            var body = dr.GetString("Body");
-            var subject = dr.GetString("Subject");
+            var body = HttpUtility.HtmlDecode(dr.GetString("Body"));
+            var subject = HttpUtility.HtmlDecode(dr.GetString("Subject"));
             var tags = dr.GetString("Tags");
             var signature = dr.GetString("Signature");
             var ipAddress = dr.GetString("IPAddress");
@@ -1314,7 +1259,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModSplit)
             {
-                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"split-checkbox\" style=\"display:none;\"><input type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /></div>");
+                sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + replyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /><label for=\"dcf-split-checkbox-" + replyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
             }
             else
             {
@@ -1376,7 +1321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if ((ForumUser.IsAdmin || ForumUser.IsSuperUser || _bModUser) && (authorId != -1) && (authorId != UserId) && (author != null) && (!author.IsSuperUser) && (!author.IsAdmin))
             {
-                var banParams = new List<string> { ParamKeys.ViewType + "=modban", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.AuthorId + "=" + authorId };
+                var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.AuthorId + "=" + authorId };
                 if (_useListActions)
                 {
                     sbOutput.Replace("[ACTIONS:BAN]", "<li onclick=\"window.location.href='" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "';\" title=\"[RESX:Ban]\"><i class=\"fa fa-ban fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Ban]</span></li>");

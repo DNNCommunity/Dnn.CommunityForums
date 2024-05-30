@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="[RESX:Email:Failed].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Wir konnten Ihre Nachricht nicht senden.  Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="[RESX:Email:Sent].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Ihre Nachricht wurde gesendet.</value>
+  </data>
+  <data name="[RESX:Reply:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Die Antwort wurde gelöscht.</value>
+  </data>
+  <data name="[RESX:Reply:Saved].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Die Antwort wurde erstellt.</value>
+  </data>
+  <data name="[RESX:Topic:Alert].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Vielen Dank für Ihre Nachricht.  Unsere Moderatoren wurden benachrichtigt und werden Ihre Nachricht so schnell wie möglich überprüfen.</value>
+  </data>
+  <data name="[RESX:Topic:Deleted].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Das Thema wurde gelöscht.</value>
+  </data>
+  <data name="[RESX:Topic:Moved].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Ihr Thema wurde nun verschoben.</value>
+  </data>
+  <data name="[RESX:Topic:PendingMod].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Sie haben in einem moderierten Forum gepostet. &lt;br&gt; Ihre Nachricht ist erst verfügbar, wenn sie genehmigt wurde. &lt;br&gt;&lt;br&gt;Ein Moderator wird Ihren Beitrag in Kürze überprüfen.&lt;br&gt;&lt;br&gt;Vielen Dank.</value>
+  </data>
+  <data name="[RESX:Topic:Saved].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Das Thema wurde erstellt.</value>
+  </data>
+  <data name="[RESX:Topic:Submit].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Ihr Thema wurde eingereicht.</value>
+  </data>
+  <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-05-16 19:34:22">
+    <value>Der Inhalt des Benutzers wurde entfernt, und der Benutzer wurde nicht autorisiert.</value>
+  </data>
+</root>

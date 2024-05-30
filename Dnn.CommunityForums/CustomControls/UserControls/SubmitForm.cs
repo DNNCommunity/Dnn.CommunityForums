@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -366,7 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (template.Contains("[TOOLBAR"))
             { 
-                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
+                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             }
 
             template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");
@@ -832,7 +832,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                            TopicTemplate = _topicReviewTemplate,
                                            OptPageSize = int.MaxValue,
                                            OptDefaultSort = "DESC",
-                                           ForumInfo = ForumInfo
+                    ForumInfo = ForumInfo
                                        };
                 plhTopicReview.Controls.Add(ctlTopicView);
             }

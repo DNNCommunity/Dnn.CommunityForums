@@ -13,7 +13,7 @@
 				<table class="dcf-table dcf-table-100">
 					<thead>
 						<tr class="dcf-table-head-row">
-							<th scope="col" colspan="2" class="dcf-th dcf-col-text">
+							<th scope="col" class="dcf-th dcf-col-text">
 								<div class="dcf-th-text">[RESX:FORUMHEADER]</div>
 							</th>
 							<th scope="col" class="dcf-th dcf-col-topics">
@@ -32,11 +32,15 @@
 					</thead>
 					[FORUMS]
 					<tbody>
-					<tr class="dcf-table-body-row">
-						<td class="dcf-col dcf-col-icon">[FORUMICONCSS]</td>
+					<tr class="dcf-table-body-row dcf-main-forums">
+						
 						<td class="dcf-col dcf-col-text">
-							<h4 class="dcf-forum-title">[FORUMNAME]</h4>
-							<span class="dcf-forum-description">[FORUMDESCRIPTION]</span>
+							<div class="dcf-col-text-inner">
+								[FORUMICONCSS]
+								<div class="dcf-forum-title-text"><h4 class="dcf-forum-title">[FORUMNAME]</h4>
+								<div class="dcf-forum-description">[FORUMDESCRIPTION]</div>
+								</div>
+							</div>
 						</td>
 						<td class="dcf-col dcf-col-topics">[TOTALTOPICS] </td>
 						<td class="dcf-col dcf-col-replies">[TOTALREPLIES]</td>

@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             catch (Exception ex)
             {
                 ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
+                ScheduleHistoryItem.AddLogNote(string.Concat("Email Notification Queue Failed. ", ex));
                 Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }

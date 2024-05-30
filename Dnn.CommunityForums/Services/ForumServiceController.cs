@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -443,9 +443,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         topicId = dto.NewTopicId;
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
                     }
+                    return Request.CreateResponse(HttpStatusCode.OK, topicId);
                 }
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
 

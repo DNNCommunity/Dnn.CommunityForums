@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -216,7 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			sOut += ",";
 			sOut += Utilities.JSON.Pair("MaxPosts", rank.MaxPosts.ToString());
 			sOut += ",";
-			sOut += Utilities.JSON.Pair("Display", rank.Display.ToLowerInvariant().Replace("activeforums/ranks", "activeforums/images/ranks"));
+			sOut += Utilities.JSON.Pair("Display", rank.Display.ToLowerInvariant().Replace("activeforums/ranks", "ActiveForums/images/ranks"));
 			sOut += "}";
 			return sOut;
 		}

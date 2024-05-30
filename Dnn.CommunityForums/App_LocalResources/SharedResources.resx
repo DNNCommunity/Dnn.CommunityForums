@@ -171,6 +171,9 @@
   <data name="[RESX:NotAuthorized].Text" xml:space="preserve">
     <value>You must be logged in to post a reply.</value>
   </data>
+  <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to post a reply.</value>
+  </data>
   <data name="PostedDate.Text" xml:space="preserve">
     <value>Posted:</value>
   </data>
@@ -283,7 +286,7 @@
     <value>Statistics Last Created</value>
   </data>
   <data name="[RESX:WhosOnline].Text" xml:space="preserve">
-    <value>Who is online:</value>
+    <value>Who's Online</value>
   </data>
   <data name="[RESX:GuestsOnline].Text" xml:space="preserve">
     <value>There are currently [GUESTCOUNT] guests(s) online.</value>
@@ -1469,16 +1472,18 @@ From,
     <value>A post by [DisplayName] has been flagged for review by [FlaggedBy]</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>[Post]</value>
+    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
-    <value>[DisplayName] has posted a reply to [TopicSubject]</value>
+    <value>[DisplayName] has posted content requiring moderation</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>[Post]</value>
+    <value>&lt;p&gt;[DisplayName] has posted content requiring moderation.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Please review the content and determine its disposition.&lt;/p&gt;
+&lt;p&gt;You can:&lt;ol&gt;&lt;li&gt;approve the topic,&lt;/li&gt;&lt;li&gt;reject it (sending to poster for revisions),&lt;/li&gt;&lt;li&gt;delete it, or&lt;/li&gt;&lt;li&gt;ban the user, deleting this and any other topics or replies posted by this user&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;If you can't determine if this content is suitable based on the subject alone, use &lt;a href="[MODLINK]"&gt;this link&lt;/a&gt; to review and moderate topics.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectTopic.Text" xml:space="preserve">
-    <value>[DisplayName] has created a new topic: [TopicSubject]</value>
+    <value>[DisplayName] has posted content requiring moderation</value>
   </data>
   <data name="ForumEditor.Text" xml:space="preserve">
     <value>Forum Editor</value>
@@ -1694,7 +1699,7 @@ From,
     <value>Reply To Topic</value>
   </data>
   <data name="[RESX:BanAlertBody].Text" xml:space="preserve">
-    <value>&lt;div&gt;[Subject] &lt;br /&gt;&lt;br /&gt;[Post] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;Posted removed:&lt;br /&gt;&lt;br /&gt;[PostsRemoved] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+    <value>&lt;div&gt;[Subject]&lt;/div&gt;&lt;div&gt;Posted removed:&lt;br /&gt;&lt;br /&gt;[PostsRemoved] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:BanAlertSubject].Text" xml:space="preserve">
     <value>User [Username] has been banned by [BannedBy]</value>
@@ -1716,5 +1721,17 @@ From,
   </data>
   <data name="ThreadsTracked.Text" xml:space="preserve">
     <value>Threads you are tracking:</value>
+  </data>
+  <data name="[RESX:Unresolved].Text" xml:space="preserve">
+    <value>Unresolved</value>
+  </data>
+  <data name="[RESX:FilteredTopics].Text" xml:space="preserve">
+    <value>Filtered Topics</value>
+  </data>
+  <data name="[RESX:Tips:BanUser].Text" xml:space="preserve">
+    <value>Deletes all posts for this user and unauthorizes the user.</value>
+  </data>
+  <data name="[RESX:SearchFor].Text" xml:space="preserve">
+    <value>Search for...</value>
   </data>
 </root>

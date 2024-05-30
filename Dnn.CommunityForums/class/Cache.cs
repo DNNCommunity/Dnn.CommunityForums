@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,12 +26,21 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class DataCache
     {
-        private static int settingsCacheTime = 10;
+        private static int settingsCacheMinutes = 10;
+        private static int contentCacheMinutes = 2;
         public static bool IsContentCachingEnabledForModule(int ModuleId)
         {
+            return true;
+
+            #region "Do not delete this code"
+
+            /* DNN module caching uses "output caching" which doesn't work correctly with this module; in particular, CSS files are not referenced */
+            /* Until this is resolved, content caching for this module is always enabled, for 2 minutes */
+
             /* Track whether caching is being used at all in this module; this setting itself is cached to avoid repeated module lookups; 
 			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
 			*/
+            /*
             if (ModuleId < 0)
             {
                 return true;
@@ -47,12 +56,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return (bool)IsCachingEnabledForModule;
             }
+            */
+            #endregion
         }
         public static int ContentCachingTime(int ModuleId)
         {
+            return contentCacheMinutes;
+
+            #region "Do not delete this code"
+            /* DNN module caching uses "output caching" which doesn't work correctly with this module; in particular, CSS files are not referenced */
+            /* Until this is resolved, content caching for this module is always enabled, for 2 minutes */
+
+            /* DNN module caching uses "output caching" which doesn't work correctly with this module; in particular, CSS files are not referenced */
             /* Track caching being used for this module; this setting itself is cached to avoid repeated module lookups; 
 			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
 			*/
+
+            /*
             if (ModuleId < 0)
             {
                 return 0;
@@ -69,15 +89,17 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (CachingTime == null)
                     {
                         CachingTime = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).CacheTime;
-                        DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CachingTime, ModuleId), CachingTime, DateTime.UtcNow.AddMinutes(settingsCacheTime));
+                        DotNetNuke.Common.Utilities.DataCache.SetCache(string.Format(CacheKeys.CachingTime, ModuleId), CachingTime, DateTime.UtcNow.AddMinutes(settingsCacheMinutes));
                     }
                     return (int)CachingTime;
                 }
             }
+            */
+            #endregion
         }
         public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {
-            SettingsCacheStore(ModuleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheTime));
+            SettingsCacheStore(ModuleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheMinutes));
         }
         public static void ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {

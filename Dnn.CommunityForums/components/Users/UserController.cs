@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,22 +36,13 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserByName(PortalId, UserName);
-                if (user != null)
-                {
-                    return user.UserID;
-                }
-                else
-                {
-                    return -1;
-                }
+                return user != null ? user.UserID : -1;
             }
             catch (Exception ex)
             {
                 return -1;
 
             }
-
-            return -1;
         }
         public User GetUser(int PortalId, int ModuleId)
         {
@@ -103,12 +94,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return u;
         }
-        private User GetDNNUser(int userId)
-        {
-            DotNetNuke.Entities.Users.UserController uc = new DotNetNuke.Entities.Users.UserController();
-            DotNetNuke.Entities.Users.UserInfo dnnUser = uc.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userId);
-            return LoadUser(dnnUser);
-        }
+        private User GetDNNUser(int portalId, int userId) => LoadUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
+        private User GetDNNUser(int portalId, string userName) => LoadUser(DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName));
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetDNNUser(int portalId, string userName).")]
         public User GetDNNUser(string userName)
         {
             DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
@@ -116,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public User GetUser(int PortalId, int ModuleId, int userId)
         {
-            User u = GetDNNUser(userId);
+            User u = GetDNNUser(PortalId, userId);
             if (u != null)
             {
                 u = FillProfile(PortalId, ModuleId, u);
@@ -134,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public User GetUser(int PortalId, int ModuleId, string userName)
         {
-            User u = GetDNNUser(userName);
+            User u = GetDNNUser(PortalId, userName);
             if (u != null)
             {
                 u = FillProfile(PortalId, ModuleId, u);
@@ -158,14 +146,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use UserProfileController.Profiles_Get().")]
+        [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use UserProfileController.Profiles_Get().")]
         public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
             return new UserProfileController().Profiles_Get(PortalId, ModuleId, UserId);
         }
         internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
         {
-            PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(dnnUser.PortalID);
             User u = new User
             {
                 UserId = dnnUser.UserID,

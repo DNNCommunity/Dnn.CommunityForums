@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class ReplyController : ControllerBase<ReplyController>
     {
+#pragma warning disable CS1570
         /// <summary>
         /// Marks a reply as the answer to a topic
         /// </summary>
@@ -39,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="replyId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Reply/MarkAsAnswer?forumId=xxx&replyId=yyy</remarks>
+#pragma warning restore CS1570
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModEdit)]
@@ -62,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+#pragma warning disable CS1570
         /// <summary>
         /// Deletes a Reply
         /// </summary>
@@ -69,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="replyId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Reply/Delete?forumId=xxx&replyId=zzz</remarks>
+#pragma warning restore CS1570
         [HttpDelete]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Delete)]

@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -149,7 +149,6 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage ToggleSecurity(ToggleSecurityDTO dto)
         {
-            var pc = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController();
             switch (dto.Action)
             {
                 case "delete":

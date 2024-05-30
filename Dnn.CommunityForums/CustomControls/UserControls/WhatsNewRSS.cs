@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -217,7 +217,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             const int indent = 2;
 
-            var counter = 0;
 
             var sb = new StringBuilder(1024);
 

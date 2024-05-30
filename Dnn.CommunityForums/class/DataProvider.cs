@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -171,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Tags
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_Delete(int PortalId, int ModuleId, int TagId);
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract void Tags_DeleteByTopicId(int PortalId, int ModuleId, int TopicId);
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public abstract IDataReader Tags_Get(int PortalId, int ModuleId, int TagId);
@@ -249,6 +248,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet UI_ActiveView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
         public abstract DataSet UI_MostLiked(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
         public abstract DataSet UI_MostReplies(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame);
+        public abstract DataSet UI_Announcements(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper);
+        public abstract DataSet UI_Unresolved(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper);
         #endregion
 
         #region Utility Items

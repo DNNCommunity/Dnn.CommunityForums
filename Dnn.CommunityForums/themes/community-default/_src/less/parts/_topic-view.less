@@ -13,7 +13,7 @@
 
 
 	/* Forums previous and next Topic */
-	.fa-prev-next {
+	.dcf-prev-next {
 
         @prev-next-bg: #eee;
         @prev-next-bg-hover: #ddd;
@@ -38,7 +38,6 @@
 		}
 
 	}
-
     
     
     
@@ -49,6 +48,9 @@
         padding-top:@dist-md;
 
         .dcf-topic-controls{
+
+            margin-top: @dist-sm;
+            
             @media screen and (min-width: @break-tablet){
                 text-align:right;
             }
@@ -61,7 +63,7 @@
                 }
             }
 
-            .dcf-subscribe{
+            .dcf-subscribe-topic{
                 padding-bottom: @dist-md;
                 label{
                     margin-bottom:0;

@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,31 +28,8 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class af_posticonlist : System.Web.UI.UserControl
     {
-        private string _Theme;
-        private string _PostIcon;
-        public string Theme
-        {
-            get
-            {
-                return _Theme;
-            }
-            set
-            {
-                _Theme = value;
-            }
-        }
-        public string PostIcon
-        {
-            get
-            {
-                string tempPostIcon = null;
-                return _PostIcon; //PostIcon = rblMessageIcons1.SelectedItem.Value
-            }
-            set
-            {
-                _PostIcon = value;
-            }
-        }
+        public string Theme { get; set; }
+        public string PostIcon { get; set; }
         protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
@@ -71,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
         private void LoadPostIcons()

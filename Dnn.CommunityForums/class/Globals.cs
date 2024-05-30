@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -162,6 +162,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
+
+        public const string ModerationNotificationType = "AF-ForumModeration";
+        public const string ContentAlertNotificationType = "AF-ContentAlert";
+        public const string BanUserNotificationType = "DCF-UserBanned";
+        public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + "User Banned";
     }
 
 	public class SettingKeys
@@ -193,6 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
 		public const string Theme = "THEME";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string MailQueue = "MAILQUEUE";
         public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
@@ -372,6 +378,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Profile = "profile";
         public const string MyPreferences = "afprofile";
         public const string MySubscriptions = "afsubscriptions";
+        public const string ModerateTopics = "modtopics";
+        public const string ModerateBan = "modban";
     }
     internal static class GridTypes
     {
@@ -381,8 +389,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string MyTopics = "mytopics";
         public const string MySettings = "afprofile";
         public const string MySubscriptions = "afsubscriptions";
-        public const string MostLiked = "mostlikes";
+        public const string MostLiked = "mostliked";
         public const string MostReplies = "mostreplies";
+        public const string Unresolved = "unresolved";
+        public const string Announcements = "announcements";
+        public const string Tags = "tags";
     }
     public class PostActions
     {
@@ -409,13 +420,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumListXml = "AF-{0}-flx";
         public const string Tokens = "AF-{0}-tk-{1}";
         public const string ForumViewPrefix = "AF-{0}-FV-";
-        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}";
+        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}-{3}";
         public const string TopicViewPrefix = "AF-{0}-TV-";
-        public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}";
+        public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}-{3}";
         public const string TopicsViewPrefix = "AF-{0}-TVS-";
-        public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}";
+        public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}-{3}";
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
-        public const string Toolbar = "AF-{0}-tb-{1}";
+        public const string Toolbar = "AF-{0}-tb-{1}-{2}";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
         public const string Template = "AF-{0}-tmpl-{1}-{2}";
         public const string QuickReply = "AF-{0}-qr";
@@ -435,8 +446,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
-        public const string Roles = "AF-roles-{0}"; 
-        public const string UserRoles  = "AF-userroles-{0}";
+        public const string Roles = "AF-roles-{0}";
+        public const string UserRoles = "AF-userroles-{0}";
+        public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
+        public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
 
         //public const string ForumView = "AF-{0}-FV-{1}";
         //public const string AllSettings = "AF-afset{0}";

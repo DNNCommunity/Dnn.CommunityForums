@@ -213,12 +213,6 @@
   <data name="LastName.Text" xml:space="preserve">
     <value>Last Name</value>
   </data>
-  <data name="MailQueue.Help" xml:space="preserve">
-    <value>Recommended for sites with large numbers of subscribers.  Requires DotNetNuke scheduler.  See documentation for more details.</value>
-  </data>
-  <data name="MailQueue.Text" xml:space="preserve">
-    <value>Enable Mail Queue</value>
-  </data>
   <data name="MainFeatures.Text" xml:space="preserve">
     <value>Main Features</value>
   </data>
@@ -380,9 +374,6 @@
   </data>
   <data name="SecGrid:view.Text" xml:space="preserve">
     <value>View</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value />
   </data>
   <data name="UserPermissions.Text" xml:space="preserve">
     <value>User Permissions</value>

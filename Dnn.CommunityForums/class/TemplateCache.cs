@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     internal static class TemplateCache
     {
-        public static string GetCachedTemplate(int ModuleId, string TemplateType)
+        internal static string GetCachedTemplate(int ModuleId, string TemplateType)
         {
             return GetCachedTemplate(ModuleId, TemplateType, -1);
         }

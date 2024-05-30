@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
+#pragma warning disable CS1570
         /// <summary>
         /// Gets Subscriber count for a Topic
         /// </summary>
@@ -85,6 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="TopicId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/SubscriberCount?ForumId=xxx&TopicId=xxx</remarks>
+#pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         public HttpResponseMessage SubscriberCount(int ForumId, int TopicId)
@@ -99,6 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
+#pragma warning disable CS1570
         /// <summary>
         /// Gets Subscriber count string for a Topic
         /// </summary>
@@ -106,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="TopicId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx&TopicId=xxx</remarks>
+#pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         public HttpResponseMessage SubscriberCountString(int ForumId, int TopicId)
@@ -198,12 +202,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
+#pragma warning disable CS1570
         /// <summary>
         /// Loads a Topic
         /// <param name="ForumId" type="int"></param>
         /// <param name="TopicId" type="int"></param>
         /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.Entities.TopicInfo"></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load?ForumId=xxx&TopicId=xxx</remarks>
+#pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Read)]
@@ -230,6 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+#pragma warning disable CS1570
         /// <summary>
         /// Deletes a Topic
         /// </summary>
@@ -237,6 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <param name="topicId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Delete?forumId=xxx&topicId=yyy</remarks>
+#pragma warning restore CS1570
         [HttpDelete]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Delete)]

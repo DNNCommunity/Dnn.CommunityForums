@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -480,8 +480,8 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 		internal static void Install_BanUser_NotificationType_080100()
         {
-            string notificationTypeName = "DCF-UserBanned";
-            string notificationTypeDescription = $"{Globals.ModuleFriendlyName} User Banned";
+            string notificationTypeName = Globals.BanUserNotificationType;
+            string notificationTypeDescription = Globals.BanUserNotificationTypeDescription;
             int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
 
             NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };

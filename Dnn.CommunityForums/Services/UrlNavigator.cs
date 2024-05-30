@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
@@ -31,6 +31,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         internal URLNavigator()
         {
             this.navigationManager = DependencyProvider.GetService<INavigationManager>();
+        }
+        internal INavigationManager NavigationManager()
+        {
+           return this.navigationManager;
         }
         internal URLNavigator(INavigationManager navigationManager)
         {

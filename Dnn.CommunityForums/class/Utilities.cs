@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -31,6 +31,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -39,6 +40,7 @@ using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Controls;
 using DotNetNuke.Modules.ActiveForums.Queue;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -116,9 +118,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return sContents;
         }
-        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType)
+        internal static string BuildToolbar(int forumModuleId, int forumTabId, int moduleId, int tabId, CurrentUserTypes currentUserType, string locale)
         {
-            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType);
+            string cacheKey = string.Format(CacheKeys.Toolbar, moduleId, currentUserType,locale);
             string sToolbar = Convert.ToString(DataCache.SettingsCacheRetrieve(moduleId, cacheKey));
             if (string.IsNullOrEmpty(sToolbar))
             {
@@ -128,8 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sToolbar;
         }
-        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId,
-            CurrentUserTypes currentUserType, int forumId = 0)
+        internal static string ParseToolBar(string template, int forumTabId, int forumModuleId, int tabId, int moduleId, CurrentUserTypes currentUserType, int forumId = 0)
         {
             var ctlUtils = new ControlUtils();
 
@@ -146,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     template = template.Replace("[AF:TB:ControlPanel]", string.Empty);
 
                 if (currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser || currentUserType == CurrentUserTypes.Admin)
-                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=modtopics")));
+                    template = template.Replace("[AF:TB:ModList]", string.Format("<a href=\"{0}\"><i class=\"fa fa-wrench fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Moderate]</span></a>", NavigateURL(tabId, "", ParamKeys.ViewType + "=" + Views.ModerateTopics)));
                 else
                     template = template.Replace("[AF:TB:ModList]", string.Empty);
             }
@@ -161,6 +162,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             template = template.Replace("[AF:TB:Unanswered]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comment-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unanswered]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unanswered, 1, -1, -1)));
+            template = template.Replace("[AF:TB:Unresolved]", string.Format("<a href=\"{0}\"><i class=\"fa fa-question fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Unresolved]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Unresolved, 1, -1, -1)));
+            template = template.Replace("[AF:TB:Announcements]", string.Format("<a href=\"{0}\"><i class=\"fa fa-bullhorn fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Announcements]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.Announcements, 1, -1, -1)));
             template = template.Replace("[AF:TB:ActiveTopics]", string.Format("<a href=\"{0}\"><i class=\"fa fa-fire fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:ActiveTopics]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.ActiveTopics, 1, -1, -1)));
             template = template.Replace("[AF:TB:MostLiked]", string.Format("<a href=\"{0}\"><i class=\"fa fa-thumbs-o-up fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostLiked]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostLiked, 1, -1, -1)));
             template = template.Replace("[AF:TB:MostReplies]", string.Format("<a href=\"{0}\"><i class=\"fa fa-comments fa-fw fa-grey\"></i><span class=\"dcf-link-text\">[RESX:MostReplies]</span></a>", ctlUtils.BuildUrl(tabId, moduleId, string.Empty, string.Empty, -1, -1, -1, -1, GridTypes.MostReplies, 1, -1, -1)));
@@ -319,19 +322,15 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static string NavigateURL(int tabId, string controlKey, string pageName, int portalId, params string[] additionalParameters)
         {
-            var currParams = additionalParameters.ToList();
-            string s = new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, currParams.ToArray());
             if (portalId == -1 || string.IsNullOrWhiteSpace(pageName))
-                return s;
+                return new DotNetNuke.Modules.ActiveForums.Services.URLNavigator().NavigateURL(tabId, controlKey, additionalParameters);
 
-            var tc = new TabController();
-            var ti = tc.GetTab(tabId, portalId, false);
-            var sURL = currParams.Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
+            var ti = new TabController().GetTab(tabId, portalId, false);
+            var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
 
             pageName = CleanStringForUrl(pageName);
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
-            s = Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
-            return s;
+            return Common.Globals.FriendlyUrl(ti, sURL, pageName, portalSettings);
         }
         public static void BindEnum(DropDownList pDDL, Type enumType, string pColValue, bool addEmptyValue, bool localize, int excludeIndex)
         {
@@ -496,10 +495,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private static string CleanTextBox(int portalId, string text, bool allowHTML, bool useFilter, int moduleId, string themePath, bool processEmoticons)
         {
-
-            var strMessage = HttpUtility.HtmlEncode(text);
-
-            if (strMessage != string.Empty)
+            string strMessage = text;
+            if (!String.IsNullOrEmpty(strMessage))
             {
                 if (strMessage.ToUpper().Contains("[CODE]") | strMessage.ToUpper().Contains("<CODE"))
                 {
@@ -517,7 +514,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                     strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
                     if (useFilter)
-                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url); 
+                        strMessage = DotNetNuke.Modules.ActiveForums.Controllers.FilterController.RemoveFilterWords(portalId, moduleId, themePath, strMessage, processEmoticons, false, HttpContext.Current.Request.Url);
 
                     strMessage = HttpUtility.HtmlEncode(strMessage);
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
@@ -544,7 +541,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 strMessage = strMessage.Replace("[", "&#91;");
                 strMessage = strMessage.Replace("]", "&#93;");
             }
-
             return strMessage;
         }
 
@@ -914,28 +910,48 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return dateTime.Add(timeZoneOffset).ToString(format, userCultureInfo);
             }
-            catch (Exception ex)
+            catch
             {
                 return dateTime.ToString(format, CultureInfo.CurrentCulture);
             }
         }
-
         public static CultureInfo GetCultureInfoForUser(int portalId, int userId)
         {
             return GetCultureInfoForUser(DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, userId));
         }
         public static CultureInfo GetCultureInfoForUser(UserInfo userInfo)
         {
+            CultureInfo cultureInfo = null;
             try
             {
-                if (userInfo != null && userInfo.UserID > 0 && userInfo.Profile.PreferredLocale != null)
+                string cacheKey = string.Format(CacheKeys.CultureInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey);
+                if (obj == null)
                 {
-                    return CultureInfo.GetCultureInfo(userInfo.Profile.PreferredLocale);
+                    if (userInfo?.Profile?.PreferredLocale != null)
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(userInfo?.Profile?.PreferredLocale);
+                    }
+                    if (cultureInfo == null && userInfo?.PortalID >= 0)
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(Utilities.GetPortalSettings(userInfo.PortalID)?.CultureCode);
+                    }
+                    if (cultureInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.CultureCode);
+                    }
+                    if (cultureInfo == null)
+                    {
+                        cultureInfo = CultureInfo.CurrentCulture;
+                    }
+                    DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: cultureInfo);
                 }
                 else
                 {
-                    return CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().CultureCode);
+                    cultureInfo = (CultureInfo)obj;
                 }
+                return cultureInfo;
+               
             }
             catch
             {
@@ -950,20 +966,41 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
 
+            TimeZoneInfo timeZoneInfo = null;
             try
             {
-                if (userInfo != null && userInfo.Profile != null && userInfo.Profile.PreferredTimeZone != null)
+                string cacheKey = string.Format(CacheKeys.TimeZoneInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
+                object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey);
+                if (obj == null)
                 {
-                    return userInfo.Profile.PreferredTimeZone;
+                    if (userInfo?.Profile?.PreferredTimeZone != null)
+                    {
+                        timeZoneInfo = userInfo?.Profile?.PreferredTimeZone;
+                    }
+                    if (timeZoneInfo == null && userInfo?.PortalID >= 0)
+                    {
+                        timeZoneInfo = Utilities.GetPortalSettings(userInfo.PortalID)?.TimeZone;
+                    }
+                    if (timeZoneInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
+                    {
+                        timeZoneInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.TimeZone;
+                    }
+                    if (timeZoneInfo == null)
+                    {
+                        timeZoneInfo = TimeZoneInfo.Utc;
+                    }
+                    DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: timeZoneInfo);
                 }
                 else
                 {
-                    return ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().TimeZone;
+                    timeZoneInfo = (TimeZoneInfo)obj;
                 }
+                return timeZoneInfo;
+
             }
             catch
             {
-                return TimeZoneInfo.Utc;
+                return timeZoneInfo = TimeZoneInfo.Utc;
             }
         }
         public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
@@ -1072,9 +1109,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             controlText = controlText.Replace(" class=afquote", " class=\"afquote\"");
 
-            var i = 0;
-            var intStart = 0;
-            var intEnd = 0;
             const string pattern = @"(\[RESX:.+?\])";
             var regExp = new Regex(pattern);
             var matches = regExp.Matches(controlText);
@@ -1224,39 +1258,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return contents;
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(int portalId, int ModuleId, int forumId).")]
         public static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
-            var rp = RoleProvider.Instance();
-            var uc = new DotNetNuke.Entities.Users.UserController();
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
-            if (fi == null)
-                return null;
-
-            var mods = new List<DotNetNuke.Entities.Users.UserInfo>();
-            var modApprove = fi.Security.ModApprove;
-            var modRoles = modApprove.Split('|')[0].Split(';');
-
-            foreach (var r in modRoles)
-            {
-                if (string.IsNullOrEmpty(r))
-                    continue;
-
-                var rid = Convert.ToInt32(r);
-                var rName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid).RoleName;
-                foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, rName))
-                {
-                    var ui = uc.GetUser(portalId, usr.UserID);
-
-                    if (!(mods.Contains(ui)))
-                    {
-                        mods.Add(ui);
-                    }
-                }
-            }
-
-            return mods;
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(portalId, moduleId, forumId);
         }
-
+        
         public static bool SafeConvertBool(object value, bool defaultValue = false)
         {
             if (value == null)

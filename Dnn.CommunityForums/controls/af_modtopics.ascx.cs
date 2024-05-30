@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,7 +18,9 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Collections.Generic;
 using System.Data;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -27,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Members
         private bool bModDelete = false;
         private bool bModEdit = false;
+        private bool bModBan = false;
         private bool bModApprove = false;
         private bool bModMove = false;
         private bool bCanMod = false;
@@ -127,6 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
                                 }
+                                DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
 
                             }
                             break;
@@ -143,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             tmpAuthorId = Convert.ToInt32(e.Parameters[4]);
                             ModController mc = new ModController();
                             mc.Mod_Reject(PortalId, ForumModuleId, UserId, tmpForumId, tmpTopicId, tmpReplyId);
+                            DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                             if (fi.ModRejectTemplateId > 0 & tmpAuthorId > 0)
                             {
                                 DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tmpAuthorId);
@@ -174,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                 if (ti != null)
+                                { 
                                     ti.IsApproved = true;
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
@@ -182,68 +188,31 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
                                     }
-
-                                Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, 0, ti.Content.AuthorId);
-
-                                try
-                                {
-                                    ControlUtils ctlUtils = new ControlUtils();
-                                    string sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId); // Utilities.NavigateUrl(TabId, "", ParamKeys.ViewType & "=" & Views.Topic & "&" & ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId)
-                                    if (sUrl.Contains("~/"))
-                                    {
-                                        sUrl = Utilities.NavigateUrl(TabId, "", ParamKeys.TopicId + "=" + TopicId);
-                                    }
-                                    Social amas = new Social();
-                                    amas.AddTopicToJournal(PortalId, ForumModuleId, TabId, ForumId, ti.TopicId, ti.Author.AuthorId, sUrl, ti.Content.Subject, ti.Content.Summary, ti.Content.Body, fi.Security.Read, SocialGroupId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, ForumId, tmpTopicId, -1, ti.Content.AuthorId);
                                 }
-                                catch (Exception ex)
-                                {
-                                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                }
-
                             }
                             else if (tmpForumId > 0 & tmpTopicId > 0 & tmpReplyId > 0)
                             {
-                                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
                                 DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(tmpReplyId);
                                 if (ri != null)
                                 {
                                     ri.IsApproved = true;
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ForumModuleId, ri);
-                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                                     //TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
                                     }
-
-                                    Subscriptions.SendSubscriptions(PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, ri.Content.AuthorId);
-
-                                    try
-                                    {
-                                        ControlUtils ctlUtils = new ControlUtils();
-                                        string fullURL = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, fi.SocialGroupId);
-                                        if (fullURL.Contains("~/"))
-                                        {
-                                            fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
-                                        }
-                                        Social amas = new Social();
-                                        amas.AddReplyToJournal(PortalId, ForumModuleId, TabId, ForumId, ri.TopicId, ri.ReplyId, ri.Author.AuthorId, fullURL, ri.Content.Subject, string.Empty, ri.Content.Body, fi.Security.Read, fi.SocialGroupId);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                    }
-
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
+                                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, -tmpReplyId, ri.Content.AuthorId);
                                 }
 
                             }
-
-
                             break;
                         }
                 }
-                
                 DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             }
             BuildModList();
@@ -292,25 +261,27 @@ namespace DotNetNuke.Modules.ActiveForums
                     sb.Append("<div class=\"afmodrow\">");
                     sb.Append("<table width=\"99%\">");
                     sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
-                    sb.Append("<td align=\"right\">");
+                    sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
                     if (bModApprove)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Approve]</span>");
+                        sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                     }
-                    //If bModApprove And bModMove And CInt(dr("ReplyId")) = 0 Then
-                    //    sb.Append("<span class=""afminibtn"" onmouseover=""this.className='afminibtn_over';"" onmouseout=""this.className='afminibtn';"">[RESX:MoveApprove]</span>")
-                    //End If
                     if (bModApprove || bModEdit)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Reject]</span>");
+                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                     }
                     if (bModDelete)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Delete]</span>");
+                        sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                     }
                     if (bModEdit)
                     {
-                        sb.Append("<span class=\"afminibtn\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\" onmouseover=\"this.className='afminibtn_over';\" onmouseout=\"this.className='afminibtn';\">[RESX:Edit]</span>");
+                        sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
+                    }
+                    if (bModBan)
+                    {
+                        var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
+                        sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
                     }
 
 
@@ -344,6 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
             bModApprove = false;
             bModEdit = false;
             bModMove = false;
+            bModBan = false;
             bCanMod = false;
             if (f != null)
             {
@@ -351,6 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles);
                 bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModMove, ForumUser.UserRoles);
                 bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles);
+                bModBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModUser, ForumUser.UserRoles);
                 if (bModDelete || bModApprove || bModMove || bModEdit)
                 {
                     bCanMod = true;
@@ -376,7 +349,6 @@ namespace DotNetNuke.Modules.ActiveForums
             foreach (DataRow dr in dtAttach.DefaultView.ToTable().Rows)
             {
                 sb.Append("<br />");
-                string tmpPath = null;
                 int attachId = Convert.ToInt32(dr["AttachId"]);
                 string Filename = dr["Filename"].ToString();
                 string contentType = dr["ContentType"].ToString();
@@ -405,6 +377,5 @@ namespace DotNetNuke.Modules.ActiveForums
             return sb.ToString();
         }
         #endregion
-
     }
 }
