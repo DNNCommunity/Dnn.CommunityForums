@@ -1861,6 +1861,7 @@
     </Compile>
     <Compile Include="controls\af_quickjump.ascx.cs">
       <DependentUpon>af_quickjump.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_quickreply.ascx.designer.cs">
       <DependentUpon>af_quickreply.ascx</DependentUpon>

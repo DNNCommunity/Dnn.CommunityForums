@@ -1507,3 +1507,8 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums * .dcf-search-popup {
 	z-index: 9 !important;
 }
+
+/* wider subject and summary input */
+.dnn-community-forums .dcf-topic-edit-subject, .dnn-community-forums .dcf-topic-edit-summary {
+	width:95%;
+} 

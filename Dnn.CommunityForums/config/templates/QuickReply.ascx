@@ -10,7 +10,7 @@
 					<tr>
 						<td></td>
 						<td class="NormalBold">[RESX:Subject]:</td>
-						<td><input type="text" id="txtSubject" class="aftextbox" readonly="readonly" value="[SUBJECT]" /></td>
+						<td><input type="text" id="txtSubject" class="aftextbox dcf-topic-edit-subject" readonly="readonly" value="[SUBJECT]" /></td>
 						<td></td>
 					</tr>
 					<tr>
