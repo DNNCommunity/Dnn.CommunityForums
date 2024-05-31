@@ -2063,6 +2063,7 @@
   <ItemGroup>
     <Folder Include="class\API\" />
     <Folder Include="components\Security\" />
+    <Folder Include="Legacy\" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
