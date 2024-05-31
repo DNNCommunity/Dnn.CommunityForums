@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumID, ou.UserID, 0, 20, ou.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
             {
-                offSet = Convert.ToInt32(ps.TimeZone.BaseUtcOffset.TotalMinutes);
+                offSet = Convert.ToInt32( ps.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);
                 if (ds.Tables[0].Rows.Count == 0)
                 {
                     return string.Empty;
