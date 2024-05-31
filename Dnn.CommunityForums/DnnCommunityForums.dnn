@@ -91,18 +91,6 @@
           </assemblies>
         </component>
 
-        <component type="File">
-          <files>
-            <basePath>DesktopModules\ActiveForums\Documentation</basePath>
-            <file>
-              <name>License.txt</name>
-            </file>
-            <file>
-              <name>ReleaseNotes.txt</name>
-            </file>
-          </files>
-        </component>
-
         <component type="Script">
           <scripts>
             <basePath>DesktopModules\ActiveForums</basePath>
@@ -403,6 +391,7 @@
             </script>
           </scripts>
         </component>
+		  
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules\ActiveForums</basePath>
@@ -412,6 +401,7 @@
             </resourceFile>
           </resourceFiles>
         </component>
+		  
         <component type="Config">
           <config>
             <configFile>web.config</configFile>
@@ -434,6 +424,7 @@
         <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
         <component type="Cleanup" version="07.00.11" fileName="07.00.11.txt" />
         <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
+		  <component type="Cleanup" version="08.01.00" fileName="08.01.00.txt" />
       </components>
     </package>
 
