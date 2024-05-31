@@ -355,8 +355,6 @@
     <Content Include="images\testrun16.png" />
     <Content Include="images\roles_add.png" />
     <Content Include="images\save16.png" />
-    <Content Include="Legacy\afattach.js" />
-    <Content Include="Legacy\uploader.aspx" />
     <Content Include="ReleaseNotes.txt" />
     <Content Include="License.txt" />
     <Content Include="module.css" />
@@ -1399,13 +1397,6 @@
     <Compile Include="Entities\PropertyInfo.cs" />
     <Compile Include="Entities\ReplyInfo.cs" />
     <Compile Include="Controllers\ReplyController.cs" />
-    <Compile Include="Legacy\AttachInfo.cs" />
-    <Compile Include="Legacy\uploader.aspx.cs">
-      <DependentUpon>uploader.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Legacy\uploader.aspx.designer.cs">
-      <DependentUpon>uploader.aspx.cs</DependentUpon>
-    </Compile>
     <Compile Include="Services\ProcessType.cs" />
     <Compile Include="Entities\ProcessQueueInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
