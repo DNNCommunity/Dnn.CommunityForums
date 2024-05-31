@@ -37,7 +37,7 @@
 									<td style="text-align:left;">[RESX:TopicStatus]:</td>
 								</tr>
 								<tr>
-									<td style="text-align:left;"><div style="width:300px;">[AF:INPUT:SUBJECT]</div></td>
+									<td style="text-align:left;">[AF:INPUT:SUBJECT]</td>
 									<td style="text-align:left;">[AF:CONTROL:STATUS]</td>
 								</tr>
 							</table>
