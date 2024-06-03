@@ -550,20 +550,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (template.Contains("[AF:UI:SECTION:SUMMARY]"))
             { 
-                template = template.Replace("[AF:UI:SECTION:SUMMARY]", "<tr><td>" +
-                    "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                template = template.Replace("[AF:UI:SECTION:SUMMARY]", "<table style=\"width:99%\" class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">" +
                     "<tr>"+
                     "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Summary]</td>"+
                     "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
-                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionSummary", title: string.Empty) +
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionSummary", title: Utilities.GetSharedResource("[RESX:SummaryForSEO]")) +
                     "</td>"+
                     "</tr>"+
                     "<tr>"+
-                    "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">"+
-                    "<table>"
+                    "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">"
                     );
 
-                template = template.Replace("[/AF:UI:SECTION:SUMMARY]", "</table></td></tr></table></td></tr>");
+                template = template.Replace("[/AF:UI:SECTION:SUMMARY]", "</td></tr></table>");
             }
             
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
@@ -982,7 +980,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             lblSubject.Text = _Subject;
             lblSubject.CssClass = "aftextbox";
             //not sure why this gets set twice.
-            txtSummary.CssClass = "aftextbox dcf-topic-edit-subject";
+            txtSummary.CssClass = "aftextbox dcf-topic-edit-summary";
             chkLocked.Checked = _locked;
             chkPinned.Checked = _pinned;
             chkApproved.Checked = _checked;

@@ -1734,4 +1734,7 @@ De
   <data name="[RESX:SearchFor].Text" xml:space="preserve">
     <value>Buscar...</value>
   </data>
+  <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
+    <value>Ingrese un resumen para mejorar la optimización de motores de búsqueda (SEO)</value>
+  </data>
 </root>
