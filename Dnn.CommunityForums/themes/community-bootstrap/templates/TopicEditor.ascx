@@ -62,9 +62,11 @@
 							</table>
 						</td>
 					</tr>
+                    [AF:UI:SECTION:SUMMARY]
 					<tr>
-						<td colspan="2" style="text-align: left;">[RESX:Summary]:&nbsp;[AF:INPUT:SUMMARY]</td>
+						<td colspan="2" style="text-align: left;">[AF:INPUT:SUMMARY]</td>
 					</tr>
+                    [/AF:UI:SECTION:SUMMARY]
 					<tr>
 						<td style="text-align:left;">[RESX:Message]:[AF:REQ:BODY]</td>
 						<td></td>

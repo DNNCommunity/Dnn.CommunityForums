@@ -36,7 +36,6 @@
 									<td style="text-align:left;">[RESX:Subject]:[AF:REQ:SUBJECT]&nbsp;[AF:INPUT:SUBJECT]</td>
 									<td style="text-align:left;">[RESX:TopicStatus]:&nbsp;[AF:CONTROL:STATUS]</td>
 								</tr>
-								</tr>
 							</table>
 						</td>
 					</tr>
@@ -63,10 +62,12 @@
 							</table>
 						</td>
 					</tr>
+                    [AF:UI:SECTION:SUMMARY]
 					<tr>
-						<td style="text-align:left;">[RESX:Summary]:&nbsp;[AF:INPUT:SUMMARY]</td>
+						<td style="text-align:left;">[AF:INPUT:SUMMARY]</td>
 						<td></td>
 					</tr>
+                    [/AF:UI:SECTION:SUMMARY]
 					<tr>
 						<td colspan="2" style="text-align: left;">[RESX:Message]:[AF:REQ:BODY]</td>
 					</tr>

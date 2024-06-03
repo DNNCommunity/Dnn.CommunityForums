@@ -540,6 +540,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
             }
+
+            if (template.Contains("[AF:UI:SECTION:SUMMARY]"))
+            { 
+                template = template.Replace("[AF:UI:SECTION:SUMMARY]", "<tr><td>" +
+                    "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">"+
+                    "<tr>"+
+                    "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Summary]</td>"+
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionSummary", title: string.Empty) +
+                    "</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">"+
+                    "<table>"
+                    );
+
+                template = template.Replace("[/AF:UI:SECTION:SUMMARY]", "</table></td></tr></table></td></tr>");
+            }
+            
             if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
                 template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
