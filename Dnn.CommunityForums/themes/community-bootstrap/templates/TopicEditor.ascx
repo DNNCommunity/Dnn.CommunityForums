@@ -33,12 +33,8 @@
 							[/AF:UI:ANON]
 							<table class="table">
 								<tr>
-									<td style="text-align:left;">[RESX:Subject]:[AF:REQ:SUBJECT]</td>
-									<td style="text-align:left;">[RESX:TopicStatus]:</td>
-								</tr>
-								<tr>
-									<td style="text-align:left;"><div style="width:300px;">[AF:INPUT:SUBJECT]</div></td>
-									<td style="text-align:left;">[AF:CONTROL:STATUS]</td>
+									<td style="text-align:left;">[RESX:Subject]:[AF:REQ:SUBJECT]&nbsp;[AF:INPUT:SUBJECT]</td>
+									<td style="text-align:left;">[RESX:TopicStatus]:&nbsp;[AF:CONTROL:STATUS]</td>
 								</tr>
 							</table>
 						</td>
@@ -67,12 +63,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td style="text-align:left;">[RESX:Summary]:</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>[AF:INPUT:SUMMARY]</td>
-						<td></td>
+						<td colspan="2" style="text-align: left;">[RESX:Summary]:&nbsp;[AF:INPUT:SUMMARY]</td>
 					</tr>
 					<tr>
 						<td style="text-align:left;">[RESX:Message]:[AF:REQ:BODY]</td>
