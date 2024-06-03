@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             template = Globals.ForumsControlsRegisterAMTag + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
-            template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox\" runat=\"server\" />");
+            template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox dcf-topic-edit-subject\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:SUBJECT]", "<asp:requiredfieldvalidator id=\"reqSubject\" validationgroup=\"afform\" ControlToValidate=\"txtSubject\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:BODY]", "<asp:label id=\"reqCustomBody\" visible=\"false\" runat=\"server\" />");
             if (template.Contains("[AF:BODY:TEMPLATE]"))
@@ -370,7 +370,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             }
 
-            template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");
+            template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" cssclass=\"dcf-topic-edit-summary\" runat=\"server\" />");
             template = template.Replace("[AF:INPUT:BODY]", "<asp:placeholder id=\"plhEditor\" runat=\"server\" />");
             template = template.Replace("[AF:LABEL:SUBJECT]", "<asp:label id=\"lblSubject\" runat=\"server\" />");
             if (!Request.IsAuthenticated & (canCreate || canReply))
@@ -970,7 +970,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    tsTags.SelectedValue = _tags
             //End If
 
-            txtSubject.CssClass = "aftextbox";
+            //not sure why this gets set twice.
+            txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
             string MyTheme = MainSettings.Theme;
             string MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
             txtSubject.MaxLength = 255;
@@ -980,7 +981,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtUsername.Text = _AuthorName;
             lblSubject.Text = _Subject;
             lblSubject.CssClass = "aftextbox";
-            txtSummary.CssClass = "aftextbox";
+            //not sure why this gets set twice.
+            txtSummary.CssClass = "aftextbox dcf-topic-edit-subject";
             chkLocked.Checked = _locked;
             chkPinned.Checked = _pinned;
             chkApproved.Checked = _checked;

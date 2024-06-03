@@ -1521,3 +1521,9 @@ div.dcf-mod-edit-wrap {
 	font-size: 1.1em;
 	font-weight: bolder;
 }
+}
+
+/* wider subject and summary input */
+.dnn-community-forums .dcf-topic-edit-subject, .dnn-community-forums .dcf-topic-edit-summary {
+	width:95%;
+} 
