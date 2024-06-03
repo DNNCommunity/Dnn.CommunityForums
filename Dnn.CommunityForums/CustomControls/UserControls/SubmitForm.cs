@@ -25,6 +25,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -423,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:SECTION:TAGS]", "</td></tr></table>");
             }
             //Properties
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) & ForumInfo.Properties != null)
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && (ForumInfo.Properties != null && ForumInfo.Properties.Count > 0))
             {
                 string pTemplate = TemplateUtils.GetTemplateSection(template, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 string propList = string.Empty;
@@ -535,9 +536,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     propList += tmp;
                 }
                 template = TemplateUtils.ReplaceSubSection(template, propList, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
+                /* tokens [AF:UI:SECTION:PROPERTIES][/AF:UI:SECTION:PROPERTIES] can now surround entire properties section to support removing entire section; if using properties, just remove the tokens*/
+                template = template.Replace("[AF:UI:SECTION:PROPERTIES]", string.Empty);
+                template = template.Replace("[/AF:UI:SECTION:PROPERTIES]", string.Empty);
             }
             else
             {
+                /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround entire properties section to support removing entire section if not using */
+                template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:UI:SECTION:PROPERTIES]", "[/AF:UI:SECTION:PROPERTIES]");
+                /* leave this for backward compatibility in cases where template doesn't yet have the [AF:UI:SECTION:PROPERTIES][/AF:UI:SECTION:PROPERTIES] tokens */
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
             }
 
@@ -591,7 +598,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:UI:FIELDSET:POLL]", "[/AF:UI:FIELDSET:POLL]");
+                template = TemplateUtils.ReplaceSubSection(template, subTemplate: string.Empty, "[AF:UI:FIELDSET:POLL]", "[/AF:UI:FIELDSET:POLL]");
                 template = template.Replace("[AF:CONTROL:POLL]", string.Empty);
             }
             if (EditorMode == EditorModes.ReplyWithBody)
@@ -657,13 +664,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:PostIcons]</legend><div class=\"affieldsetnote\">[RESX:PostIcons:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + MainSettings.Theme + "\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", "</fieldset>");
+                /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to support removing entire section; if using post icons, just remove the tokens*/
+                template = template.Replace("[AF:UI:SECTION:POSTICONS]", string.Empty);
+                template = template.Replace("[/AF:UI:SECTION:POSTICONS]", string.Empty);
 
             }
             else
             {
+                /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to remove entire section */
+                template = TemplateUtils.ReplaceSubSection(template, subTemplate: string.Empty, "[AF:UI:SECTION:POSTICONS]", "[/AF:UI:SECTION:POSTICONS]");
+                /* leave these 3 lines for backward compatibility in cases where template doesn't yet have the [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] tokens */
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", string.Empty);
                 template = template.Replace("[AF:CONTROL:POSTICONS]", string.Empty);
-                template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty);
+                template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty); 
+
             }
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
             {
@@ -730,8 +744,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             if (canSubscribe && !UserPrefTopicSubscribe) /* if user has preference set for auto subscribe, no need to show them the subscribe option */
-            {
-                if (TopicId > 0)
+                {
+                    if (TopicId > 0)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
                     subControl.Checked = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId));
