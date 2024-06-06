@@ -1771,4 +1771,7 @@ Van,
   <data name="[RESX:SearchFor].Text" xml:space="preserve">
     <value>Zoeken...</value>
   </data>
+  <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
+    <value>Voer een samenvatting in om de zoekmachineoptimalisatie (SEO) te verbeteren</value>
+  </data>
 </root>

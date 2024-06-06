@@ -1508,15 +1508,6 @@ div.dcf-mod-edit-wrap {
 	z-index: 9 !important;
 }
 
-
-/* wider subject and summary input */
-.dnn-community-forums * .dcf-topic-edit-subject {
-	width: 95%;
-}
-.dnn-community-forums * .dcf-topic-edit-summary {
-	width:95%;
-} 
-
 /* subtle UI tweaks for titles */
 .dnn-community-forums * .aftitle {
 	font-size: 1.1em;
@@ -1529,3 +1520,10 @@ div.dcf-mod-edit-wrap {
 	font-weight: bolder;
 }
 
+/* wider subject and summary input */
+.dnn-community-forums * .dcf-topic-edit-subject {
+	width: 95% !important;
+}
+.dnn-community-forums * .dcf-topic-edit-summary {
+	width: 95% !important;
+} 

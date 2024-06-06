@@ -1729,4 +1729,7 @@ Da
   <data name="[RESX:SearchFor].Text" xml:space="preserve">
     <value>Cercare...</value>
   </data>
+  <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
+    <value>Inserisci un riepilogo per migliorare l'ottimizzazione dei motori di ricerca (SEO)</value>
+  </data>
 </root>
