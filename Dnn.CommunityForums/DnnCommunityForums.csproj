@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="08.01.00.txt" />
     <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
     <Content Include="07.00.03.txt" />
@@ -316,8 +317,6 @@
     <EmbeddedResource Include="CustomControls\Resources\Validation.js" />
     <EmbeddedResource Include="CustomControls\Resources\spacer.gif" />
     <EmbeddedResource Include="sql\FullTextInstallPart2.sql" />
-    <Content Include="Documentation\License.txt" />
-    <Content Include="Documentation\ReleaseNotes.txt" />
     <Content Include="handlers\adminhelper.ashx" />
     <Content Include="images\add-circle.png" />
     <Content Include="images\af-fileicon.png" />

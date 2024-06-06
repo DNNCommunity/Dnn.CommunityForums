@@ -1508,6 +1508,7 @@ div.dcf-mod-edit-wrap {
 	z-index: 9 !important;
 }
 
+
 /* wider subject and summary input */
 .dnn-community-forums * .dcf-topic-edit-subject {
 	width: 95%;
@@ -1515,3 +1516,16 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums * .dcf-topic-edit-summary {
 	width:95%;
 } 
+
+/* subtle UI tweaks for titles */
+.dnn-community-forums * .aftitle {
+	font-size: 1.1em;
+	font-weight: bolder;
+}
+/* subtle UI tweaks for section headers */
+.dnn-community-forums * .afsectionhd {
+	background-color: #f9f9f9;
+	font-size: 1.1em;
+	font-weight: bolder;
+}
+

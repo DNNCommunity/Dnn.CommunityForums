@@ -742,6 +742,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
+            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
             SaveAttachments(ti.ContentId);
             if (ti.IsApproved && ti.Author.AuthorId > 0)
@@ -949,7 +950,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sc.Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
-            ri = rc.Reply_Get(PortalId, ForumModuleId, TopicId, tmpReplyId);
+            ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(tmpReplyId);
             SaveAttachments(ri.ContentId);
             try
             {
