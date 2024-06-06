@@ -378,9 +378,6 @@
   <data name="[RESX:EnableFullText].Text" xml:space="preserve">
     <value>Inschakelen Volledige Tekst</value>
   </data>
-  <data name="[RESX:EnableMailQueue].Text" xml:space="preserve">
-    <value>Mail Queue Inschakelen</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve">
     <value>Puntensysteem</value>
   </data>
@@ -566,12 +563,6 @@
   </data>
   <data name="[RESX:MailConnectorEnabled].Text" xml:space="preserve">
     <value>Mail Verbinding Ingeschakeld</value>
-  </data>
-  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve">
-    <value>Aanbevolen voor grote sites met een groot aantal abonnees. Vereist de DNN taakplanner. Zie de documentatie voor verdere details.</value>
-  </data>
-  <data name="[RESX:MailQueue].Text" xml:space="preserve">
-    <value>Inschakelen Mail Queue</value>
   </data>
   <data name="[RESX:MailServer].Text" xml:space="preserve">
     <value>POP3 Server</value>

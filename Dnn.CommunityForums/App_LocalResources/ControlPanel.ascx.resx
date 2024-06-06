@@ -630,9 +630,6 @@
   <data name="[RESX:LoggingLevel].Text" xml:space="preserve">
     <value>Logging Level</value>
   </data>
-  <data name="[RESX:MailQueue].Text" xml:space="preserve">
-    <value>Enable Mail Queue</value>
-  </data>
   <data name="[RESX:Moderated].Text" xml:space="preserve">
     <value>Moderated</value>
   </data>
@@ -677,9 +674,6 @@
   </data>
   <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve">
     <value>Choose the level of logging for your forums.&lt;br /&gt;Disabled - No activities are logged&lt;br /&gt;Moderate - Move and Delete are logged.&lt;br /&gt;Full - All activities are logged.</value>
-  </data>
-  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve">
-    <value>Recommended for sites with large numbers of subscribers.  Requires DNN scheduler.  See documentation for more details.</value>
   </data>
   <data name="[RESX:Tips:Moderated].Text" xml:space="preserve">
     <value>Enable this feature if you would like to approve topics and replies before they appear in the forum.</value>
@@ -1314,9 +1308,6 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   </data>
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Edit Control</value>
-  </data>
-  <data name="[RESX:EnableMailQueue].Text" xml:space="preserve">
-    <value>Enable Mail Queue</value>
   </data>
   <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve">
     <value>Features that might be necessary for high traffic sites.</value>

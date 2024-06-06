@@ -363,9 +363,6 @@
   <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Abilita testo completo</value>
   </data>
-  <data name="[RESX:EnableMailQueue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Abilita coda di posta</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Sistema a punti</value>
   </data>
@@ -542,12 +539,6 @@
   </data>
   <data name="[RESX:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Livello di registrazione</value>
-  </data>
-  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Consigliato per siti con un gran numero di iscritti.  Richiede l'utilità di pianificazione di DNN.  Per ulteriori informazioni, vedere la documentazione.</value>
-  </data>
-  <data name="[RESX:MailQueue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Abilita coda di posta</value>
   </data>
   <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Le funzionalità riportate di seguito sono utilizzate in tutti i forum.  È possibile abilitare o disabilitare determinate funzionalità di seguito.</value>
