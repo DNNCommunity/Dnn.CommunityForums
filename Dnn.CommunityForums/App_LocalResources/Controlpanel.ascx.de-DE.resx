@@ -1049,7 +1049,7 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
     <value>Aktivieren Sie dieses Kontrollkästchen, um dieses Forum aus der Liste der Foren für Benutzer auszublenden, die keinen Zugriff haben.</value>
   </data>
   <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve" lastModified="2024-05-16 19:38:27">
-    <value>Ermöglicht das Einschließen von Inhalten aus diesem Forum in die DotNetNuke-Site-Suche.</value>
+    <value>Ermöglicht das Einschließen von Inhalten aus diesem Forum in die DNN-Site-Suche.</value>
   </data>
   <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:38:27">
     <value>Aktivieren Sie dieses Kontrollkästchen, um die Funktionseinstellungen von der Gruppe zu übernehmen.</value>
@@ -1184,7 +1184,7 @@ Ihre Entfernungsmethode ist derzeit auf {0} eingestellt.  Ihre Themen werden anh
     <value>Aktivieren Sie diese Funktion, um anzuzeigen, wann der Benutzer online ist und die Foren besucht.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 19:38:27">
-    <value>Aktivieren Sie diese Funktion und DNN-Community-Foren aktualisieren das Breadcrumb-Navigationselement in Ihrem Skin.  Dies wird nur mit dem DotNetNuke Breadcrumb-Skinobjekt unterstützt.</value>
+    <value>Aktivieren Sie diese Funktion und DNN-Community-Foren aktualisieren das Breadcrumb-Navigationselement in Ihrem Skin.  Dies wird nur mit dem DNN Breadcrumb-Skinobjekt unterstützt.</value>
   </data>
   <data name="[RESX:Tips:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 19:38:27">
     <value>Geben Sie den Namen ein, den Sie in der URL verwenden möchten, wenn Sie auf dieses Forum zugreifen.  </value>

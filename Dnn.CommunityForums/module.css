@@ -1507,3 +1507,17 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums * .dcf-search-popup {
 	z-index: 9 !important;
 }
+
+
+
+/* subtle UI tweaks for titles */
+.dnn-community-forums * .aftitle {
+	font-size: 1.1em;
+	font-weight: bolder;
+}
+/* subtle UI tweaks for section headers */
+.dnn-community-forums * .afsectionhd {
+	background-color: #f9f9f9;
+	font-size: 1.1em;
+	font-weight: bolder;
+}
