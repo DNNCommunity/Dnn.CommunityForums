@@ -43,14 +43,17 @@
 							</table>
 						</td>
 					</tr>
+                    [AF:UI:SECTION:POSTICONS]
 					<tr>
-						<td style="text-align:left;">
+                        <td style="text-align:left;">
 							[AF:UI:FIELDSET:POSTICONS]
 								[AF:CONTROL:POSTICONS]
 							[/AF:UI:FIELDSET:POSTICONS]
-						</td>
-						<td></td>
-					</tr>
+                        </td>
+                        <td></td>
+                    </tr>
+                    [/AF:UI:SECTION:POSTICONS]
+					[AF:UI:SECTION:PROPERTIES]
 					<tr>
 						<td colspan="2">
 							<table class="afprop-table">
@@ -66,6 +69,7 @@
 							</table>
 						</td>
 					</tr>
+                    [/AF:UI:SECTION:PROPERTIES]
 					<tr>
 						<td style="text-align:left;">[RESX:Summary]:</td>
 						<td></td>
