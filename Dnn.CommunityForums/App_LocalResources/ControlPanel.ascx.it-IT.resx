@@ -544,7 +544,7 @@
     <value>Livello di registrazione</value>
   </data>
   <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Consigliato per siti con un gran numero di iscritti.  Richiede l'utilità di pianificazione di DotNetNuke.  Per ulteriori informazioni, vedere la documentazione.</value>
+    <value>Consigliato per siti con un gran numero di iscritti.  Richiede l'utilità di pianificazione di DNN.  Per ulteriori informazioni, vedere la documentazione.</value>
   </data>
   <data name="[RESX:MailQueue].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Abilita coda di posta</value>
@@ -1058,7 +1058,7 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
     <value>Selezionare questa casella per nascondere questo forum dall'elenco dei forum per gli utenti che non hanno accesso.</value>
   </data>
   <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Consente di includere il contenuto di questo forum nella ricerca nel sito DotNetNuke.</value>
+    <value>Consente di includere il contenuto di questo forum nella ricerca nel sito DNN.</value>
   </data>
   <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Selezionare questa casella per ereditare le impostazioni della feature dal gruppo.</value>
@@ -1193,7 +1193,7 @@ Il metodo di rimozione è attualmente impostato su {0}.  I tuoi argomenti verran
     <value>Abilita questa funzione per indicare quando l'utente è online e visita i forum.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Abilita questa funzione e DNN Community Forums aggiornerà l'elemento di navigazione breadcrumb all'interno della tua skin.  Questa operazione è supportata solo con l'oggetto interfaccia di navigazione DotNetNuke.</value>
+    <value>Abilita questa funzione e DNN Community Forums aggiornerà l'elemento di navigazione breadcrumb all'interno della tua skin.  Questa operazione è supportata solo con l'oggetto interfaccia di navigazione DNN.</value>
   </data>
   <data name="[RESX:Tips:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Inserisci il nome che desideri venga utilizzato all'interno dell'url quando accedi a questo forum.  </value>
