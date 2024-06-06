@@ -32,9 +32,9 @@
 							</table>
 							[/AF:UI:ANON]
 							<table cellpadding="0" cellspacing="4" border="0" width="99%">
-                                <tr>
-                                    <td style="text-align: left; width: 99%;"><span class="aftitle">[RESX:Subject]:[AF:REQ:SUBJECT]</span>[AF:INPUT:SUBJECT]</td>
-                                    <td style="text-align:right;"><span class="aftitle">[RESX:TopicStatus]:</span>&nbsp;[AF:CONTROL:STATUS]</td>
+                <tr>
+                    <td style="text-align: left; width: 99%;"><span class="aftitle">[RESX:Subject]:[AF:REQ:SUBJECT]</span>[AF:INPUT:SUBJECT]</td>
+                    <td style="text-align:right;"><span class="aftitle">[RESX:TopicStatus]:</span>&nbsp;[AF:CONTROL:STATUS]</td>
 								</tr>
 							</table>
 						</td>

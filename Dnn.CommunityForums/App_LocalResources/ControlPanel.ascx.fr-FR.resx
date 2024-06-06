@@ -363,9 +363,6 @@
   <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Activer le texte intégral</value>
   </data>
-  <data name="[RESX:EnableMailQueue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activer la file d’attente des messages</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Système de points</value>
   </data>
@@ -542,12 +539,6 @@
   </data>
   <data name="[RESX:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Niveau de journalisation</value>
-  </data>
-  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Recommandé pour les sites avec un grand nombre d’abonnés.  Nécessite le planificateur DotNetNuke.  Voir la documentation pour plus de détails.</value>
-  </data>
-  <data name="[RESX:MailQueue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activer la file d’attente des messages</value>
   </data>
   <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Les fonctionnalités ci-dessous sont utilisées sur tous les forums.  Vous pouvez activer ou désactiver certaines fonctionnalités ci-dessous.</value>
@@ -1058,7 +1049,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
     <value>Cochez cette case pour masquer ce forum de la liste des forums pour les utilisateurs qui n’y ont pas accès.</value>
   </data>
   <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Permet d’inclure le contenu de ce forum dans la recherche sur le site DotNetNuke.</value>
+    <value>Permet d’inclure le contenu de ce forum dans la recherche sur le site DNN.</value>
   </data>
   <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Cochez cette case pour hériter des paramètres de fonctionnalité du groupe.</value>
@@ -1193,7 +1184,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
     <value>Activez cette fonctionnalité pour indiquer quand l’utilisateur est en ligne et visite les forums.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activez cette fonctionnalité et les forums de la communauté DNN mettront à jour l’élément de navigation du fil d’Ariane dans votre habillage.  Ceci n’est pris en charge qu’avec l’objet skin DotNetNuke Breadcrumb.</value>
+    <value>Activez cette fonctionnalité et les forums de la communauté DNN mettront à jour l’élément de navigation du fil d’Ariane dans votre habillage.  Ceci n’est pris en charge qu’avec l’objet skin DNN Breadcrumb.</value>
   </data>
   <data name="[RESX:Tips:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Entrez le nom que vous souhaitez utiliser dans l’url lorsque vous accédez à ce forum.  </value>

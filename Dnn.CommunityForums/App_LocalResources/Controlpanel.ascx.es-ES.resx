@@ -363,9 +363,6 @@
   <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Habilitar texto completo</value>
   </data>
-  <data name="[RESX:EnableMailQueue].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Habilitar cola de correo</value>
-  </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Sistema de puntos</value>
   </data>
@@ -542,12 +539,6 @@
   </data>
   <data name="[RESX:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Nivel de registro</value>
-  </data>
-  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve" lastModified="2024-05-27 10:42:27">
-    <value>Recomendado para sitios con un gran número de suscriptores.  Require el programador de tareas de DNN.  Consulte la documentación para obtener más detalles.</value>
-  </data>
-  <data name="[RESX:MailQueue].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Habilitar cola de correo</value>
   </data>
   <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
     <value>Las siguientes funciones se utilizan en todos los foros.  Puede habilitar o deshabilitar ciertas funciones a continuación.</value>

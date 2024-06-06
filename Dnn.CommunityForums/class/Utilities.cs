@@ -884,13 +884,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
             TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.BaseUtcOffset, format);
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime), format);
         }
         public static string GetUserFormattedDateTime(DateTime dateTime, int portalId, int userId)
         {
             CultureInfo userCultureInfo = GetCultureInfoForUser(portalId, userId);
             TimeZoneInfo userTimeZoneInfo = GetTimeZoneInfoForUser(portalId, userId);
-            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.BaseUtcOffset);
+            return GetUserFormattedDateTime(dateTime, userCultureInfo, userTimeZoneInfo.GetUtcOffset(dateTime));
         }
         public static string GetUserFormattedDateTime(DateTime dateTime, CultureInfo userCultureInfo, TimeSpan timeZoneOffset)
         {
@@ -1005,7 +1005,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public static TimeSpan GetTimeZoneOffsetForUser(UserInfo userInfo)
         {
-            return GetTimeZoneInfoForUser(userInfo).BaseUtcOffset;
+            return GetTimeZoneInfoForUser(userInfo).GetUtcOffset(DateTime.UtcNow);
         }
         public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
         {
