@@ -217,6 +217,7 @@
     <Content Include="config\defaultgroupforums.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="config\templates\ToolbarSearchPopup.ascx" />
     <Content Include="config\templates\TopicSplitButtons.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
     <Content Include="config\templates\BlogList.ascx" />
@@ -1860,7 +1861,6 @@
     </Compile>
     <Compile Include="controls\af_quickjump.ascx.cs">
       <DependentUpon>af_quickjump.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controls\af_quickreply.ascx.designer.cs">
       <DependentUpon>af_quickreply.ascx</DependentUpon>
