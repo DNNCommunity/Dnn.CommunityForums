@@ -15,6 +15,15 @@ namespace DotNetNuke.Modules.ActiveForums
     {
 
         /// <summary>
+        /// lblThreadsTracked control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblThreadsTracked;
+
+        /// <summary>
         /// upOptions1 control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,15 @@ namespace DotNetNuke.Modules.ActiveForums
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView dgrdTopicSubs;
+
+        /// <summary>
+        /// lblForumsTracked control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblForumsTracked;
 
         /// <summary>
         /// UpdatePanel2 control.
