@@ -126,8 +126,8 @@
   <data name="[RESX:AlwaysApprove].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Toujours approuver</value>
   </data>
-  <data name="[RESX:AlwaysModerate].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Toujours modéré</value>
+  <data name="[RESX:AlwaysModerate].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Toujours modérer</value>
   </data>
   <data name="[RESX:AnswerPointValue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Fournir un message de réponse</value>
@@ -240,8 +240,8 @@
   <data name="[RESX:DateCreated].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Date de création</value>
   </data>
-  <data name="[RESX:DateFormat].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Date Format</value>
+  <data name="[RESX:DateFormat].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Format de date</value>
   </data>
   <data name="[RESX:DateTime].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Paramètres de date et d’heure</value>
@@ -249,14 +249,14 @@
   <data name="[RESX:DateUpdated].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Date de mise à jour</value>
   </data>
-  <data name="[RESX:Default].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Faire défaut</value>
+  <data name="[RESX:Default].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Défaut</value>
   </data>
   <data name="[RESX:DefaultCache].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Stockage du cache</value>
   </data>
-  <data name="[RESX:DefaultDisabled].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>--Handicapé--</value>
+  <data name="[RESX:DefaultDisabled].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>--Désactivé--</value>
   </data>
   <data name="[RESX:DefaultPageSize].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Taille de page par défaut</value>
@@ -288,8 +288,8 @@
   <data name="[RESX:Details].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Détails</value>
   </data>
-  <data name="[RESX:Disabled].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>De</value>
+  <data name="[RESX:Disabled].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Désactivé</value>
   </data>
   <data name="[RESX:Display].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Montrer</value>
@@ -300,8 +300,8 @@
   <data name="[RESX:DropDownDefault].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>--CHOISIR--</value>
   </data>
-  <data name="[RESX:DropDownDisabled].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>--HANDICAPÉ--</value>
+  <data name="[RESX:DropDownDisabled].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>--DÉSACTIVÉ--</value>
   </data>
   <data name="[RESX:EditControl:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Permet à l’utilisateur de ne modifier son message que dans un nombre donné de minutes à compter de sa création.  L’utilisateur doit également disposer d’une autorisation de modification.  Définissez cette valeur sur 0 pour désactiver cette fonctionnalité.</value>
@@ -330,14 +330,14 @@
   <data name="[RESX:EditTimeLimit].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Modifier l’intervalle</value>
   </data>
-  <data name="[RESX:Email].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Messagerie électronique</value>
+  <data name="[RESX:Email].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Courriel</value>
   </data>
   <data name="[RESX:EmailAddress].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Adresse courriel</value>
   </data>
-  <data name="[RESX:EmailTemplates].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Modèles d’e-mails</value>
+  <data name="[RESX:EmailTemplates].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Modèles de courriels</value>
   </data>
   <data name="[RESX:Emoticon].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Émoticône</value>
@@ -354,14 +354,17 @@
   <data name="[RESX:EnableAvatarsLinks].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Liens d’avatar</value>
   </data>
-  <data name="[RESX:Enabled].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Sur</value>
+  <data name="[RESX:Enabled].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Activé</value>
   </data>
   <data name="[RESX:EnableFilter].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Filtres</value>
   </data>
   <data name="[RESX:EnableFullText].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Activer le texte intégral</value>
+  </data>
+  <data name="[RESX:EnableMailQueue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
+    <value>Activer la file d’attente des messages</value>
   </data>
   <data name="[RESX:EnablePoints].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Système de points</value>
@@ -399,8 +402,8 @@
   <data name="[RESX:Exit].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sortie</value>
   </data>
-  <data name="[RESX:Feature].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Fonctionnalités</value>
+  <data name="[RESX:Feature].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Fonctionnalité</value>
   </data>
   <data name="[RESX:Features].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Fonctionnalités</value>
@@ -522,8 +525,8 @@
   <data name="[RESX:Label].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Étiquette</value>
   </data>
-  <data name="[RESX:LastName].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Nom</value>
+  <data name="[RESX:LastName].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Nom de famille</value>
   </data>
   <data name="[RESX:List].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Liste</value>
@@ -540,6 +543,12 @@
   <data name="[RESX:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Niveau de journalisation</value>
   </data>
+  <data name="[RESX:MailQueue:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
+    <value>Recommandé pour les sites avec un grand nombre d’abonnés.  Nécessite le planificateur DotNetNuke.  Voir la documentation pour plus de détails.</value>
+  </data>
+  <data name="[RESX:MailQueue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
+    <value>Activer la file d’attente des messages</value>
+  </data>
   <data name="[RESX:MainFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Les fonctionnalités ci-dessous sont utilisées sur tous les forums.  Vous pouvez activer ou désactiver certaines fonctionnalités ci-dessous.</value>
   </data>
@@ -555,8 +564,8 @@
   <data name="[RESX:Maint:Days].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Jours</value>
   </data>
-  <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>{0} sujet sera supprimé.</value>
+  <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>{0} sujet(s) sera/seront supprimé(s).</value>
   </data>
   <data name="[RESX:Maint:Execute].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Exécuter</value>
@@ -567,8 +576,8 @@
   <data name="[RESX:Maint:RequiredCriteria].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Veuillez vérifier les critères que vous avez sélectionnés et réessayer.</value>
   </data>
-  <data name="[RESX:Maint:TestRun].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Série d’essais</value>
+  <data name="[RESX:Maint:TestRun].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Éssai</value>
   </data>
   <data name="[RESX:Maint:TopicsByUser].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sujets par utilisateur</value>
@@ -582,8 +591,8 @@
   <data name="[RESX:Maintenance].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Entretien</value>
   </data>
-  <data name="[RESX:MaintenanceInstruct].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Spécifiez les critères ci-dessous pour supprimer du contenu de vos forums.  Cliquez sur le bouton « Test Run » pour recevoir le nombre de sujets qui seront affectés.  Cliquez sur le bouton « Exécuter » pour commencer la maintenance.  Ce processus peut prendre plusieurs minutes.  Veuillez attendre la fin du processus avant de fermer en quittant cette page.</value>
+  <data name="[RESX:MaintenanceInstruct].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Spécifiez les critères ci-dessous pour supprimer du contenu de vos forums.  Cliquez sur le bouton « Éssai » pour recevoir le nombre de sujets qui seront affectés.  Cliquez sur le bouton « Exécuter » pour commencer la maintenance.  Ce processus peut prendre plusieurs minutes.  Veuillez attendre la fin du processus avant de fermer en quittant cette page.</value>
   </data>
   <data name="[RESX:MaintenanceWarning:Recycle:Desc].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Marqué comme supprimé</value>
@@ -604,8 +613,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:ManageForums].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Gérer les forums</value>
   </data>
-  <data name="[RESX:ManageTags].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Gérer les balises</value>
+  <data name="[RESX:ManageTags].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Gérer les étiquettes</value>
   </data>
   <data name="[RESX:MarkAnswerPointValue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Marquer la publication comme réponse</value>
@@ -664,8 +673,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:ModEmail].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>ModEmail</value>
   </data>
-  <data name="[RESX:Moderate].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Modéré</value>
+  <data name="[RESX:Moderate].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Modérer</value>
   </data>
   <data name="[RESX:Moderated].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Modéré</value>
@@ -679,8 +688,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:ModPointValue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Modérer une publication</value>
   </data>
-  <data name="[RESX:Moved].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Ému</value>
+  <data name="[RESX:Moved].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Déplacé</value>
   </data>
   <data name="[RESX:MoveDown].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Descendre</value>
@@ -742,8 +751,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:PointsOptions].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Options pour le système de points</value>
   </data>
-  <data name="[RESX:PointValue].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Aiguillage</value>
+  <data name="[RESX:PointValue].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Points</value>
   </data>
   <data name="[RESX:POP3Password].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Mot de passe POP3</value>
@@ -772,8 +781,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:ProfileBasic].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Basique</value>
   </data>
-  <data name="[RESX:ProfileDisabled].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Handicapé</value>
+  <data name="[RESX:ProfileDisabled].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Désactivé</value>
   </data>
   <data name="[RESX:ProfileTemplate].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Modèle de profil</value>
@@ -850,8 +859,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:ReplyPostCount].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Nombre de messages de réponse</value>
   </data>
-  <data name="[RESX:RequireCaptcha].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Captcha pour les utilisateurs d’Anon</value>
+  <data name="[RESX:RequireCaptcha].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Captcha pour les utilisateurs Anonymes</value>
   </data>
   <data name="[RESX:RequireEOM].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Exiger une étiquette EOM</value>
@@ -859,8 +868,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:RestoreDefaults].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Charger les filtres par défaut</value>
   </data>
-  <data name="[RESX:RestrictAlias].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Restreindre par adresse e-mail</value>
+  <data name="[RESX:RestrictAlias].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Restreindre par adresse courriel</value>
   </data>
   <data name="[RESX:Roles].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Rôles</value>
@@ -886,8 +895,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Settings].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Paramètres</value>
   </data>
-  <data name="[RESX:SigDisable].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Handicapé</value>
+  <data name="[RESX:SigDisable].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Désactivé</value>
   </data>
   <data name="[RESX:SigHTML].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Autoriser le HTML et le texte brut</value>
@@ -934,8 +943,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:TagItems].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Articles</value>
   </data>
-  <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Nom de la balise</value>
+  <data name="[RESX:TagName].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Nom de l'étiquette</value>
   </data>
   <data name="[RESX:Tags].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Étiquettes</value>
@@ -949,8 +958,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:TemplateType].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Type</value>
   </data>
-  <data name="[RESX:Text].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>SMS</value>
+  <data name="[RESX:Text].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Texte</value>
   </data>
   <data name="[RESX:Theme].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Thème</value>
@@ -967,8 +976,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:AddUser].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Entrez le nom d’utilisateur de la personne que vous souhaitez ajouter à la grille de sécurité, puis cliquez sur l’icône plus.</value>
   </data>
-  <data name="[RESX:Tips:AdminNotify].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Il s’agit d’un modèle facultatif qui sera envoyé aux modérateurs de ce forum lorsqu’un sujet ou une réponse est créé par e-mail.  Ce modèle ne sera utilisé que lorsque le message n’est pas modéré.</value>
+  <data name="[RESX:Tips:AdminNotify].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Il s’agit d’un modèle facultatif qui sera envoyé aux modérateurs de ce forum lorsqu’un sujet ou une réponse est créé par courriel.  Ce modèle ne sera utilisé que lorsque le message n’est pas modéré.</value>
   </data>
   <data name="[RESX:Tips:AllowHTML].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Permettez aux utilisateurs de créer des publications à l’aide de balises HTML.  Cliquez sur l’icône des propriétés pour plus de détails.</value>
@@ -979,14 +988,14 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:Attachments].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Permettez aux utilisateurs de télécharger des pièces jointes avec leurs publications.   Cliquez sur l’icône des propriétés pour plus de détails.</value>
   </data>
-  <data name="[RESX:Tips:AutoCreateUsers].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activez cette option pour créer automatiquement de nouveaux utilisateurs lorsque le compte utilisateur est introuvable en fonction de leur adresse e-mail.</value>
+  <data name="[RESX:Tips:AutoCreateUsers].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Activez cette option pour créer automatiquement de nouveaux utilisateurs lorsque le compte utilisateur est introuvable en fonction de leur adresse courriel.</value>
   </data>
-  <data name="[RESX:Tips:AutoRepsonse].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Il s’agit d’un modèle facultatif qui peut être envoyé à l’utilisateur pour lui faire savoir que son e-mail a été reçu.</value>
+  <data name="[RESX:Tips:AutoRepsonse].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Il s’agit d’un modèle facultatif qui peut être envoyé à l’utilisateur pour lui faire savoir que son courriel a été reçu.</value>
   </data>
-  <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Sélectionnez les rôles qui seront automatiquement souscrits et recevrez des notifications par e-mail pour tout nouveau contenu publié sur ce forum.</value>
+  <data name="[RESX:Tips:AutoSubscribe].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Sélectionnez les rôles qui seront automatiquement souscrits et recevrez des notifications par courriel pour tout nouveau contenu publié sur ce forum.</value>
   </data>
   <data name="[RESX:Tips:AvatarDefault].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Activez cette option pour afficher l’avatar par défaut à partir du répertoire themes lorsqu’un utilisateur n’a pas encore spécifié d’avatar.</value>
@@ -1000,8 +1009,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Le nombre minimum de publications qu’un utilisateur doit avoir pour créer un nouveau sujet.</value>
   </data>
-  <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Entrez l’adresse e-mail qui sera utilisée comme adresse e-mail de l’expéditeur lors de l’envoi des notifications. </value>
+  <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Entrez l’adresse courriel qui sera utilisée comme adresse courriel de l’expéditeur lors de l’envoi des notifications. </value>
   </data>
   <data name="[RESX:Tips:EMORequired].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Activez cette option pour rejeter les messages qui n’incluent pas la balise de fin de message spécifiée ci-dessus.</value>
@@ -1021,8 +1030,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sélectionnez la façon dont vous souhaitez que les profils soient affichés&lt;br /&gt;Basic - le profil par défaut des forums de la communauté DNN&lt;br /&gt;Advanced - affiche le profil du profil de la communauté DNN, s’il est installé.&lt;br /&gt;Disabled - les profils seront désactivés.</value>
   </data>
-  <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activez cette fonctionnalité et les forums de la communauté DNN n’incluront que les paramètres minimaux nécessaires.</value>
+  <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Activez cette fonctionnalité et les forums de la communauté DNN n’inclueront que les paramètres minimaux nécessaires.</value>
   </data>
   <data name="[RESX:Tips:EOMTag].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>La balise de fin de message (EOM) est une méthode permettant d’inclure uniquement les nouvelles informations lorsqu’un utilisateur répond par e-mail.  L’utilisateur doit ajouter cette balise après son message et avant le texte du message précédent.</value>
@@ -1049,7 +1058,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
     <value>Cochez cette case pour masquer ce forum de la liste des forums pour les utilisateurs qui n’y ont pas accès.</value>
   </data>
   <data name="[RESX:Tips:IndexContent].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Permet d’inclure le contenu de ce forum dans la recherche sur le site DNN.</value>
+    <value>Permet d’inclure le contenu de ce forum dans la recherche sur le site DotNetNuke.</value>
   </data>
   <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Cochez cette case pour hériter des paramètres de fonctionnalité du groupe.</value>
@@ -1057,11 +1066,11 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Cochez cette case pour hériter de la sécurité du groupe.</value>
   </data>
-  <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Choisissez le niveau de journalisation de vos forums.&lt;br /&gt;Disabled - Aucune activité n’est enregistrée&lt;br /&gt;Moderate - Les déplacements et les suppressions sont enregistrés.&lt;br /&gt;Full - Toutes les activités sont enregistrées.</value>
+  <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Choisissez le niveau de journalisation de vos forums.&lt;br /&gt;Désactivé - Aucune activité n’est enregistrée&lt;br /&gt;Modérer - Les déplacements et les suppressions sont enregistrés.&lt;br /&gt;Complet - Toutes les activités sont enregistrées.</value>
   </data>
-  <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Permet aux utilisateurs de répondre aux messages par e-mail.  Cliquez sur l’icône des propriétés pour plus de détails.</value>
+  <data name="[RESX:Tips:MailConnector].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Permet aux utilisateurs de répondre aux messages par courriel.  Cliquez sur l’icône des propriétés pour plus de détails.</value>
   </data>
   <data name="[RESX:Tips:MaintActivityOlderThan].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Entrez le nombre de jours.  Cela s’appliquera aux sujets qui n’ont pas reçu de réponse dans le nombre de jours que vous avez spécifié.</value>
@@ -1114,8 +1123,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:QuickReplyForm].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sélectionnez le modèle d’affichage du formulaire de réponse rapide.</value>
   </data>
-  <data name="[RESX:Tips:RejectNotify].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Ce modèle sera envoyé à l’utilisateur lorsque son message électronique sera rejeté.</value>
+  <data name="[RESX:Tips:RejectNotify].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Ce modèle sera envoyé à l’utilisateur lorsque son message électronique est rejeté.</value>
   </data>
   <data name="[RESX:Tips:ReplyForm].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sélectionnez le modèle de formulaire que les utilisateurs utiliseront lors de la création d’une réponse.</value>
@@ -1126,14 +1135,14 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:ReplyPostCount].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Le nombre minimum de messages qu’un utilisateur doit avoir pour répondre à un sujet.</value>
   </data>
-  <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activez cette option pour importer uniquement les messages qui ont été envoyés directement à l’adresse e-mail spécifiée ci-dessus.  Désactivez cette fonctionnalité si vous souhaitez importer tous les messages qui se trouvent dans la boîte aux lettres de ce compte.</value>
+  <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Activez cette option pour importer uniquement les messages qui ont été envoyés directement à l’adresse courriel spécifiée ci-dessus.  Désactivez cette fonctionnalité si vous souhaitez importer tous les messages qui se trouvent dans la boîte aux lettres de ce compte.</value>
   </data>
   <data name="[RESX:Tips:RSS].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Permettez aux utilisateurs de s’abonner à ce forum avec RSS.  Seuls les rôles de sécurité avec accès en lecture peuvent s’abonner.</value>
   </data>
-  <data name="[RESX:Tips:Scripts].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Permettez aux utilisateurs d’insérer du javascript avec leurs messages.  Non recommandé.</value>
+  <data name="[RESX:Tips:Scripts].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Permettre aux utilisateurs d’insérer du javascript avec leurs messages.  Non recommandé.</value>
   </data>
   <data name="[RESX:Tips:ServerTimeZone].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Le décalage de fuseau horaire vous permet d’ajuster les calculs de temps si nécessaire.  Dans la plupart des cas, vous laisserez cette valeur à 0.</value>
@@ -1147,8 +1156,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:StripHTML].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sélectionnez cette option pour supprimer le code HTML des messages électroniques.</value>
   </data>
-  <data name="[RESX:Tips:SubNotify].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Cela vous permet de sélectionner un modèle autre que le modèle d’abonnement par e-mail par défaut à envoyer aux utilisateurs par e-mail.</value>
+  <data name="[RESX:Tips:SubNotify].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Cela vous permet de sélectionner un modèle autre que le modèle d’abonnement par e-mail par défaut à envoyer aux utilisateurs par courriel.</value>
   </data>
   <data name="[RESX:Tips:SubscriptionOptions].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sélectionnez les méthodes d’abonnement qui seront disponibles pour vos utilisateurs.</value>
@@ -1156,8 +1165,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:Tips:Subscriptions].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Choisissez si les utilisateurs peuvent ou non s’abonner aux forums et quels types d’abonnements sont autorisés.</value>
   </data>
-  <data name="[RESX:Tips:Tags].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Autoriser les auteurs à saisir des balises lors de la création de publications.</value>
+  <data name="[RESX:Tips:Tags].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Autoriser les auteurs à saisir des étiquette lors de la création de publications.</value>
   </data>
   <data name="[RESX:Tips:TopicForm].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Sélectionnez le modèle du formulaire que les utilisateurs utiliseront lors de la création d’une rubrique.</value>
@@ -1184,7 +1193,7 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
     <value>Activez cette fonctionnalité pour indiquer quand l’utilisateur est en ligne et visite les forums.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Activez cette fonctionnalité et les forums de la communauté DNN mettront à jour l’élément de navigation du fil d’Ariane dans votre habillage.  Ceci n’est pris en charge qu’avec l’objet skin DNN Breadcrumb.</value>
+    <value>Activez cette fonctionnalité et les forums de la communauté DNN mettront à jour l’élément de navigation du fil d’Ariane dans votre habillage.  Ceci n’est pris en charge qu’avec l’objet skin DotNetNuke Breadcrumb.</value>
   </data>
   <data name="[RESX:Tips:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Entrez le nom que vous souhaitez utiliser dans l’url lorsque vous accédez à ce forum.  </value>
@@ -1207,8 +1216,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:TopicPriority].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Autoriser la priorité des sujets</value>
   </data>
-  <data name="[RESX:TopicProperties:Intro].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>En savoir plus sur les propriétés de la rubrique</value>
+  <data name="[RESX:TopicProperties:Intro].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>En savoir plus sur les propriétés du sujet</value>
   </data>
   <data name="[RESX:TopicProperties].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Propriétés de la rubrique</value>
@@ -1234,8 +1243,8 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:TotalActiveMembers].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Total des membres actifs</value>
   </data>
-  <data name="[RESX:TotalForums].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Total Forums</value>
+  <data name="[RESX:TotalForums].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Total des forums</value>
   </data>
   <data name="[RESX:TotalMembers].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Total des membres</value>
@@ -1246,11 +1255,11 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:TotalTopics].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Total des sujets</value>
   </data>
-  <data name="[RESX:Trusted].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Confiance</value>
+  <data name="[RESX:Trusted].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Fiable</value>
   </data>
-  <data name="[RESX:TrustedUsers].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Utilisateurs de confiance</value>
+  <data name="[RESX:TrustedUsers].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Utilisateurs fiables</value>
   </data>
   <data name="[RESX:UniqueFileNames].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Noms de fichiers uniques</value>
@@ -1258,14 +1267,14 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:URLPrefixBase].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Chemin de base</value>
   </data>
-  <data name="[RESX:URLPrefixCategory].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Chemin d’accès à la catégorie</value>
+  <data name="[RESX:URLPrefixCategory].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Chemin d’accès de la catégorie</value>
   </data>
-  <data name="[RESX:URLPrefixOther].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Chemin d’accès aux vues</value>
+  <data name="[RESX:URLPrefixOther].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Chemin d’accès des vues</value>
   </data>
-  <data name="[RESX:URLPrefixTag].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Chemin de balise</value>
+  <data name="[RESX:URLPrefixTag].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Chemin de l'étiquette</value>
   </data>
   <data name="[RESX:UserDisplayMode].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Mode d’affichage utilisateur</value>
@@ -1285,14 +1294,14 @@ Votre méthode de suppression est actuellement définie sur {0}.  Vos sujets ser
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Afficher les utilisateurs en ligne</value>
   </data>
-  <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Mettre à jour le fil d’Ariane de la peau</value>
+  <data name="[RESX:UseSkinBreadcrumb].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Mettre à jour le fil d’Ariane de l'habillage</value>
   </data>
   <data name="[RESX:ValidationExpression].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Validation des entrées</value>
   </data>
-  <data name="[RESX:VanityName].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
-    <value>Nom de la personnalité</value>
+  <data name="[RESX:VanityName].Text" xml:space="preserve" lastModified="2024-06-09 21:35:39">
+    <value>Nom convivial</value>
   </data>
   <data name="[RESX:ViewRoles].Text" xml:space="preserve" lastModified="2024-05-16 15:10:43">
     <value>Peut lire le rôle</value>
