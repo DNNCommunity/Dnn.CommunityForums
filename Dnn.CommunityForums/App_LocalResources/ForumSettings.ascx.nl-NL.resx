@@ -31,7 +31,7 @@
     <value>Geverifieerde gebruikers</value>
   </data>
   <data name="AutoLink.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Schakel deze optie in voor DNN-communityforums om websiteadressen automatisch om te zetten in hyperlinks.</value>
+    <value>Schakel deze optie in voor DNN-Community-Forum om websiteadressen automatisch om te zetten in hyperlinks.</value>
   </data>
   <data name="AutoLink.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Automatische hyperlinks</value>
@@ -55,7 +55,7 @@
     <value>Inhoudsopties</value>
   </data>
   <data name="ControlTitle_settings.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Instellingen voor DNN-communityforums</value>
+    <value>Instellingen voor DNN-Community-Forum</value>
   </data>
   <data name="DateFormat.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Notatietekenreeks die wordt gebruikt om datumwaarden weer te geven.</value>
