@@ -1309,13 +1309,7 @@ Your removal method is currently set to {0}.  Your topics will be {1} based upon
   <data name="[RESX:EditControl].Text" xml:space="preserve">
     <value>Content Edit Control</value>
   </data>
-  <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve">
-    <value>Features that might be necessary for high traffic sites.</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures].Text" xml:space="preserve">
-    <value>Advanced  Features</value>
-  </data>
-  <data name="[RESX:FloodControl].Text" xml:space="preserve">
+   <data name="[RESX:FloodControl].Text" xml:space="preserve">
     <value>Duplicate Posts and Abuse Prevention</value>
   </data>
   <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
