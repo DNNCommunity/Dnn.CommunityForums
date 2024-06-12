@@ -18,6 +18,10 @@
 			<div class="d-md-flex">
 				<div class="flex-grow-1">
 					<h1 class="dcf-title h2 mt-0 d-flex align-items-center">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+					<div class="dcf-topic-buttons">
+						<div class="dcf-button-reply">[ADDREPLY]</div>
+						<div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
+					</div>
 				</div>
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
@@ -27,9 +31,7 @@
 
 						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
                         <span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
-                        <div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
-						<div class="dcf-button-reply">[ADDREPLY]</div>
-						
+					
 					</div>
 				</div>
 			</div>

@@ -16,6 +16,10 @@
 			<div class="dcf-cols">
 				<div class="dcf-col dcf-col-50-md">
 					<h1 class="dcf-title dcf-title-1">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+					<div class="dcf-topic-buttons">
+                        <div class="dcf-button-reply">[ADDREPLY]</div>
+						<div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
+					</div>
 				</div>
 				<div class="dcf-col dcf-col-50-md">
                     <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
@@ -25,9 +29,6 @@
 					<div class="dcf-topic-controls">
 						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
 						<div class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</div>
-                        <div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
-                        <div class="dcf-button-reply">[ADDREPLY]</div>
-						
 					</div>
 				</div>
 			</div>
