@@ -1,0 +1,9 @@
+
+// Pushing the inputs wider. for #826
+// Temporary solution as we should change the af- CSS class of the input to a dcf- class name
+.dcf-topic-edit-subject, .dcf-topic-edit-summary{
+
+    input{
+        width: 95%;
+    }
+}
