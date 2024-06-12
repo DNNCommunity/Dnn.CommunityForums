@@ -495,13 +495,7 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve">
     <value>Vriendelijke URLs Inschakelen</value>
   </data>
-  <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve">
-    <value>Kenmerken voor DNN-Community-Forum Enterprise.</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures].Text" xml:space="preserve">
-    <value>Enterprise Kenmerken</value>
-  </data>
-  <data name="[RESX:EOMALL].Text" xml:space="preserve">
+   <data name="[RESX:EOMALL].Text" xml:space="preserve">
     <value>ALLE - Verplicht</value>
   </data>
   <data name="[RESX:EOMOptional].Text" xml:space="preserve">

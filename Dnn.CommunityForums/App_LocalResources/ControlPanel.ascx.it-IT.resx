@@ -375,13 +375,7 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>Abilita URL brevi</value>
   </data>
-  <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Funzionalità che potrebbero essere necessarie per i siti ad alto traffico.</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
-    <value>Funzionalità avanzate</value>
-  </data>
-  <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
+    <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">
     <value>ALL - Obbligatorio</value>
   </data>
   <data name="[RESX:EOMOptional].Text" xml:space="preserve" lastModified="2024-05-16 19:42:26">

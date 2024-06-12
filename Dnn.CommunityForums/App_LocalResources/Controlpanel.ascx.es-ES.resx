@@ -375,13 +375,7 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve" lastModified="2024-05-27 10:38:47">
     <value>Habilitar URL amigables</value>
   </data>
-  <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Características que pueden ser necesarias para sitios de alto tráfico.</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
-    <value>Funciones avanzadas</value>
-  </data>
-  <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-27 10:38:47">
+   <data name="[RESX:EOMALL].Text" xml:space="preserve" lastModified="2024-05-27 10:38:47">
     <value>TODOS - Obligatorio</value>
   </data>
   <data name="[RESX:EOMOptional].Text" xml:space="preserve" lastModified="2024-05-16 19:52:21">
