@@ -1184,7 +1184,7 @@ function afadmin_getProperties() {
 					</tr>
 					<tr>
 						<td align="center">
-							<div style="width: 350px; margin-left: auto; margin-right: auto; padding-top: 5px;">
+							<div style="width: 100%; padding-top: 1em;">
 								<table>
 									<tr>
 										<td>
@@ -1263,11 +1263,10 @@ function afadmin_getProperties() {
 			</ul>
 		</div>
 		<div class="amtbwrapper">
-			<div class="amcpmdtoolbarbtm" style="width: 175px;" id="amtoolbar">
-				<am:imagebutton id="btnSave" runat="server" height="50" width="50" postback="False" clientsidescript="forumSave();" imagelocation="TOP" text="[RESX:Button:Save]" imageurl="~/DesktopModules/ActiveForums/images/save32.png" />
-				<am:imagebutton id="btnDelete" height="50" width="50" confirm="true" confirmmessage="[RESX:Actions:ForumDeleteConfirm]" imagelocation="TOP" runat="server" postback="false" clientsidescript="deleteForum();" text="[RESX:Button:Delete]" imageurl="~/DesktopModules/ActiveForums/images/delete32.png" />
-				<am:imagebutton id="btnClose" height="50" width="50" runat="server" postback="false" imagelocation="TOP" clientsidescript="LoadView('manageforums');" text="[RESX:Button:Cancel]" imageurl="~/DesktopModules/ActiveForums/images/cancel32.png" />
-
+			<div class="amcpmdtoolbarbtm" id="amtoolbar">
+				<am:imagebutton id="btnSave" runat="server" postback="False" clientsidescript="forumSave();" imagelocation="TOP" text="[RESX:Button:Save]" imageurl="~/DesktopModules/ActiveForums/images/save32.png" />
+				<am:imagebutton id="btnDelete" confirm="true" confirmmessage="[RESX:Actions:ForumDeleteConfirm]" imagelocation="TOP" runat="server" postback="false" clientsidescript="deleteForum();" text="[RESX:Button:Delete]" imageurl="~/DesktopModules/ActiveForums/images/delete32.png" />
+				<am:imagebutton id="btnClose" runat="server" postback="false" imagelocation="TOP" clientsidescript="LoadView('manageforums');" text="[RESX:Button:Cancel]" imageurl="~/DesktopModules/ActiveForums/images/cancel32.png" />
 			</div>
 		</div>
 	</div>

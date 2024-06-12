@@ -141,7 +141,8 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afsecactionelem{font-size:11px;font-family:Tahoma;text-align:center;padding:0;border-left:dashed 1px #dcdcdc;height:22px;}
 .amtbwrapper {text-decoration:none;text-align:center !important;display:block;padding:0px;margin:0px;height:60px;}
 .amnavbar {height:61px;text-decoration:none;text-align:center;display:block;padding:0px;margin:0px;background:#eee;}
-.amcpmdtoolbarbtm{text-align:center;padding:0px; margin-left:auto;margin-right:auto;height:55px;}
+.amcpmdtoolbarbtm{display:flex; justify-content: center;}
+.amcpmdtoolbarbtm .amtoolbaritem{width: auto; padding: 0.5em;}
 .amcpmdtoolbarbtm a, .amcpmdtoolbarbtm a:link{text-decoration:none;text-align:center !important;}
 .amcpmdtoolbar{width:610px;text-align:center;padding:0px;margin:0 auto;height:50px;padding-top:2px;text-decoration:none;}
 .amcpmdtoolbar a, .amcpmdtoolbar a:link{text-decoration:none;text-align:center !important;}

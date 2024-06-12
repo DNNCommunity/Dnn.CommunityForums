@@ -198,10 +198,10 @@
 .dnn-community-forums .dcf-sort select {
   margin-left: 0.25rem;
 }
-.dnn-community-forums .dcf-subscribe-topic {
+.dnn-community-forums .dcf-subscribe-topic, .dnn-community-forums .dcf-subscribe-forum {
   padding: 0.25rem 0;
 }
-.dnn-community-forums .dcf-subscribe-topic input {
+.dnn-community-forums .dcf-subscribe-topic input, .dnn-community-forums .dcf-subscribe-forum input {
   margin-right: 0.25rem;
 }
 .dnn-community-forums .dnn-community-forums .dcf-col-icon {
