@@ -304,7 +304,7 @@
     <value>Weet u zeker dat u dit item wilt verwijderen?</value>
   </data>
   <data name="[RESX:Confirm:Lock].Text" xml:space="preserve">
-    <value>Weet u zeker dat u dit onderwerp wilt afsluiten?</value>
+    <value>Weet u zeker dat u dit onderwerp wilt vergrendelen?</value>
   </data>
   <data name="[RESX:Confirm:Pin].Text" xml:space="preserve">
     <value>Weet u zeker dat u dit onderwerp wilt vastpinnen?</value>
@@ -313,7 +313,7 @@
     <value>Weet u zeker dat u dit bericht wilt weigeren?</value>
   </data>
   <data name="[RESX:Confirm:UnLock].Text" xml:space="preserve">
-    <value>Weet u zeker dat u het afsluiten dit onderwerp ongedaan wilt maken?</value>
+    <value>Weet u zeker dat u het vergrendelen dit onderwerp ongedaan wilt maken?</value>
   </data>
   <data name="[RESX:Confirm:UnPin].Text" xml:space="preserve">
     <value>Weet u zeker dat u het vastpinnen dit onderwerp ongedaan wilt maken?</value>
@@ -413,7 +413,7 @@ Van,
     <value>U moet tenminste {0} seconden wachten voordat u een nieuw bericht kunt plaatsen</value>
   </data>
   <data name="[RESX:ERROR:Search].Text" xml:space="preserve">
-    <value>Het zoekproces is fout gelopen.   Gelieve contact op te nemen met de beheerder van de site.</value>
+    <value>Fout tijdens het zoeken. Gelieve contact op te nemen met de beheerder van de site.</value>
   </data>
   <data name="[RESX:ERROR].Text" xml:space="preserve">
     <value>Fout</value>
@@ -464,10 +464,10 @@ Van,
     <value>Forums waarop u bent geabonneerd:</value>
   </data>
   <data name="[RESX:ForumSubscribe:Disabled].Text" xml:space="preserve">
-    <value>E-mail berichtgevingen zijn uitgeschakeld.</value>
+    <value>E-mail berichtgeving is uitgeschakeld.</value>
   </data>
   <data name="[RESX:ForumSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Vink deze box aan indien je je wilt abonneren op dit forum.</value>
+    <value>Vink deze box aan indien u zich wilt abonneren op dit forum.</value>
   </data>
   <data name="[RESX:ForumSubscribe:TRUE].Text" xml:space="preserve">
     <value>U bent geabonneerd op dit forum.</value>
@@ -575,19 +575,19 @@ Van,
     <value>Locatie</value>
   </data>
   <data name="[RESX:Lock].Text" xml:space="preserve">
-    <value>Afsluiten</value>
+    <value>Vergrendelen</value>
   </data>
   <data name="[RESX:Locked:Note].Text" xml:space="preserve">
-    <value>Opmerking over Afgesloten</value>
+    <value>Opmerking over vergrendeld</value>
   </data>
   <data name="[RESX:Locked].Text" xml:space="preserve">
-    <value>Afgesloten</value>
+    <value>Vergrendeld</value>
   </data>
   <data name="[RESX:LockedOut].Text" xml:space="preserve">
     <value>Uitgesloten</value>
   </data>
   <data name="[RESX:LockTopic].Text" xml:space="preserve">
-    <value>Vink deze box aan indien u dit topic wilt afsluiten</value>
+    <value>Vink deze box aan indien u dit topic wilt vergrendelen</value>
   </data>
   <data name="[RESX:MarkAllRead].Text" xml:space="preserve">
     <value>Markeer alles gelezen</value>
@@ -899,7 +899,7 @@ Van,
     <value>Rang</value>
   </data>
   <data name="[RESX:Rating].Text" xml:space="preserve">
-    <value>Rating</value>
+    <value>Beoordeling</value>
   </data>
   <data name="[RESX:RE].Text" xml:space="preserve">
     <value>RE:</value>
@@ -1256,7 +1256,7 @@ Van,
     <value>Bericht</value>
   </data>
   <data name="[RESX:TopicLocked].Text" xml:space="preserve">
-    <value>Bericht is afgesloten</value>
+    <value>Bericht is vergrendeld</value>
   </data>
   <data name="[RESX:TopicPriority].Text" xml:space="preserve">
     <value>Sorteer volgorde</value>
@@ -1277,13 +1277,13 @@ Van,
     <value>Meest recente eerst</value>
   </data>
   <data name="[RESX:TopicSortOldest].Text" xml:space="preserve">
-    <value>Oudste first</value>
+    <value>Oudste eerst</value>
   </data>
   <data name="[RESX:TopicStatus].Text" xml:space="preserve">
     <value>Status bericht</value>
   </data>
   <data name="[RESX:TopicSubscribe:FALSE].Text" xml:space="preserve">
-    <value>Deze box aanvinken om te abonneren op dit bericht.</value>
+    <value>Aanvinken om te abonneren op dit bericht.</value>
   </data>
   <data name="[RESX:TopicSubscribe:TRUE].Text" xml:space="preserve">
     <value>U bent geabonneerd op dit bericht.</value>
@@ -1307,7 +1307,7 @@ Van,
     <value>Onderstrepen tekst</value>
   </data>
   <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
-    <value>Aanklikken om het afsluiten van dit onderwerp ongedaan te maken</value>
+    <value>Aanklikken om het vergrendelen van dit onderwerp ongedaan te maken</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
     <value>Losmaken</value>
@@ -1481,7 +1481,7 @@ Van,
     <value>WIJZIG</value>
   </data>
   <data name="AuditAction.Lock.Text" xml:space="preserve">
-    <value>AFSLUITEN</value>
+    <value>VERGRENDEL</value>
   </data>
   <data name="AuditAction.Move.Text" xml:space="preserve">
     <value>VERPLAATS</value>
@@ -1565,7 +1565,7 @@ Van,
     <value>Direct</value>
   </data>
   <data name="Lock.Text" xml:space="preserve">
-    <value>Afsluiten</value>
+    <value>Vergrendel</value>
   </data>
   <data name="MarkAllReadConfirm.Text" xml:space="preserve">
     <value>Markeer alle items als gelezen?</value>
