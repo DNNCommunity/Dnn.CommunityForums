@@ -495,7 +495,7 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve">
     <value>Vriendelijke URLs Inschakelen</value>
   </data>
-   <data name="[RESX:EOMALL].Text" xml:space="preserve">
+  <data name="[RESX:EOMALL].Text" xml:space="preserve">
     <value>ALLE - Verplicht</value>
   </data>
   <data name="[RESX:EOMOptional].Text" xml:space="preserve">
@@ -679,7 +679,7 @@
     <value>HoofdInstellingen</value>
   </data>
   <data name="[RESX:Maint:Days].Text" xml:space="preserve">
-    <value>dagen gelden</value>
+    <value>dagen geleden</value>
   </data>
   <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve">
     <value>{0} onderwerp(en) zullen worden verwijderd.</value>
