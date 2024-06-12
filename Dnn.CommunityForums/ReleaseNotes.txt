@@ -24,6 +24,9 @@
 			Please be sure to test this and <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose" target="_blank">report any issues you may find</a>. It's a brand-new feature! 
 		</p>
 		<p>
+			When you use the "community-default" or the "community-bootstrap" Theme, make sure to set the Avatar size to 250 x 250 pixels in the Module Settings. 
+		</p>
+		<p>
 			Also, please know that this version of the forums is not meant to be used with Bootstrap 3 and/or the DNN Xcilliin theme.  
 		</p>
 
