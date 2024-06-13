@@ -77,6 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _myTheme = "_default";
         private string _myThemePath = string.Empty;
         private bool _bLocked;
+        private bool _bPinned;
         private int _topicType;
         private string _topicSubject = string.Empty;
         private string _topicDescription = string.Empty;
@@ -323,6 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _topicTemplateId = Utilities.SafeConvertInt(_drForum["TopicTemplateId"]);
             _bAllowRSS = Utilities.SafeConvertBool(_drForum["AllowRSS"]);
             _bLocked = Utilities.SafeConvertBool(_drForum["IsLocked"]);
+            _bPinned = Utilities.SafeConvertBool(_drForum["IsPinned"]);
             _topicType = Utilities.SafeConvertInt(_drForum["TopicType"]);
             _statusId = Utilities.SafeConvertInt(_drForum["StatusId"]);
             _topicSubject = HttpUtility.HtmlDecode(_drForum["Subject"].ToString());
