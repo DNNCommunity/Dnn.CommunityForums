@@ -1545,3 +1545,13 @@ div.dcf-mod-edit-wrap {
 .dnn-community-forums * .dcf-topic-edit-summary {
 	width: 95% !important;
 }
+
+/* poll graphics removed from module.css and moved to _legacy/theme.css need to be put back */
+
+.afpollbar {
+	background-color: #ff0000;
+}
+
+.afpollresults {
+	border: solid 1px #333;
+}
