@@ -138,9 +138,6 @@
 							</header>
 							<section class="dcf-topic-content-main">
 							
-								<div class="dcf-post-poll">
-									[AF:CONTROL:POLL]
-								</div>
 								<div class="dcf-post-body">
 									[BODY]
 								</div>
