@@ -43,6 +43,6 @@
     <value>Uw bericht is toegevoegd.</value>
   </data>
   <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-05-16 19:44:04">
-    <value>De inhoud van de gebruiker is verwijderd en de gebruiker is niet meer geautoriseerd.</value>
+    <value>De berichten van de gebruiker zijn verwijderd en de gebruiker is niet meer geautoriseerd in deze website.</value>
   </data>
 </root>

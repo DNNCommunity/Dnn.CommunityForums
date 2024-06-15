@@ -480,12 +480,6 @@
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve">
     <value>Aktivieren von benutzerfreundlichen URLs</value>
   </data>
-  <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve">
-    <value>Funktionen, die für Websites mit hohem Datenverkehr erforderlich sein können.</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures].Text" xml:space="preserve">
-    <value>Erweiterte Funktionen</value>
-  </data>
   <data name="[RESX:EOMALL].Text" xml:space="preserve">
     <value>ALLE - Erforderlich</value>
   </data>

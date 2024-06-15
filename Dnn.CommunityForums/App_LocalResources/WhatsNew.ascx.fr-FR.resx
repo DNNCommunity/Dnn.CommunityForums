@@ -39,8 +39,8 @@
   <data name="[RESX:IncludeBody].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Inclure le corps</value>
   </data>
-  <data name="[RESX:Minutes].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
-    <value>compte-rendu</value>
+  <data name="[RESX:Minutes].Text" xml:space="preserve" lastModified="2024-06-10 14:11:20">
+    <value>minutes</value>
   </data>
   <data name="[RESX:NumberOfItems].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Nombre d’articles</value>
@@ -114,14 +114,14 @@
   <data name="[RESX:Token:Subject].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Affiche le sujet de l’article.</value>
   </data>
-  <data name="[RESX:Token:SubjectLink].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
-    <value>Affiche l’objet sous forme de lien hypertexte vers la publication.</value>
+  <data name="[RESX:Token:SubjectLink].Text" xml:space="preserve" lastModified="2024-06-10 14:11:20">
+    <value>Affiche le sujet sous forme de lien hypertexte vers la publication.</value>
   </data>
   <data name="[RESX:Token:TemplateOnly].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Les jetons suivants peuvent être utilisés dans la section Modèle.</value>
   </data>
-  <data name="[RESX:Token:TopicId].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
-    <value>Affiche l’identifiant de rubrique unique de l’article.</value>
+  <data name="[RESX:Token:TopicId].Text" xml:space="preserve" lastModified="2024-06-10 14:11:20">
+    <value>Affiche l’identifiant unique du sujet de la publication.</value>
   </data>
   <data name="[RESX:Token:TopicModuleId].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Affiche l’identifiant du module pour l’instance des forums où se trouve le message.</value>
@@ -129,8 +129,8 @@
   <data name="[RESX:Token:TopicsURL].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Affiche l’URL de la rubrique.</value>
   </data>
-  <data name="[RESX:Token:TopicTabId].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
-    <value>Affiche l’identifiant de l’onglet de la page où se trouve l’article.</value>
+  <data name="[RESX:Token:TopicTabId].Text" xml:space="preserve" lastModified="2024-06-10 14:11:20">
+    <value>Affiche l’identifiant de l’onglet de la page où se trouve la publication.</value>
   </data>
   <data name="[RESX:TopicsOnly].Text" xml:space="preserve" lastModified="2024-05-16 15:38:23">
     <value>Sujets uniquement</value>

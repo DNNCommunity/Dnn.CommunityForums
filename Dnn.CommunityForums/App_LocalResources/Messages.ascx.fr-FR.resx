@@ -42,7 +42,7 @@
   <data name="[RESX:Topic:Submit].Text" xml:space="preserve" lastModified="2024-05-16 14:44:46">
     <value>Votre sujet a été soumis.</value>
   </data>
-  <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-05-16 14:44:46">
-    <value>Le contenu de l’utilisateur a été supprimé et l’utilisateur n’a pas été autorisé.</value>
+  <data name="[RESX:User:Banned].Text" xml:space="preserve" lastModified="2024-06-09 22:28:56">
+    <value>Le contenu de l’utilisateur a été supprimé et l’utilisateur a été désautorisé.</value>
   </data>
 </root>

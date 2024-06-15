@@ -1,5 +1,110 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
   </resheader>
@@ -7,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="[RESX:About].Text" xml:space="preserve">
     <value>Over</value>
@@ -108,7 +213,7 @@
   <data name="[RESX:AllowAttach].Text" xml:space="preserve">
     <value>Bijlagen</value>
   </data>
-  <data name="[RESX:AllowBrowseSite].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:AllowBrowseSite].Text" xml:space="preserve">
     <value>Browsesite toestaan</value>
   </data>
   <data name="[RESX:AllowedTypes].Text" xml:space="preserve">
@@ -117,7 +222,7 @@
   <data name="[RESX:AllowHTML].Text" xml:space="preserve">
     <value>HTML Input</value>
   </data>
-  <data name="[RESX:AllowLikes].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:AllowLikes].Text" xml:space="preserve">
     <value>Vind-ik-leuks toestaan</value>
   </data>
   <data name="[RESX:AllowPostIcon].Text" xml:space="preserve">
@@ -150,7 +255,7 @@
   <data name="[RESX:Approved].Text" xml:space="preserve">
     <value>Goedgekeurd</value>
   </data>
-  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:AttachInsertAllowed].Text" xml:space="preserve">
     <value>Bestanden invoegen als tokens</value>
   </data>
   <data name="[RESX:AuditLog].Text" xml:space="preserve">
@@ -160,7 +265,7 @@
     <value>Auteur</value>
   </data>
   <data name="[RESX:AutoLink:Intro].Text" xml:space="preserve">
-    <value>Deze optie inschakelen zodat Active Forums website adressen automatisch kan omzetten in hyperlinks.</value>
+    <value>Deze optie inschakelen zodat DNN-Community-Forum website adressen automatisch kan omzetten in hyperlinks.</value>
   </data>
   <data name="[RESX:AutoLink].Text" xml:space="preserve">
     <value>Automatische Hyperlinks</value>
@@ -226,12 +331,12 @@
     <value>Configureer Opties</value>
   </data>
   <data name="[RESX:Confirm:URLToggle].Text" xml:space="preserve">
-    <value>Waarschuwing: Installeren, fog het ongedaan maken hiervan, van de Active Forums URL Handler vereist een wijziging in uw web.config.  \n\nWeet u zeker dat u deze wijzing nu wilt aanbrengen?</value>
+    <value>Waarschuwing: Installeren, fog het ongedaan maken hiervan, van de DNN-Community-Forum URL Handler vereist een wijziging in uw web.config.  \n\nWeet u zeker dat u deze wijzing nu wilt aanbrengen?</value>
   </data>
-  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:ConvertingToJpegAllowed].Text" xml:space="preserve">
     <value>Converteer *.png naar *.jpg</value>
   </data>
-  <data name="[RESX:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:CreatePostCount].Text" xml:space="preserve">
     <value>Aantal berichten maken</value>
   </data>
   <data name="[RESX:CreateUsers].Text" xml:space="preserve">
@@ -327,7 +432,7 @@
   <data name="[RESX:EditorHeight].Text" xml:space="preserve">
     <value>Hoogte</value>
   </data>
-  <data name="[RESX:EditorMobile].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:EditorMobile].Text" xml:space="preserve">
     <value>Mobiele gebruikers</value>
   </data>
   <data name="[RESX:EditorStyle].Text" xml:space="preserve">
@@ -389,12 +494,6 @@
   </data>
   <data name="[RESX:EnableURLRewriter].Text" xml:space="preserve">
     <value>Vriendelijke URLs Inschakelen</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures:Intro].Text" xml:space="preserve">
-    <value>Kenmerken voor Active Forums Enterprise.</value>
-  </data>
-  <data name="[RESX:EnterpriseFeatures].Text" xml:space="preserve">
-    <value>Enterprise Kenmerken</value>
   </data>
   <data name="[RESX:EOMALL].Text" xml:space="preserve">
     <value>ALLE - Verplicht</value>
@@ -478,7 +577,7 @@
     <value>Thema</value>
   </data>
   <data name="[RESX:ForumView].Text" xml:space="preserve">
-    <value>Forum Weergave</value>
+    <value>Forum weergave</value>
   </data>
   <data name="[RESX:FriendlyURLOptions].Text" xml:space="preserve">
     <value>Vriendelijke URL Opties</value>
@@ -493,15 +592,15 @@
     <value>Volledige Naam</value>
   </data>
   <data name="[RESX:FullTextSearch:Intro].Text" xml:space="preserve">
-    <value>Volledige-Tekst zoeken geeft betere resultaten en een hogere accuratesse bij zoekresultaten.</value>
+    <value>Volledige-Tekst zoeken geeft betere resultaten en een hogere naukeurigheid bij zoekresultaten.</value>
   </data>
   <data name="[RESX:FullTextSearch].Text" xml:space="preserve">
     <value>Volledige-Tekst Zoeken</value>
   </data>
-  <data name="[RESX:GetSupport].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:GetSupport].Text" xml:space="preserve">
     <value>Klik voor ondersteuning voor DNN-communityforums</value>
   </data>
-  <data name="[RESX:GetUpdates].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:GetUpdates].Text" xml:space="preserve">
     <value>Controleren op productupdates</value>
   </data>
   <data name="[RESX:GroupName].Text" xml:space="preserve">
@@ -517,16 +616,16 @@
     <value>HTML</value>
   </data>
   <data name="[RESX:IndexContent].Text" xml:space="preserve">
-    <value>Index Inhoud</value>
+    <value>Inhoud indexeren</value>
   </data>
   <data name="[RESX:InheritGroup].Text" xml:space="preserve">
-    <value>Overerf Instellingen Groep</value>
+    <value>Overerf instellingen groep</value>
   </data>
-  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
-    <value>Groepsinstellingen overnemen</value>
+  <data name="[RESX:InheritGroupFeatures].Text" xml:space="preserve">
+    <value>Erf groepsinstellingen</value>
   </data>
-  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
-    <value>Groepsbeveiliging overnemen</value>
+  <data name="[RESX:InheritGroupSecurity].Text" xml:space="preserve">
+    <value>Erf groepsbeveiliging</value>
   </data>
   <data name="[RESX:IsHidden].Text" xml:space="preserve">
     <value>Verborgen</value>
@@ -573,14 +672,14 @@
   <data name="[RESX:MainFeatures].Text" xml:space="preserve">
     <value>Belangrijkste Kenmerken</value>
   </data>
-  <data name="[RESX:MainSettings:Intro].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:MainSettings:Intro].Text" xml:space="preserve">
     <value> </value>
   </data>
   <data name="[RESX:MainSettings].Text" xml:space="preserve">
     <value>HoofdInstellingen</value>
   </data>
   <data name="[RESX:Maint:Days].Text" xml:space="preserve">
-    <value>dagen</value>
+    <value>dagen geleden</value>
   </data>
   <data name="[RESX:Maint:DryRunResults].Text" xml:space="preserve">
     <value>{0} onderwerp(en) zullen worden verwijderd.</value>
@@ -589,16 +688,16 @@
     <value>Uitvoeren</value>
   </data>
   <data name="[RESX:Maint:NoActivityPast].Text" xml:space="preserve">
-    <value>Onderwerpen Laatste Activiteit Gedurende</value>
+    <value>Onderwerpen laatste activiteit meer dan </value>
   </data>
   <data name="[RESX:Maint:RequiredCriteria].Text" xml:space="preserve">
     <value>Controleer uw criteria en probeer opnieuw.</value>
   </data>
   <data name="[RESX:Maint:TestRun].Text" xml:space="preserve">
-    <value>Test Run</value>
+    <value>Test</value>
   </data>
   <data name="[RESX:Maint:TopicsByUser].Text" xml:space="preserve">
-    <value>Onderwerpen op Gebruiker</value>
+    <value>Onderwerpen van Gebruiker</value>
   </data>
   <data name="[RESX:Maint:TopicsOlderThan].Text" xml:space="preserve">
     <value>Onderwerpen ouder dan</value>
@@ -610,7 +709,7 @@
     <value>Onderhoud</value>
   </data>
   <data name="[RESX:MaintenanceInstruct].Text" xml:space="preserve">
-    <value>Specificeer hieronder de criteria om berichten uit uw forums te verwijderen.  Klik op de "Test Run" knop om het aantal geselecteerde berichten te tellen. Klik op de "Uitvoeren" knop om het onderhoud te starten. Dit proces kan enkele minuten duren voordat het is uitgevoerd. Wacht s.v.p. tot het proces is afgelopen voordat u deze pagina verlaat.</value>
+    <value>Specificeer hieronder de criteria om berichten uit uw forums te verwijderen.  De [Test] knop het aantal geselecteerde berichten. Klik op de [Uitvoeren] knop om het onderhoud te starten. Dit proces kan enkele minuten duren voordat het is uitgevoerd. Wacht s.v.p. tot het proces is afgelopen voordat u deze pagina verlaat.</value>
   </data>
   <data name="[RESX:MaintenanceWarning:Recycle:Desc].Text" xml:space="preserve">
     <value>Markeer als verwijderd</value>
@@ -626,7 +725,7 @@
   </data>
   <data name="[RESX:MaintenanceWarning].Text" xml:space="preserve">
     <value>Controleer of u een back-up van de database heeft gemaakt. Onderwerpen worden verwijderd op basis van de verwijder methode die u in de hoofd instellingen tab heeft geselecteerd.&lt;br /&gt;&lt;br /&gt;
-Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worden {1} gebaseerd op de criteria die u hieronder instelt.</value>
+De verwijder-methode is momenteel ingesteld op "{0}".  Uw onderwerpen worden {1} gebaseerd op de criteria die u hieronder instelt.</value>
   </data>
   <data name="[RESX:ManageForums].Text" xml:space="preserve">
     <value>Forums Onderhoud</value>
@@ -643,10 +742,10 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:MaxAttach].Text" xml:space="preserve">
     <value># Bijlagen</value>
   </data>
-  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:MaxAttachHeight].Text" xml:space="preserve">
     <value>Max. hoogte</value>
   </data>
-  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:MaxAttachWidth].Text" xml:space="preserve">
     <value>Max. breedte</value>
   </data>
   <data name="[RESX:MaxFileSize].Text" xml:space="preserve">
@@ -784,7 +883,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:OtherOptions].Text" xml:space="preserve">
     <value>Andere Opties</value>
   </data>
-  <data name="[RESX:Parent].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Parent].Text" xml:space="preserve">
     <value>Ouder:</value>
   </data>
   <data name="[RESX:PermittedRoles].Text" xml:space="preserve">
@@ -812,7 +911,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>POP3 Gebruikersnaam</value>
   </data>
   <data name="[RESX:PostInfo].Text" xml:space="preserve">
-    <value>Berichtinfo</value>
+    <value>Bericht gegevens</value>
   </data>
   <data name="[RESX:PostingOptions:Intro].Text" xml:space="preserve">
     <value>De onderstaande instellingen stellen u in staat om verschillende aspecten van het aanmaken van content in uw forum te beïnvloeden.</value>
@@ -851,7 +950,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Snelle Links</value>
   </data>
   <data name="[RESX:QuickReplyForm].Text" xml:space="preserve">
-    <value>Snel Antwoord Formulier</value>
+    <value>Snel antwoord formulier</value>
   </data>
   <data name="[RESX:QuickStats].Text" xml:space="preserve">
     <value>Snelle Statistieken</value>
@@ -905,12 +1004,12 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Toegangsleutel voor Antwoorden</value>
   </data>
   <data name="[RESX:ReplyForm].Text" xml:space="preserve">
-    <value>Antwoord Formulier</value>
+    <value>Antwoord formulier</value>
   </data>
   <data name="[RESX:ReplyPointValue].Text" xml:space="preserve">
     <value>Antwoord</value>
   </data>
-  <data name="[RESX:ReplyPostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:ReplyPostCount].Text" xml:space="preserve">
     <value>Aantal antwoordberichten</value>
   </data>
   <data name="[RESX:RequireCaptcha].Text" xml:space="preserve">
@@ -1003,7 +1102,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:Tags].Text" xml:space="preserve">
     <value>Labels</value>
   </data>
-  <data name="[RESX:Template].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Template].Text" xml:space="preserve">
     <value>Sjabloon</value>
   </data>
   <data name="[RESX:TemplateCacheDisk].Text" xml:space="preserve">
@@ -1021,7 +1120,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:Text].Text" xml:space="preserve">
     <value>Tekst</value>
   </data>
-  <data name="[RESX:Theme].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Theme].Text" xml:space="preserve">
     <value>Thema</value>
   </data>
   <data name="[RESX:TimeFormat].Text" xml:space="preserve">
@@ -1031,7 +1130,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Deze box aanvinken om gemakkelijk een forum aan of uit te zetten.</value>
   </data>
   <data name="[RESX:Tips:ActiveSocial].Text" xml:space="preserve">
-    <value>Active Forums zal updates naar het Active Social logboek verzenden.</value>
+    <value>DNN-Community-Forum zal updates naar het Active Social logboek verzenden.</value>
   </data>
   <data name="[RESX:Tips:AddRoles].Text" xml:space="preserve">
     <value>Selecteer de rol die u wilt toevoegen aan het beveiligingsschema en klik vervolgens op het plus icoon.  </value>
@@ -1069,7 +1168,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:Tips:CacheStore].Text" xml:space="preserve">
     <value>Kies de locatie waar u de cache wilt opslaan.  </value>
   </data>
-  <data name="[RESX:Tips:CreatePostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Tips:CreatePostCount].Text" xml:space="preserve">
     <value>Het minimum aantal berichten dat een gebruiker moet hebben om een nieuw onderwerp te kunnen maken.</value>
   </data>
   <data name="[RESX:Tips:EmailAddress].Text" xml:space="preserve">
@@ -1091,10 +1190,10 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>In- of Uitschakelen van het puntensysteem en instellen van de punten waarden.</value>
   </data>
   <data name="[RESX:Tips:EnableProfiles].Text" xml:space="preserve">
-    <value>Selecteer hoe profielen wilt weergeven&lt;br /&gt;Basis - Het standaard Active Forums profiel&lt;br /&gt;Geavanceerd - Toont, indien geïnstalleerd, het profiel van Active Profile.&lt;br /&gt;Uitgeschakeld - Profielen zijn uitgeschakeld.</value>
+    <value>Selecteer hoe profielen wilt weergeven&lt;br /&gt;Basis - Het standaard DNN-Community-Forum profiel&lt;br /&gt;Geavanceerd - Toont, indien geïnstalleerd, het profiel van Active Profile.&lt;br /&gt;Uitgeschakeld - Profielen zijn uitgeschakeld.</value>
   </data>
   <data name="[RESX:Tips:EnableShortUrls].Text" xml:space="preserve">
-    <value>Deze optie inschakelen om Active Forums een minimum aantal noodzakelijk aantal parameters te laten gebruiken.</value>
+    <value>Deze optie inschakelen om DNN-Community-Forum een minimum aantal noodzakelijk aantal parameters te laten gebruiken.</value>
   </data>
   <data name="[RESX:Tips:EOMTag].Text" xml:space="preserve">
     <value>Het Einde Bericht (EOM) label is een methodiek om alleen nieuwe informatie toe te voegen wanneer een gebruiker per e-mail antwoord. De gebruiker moet deze tekst invoegen naar zijn antwoord, voor de tekst van het vorige bericht.</value>
@@ -1126,10 +1225,10 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:Tips:InheritGroup].Text" xml:space="preserve">
     <value>Vink deze box aan om de beveiligingsinstellingen en eigenschappen van de groep te overerven.</value>
   </data>
-  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Tips:InheritGroupFeatures].Text" xml:space="preserve">
     <value>Vink dit vakje aan om functie-instellingen van de groep over te nemen.</value>
   </data>
-  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Tips:InheritGroupSecurity].Text" xml:space="preserve">
     <value>Vink dit vakje aan om de beveiliging van de groep over te nemen.</value>
   </data>
   <data name="[RESX:Tips:LoggingLevel].Text" xml:space="preserve">
@@ -1198,7 +1297,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:Tips:ReplyPointValue].Text" xml:space="preserve">
     <value>Aan een lid toe te kennen punten voor het geven van een antwoord.</value>
   </data>
-  <data name="[RESX:Tips:ReplyPostCount].Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="[RESX:Tips:ReplyPostCount].Text" xml:space="preserve">
     <value>Het minimale aantal berichten dat een gebruiker moet hebben om op een onderwerp te kunnen reageren.</value>
   </data>
   <data name="[RESX:Tips:RestrictByAlias].Text" xml:space="preserve">
@@ -1259,7 +1358,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Schakel deze optie aan om aan te geven of de gebruiker online is en de forums bezoekt.</value>
   </data>
   <data name="[RESX:Tips:UseSkinBreadcrumb].Text" xml:space="preserve">
-    <value>Deze optie inschakelen om Active Forums het broodkruimel navigatie element uit uw skin bij te werken. Dit wordt alleen ondersteund met het standaard DNN broodkruimel skin object.</value>
+    <value>Deze optie inschakelen om DNN-Community-Forum het broodkruimel navigatie element uit uw skin bij te werken. Dit wordt alleen ondersteund met het standaard DNN broodkruimel skin object.</value>
   </data>
   <data name="[RESX:Tips:VanityName].Text" xml:space="preserve">
     <value>Geef de naam op die u wenst te gebruiken voor het url wanneer dit forum wordt aangeroepen.</value>
@@ -1274,7 +1373,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Onderwerp</value>
   </data>
   <data name="[RESX:TopicForm].Text" xml:space="preserve">
-    <value>Onderwerp Formulier</value>
+    <value>Onderwerp formulier</value>
   </data>
   <data name="[RESX:TopicPointValue].Text" xml:space="preserve">
     <value>Nieuw Onderwerp</value>
@@ -1298,13 +1397,13 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Topics Display</value>
   </data>
   <data name="[RESX:TopicsView].Text" xml:space="preserve">
-    <value>Topics View</value>
+    <value>Onderwerpen weergave</value>
   </data>
   <data name="[RESX:TopicTemplate].Text" xml:space="preserve">
     <value>Topic Display</value>
   </data>
   <data name="[RESX:TopicView].Text" xml:space="preserve">
-    <value>Topic View</value>
+    <value>Onderwerp weergave</value>
   </data>
   <data name="[RESX:TopMembers].Text" xml:space="preserve">
     <value>Top Leden</value>
@@ -1346,7 +1445,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Label Pad</value>
   </data>
   <data name="[RESX:UserDisplayMode].Text" xml:space="preserve">
-    <value>Gebruiker Weergave Modus</value>
+    <value>Gebruiker weergave modus</value>
   </data>
   <data name="[RESX:UserName].Text" xml:space="preserve">
     <value>Gebruikersnaam</value>
@@ -1358,7 +1457,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
     <value>Gebruiker Instellingen Profiel</value>
   </data>
   <data name="[RESX:UserProfileTemplate].Text" xml:space="preserve">
-    <value>Profiel Weergave</value>
+    <value>Profiel weergave</value>
   </data>
   <data name="[RESX:UsersOnlineEnabled].Text" xml:space="preserve">
     <value>Gebruikers Online</value>
@@ -1390,7 +1489,7 @@ Uw verwijder methode is momenteel ingesteld op {0}.  Uw onderwerpen zullen worde
   <data name="[RESX:YesNo].Text" xml:space="preserve">
     <value>Ja/Nee</value>
   </data>
-  <data name="ControlTitle_edit.Text" xml:space="preserve" lastModified="2024-05-16 19:43:03">
+  <data name="ControlTitle_edit.Text" xml:space="preserve">
     <value>Bedieningspaneel</value>
   </data>
 </root>

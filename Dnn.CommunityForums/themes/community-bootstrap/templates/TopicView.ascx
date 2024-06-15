@@ -18,14 +18,20 @@
 			<div class="d-md-flex">
 				<div class="flex-grow-1">
 					<h1 class="dcf-title h2 mt-0 d-flex align-items-center">[AF:CONTROL:STATUSICON]<span class="dcf-topic">[SUBJECT]</span></h1>
+					<div class="dcf-topic-buttons">
+						<div class="dcf-button-reply">[ADDREPLY]</div>
+						<div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
+					</div>
 				</div>
 				<div class="">
 					<div class="dcf-topic-controls text-right text-end">
-						<span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[AF:LABEL:ReplyCount] [RESX:REPLIES]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;<span id="af-topicview-topicsubscribercount">[TOPICSUBSCRIBERCOUNT]</span> [RESX:TOPICSUBSCRIBERCOUNT]</div>
+                        <div class="dcf-forum-subscribers"><i class="fa fa-envelope fa-fw fa-grey"></i>&nbsp;[FORUMSUBSCRIBERCOUNT]&nbsp;[RESX:FORUMSUBSCRIBERCOUNT]</div>
+
 						<div class="dcf-subscribe-topic">[TOPICSUBSCRIBE]</div>
-                        <div class="dcf-split-buttons-wrap">[SPLITBUTTONS]</div>
-						<div class="dcf-button-reply">[ADDREPLY]</div>
-						
+                        <span class="dcf-sort">[TRESX:SortPosts]:[SORTDROPDOWN]</span>
+					
 					</div>
 				</div>
 			</div>
@@ -70,9 +76,6 @@
 							</header>
 							<section class="dcf-topic-content-main py-4">
 							
-								<div class="dcf-post-poll">
-									[AF:CONTROL:POLL]
-								</div>
 								<div class="dcf-post-body">
 									[BODY]
 								</div>

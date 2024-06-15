@@ -60,17 +60,17 @@
   <data name="DateFormat.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Chaîne de format utilisée pour afficher les valeurs de date.</value>
   </data>
-  <data name="DateFormat.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Date Format</value>
+  <data name="DateFormat.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Format de date</value>
   </data>
-  <data name="Default.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Faire défaut</value>
+  <data name="Default.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Défault</value>
   </data>
-  <data name="DefaultDisabled.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>--Handicapé--</value>
+  <data name="DefaultDisabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>--Désactivé--</value>
   </data>
-  <data name="DefaultPageSize.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Entrez le nombre par défaut d’éléments que vous souhaitez voir apparaître sur la page des rubriques et des réponses.</value>
+  <data name="DefaultPageSize.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Entrez le nombre par défaut d’éléments que vous souhaitez voir apparaître sur la page des sujets et des réponses.</value>
   </data>
   <data name="DefaultPageSize.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Taille de page par défaut</value>
@@ -84,8 +84,8 @@
   <data name="DeleteBehavior.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Comportement de suppression</value>
   </data>
-  <data name="Disabled.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Handicapé</value>
+  <data name="Disabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Désactivé</value>
   </data>
   <data name="DisplayName.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Nom d’affichage</value>
@@ -96,11 +96,11 @@
   <data name="EditInterval.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Permet à l’utilisateur de ne modifier son message que dans un nombre donné de minutes à compter de sa création.  L’utilisateur doit également disposer d’une autorisation de modification.  Définissez cette valeur sur 0 pour désactiver cette fonctionnalité.</value>
   </data>
-  <data name="EditInterval.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Modifier l’intervalle</value>
+  <data name="EditInterval.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Intervale de modification</value>
   </data>
-  <data name="EnablePoints.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Le système de points permet aux utilisateurs de recevoir des points pour certaines actions au sein du forum afin d’augmenter leur classement.</value>
+  <data name="EnablePoints.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Le système de points permet aux utilisateurs de recevoir des points pour certaines actions au sein du forum afin d’augmenter leur rang.</value>
   </data>
   <data name="EnablePoints.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Système de points</value>
@@ -165,8 +165,8 @@
   <data name="Height.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Hauteur</value>
   </data>
-  <data name="LastName.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Nom</value>
+  <data name="LastName.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Nom de famille</value>
   </data>
   <data name="MainFeatures.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Caractéristiques principales</value>
@@ -177,8 +177,8 @@
   <data name="MessagingCore.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Messagerie par défaut</value>
   </data>
-  <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Handicapé</value>
+  <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Désactivé</value>
   </data>
   <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Sélectionnez l’onglet contenant le module de message privé</value>
@@ -198,17 +198,17 @@
   <data name="Mode.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Utilisez toujours le mode Standard, sauf si vous utilisez le module sur une page pour les groupes sociaux.  Le mode Groupe social ne doit être utilisé que lorsque vous savez qu’un GroupId sera toujours présent dans l’URL.</value>
   </data>
-  <data name="Mode.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Forum Mode</value>
+  <data name="Mode.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Mode du forum</value>
   </data>
-  <data name="ModeratorPermissions.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Autorisations du modérateur</value>
+  <data name="ModeratorPermissions.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Permissions du modérateur</value>
   </data>
   <data name="Moderators.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Modérateurs</value>
   </data>
-  <data name="ModPointValue.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Modéré comme post</value>
+  <data name="ModPointValue.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Modérer une publication</value>
   </data>
   <data name="No.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Non</value>
@@ -252,8 +252,8 @@
   <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Éditer</value>
   </data>
-  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Serrure</value>
+  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Verrouiller</value>
   </data>
   <data name="SecGrid:modapprove.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Approuver</value>
@@ -264,11 +264,11 @@
   <data name="SecGrid:modedit.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Éditer</value>
   </data>
-  <data name="SecGrid:modlock.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Serrure</value>
+  <data name="SecGrid:modlock.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Verrouiller</value>
   </data>
-  <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Bouger</value>
+  <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Déplacer</value>
   </data>
   <data name="SecGrid:modpin.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Épingler</value>
@@ -288,14 +288,14 @@
   <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>S’inscrire</value>
   </data>
-  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Vue</value>
+  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Afficher</value>
   </data>
-  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Vue</value>
+  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Afficher</value>
   </data>
-  <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Handicapé</value>
+  <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Désactivé</value>
   </data>
   <data name="SignatureHTML.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Autoriser le texte brut et le HTML</value>
@@ -324,23 +324,23 @@
   <data name="URLPrefixBase.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Chemin de base</value>
   </data>
-  <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>C’est le texte qui sera utilisé dans le cadre de l’URL pour identifier les catégories de forum.</value>
+  <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>C’est le texte qui sera utilisé dans la partie de l’URL pour identifier les catégories de forum.</value>
   </data>
   <data name="URLPrefixCategory.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Chemin d’accès à la catégorie</value>
   </data>
-  <data name="URLPrefixOther.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Il s’agit du texte qui sera utilisé dans le cadre de l’URL dans d’autres vues du forum.  </value>
+  <data name="URLPrefixOther.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Il s’agit du texte qui sera utilisé dans la partie de l’URL dans d’autres vues du forum.  </value>
   </data>
   <data name="URLPrefixOther.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Chemin d’accès aux vues</value>
   </data>
-  <data name="URLPrefixTag.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Il s’agit du texte qui sera utilisé dans le cadre de l’URL pour identifier les balises du forum.</value>
+  <data name="URLPrefixTag.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Il s’agit du texte qui sera utilisé dans la partie de l’URL pour identifier les balises du forum.</value>
   </data>
-  <data name="URLPrefixTag.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Chemin de balise</value>
+  <data name="URLPrefixTag.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Chemin d'étiquettes</value>
   </data>
   <data name="UserDisplayMode.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Sélectionnez le format que vous souhaitez utiliser pour afficher les noms des membres dans les forums.</value>
@@ -351,8 +351,8 @@
   <data name="UserName.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Nom d’utilisateur</value>
   </data>
-  <data name="UserPermissions.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Autorisations des utilisateurs</value>
+  <data name="UserPermissions.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Permissions des utilisateurs</value>
   </data>
   <data name="UserSignatures.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Indiquez si les signatures doivent être activées ou non, ainsi que le format qui peut être utilisé.</value>
@@ -366,11 +366,11 @@
   <data name="UsersOnline.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Activer l’affichage en ligne des utilisateurs</value>
   </data>
-  <data name="UseSkinBreadCrumb.Help" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Utilisez le fil d’Ariane de la peau pour l’affichage du fil d’Ariane supérieur plutôt que le fil d’Ariane AF.  Notez que ce réglage n’affecte pas le fil d’Ariane AF inférieur.</value>
+  <data name="UseSkinBreadCrumb.Help" xml:space="preserve" lastModified="2024-06-09 22:26:03">
+    <value>Utilisez le fil d’Ariane du thème pour l’affichage du fil d’Ariane supérieur plutôt que le fil d’Ariane AF.  Notez que ce réglage n’affecte pas le fil d’Ariane AF inférieur.</value>
   </data>
-  <data name="UseSkinBreadCrumb.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Utilisez la chapelure Skin</value>
+  <data name="UseSkinBreadCrumb.Text" xml:space="preserve" lastModified="2024-06-09 22:26:30">
+    <value>Utilisez la fil d'Ariane du thème</value>
   </data>
   <data name="Width.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Largeur</value>
