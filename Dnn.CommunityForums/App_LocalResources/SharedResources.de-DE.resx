@@ -124,7 +124,7 @@
     <value>Vollständig</value>
   </data>
   <data name="[RESX:Actions:CreateThumbnail].Text" xml:space="preserve">
-    <value>Thumbnail erstellen</value>
+    <value>Miniaturbild erstellen</value>
   </data>
   <data name="[RESX:Actions:PrefUpdated].Text" xml:space="preserve">
     <value>Ihre Einstellungen wurden gespeichert.</value>
@@ -157,7 +157,7 @@
     <value>Neues Thema hinzufügen</value>
   </data>
   <data name="[RESX:Alert].Text" xml:space="preserve">
-    <value>Wachsam</value>
+    <value>Warnung</value>
   </data>
   <data name="[RESX:All].Text" xml:space="preserve">
     <value>Alle</value>
@@ -181,19 +181,19 @@
     <value>AOL</value>
   </data>
   <data name="[RESX:Approve].Text" xml:space="preserve">
-    <value>Billigen</value>
+    <value>Genehmigen</value>
   </data>
   <data name="[RESX:Approved:Note].Text" xml:space="preserve">
     <value>Aktivieren Sie das Kontrollkästchen, um diesen Beitrag zu genehmigen.</value>
   </data>
   <data name="[RESX:Approved].Text" xml:space="preserve">
-    <value>Gebilligt</value>
+    <value>Genehmigt</value>
   </data>
   <data name="[RESX:AT].Text" xml:space="preserve">
     <value>bei</value>
   </data>
   <data name="[RESX:Attach].Text" xml:space="preserve">
-    <value>Befestigen</value>
+    <value>Anhängen</value>
   </data>
   <data name="[RESX:AttachFiles].Text" xml:space="preserve">
     <value>Aktuelle Anhänge</value>
@@ -208,13 +208,13 @@
     <value>Ein Serverfehler ist aufgetreten.</value>
   </data>
   <data name="[RESX:Attachments].Text" xml:space="preserve">
-    <value>Anhängsel</value>
+    <value>Anhänge</value>
   </data>
   <data name="[RESX:Attacments:Note].Text" xml:space="preserve">
     <value>Erklärung für Anhänge</value>
   </data>
   <data name="[RESX:Author].Text" xml:space="preserve">
-    <value>Verfasser</value>
+    <value>Autor</value>
   </data>
   <data name="[RESX:Avatar:Link].Text" xml:space="preserve">
     <value>Link zum Avatar</value>
@@ -226,19 +226,19 @@
     <value>Avatar</value>
   </data>
   <data name="[RESX:Ban].Text" xml:space="preserve">
-    <value>Verbot</value>
+    <value>Sperre</value>
   </data>
   <data name="[RESX:BanAlertBody].Text" xml:space="preserve">
-    <value>&lt;div&gt;[Betreff] &lt;br /&gt;&lt;br /&gt;[Beitrag] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;&lt;div&gt;Veröffentlicht entfernt:&lt;br /&gt;&lt;br /&gt;[Beiträgeentfernt] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+    <value>&lt;div&gt;[Subject]&lt;/div&gt;&lt;div&gt;Entfernte Beiträge:&lt;br /&gt;&lt;br /&gt;[PostsRemoved] &lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
   </data>
   <data name="[RESX:BanAlertSubject].Text" xml:space="preserve">
-    <value>Benutzer [Benutzername] wurde von [BannedBy] gesperrt</value>
+    <value>Benutzer [Username] wurde von [BannedBy] gesperrt.</value>
   </data>
   <data name="[RESX:BanUser].Text" xml:space="preserve">
-    <value>Benutzer sperren (Inhalt entfernen und Benutzer nicht autorisieren)</value>
+    <value>Benutzer sperren (Inhalt entfernen und Autorisierung des Benutzers widerrufen)</value>
   </data>
   <data name="[RESX:Body].Text" xml:space="preserve">
-    <value>Körper</value>
+    <value>Textkörper</value>
   </data>
   <data name="[RESX:Bold].Text" xml:space="preserve">
     <value> B </value>
@@ -250,19 +250,19 @@
     <value> &gt; </value>
   </data>
   <data name="[RESX:BrowseFromSite].Text" xml:space="preserve">
-    <value>Von der Website aus durchsuchen</value>
+    <value>Portalsuche verwenden</value>
   </data>
   <data name="[RESX:Button:Cancel].Text" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
   <data name="[RESX:Button:Edit].Text" xml:space="preserve">
-    <value>Redigieren</value>
+    <value>Bearbeiten</value>
   </data>
   <data name="[RESX:Button:Save].Text" xml:space="preserve">
-    <value>Retten</value>
+    <value>Aktualisieren</value>
   </data>
   <data name="[RESX:BY].Text" xml:space="preserve">
-    <value> bis </value>
+    <value> von </value>
   </data>
   <data name="[RESX:Cancel].Text" xml:space="preserve">
     <value>Abbrechen</value>
@@ -271,7 +271,7 @@
     <value>Kategorien</value>
   </data>
   <data name="[RESX:Cell].Text" xml:space="preserve">
-    <value>Zelle</value>
+    <value>Mobiltelefon</value>
   </data>
   <data name="[RESX:City].Text" xml:space="preserve">
     <value>Stadt</value>
@@ -304,7 +304,7 @@
     <value>Sind Sie sicher, dass Sie dieses Thema sperren möchten?</value>
   </data>
   <data name="[RESX:Confirm:Pin].Text" xml:space="preserve">
-    <value>Sind Sie sicher, dass Sie dieses Thema anheften möchten?</value>
+    <value>Sind Sie sicher, dass Sie dieses Thema anpinnen möchten?</value>
   </data>
   <data name="[RESX:Confirm:Reject].Text" xml:space="preserve">
     <value>Sind Sie sicher, dass Sie diese Nachricht ablehnen möchten?</value>
@@ -322,13 +322,13 @@
     <value>Kontakt</value>
   </data>
   <data name="[RESX:ControlPanel].Text" xml:space="preserve">
-    <value>Schalttafel</value>
+    <value>Systemsteuerung</value>
   </data>
   <data name="[RESX:Country].Text" xml:space="preserve">
     <value>Land</value>
   </data>
   <data name="[RESX:Create].Text" xml:space="preserve">
-    <value>Schaffen</value>
+    <value>Erstellen</value>
   </data>
   <data name="[RESX:CreateNewTopic].Text" xml:space="preserve">
     <value>Neues Thema erstellen</value>
@@ -364,7 +364,7 @@
     <value>Anzeigename</value>
   </data>
   <data name="[RESX:Edit].Text" xml:space="preserve">
-    <value>Redigieren</value>
+    <value>Bearbeiten</value>
   </data>
   <data name="[RESX:EditingExistingReply].Text" xml:space="preserve">
     <value>Vorhandene Antwort bearbeiten</value>
@@ -376,7 +376,7 @@
     <value>Klicken Sie hier, um dieses Thema zu bearbeiten</value>
   </data>
   <data name="[RESX:EffectiveDate].Text" xml:space="preserve">
-    <value>Datum des Inkrafttretens</value>
+    <value>Start-Datum</value>
   </data>
   <data name="[RESX:Email].Text" xml:space="preserve">
     <value>E-Mail</value>
@@ -385,29 +385,29 @@
     <value>Nachricht</value>
   </data>
   <data name="[RESX:EmailMessageDefault].Text" xml:space="preserve">
-    <value>Ich dachte, Sie könnten daran interessiert sein, diese Webseite zu lesen:
-[THEMENLINK]
+    <value>Ich dachte, Sie könnten daran interessiert sein, diesen Beitrag zu lesen:
+[TOPICLINK]
 
 Von
-[ANZEIGENAME]</value>
+[DISPLAYNAME]</value>
   </data>
   <data name="[RESX:EmailSubject].Text" xml:space="preserve">
     <value>E-Mail-Betreff</value>
   </data>
   <data name="[RESX:EmailSubjectDefault].Text" xml:space="preserve">
-    <value>[BETREFF]</value>
+    <value>[SUBJECT]</value>
   </data>
   <data name="[RESX:EmailThis].Text" xml:space="preserve">
     <value>E-Mail an einen Freund</value>
   </data>
   <data name="[RESX:Error:BlockedFile].Text" xml:space="preserve">
-    <value>Dateityp ist nicht zulässig.</value>
+    <value>Der Dateityp ist nicht zulässig.</value>
   </data>
   <data name="[RESX:Error:FileTooLarge].Text" xml:space="preserve">
     <value>Die maximal zulässige Dateigröße beträgt {0} KB.</value>
   </data>
   <data name="[RESX:Error:FloodControl].Text" xml:space="preserve">
-    <value>Sie müssen mindestens {0} Sekunden zwischen den Beiträgen warten</value>
+    <value>Sie müssen mindestens {0} Sekunden zwischen dem Verfassen von 2 Beiträgen warten.</value>
   </data>
   <data name="[RESX:ERROR:Search].Text" xml:space="preserve">
     <value>Beim Suchvorgang ist ein Fehler aufgetreten.  Bitte wenden Sie sich an den Site-Administrator.</value>
@@ -464,7 +464,7 @@ Von
     <value>E-Mail-Benachrichtigungen sind deaktiviert.</value>
   </data>
   <data name="[RESX:FORUMSUBSCRIBERCOUNT].Text" xml:space="preserve">
-    <value>Dieses Forum abonniert</value>
+    <value>Abonennten dieses Forums</value>
   </data>
   <data name="[RESX:Group].Text" xml:space="preserve">
     <value>Gruppe</value>
@@ -497,13 +497,13 @@ Von
     <value>Interessen</value>
   </data>
   <data name="[RESX:Italics].Text" xml:space="preserve">
-    <value> Ich </value>
+    <value>I</value>
   </data>
   <data name="[RESX:ItalicsDesc].Text" xml:space="preserve">
-    <value>Text kursiv machen</value>
+    <value>Text kursiv formatieren</value>
   </data>
   <data name="[RESX:Joined].Text" xml:space="preserve">
-    <value>Angegliedert</value>
+    <value>Verbunden</value>
   </data>
   <data name="[RESX:JumpToLastRead].Text" xml:space="preserve">
     <value>Zum ersten neuen Beitrag springen</value>
@@ -521,7 +521,7 @@ Von
     <value>Forum-Tracking</value>
   </data>
   <data name="[RESX:Label:HelpDesk].Text" xml:space="preserve">
-    <value>Helpdesk</value>
+    <value>Servicedesk</value>
   </data>
   <data name="[RESX:Label:MyOrders].Text" xml:space="preserve">
     <value>Meine Bestellungen</value>
@@ -566,13 +566,13 @@ Von
     <value>Ort</value>
   </data>
   <data name="[RESX:Lock].Text" xml:space="preserve">
-    <value>Schleuse</value>
+    <value>Sperre</value>
   </data>
   <data name="[RESX:Locked:Note].Text" xml:space="preserve">
     <value>Aktivieren Sie das Kontrollkästchen, um dieses Thema zu sperren.  </value>
   </data>
   <data name="[RESX:Locked].Text" xml:space="preserve">
-    <value>Verschlossen</value>
+    <value>Gesperrt</value>
   </data>
   <data name="[RESX:LockedOut].Text" xml:space="preserve">
     <value>Ausgesperrt</value>
@@ -590,7 +590,7 @@ Von
     <value>Name des Mitglieds</value>
   </data>
   <data name="[RESX:Members].Text" xml:space="preserve">
-    <value>Angehörige</value>
+    <value>Mitglieder</value>
   </data>
   <data name="[RESX:MemberSince].Text" xml:space="preserve">
     <value>Mitglied seit</value>
@@ -605,7 +605,7 @@ Von
     <value>Meldungen</value>
   </data>
   <data name="[RESX:Moderate].Text" xml:space="preserve">
-    <value>Mäßig</value>
+    <value>Moderieren</value>
   </data>
   <data name="[RESX:Moderator-Editor].Text" xml:space="preserve">
     <value>Bearbeiten des Inhalts eines anderen Community-Mitglieds</value>
@@ -620,7 +620,7 @@ Von
     <value>Meiste Antworten</value>
   </data>
   <data name="[RESX:Move].Text" xml:space="preserve">
-    <value>Bewegen</value>
+    <value>Verschieben</value>
   </data>
   <data name="[RESX:MoveApprove].Text" xml:space="preserve">
     <value>Verschieben &amp; Genehmigen</value>
@@ -686,7 +686,7 @@ Von
     <value>Sie sind nicht berechtigt, eine Antwort zu veröffentlichen.</value>
   </data>
   <data name="[RESX:NotAuthorizedReplyPleaseLogin].Text" xml:space="preserve">
-    <value>Bitte &lt;a href="{0}"{1}&gt;log, um&lt;/a&gt; eine Antwort zu schreiben.</value>
+    <value>Bitte &lt;a href="{0}"{1}&gt;melden Sie sich an&lt;/a&gt;, um eine Antwort zu schreiben zu können.</value>
   </data>
   <data name="[RESX:NotAuthorizedTopic].Text" xml:space="preserve">
     <value>&lt;span class="afnotauthorized"&gt;Sie sind nicht berechtigt, ein neues Thema zu erstellen&lt;/span&gt;</value>
@@ -719,7 +719,7 @@ Von
     <value>von</value>
   </data>
   <data name="[RESX:Pending].Text" xml:space="preserve">
-    <value>Anhängig</value>
+    <value>Ausstehend</value>
   </data>
   <data name="[RESX:PendingPosts].Text" xml:space="preserve">
     <value>Ausstehende Inhalte</value>
@@ -731,13 +731,13 @@ Von
     <value>Stecknadel</value>
   </data>
   <data name="[RESX:Pinned:Note].Text" xml:space="preserve">
-    <value>Aktivieren Sie das Kontrollkästchen, um dieses Thema anzuheften.  Angeheftete Themen werden vor allen anderen angezeigt.</value>
+    <value>Aktivieren Sie das Kontrollkästchen, um dieses Thema anzupinnen.  Angepinnte Themen werden vor allen anderen angezeigt.</value>
   </data>
   <data name="[RESX:Pinned].Text" xml:space="preserve">
-    <value>Angeheftet</value>
+    <value>Angepinnt</value>
   </data>
   <data name="[RESX:PinTopic].Text" xml:space="preserve">
-    <value>Klicken Sie hier, um dieses Thema anzuheften</value>
+    <value>Klicken Sie hier, um dieses Thema anzupinnen</value>
   </data>
   <data name="[RESX:Poll:MultipleSelect].Text" xml:space="preserve">
     <value>Mehrfachauswahl</value>
@@ -764,13 +764,13 @@ Von
     <value>Beliebte Tags</value>
   </data>
   <data name="[RESX:posted].Text" xml:space="preserve">
-    <value>verschickt</value>
+    <value>Geposted</value>
   </data>
   <data name="[RESX:PostedBy].Text" xml:space="preserve">
     <value>Gepostet von</value>
   </data>
   <data name="[RESX:postedto].Text" xml:space="preserve">
-    <value>gepostet an</value>
+    <value>Gepostet an</value>
   </data>
   <data name="[RESX:PostIconNone].Text" xml:space="preserve">
     <value>Nichts</value>
@@ -815,7 +815,7 @@ Von
     <value>Sortierreihenfolge</value>
   </data>
   <data name="[RESX:PrefJumpToLastPost].Help" xml:space="preserve">
-    <value>Sie werden immer zur letzten Antwort weitergeleitet, die Sie für das Thema gelesen haben, das Sie anzeigen möchten.</value>
+    <value>Immer zur letzten von Ihnen gelesenen Antwort des Themas springen.</value>
   </data>
   <data name="[RESX:PrefJumpToLastPost].Text" xml:space="preserve">
     <value>Zum ersten ungelesenen Beitrag springen</value>
@@ -905,7 +905,7 @@ Von
     <value>Grund</value>
   </data>
   <data name="[RESX:ReasonOptions].Text" xml:space="preserve">
-    <value>Off-Topic; Spam; Profanität; Bedrohungen; Belästigung; Schleppangeln</value>
+    <value>Passt nicht zum Thema; Spam; Diskriminierung/Profanität; Bedrohungen; Belästigung; Trollen</value>
   </data>
   <data name="[RESX:RecentDiscussions].Text" xml:space="preserve">
     <value>Kürzliche Diskussionen</value>
@@ -926,16 +926,16 @@ Von
     <value>antwortete auf</value>
   </data>
   <data name="[RESX:REPLIES].Text" xml:space="preserve">
-    <value>Beantwortungen</value>
+    <value>Antworten</value>
   </data>
   <data name="[RESX:REPLIESHEADER].Text" xml:space="preserve">
-    <value>Beantwortungen</value>
+    <value>Antworten</value>
   </data>
   <data name="[RESX:Reply].Text" xml:space="preserve">
     <value>Antwort</value>
   </data>
   <data name="[RESX:ReplyToMessage].Text" xml:space="preserve">
-    <value>Auf Thema antworten</value>
+    <value>Auf Nachricht antworten</value>
   </data>
   <data name="[RESX:ReplyToTopic].Text" xml:space="preserve">
     <value>Auf Thema antworten</value>
@@ -947,7 +947,7 @@ Von
     <value>Zurücksetzen</value>
   </data>
   <data name="[RESX:Resolved].Text" xml:space="preserve">
-    <value>Entschlossen</value>
+    <value>Gelöst</value>
   </data>
   <data name="[RESX:RewardPoints].Text" xml:space="preserve">
     <value>Prämienpunkte</value>
@@ -962,7 +962,7 @@ Von
     <value>RSS-Feed ist nicht verfügbar.</value>
   </data>
   <data name="[RESX:Save].Text" xml:space="preserve">
-    <value>Retten</value>
+    <value>Aktualisieren</value>
   </data>
   <data name="[RESX:Search].Text" xml:space="preserve">
     <value>Suchen</value>
@@ -983,13 +983,13 @@ Von
     <value>Beiträge</value>
   </data>
   <data name="[RESX:SearchByTag].Text" xml:space="preserve">
-    <value>Schilder:</value>
+    <value>Tags:</value>
   </data>
   <data name="[RESX:SearchByTopics].Text" xml:space="preserve">
     <value>Themen</value>
   </data>
   <data name="[RESX:SearchByUser].Text" xml:space="preserve">
-    <value>Nutzername:</value>
+    <value>Benutzername:</value>
   </data>
   <data name="[RESX:SearchDuration].Text" xml:space="preserve">
     <value>Die Suche dauerte {0:0.00} Sekunden</value>
@@ -1067,19 +1067,19 @@ Von
     <value>Abbrechen</value>
   </data>
   <data name="[RESX:SplitCancelConfirm].Text" xml:space="preserve">
-    <value>Split abbrechen?</value>
+    <value>Trennung abbrechen?</value>
   </data>
   <data name="[RESX:SplitCreate].Text" xml:space="preserve">
     <value>Trennen</value>
   </data>
   <data name="[RESX:SplitHeader].Text" xml:space="preserve">
-    <value>Split-Modus:</value>
+    <value>Trennungs-Modus:</value>
   </data>
   <data name="[RESX:SplitSave].Text" xml:space="preserve">
-    <value>Retten</value>
+    <value>Aktualisieren</value>
   </data>
   <data name="[RESX:SplitSaveConfirm].Text" xml:space="preserve">
-    <value>Split speichern?</value>
+    <value>Trennung speichern?</value>
   </data>
   <data name="[RESX:Status:Answer].Text" xml:space="preserve">
     <value>Akzeptierte Antwort</value>
@@ -1148,7 +1148,7 @@ Von
     <value>Ein Tag ist ein Schlüsselwort oder ein Begriff, der mit dem von Ihnen eingereichten Inhalt verknüpft ist.</value>
   </data>
   <data name="[RESX:Tags].Text" xml:space="preserve">
-    <value>Schilder</value>
+    <value>Tags</value>
   </data>
   <data name="[RESX:ThreadsTracked].Text" xml:space="preserve">
     <value>Themen, die Sie abonniert haben:</value>
@@ -1193,7 +1193,7 @@ Von
     <value>Heute</value>
   </data>
   <data name="[RESX:TimeSpan:YearAgo].Text" xml:space="preserve">
-    <value>vor ein Jahr</value>
+    <value>vor einem Jahr</value>
   </data>
   <data name="[RESX:TimeSpan:YearsAgo].Text" xml:space="preserve">
     <value>vor etwa {0} Jahren</value>
@@ -1232,7 +1232,7 @@ Von
     <value>Themen-Options-Editor</value>
   </data>
   <data name="[RESX:TopicReview].Text" xml:space="preserve">
-    <value>Themen-Review</value>
+    <value>Themen-Überprüfung</value>
   </data>
   <data name="[RESX:TOPICS].Text" xml:space="preserve">
     <value>Themen</value>
@@ -1250,10 +1250,10 @@ Von
     <value>Status des Themas</value>
   </data>
   <data name="[RESX:TOPICSUBSCRIBERCOUNT].Text" xml:space="preserve">
-    <value>Dieses Thema abonniert</value>
+    <value>Abonennten dieses Themas</value>
   </data>
   <data name="[RESX:Trusted].Text" xml:space="preserve">
-    <value>Getraut</value>
+    <value>Vertrauenswürdig</value>
   </data>
   <data name="[RESX:TrustedUser].Text" xml:space="preserve">
     <value>Vertrauensstufe</value>
@@ -1265,16 +1265,16 @@ Von
     <value> U </value>
   </data>
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
-    <value>Text unterstreichen</value>
+    <value>Text unterstrichen formatieren</value>
   </data>
   <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Klicken Sie hier, um dieses Thema freizuschalten</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
-    <value>Anheften</value>
+    <value>Anpinnen</value>
   </data>
   <data name="[RESX:UnPinTopic].Text" xml:space="preserve">
-    <value>Klicken Sie hier, um die Anheftung dieses Themas aufzuheben</value>
+    <value>Klicken Sie hier, um die Anpinnung dieses Themas aufzuheben</value>
   </data>
   <data name="[RESX:Unresolved].Text" xml:space="preserve">
     <value>Ungelöst</value>
@@ -1283,7 +1283,7 @@ Von
     <value>Hochladen</value>
   </data>
   <data name="[RESX:UploadButton].Text" xml:space="preserve">
-    <value>Wählen Sie Datei</value>
+    <value>Wählen Sie eine Datei</value>
   </data>
   <data name="[RESX:Uploading].Text" xml:space="preserve">
     <value>Hochladen</value>
@@ -1292,7 +1292,7 @@ Von
     <value>Benutzerkonto</value>
   </data>
   <data name="[RESX:UserBanned].Text" xml:space="preserve">
-    <value>Benutzer:{0} wurde gesperrt und alle Beiträge gelöscht.</value>
+    <value>Benutzer {0} wurde gesperrt und alle zugehörigen Beiträge gelöscht.</value>
   </data>
   <data name="[RESX:UserCaption].Text" xml:space="preserve">
     <value>Bildunterschrift des Benutzers</value>
@@ -1424,28 +1424,28 @@ Von
     <value>Neu hinzufügen</value>
   </data>
   <data name="AlertBody.Text" xml:space="preserve">
-    <value>&lt;div&gt;&lt;b&gt;Grund:&lt;/b&gt; [Grund]&lt;br /&gt;&lt;b&gt;Kommentare:&lt;/b&gt; [Kommentar]&lt;hr noshade /&gt;[Beitrag] &lt;br /&gt;&lt;br /&gt;&lt;a href="[URL]" target="_blank"&gt;[URL]&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
+    <value>&lt;div&gt;&lt;b&gt;Grund:&lt;/b&gt; [Reason]&lt;br /&gt;&lt;b&gt;Kommentare:&lt;/b&gt; [Comment]&lt;hr noshade /&gt;[Post] &lt;br /&gt;&lt;br /&gt;&lt;a href="[URL]" target="_blank"&gt;[URL]&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;&lt;/div&gt;</value>
   </data>
   <data name="AlertSubject.Text" xml:space="preserve">
     <value>Ein Beitrag von [DisplayName] wurde von [FlaggedBy] zur Überprüfung markiert</value>
   </data>
   <data name="Approve.Text" xml:space="preserve">
-    <value>Billigen</value>
+    <value>Genehmigen</value>
   </data>
   <data name="AuditAction.Approve.Text" xml:space="preserve">
-    <value>BILLIGEN</value>
+    <value>GENEHMIGEN</value>
   </data>
   <data name="AuditAction.Delete.Text" xml:space="preserve">
     <value>LÖSCHEN</value>
   </data>
   <data name="AuditAction.Edit.Text" xml:space="preserve">
-    <value>REDIGIEREN</value>
+    <value>BEARBEITEN</value>
   </data>
   <data name="AuditAction.Lock.Text" xml:space="preserve">
-    <value>SCHLEUSE</value>
+    <value>SPERRE</value>
   </data>
   <data name="AuditAction.Move.Text" xml:space="preserve">
-    <value>BEWEGEN</value>
+    <value>VERSCHIEBEN</value>
   </data>
   <data name="AuditAction.Reject.Text" xml:space="preserve">
     <value>ABLEHNEN</value>
@@ -1458,6 +1458,7 @@ Von
   </data>
   <data name="By.Text" xml:space="preserve">
     <value>bis</value>
+    <comment>!!!!!!!</comment>
   </data>
   <data name="Cancel.Text" xml:space="preserve">
     <value>Abbrechen</value>
@@ -1472,13 +1473,13 @@ Von
     <value>Sind Sie sicher, dass Sie diesen Artikel löschen möchten?</value>
   </data>
   <data name="Disabled.Text" xml:space="preserve">
-    <value>Arbeitsunfähig</value>
+    <value>Deaktiviert</value>
   </data>
   <data name="DisplaynameDrop.Text" xml:space="preserve">
     <value>Anzeigename</value>
   </data>
   <data name="DropDownSelect.Text" xml:space="preserve">
-    <value>&lt; WÄHLEN SIE GRUPPEN- ODER FORUM-&gt;</value>
+    <value>&lt;GRUPPE ODER FORUM WÄHLEN&gt;</value>
   </data>
   <data name="drpSearchType.AllKeywords.Text" xml:space="preserve">
     <value>ALLE Schlüsselwörter</value>
@@ -1508,7 +1509,7 @@ Von
     <value>Name des Forums</value>
   </data>
   <data name="ForumsTracked.Text" xml:space="preserve">
-    <value>Foren, die Sie verfolgen:</value>
+    <value>Foren, die Sie beobachten:</value>
   </data>
   <data name="ForumSubscribe.Text" xml:space="preserve">
     <value>Senden Sie mir eine E-Mail, wenn jemand in diesem Forum postet.</value>
@@ -1523,10 +1524,10 @@ Von
     <value>in</value>
   </data>
   <data name="Instant.Text" xml:space="preserve">
-    <value>Augenblick</value>
+    <value>Sofort</value>
   </data>
   <data name="Lock.Text" xml:space="preserve">
-    <value>Schleuse</value>
+    <value>Sperre</value>
   </data>
   <data name="MarkAllReadConfirm.Text" xml:space="preserve">
     <value>Alle Artikel als gelesen markieren?</value>
@@ -1541,10 +1542,11 @@ Von
     <value>Keine Ergebnisse gefunden</value>
   </data>
   <data name="NotificationBodyReply.Text" xml:space="preserve">
-    <value>[Beitrag]</value>
+    <value>&lt;p&gt;[DisplayName] hat einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Betreff:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;</value>
   </data>
   <data name="NotificationBodyTopic.Text" xml:space="preserve">
-    <value>[Beitrag]</value>
+    <value>&lt;p&gt;[DisplayName] at einen Beitrag verfasst, der eine Moderation erfordert.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Subject:&lt;/strong&gt; [TopicSubject]&lt;/p&gt;&lt;p&gt;Bitte überprüfen Sie den Inhalt und genehmigen Sie diesen oder lehnen Sie ihn ab.&lt;/p&gt;
+&lt;p&gt;Sie können:&lt;ol&gt;&lt;li&gt;das Thema genehmigen,&lt;/li&gt;&lt;li&gt;das Thema ablehnen (mit der Mitteilung an den Verfasser, den Beitrag zu überarbeiten),&lt;/li&gt;&lt;li&gt;das Thema löschen, oder&lt;/li&gt;&lt;li&gt;den Benutzer verbannen (Autorisierung entziehen und Beiträge des Benutzers löschen)&lt;/li&gt;&lt;/ol&gt;&lt;/p&gt;&lt;p&gt;Wenn Sie allein aufgrund des Themas nicht beurteilen können, ob dieser Inhalt erlaubt ist, verwenden Sie &lt;a href="[MODLINK]"&gt;diesen Link&lt;/a&gt; um das Thema zu prüfen und zu moderieren.&lt;/p&gt;</value>
   </data>
   <data name="NotificationSubjectReply.Text" xml:space="preserve">
     <value>[DisplayName] hat eine Antwort auf [TopicSubject] gepostet.</value>
@@ -1571,7 +1573,7 @@ Von
     <value>Ablehnen</value>
   </data>
   <data name="ReplyHeader.Text" xml:space="preserve">
-    <value>Beantwortungen</value>
+    <value>Antworten</value>
   </data>
   <data name="Search.Text" xml:space="preserve">
     <value>Suchen:</value>
@@ -1616,7 +1618,7 @@ Von
     <value>Letzte {0} Stunden</value>
   </data>
   <data name="SearchReplies.Text" xml:space="preserve">
-    <value>Beantwortungen:</value>
+    <value>Antworten:</value>
   </data>
   <data name="SearchTopic.Text" xml:space="preserve">
     <value>Thema:</value>
@@ -1631,7 +1633,7 @@ Von
     <value>Ansichten:</value>
   </data>
   <data name="SendEmail.Body.Text" xml:space="preserve">
-    <value>Körper:</value>
+    <value>Textkörper:</value>
   </data>
   <data name="SendEmail.Cancel.Text" xml:space="preserve">
     <value>Abbrechen</value>
@@ -1691,13 +1693,13 @@ Von
     <value>Straße:</value>
   </data>
   <data name="Subscribe.Text" xml:space="preserve">
-    <value>Ich möchte per E-Mail benachrichtigt werden, wenn jemand auf diesen Thread antwortet.</value>
+    <value>Ich möchte per E-Mail benachrichtigt werden, wenn jemand auf dieses Thema antwortet.</value>
   </data>
   <data name="Subscriptions.Text" xml:space="preserve">
     <value>Abonnements</value>
   </data>
   <data name="ThreadsTracked.Text" xml:space="preserve">
-    <value>Threads, die Sie verfolgen:</value>
+    <value>Themen, die Sie verfolgen:</value>
   </data>
   <data name="Title.Text" xml:space="preserve">
     <value>Aktion abgeschlossen</value>
