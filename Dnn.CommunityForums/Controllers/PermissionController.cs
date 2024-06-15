@@ -153,6 +153,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (obj == null)
             {
                 roles = DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId);
+                // add psuedo-roles for anon/unauth and all users
+                roles.Add(DotNetNuke.Security.Roles.RoleController.Instance.GetRoleByName(portalId: PortalId, roleName: DotNetNuke.Common.Globals.glbRoleAllUsersName));
+                roles.Add(DotNetNuke.Security.Roles.RoleController.Instance.GetRoleByName(portalId: PortalId, roleName: DotNetNuke.Common.Globals.glbRoleUnauthUserName));
                 DataCache.SettingsCacheStore(ModuleId: -1, cacheKey: string.Format(CacheKeys.Roles, PortalId), cacheObj: roles);
             }
             else
@@ -223,6 +226,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         }
                     }
                 }
+                // add psuedo-roles for anon/unauth and all users
+                RoleIds = string.Concat(RoleIds, DotNetNuke.Common.Globals.glbRoleAllUsers, ";", DotNetNuke.Common.Globals.glbRoleUnauthUser, ";");
                 DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, PortalId), RoleIds);
             }
             return RoleIds;

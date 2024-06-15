@@ -93,7 +93,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 roles.Add(r.RoleName);
             }
             string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
-            roleIds = string.Concat(roleIds, DotNetNuke.Common.Globals.glbRoleAllUsers, ";", DotNetNuke.Common.Globals.glbRoleUnauthUser);
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
             List<SearchDocument> searchDocuments = new List<SearchDocument>();
