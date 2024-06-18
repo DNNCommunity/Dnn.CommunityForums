@@ -76,9 +76,6 @@
 							</header>
 							<section class="dcf-topic-content-main py-4">
 							
-								<div class="dcf-post-poll">
-									[AF:CONTROL:POLL]
-								</div>
 								<div class="dcf-post-body">
 									[BODY]
 								</div>
