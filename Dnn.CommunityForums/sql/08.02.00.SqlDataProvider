@@ -1,0 +1,43 @@
+/* issue 898 begin - remove duplicated foreign keys and rename some foreign keys with embedded _activeforums_ */
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Replies_activeforums_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies] DROP CONSTRAINT [FK_{objectQualifier}activeforums_Replies_activeforums_Content]
+GO
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Topics_activeforums_Content]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Topics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Topics] DROP CONSTRAINT [FK_{objectQualifier}activeforums_Topics_activeforums_Content]
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Replies_activeforums_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies] DROP CONSTRAINT [FK_{objectQualifier}activeforums_Replies_activeforums_Topics]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_Replies_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Replies]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies] DROP CONSTRAINT [FK_{objectQualifier}activeforums_Replies_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies] WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}activeforums_Replies_Topics] FOREIGN KEY([TopicId])
+REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] ([TopicId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Replies] CHECK CONSTRAINT [FK_{objectQualifier}activeforums_Replies_Topics]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_ForumTopics_activeforums_Replies]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP CONSTRAINT [FK_{objectQualifier}activeforums_ForumTopics_activeforums_Replies]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}activeforums_ForumTopics_Replies] FOREIGN KEY([LastReplyId])
+REFERENCES {databaseOwner}[{objectQualifier}activeforums_Replies] ([ReplyId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] CHECK CONSTRAINT [FK_{objectQualifier}activeforums_ForumTopics_Replies]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'{databaseOwner}[FK_{objectQualifier}activeforums_ForumTopics_activeforums_Topics]') AND parent_object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_ForumTopics]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] DROP CONSTRAINT [FK_{objectQualifier}activeforums_ForumTopics_activeforums_Topics]
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] WITH CHECK ADD CONSTRAINT [FK_{objectQualifier}activeforums_ForumTopics_Topics] FOREIGN KEY([TopicId])
+REFERENCES {databaseOwner}[{objectQualifier}activeforums_Topics] ([TopicId])
+GO
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_ForumTopics] CHECK CONSTRAINT [FK_{objectQualifier}activeforums_ForumTopics_Topics]
+GO
+
+/* issue 898 end - remove duplicated foreign keys and rename some foreign keys with embedded _activeforums_ */
+
+
+/* ----------------- */
