@@ -11,7 +11,7 @@ amaf.resx = {
     UnPinTopic: '[RESX:UnPinTopic]',
     DeleteConfirm: '[RESX:Confirm:Delete]',
     PinConfirm: '[RESX:Confirm:Pin]',
-    UnPinConfim: '[RESX:Confirm:UnPin]',
+    UnPinConfirm: '[RESX:Confirm:UnPin]',
     LockConfirm: '[RESX:Confirm:Lock]',
     UnLockConfirm: '[RESX:Confirm:UnLock]'
 };
