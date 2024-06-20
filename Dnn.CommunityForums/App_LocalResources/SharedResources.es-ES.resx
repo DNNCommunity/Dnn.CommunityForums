@@ -1659,7 +1659,7 @@ De
   <data name="Started.Text" xml:space="preserve">
     <value>Comenzó</value>
   </data>
-  <data name="StartedHeader.Text" xml:space="preserve">
+  <data name="[RESX:StartedHeader].Text" xml:space="preserve">
     <value>Iniciado por</value>
   </data>
   <data name="Stats.LastCreated.Text" xml:space="preserve">

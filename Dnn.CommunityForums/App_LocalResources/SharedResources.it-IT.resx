@@ -1654,7 +1654,7 @@ Da
   <data name="Started.Text" xml:space="preserve">
     <value>Avviato</value>
   </data>
-  <data name="StartedHeader.Text" xml:space="preserve">
+  <data name="[RESX:StartedHeader].Text" xml:space="preserve">
     <value>Iniziato da</value>
   </data>
   <data name="Stats.LastCreated.Text" xml:space="preserve">

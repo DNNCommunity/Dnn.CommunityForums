@@ -150,7 +150,7 @@
   <data name="[RESX:Views].Text" xml:space="preserve">
     <value>Views</value>
   </data>
-  <data name="StartedHeader.Text" xml:space="preserve">
+  <data name="[RESX:StartedHeader].Text" xml:space="preserve">
     <value>Started By</value>
   </data>
   <data name="[RESX:SubPages].Text" xml:space="preserve">

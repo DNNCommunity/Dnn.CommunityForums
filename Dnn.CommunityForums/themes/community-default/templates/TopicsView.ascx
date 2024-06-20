@@ -50,7 +50,7 @@
 							<td class="dcf-col dcf-col-subject" title="[BODYTITLE]">
 								<div class="dcf-subject">
 										<h4 class="dcf-title dcf-title-4">[SUBJECTLINK][AF:ICONLINK:LASTREAD]</h4>
-										<div class="dcf-topic-started">Started by <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
+										<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
 
 									<div class="dcf-forum-description">[BODYTITLE]</div>
 
@@ -125,7 +125,7 @@
 
 							<h4 class="dcf-title dcf-title-4">[SUBJECTLINK][AF:ICONLINK:LASTREAD][ICONPIN][ICONLOCK]</h4>
 
-							<div class="dcf-topic-started">Started by <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
+							<div class="dcf-topic-started">[RESX:StartedHeader] <i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</div>
 
 							<div class="dcf-topic-description">[BODYTITLE]</div>
 
