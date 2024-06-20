@@ -1696,7 +1696,7 @@ Van,
   <data name="Started.Text" xml:space="preserve">
     <value>Begonnen</value>
   </data>
-  <data name="StartedHeader.Text" xml:space="preserve">
+  <data name="[RESX:StartedHeader].Text" xml:space="preserve">
     <value>Gestart op</value>
   </data>
   <data name="Stats.LastCreated.Text" xml:space="preserve">
