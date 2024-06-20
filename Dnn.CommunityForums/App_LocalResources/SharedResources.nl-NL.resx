@@ -1697,7 +1697,7 @@ Van,
     <value>Begonnen</value>
   </data>
   <data name="[RESX:StartedHeader].Text" xml:space="preserve">
-    <value>Gestart op</value>
+    <value>Gestart door</value>
   </data>
   <data name="Stats.LastCreated.Text" xml:space="preserve">
     <value>Statistieken gemaakt op</value>
