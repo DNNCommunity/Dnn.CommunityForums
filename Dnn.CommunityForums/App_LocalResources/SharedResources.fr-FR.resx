@@ -1162,7 +1162,10 @@ De,
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve" lastModified="2024-06-10 13:28:03">
     <value>Texte souligné</value>
   </data>
-  <data name="[RESX:UnLockTopic].Text" xml:space="preserve" lastModified="2024-06-10 13:28:03">
+	<data name="[RESX:UnLock].Text" xml:space="preserve" lastModified="2024-06-10 13:28:03">
+    <value>Déverrouille</value>
+  </data>
+	<data name="[RESX:UnLockTopic].Text" xml:space="preserve" lastModified="2024-06-10 13:28:03">
     <value>Clickez pour déverrouiller ce sujet</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve" lastModified="2024-06-10 13:28:03">

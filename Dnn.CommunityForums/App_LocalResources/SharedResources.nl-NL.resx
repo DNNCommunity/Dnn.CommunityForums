@@ -1306,7 +1306,10 @@ Van,
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Onderstrepen tekst</value>
   </data>
-  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+	<data name="[RESX:UnLock].Text" xml:space="preserve">
+    <value>Ontsluiten</value>
+  </data>
+	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Aanklikken om het vergrendelen van dit onderwerp ongedaan te maken</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">

@@ -1267,6 +1267,9 @@ Von
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Text unterstrichen formatieren</value>
   </data>
+	<data name="[RESX:UnLock].Text" xml:space="preserve">
+    <value>Entsperren</value>
+  </data>
   <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Klicken Sie hier, um dieses Thema freizuschalten</value>
   </data>

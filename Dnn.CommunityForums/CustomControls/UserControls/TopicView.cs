@@ -40,6 +40,7 @@ using System.Drawing.Printing;
 using System.Runtime.InteropServices;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication;
+using System.Diagnostics.Eventing.Reader;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -682,7 +683,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             //Quick Reply
-            if (CanRead && _bLocked == false)
+            if (CanReply) //  && _bLocked == false) /*always create quick reply in case topic is locked and unlocked from javascript */
             {
                 plh = FindControl("plhQuickReply") as PlaceHolder;
                 if (plh != null)
@@ -702,7 +703,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ctlQuickReply.ForumModuleId = ForumModuleId;
                     ctlQuickReply.ForumTabId = ForumTabId;
                     ctlQuickReply.RequireCaptcha = true;
-
+                    
                     if (ForumId > 0)
                         ctlQuickReply.ForumInfo = ForumInfo;
 
@@ -857,49 +858,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
             // Quick Reply
-            if (_bLocked)
+            if (CanReply)
             {
-                sbOutput.Replace("[ADDREPLY]", "<span class=\"afnormal\">[RESX:TopicLocked]</span>");
-                sbOutput.Replace("[QUICKREPLY]", string.Empty);
+                var @params = new List<string> {
+                    $"{ParamKeys.ViewType}={Views.Post}",
+                    $"{ParamKeys.TopicId}={TopicId}",
+                    $"{ParamKeys.ForumId}={ForumId}",
+                };
+                if (SocialGroupId > 0)
+                {
+                    @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                }
+                if (_bLocked)
+                {
+                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label\" class=\"afnormal\">[RESX:TopicLocked]</span><a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-locked\">[RESX:AddReply]</a>");
+                    sbOutput.Replace("[QUICKREPLY]", "<div class=\"dcf-quickreply-wrapper\" style=\"display:none;\"><asp:placeholder id=\"plhQuickReply\" runat=\"server\" /></div>");
+                }
+                else
+                { 
+                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-topic-lock-locked-label\" class=\"afnormal\"></span><a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\" class=\"dnnPrimaryAction dcf-topic-reply-link dcf-topic-reply-unlocked\">[RESX:AddReply]</a>");
+                    sbOutput.Replace("[QUICKREPLY]", "<div class=\"dcf-quickreply-wrapper\" style=\"display:block;\"><asp:placeholder id=\"plhQuickReply\" runat=\"server\" /></div>");
+                }
             }
             else
             {
-                if (CanReply)
-                {
-                    var @params = new List<string> {
-                        $"{ParamKeys.ViewType}={Views.Post}", 
-                        $"{ParamKeys.TopicId}={TopicId}", 
-                        $"{ParamKeys.ForumId}={ForumId}",
-                    };                    
-                    if (SocialGroupId > 0)
+                if (!Request.IsAuthenticated)
+                { 
+                    DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                    string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
+
+                    string onclick = string.Empty;
+                    if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
                     {
-                        @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                        onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
                     }
-                    sbOutput.Replace("[ADDREPLY]", "<a href=\"" + Utilities.NavigateURL(TabId, "", @params.ToArray()) + "\" class=\"dnnPrimaryAction\">[RESX:AddReply]</a>");
-                    sbOutput.Replace("[QUICKREPLY]", "<asp:placeholder id=\"plhQuickReply\" runat=\"server\" />");
+                    sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl, onclick)}</span>");
                 }
                 else
                 {
-                    if (!Request.IsAuthenticated)
-                    { 
-                        DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-                        string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
-
-                        string onclick = string.Empty;
-                        if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
-                        {
-                            onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
-                        }
-                        sbOutput.Replace("[ADDREPLY]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedReplyPleaseLogin]"), LoginUrl, onclick)}</span>");
-                    }
-                    else
-                    {
-                        sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-auth-false\">[RESX:NotAuthorizedReply]</span>");
-                    }
-                    sbOutput.Replace("[QUICKREPLY]", string.Empty);
+                    sbOutput.Replace("[ADDREPLY]", "<span class=\"dcf-auth-false\">[RESX:NotAuthorizedReply]</span>");
                 }
-
+                sbOutput.Replace("[QUICKREPLY]", string.Empty);
             }
+
+           
             if ((sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0)))
             {
                 sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(ForumModuleId, "TopicSplitButtons"));
@@ -1395,8 +1397,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (_bModLock)
             {
-                sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_modLock(" + ModuleId + "," + ForumId +",[TOPICID]);};\" title=\"[RESX:Lock]\"><i id=\"af-topic-lock-" + contentId.ToString() + "\"class=\"fa fa-lock fa-fm fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Lock]</span></li>");
-
+                if (_bLocked)
+                {
+                    sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnLock]')){amaf_Lock(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:UnLockTopic]\"><i class=\"fa fa-unlock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text \">[RESX:UnLock]</span></li>");
+                }
+                else
+                {
+                    sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", "<li class=\"dcf-topic-lock-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Lock]')){amaf_Lock(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:LockTopic]\"><i class=\"fa fa-lock fa-fm fa-blue dcf-topic-lock-inner\"></i><span class=\"dcf-topic-lock-text dcf-link-text\">[RESX:Lock]</span></li>");
+                }
             }
             else
             {
@@ -1404,8 +1412,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (_bModPin)
             {
-                sbOutput.Replace("[ACTIONS:PIN]", "<li onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_modPin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:Pin]\"><i id=\"af-topic-pin-" + contentId.ToString() + "\" class=\"fa fa-thumb-tack fa-fm fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Pin]</span></li>");
-
+                if (_bPinned)
+                {
+                    sbOutput.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:UnPin]')){amaf_Pin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:UnPinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-unpin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:UnPin]</span></li>");
+                }
+                else
+                {
+                    sbOutput.Replace("[ACTIONS:PIN]", "<li class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:PinTopic]\"><i class=\"fa fa-thumb-tack fa-fm fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i><span class=\"dcf-topic-pin-text dcf-link-text\">[RESX:Pin]</span></li>");
+                }
             }
             else
             {

@@ -1267,7 +1267,10 @@ Da
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Sottolinea testo</value>
   </data>
-  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+	<data name="[RESX:UnLock].Text" xml:space="preserve">
+    <value>Sblocca</value>
+  </data>
+	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Fai clic per sbloccare questo argomento</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">

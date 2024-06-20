@@ -71,68 +71,6 @@ function amaf_modMove(mid, fid, tid) {
         alert('error moving post');
     });
 };
-function amaf_modPin(mid, fid, tid) {
-    var sf = $.ServicesFramework(mid);
-    var params = {
-        forumId: fid,
-        topicId: tid
-    };
-    $.ajax({
-        type: "POST",
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Pin',
-        beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
-        $('#af-topicsview-pin-' + tid).toggleClass('fa-thumb-tack');
-        if (data == true) { 
-            $('#af-topic-pin-a-' + tid)
-                .attr("title", amaf.resx.UnPinTopic)
-                .attr("onclick", "javascript:if (confirm('" + amaf.resx.UnPinConfirm + "')) { amaf_modPin(" + mid + ", " + fid + "," + tid + "); };")
-                ;
-        }
-        else {
-            $('#af-topic-pin-a-' + tid)
-                .attr("title", amaf.resx.PinTopic)
-                .attr("onclick", "javascript:if (confirm('" + amaf.resx.PinConfirm + "')) { amaf_modPin(" + mid + ", " + fid + "," + tid + "); };")
-                ;
-        }
-    }).fail(function (xhr, status) {
-        alert('error pinning post');
-    });
-};
-function amaf_modLock(mid, fid, tid) {
-    var sf = $.ServicesFramework(mid);
-    var params = {
-        forumId: fid,
-        topicId: tid
-    };
-    $.ajax({
-        type: "POST",
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Lock',
-        beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
-        $('#af-topicsview-lock-' + tid).toggleClass('fa-lock');
-        if (data == true) {
-            $('#af-topic-lock-a-' + tid)
-                .attr("title", amaf.resx.UnLockTopic)
-                .attr("onclick", "javascript:if (confirm('" + amaf.resx.UnLockConfirm + "')) { amaf_modLock(" + mid + ", " + fid + "," + tid + "); };")
-                ;
-        }
-        else {
-            $('#af-topic-lock-a-' + tid)
-                .attr("title", amaf.resx.LockTopic)
-                .attr("onclick", "javascript:if (confirm('" + amaf.resx.LockConfirm + "')) { amaf_modLock(" + mid + ", " + fid + "," + tid + "); };")
-                ;
-        }
-    }).fail(function (xhr, status) {
-        alert('error locking post');
-    });
-};
 function amaf_quickEdit(mid, fid, tid) {
     amaf_resetQuickEdit();
     am.UI.LoadDiv('aftopicedit');

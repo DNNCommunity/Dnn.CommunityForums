@@ -1555,3 +1555,22 @@ div.dcf-mod-edit-wrap {
 .afpollresults {
 	border: solid 1px #333;
 }
+}
+
+/* pin & lock from topic view */
+.dnn-community-forums * .dcf-topic-lock-lock {
+}
+.dnn-community-forums * .dcf-topic-lock-unlock {
+}
+.dnn-community-forums * .dcf-topic-pin-pin {
+	transform: rotate(45deg);
+}
+.dnn-community-forums * .dcf-topic-pin-unpin {
+	transform: rotate(0deg);
+}
+.dnn-community-forums * .dcf-topic-reply-locked {
+	display:none;
+}
+.dnn-community-forums * .dcf-topic-reply-unlocked {
+	display:inline-flex;
+}
