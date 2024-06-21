@@ -306,7 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     string subject = Utilities.XSSFilter(dto.Topic.Content.Subject, true);
                     originalTopic.Content.Subject = subject;
-                    originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: ActiveModule.PortalID, ModuleId: ForumModuleId, TopicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
+                    originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrlSegment(PortalId: ActiveModule.PortalID, ModuleId: ForumModuleId, TopicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
                     if (dto.Topic.IsLocked != originalTopic.IsLocked &&
                         (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))) ||
