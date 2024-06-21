@@ -1499,5 +1499,9 @@ namespace DotNetNuke.Modules.ActiveForums
             // signal to platform that module has updated content in order to be included in incremental search crawls
             DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
         }
+        internal static string LocalizeString(string key, string resourceFile, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string language = "en-US")
+        {
+            return DotNetNuke.Services.Localization.Localization.GetString(key, resourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
+        }
     }
 }

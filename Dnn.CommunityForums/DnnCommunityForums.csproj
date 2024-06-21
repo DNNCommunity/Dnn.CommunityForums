@@ -1330,6 +1330,7 @@
     <Compile Include="class\DataRecordExtensions.cs" />
     <Compile Include="class\Injector.cs" />
     <Compile Include="class\Permissions.cs" />
+    <Compile Include="class\TokenReplacer.cs" />
     <Compile Include="components\Replies\Replies.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ContentController.cs" />

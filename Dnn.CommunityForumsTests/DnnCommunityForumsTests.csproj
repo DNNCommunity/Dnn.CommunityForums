@@ -84,6 +84,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="class\TokenReplacerTests.cs" />
     <Compile Include="class\UtilitiesTests.cs" />
     <Compile Include="Controllers\PermissionControllerTests.cs" />
     <Compile Include="Controllers\TopicPropertyControllerTests.cs" />
