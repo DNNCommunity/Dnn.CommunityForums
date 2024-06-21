@@ -184,7 +184,7 @@
     <value>Pin</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
-    <value>Un-Pin</value>
+    <value>Unpin</value>
   </data>
   <data name="[RESX:Alert].Text" xml:space="preserve">
     <value>Alert</value>
@@ -1071,6 +1071,9 @@ From,
   </data>
   <data name="[RESX:PinTopic].Text" xml:space="preserve">
     <value>Click to pin this topic</value>
+  </data>
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
+    <value>Unlock</value>
   </data>
   <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Click to unlock this topic</value>
