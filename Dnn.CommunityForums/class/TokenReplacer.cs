@@ -24,6 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http.Results;
 using System.Web.UI;
 using DotNetNuke.Abstractions;
@@ -91,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
             template.Replace("[FORUMMAINLINK]", string.Format(LocalizeTokenString("[FORUMMAINLINK]", portalSettings, language), urlNavigator.NavigateURL(TabId)));
             return template;
         }
-        internal static StringBuilder ReplaceForumTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId)
+        internal static StringBuilder ReplaceForumTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId, CurrentUserTypes CurrentUserType)
         {
             string language = userInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
             var ctlUtils = new ControlUtils();
@@ -121,21 +122,26 @@ namespace DotNetNuke.Modules.ActiveForums
                 : urlNavigator.NavigateURL(TabId, new[] { string.Concat(ParamKeys.ForumId, "=", forum.ForumID), string.Concat(ParamKeys.ViewType, "=", Views.Topics) }));
             template.Replace("[PARENTFORUMNAME]", string.IsNullOrEmpty(forum.ParentForumName) ? string.Empty : forum.ParentForumName);
 
-            string parentForumLink = LocalizeTokenString("[PARENTFORUMLINK]", portalSettings, language);
-            if (forum.ParentForumId > 0)
+            if (template.ToString().Contains("[PARENTFORUMLINK]"))
             {
-                template.Replace(oldValue: "[PARENTFORUMLINK]", string.Format(parentForumLink,
-                                                                              mainSettings.UseShortUrls ?
-                                                                              urlNavigator.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + forum.ParentForumId }) :
-                                                                              urlNavigator.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forum.ParentForumId }),
-                                                                              forum.ParentForumName));
+                string parentForumLink = LocalizeTokenString("[PARENTFORUMLINK]", portalSettings, language);
+                if (forum.ParentForumId > 0)
+                {
+                    template.Replace(oldValue: "[PARENTFORUMLINK]", string.Format(parentForumLink,
+                                                                                  mainSettings.UseShortUrls ?
+                                                                                  urlNavigator.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + forum.ParentForumId }) :
+                                                                                  urlNavigator.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forum.ParentForumId }),
+                                                                                  forum.ParentForumName));
+                }
+                else if (forum.ForumGroupId > 0)
+                {
+                    template.Replace(oldValue: "[PARENTFORUMLINK]", string.Format(parentForumLink, Utilities.NavigateURL(TabId), forum.GroupName));
+                }
             }
-            else if (forum.ForumGroupId > 0)
+            else
             {
-                template.Replace(oldValue: "[PARENTFORUMLINK]", string.Format(parentForumLink, Utilities.NavigateURL(TabId), forum.GroupName));
+                template.Replace("[PARENTFORUMLINK]", string.Empty);
             }
-            template.Replace("[PARENTFORUMLINK]", string.Empty);
-
             template.Replace("[FORUMDESCRIPTION]", !string.IsNullOrEmpty(forum.ForumDesc) ? string.Format(LocalizeTokenString("[FORUMDESCRIPTION]", portalSettings, language), forum.ForumDesc) : string.Empty);
 
 
@@ -172,6 +178,63 @@ namespace DotNetNuke.Modules.ActiveForums
             template.Replace("[TOTALTOPICS]", forum.TotalTopics.ToString());
             template.Replace("[TOTALREPLIES]", forum.TotalReplies.ToString());
             template.Replace("[FORUMSUBSCRIBERCOUNT]", forum.SubscriberCount.ToString());
+
+
+
+
+
+            //Last Post Section
+            int intLength = 0;
+            if ((template.ToString().IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
+            {
+                int inStart = (template.ToString().IndexOf("[LASTPOSTSUBJECT:", 0) + 1) + 17;
+                int inEnd = (template.ToString().IndexOf("]", inStart - 1) + 1);
+                string sLength = template.ToString().Substring(inStart - 1, inEnd - inStart);
+                intLength = Convert.ToInt32(sLength);
+            }
+            string ReplaceTag = "[LASTPOSTSUBJECT:" + intLength.ToString() + "]";
+            if (forum.LastPostID == 0)
+            {
+                template.Replace("[RESX:BY]", string.Empty);
+                template.Replace("[DISPLAYNAME]", string.Empty);
+                template.Replace("[LASTPOSTDATE]", string.Empty);
+                template.Replace(ReplaceTag, string.Empty);
+            }
+            else
+            {
+                if (canView)
+                {
+                    if (forum.LastPostUserID <= 0)
+                    {
+                        template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + forum.LastPostDisplayName);
+                    }
+                    else
+                    {
+                        bool isMod = CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.ForumMod || CurrentUserType == CurrentUserTypes.SuperUser;
+                        bool isAdmin = CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser;
+                        template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + UserProfiles.GetDisplayName(ForumModuleId, true, isMod, isAdmin, forum.LastPostUserID, forum.LastPostUserName, forum.LastPostFirstName, forum.LastPostLastName, forum.LastPostDisplayName));
+                    }
+                    DateTime dtLastPostDate = forum.LastPostDateTime;
+                    template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate, forum.PortalId, userInfo == null ? -1 : userInfo.UserID));
+                    string Subject = HttpUtility.HtmlDecode(forum.LastPostSubject);
+                    if (Subject != string.Empty)
+                    {
+                        template.Replace(ReplaceTag, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetLastPostSubjectLinkTag(forum.LastPostID, forum.LastTopicId, Subject, intLength, forum));
+                    }
+                    else
+                    {
+                        template.Replace("[RESX:BY]", string.Empty);
+                        template.Replace(ReplaceTag, string.Empty);
+                    }
+                }
+                else
+                {
+                    template.Replace("[DISPLAYNAME]", string.Empty);
+                    template.Replace("[LASTPOSTDATE]", string.Empty);
+                    template.Replace("[RESX:BY]", string.Empty);
+                    template.Replace(ReplaceTag, string.Empty);
+                }
+            }
             return template;
         }
     }

@@ -28,7 +28,7 @@ using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
+    [Obsolete("Deprecated in Community Forums. Remove in 10.00.00. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
     public class TokensController { TokensController() { throw new NotImplementedException(); } }    
 }
     namespace DotNetNuke.Modules.ActiveForums.Controllers

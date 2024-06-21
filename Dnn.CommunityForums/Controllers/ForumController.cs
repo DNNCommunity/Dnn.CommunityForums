@@ -22,6 +22,7 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using System.Xml;
 using DotNetNuke.Data;
 using DotNetNuke.Modules.ActiveForums.API;
@@ -512,6 +513,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Exceptions.LogException(ex);
                 return false;
             }
+        }
+        internal static string GetLastPostSubjectLinkTag(int LastPostID, int ParentPostID, string Subject, int Length, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
+        {
+            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ParentPostID);
+            var sb = new StringBuilder();
+            Subject = HttpUtility.HtmlDecode(Subject);
+            Subject = Utilities.StripHTMLTag(Subject);
+            Subject = Subject.Replace("[", "&#91");
+            Subject = Subject.Replace("]", "&#93");
+            if (Subject.Length > Length & Length > 0)
+            {
+                Subject = Subject.Substring(0, Length) + "...";
+            }
+            string sURL = new ControlUtils().TopicURL(fi.TabId, fi.ModuleId, ParentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti.TopicUrl);
+            if (sURL.Contains("~/"))
+            {
+                sURL = Utilities.NavigateURL(fi.TabId, "", new[] { ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + LastPostID });
+            }
+            if (sURL.EndsWith("/") && LastPostID != ParentPostID)
+            {
+                sURL += Utilities.UseFriendlyURLs(fi.ModuleId) ? String.Concat("#", LastPostID) : String.Concat("?", ParamKeys.ContentJumpId, "=", LastPostID);
+            }
+            sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
+            return sb.ToString();
         }
     }
 }
