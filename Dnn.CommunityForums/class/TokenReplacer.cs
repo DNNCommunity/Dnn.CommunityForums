@@ -149,41 +149,39 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.View, userInfo.UserID, forum.PortalId);
-            string sIcon = TemplateUtils.ShowIcon(canView, forum.ForumID, userInfo.UserID, forum.LastPostDateTime, forum.LastRead, forum.LastPostID);
-            string sIconImage = "<img alt=\"" + forum.ForumName + "\" src=\"" + mainSettings.ThemeLocation + "images/" + sIcon + "\" />";
-
-            if (template.ToString().Contains("[FORUMICON]"))
+            if ((template.ToString().Contains("[FORUMICON]")) || (template.ToString().Contains("[FORUMICONCSS]")))
             {
-                template.Replace("[FORUMICON]", sIconImage);
-            }
-            else if (template.ToString().Contains("[FORUMICONCSS]"))
-            {
-                string sFolderCSS = "fa-folder fa-blue";
-                switch (sIcon.ToLower())
+                string sIcon = TemplateUtils.ShowIcon(canView, forum.ForumID, userInfo.UserID, forum.LastPostDateTime, forum.LastRead, forum.LastPostID);
+                if (template.ToString().Contains("[FORUMICON]"))
                 {
-                    case "folder.png":
-                        sFolderCSS = "fa-folder fa-blue";
-                        break;
-                    case "folder_new.png":
-                        sFolderCSS = "fa-folder fa-red";
-                        break;
-                    case "folder_forbidden.png":
-                        sFolderCSS = "fa-folder fa-grey";
-                        break;
-                    case "folder_closed.png":
-                        sFolderCSS = "fa-folder-o fa-grey";
-                        break;
+                    string sIconImage = "<img alt=\"" + forum.ForumName + "\" src=\"" + mainSettings.ThemeLocation + "images/" + sIcon + "\" />";
+                    template.Replace("[FORUMICON]", sIconImage);
                 }
-                template.Replace("[FORUMICONCSS]", string.Format(LocalizeTokenString("[FORUMICONCSS]", portalSettings, language), sFolderCSS));
+                else if (template.ToString().Contains("[FORUMICONCSS]"))
+                {
+                    string sFolderCSS = "fa-folder fa-blue";
+                    switch (sIcon.ToLower())
+                    {
+                        case "folder.png":
+                            sFolderCSS = "fa-folder fa-blue";
+                            break;
+                        case "folder_new.png":
+                            sFolderCSS = "fa-folder fa-red";
+                            break;
+                        case "folder_forbidden.png":
+                            sFolderCSS = "fa-folder fa-grey";
+                            break;
+                        case "folder_closed.png":
+                            sFolderCSS = "fa-folder-o fa-grey";
+                            break;
+                    }
+                    template.Replace("[FORUMICONCSS]", string.Format(LocalizeTokenString("[FORUMICONCSS]", portalSettings, language), sFolderCSS));
+                }
             }
-
 
             template.Replace("[TOTALTOPICS]", forum.TotalTopics.ToString());
             template.Replace("[TOTALREPLIES]", forum.TotalReplies.ToString());
             template.Replace("[FORUMSUBSCRIBERCOUNT]", forum.SubscriberCount.ToString());
-
-
-
 
 
             //Last Post Section

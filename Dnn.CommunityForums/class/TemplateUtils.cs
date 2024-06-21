@@ -157,16 +157,19 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber)
         { return ParseEmailTemplate(template, templateName, portalID, moduleID, tabID, forumID, topicId, replyId, comments, user, userId, userCulture, timeZoneOffset, topicSubscriber,new Services.URLNavigator().NavigationManager(), HttpContext.Current.Request.Url); }
 
-        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo user, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl)
+        public static string ParseEmailTemplate(string template, string templateName, int portalID, int moduleID, int tabID, int forumID, int topicId, int replyId, string comments, DotNetNuke.Entities.Users.UserInfo author, int userId, CultureInfo userCulture, TimeSpan timeZoneOffset, bool topicSubscriber, INavigationManager navigationManager, Uri requestUrl)
         {
             if (navigationManager == null)
             {
                 navigationManager = (INavigationManager)new Services.URLNavigator();
             }
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalID);
-            var ms = SettingsBase.GetModuleSettings(moduleID);
-            var sOut = template;
-
+            var moduleSettings = SettingsBase.GetModuleSettings(moduleID);
+            var forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumID, moduleId: moduleID);
+            if (author == null)
+            {
+                author = DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalID, userId);
+            }
             // If we have a template name, load the template into sOut
             if (templateName != string.Empty)
             {
@@ -174,14 +177,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     templateName = templateName.Replace(string.Concat("_Subject_", moduleID), string.Empty);
                 }
-                sOut = TemplateCache.GetCachedTemplate(moduleID, templateName, -1);
+                template = TemplateCache.GetCachedTemplate(moduleID, templateName, -1);
             }
 
             // Load Subject and body from topic or reply
-            var subject = string.Empty;
-            var body = string.Empty;
-            var dateCreated = Utilities.NullDate();
-            var authorName = string.Empty;
+            string subject = string.Empty;
+            string body = string.Empty;
+            DateTime dateCreated = Utilities.NullDate();
 
             if (topicId > 0 && replyId > 0)
             {
@@ -191,7 +193,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     subject = ri.Content.Subject;
                     body = ri.Content.Body;
                     dateCreated = ri.Content.DateCreated;
-                    authorName = ri.Content.AuthorName;
                 }
             }
             else
@@ -203,53 +204,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     subject = ti.Content.Subject;
                     body = ti.Content.Body;
                     dateCreated = ti.Content.DateCreated;
-                    authorName = ti.Content.AuthorName;
                 }
             }
 
             body = Utilities.ManageImagePath(body, requestUrl);
 
-            // load the forum information
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumID, moduleId: moduleID);
-
-            // Load the user if needed
-            if (user == null)
-            {
-                var objUsers = new DotNetNuke.Entities.Users.UserController();
-                var objUser = objUsers.GetUser(portalID, userId);
-                user = objUser;
-            }
-
-            // Load the user properties
-            string sFirstName;
-            string sLastName;
-            string sDisplayName;
-            string sUsername;
-
-            if (user != null)
-            {
-                sFirstName = user.FirstName;
-                sLastName = user.LastName;
-                sDisplayName = user.DisplayName;
-                sUsername = user.Username;
-            }
-            else
-            {
-                sFirstName = string.Empty;
-                sLastName = string.Empty;
-                sDisplayName = string.Empty;
-                sUsername = string.Empty;
-            }
-
-            // Build the link
+            // Build the topic link
             string link;
-            if (string.IsNullOrEmpty(fi.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
+            if (string.IsNullOrEmpty(forumInfo.PrefixURL) || !Utilities.UseFriendlyURLs(moduleID))
             {
                 if (replyId == 0)
-                    link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty,  new[] { $"{ParamKeys.TopicId}={topicId}" })
+                    link = moduleSettings.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty,  new[] { $"{ParamKeys.TopicId}={topicId}" })
                         : navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topic}", $"{ParamKeys.TopicId}={topicId}" });
                 else
-                    link = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.TopicId}={topicId}", string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
+                    link = moduleSettings.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.TopicId}={topicId}", string.Concat(ParamKeys.ContentJumpId, "=", replyId) })
                         : navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topic}", $"{ParamKeys.TopicId}={topicId}", $"{ParamKeys.ContentJumpId}={replyId}" });
             }
             else
@@ -266,85 +234,53 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (HttpContext.Current != null && link.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
                     link = Common.Globals.AddHTTP(requestUrl.Host) + link;
             }
-
-
             // Build the forum Url
-            var forumURL = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}" })
-                : navigationManager.NavigateURL(tabID, portalSettings,string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topics}" });
+            string forumURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildForumUrl(navigationManager, portalSettings, moduleSettings, forumInfo);
 
-            // Build Moderation url
-            var modLink = navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumID}" });
-            if (HttpContext.Current != null && modLink.IndexOf(requestUrl.Host, StringComparison.Ordinal) == -1)
-                modLink = Common.Globals.AddHTTP(requestUrl.Host) + modLink;
+            var templateStringbuilder = new StringBuilder(template);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author, tabID, moduleID);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, author, tabID, moduleID, CurrentUserTypes.Auth );
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author, tabID, moduleID);
 
-            var result = new StringBuilder(sOut);
+            templateStringbuilder.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, userCulture, timeZoneOffset));
+            templateStringbuilder.Replace("[COMMENTS]", comments);
+            templateStringbuilder.Replace("[LINK]", string.Concat("<a href=\"", link, "\">", link, "</a>"));
+            templateStringbuilder.Replace("[HYPERLINK]", string.Concat("<a href=\"", link, "\">", link, "</a>"));
+            templateStringbuilder.Replace("[LINKURL]", link);
 
-            result.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, moduleID,false,false,false, userId, authorName, sFirstName, sLastName, sDisplayName));
-            result.Replace("[USERNAME]", sUsername);
-            result.Replace("[USERID]", userId.ToString());
-            result.Replace("[FORUMNAME]", fi.ForumName);
-            result.Replace("[PORTALID]", portalID.ToString());
-            result.Replace("[FIRSTNAME]", sFirstName);
-            result.Replace("[LASTNAME]", sLastName);
-            result.Replace("[FULLNAME]", string.Concat(sFirstName, " ", sLastName));
-            result.Replace("[GROUPNAME]", fi.GroupName);
-            result.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, userCulture, timeZoneOffset));
-            result.Replace("[COMMENTS]", comments);
-            result.Replace("[PORTALNAME]", portalSettings.PortalName);
-            result.Replace("[MODLINK]", string.Concat("<a href=\"", modLink, "\">", modLink, "</a>"));
-            result.Replace("[LINK]", string.Concat("<a href=\"", link, "\">", link, "</a>"));
-            result.Replace("[HYPERLINK]", string.Concat("<a href=\"", link, "\">", link, "</a>"));
-            result.Replace("[LINKURL]", link);
-            result.Replace("[FORUMURL]", forumURL);
-            result.Replace("[FORUMLINK]", string.Concat("<a href=\"", forumURL, "\">", forumURL, "</a>"));
-
-            result.Replace("[POSTEDORREPLIEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]")));
-            result.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));
-            result.Replace("[REPLIEDTO]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:repliedto]") : string.Empty));
-            result.Replace("[NEWPOST]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:NewPost]") : string.Empty));
-            result.Replace("[NEWREPLY]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:NewReply]") : string.Empty));
-            result.Replace("[SUBSCRIBEDTOPIC]", (topicSubscriber ? Utilities.GetSharedResource("[RESX:SubscribedTopic]") : string.Empty));
-            result.Replace("[SUBSCRIBEDTOPICSUBJECT]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicSubject]"), subject) : string.Empty));
-            result.Replace("[SUBSCRIBEDTOPICFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Empty));
-            result.Replace("[SUBSCRIBEDFORUM]", (topicSubscriber ? string.Empty : "[RESX:SubscribedForum]"));
-            result.Replace("[SUBSCRIBEDFORUMNAME]", (topicSubscriber ? string.Empty : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumName]"), fi.ForumName)));
-            result.Replace("[SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumTopicForumName]"), subject, fi.ForumName)));
+            templateStringbuilder.Replace("[POSTEDORREPLIEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]")));
+            templateStringbuilder.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));
+            templateStringbuilder.Replace("[REPLIEDTO]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:repliedto]") : string.Empty));
+            templateStringbuilder.Replace("[NEWPOST]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:NewPost]") : string.Empty));
+            templateStringbuilder.Replace("[NEWREPLY]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:NewReply]") : string.Empty));
+            templateStringbuilder.Replace("[SUBSCRIBEDTOPIC]", (topicSubscriber ? Utilities.GetSharedResource("[RESX:SubscribedTopic]") : string.Empty));
+            templateStringbuilder.Replace("[SUBSCRIBEDTOPICSUBJECT]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicSubject]"), subject) : string.Empty));
+            templateStringbuilder.Replace("[SUBSCRIBEDTOPICFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), arg0: subject, forumInfo.ForumName) : string.Empty));
+            templateStringbuilder.Replace("[SUBSCRIBEDFORUM]", (topicSubscriber ? string.Empty : "[RESX:SubscribedForum]"));
+            templateStringbuilder.Replace("[SUBSCRIBEDFORUMNAME]", (topicSubscriber ? string.Empty : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumName]"), forumInfo.ForumName)));
+            templateStringbuilder.Replace("[SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, forumInfo.ForumName) : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumTopicForumName]"), subject, forumInfo.ForumName)));
 
             // Introduced for Active Forum Email Connector plug-in Starts
-            if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
+            if (templateStringbuilder.ToString().Contains("[EMAILCONNECTORITEMID]"))
             {
                 // This Try with empty catch is introduced here because this code section is for Email Connector functionality only and this section should not 
                 // cause any issue to DNN Community Forums functionality in case it does not run successfully.
                 try
                 {
                     long itemID = GetEmailInfo(portalID, moduleID, forumID, topicId, HttpContext.Current.Request.UserHostAddress);
-                    result.Replace("[EMAILCONNECTORITEMID]", itemID.ToString());
+                    templateStringbuilder.Replace("[EMAILCONNECTORITEMID]", itemID.ToString());
                 }
                 catch
                 { }
             }
             // Introduced for Active Forum Email Connector plug-in Ends
 
-            if (user != null)
-            {
-                result.Replace("[SENDERUSERNAME]", user.UserID.ToString());
-                result.Replace("[SENDERFIRSTNAME]", user.FirstName);
-                result.Replace("[SENDERLASTNAME]", user.LastName);
-                result.Replace("[SENDERDISPLAYNAME]", user.DisplayName);
-            }
-            else
-            {
-                result.Replace("[SENDERUSERNAME]", string.Empty);
-                result.Replace("[SENDERFIRSTNAME]", string.Empty);
-                result.Replace("[SENDERLASTNAME]", string.Empty);
-                result.Replace("[SENDERDISPLAYNAME]", string.Empty);
-            }
 
-            result.Replace("[SUBJECT]", subject);
-            result.Replace("[BODY]", body);
-            result.Replace("[Body]", body);
+            templateStringbuilder.Replace("[SUBJECT]", subject);
+            templateStringbuilder.Replace("[BODY]", body);
+            templateStringbuilder.Replace("[Body]", body);
 
-            return result.ToString();
+            return templateStringbuilder.ToString();
         }
 
         private static long GetEmailInfo(int PortalId, int ModuleId, int forumID, int topicID, string ipAddress)
