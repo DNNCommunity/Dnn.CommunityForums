@@ -65,13 +65,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			drpPageSize.Style.Add("float", "none");
 
-			if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
+			if (!(Utilities.IsRewriteLoaded()))
 			{
 				rdEnableURLRewriter.SelectedIndex = 1;
 				rdEnableURLRewriter.Enabled = false;
             }
+			else
+            {
+				rdEnableURLRewriter.Enabled = true;
+			}
             var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-      if (u.IsSuperUser & (HttpRuntime.IISVersion.Major >= 7) &!(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
+			if ((u.IsSuperUser) && (HttpRuntime.IISVersion.Major >= 7))
 			{
 				if (Utilities.IsRewriteLoaded())
 				{
