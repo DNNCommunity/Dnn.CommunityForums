@@ -40,11 +40,11 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     internal static class TokenReplacer
     {
-        internal static string LocalizeTokenString(string key, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, string language = "en-US")
+        internal static string LocalizeTokenString(string key, DotNetNuke.Entities.Portals.PortalSettings portalSettings, string language = "en-US")
         {
             return Utilities.LocalizeString(key, Globals.TokenResourceFile, (DotNetNuke.Entities.Portals.PortalSettings)portalSettings, language);
         }
-        internal static StringBuilder ReplaceUserTokens(StringBuilder template, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId)
+        internal static StringBuilder ReplaceUserTokens(StringBuilder template, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId)
         {
             template.Replace("[USERID]", userInfo?.UserID.ToString());
             template.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(ForumModuleId, (userInfo == null ? -1 : userInfo.UserID), userInfo?.Username, userInfo?.FirstName, userInfo?.LastName, userInfo?.DisplayName));
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
             template.Replace("[SPLITBUTTONS2]", string.Empty);
             return template;
         }
-        internal static StringBuilder ReplaceModuleTokens(StringBuilder template, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId)
+        internal static StringBuilder ReplaceModuleTokens(StringBuilder template, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId)
         {
 
             // Add This -- obsolete so just remove
@@ -90,9 +90,12 @@ namespace DotNetNuke.Modules.ActiveForums
             template.Replace("[MODULEID]", ForumModuleId.ToString());
             template.Replace("[TABID]", TabId.ToString());
             template.Replace("[FORUMMAINLINK]", string.Format(LocalizeTokenString("[FORUMMAINLINK]", portalSettings, language), urlNavigator.NavigateURL(TabId)));
+
+            template.Replace("[PAGENAME]", HttpUtility.HtmlEncode(string.IsNullOrEmpty(portalSettings.ActiveTab.Title) ? portalSettings.ActiveTab.TabName : portalSettings.ActiveTab.Title));
+
             return template;
         }
-        internal static StringBuilder ReplaceForumTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId, CurrentUserTypes CurrentUserType)
+        internal static StringBuilder ReplaceForumTokens(StringBuilder template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum, DotNetNuke.Entities.Portals.PortalSettings portalSettings, SettingsInfo mainSettings, DotNetNuke.Entities.Users.UserInfo userInfo, int TabId, int ForumModuleId, CurrentUserTypes CurrentUserType)
         {
             string language = userInfo?.Profile?.PreferredLocale ?? portalSettings?.DefaultLanguage;
             var ctlUtils = new ControlUtils();

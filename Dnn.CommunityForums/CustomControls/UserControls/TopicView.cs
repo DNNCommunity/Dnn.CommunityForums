@@ -51,8 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Members
 
-        private string _forumName;
-        private string _groupName;
         private int _topicTemplateId;
         private DataRow _drForum;
         private DataRow _drSecurity;
@@ -75,8 +73,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _bAllowRSS;
         private int _rowIndex;
         private int _pageSize = 20;
-        private string _myTheme = "_default";
-        private string _myThemePath = string.Empty;
         private bool _bLocked;
         private bool _bPinned;
         private int _topicType;
@@ -85,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _viewCount;
         private int _replyCount;
         private int _topicSubscriberCount;
-        private int _forumSubscriberCount;
         private int _rowCount;
         private int _statusId;
         private int _topicAuthorId;
@@ -181,9 +176,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 AppRelativeVirtualPath = "~/";
 
-                _myTheme = MainSettings.Theme;
-                _myThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + _myTheme);
-                //_allowAvatars = !UserPrefHideAvatars;
                 _enablePoints = MainSettings.EnablePoints;
                 _editInterval = MainSettings.EditInterval;
 
@@ -320,8 +312,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
-            _forumName = _drForum["ForumName"].ToString();
-            _groupName = _drForum["GroupName"].ToString();
             ForumGroupId = Utilities.SafeConvertInt(_drForum["ForumGroupId"]);
             _topicTemplateId = Utilities.SafeConvertInt(_drForum["TopicTemplateId"]);
             _bAllowRSS = Utilities.SafeConvertBool(_drForum["AllowRSS"]);
@@ -335,7 +325,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _viewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
             _replyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
             _topicSubscriberCount = Utilities.SafeConvertInt(_drForum["TopicSubscriberCount"]);
-            _forumSubscriberCount = Utilities.SafeConvertInt(_drForum["ForumSubscriberCount"]);
             _topicAuthorId = Utilities.SafeConvertInt(_drForum["AuthorId"]);
             _topicAuthorDisplayName = _drForum["TopicAuthor"].ToString();
             _topicRating = Utilities.SafeConvertInt(_drForum["TopicRating"]);
@@ -416,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void BindTopic()
         {
-            string sOutput;
+            StringBuilder stringBuilder = new StringBuilder();
 
             var bFullTopic = true;
 
@@ -425,26 +414,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 // Note:  The template may be set in the topic review section of the Post form.
                 bFullTopic = false;
-                sOutput = TopicTemplate;
-                sOutput = Utilities.ParseSpacer(sOutput);
+                stringBuilder.Append(Utilities.ParseSpacer(TopicTemplate));
             }
             else
             {
-                sOutput = TemplateCache.GetCachedTemplate(ForumModuleId, "TopicView", _topicTemplateId);
+                stringBuilder.Append(TemplateCache.GetCachedTemplate(ForumModuleId, "TopicView", _topicTemplateId));
             }
+            stringBuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceForumTokens(stringBuilder, ForumInfo, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId, CurrentUserType);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceModuleTokens(stringBuilder, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId);
+            
+            stringBuilder.Replace("[TOPICID]", TopicId.ToString());
+            string sOutput = stringBuilder.ToString();
 
             // Handle the postinfo token if present
             if (sOutput.Contains("[POSTINFO]") && ForumInfo.ProfileTemplateId > 0)
                 sOutput = sOutput.Replace("[POSTINFO]", TemplateCache.GetCachedTemplate(ForumModuleId, "ProfileInfo", ForumInfo.ProfileTemplateId));
 
-            // Run some basic rpleacements
-            sOutput = sOutput.Replace("[PORTALID]", PortalId.ToString());
-            sOutput = sOutput.Replace("[MODULEID]", ForumModuleId.ToString());
-            sOutput = sOutput.Replace("[TABID]", TabId.ToString());
-            sOutput = sOutput.Replace("[TOPICID]", TopicId.ToString());
-            sOutput = sOutput.Replace("[AF:CONTROL:FORUMID]", ForumId.ToString());
-            sOutput = sOutput.Replace("[AF:CONTROL:FORUMGROUPID]", ForumGroupId.ToString());
-            sOutput = sOutput.Replace("[AF:CONTROL:PARENTFORUMID]", ParentForumId.ToString());
 
             // Add Topic Scripts
             var ctlTopicScripts = (af_topicscripts)(LoadControl("~/DesktopModules/ActiveForums/controls/af_topicscripts.ascx"));
@@ -519,17 +504,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Parse Meta Template
             if (!string.IsNullOrEmpty(MetaTemplate))
             {
-                MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", _forumName);
-                MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", _groupName);
+                MetaTemplate = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceForumTokens(new StringBuilder(MetaTemplate), ForumInfo, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId, CurrentUserType).ToString();
+                MetaTemplate = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceModuleTokens(new StringBuilder(MetaTemplate), PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId).ToString();
 
-                DotNetNuke.Entities.Portals.PortalSettings settings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-                string pageName = (settings.ActiveTab.Title.Length == 0)
-
-                                   ? Server.HtmlEncode(settings.ActiveTab.TabName)
-                                   : Server.HtmlEncode(settings.ActiveTab.Title);
-
-                MetaTemplate = MetaTemplate.Replace("[PAGENAME]", pageName);
-                MetaTemplate = MetaTemplate.Replace("[PORTALNAME]", settings.PortalName);
                 MetaTemplate = MetaTemplate.Replace("[TAGS]", _tags);
 
                 // Subject
@@ -584,8 +561,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var forumUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
                 var topicUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, _topicURL, -1, -1, string.Empty, 1, -1, SocialGroupId);
 
-                var sCrumb = "<a href=\"" + groupUrl + "\">" + _groupName + "</a>|";
-                sCrumb += "<a href=\"" + forumUrl + "\">" + _forumName + "</a>";
+                var sCrumb = "<a href=\"" + groupUrl + "\">" + ForumInfo.GroupName + "</a>|";
+                sCrumb += "<a href=\"" + forumUrl + "\">" + ForumInfo.ForumName + "</a>";
                 sCrumb += "|<a href=\"" + topicUrl + "\">" + _topicSubject + "</a>";
 
                 if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
@@ -915,39 +892,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // no longer using this
             sbOutput.Replace("[SPLITBUTTONS2]", string.Empty);
 
-            // Parent Forum Link
-            if (sOutput.Contains("[PARENTFORUMLINK]"))
-            {
-                if (ForumInfo.ParentForumId > 0)
-                {
-                    if (MainSettings.UseShortUrls)
-                        sbOutput.Replace(oldValue: "[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
-                    else
-                        sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumInfo.ParentForumId }) + "\">" + ForumInfo.ParentForumName + "</a>");
-                }
-                else if (ForumInfo.ForumGroupId > 0)
-                    sbOutput.Replace("[PARENTFORUMLINK]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">" + ForumInfo.GroupName + "</a>");
-            }
-
-            // Parent Forum Name
-            if (string.IsNullOrEmpty(ForumInfo.ParentForumName))
-                sbOutput.Replace("[PARENTFORUMNAME]", ForumInfo.ParentForumName);
-
-            // ForumLinks
-
-            var ctlUtils = new ControlUtils();
-            var groupUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, string.Empty, ForumInfo.ForumGroupId, -1, -1, -1, string.Empty, 1, -1, SocialGroupId);
-            var forumUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
-            var topicUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, _topicURL, -1, -1, string.Empty, 1, -1, SocialGroupId);
-
-            sbOutput.Replace("[FORUMMAINLINK]", "<a href=\"" + NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>");
-            sbOutput.Replace("[FORUMGROUPLINK]", "<a href=\"" + groupUrl + "\">" + _groupName + "</a>");
-            sbOutput.Replace("[FORUMLINK]", "<a href=\"" + forumUrl + "\">" + _forumName + "</a>");
-            
-            // Names and Ids
-            sbOutput.Replace("[FORUMID]", ForumId.ToString());
-            sbOutput.Replace("[FORUMNAME]", _forumName);
-            sbOutput.Replace("[GROUPNAME]", _groupName);
 
             // Printer Friendly Link
             var sURL = "<a rel=\"nofollow\" href=\"" + Utilities.NavigateURL(TabId, "", ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, "mid=" + ModuleId, "dnnprintmode=true") + "?skinsrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootSkin + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Skin") + "&amp;containersrc=" + HttpUtility.UrlEncode("[G]" + SkinController.RootContainer + "/" + Common.Globals.glbHostSkinFolder + "/" + "No Container") + "\" target=\"_blank\">";
@@ -969,7 +913,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (_bAllowRSS)
             {
                 var url = Common.Globals.AddHTTP(Common.Globals.GetDomainName(Request)) + "/DesktopModules/ActiveForums/feeds.aspx?portalid=" + PortalId + "&forumid=" + ForumId + "&tabid=" + TabId + "&moduleid=" + ModuleId;
-                sbOutput.Replace("[RSSLINK]", "<a href=\"" + url + "\"><img src=\"~/DesktopModules/ActiveForums/themes/" + _myTheme + "/images/rss.png\" runat=server border=\"0\" alt=\"[RESX:RSS]\" /></a>");
+                sbOutput.Replace("[RSSLINK]", "<a href=\"" + url + "\"><img src=\"" + ThemePath + "/images/rss.png\" runat=server border=\"0\" alt=\"[RESX:RSS]\" /></a>");
             }
             else
                 sbOutput.Replace("[RSSLINK]", string.Empty);
@@ -985,9 +929,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Topic Subscriber Count
             sbOutput.Replace("[TOPICSUBSCRIBERCOUNT]", _topicSubscriberCount.ToString());
-
-            // Forum Subscriber Count
-            sbOutput.Replace("[FORUMSUBSCRIBERCOUNT]", _forumSubscriberCount.ToString());           
+     
 
             // View Count
             sbOutput.Replace("[VIEWCOUNT]", _viewCount.ToString());
