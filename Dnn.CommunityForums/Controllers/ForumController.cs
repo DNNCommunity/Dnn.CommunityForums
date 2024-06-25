@@ -526,7 +526,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Subject = Subject.Substring(0, Length) + "...";
             }
-            string sURL = new ControlUtils().TopicURL(fi.TabId, fi.ModuleId, ParentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti.TopicUrl);
+            string sURL = new ControlUtils().TopicURL(fi.TabId, fi.ModuleId, ParentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti?.TopicUrl);
             if (sURL.Contains("~/"))
             {
                 sURL = Utilities.NavigateURL(fi.TabId, "", new[] { ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + LastPostID });

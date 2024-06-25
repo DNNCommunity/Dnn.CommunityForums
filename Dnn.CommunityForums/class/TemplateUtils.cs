@@ -238,9 +238,9 @@ namespace DotNetNuke.Modules.ActiveForums
             string forumURL = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildForumUrl(navigationManager, portalSettings, moduleSettings, forumInfo);
 
             var templateStringbuilder = new StringBuilder(template);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author, tabID, moduleID);
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, author, tabID, moduleID, CurrentUserTypes.Auth );
-            templateStringbuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author, tabID, moduleID);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceUserTokens(templateStringbuilder, portalSettings, moduleSettings, author, tabID, moduleID);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(templateStringbuilder, forumInfo, portalSettings, moduleSettings, new  Services.URLNavigator().NavigationManager(), author, tabID, moduleID, CurrentUserTypes.Auth);
+            templateStringbuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(templateStringbuilder, portalSettings, moduleSettings, author, tabID, moduleID);
 
             templateStringbuilder.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, userCulture, timeZoneOffset));
             templateStringbuilder.Replace("[COMMENTS]", comments);
@@ -762,6 +762,19 @@ namespace DotNetNuke.Modules.ActiveForums
                 var intSubTempEnd = intEndTag - 1;
                 var intSubTempLength = intSubTempEnd - intSubTempStart;
                 template = template.Substring(0, intStartTag) + subTemplate + template.Substring(intEndTag + endTag.Length);
+            }
+            return template;
+        }
+        public static StringBuilder ReplaceSubSection(StringBuilder template, string subTemplate, string startTag, string endTag)
+        {
+            var intStartTag = template.ToString().IndexOf(startTag, StringComparison.Ordinal);
+            var intEndTag = template.ToString().IndexOf(endTag, StringComparison.Ordinal);
+            if (intStartTag >= 0 && intEndTag > intStartTag)
+            {
+                var intSubTempStart = intStartTag + startTag.Length;
+                var intSubTempEnd = intEndTag - 1;
+                var intSubTempLength = intSubTempEnd - intSubTempStart;
+                template = new StringBuilder(template.ToString().Substring(0, intStartTag) + subTemplate + template.ToString().Substring(intEndTag + endTag.Length));
             }
             return template;
         }

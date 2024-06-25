@@ -56,6 +56,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn()]
+        public string Subject => Content.Subject;
+        [IgnoreColumn()]
+        public string Summary => Content.Summary;
+        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
             get => _contentInfo ?? (_contentInfo = GetContent());

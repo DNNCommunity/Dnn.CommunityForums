@@ -58,8 +58,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private List<Category> _categories;
 
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo _lastReply;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Author _Author;
+        private DotNetNuke.Modules.ActiveForums.Author _lastReplyAuthor;
+        private DotNetNuke.Modules.ActiveForums.Author _author;
         private int _forumId = -1;
         private string _tags = string.Empty;
         private string _selectedcategories;
@@ -103,7 +105,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [ColumnName("URL")]
         public string TopicUrl { get; set; } = string.Empty;
         [IgnoreColumn()]
+        public int LastReplyId { get; set; }
+        [IgnoreColumn()]
+        public int Rating { get; set; }
+        [IgnoreColumn()]
         public string URL => !(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)) ? ForumURL + TopicUrl : string.Empty;
+
+        [IgnoreColumn()]
+        public string Subject => Content.Subject;
+        [IgnoreColumn()]
+        public string Summary => Content.Summary;
+        [IgnoreColumn()]
+        public int SubscriberCount => new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(portalId: PortalId, moduleId: ModuleId, forumId: ForumId, topicId: TopicId);
         [IgnoreColumn()]
         public string ForumURL => !(string.IsNullOrEmpty(Forum.PrefixURL)) && !(string.IsNullOrEmpty(TopicUrl)) ? "/" + Forum.PrefixURL + "/" : string.Empty;
         public int NextTopic { get; set; }
@@ -136,22 +149,48 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get => _Author ?? (_Author = GetAuthor());
-            set => _Author = value;
+            get => _author ?? (_author = GetAuthor());
+            set => _author = value;
         }
-
         internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
         {
-            _Author = new DotNetNuke.Modules.ActiveForums.Author();
-            _Author.AuthorId = Content.AuthorId;
+            _author = new DotNetNuke.Modules.ActiveForums.Author();
+            _author.AuthorId = Content.AuthorId;
             var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
             if (userInfo != null)
             {
-                _Author.Email = userInfo?.Email;
-                _Author.FirstName = userInfo?.FirstName;    
-                _Author.LastName = userInfo?.LastName;
-                _Author.DisplayName = userInfo?.DisplayName;
-                _Author.Username = userInfo?.Username;
+                _author.Email = userInfo?.Email;
+                _author.FirstName = userInfo?.FirstName;
+                _author.LastName = userInfo?.LastName;
+                _author.DisplayName = userInfo?.DisplayName;
+                _author.Username = userInfo?.Username;
+            }
+            else
+            {
+                _author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                _author.Username = _author.DisplayName;
+            }
+            return _author;
+        }
+
+        [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Author LastReplyAuthor
+        {
+            get => _lastReplyAuthor ?? (_lastReplyAuthor = GetLastReplyAuthor());
+            set => _lastReplyAuthor = value;
+        }
+        internal DotNetNuke.Modules.ActiveForums.Author GetLastReplyAuthor()
+        {
+            _lastReplyAuthor = new DotNetNuke.Modules.ActiveForums.Author();
+            _lastReplyAuthor.AuthorId = LastReply.Content.AuthorId;
+            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, _lastReplyAuthor.AuthorId);
+            if (userInfo != null)
+            {
+                _lastReplyAuthor.Email = userInfo?.Email;
+                _lastReplyAuthor.FirstName = userInfo?.FirstName;
+                _lastReplyAuthor.LastName = userInfo?.LastName;
+                _lastReplyAuthor.DisplayName = userInfo?.DisplayName;
+                _lastReplyAuthor.Username = userInfo?.Username;
             }
             else
             {

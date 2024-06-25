@@ -108,6 +108,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _topicData = string.Empty;
         private bool _useListActions;
 
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topic;
+
         #endregion
 
         #region Public Properties
@@ -312,21 +314,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
+            _topic = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+            _topic.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+            _topic.TopicId = TopicId;
+            _topic.IsPinned = Utilities.SafeConvertBool(_drForum["IsPinned"]); ;
+            _topic.IsLocked = Utilities.SafeConvertBool(_drForum["IsLocked"]); ;
+            _topic.ViewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
+            _topic.ReplyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
+            _topic.Content.Subject = HttpUtility.HtmlDecode(_drForum["Subject"].ToString());
+            _topic.Content.Body = HttpUtility.HtmlDecode(_drForum["Body"].ToString());
+            _topic.Content.AuthorId = Utilities.SafeConvertInt(_drForum["AuthorId"]);
+            _topic.Content.AuthorName = _drForum["TopicAuthor"].ToString();
+
             ForumGroupId = Utilities.SafeConvertInt(_drForum["ForumGroupId"]);
             _topicTemplateId = Utilities.SafeConvertInt(_drForum["TopicTemplateId"]);
             _bAllowRSS = Utilities.SafeConvertBool(_drForum["AllowRSS"]);
-            _bLocked = Utilities.SafeConvertBool(_drForum["IsLocked"]);
-            _bPinned = Utilities.SafeConvertBool(_drForum["IsPinned"]);
             _topicType = Utilities.SafeConvertInt(_drForum["TopicType"]);
             _statusId = Utilities.SafeConvertInt(_drForum["StatusId"]);
-            _topicSubject = HttpUtility.HtmlDecode(_drForum["Subject"].ToString());
-            _topicDescription = Utilities.StripHTMLTag(HttpUtility.HtmlDecode(_drForum["Body"].ToString()));
             _tags = _drForum["Tags"].ToString();
-            _viewCount = Utilities.SafeConvertInt(_drForum["ViewCount"]);
-            _replyCount = Utilities.SafeConvertInt(_drForum["ReplyCount"]);
             _topicSubscriberCount = Utilities.SafeConvertInt(_drForum["TopicSubscriberCount"]);
-            _topicAuthorId = Utilities.SafeConvertInt(_drForum["AuthorId"]);
-            _topicAuthorDisplayName = _drForum["TopicAuthor"].ToString();
             _topicRating = Utilities.SafeConvertInt(_drForum["TopicRating"]);
             _allowHTML = Utilities.SafeConvertBool(_drForum["AllowHTML"]);
             _allowLikes = Utilities.SafeConvertBool(_drForum["AllowLikes"]);
@@ -420,8 +426,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 stringBuilder.Append(TemplateCache.GetCachedTemplate(ForumModuleId, "TopicView", _topicTemplateId));
             }
-            stringBuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceForumTokens(stringBuilder, ForumInfo, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId, CurrentUserType);
-            stringBuilder = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceModuleTokens(stringBuilder, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(stringBuilder, ForumInfo, PortalSettings, MainSettings, new Services.URLNavigator().NavigationManager(), UserInfo, TabId, ForumModuleId, CurrentUserType);
+            stringBuilder = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(stringBuilder, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId);
             
             stringBuilder.Replace("[TOPICID]", TopicId.ToString());
             string sOutput = stringBuilder.ToString();
@@ -504,8 +510,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Parse Meta Template
             if (!string.IsNullOrEmpty(MetaTemplate))
             {
-                MetaTemplate = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceForumTokens(new StringBuilder(MetaTemplate), ForumInfo, PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId, CurrentUserType).ToString();
-                MetaTemplate = DotNetNuke.Modules.ActiveForums.TokenReplacer.ReplaceModuleTokens(new StringBuilder(MetaTemplate), PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId).ToString();
+                MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceForumTokens(new StringBuilder(MetaTemplate), ForumInfo, PortalSettings, MainSettings, new Services.URLNavigator().NavigationManager(), UserInfo, TabId, ForumModuleId, CurrentUserType).ToString();
+                MetaTemplate = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.ReplaceModuleTokens(new StringBuilder(MetaTemplate), PortalSettings, MainSettings, UserInfo, TabId, ForumModuleId).ToString();
 
                 MetaTemplate = MetaTemplate.Replace("[TAGS]", _tags);
 
@@ -516,7 +522,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     foreach (Match m in Regex.Matches(MetaTemplate, pattern))
                     {
                         var maxLength = Utilities.SafeConvertInt(m.Groups[2].Value, 255);
-                        if (_topicSubject.Length > maxLength)
+                        if (_topic.Content.Subject.Length > maxLength)
                             MetaTemplate = MetaTemplate.Replace(m.Value, _topicSubject.Substring(0, maxLength) + "...");
                         else
                             MetaTemplate = MetaTemplate.Replace(m.Value, Utilities.StripHTMLTag(_topicSubject));
@@ -563,7 +569,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 var sCrumb = "<a href=\"" + groupUrl + "\">" + ForumInfo.GroupName + "</a>|";
                 sCrumb += "<a href=\"" + forumUrl + "\">" + ForumInfo.ForumName + "</a>";
-                sCrumb += "|<a href=\"" + topicUrl + "\">" + _topicSubject + "</a>";
+                sCrumb += "|<a href=\"" + topicUrl + "\">" + _topic.Content.Subject + "</a>";
 
                 if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
                     breadCrumb = string.Empty;
@@ -741,16 +747,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseControls(string sOutput)
         {
-            // Do a few things before we switch to a string builder
-
-            // Add This -- obsolete so just remove
-            if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
-            {
-                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
-                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
-                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
-            }
-
 
             // Banners
             if (sOutput.Contains("[BANNER"))
@@ -919,9 +915,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[RSSLINK]", string.Empty);
 
             // Subject
-            _topicSubject = _topicSubject.Replace("[", "&#91");
-            _topicSubject = _topicSubject.Replace("]", "&#93");
-            sbOutput.Replace("[SUBJECT]", Utilities.StripHTMLTag(_topicSubject));
+            _topic.Content.Subject = _topic.Content.Subject.Replace("[", "&#91");
+            _topic.Content.Subject = _topic.Content.Subject.Replace("]", "&#93");
+            sbOutput.Replace("[SUBJECT]", Utilities.StripHTMLTag(_topic.Content.Subject));
 
             // Reply Count
             sbOutput.Replace("[REPLYCOUNT]", _replyCount.ToString());
