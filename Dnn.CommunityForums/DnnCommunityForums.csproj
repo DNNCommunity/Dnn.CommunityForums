@@ -397,6 +397,7 @@
     </Content>
     <None Include="Module.build" />
     <None Include="packages.config" />
+    <None Include="README.md" />
     <None Include="Resources\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
     <None Include="Resources\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
     <None Include="Resources\font-awesome-4.7.0\fonts\fontawesome-webfont.woff" />
@@ -430,7 +431,6 @@
     <None Include="Resources\font-awesome-4.7.0\scss\_screen-reader.scss" />
     <None Include="Resources\font-awesome-4.7.0\scss\_stacked.scss" />
     <None Include="Resources\font-awesome-4.7.0\scss\_variables.scss" />
-    <None Include="README.md" />
     <None Include="sql\04.01.17.SqlDataProvider" />
     <None Include="sql\04.01.18.SqlDataProvider" />
     <None Include="sql\04.02.06.SqlDataProvider" />
