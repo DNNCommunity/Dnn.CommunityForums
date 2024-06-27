@@ -27,7 +27,7 @@
 			When you use the "community-default" or the "community-bootstrap" Theme, make sure to set the Avatar size to 250 x 250 pixels in the Module Settings. 
 		</p>
 		<p>
-			Also, please know that this version of the forums is not meant to be used with Bootstrap 3 and/or the DNN Xcilliin theme.  
+			Also, please note that this version of the community-bootstrap theme will not work with Bootstrap 3 and/or the DNN Xcillion theme.  
 		</p>
 
 		<h3>New <strong>Languages</strong> Added!</h3>
