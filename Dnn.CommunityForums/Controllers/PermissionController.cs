@@ -695,7 +695,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in (ModuleId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get()))
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.View, UserRoles))
+                    if (forum.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, UserRoles))
                     {
                         sForums += forum.ForumID.ToString() + ":";
                     }

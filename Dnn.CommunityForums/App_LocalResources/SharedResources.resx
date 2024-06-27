@@ -1740,4 +1740,10 @@ From,
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Enter a summary to enhance Search Engine Optimization (SEO)</value>
   </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anonymous</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Deleted User</value>
+  </data>
 </root>

@@ -1267,10 +1267,10 @@ Da
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Sottolinea testo</value>
   </data>
-	<data name="[RESX:UnLock].Text" xml:space="preserve">
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
     <value>Sblocca</value>
   </data>
-	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Fai clic per sbloccare questo argomento</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
@@ -1734,5 +1734,11 @@ Da
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Inserisci un riepilogo per migliorare l'ottimizzazione dei motori di ricerca (SEO)</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anonimo</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Eliminato Utente</value>
   </data>
 </root>

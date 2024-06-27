@@ -23,6 +23,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Linq;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -87,14 +88,61 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public DateTime LastRead { get; set; }
 
         [IgnoreColumn()]
-        public string LastPostFirstName => (PortalId >= 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).FirstName : string.Empty;
+        public string LastPostFirstName
+        {
+            get
+            {
+                string name = string.Empty;
+                if (PortalId >= 0 && LastPostUserID > 0)
+                {
+                    var user = new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID);
+                    name = user?.FirstName;
+                }
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = LastPostUserID > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                }
+                return name;
+            }
+        }
 
         [IgnoreColumn()]
-        public string LastPostLastName => (PortalId >= 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).LastName : string.Empty;
+        public string LastPostLastName
+        {
+            get
+            {
+                string name = string.Empty;
+                if (PortalId >= 0 && LastPostUserID > 0)
+                {
+                    var user = new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID);
+                    name = user?.LastName;
+                }
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = LastPostUserID > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                }
+                return name;
+            }
+        }
 
         [IgnoreColumn()]
-        public string LastPostDisplayName => (PortalId >= 0 && LastPostUserID > 0) ? new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID).DisplayName : string.Empty;
-
+        public string LastPostDisplayName
+        {
+            get
+            {
+                string name = string.Empty;
+                if (PortalId >= 0 && LastPostUserID > 0)
+                {
+                    var user = new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID);
+                    name = user?.DisplayName;
+                }
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = LastPostUserID > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                }
+                return name;
+            }
+        }
         [IgnoreColumn()]
         public bool InheritSecurity => this.PermissionsId == ForumGroup.PermissionsId;
 

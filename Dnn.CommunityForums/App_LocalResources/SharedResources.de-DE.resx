@@ -1267,7 +1267,7 @@ Von
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Text unterstrichen formatieren</value>
   </data>
-	<data name="[RESX:UnLock].Text" xml:space="preserve">
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
     <value>Entsperren</value>
   </data>
   <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
@@ -1736,5 +1736,11 @@ Von
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Geben Sie eine Zusammenfassung ein, um die Suchmaschinenoptimierung (SEO) zu verbessern</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>anonym</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Gelöscht Benutzer</value>
   </data>
 </root>

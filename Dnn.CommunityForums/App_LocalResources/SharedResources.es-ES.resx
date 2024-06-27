@@ -1270,10 +1270,10 @@ De
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Subrayar texto</value>
   </data>
-	<data name="[RESX:UnLock].Text" xml:space="preserve">
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
     <value>Desbloquear</value>
   </data>
-	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Haga clic para desbloquear este tema</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
@@ -1739,5 +1739,11 @@ De
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Ingrese un resumen para mejorar la optimización de motores de búsqueda (SEO)</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anónimo</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Borrado Usuario</value>
   </data>
 </root>

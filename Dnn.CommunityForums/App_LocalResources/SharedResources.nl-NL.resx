@@ -1306,10 +1306,10 @@ Van,
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Onderstrepen tekst</value>
   </data>
-	<data name="[RESX:UnLock].Text" xml:space="preserve">
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
     <value>Ontsluiten</value>
   </data>
-	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Aanklikken om het vergrendelen van dit onderwerp ongedaan te maken</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
@@ -1776,5 +1776,11 @@ Van,
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Voer een samenvatting in om de zoekmachineoptimalisatie (SEO) te verbeteren</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anoniem</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Eliminato Gebruiker</value>
   </data>
 </root>
