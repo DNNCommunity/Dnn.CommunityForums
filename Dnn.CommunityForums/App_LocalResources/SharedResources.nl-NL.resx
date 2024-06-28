@@ -1783,4 +1783,13 @@ Van,
   <data name="[RESX:DeletedUser].Text" xml:space="preserve">
     <value>Eliminato Gebruiker</value>
   </data>
+  <data name="[RESX:ForumGroupMissingForForum].Text" xml:space="preserve">
+    <value>De Forum Group {0} voor Forum {1} is niet te vinden in de database; Je moet dit repareren in de database, of het forum verwijderen en opnieuw aanmaken. Ga naar de DNN Community Forums Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums), waar u een probleem kunt posten of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForumGroup].Text" xml:space="preserve">
+    <value>De machtigingen {0} voor {1} van de forumgroep zijn niet te vinden in de database; U moet dit in de database repareren of de forumgroep verwijderen en opnieuw aanmaken. Ga naar de DNN Community Forums Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums), waar u een probleem kunt posten of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
+    <value>De machtigingen {0} voor Forum {1} zijn niet te vinden in de database; Je moet dit repareren in de database, of het forum verwijderen en opnieuw aanmaken. Ga naar de DNN Community Forums Github-repository (https://github.com/DNNCommunity/Dnn.CommunityForums), waar u een probleem kunt posten of de wiki kunt bekijken voor stappen voor probleemoplossing.</value>
+  </data>
 </root>

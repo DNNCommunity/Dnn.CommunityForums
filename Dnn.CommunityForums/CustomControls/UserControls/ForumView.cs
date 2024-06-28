@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return string.Empty;
+                throw;
             }
         }
         private void LinkControls(ControlCollection ctrls)

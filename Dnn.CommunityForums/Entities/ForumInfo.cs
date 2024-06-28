@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Linq;
 using DotNetNuke.UI.UserControls;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -76,7 +77,20 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo LoadForumGroup()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
+            var group = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
+            if (group == null)
+            {
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                string message = String.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), ForumGroupId, ForumID);
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+
+                var ex = new NullReferenceException(String.Format(Utilities.GetSharedResource("[RESX:ForumGroupMissingForForum]"), ForumGroupId, ForumID));
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                throw ex;
+            }
+            return group;
         }
         [IgnoreColumn()]
         public string GroupName => ForumGroup.GroupName;
@@ -199,7 +213,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId);
+            var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId);
+            if (security == null)
+            {
+                security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions();                
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                string message = String.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForum]"), PermissionsId, ForumID);
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+            }
+            return security;
         }
 
         [IgnoreColumn()]

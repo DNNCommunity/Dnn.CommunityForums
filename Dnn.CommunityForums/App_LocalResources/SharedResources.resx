@@ -1746,4 +1746,13 @@ From,
   <data name="[RESX:DeletedUser].Text" xml:space="preserve">
     <value>Deleted User</value>
   </data>
+  <data name="[RESX:ForumGroupMissingForForum].Text" xml:space="preserve">
+    <value>The Forum Group {0} for Forum {1} is not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForumGroup].Text" xml:space="preserve">
+    <value>The Permissions {0} for Forum Group {1} are not found in the database; you will need to repair this in the database, or delete the forum group and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
+    <value>The Permissions {0} for Forum {1} are not found in the database; you will need to repair this in the database, or delete the forum and re-create it. Please visit the DNN Community Forums Github repository (https://github.com/DNNCommunity/Dnn.CommunityForums), where you can post an issue or review the wiki for troubleshooting steps.</value>
+  </data>
 </root>
