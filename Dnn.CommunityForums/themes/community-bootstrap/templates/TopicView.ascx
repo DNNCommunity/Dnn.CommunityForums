@@ -96,7 +96,7 @@
 									<div class="dcf-col-50">
 										[MODEDITDATE]
 									</div>
-									<div class="dcf-col-50 text-right dcf-post-likes">
+									<div class="dcf-col-50 text-right text-end dcf-post-likes">
 										[LIKESx2]
 									</div>
 								</div>
@@ -147,7 +147,7 @@
 									<div class="dcf-col-50">
 										[MODEDITDATE]
 									</div>
-									<div class="dcf-col-50 text-right dcf-post-likes">
+									<div class="dcf-col-50 text-right text-end dcf-post-likes">
 										[LIKESx2]
 									</div>
 								</div>

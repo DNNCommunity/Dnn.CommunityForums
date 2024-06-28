@@ -231,6 +231,9 @@
 .dnn-community-forums .dcf-topic-view .dcf-prev-next .fa-next .fa {
   margin-left: 0.5em;
 }
+.dnn-community-forums .dcf-topic-view .dcf-post-likes .fa {
+  font-size: 1.5rem;
+}
 .dnn-community-forums .dcf-topic-view .dcf-topic-content {
   width: 100%;
 }
