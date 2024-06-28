@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append(" lastpostauthorid=\"" + f.LastPostUserID + "\"");
                     forums.Append(" lastpostdate=\"" + f.LastPostDateTime.ToString() + "\"");
                     forums.Append(" lastread=\"" + f.LastRead.ToString() + "\"");
-                    forums.Append(" allowrss=\"" + f.ForumSettings["ALLOWRSS"].ToString() + "\"");
+                    forums.Append(" allowrss=\"" + f.AllowRSS.ToString() + "\"");
                     forums.Append(" parentforumid=\"" + f.ParentForumId.ToString() + "\"");
                     forums.Append(" viewroles=\"" + f.Security?.View.ToString() + "\"");
                     forums.Append(" readroles=\"" + f.Security?.Read.ToString() + "\"");
