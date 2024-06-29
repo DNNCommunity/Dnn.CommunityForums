@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -139,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public ImageButton PostButton { get; set; } = new ImageButton();
         public ImageButton CancelButton { get; set; } = new ImageButton();
         public EditorTypes EditorType { get; set; }
-        public Forum ForumInfo { get; set; }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo { get; set; }
         public string TopicIcon
         {
             get => string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
@@ -254,6 +255,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 afpolledit.PollQuestion = value;
             }
         }
+        public bool Subscribe
+        {
+            get => chkSubscribe.Checked;
+            set => chkSubscribe.Checked = value;
+        }
         public string PollType
         {
             get
@@ -292,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public int AuthorId { get; set; } = -1;
         public bool AllowHTML { get; set; }
         public bool RequireCaptcha { get; set; } = true;
-        public List<PropertiesInfo> TopicProperties { get; set; }
+        public List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties { get; set; }
         #endregion
         #region Protected Controls
         protected TextBox txtSubject = new TextBox();
@@ -313,7 +319,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_topicstatus aftopicstatus = new af_topicstatus();
         protected CheckBox chkLocked = new CheckBox();
         protected CheckBox chkPinned = new CheckBox();
-        protected CheckBox chkAnnounce = new CheckBox(); 
+        protected CheckBox chkAnnounce = new CheckBox();
+        protected CheckBox chkSubscribe = new CheckBox();
         protected CheckBox chkApproved = new CheckBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqSubject = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected Label reqCustomBody = new Label();
@@ -346,9 +353,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForm(string template)
         {
-            template = Globals.ControlRegisterTag + template;
+            template = Globals.ForumsControlsRegisterAMTag + template;
             template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_posticonlist.ascx\" tagprefix=\"af\" tagname=\"posticons\" %>" + template;
-            template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox\" runat=\"server\" />");
+            template = template.Replace("[AF:INPUT:SUBJECT]", "<asp:textbox id=\"txtSubject\" cssclass=\"aftextbox dcf-topic-edit-subject\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:SUBJECT]", "<asp:requiredfieldvalidator id=\"reqSubject\" validationgroup=\"afform\" ControlToValidate=\"txtSubject\" runat=\"server\" />");
             template = template.Replace("[AF:REQ:BODY]", "<asp:label id=\"reqCustomBody\" visible=\"false\" runat=\"server\" />");
             if (template.Contains("[AF:BODY:TEMPLATE]"))
@@ -360,10 +367,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (template.Contains("[TOOLBAR"))
             { 
-                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
+                template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
             }
 
-            template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" runat=\"server\" />");
+            template = template.Replace("[AF:INPUT:SUMMARY]", "<asp:textbox id=\"txtSummary\" cssclass=\"dcf-topic-edit-summary\" runat=\"server\" />");
             template = template.Replace("[AF:INPUT:BODY]", "<asp:placeholder id=\"plhEditor\" runat=\"server\" />");
             template = template.Replace("[AF:LABEL:SUBJECT]", "<asp:label id=\"lblSubject\" runat=\"server\" />");
             if (!Request.IsAuthenticated & (canCreate || canReply))
@@ -398,7 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTopicReview\" runat=\"server\" />", "[AF:CONTROL:TOPICREVIEW]", "[/AF:CONTROL:TOPICREVIEW]");
                 template = template.Replace("[/AF:UI:SECTION:TOPICREVIEW]", "</td></tr></table>");
             }
-            if (Permissions.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
                 template = template.Replace("[AF:UI:SECTION:TAGS]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Tags]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">"+
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionTags", title: string.Empty) +
@@ -417,20 +424,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:SECTION:TAGS]", "</td></tr></table>");
             }
             //Properties
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) & ForumInfo.Properties != null)
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && (ForumInfo.Properties != null && ForumInfo.Properties.Count > 0))
             {
                 string pTemplate = TemplateUtils.GetTemplateSection(template, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 string propList = string.Empty;
-                foreach (PropertiesInfo p in ForumInfo.Properties)
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo p in ForumInfo.Properties)
                 {
                     string pValue = string.Empty;
                     if (TopicProperties != null && TopicProperties.Count > 0)
                     {
-                        foreach (PropertiesInfo tp in TopicProperties)
+                        foreach (DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo tp in TopicProperties)
                         {
                             if (tp.PropertyId == p.PropertyId)
                             {
-                                pValue = tp.DefaultValue;
+                                pValue = tp.Value;
                             }
                         }
                     }
@@ -529,12 +536,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     propList += tmp;
                 }
                 template = TemplateUtils.ReplaceSubSection(template, propList, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
+                /* tokens [AF:UI:SECTION:PROPERTIES][/AF:UI:SECTION:PROPERTIES] can now surround entire properties section to support removing entire section; if using properties, just remove the tokens*/
+                template = template.Replace("[AF:UI:SECTION:PROPERTIES]", string.Empty);
+                template = template.Replace("[/AF:UI:SECTION:PROPERTIES]", string.Empty);
             }
             else
             {
+                /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround entire properties section to support removing entire section if not using */
+                template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:UI:SECTION:PROPERTIES]", "[/AF:UI:SECTION:PROPERTIES]");
+                /* leave this for backward compatibility in cases where template doesn't yet have the [AF:UI:SECTION:PROPERTIES][/AF:UI:SECTION:PROPERTIES] tokens */
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
             }
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
+
+            if (template.Contains("[AF:UI:SECTION:SUMMARY]"))
+            { 
+                template = template.Replace("[AF:UI:SECTION:SUMMARY]", "<table style=\"width:99%\" class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\">" +
+                    "<tr>"+
+                    "<td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Summary]</td>"+
+                    "<td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
+                    DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionSummary", title: Utilities.GetSharedResource("[RESX:SummaryForSEO]")) +
+                    "</td>"+
+                    "</tr>"+
+                    "<tr>"+
+                    "<td colspan=\"2\" class=\"afsectiondsp\" id=\"sectionSummary\" style=\"display:none;\">"
+                    );
+
+                template = template.Replace("[/AF:UI:SECTION:SUMMARY]", "</td></tr></table>");
+            }
+            
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Categorize, ForumUser.UserRoles))
             {
                 template = template.Replace("[AF:UI:SECTION:CATEGORIES]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Categories]</td><td class=\"afsectionhd\" align=\"right\" style=\"border-right:solid 1px #b3b3b3;\">" +
                     DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleClosed(target: "sectionCategories", title: string.Empty) +
@@ -551,7 +581,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:FIELDSET:CATEGORIES]", "</fieldset>");
                 template = template.Replace("[/AF:UI:SECTION:CATEGORIES]", "</td></tr></table>");
             }
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && Permissions.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Poll, ForumUser.UserRoles))
             {
                 template = "<%@ register src=\"~/DesktopModules/ActiveForums/controls/af_polledit.ascx\" tagprefix=\"af\" tagname=\"polledit\" %>" + template;
                 template = template.Replace("[AF:UI:SECTION:POLL]", "<table class=\"afsection\" cellpadding=\"0\" cellspacing=\"0\"><tr><td class=\"afsectionhd\" style=\"border-left:solid 1px #b3b3b3;\">[RESX:Polls]</td>"+
@@ -566,7 +596,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:UI:FIELDSET:POLL]", "[/AF:UI:FIELDSET:POLL]");
+                template = TemplateUtils.ReplaceSubSection(template, subTemplate: string.Empty, "[AF:UI:FIELDSET:POLL]", "[/AF:UI:FIELDSET:POLL]");
                 template = template.Replace("[AF:CONTROL:POLL]", string.Empty);
             }
             if (EditorMode == EditorModes.ReplyWithBody)
@@ -632,18 +662,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:PostIcons]</legend><div class=\"affieldsetnote\">[RESX:PostIcons:Note]</div>");
                 template = template.Replace("[AF:CONTROL:POSTICONS]", "<af:posticons id=\"afposticons\" runat=\"server\" Theme=\"" + MainSettings.Theme + "\" />");
                 template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", "</fieldset>");
+                /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to support removing entire section; if using post icons, just remove the tokens*/
+                template = template.Replace("[AF:UI:SECTION:POSTICONS]", string.Empty);
+                template = template.Replace("[/AF:UI:SECTION:POSTICONS]", string.Empty);
 
             }
             else
             {
+                /* tokens [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] can now surround post icons to remove entire section */
+                template = TemplateUtils.ReplaceSubSection(template, subTemplate: string.Empty, "[AF:UI:SECTION:POSTICONS]", "[/AF:UI:SECTION:POSTICONS]");
+                /* leave these 3 lines for backward compatibility in cases where template doesn't yet have the [AF:UI:SECTION:POSTICONS][/AF:UI:SECTION:POSTICONS] tokens */
                 template = template.Replace("[AF:UI:FIELDSET:POSTICONS]", string.Empty);
                 template = template.Replace("[AF:CONTROL:POSTICONS]", string.Empty);
-                template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty);
+                template = template.Replace("[/AF:UI:FIELDSET:POSTICONS]", string.Empty); 
+
             }
             if (template.Contains("[AF:CONTROL:EMOTICONS]") && ForumInfo.AllowEmoticons)
             {
-                var objUtils = new emoticons();
-               template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + objUtils.LoadEmoticons(EditorType, ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation) ) + "</fieldset>");
+                template = template.Replace("[AF:CONTROL:EMOTICONS]", "<fieldset class=\"affieldset\"><legend>[RESX:Smilies]</legend>" + DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ForumModuleId, Page.ResolveUrl(MainSettings.ThemeLocation), EditorType ) + "</fieldset>");
             }
             else
             {
@@ -705,15 +741,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 bHasOptions = true;
             }
 
-            if (canSubscribe)
-            {
-                var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
-                subControl.Checked = (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId));
-                subControl.Text = "[RESX:TopicSubscribe:" + (UserPrefTopicSubscribe || Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumInfo.ForumID, TopicId, SubscriptionTypes.Instant, this.UserId)).ToString().ToUpper() + "]";
-                sb.Append("<tr><td colspan=\"2\">" + subControl.Render() +"</td></tr>");
+            if (canSubscribe && !UserPrefTopicSubscribe) /* if user has preference set for auto subscribe, no need to show them the subscribe option */
+                {
+                    if (TopicId > 0)
+                {
+                    var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
+                    subControl.Checked = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId));
+                    subControl.Text = "[RESX:Subscribe]";
+                    sb.Append("<tr><td colspan=\"2\">" + subControl.Render() + "</td></tr>");
+                }
+                else
+                {
+                    sb.Append("<tr><td colspan=\"2\"><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:Subscribe]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
+                }
                 bHasOptions = true;
             }
-            if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && Permissions.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
+            if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
             {
                 sb.Append("<tr><td>[RESX:TopicPriority]:</td>");
                 sb.Append("<td><asp:textbox id=\"txtTopicPriority\" cssclass=\"aftextbox\" width=\"75\" onkeypress=\"return onlyNumbers(event);\" runat=\"server\" /></td></tr>");
@@ -820,7 +863,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                            TopicTemplate = _topicReviewTemplate,
                                            OptPageSize = int.MaxValue,
                                            OptDefaultSort = "DESC",
-                                           ForumInfo = ForumInfo
+                    ForumInfo = ForumInfo
                                        };
                 plhTopicReview.Controls.Add(ctlTopicView);
             }
@@ -899,17 +942,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            canModEdit = Permissions.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles);
-            canModApprove = Permissions.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles);
-            canEdit = Permissions.HasPerm(ForumInfo.Security.Edit, ForumUser.UserRoles);
-            canReply = Permissions.HasPerm(ForumInfo.Security.Reply, ForumUser.UserRoles);
-            canCreate = Permissions.HasPerm(ForumInfo.Security.Create, ForumUser.UserRoles);
-            canAttach = Permissions.HasPerm(ForumInfo.Security.Attach, ForumUser.UserRoles);
-            canTrust = Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles);
-            canLock = Permissions.HasPerm(ForumInfo.Security.Lock, ForumUser.UserRoles);
-            canPin = Permissions.HasPerm(ForumInfo.Security.Pin, ForumUser.UserRoles);
-            canAnnounce = Permissions.HasPerm(ForumInfo.Security.Announce, ForumUser.UserRoles);
-            canSubscribe = Permissions.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
+            canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles);
+            canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles);
+            canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Edit, ForumUser.UserRoles);
+            canReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Reply, ForumUser.UserRoles);
+            canCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Create, ForumUser.UserRoles);
+            canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Attach, ForumUser.UserRoles);
+            canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles);
+            canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Lock, ForumUser.UserRoles);
+            canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Pin, ForumUser.UserRoles);
+            canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Announce, ForumUser.UserRoles);
+            canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
 
         }
         protected override void OnLoad(EventArgs e)
@@ -925,7 +968,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    tsTags.SelectedValue = _tags
             //End If
 
-            txtSubject.CssClass = "aftextbox";
+            //not sure why this gets set twice.
+            txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
             string MyTheme = MainSettings.Theme;
             string MyThemePath = Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
             txtSubject.MaxLength = 255;
@@ -935,7 +979,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             txtUsername.Text = _AuthorName;
             lblSubject.Text = _Subject;
             lblSubject.CssClass = "aftextbox";
-            txtSummary.CssClass = "aftextbox";
+            //not sure why this gets set twice.
+            txtSummary.CssClass = "aftextbox dcf-topic-edit-summary";
             chkLocked.Checked = _locked;
             chkPinned.Checked = _pinned;
             chkApproved.Checked = _checked;
@@ -1115,6 +1160,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         ctlAttach.ModuleConfiguration = this.ModuleConfiguration;
                         ctlAttach.ModuleId = ModuleId;
                         ctlAttach.ForumInfo = ForumInfo;
+                        break;
+                    case "chkSubscribe":
+                        chkSubscribe = (CheckBox)ctrl;
                         break;
                     case "ctlCaptcha":
                         ctlCaptcha = (DotNetNuke.UI.WebControls.CaptchaControl)ctrl;

@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -38,7 +38,10 @@ namespace DotNetNuke.Modules.ActiveForums
 		protected override void OnLoad(EventArgs e)
 		{
 			base.OnLoad(e);
-		}
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
+			txtThemeName.Text = moduleSettings.Theme;
+            txtTemplateFolder.Text = Server.MapPath(moduleSettings.TemplatePath);
+        }
 
 		private void agTemplates_Callback(object sender, Controls.CallBackEventArgs e)
 		{

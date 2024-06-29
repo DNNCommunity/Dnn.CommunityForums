@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -97,6 +97,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		}
         protected override void OnInit(EventArgs e)
 		{
+			try
+			{
+
 			base.OnInit(e);
 
 			if (ParseTemplateFile)
@@ -108,25 +111,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					this.Controls.Add(ctl);
 				}
 			}
+			}
+			catch (Exception ex)
+			{
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                throw;
+			}
 		}
 		private void LinkControls(ControlCollection ctrls)
 		{
-			foreach (Control ctrl in ctrls)
+			try
 			{
-				if (ctrl is Controls.ForumRow)
-				{
-					((Controls.ForumRow)ctrl).UserRoles = ForumUser.UserRoles;
-				}
-				if (ctrl is Controls.ControlsBase)
-				{
-					((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
-					((Controls.ControlsBase)ctrl).ForumData = ForumData;
-					((Controls.ControlsBase)ctrl).ForumInfo = ForumInfo;
-				}
-				if (ctrl.Controls.Count > 0)
-				{
-					LinkControls(ctrl.Controls);
-				}
+
+                foreach (Control ctrl in ctrls)
+                {
+                    if (ctrl is Controls.ForumRow)
+                    {
+                        ((Controls.ForumRow)ctrl).UserRoles = ForumUser.UserRoles;
+                    }
+                    if (ctrl is Controls.ControlsBase)
+                    {
+                        ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
+                        ((Controls.ControlsBase)ctrl).ForumData = ForumData;
+                        ((Controls.ControlsBase)ctrl).ForumInfo = ForumInfo;
+                    }
+                    if (ctrl.Controls.Count > 0)
+                    {
+                        LinkControls(ctrl.Controls);
+                    }
+                }
+            }
+			catch (Exception ex)
+			{
+                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                throw;
 			}
 		}
 	}

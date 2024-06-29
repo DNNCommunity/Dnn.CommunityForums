@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
 				node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
 			}
-			node.InnerXml = HttpContext.Current.Server.HtmlEncode(text);
+			node.InnerXml = HttpUtility.HtmlEncode(text);
 
 		}
 	}

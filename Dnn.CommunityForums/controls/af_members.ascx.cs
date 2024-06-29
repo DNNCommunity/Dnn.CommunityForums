@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,21 +34,20 @@ namespace DotNetNuke.Modules.ActiveForums
 			base.OnLoad(e);
 
             lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
-            bool bCanLoad = false;
             string sMode = MainSettings.MemberListMode;
             if (!UserInfo.IsSuperUser)
             {
                 if (sMode == "DISABLED")
                 {
-                    Response.Redirect(NavigateUrl(TabId));
+                    Response.Redirect(Utilities.NavigateURL(TabId));
                 }
                 if (!Request.IsAuthenticated & (sMode == "ENABLEDREG" || sMode == "ENABLEDMOD"))
                 {
-                    Response.Redirect(NavigateUrl(TabId));
+                    Response.Redirect(Utilities.NavigateURL(TabId));
                 }
                 else if (Request.IsAuthenticated && sMode == "ENABLEDMOD" && !UserIsMod)
                 {
-                    Response.Redirect(NavigateUrl(TabId));
+                    Response.Redirect(Utilities.NavigateURL(TabId));
                 }
             }
 

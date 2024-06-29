@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         public string XSSFilter(string sText)
         {
-            sText = HttpContext.Current.Server.UrlDecode(sText);
+            sText = HttpUtility.UrlDecode(sText);
             string pattern = "<script.*/*>|</script>|<[a-zA-Z][^>]*=['\"]+javascript:\\w+.*['\"]+>|<\\w+[^>]*\\son\\w+=.*[ /]*>";
             sText = Regex.Replace(sText, pattern, string.Empty, RegexOptions.IgnoreCase);
             sText = sText.Replace("-->", string.Empty);

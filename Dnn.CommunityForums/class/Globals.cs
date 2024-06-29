@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -121,6 +121,12 @@ namespace DotNetNuke.Modules.ActiveForums
         UserBanned
     }
 
+    public class FilterTypes
+    {
+        public const string EMOTICON = "EMOTICON";
+        public const string MARKUP = "MARKUP";
+        public const string REGEX = "REGEX";
+    }
     #endregion
 
     public class Globals
@@ -134,7 +140,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		public const string ModuleName = "Active Forums";
-		public const string ModulePath = "~/DesktopModules/ActiveForums/";
+		public const string ModuleFriendlyName = "DNN Community Forums";
+        public const string ModulePath = "~/DesktopModules/ActiveForums/";
+        public const string ModuleConfigPath = Globals.ModulePath + "config/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
         public const string ModuleImagesPath = Globals.ModulePath + "images/";
         public const string TemplatesPath = Globals.ModulePath + "templates/";
@@ -144,15 +152,21 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
         public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
-
-        public const string ControlRegisterTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
-		public const string ControlRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+		
+        public const string ForumsControlsRegisterAMTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+		public const string ForumsControlsRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+		public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
         public const string DnnControlsRegisterTag = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
 
         public const int GroupCount = 10000000;
 		public const int ForumCount = 10000000;
 		public const int SiteCount = -1;
+
+        public const string ModerationNotificationType = "AF-ForumModeration";
+        public const string ContentAlertNotificationType = "AF-ContentAlert";
+        public const string BanUserNotificationType = "DCF-UserBanned";
+        public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + "User Banned";
     }
 
 	public class SettingKeys
@@ -176,21 +190,24 @@ namespace DotNetNuke.Modules.ActiveForums
 		public const string StatsTemplate = "STATSTEMPLATE";
 		public const string StatsCache = "STATSCACHE";
 		public const string DateFormatString = "DATEFORMATSTRING";
-		public const string TimeFormatString = "TIMEFORMATSTRING";
-		public const string TimeZoneOffset = "TIMEZONEOFFSET";
+		public const string TimeFormatString = "TIMEFORMATSTRING"; 
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string TimeZoneOffset = "TIMEZONEOFFSET";
 		public const string UsersOnlineEnabled = "USERSONLINEENABLED";
 		public const string MemberListMode = "MEMBERLISTMODE";
 		public const string ForumTemplateId = "FORUMTEMPLATEID";
 		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
 		public const string Theme = "THEME";
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string MailQueue = "MAILQUEUE";
         public const string FullText = "FULLTEXT";
 		public const string AllowSubTypes = "ALLOWSUBTYPES";
 		public const string FloodInterval = "FLOODINTERVAL";
 		public const string EditInterval = "EDITINTERVAL";
 		public const string LoggingLevel = "LOGGINGLEVEL";
-		public const string DeleteBehavior = "DELETEBEHAVIOR";
-		public const string ProdKey = "AMFORUMS";
+		public const string DeleteBehavior = "DELETEBEHAVIOR"; 
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string ProdKey = "AMFORUMS";
 
 		public const string EnablePoints = "ENABLEPOINTS";
 		public const string TopicPointValue = "TOPICPOINTVALUE";
@@ -287,36 +304,105 @@ namespace DotNetNuke.Modules.ActiveForums
         */
     }
 
+	public class SearchParamKeys
+    {
+        public const string Tag = "tg";
+        public const string Query = "q";
+        public const string SearchType = "k";
+        public const string User = "uid";
+        public const string Author = "author";
+        public const string Search = "sid";
+        public const string Sort = "srt";
+        public const string ResultType = "rt";
+        public const string TimeSpan = "ts";
+        public const string Columns = "c";
+        public const string Forums = "f";
+    }
     public class ParamKeys
-	{
+    {
 		public const string ForumId = "aff";
-		public const string GroupId = "afg";
-        public const string GroupIdName = "GroupId";
-		public const string TopicId = "aft";
+        public const string GroupId = "afg";
+        public const string TopicId = "aft";
 		public const string ReplyId = "afr";
 		public const string ViewType = "afv";
 		public const string QuoteId = "afq";
-		public const string PageId = "afpg";
-		public const string PostId = "postid";
-		public const string Sort = "afs";
-		public const string PageJumpId = "afpgj";
+        public const string PageId = "afpg";
+        public const string PostId = "postid";
+        public const string UserId = "uid";
+        public const string Sort = "afs";
+        public const string PageJumpId = "afpgj";
 		public const string ContentJumpId = "afc";
 		public const string ConfirmActionId = "afca";
-		public const string Tags = "aftg";
+        public const string Tags = "aftg";
         public const string FirstNewPost = "afnp";
         public const string AuthorId = "authorid";
+        public const string GridType = "afgt";
+        public const string Category = "act";
+        public const string action = "action";
+        public const string TimeSpan = "ts";
+        public const string mode = "mode";
     }
-
-	public class Views
+	public class Modes
+    {
+        public const string edit = "edit";
+    }
+    public class Literals
+    {
+        public const string page = "page";
+        public const string view = "view";
+        public const string ForumId = "ForumId";
+        public const string GroupId = "GroupId";
+        public const string TopicId = "TopicId";
+        public const string ReplyId = "ReplyId";
+        public const string UserId = "UserId";
+        public const string PostId = "PostId";
+        public const string PageId = "PageId";
+    }
+	public class SortOptions
 	{
-		public const string Topics = "topicsview";
-		public const string Topic = "topic";
-		public const string ForumView = "forumview";
-		public const string TopicNew = "topicnew";
-		public const string TopicEdit = "topicedit";
+		public const string Descending = "DESC";
+		public const string Ascending = "ASC";
 	}
 
-	public class CacheKeys
+    public class Views
+    {
+        public const string Topics = "topicsview";
+        public const string Topic = "topic";
+        public const string ForumView = "forumview";
+        public const string TopicNew = "topicnew";
+        public const string TopicEdit = "topicedit";
+        public const string Grid = "grid";
+        public const string Tags = "tags";
+        public const string Post = "post";
+        public const string Search = "search";
+        public const string Profile = "profile";
+        public const string MyPreferences = "afprofile";
+        public const string MySubscriptions = "afsubscriptions";
+        public const string ModerateTopics = "modtopics";
+        public const string ModerateBan = "modban";
+    }
+    internal static class GridTypes
+    {
+        public const string NotRead = "notread";
+        public const string Unanswered = "unanswered";
+        public const string ActiveTopics = "activetopics";
+        public const string MyTopics = "mytopics";
+        public const string MySettings = "afprofile";
+        public const string MySubscriptions = "afsubscriptions";
+        public const string MostLiked = "mostliked";
+        public const string MostReplies = "mostreplies";
+        public const string Unresolved = "unresolved";
+        public const string Announcements = "announcements";
+        public const string Tags = "tags";
+    }
+    public class PostActions
+    {
+        public const string TopicEdit = "te";
+        public const string ReplyEdit = "re";
+        public const string Reply = "reply";
+    }
+
+    public class CacheKeys
     {
         public const string CachePrefix = "AF-";
         public const string CacheModulePrefix = "AF-{0}-";
@@ -328,18 +414,19 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string HostUrl = "AF-{0}-url";
         public const string MainSettings = "AF-{0}-ms";
         public const string ForumSettingsByKey = "AF-{0}-fsk-{1}";
-        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}"; 
+        public const string GroupSettingsByKey = "AF-{0}-gsk-{1}";
         public const string ForumList = "AF-{0}-fl";
+        public const string SubForumList = "AF-{0}-sfl-{1}";
         public const string ForumListXml = "AF-{0}-flx";
         public const string Tokens = "AF-{0}-tk-{1}";
         public const string ForumViewPrefix = "AF-{0}-FV-";
-        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}";
+        public const string ForumViewForUser = "AF-{0}-FV-{1}-{2}-{3}";
         public const string TopicViewPrefix = "AF-{0}-TV-";
-        public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}";
+        public const string TopicViewForUser = "AF-{0}-TV-{1}-{2}-{3}";
         public const string TopicsViewPrefix = "AF-{0}-TVS-";
-        public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}";
+        public const string TopicsViewForUser = "AF-{0}-TVS-{1}-{2}-{3}";
         public const string ForumViewTemplate = "AF-{0}-fvt-{1}";
-        public const string Toolbar = "AF-{0}-tb-{1}";
+        public const string Toolbar = "AF-{0}-tb-{1}-{2}";
         public const string TemplatePrefix = "AF-{0}-tmpl-";
         public const string Template = "AF-{0}-tmpl-{1}-{2}";
         public const string QuickReply = "AF-{0}-qr";
@@ -354,10 +441,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ForumSettings = "AF-{0}-fs-{1}";
 
 
+        public const string ForumGroupInfo = "AF-{0}-fgi-{1}";
+        public const string ForumGroupSettings = "AF-{0}-fgs-{1}";
+        public const string PermissionsInfo = "AF-{0}-perms-{1}";
 
         public const string RoleNames = "AF-rn-{0}";
         public const string RoleIDs = "AF-rids-{0}";
-        public const string UserRoles  = "AF-userroles-{0}";
+        public const string Roles = "AF-roles-{0}";
+        public const string UserRoles = "AF-userroles-{0}";
+        public const string CultureInfoForUser = "AF-usercultureinfo-{0}";
+        public const string TimeZoneInfoForUser = "AF-usertimezoneinfo-{0}";
 
         //public const string ForumView = "AF-{0}-FV-{1}";
         //public const string AllSettings = "AF-afset{0}";

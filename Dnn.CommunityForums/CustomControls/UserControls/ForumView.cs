@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,52 +28,25 @@ using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Linq;
+using System.IO;
+using System.Web.Http.Results;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
     {
-        private DataTable dtForums;
         private string ForumURL = string.Empty;
         private string ForumPageTitle = string.Empty;
-        private string _DisplayTemplate = "";
-        private int _currentUserId = -1;
         public bool SubsOnly { get; set; }
-
-        public string DisplayTemplate
-        {
-            get
-            {
-                return _DisplayTemplate;
-            }
-            set
-            {
-                _DisplayTemplate = value;
-            }
-        }
-        public DataTable ForumTable
-        {
-            get
-            {
-                return dtForums;
-            }
-            set
-            {
-                dtForums = value;
-            }
-        }
-        public int CurrentUserId
-        {
-            get
-            {
-                return _currentUserId;
-            }
-            set
-            {
-                _currentUserId = value;
-            }
-        }
+        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")] 
+        public DataTable ForumTable { get; set; }
+        
+        public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
+        public string DisplayTemplate { get; set; } = "";
+        public int CurrentUserId { get; set; } = -1;
         protected af_quickjump ctlForumJump = new af_quickjump();
         #region Event Handlers
 
@@ -98,12 +71,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         defaultTemplateId = DefaultForumViewTemplateId;
                     }
-                    template = BuildForumView(defaultTemplateId, CurrentUserId, Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MainSettings.Theme + "/"));
+                    template = BuildForumView();
                 }
                 catch (Exception ex)
                 {
-                    //sOutput = ex.Message
-                    //DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(Me, ex)
+                    DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
 
                 if (template != string.Empty)
@@ -112,18 +84,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (template.Contains("[TOOLBAR"))
                         {
-                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType));
+                            template = template.Replace("[TOOLBAR]", Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value));
                         }
                         Control tmpCtl = null;
                         try
                         {
-
                             tmpCtl = ParseControl(template);
-
                         }
                         catch (Exception ex)
                         {
-
+                            DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                         }
                         if (tmpCtl != null)
                         {
@@ -136,14 +106,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     var plh = (PlaceHolder)(tmpCtl.FindControl("plhQuickJump"));
                                     if (plh != null)
                                     {
-                                        ctlForumJump = new af_quickjump { ForumModuleId = ForumModuleId, dtForums = ForumTable, ModuleId = ModuleId };
+                                        ctlForumJump = new af_quickjump { ForumModuleId = ForumModuleId, Forums = Forums, ModuleId = ModuleId };
                                         plh.Controls.Add(ctlForumJump);
                                     }
                                     plh = (PlaceHolder)(tmpCtl.FindControl("plhUsersOnline"));
                                     if (plh != null)
                                     {
                                         ForumBase ctlWhosOnline;
-                                        ctlWhosOnline = (ForumBase)(LoadControl("~/Desktopmodules/ActiveForums/controls/af_usersonline.ascx"));
+                                        ctlWhosOnline = (ForumBase)(LoadControl($"{Globals.ModulePath}controls/af_usersonline.ascx"));
                                         ctlWhosOnline.ModuleConfiguration = ModuleConfiguration;
                                         plh.Controls.Add(ctlWhosOnline);
                                     }
@@ -152,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                             catch (Exception ex)
                             {
-
+                                DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                             }
                         }
                     }
@@ -170,7 +140,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Public Methods
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use BuildForumView()")]
         public string BuildForumView(int ForumTemplateId, int CurrentUserId, string ThemePath)
+        {
+            return BuildForumView();
+        }
+        public string BuildForumView()
         {
             try
             {
@@ -182,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 catch (Exception ex)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
-                    sTemplate = ex.Message; //ParseControls(sTemplate)
+                    sTemplate = ex.Message;
                 }
                 if (sTemplate.Contains("[NOTOOLBAR]"))
                 {
@@ -204,53 +179,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sForums = string.Empty;
                     string sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
                     string tmpGroup = string.Empty;
-                    //Dim reader As IDataReader = Nothing
-                    if (ForumTable == null)
+
+                    #region "backward compatibilty - remove when removing ForumTable property" 
+#pragma warning disable CS0618
+                    /* this is for backward compatibility -- remove when removing ForumTable property in 10.00.00 */
+                    if (ForumTable != null)
+#pragma warning restore CS0618
                     {
-                        var ds = new DataSet();
-                        dtForums = new DataTable();
-                        var fc = new ForumController();
-                        ForumTable = fc.GetForumView(PortalId, ForumModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds); // KR - added cache retreival
-                        //ds = DataProvider.Instance.UI_ForumView(PortalId, ModuleId, CurrentUserId, UserInfo.IsSuperUser, ForumIds)
-                        //ForumTable = ds.Tables(0)
+                        Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+#pragma warning disable CS0618
+                        foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
+#pragma warning restore CS0618
+                        {
+                            Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), ForumModuleId));
+                        }
                     }
-                    string sCrumb = string.Empty;
-                    string sGroupName = string.Empty;
-                    //Dim ForumGroupId As Integer = 0
-                    if (ForumGroupId != -1)
+                    #endregion
+
+                    if (Forums == null)
                     {
-                        DataRow tmpDR = null;
-                        ForumTable.DefaultView.RowFilter = "ForumGroupId = " + ForumGroupId;
-                        if (ForumTable.DefaultView.ToTable().Rows.Count > 0)
+                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
+                        var obj = DataCache.ContentCacheRetrieve(ForumModuleId, cachekey);
+                        if (obj == null)
                         {
-                            tmpDR = ForumTable.DefaultView.ToTable().Rows[0];
+                            Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                            foreach (string ForumId in ForumIds.Split(separator: ";".ToCharArray(), options: StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(ForumId), ForumModuleId));
+                            }
+                            DataCache.ContentCacheStore(ForumModuleId, cachekey, Forums);
                         }
-                        if (tmpDR != null)
+                        else
                         {
-                            sGroupName = tmpDR["GroupName"].ToString();
-                            sCrumb = "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateUrl(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + tmpDR["GroupName"] + "</div>";
+                            Forums = (List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>)obj;
                         }
-
-
-                        //dtForums.DefaultView.RowFilter = ""
-
                     }
+                    Forums = (Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList());
+                    
+
+                    string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
+                    string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateURL(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
+
                     if (ParentForumId != -1)
                     {
-                        //SubsOnly = True
-                        DataRow tmpDR = null;
-                        string sFilter = "ForumId = " + ParentForumId + " ";
-
-                        ForumTable.DefaultView.RowFilter = sFilter;
-                        if (ForumTable.DefaultView.ToTable().Rows.Count > 0)
-                        {
-                            tmpDR = ForumTable.DefaultView.ToTable().Rows[0];
-                        }
-                        ForumTable.DefaultView.RowFilter = "";
-                        sGroupName = tmpDR["GroupName"].ToString();
-
+                        sGroupName = Forums?.Where(f => f.ForumID == ParentForumId).FirstOrDefault().GroupName;
                     }
-                    if (MainSettings.UseSkinBreadCrumb && ForumTable.Rows.Count > 0 && SubsOnly == false && ForumGroupId != -1)
+                    if (MainSettings.UseSkinBreadCrumb && Forums?.Count > 0 && SubsOnly == false && ForumGroupId != -1)
                     {
                         Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + sGroupName + "</a>");
                         sTemplate = sTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
@@ -264,65 +238,59 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int iForum = 1;
                     int ForumCount = 0;
                     bool hasForums = false;
-                    DataTable rsForums = ForumTable.DefaultView.ToTable();
-                    Forum fi;
                     int tmpGroupCount = 0;
-                    foreach (DataRow dr in rsForums.Rows)
+                    if (Forums != null)
                     {
-                        fi = FillForumRow(dr);
-                        bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
-                        if ((UserInfo.IsSuperUser) || (canView) || (!Convert.ToBoolean(dr["GroupHidden"])))
+                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
-                            if (tmpGroup != dr["GroupName"].ToString())
+                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, ForumUser.UserRoles);
+                            if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
                             {
-                                if (tmpGroupCount < Globals.GroupCount)
+                                if (tmpGroup != fi.GroupName)
                                 {
-                                    ForumTable.DefaultView.RowFilter = "ForumGroupId = " + Convert.ToInt32(dr["ForumGroupId"]) + " AND ParentForumId = 0";
-
-                                    ForumCount = ForumTable.DefaultView.Count;
-                                    ForumTable.DefaultView.RowFilter = "";
-                                    if (sForums != string.Empty)
+                                    if (tmpGroupCount < Globals.GroupCount)
                                     {
-                                        sGroupSection = TemplateUtils.ReplaceSubSection(sGroupSection, sForums, "[FORUMS]", "[/FORUMS]");
-                                        sForums = string.Empty;
+                                        ForumCount = Forums.Count(f => f.ForumGroupId == fi.ForumGroupId);
+                                        if (sForums != string.Empty)
+                                        {
+                                            sGroupSection = TemplateUtils.ReplaceSubSection(sGroupSection, sForums, "[FORUMS]", "[/FORUMS]");
+                                            sForums = string.Empty;
+                                        }
+                                        int GroupId = fi.ForumGroupId;
+                                        sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
+                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", fi.GroupName);
+                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
+                                        sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{GroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
+
+
+                                        //any replacements on the group
+                                        string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
+                                        sNewGroup = sNewGroup.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
+                                        sNewGroup = sNewGroup.Replace("[GROUPNAME]", fi.GroupName);
+                                        sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
+                                        sGroupSection += sGroupSectionTemp;
+                                        tmpGroup = fi.GroupName;
+                                        tmpGroupCount += 1;
+                                        iForum = 1;
                                     }
-                                    int GroupId = Convert.ToInt32(dr["ForumGroupId"]);
-                                    sGroupSectionTemp = TemplateUtils.GetTemplateSection(sTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPNAME]", dr["GroupName"].ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", dr["ForumGroupId"].ToString());
-                                    sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{GroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")) );
 
-
-                                    //any replacements on the group
-                                    string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
-                                    sGroupSectionTemp = TemplateUtils.ReplaceSubSection(sGroupSectionTemp, sNewGroup, "[GROUP]", "[/GROUP]");
-                                    sGroupSection += sGroupSectionTemp;
-                                    tmpGroup = dr["GroupName"].ToString();
-                                    tmpGroupCount += 1;
-                                    iForum = 1;
                                 }
-
-                            }
-                            if (iForum <= Globals.ForumCount)
-                            {
-                                if (canView || (!fi.Hidden))
+                                if (iForum <= Globals.ForumCount)
                                 {
-                                    sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
-                                    hasForums = true;
-                                    if (fi.ParentForumId == 0 || SubsOnly || (SubsOnly == false && fi.ParentForumId > 0 && rsForums.Rows.Count == 1))
+                                    if (canView || (!fi.Hidden))
                                     {
-                                        sForumTemp = ParseForumRow(sForumTemp, fi, iForum, ThemePath, ForumCount);
-                                        iForum += 1;
-                                        sForums += sForumTemp;
+                                        sForumTemp = TemplateUtils.GetTemplateSection(sTemplate, "[FORUMS]", "[/FORUMS]");
+                                        hasForums = true;
+                                        if (fi.ParentForumId == 0 || SubsOnly || (SubsOnly == false && fi.ParentForumId > 0 && Forums.Count == 1))
+                                        {
+                                            sForumTemp = ParseForumRow(sForumTemp, fi, iForum, ForumCount);
+                                            iForum += 1;
+                                            sForums += sForumTemp;
+                                        }
                                     }
                                 }
                             }
                         }
-
-
-
-
-                        //End If
                     }
 
                     if (hasForums == false && SubsOnly)
@@ -344,64 +312,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return string.Empty;
+                throw;
             }
-        }
-        private Forum FillForumRow(DataRow dr)
-        {
-            var fi = new Forum();
-            try
-            {
-                fi.ForumID = Convert.ToInt32(dr["ForumId"]);
-                fi.ForumName = dr["ForumName"].ToString();
-                fi.ForumDesc = dr["ForumDesc"].ToString();
-                fi.Security.Read = dr["CanRead"].ToString();
-                fi.Security.View = dr["CanView"].ToString();
-                fi.Security.Subscribe = dr["CanSubscribe"].ToString();
-                fi.ParentForumId = Convert.ToInt32(dr["ParentForumId"]);
-
-
-                fi.LastPostSubject = dr["LastPostSubject"].ToString();
-                fi.LastPostDisplayName = dr["LastPostAuthorName"].ToString().Replace("&amp;#", "&#");
-                fi.LastPostUserID = Convert.ToInt32(dr["LastPostAuthorId"]);
-                fi.LastPostDateTime = Convert.ToDateTime(dr["LastPostDate"]);
-
-                fi.LastPostUserName = fi.LastPostDisplayName;
-
-
-                if (dr["LastRead"].ToString() != string.Empty)
-                {
-                    fi.LastRead = Convert.ToDateTime(dr["LastRead"]);
-                }
-
-                fi.ForumGroup = new ForumGroupInfo
-                {
-                    ForumGroupId = int.Parse(dr["ForumGroupId"].ToString()),
-                    PrefixURL = dr["GroupPrefixURL"].ToString()
-                };
-                fi.ForumGroupId = int.Parse(dr["ForumGroupId"].ToString());
-                fi.TopicUrl = dr["TopicURL"].ToString();
-
-                fi.TopicSubject = dr["LastPostSubject"].ToString();
-                fi.TopicId = Convert.ToInt32(dr["LastTopicId"]);
-
-                fi.TotalTopics = Convert.ToInt32(dr["TotalTopics"]);
-                fi.TotalReplies = Convert.ToInt32(dr["TotalReplies"]);
-                fi.SubscriberCount = Utilities.SafeConvertInt(dr["ForumSubscriberCount"]);
-                fi.Hidden = Convert.ToBoolean(dr["ForumHidden"]);
-                fi.LastReplyId = Convert.ToInt32(dr["LastReplyId"]);
-                fi.LastTopicId = Convert.ToInt32(dr["LastTopicId"]);
-                fi.PrefixURL = dr["PrefixURL"].ToString();
-                fi.LastPostID = fi.LastReplyId == 0 ? fi.LastTopicId : fi.LastReplyId;
-
-                //.Active = CBool(dr("Active"))
-            }
-            catch (Exception ex)
-            {
-                DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-            }
-
-            return fi;
         }
         private void LinkControls(ControlCollection ctrls)
         {
@@ -436,7 +348,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[USERID]", CurrentUserId.ToString());
             return sOutput;
         }
-        private string ParseForumRow(string Template, Forum fi, int currForumIndex, string ThemePath, int totalForums)
+        private string ParseForumRow(string Template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int currForumIndex, int totalForums)
         {
 
 
@@ -475,9 +387,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            bool canView = Permissions.HasPerm(fi.Security.View, ForumUser.UserRoles);
-            bool canSubscribe = Permissions.HasPerm(fi.Security.Subscribe, ForumUser.UserRoles);
-            bool canRead = Permissions.HasPerm(fi.Security.Read, ForumUser.UserRoles);
+            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
+            bool canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, ForumUser.UserRoles);
+            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Read, ForumUser.UserRoles);
             string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, CurrentUserId, fi.LastPostDateTime, fi.LastRead, fi.LastPostID);
             string sIconImage = "<img alt=\"" + fi.ForumName + "\" src=\"" + ThemePath + "images/" + sIcon + "\" />";
 
@@ -530,8 +442,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (canSubscribe)
                 {
-                    bool IsSubscribed = Subscriptions.IsSubscribed(PortalId, ForumModuleId, fi.ForumID, 0, SubscriptionTypes.Instant, CurrentUserId);
-                    string sAlt = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
+                    bool IsSubscribed = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumId);
+                    string sAlt = "[RESX:Subscribe]";
                     string sImg = ThemePath + "images/email_unchecked.png";
                     if (IsSubscribed)
                     {
@@ -542,7 +454,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     subControl.DisplayMode = 1;
                     subControl.UserId = CurrentUserId;
                     subControl.ImageURL = sImg;
-                    subControl.Text = "[RESX:ForumSubscribe:" + IsSubscribed.ToString().ToUpper() + "]";
+                    subControl.Text = "[RESX:Subscribe]";
 
                     Template = Template.Replace("[AF:CONTROL:TOGGLESUBSCRIBE]", subControl.Render());
                 }
@@ -589,7 +501,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Template = Template.Replace("[DISPLAYNAME]", string.Empty);
                 Template = Template.Replace("[LASTPOSTDATE]", string.Empty);
                 Template = Template.Replace(ReplaceTag, string.Empty);
-                //Template = TemplateUtils.ParseUserDetails(PortalId, -1, Template, String.Empty)
             }
             else
             {
@@ -597,33 +508,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (fi.LastPostUserID <= 0)
                     {
-                        //Template = Template.Replace("[RESX:BY]", String.Empty)
                         Template = Template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + fi.LastPostDisplayName);
-                        //Template = TemplateUtils.ParseUserDetails(PortalId, -1, Template, "FG")
                     }
                     else
                     {
                         bool isMod = CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.ForumMod || CurrentUserType == CurrentUserTypes.SuperUser;
                         bool isAdmin = CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser;
                         Template = Template.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + UserProfiles.GetDisplayName(ForumModuleId, true, isMod, isAdmin, fi.LastPostUserID, fi.LastPostUserName, fi.LastPostFirstName, fi.LastPostLastName, fi.LastPostDisplayName));
-                        //Template = TemplateUtils.ParseUserDetails(PortalId, .LastPostUserID, Template, "FG")
                     }
                     DateTime dtLastPostDate = fi.LastPostDateTime;
                     Template = Template.Replace("[LASTPOSTDATE]", Utilities.GetUserFormattedDateTime(dtLastPostDate,PortalId, CurrentUserId));
-                    string Subject = fi.LastPostSubject;
-                    if (Subject == "")
-                    {
-                        Subject = GetSharedResource("[RESX:SubjectPrefix]") + " " + fi.TopicSubject;
-                    }
+                    string Subject = HttpUtility.HtmlDecode(fi.LastPostSubject);
                     if (Subject != string.Empty)
                     {
-                        string sDots = "";
-                        if (Subject.Length > intLength)
-                        {
-                            sDots = "...";
-                        }
-
-                        Template = Template.Replace(ReplaceTag, GetLastPostSubject(fi.LastPostID, fi.TopicId, fi.ForumID, TabId, Subject, intLength, MainSettings.PageSize, fi));
+                        Template = Template.Replace(ReplaceTag, GetLastPostSubject(fi.LastPostID, fi.LastTopicId, fi.ForumID, TabId, Subject, intLength, MainSettings.PageSize, fi));
                     }
                     else
                     {
@@ -668,11 +566,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
-        private string GetLastPostSubject(int LastPostID, int ParentPostID, int ForumID, int TabID, string Subject, int Length, int PageSize, Forum fi)
+        private string GetLastPostSubject(int LastPostID, int ParentPostID, int ForumID, int TabID, string Subject, int Length, int PageSize, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
-            //TODO: Verify that this will still jump to topics on page 2
+            var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ParentPostID);
             var sb = new StringBuilder();
-            int PostId = LastPostID;
+            Subject = HttpUtility.HtmlDecode(Subject);
             Subject = Utilities.StripHTMLTag(Subject);
             Subject = Subject.Replace("[", "&#91");
             Subject = Subject.Replace("]", "&#93");
@@ -680,66 +578,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Subject = Subject.Substring(0, Length) + "...";
             }
-            if (LastPostID != 0)
+            string sURL = new ControlUtils().TopicURL(TabId, ForumModuleId, ParentPostID, fi.ForumGroup.PrefixURL, fi.PrefixURL, ti.TopicUrl);
+            if (sURL.Contains("~/"))
             {
-                string sTopicURL;
-                var ctlUtils = new ControlUtils();
-                sTopicURL = ctlUtils.BuildUrl(TabId, ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, ForumID, ParentPostID, fi.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
-
-                string sURL;
-                if (ParentPostID == 0 || LastPostID == ParentPostID)
-                {
-                    sURL = sTopicURL;
-                }
-                else
-                {
-                    if (sTopicURL.EndsWith("/"))
-                    {
-                        sURL = sTopicURL + "?" + (Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", PostId) : String.Concat("?", ParamKeys.ContentJumpId, "=", PostId));
-                    }
-                    else
-                    {
-                        var @params = new List<string> { ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId };
-
-                        if (SocialGroupId > 0)
-                            @params.Add("GroupId=" + SocialGroupId.ToString());
-
-                        sURL = Utilities.NavigateUrl(TabID, "", @params.ToArray());
-                    }
-
-
-
-                }
-                sb.Append("<a href=\"" + sURL + "\">" + Utilities.HTMLEncode(Subject) + "</a>");
+                sURL = Utilities.NavigateURL(TabId, "", new[] { ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + LastPostID });
             }
+            if (sURL.EndsWith("/") && LastPostID != ParentPostID)
+            {
+                sURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", LastPostID) : String.Concat("?", ParamKeys.ContentJumpId, "=", LastPostID);
+            }
+            sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
             return sb.ToString();
         }
         private string GetSubForums(string Template, int ForumId, int TabId, string ThemePath)
         {
             int i = 0;
-            string sFilter = "ParentForumId = " + ForumId;
-            ForumTable.DefaultView.RowFilter = sFilter;
-            int rows = ForumTable.DefaultView.Count;
+            var subforums = Forums.Where(f=>f.ParentForumId== ForumId).ToList();
             if (Template == string.Empty)
             {
                 var sb = new StringBuilder();
                 string SubForum;
-                foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in subforums)
                 {
-                    if (Convert.ToInt32(dr["ParentForumId"]) == ForumId)
+                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                    SubForum = GetForumName(canView, fi.Hidden, TabId, fi.ForumID, fi.ForumName, MainSettings.UseShortUrls);
+                    if (SubForum != string.Empty)
                     {
-                        bool canView = Permissions.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
-                        SubForum = GetForumName(canView, Convert.ToBoolean(dr["ForumHidden"]), TabId, Convert.ToInt32(dr["ForumId"]), dr["ForumName"].ToString(), MainSettings.UseShortUrls);
-                        if (SubForum != string.Empty)
+                        sb.Append(SubForum);
+                        if (i < subforums.Count() - 1)
                         {
-                            sb.Append(SubForum);
-                            if (i < rows - 1)
-                            {
-                                sb.Append(", ");
-                            }
-                            i += 1;
+                            sb.Append(", ");
                         }
-
+                        i += 1;
                     }
                 }
                 string subs = string.Empty;
@@ -753,23 +623,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         subs = subs.Substring(0, subs.LastIndexOf(","));
                     }
                 }
-                ForumTable.DefaultView.RowFilter = "";
                 return subs;
             }
             else
             {
                 string subs = string.Empty;
-                foreach (DataRow dr in ForumTable.DefaultView.ToTable().Rows)
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in subforums)
                 {
                     i += 1;
                     string tmpSubs = TemplateUtils.GetTemplateSection(Template, "[SUBFORUMS]", "[/SUBFORUMS]");
-                    Forum fi = FillForumRow(dr);
-                    bool canView = Permissions.HasPerm(dr["CanView"].ToString(), ForumUser.UserRoles);
+                    bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
                     if (canView || (!fi.Hidden) | UserInfo.IsSuperUser)
                     {
                         string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, CurrentUserId, fi.LastPostDateTime, fi.LastRead, fi.LastPostID);
-                        //string sIconImage = "<img alt=\"" + fi.ForumName + "\" src=\"" + ThemePath + "images/" + sIcon + "\" />";
-                        //tmpSubs = tmpSubs.Replace("[FORUMICONSM]", sIconImage.Replace("folder", "folder16"));
 
 
                         string sFolderCSS = "fa-folder fa-blue";
@@ -791,7 +657,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa " + sFolderCSS + " fa-fw\"></i>&nbsp;&nbsp;");
 
                         //tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa fa-folder fa-fw fa-blue\"></i>&nbsp;&nbsp;");
-                        tmpSubs = ParseForumRow(tmpSubs, fi, i, ThemePath, ForumTable.DefaultView.ToTable().Rows.Count);
+                        tmpSubs = ParseForumRow(tmpSubs, fi, i, subforums.Count());
                     }
                     else
                     {
@@ -799,7 +665,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                     subs += tmpSubs;
                 }
-                ForumTable.DefaultView.RowFilter = "";
                 Template = TemplateUtils.ReplaceSubSection(Template, subs, "[SUBFORUMS]", "[/SUBFORUMS]");
                 return Template;
             }
@@ -815,7 +680,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (CanView)
             {
-                sOut = "<a href=\"" + Utilities.NavigateUrl(TabID, "", Params) + "\">" + Name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(TabID, "", Params) + "\">" + Name + "</a>";
             }
             else if (Hidden)
             {
@@ -827,7 +692,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
-        #endregion
+    #endregion
     }
 
 }

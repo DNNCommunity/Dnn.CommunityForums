@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, sGrid, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
             }
-            sTemplate = Globals.ControlRegisterTag + sTemplate;
+            sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             sTemplate = sTemplate.Replace("[AF:CONTROL:PAGER]", "<am:pagernav id=\"Pager1\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AF:CONTROL:ALPHABAR]", BuildAlphaList());
             Control ctl = this.ParseControl(sTemplate);

@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 	{
 		public static void Log(string Msg)
 		{
-			string sPath = HttpContext.Current.Request.MapPath(string.Concat(Globals.ModulePath, "am.html"));
+			string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
 			Msg = Msg + System.Environment.NewLine;
 			System.IO.File.AppendAllText(sPath, Msg);
         }

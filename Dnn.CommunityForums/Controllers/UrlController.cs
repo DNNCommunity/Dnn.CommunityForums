@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal static class UrlController
     {
-        internal static string BuildTopicUrl(int PortalId, int ModuleId, int TopicId, string subject, Forum forumInfo)
+        internal static string BuildTopicUrl(int PortalId, int ModuleId, int TopicId, string subject, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             var cleanSubject = Utilities.CleanName(subject).ToLowerInvariant();
             if (SimulateIsNumeric.IsNumeric(cleanSubject))
@@ -60,6 +60,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             return topicUrl;
+        }
+        internal static string BuildForumUrl(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        {
+            string url = "/";
+
+            if (!(string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL)))
+            {
+                url += forumInfo.ForumGroup.PrefixURL + "/";
+            }
+
+            if (!(string.IsNullOrEmpty(forumInfo.PrefixURL)))
+            {
+                url += forumInfo.PrefixURL + "/";
+            }
+            return url;
         }
     }
 }

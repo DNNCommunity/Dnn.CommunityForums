@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -141,8 +141,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            bool canView = Permissions.HasPerm(ViewRoles, UserRoles);
-            bool canRead = Permissions.HasPerm(ReadRoles, UserRoles);
+            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ViewRoles, UserRoles);
+            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ReadRoles, UserRoles);
 
             if (Content != null)
             {

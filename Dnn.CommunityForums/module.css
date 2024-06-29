@@ -11,35 +11,37 @@
 
 
 /* #1 New wrapper class */
-	.dnn-community-forums input[type=checkbox],
-	.dnn-community-forums input[type=radio] {
-		cursor: pointer;
-	}
+.dnn-community-forums input[type=checkbox],
+.dnn-community-forums input[type=radio] {
+	cursor: pointer;
+}
+
 /* /1 */
 
 /* #1a new for v8, command buttons */
-	.dcf-link-text{
-		margin-left: 0.25em;
-	}	
+.dcf-link-text {
+	margin-left: 0.25em;
+}
+
 /* /1a */
 
 
 /* TEMP until all image icons are taken out for responsive optimizations!*/
-	.fa-grey {
-		color: #555555;
-	}
+.fa-grey {
+	color: #555555;
+}
 
-	.fa-red {
-		color: #ce424b;
-	}
+.fa-red {
+	color: #ce424b;
+}
 
-	.fa-blue {
-		color: #7da8cc;
-	}
+.fa-blue {
+	color: #7da8cc;
+}
 
-	.af-user-status {
-		margin-left: 2px;
-	}
+.af-user-status {
+	margin-left: 2px;
+}
 
 /* 2 -> */
 
@@ -51,42 +53,42 @@
 
 
 /* https://github.com/DNNCommunity/Dnn.CommunityForums/issues/40#issue-753603917 */
-	.afeditor img {
-		max-width: 100%;
-		height: auto !important;
-	}
-	
-	
+.afeditor img {
+	max-width: 100%;
+	height: auto !important;
+}
+
+
 
 /* 5 Wrap in wrapper class, to be removed later */
 
-	.dnn-community-forums ._hide,
-	td.af-lastpost img,
-	.afsearchgo {
-		display: none !important;
-	}
+.dnn-community-forums ._hide,
+td.af-lastpost img,
+.afsearchgo {
+	display: none !important;
+}
 
 /* /5 */
 
 /* 6 - >*/
 
 /* 7 Add wrapper class that works */
-	.dnn-community-forums * {
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-	}
+.dnn-community-forums * {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
 
-	.dnn-community-forums table {
-		max-width: 100%;
-		background-color: transparent;
-		border-collapse: collapse;
-		border-spacing: 0;
-	}
+.dnn-community-forums table {
+	max-width: 100%;
+	background-color: transparent;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
 
-	.afcontainer .ComposeMessage {
-		cursor: pointer;
-	}
+.afcontainer .ComposeMessage {
+	cursor: pointer;
+}
 
 /* /7 */
 
@@ -95,10 +97,11 @@
 /* 9 -> */
 
 
-/* 10 removed rule font-size */ 
-	.afgrid {
-		width: 100%;
-	}
+/* 10 removed rule font-size */
+.afgrid {
+	width: 100%;
+}
+
 /* /10 */
 
 
@@ -116,34 +119,34 @@
 
 /* 15 Modernize */
 
-	.afclear::after{
-		content: " ";
-		display: table;
-		clear: both;
-	}
+.afclear::after {
+	content: " ";
+	display: table;
+	clear: both;
+}
 
 /* /15 */
 
 
 /* 16 Do not use element styling, move float classes to legacy as they are also used for text alignment*/
-	.af-catlist {
-		margin: 0;
-		padding: 0;
-		margin-left: 25px;
-	}
+.af-catlist {
+	margin: 0;
+	padding: 0;
+	margin-left: 25px;
+}
 
-	.af-catlist li {
-		list-style-type: none;
-	}
+.af-catlist li {
+	list-style-type: none;
+}
 
-	.af-list-flat {
-		padding: 0px;
-		margin: 0px;
-	}
+.af-list-flat {
+	padding: 0px;
+	margin: 0px;
+}
 
-	.af-list-flat li {
-		display: inline;
-	}
+.af-list-flat li {
+	display: inline;
+}
 
 /* /16 */
 
@@ -151,189 +154,189 @@
 
 /* 17 No change, refactor later: remove element styling af-rater used for ul and span */
 
-	/* Ratings */
-	.dnn-community-forums ul.af-rater {
-		padding: 0px;
-		margin: 0px;
-		background-image: url(images/sp-stars.png);
-		width: 80px;
-	}
+/* Ratings */
+.dnn-community-forums ul.af-rater {
+	padding: 0px;
+	margin: 0px;
+	background-image: url(images/sp-stars.png);
+	width: 80px;
+}
 
-	span.af-rater {
-		display: inline-block;
-		height: 8px;
-		padding: 0px;
-		margin: 0px;
-		background-image: url(images/sp-ministars.png);
-		width: 40px;
-	}
+span.af-rater {
+	display: inline-block;
+	height: 8px;
+	padding: 0px;
+	margin: 0px;
+	background-image: url(images/sp-ministars.png);
+	width: 40px;
+}
 
-	ul.af-rater li {
-		display: inline-block;
-		list-style-type: none;
-		width: 14px;
-		height: 16px;
-		cursor: pointer;
-		margin-left: 1px;
-		margin-right: 1px;
-	}
+ul.af-rater li {
+	display: inline-block;
+	list-style-type: none;
+	width: 14px;
+	height: 16px;
+	cursor: pointer;
+	margin-left: 1px;
+	margin-right: 1px;
+}
 
-	ul.rate1 {
-		background-position: 0px -16px;
-	}
+ul.rate1 {
+	background-position: 0px -16px;
+}
 
-	ul.rate2 {
-		background-position: 0px -32px;
-	}
+ul.rate2 {
+	background-position: 0px -32px;
+}
 
-	ul.rate3 {
-		background-position: 0px -48px;
-	}
+ul.rate3 {
+	background-position: 0px -48px;
+}
 
-	ul.rate4 {
-		background-position: 0px -64px;
-	}
+ul.rate4 {
+	background-position: 0px -64px;
+}
 
-	ul.rate5 {
-		background-position: 0px -80px;
-	}
+ul.rate5 {
+	background-position: 0px -80px;
+}
 
-	span.rate1 {
-		background-position: 0px -8px;
-	}
+span.rate1 {
+	background-position: 0px -8px;
+}
 
-	span.rate2 {
-		background-position: 0px -16px;
-	}
+span.rate2 {
+	background-position: 0px -16px;
+}
 
-	span.rate3 {
-		background-position: 0px -24px;
-	}
+span.rate3 {
+	background-position: 0px -24px;
+}
 
-	span.rate4 {
-		background-position: 0px -32px;
-	}
+span.rate4 {
+	background-position: 0px -32px;
+}
 
-	span.rate5 {
-		background-position: 0px -40px;
-	}
+span.rate5 {
+	background-position: 0px -40px;
+}
 
 
-	ul.fa-rater {
-		height: 20px;
-		padding: 0px;
-		margin: 0px;
-		width: 90px;
-		font-size: large;
-	}
+ul.fa-rater {
+	height: 20px;
+	padding: 0px;
+	margin: 0px;
+	width: 90px;
+	font-size: large;
+}
 
-	span.fa-rater {
-		display: inline-block;
-		height: 10px;
-		padding: 0px;
-		margin: 0px;
-		width: 80px;
-		font-size: smaller;
-	}
+span.fa-rater {
+	display: inline-block;
+	height: 10px;
+	padding: 0px;
+	margin: 0px;
+	width: 80px;
+	font-size: smaller;
+}
 
-	ul.fa-rater li {
-		float: left;
-		list-style-type: none;
-		cursor: pointer;
-	}
+ul.fa-rater li {
+	float: left;
+	list-style-type: none;
+	cursor: pointer;
+}
 
-	.fa-star1:after,
-	.fa-star2:after,
-	.fa-star3:after,
-	.fa-star4:after,
-	.fa-star5:after {
-		content: "\f006";
-	}
+.fa-star1:after,
+.fa-star2:after,
+.fa-star3:after,
+.fa-star4:after,
+.fa-star5:after {
+	content: "\f006";
+}
 
-	.fa-rate1 .fa-star1:after,
-	.fa-rate2 .fa-star1:after,
-	.fa-rate3 .fa-star1:after,
-	.fa-rate4 .fa-star1:after,
-	.fa-rate5 .fa-star1:after,
-	.fa-rate2 .fa-star2:after,
-	.fa-rate3 .fa-star2:after,
-	.fa-rate4 .fa-star2:after,
-	.fa-rate5 .fa-star2:after,
-	.fa-rate3 .fa-star3:after,
-	.fa-rate4 .fa-star3:after,
-	.fa-rate5 .fa-star3:after,
-	.fa-rate4 .fa-star4:after,
-	.fa-rate5 .fa-star4:after,
-	.fa-rate5 .fa-star5:after {
-		content: "\f005" !important;
-	}
+.fa-rate1 .fa-star1:after,
+.fa-rate2 .fa-star1:after,
+.fa-rate3 .fa-star1:after,
+.fa-rate4 .fa-star1:after,
+.fa-rate5 .fa-star1:after,
+.fa-rate2 .fa-star2:after,
+.fa-rate3 .fa-star2:after,
+.fa-rate4 .fa-star2:after,
+.fa-rate5 .fa-star2:after,
+.fa-rate3 .fa-star3:after,
+.fa-rate4 .fa-star3:after,
+.fa-rate5 .fa-star3:after,
+.fa-rate4 .fa-star4:after,
+.fa-rate5 .fa-star4:after,
+.fa-rate5 .fa-star5:after {
+	content: "\f005" !important;
+}
 
-	.fa-status0:after {
-		content: "\f05a";
-	}
+.fa-status0:after {
+	content: "\f05a";
+}
 
-	.fa-status1:after {
-		content: "\f059";
-	}
+.fa-status1:after {
+	content: "\f059";
+}
 
-	.fa-status3:after {
-		content: "\f058";
-	}
+.fa-status3:after {
+	content: "\f058";
+}
 
 /* /17 */
 
 
 
 /* 18 No change, but grouped lines. Remove font-family + refactor later ? */
-	/* Modals  */
-	.amModal {
-		background-color: #fff;
-		border: solid 8px #ccc;
-		padding: 0px;
-		border-collapse: collapse;
-		z-index: 1002;
-		-moz-border-radius: 4px;
-		-webkit-border-radius: 4px;
-	}
+/* Modals  */
+.amModal {
+	background-color: #fff;
+	border: solid 8px #ccc;
+	padding: 0px;
+	border-collapse: collapse;
+	z-index: 1002;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+}
 
-	.amModalHeader {
-		
-		font-size: 11px;
-		font-weight: bold;
-		background-color: #666;
-		color: #fff;
-		height: 22px;
-		width: 100%;
-	}
+.amModalHeader {
 
-	.amModalHeaderText {
-		padding-left: 10px;
-		padding-top: 5px;
-		
-		font-size: 11px;
-		font-weight: bold;
-		background-color: #666;
-		color: #fff;
-		text-align: left;
-		float: left
-	}
+	font-size: 11px;
+	font-weight: bold;
+	background-color: #666;
+	color: #fff;
+	height: 22px;
+	width: 100%;
+}
 
-	.amModalCloseImg {
-		text-align: right;
-		padding-right: 2px;
-		cursor: pointer;
-		float: right;
-		padding-top: 3px;
-	}
-	
-	.amModal .amtbwrapper {
-		margin-top: 20px;
-	}
+.amModalHeaderText {
+	padding-left: 10px;
+	padding-top: 5px;
 
-	.amModal .amimagebutton,
-	.amModal .amimagebutton_over {
-		margin-right: 4px;
-	}
+	font-size: 11px;
+	font-weight: bold;
+	background-color: #666;
+	color: #fff;
+	text-align: left;
+	float: left
+}
+
+.amModalCloseImg {
+	text-align: right;
+	padding-right: 2px;
+	cursor: pointer;
+	float: right;
+	padding-top: 3px;
+}
+
+.amModal .amtbwrapper {
+	margin-top: 20px;
+}
+
+.amModal .amimagebutton,
+.amModal .amimagebutton_over {
+	margin-right: 4px;
+}
 
 /* /18 */
 
@@ -343,101 +346,103 @@
 
 
 /* 20 Needs Fontawesome */
-	.afrequired {
-		display: block;
-		width: 16px;
-		height: 16px;
-		background-image: url(images/sp-icons16.png);
-		background-repeat: no-repeat;
-		background-position: -464px 0px;
-	}
+.afrequired {
+	display: block;
+	width: 16px;
+	height: 16px;
+	background-image: url(images/sp-icons16.png);
+	background-repeat: no-repeat;
+	background-position: -464px 0px;
+}
+
 /* /20 */
 
 
 
 /* 21 No change > refacored later ? */
 
-	.afprop-table td {
-		vertical-align: top;
-	}
+.afprop-table td {
+	vertical-align: top;
+}
 
-	.afprop-input,
-	.afprop-select,
-	.afprop-chklist {
-		width: 175px;
-	}
+.afprop-input,
+.afprop-select,
+.afprop-chklist {
+	width: 175px;
+}
 
-	td.afprop-label {
-		white-space: nowrap;
-	}
+td.afprop-label {
+	white-space: nowrap;
+}
 
-	.afprop-required {
-		font-weight: bold;
-	}
+.afprop-required {
+	font-weight: bold;
+}
 
-	.afprop-list ul li {
-		list-style-type: none;
-	}
+.afprop-list ul li {
+	list-style-type: none;
+}
 
-	.afprop-chklist ul {
-		margin: 0;
-		padding: 0;
-	}
+.afprop-chklist ul {
+	margin: 0;
+	padding: 0;
+}
 
-	.afprop-chklist ul li {
-		list-style-type: none;
-		float: left;
-	}
+.afprop-chklist ul li {
+	list-style-type: none;
+	float: left;
+}
 
-	.afprop-chklist ul li span {
-		white-space: nowrap;
-	}
+.afprop-chklist ul li span {
+	white-space: nowrap;
+}
 
-	.afpg-current span,
-	.afpg-page span {
-		
-		font-size: 14px;
-		display: inline-block;
-		border: 1px solid #333;
-		width: 20px;
-		text-align: center;
-		color: #000;
-		font-weight: bold;
-		background-color: #cdcdcd;
-		padding-top: 2px;
-		padding-bottom: 2px
-	}
+.afpg-current span,
+.afpg-page span {
 
-	.afpg-current span {
-		background-color: #fff;
-	}
+	font-size: 14px;
+	display: inline-block;
+	border: 1px solid #333;
+	width: 20px;
+	text-align: center;
+	color: #000;
+	font-weight: bold;
+	background-color: #cdcdcd;
+	padding-top: 2px;
+	padding-bottom: 2px
+}
+
+.afpg-current span {
+	background-color: #fff;
+}
 
 /* /21*/
 
 /* 22 No change for now > FontAwsome ? */
-	.affolder {
-		background: transparent url(images/sp-folders.png) no-repeat 0 0px;
-		height: 27px;
-		width: 32px;
-	}
+.affolder {
+	background: transparent url(images/sp-folders.png) no-repeat 0 0px;
+	height: 27px;
+	width: 32px;
+}
 
-	.affolderclosed {
-		background: transparent url(images/sp-folders.png) no-repeat 0 -27px;
-		height: 27px;
-		width: 32px;
-	}
+.affolderclosed {
+	background: transparent url(images/sp-folders.png) no-repeat 0 -27px;
+	height: 27px;
+	width: 32px;
+}
 
-	.affoldernew {
-		background: transparent url(images/sp-folders.png) no-repeat 0 -54px;
-		height: 27px;
-		width: 32px;
-	}
+.affoldernew {
+	background: transparent url(images/sp-folders.png) no-repeat 0 -54px;
+	height: 27px;
+	width: 32px;
+}
 
-	.affolderblock {
-		background: transparent url(images/sp-folders.png) no-repeat 0 -81px;
-		height: 27px;
-		width: 32px;
-	}
+.affolderblock {
+	background: transparent url(images/sp-folders.png) no-repeat 0 -81px;
+	height: 27px;
+	width: 32px;
+}
+
 /* /22 */
 
 
@@ -454,10 +459,11 @@
 
 
 /* 27 Remove font sizes + styling -> */
-	.afhiddenstats,
-	.afhiddentime {
-		display: none;
-	}
+.afhiddenstats,
+.afhiddentime {
+	display: none;
+}
+
 /* /27 */
 
 
@@ -466,122 +472,123 @@
 
 /* 29 > should be converted to FA Icons? */
 /* Actions */
-	td.af-actions {
-		text-align: right;
-		vertical-align: top;
-	}
+td.af-actions {
+	text-align: right;
+	vertical-align: top;
+}
 
-	td.af-actions ul {
-		float: right;
-		margin-top: 0px;
-		margin-bottom: 0px;
-	}
+td.af-actions ul {
+	float: right;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
 
-	.af-actions ul {
-		margin-top: 0px;
-		margin-bottom: 0px;
-	}
+.af-actions ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
 
-	.af-actions ul li {
-		list-style-type: none;
-		float: left;
-		cursor: pointer;
-		margin-right: 2px;
-		border: 1px solid transparent;
-		padding: 1px;
-		padding-right: 2px;
-	}
+.af-actions ul li {
+	list-style-type: none;
+	float: left;
+	cursor: pointer;
+	margin-right: 2px;
+	border: 1px solid transparent;
+	padding: 1px;
+	padding-right: 2px;
+}
 
-	a.af-actions,
-	span.af-actions {
-		display: inline-block;
-		margin-right: 2px;
-		border: 1px solid transparent;
-		padding: 1px;
-		padding-right: 2px;
-	}
+a.af-actions,
+span.af-actions {
+	display: inline-block;
+	margin-right: 2px;
+	border: 1px solid transparent;
+	padding: 1px;
+	padding-right: 2px;
+}
 
-	.af-actions ul li:hover,
-	a.af-actions:hover {
-		border-color: #cdcdcd;
-	}
+.af-actions ul li:hover,
+a.af-actions:hover {
+	border-color: #cdcdcd;
+}
 
-	.af-actions ul li em,
-	a.af-actions em,
-	span.af-actions em {
-		float: left;
-		display: inline-block;
-		width: 16px;
-		height: 16px;
-		background-image: url(images/sp-icons16.png);
-		background-repeat: no-repeat;
-		margin-right: 2px;
-		margin-left: 2px;
-	}
+.af-actions ul li em,
+a.af-actions em,
+span.af-actions em {
+	float: left;
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-image: url(images/sp-icons16.png);
+	background-repeat: no-repeat;
+	margin-right: 2px;
+	margin-left: 2px;
+}
 
-	.af-actions ul li em {
-		float: left;
-		display: block;
-	}
+.af-actions ul li em {
+	float: left;
+	display: block;
+}
 
-	.af-actions ul li.af-delete em,
-	a.af-delete em {
-		background-position: -192px 0px;
-	}
+.af-actions ul li.af-delete em,
+a.af-delete em {
+	background-position: -192px 0px;
+}
 
-	.af-actions ul li.af-edit em,
-	a.af-edit em {
-		background-position: -208px 0px;
-	}
+.af-actions ul li.af-edit em,
+a.af-edit em {
+	background-position: -208px 0px;
+}
 
-	.af-actions ul li.af-quote em,
-	a.af-quote em {
-		background-position: -304px 0px;
-	}
+.af-actions ul li.af-quote em,
+a.af-quote em {
+	background-position: -304px 0px;
+}
 
-	.af-actions ul li.af-reply em,
-	a.af-reply em {
-		background-position: -336px 0px;
-	}
+.af-actions ul li.af-reply em,
+a.af-reply em {
+	background-position: -336px 0px;
+}
 
-	.af-actions ul li.af-alert em,
-	a.af-alert em {
-		background-position: -464px 0px;
-	}
+.af-actions ul li.af-alert em,
+a.af-alert em {
+	background-position: -464px 0px;
+}
 
-	.af-actions ul li.af-answered em,
-	span.af-answered em {
-		background-position: -176px 0px;
-	}
+.af-actions ul li.af-answered em,
+span.af-answered em {
+	background-position: -176px 0px;
+}
 
-	.af-actions ul li.af-markanswer em,
-	a.af-markanswer em {
-		background-position: -64px -16px;
-	}
+.af-actions ul li.af-markanswer em,
+a.af-markanswer em {
+	background-position: -64px -16px;
+}
 
-	.af-actions ul li.af-answered {
-		cursor: default;
-	}
+.af-actions ul li.af-answered {
+	cursor: default;
+}
 
-	.af-icon16 {
-		float: left;
-		display: block;
-		height: 15px;
-		width: 15px;
-		cursor: pointer;
-		background-image: url(images/sp-icons16.png);
-		background-repeat: no-repeat;
-		border: 1px solid transparent
-	}
+.af-icon16 {
+	float: left;
+	display: block;
+	height: 15px;
+	width: 15px;
+	cursor: pointer;
+	background-image: url(images/sp-icons16.png);
+	background-repeat: no-repeat;
+	border: 1px solid transparent
+}
 
-	.af-icon16:hover {
-		border-color: #cdcdcd;
-		background-color: #f5f5f5;
-	}
+.af-icon16:hover {
+	border-color: #cdcdcd;
+	background-color: #f5f5f5;
+}
 
-	.af-icon16-gear {
-		background-position: -81px -17px
-	}
+.af-icon16-gear {
+	background-position: -81px -17px
+}
+
 /* /29 */
 
 
@@ -589,65 +596,65 @@
 /* 30 -> */
 
 /* 31 notifications created from code*/
-	.amnotify {
-		width: 500px;
-		border: 2px solid #cdcdcd;
-		height: 48px;
-		float: left;
-		display: none;
-		position: absolute;
-		margin-left: auto;
-		margin-right: auto;
-	}
+.amnotify {
+	width: 500px;
+	border: 2px solid #cdcdcd;
+	height: 48px;
+	float: left;
+	display: none;
+	position: absolute;
+	margin-left: auto;
+	margin-right: auto;
+}
 
-	.amnotify div {
-		position: absolute;
-		margin-left: 12px;
-	}
+.amnotify div {
+	position: absolute;
+	margin-left: 12px;
+}
 
-	.amnotify i {
-		display: block;
-		height: 32px;
-		width: 32px;
-		position: relative;
-		top: 8px;
-		float: left;
-	}
+.amnotify i {
+	display: block;
+	height: 32px;
+	width: 32px;
+	position: relative;
+	top: 8px;
+	float: left;
+}
 
-	.amnotify span {
-		font-weight: bold;
-		margin-left: 18px;
-		position: relative;
-		top: 12px;
-		font-size: 16px;
-	}
+.amnotify span {
+	font-weight: bold;
+	margin-left: 18px;
+	position: relative;
+	top: 12px;
+	font-size: 16px;
+}
 
-	.amsuccess {
-		border-color: #669966;
-		background-color: #ccffcc;
-	}
+.amsuccess {
+	border-color: #669966;
+	background-color: #ccffcc;
+}
 
-	.amsuccess i {
-		background-image: url(images/check32.png);
-	}
+.amsuccess i {
+	background-image: url(images/check32.png);
+}
 
-	.amerror {
-		border-color: #cc0000;
-		background-color: #ffcccc;
-	}
+.amerror {
+	border-color: #cc0000;
+	background-color: #ffcccc;
+}
 
-	.amerror i {
-		background-image: url(images/error32.png);
-	}
+.amerror i {
+	background-image: url(images/error32.png);
+}
 
-	.amwarn {
-		border-color: #ffcc00;
-		background-color: #ffffcc;
-	}
+.amwarn {
+	border-color: #ffcc00;
+	background-color: #ffffcc;
+}
 
-	.amwarn i {
-		background-image: url(images/warn32.png);
-	}
+.amwarn i {
+	background-image: url(images/warn32.png);
+}
 
 /* / 31 */
 
@@ -660,6 +667,7 @@
 #aftopicmove .dnnForm {
 	min-width: inherit;
 }
+
 /* /33 */
 
 
@@ -667,477 +675,477 @@
 
 
 /* 35 > Could use some cleanup and use of FA icons */
-	/* Attachments */
+/* Attachments */
 
-	/* Editor */
-	.af-attach-upload .progress_bar_wrapper {
-		overflow: hidden;
-	}
+/* Editor */
+.af-attach-upload .progress_bar_wrapper {
+	overflow: hidden;
+}
 
-	.af-attach-upload .progress-bar div {
-		background-image: url('Images/progress.gif');
-		position: relative;
-		padding: 0 !important;
-	}
+.af-attach-upload .progress-bar div {
+	background-image: url('Images/progress.gif');
+	position: relative;
+	padding: 0 !important;
+}
 
-	.af-attach-upload .fileupload-picker>span {
-		position: relative;
-		display: inline-block;
-	}
+.af-attach-upload .fileupload-picker>span {
+	position: relative;
+	display: inline-block;
+}
 
-	.af-attach-upload .fileupload-progress {
-		padding: 10px;
-		margin-bottom: 10px;
-	}
+.af-attach-upload .fileupload-progress {
+	padding: 10px;
+	margin-bottom: 10px;
+}
 
-	.af-attach-upload .fileupload-progress-percent {
-		float: right;
-	}
+.af-attach-upload .fileupload-progress-percent {
+	float: right;
+}
 
-	.af-attach-upload .fileupload-progress-bar {
-		height: 20px !important;
-	}
+.af-attach-upload .fileupload-progress-bar {
+	height: 20px !important;
+}
 
-	.af-attach-editor-list table {
-		padding: 0;
-		margin: 0;
-		border-collapse: collapse;
-		width: 100%;
-	}
+.af-attach-editor-list table {
+	padding: 0;
+	margin: 0;
+	border-collapse: collapse;
+	width: 100%;
+}
 
-	.af-attach-editor-list table thead tr {
-		background-color: #333;
-		color: #fff;
-	}
+.af-attach-editor-list table thead tr {
+	background-color: #333;
+	color: #fff;
+}
 
-	.af-attach-editor-list table tbody tr td {
-		background-color: #fff;
-		border-bottom: solid 1px #ddd;
-		vertical-align: middle;
-	}
+.af-attach-editor-list table tbody tr td {
+	background-color: #fff;
+	border-bottom: solid 1px #ddd;
+	vertical-align: middle;
+}
 
-	.af-attach-editor-list table tr td:nth-child(1) {
-		text-align: left;
-	}
+.af-attach-editor-list table tr td:nth-child(1) {
+	text-align: left;
+}
 
-	.af-attach-editor-list table tr td:nth-child(2) {
-		width: 100px;
-		text-align: right;
-	}
+.af-attach-editor-list table tr td:nth-child(2) {
+	width: 100px;
+	text-align: right;
+}
 
-	.af-attach-editor-list table tr td:nth-child(3) {
-		width: 75px;
-	}
+.af-attach-editor-list table tr td:nth-child(3) {
+	width: 75px;
+}
 
-	.af-attach-editor-list table tr td {
-		text-align: center;
-		padding: 4px;
-		margin: 0px;
-	}
+.af-attach-editor-list table tr td {
+	text-align: center;
+	padding: 4px;
+	margin: 0px;
+}
 
-	/* Post List */
-	.af-attach-post-list {}
+/* Post List */
+.af-attach-post-list {}
 
-	.af-attach-post-list>span {
-		font-size: .9em;
-		opacity: 0.4;
-	}
+.af-attach-post-list>span {
+	font-size: .9em;
+	opacity: 0.4;
+}
 
-	.af-attach-post-list ul {
-		padding: 0px;
-		margin: 0px;
-	}
+.af-attach-post-list ul {
+	padding: 0px;
+	margin: 0px;
+}
 
-	.af-attach-post-list ul li {
-		list-style-type: none;
-		margin: 5px 10px 5px 0px;
-		padding: 0px;
-		display: inline-block;
-	}
+.af-attach-post-list ul li {
+	list-style-type: none;
+	margin: 5px 10px 5px 0px;
+	padding: 0px;
+	display: inline-block;
+}
 
-	.af-attach-post-list ul li a {
-		padding: 5px 10px 5px 0px;
-		display: inline-block;
-		border: solid 1px #ddd;
-		background-color: #eee;
-		border-radius: 4px;
-		-moz-border-radius: 4px;
-		text-decoration: none !important
-	}
+.af-attach-post-list ul li a {
+	padding: 5px 10px 5px 0px;
+	display: inline-block;
+	border: solid 1px #ddd;
+	background-color: #eee;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	text-decoration: none !important
+}
 
 /* /35 */
 
 /* 36 Switch to FA Icons */
 
-	/* File Icons - Also used in attachments*/
-	.af-fileicon {
-		display: inline-block;
-		width: 16px;
-		height: 16px;
-		background: url(images/af-fileicon.png) no-repeat top left;
-		background-position: -800px 0;
-		vertical-align: text-bottom;
-		margin: 0px 10px;
-	}
-
-	.af-fileicon-7z {
-		background-position: 0 0;
-	}
-
-	.af-fileicon-ai {
-		background-position: -32px 0;
-	}
-
-	.af-fileicon-aiff {
-		background-position: -64px 0;
-	}
-
-	.af-fileicon-asc {
-		background-position: -96px 0;
-	}
-
-	.af-fileicon-audio {
-		background-position: -128px 0;
-	}
-
-	.af-fileicon-bin {
-		background-position: -160px 0;
-	}
-
-	.af-fileicon-bmp,
-	.af-fileicon-image,
-	.af-fileicon-tif,
-	.af-fileicon-tiff {
-		background-position: -192px 0;
-	}
-
-	.af-fileicon-bz2 {
-		background-position: -224px 0;
-	}
-
-	.af-fileicon-c {
-		background-position: -256px 0;
-	}
-
-	.af-fileicon-cfc {
-		background-position: -288px 0;
-	}
-
-	.af-fileicon-cfm {
-		background-position: -320px 0;
-	}
-
-	.af-fileicon-chm {
-		background-position: -352px 0;
-	}
-
-	.af-fileicon-class {
-		background-position: -384px 0;
-	}
-
-	.af-fileicon-conf {
-		background-position: -416px 0;
-	}
-
-	.af-fileicon-cpp {
-		background-position: -448px 0;
-	}
-
-	.af-fileicon-cs {
-		background-position: -480px 0;
-	}
-
-	.af-fileicon-css {
-		background-position: -512px 0;
-	}
-
-	.af-fileicon-csv {
-		background-position: -544px 0;
-	}
-
-	.af-fileicon-deb {
-		background-position: -576px 0;
-	}
-
-	.af-fileicon-divx {
-		background-position: -608px 0;
-	}
-
-	.af-fileicon-doc,
-	.af-fileicon-docm,
-	.af-fileicon-docx {
-		background-position: -640px 0;
-	}
-
-	.af-fileicon-dot {
-		background-position: -672px 0;
-	}
-
-	.af-fileicon-eml {
-		background-position: -704px 0;
-	}
-
-	.af-fileicon-enc {
-		background-position: -736px 0;
-	}
-
-	.af-fileicon-exe {
-		background-position: -768px 0;
-	}
-
-	.af-fileicon-file {
-		background-position: -800px 0;
-	}
-
-	.af-fileicon-gif {
-		background-position: -832px 0;
-	}
-
-	.af-fileicon-gz {
-		background-position: -864px 0;
-	}
-
-	.af-fileicon-hlp {
-		background-position: -896px 0;
-	}
-
-	.af-fileicon-htm {
-		background-position: -928px 0;
-	}
-
-	.af-fileicon-html {
-		background-position: -960px 0;
-	}
-
-	.af-fileicon-iso {
-		background-position: -992px 0;
-	}
-
-	.af-fileicon-jar {
-		background-position: -1024px 0;
-	}
-
-	.af-fileicon-java {
-		background-position: -1056px 0;
-	}
-
-	.af-fileicon-jpeg {
-		background-position: -1088px 0;
-	}
-
-	.af-fileicon-jpg {
-		background-position: -1120px 0;
-	}
-
-	.af-fileicon-js {
-		background-position: -1152px 0;
-	}
-
-	.af-fileicon-lua {
-		background-position: -1184px 0;
-	}
-
-	.af-fileicon-m {
-		background-position: -1216px 0;
-	}
-
-	.af-fileicon-mm {
-		background-position: -1248px 0;
-	}
-
-	.af-fileicon-mov {
-		background-position: -1280px 0;
-	}
-
-	.af-fileicon-mp3 {
-		background-position: -1312px 0;
-	}
-
-	.af-fileicon-mp4,
-	.af-fileicon-mpeg,
-	.af-fileicon-mpg {
-		background-position: -1344px 0;
-	}
-
-	.af-fileicon-odc {
-		background-position: -1376px 0;
-	}
-
-	.af-fileicon-odf {
-		background-position: -1408px 0;
-	}
-
-	.af-fileicon-odg {
-		background-position: -1440px 0;
-	}
-
-	.af-fileicon-odi {
-		background-position: -1472px 0;
-	}
-
-	.af-fileicon-odp {
-		background-position: -1504px 0;
-	}
-
-	.af-fileicon-ods {
-		background-position: -1536px 0;
-	}
-
-	.af-fileicon-odt {
-		background-position: -1568px 0;
-	}
-
-	.af-fileicon-ogg {
-		background-position: -1600px 0;
-	}
-
-	.af-fileicon-pdf {
-		background-position: -1632px 0;
-	}
-
-	.af-fileicon-pgp {
-		background-position: -1664px 0;
-	}
-
-	.af-fileicon-php {
-		background-position: -1696px 0;
-	}
-
-	.af-fileicon-pl {
-		background-position: -1728px 0;
-	}
-
-	.af-fileicon-png {
-		background-position: -1760px 0;
-	}
-
-	.af-fileicon-ppt,
-	.af-fileicon-pptm,
-	.af-fileicon-pptx {
-		background-position: -1792px 0;
-	}
-
-	.af-fileicon-ps {
-		background-position: -1824px 0;
-	}
-
-	.af-fileicon-py {
-		background-position: -1856px 0;
-	}
-
-	.af-fileicon-ram {
-		background-position: -1888px 0;
-	}
-
-	.af-fileicon-rar {
-		background-position: -1920px 0;
-	}
-
-	.af-fileicon-rb {
-		background-position: -1952px 0;
-	}
-
-	.af-fileicon-rm {
-		background-position: 0 -32px;
-	}
-
-	.af-fileicon-rpm {
-		background-position: -32px -32px;
-	}
-
-	.af-fileicon-rtf {
-		background-position: -64px -32px;
-	}
-
-	.af-fileicon-sig {
-		background-position: -96px -32px;
-	}
-
-	.af-fileicon-sql {
-		background-position: -128px -32px;
-	}
-
-	.af-fileicon-swf {
-		background-position: -160px -32px;
-	}
-
-	.af-fileicon-sxc {
-		background-position: -192px -32px;
-	}
-
-	.af-fileicon-sxd {
-		background-position: -224px -32px;
-	}
-
-	.af-fileicon-sxi {
-		background-position: -256px -32px;
-	}
-
-	.af-fileicon-sxw {
-		background-position: -288px -32px;
-	}
-
-	.af-fileicon-tar {
-		background-position: -320px -32px;
-	}
-
-	.af-fileicon-tex {
-		background-position: -352px -32px;
-	}
-
-	.af-fileicon-tgz {
-		background-position: -384px -32px;
-	}
-
-	.af-fileicon-txt {
-		background-position: -416px -32px;
-	}
-
-	.af-fileicon-vcf {
-		background-position: -448px -32px;
-	}
-
-	.af-fileicon-video {
-		background-position: -480px -32px;
-	}
-
-	.af-fileicon-vsd {
-		background-position: -512px -32px;
-	}
-
-	.af-fileicon-wav {
-		background-position: -544px -32px;
-	}
-
-	.af-fileicon-wma {
-		background-position: -576px -32px;
-	}
-
-	.af-fileicon-wmv {
-		background-position: -608px -32px;
-	}
-
-	.af-fileicon-xls,
-	.af-fileicon-xlsm,
-	.af-fileicon-xlsx {
-		background-position: -640px -32px;
-	}
-
-	.af-fileicon-xml {
-		background-position: -672px -32px;
-	}
-
-	.af-fileicon-xpi {
-		background-position: -704px -32px;
-	}
-
-	.af-fileicon-xvid {
-		background-position: -736px -32px;
-	}
-
-	.af-fileicon-zip {
-		background-position: -768px -32px;
-	}
+/* File Icons - Also used in attachments*/
+.af-fileicon {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background: url(images/af-fileicon.png) no-repeat top left;
+	background-position: -800px 0;
+	vertical-align: text-bottom;
+	margin: 0px 10px;
+}
+
+.af-fileicon-7z {
+	background-position: 0 0;
+}
+
+.af-fileicon-ai {
+	background-position: -32px 0;
+}
+
+.af-fileicon-aiff {
+	background-position: -64px 0;
+}
+
+.af-fileicon-asc {
+	background-position: -96px 0;
+}
+
+.af-fileicon-audio {
+	background-position: -128px 0;
+}
+
+.af-fileicon-bin {
+	background-position: -160px 0;
+}
+
+.af-fileicon-bmp,
+.af-fileicon-image,
+.af-fileicon-tif,
+.af-fileicon-tiff {
+	background-position: -192px 0;
+}
+
+.af-fileicon-bz2 {
+	background-position: -224px 0;
+}
+
+.af-fileicon-c {
+	background-position: -256px 0;
+}
+
+.af-fileicon-cfc {
+	background-position: -288px 0;
+}
+
+.af-fileicon-cfm {
+	background-position: -320px 0;
+}
+
+.af-fileicon-chm {
+	background-position: -352px 0;
+}
+
+.af-fileicon-class {
+	background-position: -384px 0;
+}
+
+.af-fileicon-conf {
+	background-position: -416px 0;
+}
+
+.af-fileicon-cpp {
+	background-position: -448px 0;
+}
+
+.af-fileicon-cs {
+	background-position: -480px 0;
+}
+
+.af-fileicon-css {
+	background-position: -512px 0;
+}
+
+.af-fileicon-csv {
+	background-position: -544px 0;
+}
+
+.af-fileicon-deb {
+	background-position: -576px 0;
+}
+
+.af-fileicon-divx {
+	background-position: -608px 0;
+}
+
+.af-fileicon-doc,
+.af-fileicon-docm,
+.af-fileicon-docx {
+	background-position: -640px 0;
+}
+
+.af-fileicon-dot {
+	background-position: -672px 0;
+}
+
+.af-fileicon-eml {
+	background-position: -704px 0;
+}
+
+.af-fileicon-enc {
+	background-position: -736px 0;
+}
+
+.af-fileicon-exe {
+	background-position: -768px 0;
+}
+
+.af-fileicon-file {
+	background-position: -800px 0;
+}
+
+.af-fileicon-gif {
+	background-position: -832px 0;
+}
+
+.af-fileicon-gz {
+	background-position: -864px 0;
+}
+
+.af-fileicon-hlp {
+	background-position: -896px 0;
+}
+
+.af-fileicon-htm {
+	background-position: -928px 0;
+}
+
+.af-fileicon-html {
+	background-position: -960px 0;
+}
+
+.af-fileicon-iso {
+	background-position: -992px 0;
+}
+
+.af-fileicon-jar {
+	background-position: -1024px 0;
+}
+
+.af-fileicon-java {
+	background-position: -1056px 0;
+}
+
+.af-fileicon-jpeg {
+	background-position: -1088px 0;
+}
+
+.af-fileicon-jpg {
+	background-position: -1120px 0;
+}
+
+.af-fileicon-js {
+	background-position: -1152px 0;
+}
+
+.af-fileicon-lua {
+	background-position: -1184px 0;
+}
+
+.af-fileicon-m {
+	background-position: -1216px 0;
+}
+
+.af-fileicon-mm {
+	background-position: -1248px 0;
+}
+
+.af-fileicon-mov {
+	background-position: -1280px 0;
+}
+
+.af-fileicon-mp3 {
+	background-position: -1312px 0;
+}
+
+.af-fileicon-mp4,
+.af-fileicon-mpeg,
+.af-fileicon-mpg {
+	background-position: -1344px 0;
+}
+
+.af-fileicon-odc {
+	background-position: -1376px 0;
+}
+
+.af-fileicon-odf {
+	background-position: -1408px 0;
+}
+
+.af-fileicon-odg {
+	background-position: -1440px 0;
+}
+
+.af-fileicon-odi {
+	background-position: -1472px 0;
+}
+
+.af-fileicon-odp {
+	background-position: -1504px 0;
+}
+
+.af-fileicon-ods {
+	background-position: -1536px 0;
+}
+
+.af-fileicon-odt {
+	background-position: -1568px 0;
+}
+
+.af-fileicon-ogg {
+	background-position: -1600px 0;
+}
+
+.af-fileicon-pdf {
+	background-position: -1632px 0;
+}
+
+.af-fileicon-pgp {
+	background-position: -1664px 0;
+}
+
+.af-fileicon-php {
+	background-position: -1696px 0;
+}
+
+.af-fileicon-pl {
+	background-position: -1728px 0;
+}
+
+.af-fileicon-png {
+	background-position: -1760px 0;
+}
+
+.af-fileicon-ppt,
+.af-fileicon-pptm,
+.af-fileicon-pptx {
+	background-position: -1792px 0;
+}
+
+.af-fileicon-ps {
+	background-position: -1824px 0;
+}
+
+.af-fileicon-py {
+	background-position: -1856px 0;
+}
+
+.af-fileicon-ram {
+	background-position: -1888px 0;
+}
+
+.af-fileicon-rar {
+	background-position: -1920px 0;
+}
+
+.af-fileicon-rb {
+	background-position: -1952px 0;
+}
+
+.af-fileicon-rm {
+	background-position: 0 -32px;
+}
+
+.af-fileicon-rpm {
+	background-position: -32px -32px;
+}
+
+.af-fileicon-rtf {
+	background-position: -64px -32px;
+}
+
+.af-fileicon-sig {
+	background-position: -96px -32px;
+}
+
+.af-fileicon-sql {
+	background-position: -128px -32px;
+}
+
+.af-fileicon-swf {
+	background-position: -160px -32px;
+}
+
+.af-fileicon-sxc {
+	background-position: -192px -32px;
+}
+
+.af-fileicon-sxd {
+	background-position: -224px -32px;
+}
+
+.af-fileicon-sxi {
+	background-position: -256px -32px;
+}
+
+.af-fileicon-sxw {
+	background-position: -288px -32px;
+}
+
+.af-fileicon-tar {
+	background-position: -320px -32px;
+}
+
+.af-fileicon-tex {
+	background-position: -352px -32px;
+}
+
+.af-fileicon-tgz {
+	background-position: -384px -32px;
+}
+
+.af-fileicon-txt {
+	background-position: -416px -32px;
+}
+
+.af-fileicon-vcf {
+	background-position: -448px -32px;
+}
+
+.af-fileicon-video {
+	background-position: -480px -32px;
+}
+
+.af-fileicon-vsd {
+	background-position: -512px -32px;
+}
+
+.af-fileicon-wav {
+	background-position: -544px -32px;
+}
+
+.af-fileicon-wma {
+	background-position: -576px -32px;
+}
+
+.af-fileicon-wmv {
+	background-position: -608px -32px;
+}
+
+.af-fileicon-xls,
+.af-fileicon-xlsm,
+.af-fileicon-xlsx {
+	background-position: -640px -32px;
+}
+
+.af-fileicon-xml {
+	background-position: -672px -32px;
+}
+
+.af-fileicon-xpi {
+	background-position: -704px -32px;
+}
+
+.af-fileicon-xvid {
+	background-position: -736px -32px;
+}
+
+.af-fileicon-zip {
+	background-position: -768px -32px;
+}
 
 /* /36 */
 
@@ -1155,13 +1163,13 @@
 	border: solid 0px #aaa;
 }
 
-	.afSecGrid table td {
-		padding: 2px;
-	}
+.afSecGrid table td {
+	padding: 2px;
+}
 
-	.afSecGrid .rowhd {
-		text-align: right;
-	}
+.afSecGrid .rowhd {
+	text-align: right;
+}
 
 .afgridhd {
 	font-weight: bold;
@@ -1238,11 +1246,11 @@
 	text-align: center !important;
 }
 
-	.afSecGrid .gridcheck input {
-		padding: 0;
-		margin: 0;
-		margin: 4px;
-	}
+.afSecGrid .gridcheck input {
+	padding: 0;
+	margin: 0;
+	margin: 4px;
+}
 
 .afSecGrid .rowhd {
 	font-weight: bold;
@@ -1252,14 +1260,15 @@
 
 
 /* quick fix for secuirty width */
-.afsecgrid > div > table {
+.afsecgrid>div>table {
 	table-layout: fixed;
 	width: 100%;
 }
 
-	.afsecgrid > div > table > tbody > tr > td:first-child {
-		width: 200px;
-	}
+.afsecgrid>div>table>tbody>tr>td:first-child {
+	width: 200px;
+}
+
 /* /38 */
 
 
@@ -1276,6 +1285,7 @@
 	margin-right: 8px;
 	list-style-type: none;
 }
+
 /* /39 */
 
 /* 40 -> */
@@ -1283,106 +1293,107 @@
 
 
 /* 41 Styling of Forum view, part fo the classes from ascx > cleanup? */
- 
-	@media only screen and (max-width: 768px),
-	only screen and (max-device-width: 768px) {
 
-		.af-lastpost,
-		.af-colstats,
-		.afgrouprow-m,
-		.afgrouprow-l {
-			display: none;
-		}
+@media only screen and (max-width: 768px),
+only screen and (max-device-width: 768px) {
 
-		.af-colstats_responsive {
-			display: inline;
-		}
-
-		.af_lastpost_responsive {
-			display: block;
-		}
-
-		.afpostinfo_responsive {
-			position: static;
-			width: 100%;
-			margin-right: 0px;
-			clear: both;
-		}
-
-		.afpostcontent_responsive {
-			position: static;
-			padding-left: 0px;
-			width: 100%;
-			clear: both;
-		}
-
-		.afpostinfo_responsive .afavatarprofile {
-			float: left;
-			width: 125px;
-			/*position:absolute;*/
-			min-height: 100px;
-			padding-right: 5px;
-		}
-
-		.afpostinfo_responsive .aftopprofile {
-			float: left;
-			/*padding-left: 130px;*/
-			margin-left: 10px;
-			padding-right: 5px;
-			width: 125px;
-			min-height: 100px;
-			/*position:absolute;*/
-		}
-
-		.afpostinfo_responsive .afbottomprofile {
-			float: left;
-			/*padding-left: 250px;*/
-			margin-left: 10px;
-			width: 125px;
-			min-height: 100px;
-			padding-right: 5px;
-			/*position:absolute;*/
-		}
-
-		/*.afpostinfo_responsive .afavatarprofile *, */
-		.afpostinfo_responsive .aftopprofile *,
-		.afpostinfo_responsive .afbottomprofile * {
-			/*display:block;*/
-		}
-
-		ul.af-right {
-			float: left;
-		}
-
-		/*.afhiddenstats,*/
-		.afhiddentime {
-			display: inline-block;
-		}
-
+	.af-lastpost,
+	.af-colstats,
+	.afgrouprow-m,
+	.afgrouprow-l {
+		display: none;
 	}
 
-	@media only screen and (max-width: 490px),
-	only screen and (max-device-width: 490px) {
-		.afpostinfo_responsive .afbottomprofile {
-			clear: both;
-			margin-left: 0px;
-		}
-
+	.af-colstats_responsive {
+		display: inline;
 	}
+
+	.af_lastpost_responsive {
+		display: block;
+	}
+
+	.afpostinfo_responsive {
+		position: static;
+		width: 100%;
+		margin-right: 0px;
+		clear: both;
+	}
+
+	.afpostcontent_responsive {
+		position: static;
+		padding-left: 0px;
+		width: 100%;
+		clear: both;
+	}
+
+	.afpostinfo_responsive .afavatarprofile {
+		float: left;
+		width: 125px;
+		/*position:absolute;*/
+		min-height: 100px;
+		padding-right: 5px;
+	}
+
+	.afpostinfo_responsive .aftopprofile {
+		float: left;
+		/*padding-left: 130px;*/
+		margin-left: 10px;
+		padding-right: 5px;
+		width: 125px;
+		min-height: 100px;
+		/*position:absolute;*/
+	}
+
+	.afpostinfo_responsive .afbottomprofile {
+		float: left;
+		/*padding-left: 250px;*/
+		margin-left: 10px;
+		width: 125px;
+		min-height: 100px;
+		padding-right: 5px;
+		/*position:absolute;*/
+	}
+
+	/*.afpostinfo_responsive .afavatarprofile *, */
+	.afpostinfo_responsive .aftopprofile *,
+	.afpostinfo_responsive .afbottomprofile * {
+		/*display:block;*/
+	}
+
+	ul.af-right {
+		float: left;
+	}
+
+	/*.afhiddenstats,*/
+	.afhiddentime {
+		display: inline-block;
+	}
+
+}
+
+@media only screen and (max-width: 490px),
+only screen and (max-device-width: 490px) {
+	.afpostinfo_responsive .afbottomprofile {
+		clear: both;
+		margin-left: 0px;
+	}
+
+}
 
 /* /41 */
 
 /* 42 moderator is editor wrapper */
 div.dcf-mod-edit-wrap {
 	background-color: salmon;
-	color: white;
+	color: inherit;
 	padding: 10px;
 	text-align: center;
 	font-weight: bold;
 }
+
 /* /42 */
 
- 
+
 /* 43 collapsible */
 .dcf-collapsible {
 	text-align: center;
@@ -1398,26 +1409,168 @@ div.dcf-mod-edit-wrap {
 }
 
 /* not sure these are needed but put them here to use if desired */
-.dcf-collapsible-opened {
-}
+.dcf-collapsible-opened {}
+
 /* not sure these are needed but put them here to use if desired */
-.dcf-collapsible-closed {
-}
+.dcf-collapsible-closed {}
+
 /* /43 */
 
 
 /* Post preview Div, shown by adding element Styling using JS */
-.dcf-preview{
-	display:none;
+.dcf-preview {
+	display: none;
 	border: solid 1px #eee;
 }
 
-.dcf-preview .dcf-preview-bar{
+.dcf-preview .dcf-preview-bar {
 	background: #eee;
 	text-align: right;
 	padding: 0.2em;
 }
 
-.dcf-preview .dcf-preview-bar a{
+.dcf-preview .dcf-preview-bar a {
 	cursor: pointer;
+}
+
+
+/* subscription pager */
+
+.dcf-pager * {
+	font-size: 14px;
+	display: inline-block;
+	text-align: center;
+	color: #000;
+	padding: 3px;
+}
+
+.dcf-pager span {
+	border: 1px solid #333;
+	font-weight: bold;
+	background-color: #cdcdcd;
+}
+
+/* toolbar drop down */
+
+.dcf-toolbar-drop-down-menu {
+	position: relative;
+	display: inline-block;
+}
+
+.dcf-toolbar-drop-down-menu-button {
+	border: none;
+	cursor: pointer;
+	background: #fff;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dcf-toolbar-drop-down-menu-content {
+	display: none;
+	position: absolute;
+	background-color: #f9f9f9;
+	width: 13em;
+	min-width: 100%;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dcf-toolbar-drop-down-menu-content a {
+	padding: 2px 2px;
+	text-decoration: none;
+	display: block;
+}
+
+.dcf-toolbar-drop-down-menu-content a:hover {
+	background-color: #f1f1f1
+}
+
+.dcf-toolbar-drop-down-menu:hover .dcf-toolbar-drop-down-menu-button {
+	background-color: #f1f1f1;
+}
+
+.dcf-toolbar-drop-down-menu:hover .dcf-toolbar-drop-down-menu-content {
+	display: block;
+}
+
+
+
+/* placeholders for topic splitter */
+
+.dcf-split-buttons-wrap {}
+
+#dcf-split-buttons {}
+
+.dcf-split-buttons {}
+
+.dcf-split-button-header {}
+
+.dcf-split-button-save {}
+
+.dcf-split-button-cancel {}
+
+.dcf-split-checkbox-wrap {
+	float: right;
+}
+
+.dcf-split-checkbox {}
+
+.dcf-split-checkbox-label {
+	margin-left: 3px;
+}
+
+/* need z-index on search popup */
+.dnn-community-forums * .dcf-search-popup {
+	z-index: 9 !important;
+}
+
+/* subtle UI tweaks for titles */
+.dnn-community-forums * .aftitle {
+	font-size: 1.1em;
+	font-weight: bolder;
+}
+
+/* subtle UI tweaks for section headers */
+.dnn-community-forums * .afsectionhd {
+	background-color: #f9f9f9;
+	font-size: 1.1em;
+	font-weight: bolder;
+}
+
+/* wider subject and summary input */
+.dnn-community-forums * .dcf-topic-edit-subject {
+	width: 95% !important;
+}
+
+.dnn-community-forums * .dcf-topic-edit-summary {
+	width: 95% !important;
+}
+
+/* poll graphics removed from module.css and moved to _legacy/theme.css need to be put back */
+
+.afpollbar {
+	background-color: #ff0000;
+}
+
+.afpollresults {
+	border: solid 1px #333;
+}
+}
+
+/* pin & lock from topic view */
+.dnn-community-forums * .dcf-topic-lock-lock {
+}
+.dnn-community-forums * .dcf-topic-lock-unlock {
+}
+.dnn-community-forums * .dcf-topic-pin-pin {
+	transform: rotate(45deg);
+}
+.dnn-community-forums * .dcf-topic-pin-unpin {
+	transform: rotate(0deg);
+}
+.dnn-community-forums * .dcf-topic-reply-locked {
+	display:none;
+}
+.dnn-community-forums * .dcf-topic-reply-unlocked {
+	display:inline-flex;
 }

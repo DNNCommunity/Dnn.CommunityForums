@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -36,6 +36,12 @@ using DotNetNuke.Data;
 using System.Reflection;
 using DotNetNuke.Instrumentation;
 using System.Web.UI;
+using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.Localization;
+using System.Globalization;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -64,7 +70,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 // templates are loaded; map new forumview template id
                 UpdateForumViewTemplateId(PortalId, ModuleId);
 
-                return true;
+                // Create "User Banned" core messaging notification type new in 08.01.00
+				ForumsConfig.Install_BanUser_NotificationType_080100();
+                
+				return true;
 			}
 			catch (Exception ex)
 			{
@@ -153,9 +162,9 @@ namespace DotNetNuke.Modules.ActiveForums
 		}
 
 		private void LoadFilters(int PortalId, int ModuleId)
-		{
-			Utilities.ImportFilter(PortalId, ModuleId);
-		}
+        {
+            DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(PortalId, ModuleId);
+        }
 
 		private void LoadRanks(int PortalId, int ModuleId)
 		{
@@ -205,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     for (int i = 0; i < xNodeList.Count; i++)
 					{
-						var gi = new ForumGroupInfo
+						var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
 						             {
 						                 ModuleId = ModuleId,
 						                 ForumGroupId = -1,
@@ -217,10 +226,9 @@ namespace DotNetNuke.Modules.ActiveForums
 						                 GroupSettingsKey = string.Empty,
 						                 PermissionsId = -1
 						             };
-					    var gc = new ForumGroupController();
-						int groupId;
-						groupId = gc.Groups_Save(PortalId, gi, true);
-						gi = gc.GetForumGroup(ModuleId, groupId);
+					    var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
+						int groupId = gc.Groups_Save(PortalId, gi, true);
+						gi = gc.GetById(groupId, ModuleId);
 						string sKey = string.Concat("G:", groupId.ToString());
 						string sAllowHTML = "false";
 						if (xNodeList[i].Attributes["allowhtml"] != null)
@@ -231,9 +239,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicTemplateId, Convert.ToString(TopicViewTemplateId));
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.UseFilter, "true");
-						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "true");
+						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowLikes, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "true");
+                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "false");
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "true");
 						Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowRSS, "true");
@@ -284,8 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums
 								System.Xml.XmlNodeList cNodes = xNodeList[i].ChildNodes;
 								for (int c = 0; c < cNodes.Count; c++)
 								{
-									var fi = new Forum();
-									var fc = new ForumController();
+									var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
 									fi.ForumID = -1;
 									fi.ModuleId = ModuleId;
 									fi.ForumGroupId = groupId;
@@ -293,13 +300,12 @@ namespace DotNetNuke.Modules.ActiveForums
 									fi.ForumName = cNodes[c].Attributes["forumname"].Value;
 									fi.ForumDesc = cNodes[c].Attributes["forumdesc"].Value;
 									fi.PrefixURL = cNodes[c].Attributes["prefixurl"].Value;
-									fi.ForumSecurityKey = string.Concat("G:", groupId.ToString());
 									fi.ForumSettingsKey = string.Concat("G:", groupId.ToString());
 									fi.Active = cNodes[c].Attributes["active"].Value == "1";
 									fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
 									fi.SortOrder = c;
 									fi.PermissionsId = gi.PermissionsId;
-									fc.Forums_Save(PortalId, fi, true, true);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, true, true, true);
 								}
 							}
 						}
@@ -325,8 +331,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
 			{
-				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_legacy")));
-				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath + "_default")));
+				DotNetNuke.Modules.ActiveForums.Utilities.CopyFolder(new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_default")), new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_legacy")));
+				DotNetNuke.Modules.ActiveForums.Utilities.DeleteFolder(new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath + "_default")));
             }
             catch (Exception ex)
             {
@@ -338,7 +344,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+                var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
                 System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
                 foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
                 {
@@ -356,16 +362,16 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         internal void Install_Or_Upgrade_MoveTemplates()
 		{
-			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.TemplatesPath)))
+			if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
 			{
-				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.TemplatesPath));
+				System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
 			}
-			if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath)))
+			if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.DefaultTemplatePath)))
 			{
-				System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath));
+				System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
 			}
 
-			var di = new System.IO.DirectoryInfo(HttpContext.Current.Server.MapPath(Globals.ThemesPath));
+			var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ThemesPath));
 			System.IO.DirectoryInfo[] themeFolders = di.GetDirectories();
 			foreach (System.IO.DirectoryInfo themeFolder in themeFolders)
 			{
@@ -454,7 +460,6 @@ namespace DotNetNuke.Modules.ActiveForums
             string connectionString = new Connection().connectionString;
             string dbPrefix = new Connection().dbPrefix;
             var tc = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController();
-			var fc = new DotNetNuke.Modules.ActiveForums.ForumController();
 
             using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, CommandType.Text, $"SELECT f.PortalId,f.ModuleId,ft.ForumId,t.topicId,c.Subject FROM {dbPrefix}Topics t INNER JOIN {dbPrefix}ForumTopics ft ON ft.TopicId = t.TopicId INNER JOIN {dbPrefix}Content c ON c.ContentId = t.ContentId INNER JOIN {dbPrefix}Forums f ON f.ForumId = ft.ForumId WHERE t.URL = ''"))
             {
@@ -465,13 +470,25 @@ namespace DotNetNuke.Modules.ActiveForums
                     int forumId = (Utilities.SafeConvertInt(dr["ForumId"]));
                     int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
                     string subject = (Utilities.SafeConvertString(dr["Subject"]));
-                    Forum forumInfo = fc.GetForum(portalId, moduleId, forumId);
-					DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.Get(topicId);
-					topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.GetById(topicId);
+                    topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
 					tc.Update(topicInfo); 
                 }
                 dr.Close();
             } 
+		}
+		internal static void Install_BanUser_NotificationType_080100()
+        {
+            string notificationTypeName = Globals.BanUserNotificationType;
+            string notificationTypeDescription = Globals.BanUserNotificationTypeDescription;
+            int deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(Globals.ModuleFriendlyName).DesktopModuleID;
+
+            NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
+            if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+			{
+				NotificationsController.Instance.CreateNotificationType(type);
+			}
 		}
 	}
 }

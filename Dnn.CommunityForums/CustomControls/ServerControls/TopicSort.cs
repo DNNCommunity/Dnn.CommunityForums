@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string Sort = drpSort.SelectedItem.Value;
             int TabId = int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
 
-            HttpContext.Current.Response.Redirect(Utilities.NavigateUrl(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.Sort + "=" + Sort }));
+            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.Sort + "=" + Sort }));
         }
 
         protected override void OnLoad(EventArgs e)

@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             IsCallBack = cbShell.IsCallback;
 
-            btnReturn.ClientSideScript = "window.location.href = '" + Common.Globals.NavigateURL(TabId) + "';";
+            btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(TabId) + "';";
             cbModal.LoadingTemplate = GetLoadingTemplateSmall();
             Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)

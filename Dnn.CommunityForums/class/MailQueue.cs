@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,150 +20,28 @@
 using System;
 using System.Collections.Generic;
 using DotNetNuke.Services.Scheduling;
-
 namespace DotNetNuke.Modules.ActiveForums.Queue
 {
-	public class Controller
-	{
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Add(int portalId, string emailFrom, string emailTo, string emailSubject, string body, string emailCC, string emailBcc).")]
-		public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
-		{
-			Add(-1, emailFrom, emailTo, emailSubject, emailBody, emailCC, emailBcc);
-		}
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Add(int portalId, string emailFrom, string emailTo, string emailSubject, string body, string emailCC, string emailBcc).")]
-        public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc)
-		{ 
-			Add(portalId,emailFrom, emailTo, emailSubject,emailBody,emailCC, emailBcc);
-		}
-		public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string body, string emailCC, string emailBcc)
-        {
-            try
-			{
-				DataProvider.Instance().Queue_Add(portalId, emailFrom, emailTo, emailSubject, body, emailCC, emailBcc);
-			}
-			catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
-		}
-	}
-
-	public class Scheduler : SchedulerClient
-	{
-		public Scheduler(ScheduleHistoryItem objScheduleHistoryItem)
-		{
-			ScheduleHistoryItem = objScheduleHistoryItem;
-		}
-
-		public override void DoWork()
-		{
-			try
-			{
-			    var intQueueCount = ProcessQueue();
-				ScheduleHistoryItem.Succeeded = true;
-				ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " messages"));
-			}
-			catch (Exception ex)
-			{
-				ScheduleHistoryItem.Succeeded = false;
-				ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
-				Errored(ref ex);
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-			}
-		}
-
-		private static int ProcessQueue()
-		{
-			var intQueueCount = 0;
-			try
-			{
-				var dr = DataProvider.Instance().Queue_List();
-				while (dr.Read())
-				{
-					intQueueCount += 1;
-					var objEmail = new Message
-					                   {
-										PortalId = Convert.ToInt32(dr["PortalId"]),
-										Subject = dr["EmailSubject"].ToString(),
-										SendFrom = dr["EmailFrom"].ToString(),
-										SendTo = dr["EmailTo"].ToString(),
-										Body = dr["EmailBody"].ToString(),
-					                   };
-
-				    var canDelete = objEmail.SendMail();
-					if (canDelete)
-					{
-						try
-						{
-							DataProvider.Instance().Queue_Delete(Convert.ToInt32(dr["Id"]));
-						}
-						catch (Exception ex)
-						{
-							DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-						}
-					}
-					else
-					{
-						intQueueCount = intQueueCount - 1;
-					}
-				}
-				dr.Close();
-				dr.Dispose();
-
-				return intQueueCount;
-			}
-			catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-				return -1;
-			}
-        }
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Message.")]
+    public class Message
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not used.")]
+        public bool SendMail() => throw new NotImplementedException();
     }
-
-	public class Message
-	{
-		public int PortalId;
-		public string Subject;
-		public string SendFrom;
-		public string SendTo;
-		public string Body;
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyText;
-
-		public bool SendMail()
-		{
-			try
-			{
-				var subs = new List<SubscriptionInfo>();
-				var si = new SubscriptionInfo { Email = SendTo };
-			    subs.Add(si);
-				var oEmail = new Email
-				{
-					PortalId = PortalId,
-					UseQueue = false,
-					Recipients = subs,
-					Subject = Subject,
-					From = SendFrom,
-					Body = Body,
-				};
-			    try
-				{
-					var objThread = new System.Threading.Thread(oEmail.Send);
-					objThread.Start();
-					return true;
-				}
-				catch (Exception ex)
-				{
-					DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-					return false;
-				}
-			}
-			catch (Exception ex)
-			{
-				DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-				return false;
-			}
-		}
-	}
-
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
+    public class Controller 
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
+        public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc) => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
+        public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc) => throw new NotImplementedException();
+    }
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
+    public class Scheduler : DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler
+    {
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
+        public Scheduler(ScheduleHistoryItem objScheduleHistoryItem) : base(objScheduleHistoryItem) { }
+        [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
+        public override void DoWork() => base.DoWork();
+    }
 }

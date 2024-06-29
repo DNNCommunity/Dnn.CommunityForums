@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Admins.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Beheerders</value>
+  </data>
+  <data name="AdvancedOptions.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Geavanceerde opties</value>
+  </data>
+  <data name="Anon.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Anonieme gebruiker</value>
+  </data>
+  <data name="AnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Geef antwoord</value>
+  </data>
+  <data name="ApplicationRestart.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Applicatie opnieuw opstarten nadat module-instellingen zijn gewijzigd</value>
+  </data>
+  <data name="AuthenticatedUsers.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Geverifieerde gebruikers</value>
+  </data>
+  <data name="AutoLink.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Schakel deze optie in voor DNN-Community-Forum om websiteadressen automatisch om te zetten in hyperlinks.</value>
+  </data>
+  <data name="AutoLink.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Automatische hyperlinks</value>
+  </data>
+  <data name="AvatarSize.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Voer de maximale hoogte en breedte voor een avatar in.</value>
+  </data>
+  <data name="AvatarSize.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Avatar Grootte</value>
+  </data>
+  <data name="CacheTemplates.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Moet normaal gesproken zijn ingeschakeld; Schakel deze optie uit als u sjablonen bewerkt en direct resultaat wilt zien.</value>
+  </data>
+  <data name="CacheTemplates.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Sjablooncaching inschakelen</value>
+  </data>
+  <data name="CommunityOptions.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Community-opties</value>
+  </data>
+  <data name="ContentOptions.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Inhoudsopties</value>
+  </data>
+  <data name="ControlTitle_settings.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Instellingen voor DNN-Community-Forum</value>
+  </data>
+  <data name="DateFormat.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Notatietekenreeks die wordt gebruikt om datumwaarden weer te geven.</value>
+  </data>
+  <data name="DateFormat.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Datum notatie</value>
+  </data>
+  <data name="Default.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Verstek</value>
+  </data>
+  <data name="DefaultDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>--Invalide--</value>
+  </data>
+  <data name="DefaultPageSize.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Voer het standaardaantal items in dat u wilt weergeven op de pagina Onderwerpen en antwoorden.</value>
+  </data>
+  <data name="DefaultPageSize.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Standaard paginaformaat</value>
+  </data>
+  <data name="DefaultProfile.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Standaard profiel</value>
+  </data>
+  <data name="DeleteBehavior.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Kies wat er met inhoud gebeurt wanneer deze wordt verwijderd. &lt;b&gt;Verwijderen&lt;/b&gt; - Verwijdert inhoud uit de database.  &lt;b&gt;Recyclen&lt;/b&gt; - Inhoud wordt gemarkeerd als verwijderd en blijft in de database staan. Kies deze optie als u wilt profiteren van incrementeel DNN-zoeken.</value>
+  </data>
+  <data name="DeleteBehavior.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gedrag verwijderen</value>
+  </data>
+  <data name="Disabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Invalide</value>
+  </data>
+  <data name="DisplayName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Weergavenaam</value>
+  </data>
+  <data name="DisplaySettings.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Weergave-instellingen</value>
+  </data>
+  <data name="EditInterval.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Hiermee kan de gebruiker zijn bericht alleen bewerken binnen een bepaald aantal minuten vanaf het moment dat het is gemaakt.  De gebruiker moet ook bewerkingsrechten hebben.  Stel deze waarde in op 0 om deze functie uit te schakelen.</value>
+  </data>
+  <data name="EditInterval.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Interval bewerken</value>
+  </data>
+  <data name="EnablePoints.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Het puntensysteem stelt gebruikers in staat om punten te ontvangen voor bepaalde acties binnen het forum om hun rang te verhogen.</value>
+  </data>
+  <data name="EnablePoints.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Puntensysteem</value>
+  </data>
+  <data name="EnableURLRewriter.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Kies deze optie als u de vriendelijke url-rewriter voor deze module wilt inschakelen.  </value>
+  </data>
+  <data name="EnableURLRewriter.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Beschrijvende URL's inschakelen</value>
+  </data>
+  <data name="Everyone.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Iedereen</value>
+  </data>
+  <data name="FirstName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Voornaam</value>
+  </data>
+  <data name="FloodInterval.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Het aantal seconden dat een gebruiker moet wachten tussen berichten.</value>
+  </data>
+  <data name="FloodInterval.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Overstromingsinterval</value>
+  </data>
+  <data name="ForumGroupTemplate.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer de forumgroep die gebruikt gaat worden voor nieuwe forums.  Dit is alleen van toepassing op forums die automatisch worden aangemaakt voor sociale groepen.</value>
+  </data>
+  <data name="ForumGroupTemplate.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Forumgroep voor nieuwe forums</value>
+  </data>
+  <data name="ForumTemplate.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer de sjabloon voor de pagina waarop al je forums worden weergegeven.</value>
+  </data>
+  <data name="ForumTemplate.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Sjabloon</value>
+  </data>
+  <data name="ForumTheme.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer het grafische thema voor je forum.</value>
+  </data>
+  <data name="ForumTheme.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Thema</value>
+  </data>
+  <data name="FullName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Voor- en achternaam</value>
+  </data>
+  <data name="FullTextAzure.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Zoeken in volledige tekst wordt niet ondersteund in SQL Azure.</value>
+  </data>
+  <data name="FullTextNotInstalled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Zoeken in volledige tekst is niet geïnstalleerd op SQL Server.</value>
+  </data>
+  <data name="FullTextSearch.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Zoeken in volledige tekst zorgt voor betere prestaties en nauwkeurigere resultaten.  Neem contact op met uw hostingprovider om ervoor te zorgen dat zoeken in volledige tekst is ingeschakeld voor uw database.</value>
+  </data>
+  <data name="FullTextSearch.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Zoeken in volledige tekst inschakelen</value>
+  </data>
+  <data name="GroupAdmin.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Groepseigenaren</value>
+  </data>
+  <data name="GroupMember.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Groepsleden</value>
+  </data>
+  <data name="Height.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Hoogte</value>
+  </data>
+  <data name="LastName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Achternaam</value>
+  </data>
+  <data name="MainFeatures.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Hoofdlijnen</value>
+  </data>
+  <data name="MarkAnswerPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Markeer antwoord</value>
+  </data>
+  <data name="MessagingCore.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Standaard berichten</value>
+  </data>
+  <data name="MessagingDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Invalide</value>
+  </data>
+  <data name="MessagingTab.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer het tabblad met de module voor privéberichten</value>
+  </data>
+  <data name="MessagingTab.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Tabblad Berichten</value>
+  </data>
+  <data name="MessagingType.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer een systeem voor privéberichten.</value>
+  </data>
+  <data name="MessagingType.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Type bericht</value>
+  </data>
+  <data name="MessagingVentrian.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Ventrian Berichten</value>
+  </data>
+  <data name="Mode.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gebruik altijd de standaardmodus, tenzij u de module gebruikt op een pagina voor sociale groepen.  De modus Sociale groep mag alleen worden gebruikt als u weet dat er altijd een GroupId in de URL aanwezig zal zijn.</value>
+  </data>
+  <data name="Mode.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Forum-modus</value>
+  </data>
+  <data name="ModeratorPermissions.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Moderator Machtigingen</value>
+  </data>
+  <data name="Moderators.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Moderators</value>
+  </data>
+  <data name="ModPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Matig als bericht</value>
+  </data>
+  <data name="No.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Nee</value>
+  </data>
+  <data name="ProfileDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Profiellinks uitgeschakeld</value>
+  </data>
+  <data name="ProfileType.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Kies het type profiel dat u gaat gebruiken. Het standaardprofiel is hetzelfde als het standaardsiteprofiel.</value>
+  </data>
+  <data name="ProfileType.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Profiel Type</value>
+  </data>
+  <data name="ProfileVisibility.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Hiermee bepaalt u op welke gebruikers kunnen klikken om het profiel van een gebruiker weer te geven.</value>
+  </data>
+  <data name="ProfileVisibility.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Zichtbaarheid van het profiel</value>
+  </data>
+  <data name="Recycle.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Markeren als verwijderd</value>
+  </data>
+  <data name="RegisteredUser.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Geregistreerde gebruiker</value>
+  </data>
+  <data name="Remove.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Inhoud onmiddellijk verwijderen</value>
+  </data>
+  <data name="ReplyPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Antwoord</value>
+  </data>
+  <data name="SecGrid:attach.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Vastmaken</value>
+  </data>
+  <data name="SecGrid:create.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Scheppen</value>
+  </data>
+  <data name="SecGrid:delete.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Verwijderen</value>
+  </data>
+  <data name="SecGrid:edit.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Bewerken</value>
+  </data>
+  <data name="SecGrid:lock.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Slot</value>
+  </data>
+  <data name="SecGrid:modapprove.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Goedkeuren</value>
+  </data>
+  <data name="SecGrid:moddelete.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Verwijderen</value>
+  </data>
+  <data name="SecGrid:modedit.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Bewerken</value>
+  </data>
+  <data name="SecGrid:modlock.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Slot</value>
+  </data>
+  <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Bewegen</value>
+  </data>
+  <data name="SecGrid:modpin.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Speld</value>
+  </data>
+  <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gebruiker</value>
+  </data>
+  <data name="SecGrid:pin.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Speld</value>
+  </data>
+  <data name="SecGrid:read.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Lezen</value>
+  </data>
+  <data name="SecGrid:reply.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Antwoord</value>
+  </data>
+  <data name="SecGrid:subscribe.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Abonneren</value>
+  </data>
+  <data name="SecGrid:user.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Bekijken</value>
+  </data>
+  <data name="SecGrid:view.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Bekijken</value>
+  </data>
+  <data name="SignatureDisabled.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Invalide</value>
+  </data>
+  <data name="SignatureHTML.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Platte tekst en HTML toestaan</value>
+  </data>
+  <data name="SignaturePlainText.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Alleen tekst zonder opmaak toestaan</value>
+  </data>
+  <data name="SocialGroups.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Sociale groepen</value>
+  </data>
+  <data name="Standard.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Standaard</value>
+  </data>
+  <data name="TimeFormat.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Notatietekenreeks die wordt gebruikt om tijdwaarden weer te geven.</value>
+  </data>
+  <data name="TimeFormat.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Tijd notatie</value>
+  </data>
+  <data name="TopicPointValue.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Nieuw onderwerp</value>
+  </data>
+  <data name="URLPrefixBase.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Dit is de tekst die zal worden gebruikt als het eerste deel van alle forum-URL's.  In de meeste gevallen wilt u gewoon "forum" invoeren</value>
+  </data>
+  <data name="URLPrefixBase.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Basis Pad</value>
+  </data>
+  <data name="URLPrefixCategory.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Dit is de tekst die zal worden gebruikt als onderdeel van de URL om forumcategorieën te identificeren.</value>
+  </data>
+  <data name="URLPrefixCategory.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Categorie Pad</value>
+  </data>
+  <data name="URLPrefixOther.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Dit is de tekst die zal worden gebruikt als onderdeel van de URL binnen andere forumweergaven.  </value>
+  </data>
+  <data name="URLPrefixOther.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Uitzicht Pad</value>
+  </data>
+  <data name="URLPrefixTag.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Dit is de tekst die zal worden gebruikt als onderdeel van de URL om forumtags te identificeren.</value>
+  </data>
+  <data name="URLPrefixTag.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Tag Pad</value>
+  </data>
+  <data name="UserDisplayMode.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer het formaat dat je wilt gebruiken voor het weergeven van ledennamen in de forums.</value>
+  </data>
+  <data name="UserDisplayMode.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Weergave-indeling van de naam van het lid</value>
+  </data>
+  <data name="UserName.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gebruikersnaam</value>
+  </data>
+  <data name="UserPermissions.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Machtigingen van de gebruiker</value>
+  </data>
+  <data name="UserSignatures.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Selecteer of handtekeningen al dan niet moeten worden ingeschakeld, samen met het formaat dat kan worden gebruikt.</value>
+  </data>
+  <data name="UserSignatures.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Handtekeningen van gebruikers</value>
+  </data>
+  <data name="UsersOnline.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Schakel de weergave in of uit van gebruikers die momenteel de forummodule gebruiken.</value>
+  </data>
+  <data name="UsersOnline.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gebruikers online weergave inschakelen</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Help" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gebruik het paneermeel voor het bovenste paneermeel in plaats van het AF-paneermeel.  Houd er rekening mee dat deze instelling geen invloed heeft op het onderste AF-broodkruimel.</value>
+  </data>
+  <data name="UseSkinBreadCrumb.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Gebruik Skin Breadcrumb</value>
+  </data>
+  <data name="Width.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Breedte</value>
+  </data>
+  <data name="Yes.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
+    <value>Ja</value>
+  </data>
+</root>

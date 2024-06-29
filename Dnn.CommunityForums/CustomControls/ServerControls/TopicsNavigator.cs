@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			if (ForumId > 0)
 			{
-				if (Permissions.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
+				if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
 				{
 					tb.ForumIds = ForumId.ToString();
 				}
@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				tb.TagId = int.Parse(Request.QueryString["atg"]);
 
 			}
-			if (Request.QueryString["act"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["act"]))
+			if (Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Category]))
 			{
-				tb.CategoryId = int.Parse(Request.QueryString["act"]);
+				tb.CategoryId = int.Parse(Request.QueryString[ParamKeys.Category]);
 			}
 			tb.ForumUser = ForumUser;
 			tb.PageIndex = PageId;

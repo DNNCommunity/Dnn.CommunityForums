@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -80,10 +80,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (txtSearch.Text.Trim() != "")
             {
-                var @params = new List<string> { ParamKeys.ViewType + "=search", ParamKeys.ForumId + "=" + ForumId, "q=" + HttpUtility.UrlEncode(txtSearch.Text.Trim()) };
+                var @params = new List<string> { 
+                    $"{ParamKeys.ViewType}={Views.Search}", 
+                    $"{ParamKeys.ForumId}={ForumId}", 
+                    $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(txtSearch.Text.Trim())}" 
+                };
 
                 if (SocialGroupId > 0)
-                    @params.Add("GroupId=" + SocialGroupId.ToString());
+                    @params.Add($"{Literals.GroupId}={SocialGroupId}");
 
                 Response.Redirect(NavigateUrl(ForumTabId, "", @params.ToArray()));
             }

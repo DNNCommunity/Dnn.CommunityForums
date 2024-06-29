@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -138,8 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 forumUser = uc.GetUser(PortalId, ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
-                    ForumController fc = new ForumController();
-                    ForumIds = fc.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
+                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
                 }
                 else
                 {

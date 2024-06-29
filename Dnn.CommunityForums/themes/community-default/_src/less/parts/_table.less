@@ -1,0 +1,116 @@
+.dcf-table {
+
+    .dcf-table-head-row {
+
+        border-bottom: @separator-border;
+
+    }
+
+    // Table TR and TD
+    .dcf-th,
+    .dcf-col {
+        padding: @dist-md @dist-sm ;
+    }
+
+    // Table Heading
+    .dcf-th {
+
+        text-align: left;
+        font-weight: normal;
+
+        &.dcf-forum-icon-text {
+            padding-right: 0;
+        }
+
+    }
+
+    // Table TR and TD
+    .dcf-table-body-row {
+        .dcf-col {
+            vertical-align: top;
+            border-bottom: @separator-border;
+        }
+    }
+
+    // Table header
+    .dcf-table-body-row {
+
+        // TH width 
+        .dcf-col-number,
+        .dcf-col-replies,
+        .dcf-col-views,
+        .dcf-col-ratings,
+        .dcf-col-status,
+        .dcf-col-subscribers {
+            text-align: center;
+            width: 0; // Shrink them..
+        }
+
+        .dcf-col-icon {
+
+            width: 0;
+        }
+
+        .dcf-col-text, .dcf-col-subject{
+            width: 80%;
+
+            @media screen and(min-width: @break-tablet){
+                width: 60%;
+            }
+        }
+
+    }
+
+    // Icon with text
+    .dcf-icon-text {
+        white-space: nowrap;
+
+        .dcf-link-text {
+            margin-left: 0.3em;
+        }
+    }
+
+
+    // Forum Description
+    .dcf-forum-description {
+        display: block;
+        padding-top: 1em;
+        font-size: 0.9em;
+
+        .fa {
+            display: none; // Hide description icon
+
+        }
+
+        &:empty {
+            padding-top: 0;
+        }
+    }
+
+
+    // Forum Icon Column
+    .dcf-col-icon {
+        font-size: 0.7em; // Overrrule fa-2x
+
+        >div {
+            // https://github.com/DNNCommunity/Dnn.CommunityForums/issues/467
+            margin: 0 !important;
+            height: auto;
+        }
+
+        .fa {
+            padding-top: 0.1em;
+        }
+    }
+
+    .dcf-topic-started {
+        padding: @dist-sm 0;
+    }
+
+
+
+
+
+    @import url("_table-responsive.less");
+
+}

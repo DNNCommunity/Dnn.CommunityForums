@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -26,7 +26,7 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public partial class profile_mypreferences : SettingsBase
+    public partial class profile_mypreferences : ForumBase
     {
         public int UID { get; set; }
 
@@ -37,13 +37,13 @@ namespace DotNetNuke.Modules.ActiveForums
             btnSave.Click += new System.EventHandler(btnSave_Click);
 
 
-            if (Request.QueryString["UserId"] == null)
+            if (Request.QueryString[Literals.UserId] == null)
             {
                 UID = UserInfo.UserID;
             }
             else
             {
-                UID = Convert.ToInt32(Request.QueryString["UserId"]);
+                UID = Convert.ToInt32(Request.QueryString[Literals.UserId]);
             }
            
             if (UID > 0 && !Page.IsPostBack)
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
-                        upi.Signature = Utilities.HTMLEncode(upi.Signature);
+                        upi.Signature = System.Web.HttpUtility.HtmlEncode(upi.Signature);
                     }
                     else if (MainSettings.AllowSignatures == 2)
                     {

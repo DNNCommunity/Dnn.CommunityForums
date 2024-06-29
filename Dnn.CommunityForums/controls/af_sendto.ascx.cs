@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -48,10 +48,10 @@ namespace DotNetNuke.Modules.ActiveForums
             if (TopicId > 0)
             {
                 TopicsController tc = new TopicsController();
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = tc.Topics_Get(PortalId, ModuleId, TopicId, ForumId, UserId, true);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
                 if (ti != null)
                 {
-                    if (Permissions.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Read, ForumUser.UserRoles))
                     {
                         if (!Page.IsPostBack)
                         {
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!(sMessage == string.Empty) && !(sSubject == string.Empty))
                     {
-                        Email.SendNotification(PortalId, UserInfo.Email, sEmail, sSubject, sMessage.Replace(System.Environment.NewLine, "<br />"));
+                        DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(PortalId, moduleId: ModuleId, fromEmail: UserInfo.Email, toEmail: sEmail, subject: sSubject, body: sMessage);
                     }
 
 

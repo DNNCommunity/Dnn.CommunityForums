@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,34 +18,16 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using DotNetNuke.Entities.Modules;
+using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-
-#region Content Info
-	public class Content
-	{
-#region Private Members
-
-	    #endregion
-#region Public Properties
-
-	    public int ContentId { get; set; }
-        public string Subject { get; set; }
-        public string Summary { get; set; }
-        public string Body { get; set; }
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
-        public int AuthorId { get; set; }
-        public string AuthorName { get; set; }
-        public bool IsDeleted { get; set; }
-        public string IPAddress { get; set; }
-
-	    #endregion
-
-	}
-#endregion
-
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ContentInfo.")]
+    public class Content : DotNetNuke.Modules.ActiveForums.Entities.ContentInfo { }  
 }

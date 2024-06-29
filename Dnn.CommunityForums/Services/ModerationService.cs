@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,6 +20,8 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Http;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
@@ -40,15 +42,14 @@ namespace DotNetNuke.Modules.ActiveForums
         // In both cases, it must return an 200 "OK" response.
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage ApprovePost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
 
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -59,15 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_replyId > 0)
             {
-                var rc = new ReplyController();
-                var reply = rc.ApproveReply(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId, _replyId);
+                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId, _replyId);
                 if (reply == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
             }
             else
             {
-                var tc = new TopicsController();
-                var topic = tc.ApproveTopic(PortalSettings.PortalId, _tabId, _moduleId, _forumId, _topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
             }
@@ -78,14 +77,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage RejectPost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
 
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -100,8 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_replyId > 0)
             {
-                var rc = new ReplyController();
-                var reply = rc.Reply_Get(PortalSettings.PortalId, _moduleId, _topicId, _replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(_replyId);
 
                 if (reply == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
@@ -110,8 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var tc = new TopicsController();
-                var topic = tc.Topics_Get(PortalSettings.PortalId, _moduleId, _topicId);
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
                 if (topic == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
 
@@ -125,15 +122,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (ui != null)
                 {
                     var au = new Author
-                    {
-                        AuthorId = authorId,
-                        DisplayName = ui.DisplayName,
-                        Email = ui.Email,
-                        FirstName = ui.FirstName,
-                        LastName = ui.LastName,
-                        Username = ui.Username
-                    };
-                    Email.SendEmail(fi.ModRejectTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, au);
+                                 {
+                                     AuthorId = authorId,
+                                     DisplayName = ui.DisplayName,
+                                     Email = ui.Email,
+                                     FirstName = ui.FirstName,
+                                     LastName = ui.LastName,
+                                     Username = ui.Username
+                                 };
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, au);
                 }
 
             }
@@ -143,14 +140,13 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage DeletePost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
-
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -162,28 +158,25 @@ namespace DotNetNuke.Modules.ActiveForums
             var ms = SettingsBase.GetModuleSettings(_moduleId);
             if (_replyId > 0 & _replyId != _topicId)
             {
-                var rc = new ReplyController();
-                var reply = rc.Reply_Get(PortalSettings.PortalId, _moduleId, _topicId, _replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(_replyId);
 
                 if (reply == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
 
                 authorId = reply.Content.AuthorId;
-
+                var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
                 rc.Reply_Delete(PortalSettings.PortalId, _forumId, _topicId, _replyId, ms.DeleteBehavior);
-                rc.UpdateModuleLastContentModifiedOnDate(_moduleId);
             }
             else
             {
-                var tc = new TopicsController();
-                var topic = tc.Topics_Get(PortalSettings.PortalId, _moduleId, _topicId);
-                if (topic == null)
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
+                if (ti == null)
                     return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
 
-                authorId = topic.Content.AuthorId;
+                authorId = ti.Content.AuthorId;
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(_topicId);
 
-                tc.Topics_Delete(PortalSettings.PortalId, _moduleId, _forumId, _topicId, ms.DeleteBehavior);
-                tc.UpdateModuleLastContentModifiedOnDate(_moduleId);
+                
             }
 
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)
@@ -201,24 +194,61 @@ namespace DotNetNuke.Modules.ActiveForums
                         LastName = ui.LastName,
                         Username = ui.Username
                     };
-
-                    //Email.SendEmail(fi.ModDeleteTemplateId, PortalSettings.PortalId, _moduleId, _tabId, _forumId, _topicId, _replyId, string.Empty, null);
-                    Email.SendEmailToModerators(fi.ModDeleteTemplateId, PortalSettings.PortalId, _forumId, _topicId, _replyId, _moduleId, _tabId, string.Empty);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, PortalSettings.PortalId, _forumId, _topicId, _replyId, _moduleId, _tabId, string.Empty);
                 }
             }
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
+        [HttpPost]
+        [DnnAuthorize]
+        public HttpResponseMessage BanUser(ModerationDTO dto)
+        {
+            var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
+            ParseNotificationContext(notify.Context);
+
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
+            if (fi == null)
+                return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
+
+            if (!(IsMod(_forumId)))
+                return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
+
+
+            int authorId;
+            if (_replyId > 0 & _replyId != _topicId)
+            {
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(_replyId);
+
+                if (reply == null)
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
+
+                authorId = reply.Content.AuthorId;
+            }
+            else
+            {
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(_topicId);
+                if (ti == null)
+                    return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
+
+                authorId = ti.Content.AuthorId;
+            }
+            string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(_moduleId, _tabId, true).ModuleTitle;
+            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: ActiveModule.PortalID, ModuleId: _moduleId, ModuleTitle: moduleTitle, TabId: _tabId, ForumId: _forumId, TopicId: _topicId, ReplyId: _replyId, BannedBy: UserInfo, AuthorId: authorId);
+
+            NotificationsController.Instance.DeleteNotification(dto.NotificationId);
+            return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+        }
 
         [DnnAuthorize]
+        [HttpPost]
         public HttpResponseMessage IgnorePost(ModerationDTO dto)
         {
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             ParseNotificationContext(notify.Context);
 
-            var fc = new ForumController();
-            var fi = fc.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, _forumId, true);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(_forumId, _moduleId);
             if (fi == null)
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
 
@@ -233,9 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool IsMod(int forumId)
         {
-            var mods = Utilities.GetListOfModerators(ActiveModule.PortalID, ActiveModule.ModuleID, forumId);
-
-            return mods.Any(i => i.UserID == UserInfo.UserID);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(ActiveModule.PortalID, _moduleId, forumId).Any(i => i.UserID == UserInfo.UserID);
         }
 
         private void ParseNotificationContext(string context)

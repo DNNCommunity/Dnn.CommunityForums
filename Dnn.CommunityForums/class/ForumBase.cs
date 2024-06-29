@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Xml;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
@@ -31,22 +32,15 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Member Variables
 
         private int? _forumId;
-        private string _forumIds = string.Empty;
         private int? _forumGroupId;
-        private int _parentForumId = -1;
         private int? _postId;
         private int? _topicId; // = -1;
         private int? _replyId;
         private int? _quoteId;
         private int? _authorid;
         private bool? _jumpToLastPost;
-        private string _defaultView = Views.ForumView;
-        private int _defaultForumViewTemplateId = -1;
-        private int _defaultTopicsViewTemplateId = -1;
-        private int _defaultTopicViewTemplateId = -1;
         private string _templatePath = string.Empty;
-        private string _templateFile = string.Empty;
-        private Forum _foruminfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _foruminfo;
         private XmlDocument _forumData;
 
         private bool? _canRead;
@@ -60,87 +54,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public XmlDocument ForumData
         {
-            get
-            {
-                if(_forumData == null)
-                    return ControlConfig != null ? ForumsDB.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : ForumsDB.ForumListXML(PortalId, ModuleId); 
-
-                return _forumData;
-            }
-
-            set { _forumData = value; }
+            get => _forumData ?? (_forumData = (ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(PortalId, ModuleId)));
+            set => _forumData = value;
         }
 
         public ControlsConfig ControlConfig { get; set; }
 
-        public string ThemePath
-        {
-            get
-            {
-                return Page.ResolveUrl(MainSettings.ThemeLocation);
-            }
-        }
+        public string ThemePath => Page.ResolveUrl(MainSettings.ThemeLocation);
 
-        public string ForumIds
-        {
-            get
-            {
-                return _forumIds;
-            }
-            set
-            {
-                _forumIds = value;
-            }
-        }
+        public string ForumIds { get; set; } = string.Empty;
 
-        public int DefaultForumViewTemplateId
-        {
-            get
-            {
-                return _defaultForumViewTemplateId;
-            }
-            set
-            {
-                _defaultForumViewTemplateId = value;
-            }
-        }
-        public int DefaultTopicsViewTemplateId
-        {
-            get
-            {
-                return _defaultTopicsViewTemplateId;
-            }
-            set
-            {
-                _defaultTopicsViewTemplateId = value;
-            }
-        }
-
-        public int DefaultTopicViewTemplateId
-        {
-            get
-            {
-                return _defaultTopicViewTemplateId;
-            }
-            set
-            {
-                _defaultTopicViewTemplateId = value;
-            }
-        }
-
-        public string DefaultView
-        {
-            get
-            {
-
-                return _defaultView;
-            }
-            set
-            {
-
-                _defaultView = value;
-            }
-        }
+        public int DefaultForumViewTemplateId { get; set; } = -1;
+        public int DefaultTopicsViewTemplateId { get; set; } = -1;
+        public int DefaultTopicViewTemplateId { get; set; } = -1;
+        public string DefaultView { get; set; } = Views.ForumView;
 
         public bool JumpToLastPost
         {
@@ -327,7 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we don't have a forum id at this point, try and pull it from "forumid" in the query string
                 if (_forumId < 1)
                 {
-                    queryForumId = Request.QueryString["forumid"];
+                    queryForumId = Request.QueryString[Literals.ForumId];
                     if (!string.IsNullOrWhiteSpace(queryForumId))
                     {
                         // Try to parse the id, if it doesn't work, return the default value.
@@ -339,7 +266,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // If we still don't have a forum id, but we have a topic id, look up the forum id
                 if (_forumId < 1 & TopicId > 0)
                 {
-                   _forumId = ForumsDB.Forum_GetByTopicId(TopicId);
+                   _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
 
                 return _forumId.Value;
@@ -422,35 +349,15 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public int ParentForumId
-        {
-            get
-            {
-                return _parentForumId;
-            }
-            set
-            {
-                _parentForumId = value;
-            }
-        }
+        public int ParentForumId { get; set; } = -1;
 
-        public string TemplateFile
-        {
-            get
-            {
-                return _templateFile;
-            }
-            set
-            {
-                _templateFile = value;
-            }
-        }
+        public string TemplateFile { get; set; } = string.Empty;
 
-        public Forum ForumInfo
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo
         {
             get 
             {
-                return _foruminfo ?? (_foruminfo = ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
+                return _foruminfo ?? (_foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
             }
             set
             {
@@ -459,29 +366,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public int SocialGroupId { get; set; }
-
-        public bool CanRead
-        {
-            get
-            {
-                if(!_canRead.HasValue)
-                    _canRead =  SecurityCheck("read");
-
-                return _canRead.Value;
-            }
-        }
-
-        public bool CanView
-        {
-            get
-            {
-                if(!_canView.HasValue)
-                    _canView = SecurityCheck("view");
-
-                return _canView.Value;
-            }
-        }
-
+        public bool CanRead => _canRead ?? SecurityCheck("read");
+        public bool CanView => _canView ?? SecurityCheck("view");
         public bool CanCreate
         {
             get
@@ -493,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
                         _canCreate = true;
 
                     // If CreatePostCount is not set, no need to go further
@@ -523,7 +409,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = false;
 
                     // Admins and trusted users shall pass!
-                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || Permissions.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
+                    else if (ForumUser.IsAdmin || ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles))
                         _canReply = true;
 
                     // If ReplyPostCount is not set, no need to go further
@@ -560,7 +446,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var secRoles = xNode.InnerText;
 
-            return Permissions.HasPerm(secRoles, ForumUser.UserRoles);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(secRoles, ForumUser.UserRoles);
         }
 
         protected string GetSharedResource(string key)
@@ -670,7 +556,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (p.Count <= 0) 
                 return;
             
-            var sURL = Utilities.NavigateUrl(TabId, string.Empty, p.ToArray());
+            var sURL = Utilities.NavigateURL(TabId, string.Empty, p.ToArray());
             if (string.IsNullOrEmpty(sURL))
                 return;
 

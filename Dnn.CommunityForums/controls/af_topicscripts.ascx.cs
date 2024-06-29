@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
             if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AFUserEditor")))
-                Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", Page.ResolveUrl("~/DesktopModules/activeforums/scripts/usereditor.js"));
+                Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/usereditor.js"));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -16,26 +16,13 @@
 // THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
-//
-using DotNetNuke.ComponentModel.DataAnnotations;
+// 
 using System;
 using System.Web.Caching;
 namespace DotNetNuke.Modules.ActiveForums
 {
-    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.Likes")]
-    class Likes : DotNetNuke.Modules.ActiveForums.Entities.Like { }
-}
-namespace DotNetNuke.Modules.ActiveForums.Entities
-{
-    [TableName("activeforums_Likes")]
-    [PrimaryKey("Id", AutoIncrement = true)]
-    [Scope("PostId")]
-    [Cacheable("activeforums_Likes", CacheItemPriority.Normal)]
-    class Like
-    {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int UserId { get; set; }
-        public bool Checked { get; set; }
-    }
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
+    class Likes : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
+    [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Entities.LikeInfo")]
+    class Like : DotNetNuke.Modules.ActiveForums.Entities.LikeInfo { }
 }

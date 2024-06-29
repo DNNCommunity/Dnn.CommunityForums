@@ -1,4 +1,4 @@
-﻿<div id="aftopicedit" style="width:500px;height:350px;display:none;" title="[RESX:TopicQuickEdit]">
+﻿<div id="aftopicedit" style="width:500px;height:500px;display:none;" title="[RESX:TopicQuickEdit]">
     <div class="dnnForm">
         <ul class="dnnAdminTabNav">
             <li><a href="#editTopic1">[RESX:Topic]</a></li>
@@ -48,6 +48,8 @@
             <li><a href="#" onclick="am.UI.CloseDiv('aftopicedit'); return false;" class="dnnSecondaryAction">
             [RESX:Cancel]</a></li>
         </ul>
+        <input type="hidden" id="aftopicedit-moduleid" value="" />
+        <input type="hidden" id="aftopicedit-forumid" value="" />
         <input type="hidden" id="aftopicedit-topicid" value="" />
     </div>
 </div>

@@ -13,11 +13,12 @@ function openDialog(row){
 };
 </script>
 <div class="amcpsubnav"><div onclick="openDialog();" class="amcplnkbtn">[RESX:AddTemplate]</div></div>
+<span class="amcplabel"><span class="amcpbold">[RESX:Theme]:</span><span class="amcpnormal">&nbsp;<asp:Label ID="txtThemeName" runat="server" CssClass="amcplabel" /></span>&nbsp;<span class="amcpbold">[RESX:Template]&nbsp;[RESX:Folder]:</span>&nbsp;<span class="amcpnormal"><asp:Label ID="txtTemplateFolder" runat="server" CssClass="amcplabel" /></span></span>
 <div class="amcpbrdnav">[RESX:Templates]</div>
 <div class="amcpcontrols">
 	<am:ActiveGrid ID="agTemplates" runat="server" ImagePath="~/DesktopModules/activeforums/images/" PageSize="15">
 		<HeaderTemplate><table cellpadding="2" cellspacing="0" border="0" class="amGrid" style="width:100%;">
-					<tr><td ColumnName="TemplateId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="Title" style="width:100px;height:16px;"><div class="amheadingcelltext">[RESX:TemplateType]</div></td><td class="amcptblhdr" ColumnName="Title" style="height:16px;"><div class="amheadingcelltext">[RESX:Title]</div></td><td class="amcptblhdr" ColumnName="DateCreated" style="height:16px;white-space:nowrap;width:120px;"><div class="amheadingcelltext">[RESX:DateCreated]</div></td></tr>
+					<tr><td ColumnName="TemplateId" style="display:none;width:0px;"></td><td class="amcptblhdr" ColumnName="Title" style="width:15em;height:16px;"><div class="amheadingcelltext">[RESX:TemplateType]</div></td><td class="amcptblhdr" ColumnName="Title" style="height:16px;"><div class="amheadingcelltext">[RESX:Title]</div></td><td class="amcptblhdr" ColumnName="DateCreated" style="height:16px;white-space:nowrap;width:120px;"><div class="amheadingcelltext">[RESX:DateCreated]</div></td></tr>
 		</HeaderTemplate>
 		<ItemTemplate><tr style="display:none;" class="amdatarow"><td style="display:none;">##DataItem('TemplateId')##</td><td class="amcpnormal" onclick="openDialog(this.parentNode);">##DataItem('TemplateType')##</td><td class="amcpnormal" resize="true" onclick="openDialog(this.parentNode);">##DataItem('Title')##</td><td class="amcpnormal" onclick="openDialog(this.parentNode);" style="white-space:nowrap;">##DataItem('DateCreated')##</td></ItemTemplate>
 		<FooterTemplate></table></FooterTemplate>

@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     {
         internal static bool IsAuthorized(int portalId, int moduleId, int forumId, SecureActions permissionRequired, UserInfo userInfo)
         {
-            Forum fi = new ForumController().GetForum(portalId, moduleId, forumId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
             string roles;
             switch (permissionRequired)
             {
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 default:
                     return false;
             }
-            return (Permissions.HasPerm(roles, userInfo.UserID, portalId));
+            return (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(roles, userInfo.UserID, portalId));
         }
     }
 }

@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			get { return MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
 		}
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int TimeZoneOffset
         {
             get { return MainSettings.GetInt(SettingKeys.TimeZoneOffset); }
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string Theme
 		{
-			get
+            get
 			{
 			    var result = MainSettings.GetString(SettingKeys.Theme);
 			    return string.IsNullOrWhiteSpace(result) ? "_legacy" : result; 
@@ -181,10 +181,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty); }
         }
-        public bool MailQueue
-        {
-            get { return MainSettings.GetBoolean(SettingKeys.MailQueue); }
-        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public bool MailQueue => true;
         public bool CacheTemplates
         {
             get { return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }

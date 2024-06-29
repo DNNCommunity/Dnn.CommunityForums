@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -216,7 +216,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
                 int i = 0;
-                string controlToLoad = "";
                 writer = new HtmlTextWriter(writer, string.Empty);
                 AddAttributesToRender(writer);
                 foreach (Tab tab in Tabs)

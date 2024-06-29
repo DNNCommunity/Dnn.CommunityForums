@@ -1,0 +1,14 @@
+
+
+    .dcf-sort {
+        select{
+            margin-left: $spacer-xs;
+        } 
+    }
+
+    .dcf-subscribe-topic, .dcf-subscribe-forum{
+        padding: $spacer-sm 0;
+        input{
+            margin-right: $spacer-xs;
+        }
+    }

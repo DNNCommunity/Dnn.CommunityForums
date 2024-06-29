@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -142,20 +142,18 @@ namespace DotNetNuke.Modules.ActiveForums
             public int PermissionsId { get; set; }
             public string SecurityId { get; set; }
             public int SecurityType { get; set; }
-            public string SecurityKey { get; set; }
+            public string SecurityAccessRequested { get; set; }
             public string ReturnId { get; set; }
         }
 
         [HttpPost]
         public HttpResponseMessage ToggleSecurity(ToggleSecurityDTO dto)
         {
-            var db = new Data.Common();
-            var sb = new StringBuilder();
             switch (dto.Action)
             {
                 case "delete":
                     {
-                        Permissions.RemoveObjectFromAll(dto.SecurityId, dto.SecurityType, dto.PermissionsId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, dto.SecurityType, dto.PermissionsId);
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 case "addobject":
@@ -173,22 +171,21 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         if (!(string.IsNullOrEmpty(dto.SecurityId)))
                         {
-                            var permSet = db.GetPermSet(dto.PermissionsId, "View");
-                            permSet = Permissions.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
-                            db.SavePermSet(dto.PermissionsId, "View", permSet);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, "View", dto.SecurityId, dto.SecurityType);
                         }
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 default:
                     {
-                        var permSet = db.GetPermSet(dto.PermissionsId, dto.SecurityKey);
                         if (dto.Action == "remove")
-                            permSet = Permissions.RemovePermFromSet(dto.SecurityId, dto.SecurityType, permSet);
+                        {
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(dto.ModuleId,dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                        }
                         else
-                            permSet = Permissions.AddPermToSet(dto.SecurityId, dto.SecurityType, permSet);
-
-                        db.SavePermSet(dto.PermissionsId, dto.SecurityKey, permSet);
+                        {
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
+                        };
                         return Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);
                     }
             }

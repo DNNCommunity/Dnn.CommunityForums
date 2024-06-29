@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,6 +28,7 @@ using System.Xml;
 using System.Web;
 using DotNetNuke.Entities.Urls;
 using System.Linq;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -64,13 +65,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 			drpPageSize.Style.Add("float", "none");
 
-			if (!(Utilities.IsRewriteLoaded()) || PortalSettings.PortalAlias.HTTPAlias.Contains("/"))
+			if (!(Utilities.IsRewriteLoaded()))
 			{
 				rdEnableURLRewriter.SelectedIndex = 1;
 				rdEnableURLRewriter.Enabled = false;
+            }
+			else
+            {
+				rdEnableURLRewriter.Enabled = true;
 			}
-      var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-      if (u.IsSuperUser & (HttpRuntime.IISVersion.Major >= 7) &!(PortalSettings.PortalAlias.HTTPAlias.Contains("/")))
+            var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
+			if ((u.IsSuperUser) && (HttpRuntime.IISVersion.Major >= 7))
 			{
 				if (Utilities.IsRewriteLoaded())
 				{
@@ -144,13 +149,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     Utilities.SelectListItemByValue(rdFullTextSearch, FullTextSearch && FullTextStatus == 1); // 1 = Enabled Status
 
-                //rdFullTextSearch.SelectedIndex = FullTextSearch 
-                //    ? rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("True"))
-                //    : rdFullTextSearch.Items.IndexOf(rdFullTextSearch.Items.FindByValue("False"));
-
-                Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
-                Utilities.SelectListItemByValue(rdMailQueue, MailQueue);
-                Utilities.SelectListItemByValue(rdPoints, EnablePoints);
+    				Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
+	                Utilities.SelectListItemByValue(rdPoints, EnablePoints);
                     Utilities.SelectListItemByValue(rdUsersOnline, EnableUsersOnline);
                     Utilities.SelectListItemByValue(rdUseSkinBreadCrumb, UseSkinBreadCrumb);
 
@@ -210,8 +210,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				var urlSettings = new FriendlyUrlSettings(PortalId);
                 string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
-                const string ignoreForumsRegex = "(aff=|afg=|aft=|afgt=|aftg=|afv=|act=|afpg=)|";
-				if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
+				const string ignoreForumsRegex = "("+ParamKeys.ForumId+"=|"+ParamKeys.GroupId+"=|"+ParamKeys.TopicId+"=|"+ParamKeys.GridType+"=|"+ParamKeys.Tags+"=|"+ParamKeys.ViewType+"=|"+ParamKeys.Category+"=|"+ParamKeys.PageId+"=)|";
+
+                if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
 				{
 					if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
 					{
@@ -229,7 +230,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 FullTextSearch = Utilities.SafeConvertBool(rdFullTextSearch.SelectedValue);
-                MailQueue = Utilities.SafeConvertBool(rdMailQueue.SelectedValue);
                 CacheTemplates = Utilities.SafeConvertBool(rdCacheTemplates.SelectedValue);
 
                 MessagingType = Utilities.SafeConvertInt(drpMessagingType.SelectedValue);
@@ -311,7 +311,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Clear out the cache
                 DataCache.ClearSettingsCache(ModuleId);
 
-			}
+				var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
+				log.LogProperties.Add(new LogDetailInfo("ModuleId", ModuleId.ToString()));
+                log.AddProperty("Message", this.LocalizeString("ApplicationRestart"));
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+				DotNetNuke.Common.Utilities.Config.Touch();
+
+            }
 			catch (Exception exc) //Module failed to load
 			{
 				DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
@@ -335,7 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 		
         private void BindThemes()
 		{
-			var di = new System.IO.DirectoryInfo(Server.MapPath(Globals.ModulePath + "themes"));
+			var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ModulePath + "themes"));
 			drpThemes.DataSource = di.GetDirectories();
 			drpThemes.DataBind();
 		}
@@ -390,12 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				dt.Load(dr);
 				dr.Close();
 
-				int totalGroupForum = 0;
 				string tmpGroup = string.Empty;
-				int i = 0;
-				int groupCount = 0;
-				int forumCount = 0;
-				bool hasChildren = false;
 				foreach (DataRow row in dt.Rows)
 				{
 					if (tmpGroup != row["ForumGroupId"].ToString())
@@ -414,7 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			var xDoc = new XmlDocument();
 			if (string.IsNullOrEmpty(ForumConfig))
 			{
-				xDoc.Load(Server.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
+				xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
 			}
 			else
 			{
@@ -629,7 +630,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			var xDoc = new XmlDocument();
 			if (string.IsNullOrEmpty(ForumConfig))
 			{
-				xDoc.Load(Server.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
+				xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
 			}
 			else
 			{

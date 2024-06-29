@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             var sort = drpSort.SelectedItem.Value;
-            var dest = DotNetNuke.Common.Globals.NavigateURL(TabId, "",
+            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(TabId, "",
                                                              new[]
                                                                  {
                                                                      ParamKeys.ViewType + "=" + Views.Topic,

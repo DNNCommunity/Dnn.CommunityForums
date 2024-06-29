@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "DELETE":
                             if (SimulateIsNumeric.IsNumeric(FilterId))
                             {
-                                DataProvider.Instance().Filters_Delete(PortalId, ModuleId, FilterId);
+                                new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
                             }
                             break;
                         case "DEFAULTS":
-                            DataProvider.Instance().Filters_DeleteByModuleId(PortalId, ModuleId);
-                            Utilities.ImportFilter(PortalId, ModuleId);
+                            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteByModuleId(ModuleId);
+                            Controllers.FilterController.ImportFilter(PortalId, ModuleId);
                             break;
                     }
 

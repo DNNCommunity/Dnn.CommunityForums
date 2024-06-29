@@ -1,0 +1,32 @@
+// There is an issue with one of the star icons in combination with FontAwesoem 5+
+// See: https://github.com/DNNCommunity/Dnn.CommunityForums/issues/864
+// So we'll overrrule Module.css so it always works with any version of FontAwesome
+
+.fa-star1:after,
+.fa-star2:after,
+.fa-star3:after,
+.fa-star4:after,
+.fa-star5:after {
+	content: "\f005";
+    color: #ddd;
+}
+
+.fa-rate1 .fa-star1:after,
+.fa-rate2 .fa-star1:after,
+.fa-rate3 .fa-star1:after,
+.fa-rate4 .fa-star1:after,
+.fa-rate5 .fa-star1:after,
+.fa-rate2 .fa-star2:after,
+.fa-rate3 .fa-star2:after,
+.fa-rate4 .fa-star2:after,
+.fa-rate5 .fa-star2:after,
+.fa-rate3 .fa-star3:after,
+.fa-rate4 .fa-star3:after,
+.fa-rate5 .fa-star3:after,
+.fa-rate4 .fa-star4:after,
+.fa-rate5 .fa-star4:after,
+.fa-rate5 .fa-star5:after {
+	content: "\f005" !important;
+    color: currentColor;
+}
+

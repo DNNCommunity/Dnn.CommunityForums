@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -23,6 +23,7 @@ using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.UI.WebControls;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -52,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if(_searchText == null)
                 {
-                    _searchText = Request.Params["q"] + string.Empty;
+                    _searchText = Request.Params[SearchParamKeys.Query] + string.Empty;
                     _searchText = Utilities.XSSFilter(_searchText);
                     _searchText = Utilities.StripHTMLTag(_searchText);
                     _searchText = Utilities.CheckSqlString(_searchText);
@@ -69,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_tags == null)
                 {
-                    _tags = Request.Params["tg"] + string.Empty;
+                    _tags = Request.Params[SearchParamKeys.Tag] + string.Empty;
                     _tags = Utilities.XSSFilter(_tags);
                     _tags = Utilities.StripHTMLTag(_tags);
                     _tags = Utilities.CheckSqlString(_tags);
@@ -87,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if(!_searchType.HasValue)
                 {
                     int parsedSearchType;
-                    _searchType = int.TryParse(Request.Params["k"], out parsedSearchType) ? parsedSearchType : 0;
+                    _searchType = int.TryParse(Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
                 }
 
                 return _searchType.Value;
@@ -100,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_authorUsername == null)
                 {
-                    _authorUsername = Request.Params["author"] + string.Empty;
+                    _authorUsername = Request.Params[SearchParamKeys.Author] + string.Empty;
                     _authorUsername = Utilities.XSSFilter(_authorUsername);
                     _authorUsername = Utilities.StripHTMLTag(_authorUsername);
                     _authorUsername = Utilities.CheckSqlString(_authorUsername);
@@ -118,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchColumns.HasValue)
                 {
                     int parsedSearchColumns;
-                    _searchColumns = int.TryParse(Request.Params["c"], out parsedSearchColumns) ? parsedSearchColumns : 0;
+                    _searchColumns = int.TryParse(Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
                 }
 
                 return _searchColumns.Value;
@@ -131,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (_forums == null)
                 {
-                    _forums = Request.Params["f"] + string.Empty;
+                    _forums = Request.Params[SearchParamKeys.Forums] + string.Empty;
                     _forums = Utilities.XSSFilter(_forums);
                     _forums = Utilities.StripHTMLTag(_forums);
                     _forums = Utilities.CheckSqlString(_forums);
@@ -149,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_searchDays.HasValue)
                 {
                     int parsedValue;
-                    _searchDays = int.TryParse(Request.Params["ts"], out parsedValue) ? parsedValue : 0;
+                    _searchDays = int.TryParse(Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _searchDays.Value;
@@ -163,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_resultType.HasValue)
                 {
                     int parsedValue;
-                    _resultType = int.TryParse(Request.Params["rt"], out parsedValue) ? parsedValue : 0;
+                    _resultType = int.TryParse(Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _resultType.Value;
@@ -177,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (!_sort.HasValue)
                 {
                     int parsedValue;
-                    _sort = int.TryParse(Request.Params["srt"], out parsedValue) ? parsedValue : 0;
+                    _sort = int.TryParse(Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
                 }
 
                 return _sort.Value;
@@ -197,9 +198,9 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
 
-                if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+                if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))
                 {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                    SocialGroupId = Convert.ToInt32(Request.QueryString[Literals.GroupId]);
                 }
 
                 btnSearch.Click += btnSearch_Click;
@@ -333,38 +334,57 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            var @params = new List<string> { ParamKeys.ViewType + "=search" };
+            var @params = new List<string> { $"{ParamKeys.ViewType}={Views.Search}" };
 
-            if(!string.IsNullOrWhiteSpace(searchText))
-                @params.Add("q=" + Server.UrlEncode(searchText));
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                @params.Add($"{SearchParamKeys.Query}={System.Web.HttpUtility.UrlEncode(searchText)}");
+            }
 
             if (!string.IsNullOrWhiteSpace(tags))
-                @params.Add("tg=" + Server.UrlEncode(tags));
+            {
+                @params.Add($"{SearchParamKeys.Tag}={System.Web.HttpUtility.UrlEncode(tags)}");
+            }
 
-            if(searchType > 0)
-                @params.Add("k=" + searchType);
+            if (searchType > 0)
+            {
+                @params.Add($"{SearchParamKeys.SearchType}={searchType}");
+            }
 
-            if(searchColumns > 0)
-                @params.Add("c=" + searchColumns);
+            if (searchColumns > 0)
+            {
+                @params.Add($"{SearchParamKeys.Columns}={searchColumns}");
+            }
 
             if(searchDays > 0)
-                @params.Add("ts=" + searchDays);
+            {
+                @params.Add($"{SearchParamKeys.TimeSpan}={searchDays}");
+            }
 
             if(resultType > 0)
-                @params.Add("rt=" + resultType);
+            {
+                @params.Add($"{SearchParamKeys.ResultType}={resultType}");
+            }
 
             if(sort > 0)
-                @params.Add("srt=" + sort);
-
+            {
+                @params.Add($"{SearchParamKeys.Sort}={sort}");
+            }
 
             if(!string.IsNullOrWhiteSpace(authorUsername))
-                @params.Add("author=" + Server.UrlEncode(authorUsername));
+            {
+                @params.Add($"{SearchParamKeys.Author}={System.Web.HttpUtility.UrlEncode(authorUsername)}");
+            }
 
-            if(!string.IsNullOrWhiteSpace(forums))
-                @params.Add("f=" + Server.UrlEncode(forums));
+            if (!string.IsNullOrWhiteSpace(forums))
+            {
+                @params.Add($"{SearchParamKeys.Forums}={System.Web.HttpUtility.UrlEncode(forums)}");
+            }
 
             if (SocialGroupId > 0)
-                @params.Add("GroupId=" + SocialGroupId.ToString());
+            {
+                @params.Add($"{Literals.GroupId}={SocialGroupId}");
+            }
 
             Response.Redirect(NavigateUrl(TabId, string.Empty, @params.ToArray()));
         }
@@ -411,44 +431,20 @@ namespace DotNetNuke.Modules.ActiveForums
             var forumsToSearch = Forums.Split(':').Where(o => int.TryParse(o, out parseId) && parseId > 0).Select(int.Parse).ToList();
 
             // Add the "All Forums" item
-            var allForumsItem = new ListItem("All Forums", "0") { Selected = forumsToSearch.Count == 0 && ForumId <= 0 };
+            lbForums.Items.Add(new ListItem("All Forums", "0") { Selected = forumsToSearch.Count == 0 && ForumId <= 0 });
 
-            lbForums.Items.Add(allForumsItem);
-
-            // This call comes back in the proper order for the tree
-            // Assumes only 1 level of sub-forums
-            var dt = DataProvider.Instance().UI_ForumView(PortalId, ModuleId, UserId, UserInfo.IsSuperUser, ForumIds).Tables[0];
-
-            // Filter out any forums the user can't read
-            var visibleRows = from rows in dt.AsEnumerable()
-                                where Permissions.HasPerm(rows.Field<string>("CanRead"), ForumUser.UserRoles)
-                                select rows;
-
-            // The JQuery plugin convert the group option elements to optgroup elements
-            // and handles some extra click functions
-
-            var currentGroupId = string.Empty;
-            foreach (var row in visibleRows)
-            {
-                var groupId = row["ForumGroupId"].ToString();
-                
-                // Add a new group item if needed
-                if (currentGroupId != groupId)
-                {
-                    currentGroupId = groupId;
-                    var groupName = row["GroupName"].ToString();
-                    var groupListItem = new ListItem(groupName, "G" + groupId);
-                    lbForums.Items.Add(groupListItem);
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums, ForumUser,
+                fi => {
+                lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
+                },
+                fi => {
+                lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) });
+                },
+                fi => {
+                lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) } );
                 }
-
-                // Add the forum item
-                var forumId = Convert.ToInt32(row["ForumId"]);
-                var isSubForum = Convert.ToInt32(row["ParentForumId"]) > 0;
-                var forumName = (isSubForum ? "-- " : string.Empty) + row["ForumName"];
-                var forumListItem = new ListItem(forumName, "F" + forumId + "G" + groupId)  { Selected = (forumsToSearch.Contains(forumId) || ForumId == forumId) };
-
-                lbForums.Items.Add(forumListItem);
-            }
+                );
         }
 
         #endregion

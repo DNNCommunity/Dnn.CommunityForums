@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,6 +25,10 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     internal static class TemplateCache
     {
+        internal static string GetCachedTemplate(int ModuleId, string TemplateType)
+        {
+            return GetCachedTemplate(ModuleId, TemplateType, -1);
+        }
         public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
         {
             string sTemplate = string.Empty;
@@ -46,13 +50,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         string fileName = $"{TemplateType}.ascx";
                         SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
-                        string templateFilePathFileName = HttpContext.Current.Server.MapPath(moduleSettings.TemplatePath + fileName);
+                        string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
                         {                            
-                            templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.TemplatesPath + fileName);
+                            templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + fileName);
                             if (!System.IO.File.Exists(templateFilePathFileName))
                             {
-                                templateFilePathFileName = HttpContext.Current.Server.MapPath(Globals.DefaultTemplatePath + fileName);
+                                templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + fileName);
                             }
                         }
                         if (System.IO.File.Exists(templateFilePathFileName))
@@ -87,11 +91,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             if (sTemplate.ToLowerInvariant().Contains("<am:"))
             {
-                sTemplate = Globals.ControlRegisterTag + sTemplate;
+                sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             }
             if (sTemplate.ToLowerInvariant().Contains("<af:"))
             {
-                sTemplate = Globals.ControlRegisterAFTag + sTemplate;
+                sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
             }
             if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
             {

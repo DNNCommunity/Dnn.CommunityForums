@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _authorizedForums ??
                        (_authorizedForums =
-                        new Data.Common().CheckForumIdsForView(ModuleId, Settings.Forums, CurrentUser.UserRoles));
+                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, Settings.Forums, CurrentUser.UserRoles));
             }
         }
 
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private static string CleanXmlString(string xmlString)
         {
-            xmlString = HttpContext.Current.Server.HtmlEncode(xmlString);
+            xmlString = HttpUtility.HtmlEncode(xmlString);
             return xmlString;
         }
 
@@ -217,7 +217,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             const int indent = 2;
 
-            var counter = 0;
 
             var sb = new StringBuilder(1024);
 
@@ -228,12 +227,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // build channel
             var ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
-            var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.BaseUtcOffset.TotalMinutes);
+            var offSet = Convert.ToInt32(PortalSettings.Current.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);
 
             sb.Append(WriteElement("channel", indent));
             sb.Append(WriteElement("title", ps.PortalName, indent));
             sb.Append(WriteElement("link", "http://" + HttpContext.Current.Request.Url.Host, indent));
-            sb.Append(WriteElement("description", ps.PortalName, indent));
+            sb.Append(value: WriteElement("description", ps.PortalName, indent));
             sb.Append(WriteElement("generator", "ActiveForums  5.0", indent));
             sb.Append(WriteElement("language", ps.DefaultLanguage, indent));
 
@@ -297,7 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (string.IsNullOrEmpty(sTopicUrl) || !Utilities.UseFriendlyURLs(topicModuleId))
                     {
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId };
-                        url = Common.Globals.NavigateURL(topicTabId, "", Params);
+                        url = Utilities.NavigateURL(topicTabId, "", Params);
                         if (url.IndexOf(HttpContext.Current.Request.Url.Host, StringComparison.CurrentCulture) == -1)
                         {
                             url = Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
@@ -352,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                         }
                         bodyHtml = bodyHtml.Replace("src=\"/Portals", "src=\"" + Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/Portals");
-                        bodyHtml = Utilities.ManageImagePath(bodyHtml, Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host));
+                        bodyHtml = Utilities.ManageImagePath(bodyHtml, new Uri(Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host)));
 
                         sb.Append(WriteElement("description", bodyHtml, indent + 1));
                     }

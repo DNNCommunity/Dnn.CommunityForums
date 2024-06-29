@@ -82,7 +82,7 @@ border-bottom-left-radius: 4px;}
 .amtabdisplay{width:auto;min-height:400px;}
 .amcpsubnav{padding-left:10px;padding-top:3px;padding-bottom:3px;background:#ddd;text-align:left;}
 .amcpsubnav .amcplnkbtn{color:#000000;}
-.amcpbrdnav{font-family:Tahoma;font-size:12px;color:#666; background-color:#ebf2ff;text-align:left;padding-top:4px;padding-left:4px;padding-bottom:4px}
+.amcpbrdnav{font-family:Tahoma;font-size:12px;color:#666; background-color:#ebf2ff;text-align:left;padding-top:4px;padding-left:10px;padding-bottom:4px}
 .amcpbrdnavitem{cursor:pointer;}
 .amcpcontrols{min-height:490px;font-family:Tahoma;font-size:11px; padding-top:5px;padding-left:10px;padding-right:10px;text-align:left;border-top:solid 1px #aaa;}
 .amcpfooter{margin-left:auto;margin-right:auto;min-width:650px;padding-top:0px !important;padding-top:3px;padding-left:0px !important;padding-left:4px;padding-right:0px !important;padding-right:4px;height:30px;background: #eee;border-left:solid 1px #666;border-right:solid 1px #666;border-bottom:solid 1px #666;}
@@ -141,7 +141,8 @@ tr.afgroupback td.afgroupback_right{background-image:url(images/groupback_right.
 .afsecactionelem{font-size:11px;font-family:Tahoma;text-align:center;padding:0;border-left:dashed 1px #dcdcdc;height:22px;}
 .amtbwrapper {text-decoration:none;text-align:center !important;display:block;padding:0px;margin:0px;height:60px;}
 .amnavbar {height:61px;text-decoration:none;text-align:center;display:block;padding:0px;margin:0px;background:#eee;}
-.amcpmdtoolbarbtm{text-align:center;padding:0px; margin-left:auto;margin-right:auto;height:55px;}
+.amcpmdtoolbarbtm{display:flex; justify-content: center;}
+.amcpmdtoolbarbtm .amtoolbaritem{width: auto; padding: 0.5em;}
 .amcpmdtoolbarbtm a, .amcpmdtoolbarbtm a:link{text-decoration:none;text-align:center !important;}
 .amcpmdtoolbar{width:610px;text-align:center;padding:0px;margin:0 auto;height:50px;padding-top:2px;text-decoration:none;}
 .amcpmdtoolbar a, .amcpmdtoolbar a:link{text-decoration:none;text-align:center !important;}

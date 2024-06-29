@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				txtSubject.Text = ti.Subject;
 
                 SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
-                txtFileName.Text = Server.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                txtFileName.Text = Utilities.MapPath(moduleSettings.TemplatePath + ti.FileName);
 				txtEditor.Text = Server.HtmlDecode(ti.Template.Replace("[RESX:", "[TRESX:"));
 				drpTemplateType.SelectedIndex = drpTemplateType.Items.IndexOf(drpTemplateType.Items.FindByValue(Convert.ToString(Convert.ToInt32(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString())))));
 				hidTemplateId.Value = Convert.ToString(ti.TemplateId);

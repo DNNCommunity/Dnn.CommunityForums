@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -66,10 +66,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 int forumId = -1;
                 if (forumId <= 0)
                 {
-                    if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey("forumId"))
+                    if (context.ActionContext.Request.GetRouteData().Route.DataTokens.ContainsKey(Literals.ForumId))
                     {
                         forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetRouteData().Route
-                                                                                        .DataTokens["forumId"]
+                                                                                        .DataTokens[Literals.ForumId]
                                                                                         .ToString());
                     }
                 }
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     try
                     {
                         forumId = Utilities.SafeConvertInt(context.ActionContext.Request.GetQueryNameValuePairs()
-                                                                                        .Where(q => q.Key.ToLowerInvariant() == "forumid")
+                                                                                        .Where(q => q.Key.ToLowerInvariant() == Literals.ForumId.ToLowerInvariant())
                                                                                         .FirstOrDefault().Value);
                     }
                     catch

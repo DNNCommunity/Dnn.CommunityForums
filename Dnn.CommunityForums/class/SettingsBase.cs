@@ -1,6 +1,6 @@
 //
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -58,8 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string forums;
                 if (string.IsNullOrEmpty(ForumUser.UserForums))
                 {
-                    var fc = new ForumController();
-                    forums = fc.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
+                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
                     ForumUser.UserForums = forums;
                 }
                 else
@@ -134,14 +133,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         tempPageId = Convert.ToInt32(Request.QueryString[ParamKeys.PageId]);
                     }
                 }
-                else if (Request.QueryString["page"] != null)
+                else if (Request.QueryString[Literals.page] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString["page"]))
+                    if (SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.page]))
                     {
-                        tempPageId = Convert.ToInt32(Request.QueryString["page"]);
+                        tempPageId = Convert.ToInt32(Request.QueryString[Literals.page]);
                     }
                 }
-                else if (Params != string.Empty && Params.Contains("PageId"))
+                else if (Params != string.Empty && Params.Contains(Literals.PageId))
                 {
                     tempPageId = Convert.ToInt32(Params.Split('=')[1]);
                 }
@@ -171,33 +170,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public ForumController ForumController
-        {
-            get
-            {
-                const string forumControllerContextKey = "AF|ForumController";
-                var forumController = HttpContext.Current.Items[forumControllerContextKey] as ForumController;
-                if (forumController == null)
-                {
-                    forumController = new ForumController();
-                    HttpContext.Current.Items[forumControllerContextKey] = forumController;
-                }
-                return forumController;
-            }
-        }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public ForumsDB ForumsDB
         {
             get
             {
-                const string forumsDBContextKey = "AF|ForumsDB";
-                var forumsDB = HttpContext.Current.Items[forumsDBContextKey] as ForumsDB;
-                if (forumsDB == null)
-                {
-                    forumsDB = new ForumsDB();
-                    HttpContext.Current.Items[forumsDBContextKey] = forumsDB;
-                }
-                return forumsDB;
+                throw new NotImplementedException();
             }
         }
 
@@ -408,37 +386,23 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-        #region Protected Methods
+        #region Protected Methods        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return Utilities.GetUserDate(displayDate, ForumModuleId, Convert.ToInt32(TimeZoneOffset.TotalMinutes));
+            return displayDate.AddMinutes(TimeZoneOffset.TotalMinutes);
         }
 
-        protected string GetServerDateTime(DateTime DisplayDate)
-        {
-            //Dim newDate As Date 
-            string dateString;
-            try
-            {
-                dateString = DisplayDate.ToString(string.Concat(MainSettings.DateFormatString, " ", MainSettings.TimeFormatString));
-                return dateString;
-            }
-            catch (Exception ex)
-            {
-                dateString = DisplayDate.ToString();
-                return dateString;
-            }
-        }
         #endregion
 
         #region Public Methods
         public string NavigateUrl(int TabId)
         {
-            return Utilities.NavigateUrl(TabId);
+            return Utilities.NavigateURL(TabId);
         }
         public string NavigateUrl(int TabId, string ControlKey, params string[] AdditionalParameters)
         {
-            return Utilities.NavigateUrl(TabId, ControlKey, AdditionalParameters);
+            return Utilities.NavigateURL(TabId, ControlKey, AdditionalParameters);
         }
         private string[] AddParams(string param, string[] currParams)
         {
@@ -475,28 +439,28 @@ namespace DotNetNuke.Modules.ActiveForums
 		{
 			base.OnLoad(e);
 
-            if (Request.Params["view"] != null)
+            if (Request.Params[Literals.view] != null)
             {
                 string sUrl;
                 string sParams = string.Empty;
                 
-                if (Request.Params["forumid"] != null)
+                if (Request.Params[Literals.ForumId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params["ForumId"]))
+                    if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.ForumId]))
                     {
-                        sParams = string.Concat(ParamKeys.ForumId, "=", Request.Params["ForumId"]);
+                        sParams = $"{ParamKeys.ForumId}={Request.Params[Literals.ForumId]}";
                     }
                 }
  
-                if (Request.Params["postid"] != null)
+                if (Request.Params[Literals.PostId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params["postid"]))
+                    if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.PostId]))
                     {
-                        sParams += string.Concat("|", ParamKeys.TopicId, "=", Request.Params["postid"]);
+                        sParams += $"|{ParamKeys.TopicId}={Request.Params[Literals.PostId]}";
                     }
                 }
                 
-                sParams += string.Concat("|", ParamKeys.ViewType, "=", Request.Params["view"]);
+                sParams += $"|{ParamKeys.ViewType}={Request.Params[Literals.view]}";
                 sUrl = NavigateUrl(TabId, "", sParams.Split('|'));
 
                 Response.Status = "301 Moved Permanently";

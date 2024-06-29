@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -66,11 +66,11 @@ namespace DotNetNuke.Modules.ActiveForums
                                 tk.TokenTag = xNodeList[i].Attributes["name"].Value;
                                 if (xNodeList[i].Attributes["value"] != null)
                                 {
-                                    tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].Attributes["value"].Value);
+                                    tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].Attributes["value"].Value);
                                 }
                                 else
                                 {
-                                    tk.TokenReplace = Utilities.HTMLDecode(xNodeList[i].ChildNodes[0].InnerText);
+                                    tk.TokenReplace = HttpUtility.HtmlDecode(xNodeList[i].ChildNodes[0].InnerText);
                                 }
 
                                 li.Add(tk);

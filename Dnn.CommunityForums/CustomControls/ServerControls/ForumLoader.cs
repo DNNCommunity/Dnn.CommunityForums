@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:ForumLoader runat=server></{0}:ForumLoader>")]
     public class ForumLoader : ForumBase
     {
-        private Forum fi;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -36,28 +36,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
 
-                if (Request.QueryString["afgt"] == "afprofile" || PortalSettings.UserTabId != null && PortalSettings.UserTabId != Null.NullInteger && PortalSettings.UserTabId != -1 && PortalSettings.UserTabId == PortalSettings.ActiveTab.ParentId)
-                {
-                    int userId;
-
-                    userId = int.TryParse(Request.QueryString["UserId"], out userId) ? userId : UserInfo.UserID;
-
-                    // Users can only view thier own settings unless they are admin.
-                    if (userId == UserInfo.UserID || UserInfo.IsInRole(PortalSettings.AdministratorRoleName))
-                    {
-                        var userPrefsCtl = (SettingsBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
-                        userPrefsCtl.ModuleConfiguration = ModuleConfiguration;
-                        userPrefsCtl.LocalResourceFile = Page.ResolveUrl(Globals.SharedResourceFile);
-                        this.Controls.Add(userPrefsCtl);
-                    }
-
-                    return;
-                }
-
                 if (ForumId > 0 && ForumModuleId == -1)
                 {
-                    ForumController fc = new ForumController();
-                    fi = fc.Forums_Get(PortalId, ForumModuleId, ForumId, true);
+                    fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
                     ForumModuleId = fi.ModuleId;
                 }
                 if (ForumModuleId > 0)

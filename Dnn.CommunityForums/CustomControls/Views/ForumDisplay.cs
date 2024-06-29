@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -56,9 +56,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = Convert.ToString(obj);
             }
             sTemp = Utilities.LocalizeControl(sTemp);
-            if (!(sTemp.Contains(Globals.ControlRegisterAFTag)))
+            if (!(sTemp.Contains(Globals.ForumsControlsRegisterAFTag)))
             {
-                sTemp = Globals.ControlRegisterAFTag + sTemp;
+                sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
             }
             Control ctl = Page.ParseControl(sTemp);
             LinkControls(ctl.Controls);
@@ -106,8 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 groupTemplate = TemplateUtils.GetTemplateSection(DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
-            var db = new Data.ForumsDB();
-            ForumData = db.ForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
+            ForumData = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
             if (ForumData != null)
             {
                 XmlNodeList xGroups;
@@ -137,8 +136,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sCSSClass = "afforumrowbottom";
                         }
                         int fid = int.Parse(fNode.Attributes["forumid"].Value);
-                        //Dim viewRoles As String = fNode.Attributes["canview"].Value.ToString
-                        //Dim readRoles As String = fNode.Attributes["canread"].Value.ToString
                         string sForum = TemplateUtils.GetTemplateSection(sGroup, "[FORUMS]", "[/FORUMS]");
                         sForum = sForum.Replace("[CSS:ROWCLASS]", sCSSClass);
                         sForum = ParseForumRow(fNode, sForum, groupName);
@@ -257,11 +254,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string[] Params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId };
             if (CanView && Name != string.Empty)
             {
-                sOut = "<a href=\"" + Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId }) + "\">" + Name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId }) + "\">" + Name + "</a>";
             }
             else if (CanView && Name == string.Empty)
             {
-                return Utilities.NavigateUrl(PageId, "", Params);
+                return Utilities.NavigateURL(PageId, "", Params);
             }
             else
             {
@@ -287,14 +284,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sURL;
                 if (ParentPostID == 0 || LastPostID == ParentPostID)
                 {
-                    sURL = Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + PostId });
+                    sURL = Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + PostId });
                 }
                 else
                 {
-                    sURL = Utilities.NavigateUrl(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
+                    sURL = Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
 
                 }
-                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + Utilities.HTMLEncode(Subject) + "\" runat=\"server\" />";
+                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(Subject) + "\" runat=\"server\" />";
             }
             return sOut;
         }

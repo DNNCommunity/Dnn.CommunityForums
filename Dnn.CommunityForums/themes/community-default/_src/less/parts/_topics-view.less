@@ -1,0 +1,147 @@
+.dcf-topics-view {
+
+
+    .dcf-forum-title {
+
+        margin-top: 0;
+        font-size: @title-2-size;
+        flex-grow: 1;
+        width: 100%;
+        @media screen and (min-width: @break-tablet){
+            width: auto;
+        }
+    }
+
+    .dcf-forum-search-subscribe{
+        .dcf-forum-search{
+            padding-bottom: @dist-md;
+        }
+        .dcf-subscribe-forum{
+            .amaf-chk-subs{
+                margin: 0 @dist-sm 0 @dist-xs ;
+            }
+        }
+    }
+
+    .dcf-topic-title {
+
+        margin: 0;
+        font-size: @title-3-size;
+    }
+
+
+    // Table head
+
+    .dcf-table-head-row{
+        .dcf-col-title {
+            width: 100%; // Push other THs to the right
+            .dcf-title {
+                margin: 0;
+                font-size: @title-3-size;
+            }
+    
+        }
+    }
+    
+
+
+    // Topics 
+    .dcf-topics {
+
+
+
+        padding-bottom: 3em;
+
+        &:empty{
+
+            padding-bottom: 0;
+        }
+
+        .dcf-col-icon {
+            padding-top: 1.9em;
+        }
+
+        .dcf-col-subject{
+
+            width: 100%; // Push other TDs to the right
+        }
+
+        .dcf-actions-top {
+            display: flex;
+            justify-content: flex-end; // Align pager at the right
+
+        }
+
+        .dcf-subject {
+
+            .afpagermini {
+                padding: @dist-sm 0;
+                display: inline-flex;
+                align-items: center;
+
+                a {
+                    margin-left: @dist-sm;
+                }
+            }
+
+            .dcf-title {
+                margin: 0 0 @dist-sm;
+            }
+
+            .dcf-topic-description {
+                margin-bottom: @dist-md;
+                max-height: 7.5em;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .dcf-topic-tools {
+                display: flex;
+                align-items: center;
+
+                a {
+                    margin-right: @dist-sm;
+                }
+            }
+
+            // Hide on mobile
+            .dcf-topic-description,
+            .afpagermini {
+
+                display: none;
+
+                @media screen and (min-width: @break-desktop) {
+                    display: block;
+                }
+
+            }
+
+        }
+
+        .dcf-last-post {
+            white-space: nowrap;
+
+            a {
+                display: block;
+            }
+
+            br {
+                display: none;
+            }
+        }
+
+
+
+        .dcf-actions-bottom {
+            display: flex;
+
+            .dcf-buttons {
+                // Push pager to the right;
+
+                flex-grow: 1;
+            }
+
+        }
+    }
+
+}

@@ -85,22 +85,23 @@ function amaf_topicSubscribe(mid, fid, tid) {
         forumId: fid,
         topicId: tid
     };
-    $.ajax({
-        type: "POST",
-        data: JSON.stringify(params),
-        contentType: "application/json",
-        dataType: "json",
-        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Subscribe',
-        beforeSend: sf.setModuleHeaders
-    }).done(function (data) {
-        amaf_UpdateTopicSubscriberCount(mid, fid, tid);
-        $('input[type=checkbox].amaf-chk-subs')
-            .prop('checked', data)
-            .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.TopicSubscribeTrue : amaf.resx.TopicSubscribeFalse);
-
-    }).fail(function (xhr, status) {
-        alert('error subscribing to topic');
-    });
+    /* can only subscribe using API if existing topic; new topic will be handled in code-behind when saving the topic */
+    if (tid > 0) {
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            dataType: "json",
+            url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Subscribe',
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            amaf_UpdateTopicSubscriberCount(mid, fid, tid);
+            $('input[type=checkbox].amaf-chk-subs')
+                .prop('checked', data);
+        }).fail(function (xhr, status) {
+            alert('error subscribing to topic');
+        });
+    }
 };
 function amaf_UpdateTopicSubscriberCount(mid, fid, tid) {
     var u = document.getElementById('af-topicview-topicsubscribercount');
@@ -132,8 +133,7 @@ function amaf_forumSubscribe(mid, fid) {
     }).done(function (data) {
         amaf_UpdateForumSubscriberCount(mid, fid);
         $('input[type=checkbox].amaf-chk-subs')
-            .prop('checked', data)
-            .siblings('label[for=amaf-chk-subs]').html(data ? amaf.resx.ForumSubscribeTrue : amaf.resx.ForumSubscribeFalse);
+            .prop('checked', data);
         $('img#amaf-sub-' + fid).each(function () {
             var imgSrc = $(this).attr('src');
             if (data) {
@@ -162,21 +162,30 @@ function amaf_UpdateForumSubscriberCount(mid, fid) {
         });
     }
 };
-function amaf_changeRate(r, t) {
-    var d = {};
-    d.action = 5;
-    d.rate = r;
-    d.topicid = t;
-    amaf.callback(d, amaf_rateComplete);
-};
-function amaf_rateComplete(result) {
-    var r = document.getElementById('af-rater');
-    var rate = result[0].result;
-    var rv = document.getElementById('af-rate-value');
-    rv.value = rate;
-    if (typeof (r) != 'undefined') {
-        r.className = 'fa-rater fa-rate' + rate;
+function amaf_ChangeTopicRating(mid, fid, tid, rating) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
     };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + '/API/ActiveForums/Topic/Rate?rating=' + rating,
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        var r = document.getElementById('af-rater');
+        var rate = data;
+        var rv = document.getElementById('af-rate-value');
+        rv.value = rate;
+        if (typeof (r) != 'undefined') {
+            r.className = 'fa-rater fa-rate' + rate;
+        };
+    }).fail(function (xhr, status) {
+        alert('error updating topic rating');
+    });
 };
 function amaf_hoverRate(obj, r) {
     var p = obj.parentNode;
@@ -186,15 +195,25 @@ function amaf_hoverRate(obj, r) {
     };
     p.className = 'fa-rater fa-rate' + r;
 };
-function amaf_markAnswer(tid, rid) {
-    var d = {};
-    d.action = 10;
-    d.topicid = tid;
-    d.replyid = rid;
-    amaf.callback(d, amaf_markAnswerComplete);
-};
-function amaf_markAnswerComplete() {
-    afreload();
+function amaf_MarkAsAnswer(mid, fid, tid, rid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid,
+        replyId: rid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Reply/MarkAsAnswer',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        afreload();
+    }).fail(function (xhr, status) {
+        alert('error marking as answer');
+    });
 };
 function amaf_loadSuggest(field, prepop, type) {
     if (typeof (type) == 'undefined') {
@@ -220,94 +239,19 @@ function amaf_loadSuggest(field, prepop, type) {
         }
     });
 };
-function amaf_postDel(tid, rid) {
+function amaf_postDel(mid, fid, tid, rid) {
     if (confirm(amaf.resx.DeleteConfirm)) {
-        var d = {};
-        d.action = 12;
-        d.topicid = tid;
-        d.replyid = rid;
-        amaf.callback(d, amaf_postDelComplete);
+        var sf = $.ServicesFramework(mid);
+        $.ajax({
+            type: "DELETE",
+            url: dnn.getVar("sf_siteRoot", "/") + (rid > 0 ? 'API/ActiveForums/Reply/Delete?forumId=' + fid + '&replyId=' + rid : 'API/ActiveForums/Topic/Delete?forumId=' + fid + '&topicId=' + tid),
+            beforeSend: sf.setModuleHeaders
+        }).done(function (data) {
+            afreload();
+        }).fail(function (xhr, status) {
+            alert('error deleting post');
+        });
     };
-
-};
-function amaf_postDelComplete(result) {
-    if (result[0].success == true) {
-        if (typeof (result[0].result) != 'undefined') {
-            var rid = result[0].result.split('|')[1];
-            if (rid > 0) {
-                afreload();
-            } else {
-                window.history.go(-1);
-            };
-        }
-
-    };
-};
-
-function amaf_splitRestore() {
-    var split_topicid = amaf_getParam('splitId');
-    if (typeof (split_topicid) != 'undefined') {
-        if (split_topicid == current_topicid) {
-            var sv = amaf_getParam('splitValue');
-            if (sv != '') splitposts = sv.split('|');
-            amaf_splitButtons(true);
-            return;
-        }
-    }
-    amaf_splitButtons(false);
-}
-
-
-function amaf_splitCheck(el) {
-    if (el.checked) {
-        if (splitposts.indexOf(el.value) < 0) splitposts.push(el.value);
-        var saved_split = splitposts.join('|');
-        amaf_setParam('splitValue', saved_split, 0);
-    }
-    else {
-        var index = splitposts.indexOf(el.value);
-        splitposts.splice(index, 1);
-        var saved_split = splitposts.join('|');
-        amaf_setParam('splitValue', saved_split, 0);
-    }
-};
-function amaf_splitCreate(el, tid) {
-    amaf_setParam('splitId', tid, 0);
-    amaf_setParam('splitValue', '', 0);
-    splitposts = new Array();
-    amaf_splitButtons(true);
-};
-
-function amaf_splitButtons(opt) {
-    var btns = document.getElementById('splitbuttons');
-    if (typeof (btns) == 'undefined') return;
-    if (opt) {
-        btns.childNodes[0].style.display = 'none';
-        btns.childNodes[1].style.display = 'block';
-        var objs = am.Utils.GetElementsByClassName('split-checkbox', 'afgrid');
-        for (var i = 0; i < objs.length; i++) {
-            objs[i].style.display = 'block';
-            if (splitposts.indexOf(objs[i].firstChild.value) > -1) objs[i].firstChild.checked = true;
-        };
-    }
-    else {
-        btns.childNodes[0].style.display = 'block';
-        btns.childNodes[1].style.display = 'none';
-        var objs = am.Utils.GetElementsByClassName('split-checkbox', 'afgrid');
-        for (var i = 0; i < objs.length; i++) {
-            objs[i].style.display = 'none';
-            objs[i].firstChild.checked = false;
-        };
-    }
-
-
-};
-
-function amaf_splitCancel() {
-    amaf_setParam('splitId', '', 0);
-    amaf_setParam('splitValue', '', 0);
-    splitposts = new Array();
-    amaf_splitButtons(false);
 };
 function amaf_likePost(mid, fid, cid) {
     var sf = $.ServicesFramework(mid);
@@ -354,13 +298,13 @@ function dcf_collapsible_showOrHideTarget(targetName) {
     var cookieName = dcf_collapsible_getCookieName(targetName);
     var targetElement = eval(document.getElementById(targetName));
     var showCollapsible = dcf_getCookieParam(cookieName);
-    if (showCollapsible == 'T' || showCollapsible == '') {
+    if (showCollapsible == 'T') {
         targetElement.style.display = '';
         $(dcf_collapsible_getElementId(targetName)).removeClass(dcf_collapsible_getCssClassClosed()).addClass(dcf_collapsible_getCssClassOpened());
         $(dcf_collapsible_getElementId(targetName)).children().removeClass(dcf_collapsible_getFaCssClassClosed()).addClass(dcf_collapsible_getFaCssClassOpened());
         dcf_setCookieParam(cookieName, 'T', 30);
     }
-    else {
+    else if (showCollapsible == 'F') {
         targetElement.style.display = 'none';
         $(dcf_collapsible_getElementId(targetName)).removeClass(dcf_collapsible_getCssClassOpened()).addClass(dcf_collapsible_getCssClassClosed());
         $(dcf_collapsible_getElementId(targetName)).children().removeClass(dcf_collapsible_getFaCssClassOpened()).addClass(dcf_collapsible_getFaCssClassClosed());
@@ -399,4 +343,79 @@ function dcf_getCookieParam(name) {
     var parts = value.split("; " + name + "=");
     if (parts.length == 2) return parts.pop().split(";").shift();
     return "";
+};
+
+
+function amaf_Pin(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Pin',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        $('#af-topicsview-pin-' + tid).toggleClass('fa-thumb-tack');
+        $('.dcf-topic-pin-inner').toggleClass('dcf-topic-pin-pin').toggleClass('dcf-topic-pin-unpin');
+        if (data == true) {
+            /* pinned --change icon and text to 'unpin' */
+            $('.dcf-topic-pin-text').text(amaf.resx.UnPin);
+            $('.dcf-topic-pin-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.UnPinConfirm + "')) { amaf_Pin(" + mid + ", " + fid + "," + tid + "); };");
+            $('.dcf-topic-pin-outer').attr("title", amaf.resx.UnPinTopic);
+            $('.dcf-topic-pin-inner').attr("title", amaf.resx.UnPinTopic);
+        }
+        else {
+            /* unpinned --change icon and text to 'pin' */
+            $('.dcf-topic-pin-text').text(amaf.resx.Pin);
+            $('.dcf-topic-pin-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.PinConfirm + "')) { amaf_Pin(" + mid + ", " + fid + "," + tid + "); };");
+            $('.dcf-topic-pin-outer').attr("title", amaf.resx.PinTopic);
+            $('.dcf-topic-pin-inner').attr("title", amaf.resx.PinTopic);
+        }
+    }).fail(function (xhr, status) {
+        alert('error pinning post');
+    });
+};
+function amaf_Lock(mid, fid, tid) {
+    var sf = $.ServicesFramework(mid);
+    var params = {
+        forumId: fid,
+        topicId: tid
+    };
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(params),
+        contentType: "application/json",
+        dataType: "json",
+        url: dnn.getVar("sf_siteRoot", "/") + 'API/ActiveForums/Topic/Lock',
+        beforeSend: sf.setModuleHeaders
+    }).done(function (data) {
+        $('#af-topicsview-lock-' + tid).toggleClass('fa-lock');
+        $('.dcf-topic-lock-inner').toggleClass('dcf-topic-lock-lock').toggleClass('dcf-topic-lock-unlock').toggleClass('fa-lock').toggleClass('fa-unlock');
+        $('.dcf-topic-reply-link').toggleClass('dcf-topic-reply-locked').toggleClass('dcf-topic-reply-unlocked'); /* enable/disable reply button */
+        if (data == true) {
+            /* locked -change icon and text to 'unlock'; hide quick reply and add message 'topic is locked'*/
+            $('.dcf-quickreply-wrapper').css('display', 'none');
+            $('.dcf-topic-lock-locked-label').text(amaf.resx.TopicLocked)
+            $('.dcf-topic-lock-text').text(amaf.resx.UnLock);
+            $('.dcf-topic-lock-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.UnLockConfirm + "')) { amaf_Lock(" + mid + ", " + fid + "," + tid + "); };");
+            $('.dcf-topic-lock-outer').attr("title", amaf.resx.UnLockTopic);
+            $('.dcf-topic-lock-inner').attr("title", amaf.resx.UnLockTopic);
+        }
+        else {
+            /* unlocked -change icon and text to lock; show quick reply and remove 'topic is locked' message */
+            $('.dcf-quickreply-wrapper').css('display', 'block');
+            $('.dcf-topic-lock-locked-label').text('')
+            $('.dcf-topic-lock-text').text(amaf.resx.Lock);
+            $('.dcf-topic-lock-outer').attr("onclick", "javascript:if (confirm('" + amaf.resx.LockConfirm + "')) { amaf_Lock(" + mid + ", " + fid + "," + tid + "); };");
+            $('.dcf-topic-lock-outer').attr("title", amaf.resx.LockTopic);
+            $('.dcf-topic-lock-inner').attr("title", amaf.resx.LockTopic);
+        }
+    }).fail(function (xhr, status) {
+        alert('error locking post');
+    });
 };

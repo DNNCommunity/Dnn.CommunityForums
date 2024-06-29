@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -81,7 +81,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <summary>
          /// Gets Subscriber count string for a Forum
          /// </summary>
-         /// <param name="ForumId" type="int"></param>
          /// <returns></returns>
          /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx</remarks>
         [HttpGet]
@@ -93,6 +92,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId)} {Utilities.GetSharedResource("[RESX:FORUMSUBSCRIBERCOUNT]", false)}");
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
+        }
+        /// <summary>
+        /// Populates list of forums for an HTML control
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Forum/ListForHtml</remarks>
+        [HttpPost]
+        [DnnAuthorize]
+        [ForumsAuthorize(SecureActions.ModMove)]
+        public HttpResponseMessage ListForHtml(ForumDto dto)
+        {
+            DotNetNuke.Modules.ActiveForums.User user = new DotNetNuke.Modules.ActiveForums.UserController().LoadUser(UserInfo);
+            return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(ForumModuleId, user));
         }
     }
 }

@@ -97,7 +97,7 @@
 										
 										<span class="afhiddenstats">[REPLIES] [RESX:REPLIESHEADER] and [VIEWS] [RESX:Views] and [TOPICSUBSCRIBERCOUNT] [RESX:SUBSCRIBERS]</span>
 										<span class="aftopictitle"><i class="fa fa-file-o fa-fw fa-grey"></i>&nbsp;[SUBJECTLINK][AF:ICONLINK:LASTREAD]</span> 
-										<span class="aftopicstarted">Started by <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
+										<span class="aftopicstarted">[RESX:StartedHeader] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
 										
 										
 										<span class="aftopictools">
@@ -173,7 +173,7 @@
 												<i class="fa fa-reply fa-fw fa-grey"></i>&nbsp;[REPLIES]
 												<i class="fa fa-envelope-o fa-fw fa-grey"></i>&nbsp;[TOPICSUBSCRIBERCOUNT]
 											</span>
-											<span class="aftopicstarted">Started by <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
+											<span class="aftopicstarted">[RESX:StartedHeader] <i class="fa fa-user fa-fw fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]</span>
 											
 											
 											<span class="aftopictools">

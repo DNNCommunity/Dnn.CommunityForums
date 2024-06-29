@@ -1,6 +1,6 @@
 ﻿//
 // Community Forums
-// Copyright (c) 2013-2021
+// Copyright (c) 2013-2024
 // by DNN Community
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -97,7 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums
 				objModules.UpdateModuleSetting(ModuleId, ForumViewerSettingsKeys.AFForumGroup, drpForum.SelectedItem.Value);
 				//objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
 				string ForumGroup;
-				int ForumGroupID = 0;
 				ForumGroup = drpForum.SelectedItem.Value;
 				if ((ForumGroup.IndexOf("GROUPID:", 0) + 1) > 0)
 				{
@@ -112,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
 				//ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
 				objModules.UpdateModuleSetting(ModuleId, ForumViewerSettingsKeys.AFForumGroupId, sID);
 				// Redirect back to the portal home page
-				Response.Redirect(Utilities.NavigateUrl(TabId), true);
+				Response.Redirect(Utilities.NavigateURL(TabId), true);
 			}
 			catch (Exception exc)
 			{

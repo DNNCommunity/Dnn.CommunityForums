@@ -1,0 +1,44 @@
+@qr-icon-color: #666;
+@qr-icon-color-hover: #000;
+
+.dcf-quick-reply{
+
+    padding: @dist-md 0;
+    #sep-border-top;
+    #sep-border-bottom;
+
+    .dcf-title{
+        margin:0;
+
+        &-4{
+            margin: @dist-md 0 @dist-xs;
+        }
+    }
+
+    .dcf-quick-reply-header{
+        margin: @dist-md 0;
+    }
+
+    .dcf-textbox{
+        max-width: 100%;
+        #input-border;
+    }
+
+    .dcf-toolbar-buttons{
+
+        .fa{
+            padding: 0.5em 0.7em;
+            cursor: pointer;
+            color: @qr-icon-color;
+
+            &:hover{
+                color: @qr-icon-color-hover;
+            }
+        }
+
+    }
+
+    .dcf-subscribe-topic{
+        margin: 1em 0;
+    }
+}
