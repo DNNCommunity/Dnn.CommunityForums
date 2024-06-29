@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             Forums = (List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>)obj;
                         }
                     }
-                    Forums = (Forums.OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).ToList());
+                    Forums = (Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList());
                     
 
                     string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
@@ -241,9 +241,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int tmpGroupCount = 0;
                     if (Forums != null)
                     {
-                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
+                        foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
-                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.View, ForumUser.UserRoles);
+                            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, ForumUser.UserRoles);
                             if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
                             {
                                 if (tmpGroup != fi.GroupName)
@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                return string.Empty;
+                throw;
             }
         }
         private void LinkControls(ControlCollection ctrls)

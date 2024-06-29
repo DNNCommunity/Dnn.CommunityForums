@@ -28,6 +28,7 @@ using System.Web.Security;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.DAL2;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -36,17 +37,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
         private const string emptyPermissions = "||||";
-        /// <summary>
-        ///
+        internal new void DeleteById<TProperty>(TProperty permissionsId)
+        {
+            base.DeleteById(permissionsId);
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionsId);
+            DataCache.SettingsCacheClear(-1, cachekey);
+        }
+        internal new void Delete(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
+        {
+            base.Delete(permissionInfo);
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionInfo.PermissionsId);
+            DataCache.SettingsCacheClear(-1, cachekey);
+        }
+        internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
+        {
+            base.Insert(permissionInfo);
+            return GetById(permissionInfo.PermissionsId);
+        }
+        internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
+        {
+            base.Update(permissionInfo);
+            return GetById(permissionInfo.PermissionsId);
+        }
         /// GetById needs to intercept and route to GetById without scope since PermissionsInfo does not yet have ModuleId
-        ///
-        /// </summary>
-        /// <param name="permissionId"></param>
-        /// <param name="moduleId"></param>
-        /// <returns></returns>
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionId, int moduleId)
         {
-            return base.GetById(permissionId);
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionId);
+            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DataCache.SettingsCacheRetrieve(-1, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
+            if (permissions == null)
+            {
+                permissions = base.GetById(permissionId);
+                DataCache.SettingsCacheStore(-1, cachekey, permissions);
+            }
+            return permissions;
+        }
+        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionId)
+        {
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionId);
+            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DataCache.SettingsCacheRetrieve(-1, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
+            if (permissions == null)
+            {
+                permissions = base.GetById(permissionId);
+                DataCache.SettingsCacheStore(-1, cachekey, permissions);
+            }
+            return permissions;
         }
         internal static int GetAdministratorsRoleId(int portalId)
         {
@@ -98,8 +132,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Block = adminRoleId,
                 Trust = adminRoleId,
                 Subscribe = adminRoleId,
-                Announce = adminRoleId, 
-                Prioritize = adminRoleId, 
+                Announce = adminRoleId,
+                Prioritize = adminRoleId,
                 ModApprove = adminRoleId,
                 ModMove = adminRoleId,
                 ModSplit = adminRoleId,
@@ -111,6 +145,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             };
             Insert(permissionInfo);
             return permissionInfo;
+        }
+        internal static DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetEmptyPermissions()
+        {
+            return new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
+            {
+                View = emptyPermissions,
+                Read = emptyPermissions,
+                Create = emptyPermissions,
+                Reply = emptyPermissions,
+                Edit = emptyPermissions,
+                Delete = emptyPermissions,
+                Lock = emptyPermissions,
+                Pin = emptyPermissions,
+                Attach = emptyPermissions,
+                Poll = emptyPermissions,
+                Block = emptyPermissions,
+                Trust = emptyPermissions,
+                Subscribe = emptyPermissions,
+                Announce = emptyPermissions,
+                Prioritize = emptyPermissions,
+                ModApprove = emptyPermissions,
+                ModMove = emptyPermissions,
+                ModSplit = emptyPermissions,
+                ModDelete = emptyPermissions,
+                ModUser = emptyPermissions,
+                ModEdit = emptyPermissions,
+                ModLock = emptyPermissions,
+                ModPin = emptyPermissions
+            };
         }
         public static bool HasAccess(string AuthorizedRoles, string UserRoles)
         {
@@ -695,7 +758,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in (ModuleId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get()))
                 {
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.View, UserRoles))
+                    if (forum.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, UserRoles))
                     {
                         sForums += forum.ForumID.ToString() + ":";
                     }
