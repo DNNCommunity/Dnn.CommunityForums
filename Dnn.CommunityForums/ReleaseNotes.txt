@@ -24,7 +24,7 @@
 			Please be sure to test this and <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose" target="_blank">report any issues you may find</a>. It's a brand-new feature! 
 		</p>
 		<p>
-			When you use the "community-default" or the "community-bootstrap" Theme, make sure to set the Avatar size to 250 x 250 pixels in the Module Settings. 
+			When you use the &quot;community-default&quot; or the &quot;community-bootstrap&quot; Theme, make sure to set the Avatar size to 250 x 250 pixels in the Module Settings. 
 		</p>
 		<p>
 			Also, please note that this version of the community-bootstrap theme will not work with Bootstrap 3 and/or the DNN Xcillion theme.  
@@ -96,8 +96,9 @@
 	<div class="dnnClear">
 		<h2>Release Notes</h2>
 		<hr />
-		<h3>08.01.00 <span class="muy-importante">RELEASE CANDIDATE 1</span></h3>
+		<h3>08.01.00<!-- <span class="muy-importante">RELEASE CANDIDATE 1</span>--></h3>
 
+		<!--
 		<p class="muy-importante">
 			<strong>IMPORTANT!!!</strong> This is a release candidate (RC).  Please <strong>DO NOT</strong> use this installation/upgrade package for any production 
 			websites of any kind.  
@@ -106,6 +107,7 @@
 		<p class="muy-importante">This release is <strong>not supported</strong> and is <strong>only provided for testing purposes</strong>, to allow others to test 
 			their websites first, before we deploy an official release.  
 		</p>
+		-->
 
 		<h4>New Features &amp; Enhancements</h4>
 		<ul>
