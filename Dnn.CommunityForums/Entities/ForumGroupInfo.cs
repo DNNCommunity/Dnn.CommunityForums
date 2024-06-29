@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Web.Caching;
 using DotNetNuke.ComponentModel.DataAnnotations;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -53,7 +54,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId);
+            var security = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetById(PermissionsId, ModuleId);
+            if (security == null)
+            {
+                security = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetEmptyPermissions();
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                string message = String.Format(Utilities.GetSharedResource("[RESX:PermissionsMissingForForumGroup]"), PermissionsId, ForumGroupId);
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+            }
+            return security;
         }
         [IgnoreColumn()]
         public Hashtable GroupSettings

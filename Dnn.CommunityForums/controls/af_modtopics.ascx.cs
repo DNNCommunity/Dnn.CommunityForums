@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (Request.IsAuthenticated && ForumUser.Profile.IsMod)
+            if (Request.IsAuthenticated && ( ForumUser.Profile.IsMod || ForumUser.IsSuperUser || ForumUser.IsAdmin))
             {
                 if (ForumId > 0)
                 {

@@ -56,6 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 else if ((HttpContext.Current.Items["AFUserInfo"]) != null)
                 {
                     u = (User)(HttpContext.Current.Items["AFUserInfo"]);
+                    u = FillProfile(PortalId, ModuleId, u);
                 }
                 else
                 {
