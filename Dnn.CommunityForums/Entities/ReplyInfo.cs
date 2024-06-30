@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
             else
             {
-                _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]"); ;
             }
             return _Author;
         }

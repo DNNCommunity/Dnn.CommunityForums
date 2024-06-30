@@ -24,7 +24,7 @@
 			Please be sure to test this and <a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/new/choose" target="_blank">report any issues you may find</a>. It's a brand-new feature! 
 		</p>
 		<p>
-			When you use the "community-default" or the "community-bootstrap" Theme, make sure to set the Avatar size to 250 x 250 pixels in the Module Settings. 
+			When you use the &quot;community-default&quot; or the &quot;community-bootstrap&quot; Theme, make sure to set the Avatar size to 250 x 250 pixels in the Module Settings. 
 		</p>
 		<p>
 			Also, please note that this version of the community-bootstrap theme will not work with Bootstrap 3 and/or the DNN Xcillion theme.  
@@ -105,14 +105,14 @@
 		<ul>
 			<li>BUG: [DISPLAYNAME] not included in email notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/923">Issue 923</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 		</ul>
-		 
 		<hr />
+		 
 		<h3>08.01.00</h3>
 		<hr />
 
-		<!--
-		<h3>08.01.00 <span class="muy-importante">RELEASE CANDIDATE 1</span></h3>
+		<h3>08.01.00<!-- <span class="muy-importante">RELEASE CANDIDATE 1</span>--></h3>
 
+		<!--
 		<p class="muy-importante">
 			<strong>IMPORTANT!!!</strong> This is a release candidate (RC).  Please <strong>DO NOT</strong> use this installation/upgrade package for any production 
 			websites of any kind.  
@@ -144,7 +144,7 @@
 			</li>
 			<li>NEW: Added language pack files to support Spanish (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/813">Pull 813</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)
 				<ul>
-					<li>Thank you so much to <a href="http://www.disgrafic.com/" target="_blank">Vicenç Masanas</a> (<a href="https://github.com/vmasanas" target="_blank">@vmasanas</a>) for checking this language pack!</li>
+					<li>Thank you so much to <a href="http://www.disgrafic.com/" target="_blank">VicenÃ§ Masanas</a> (<a href="https://github.com/vmasanas" target="_blank">@vmasanas</a>) for checking this language pack!</li>
 				</ul>			
 			</li>
 			<li>NEW: Added language pack files to support Italian (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/814">Pull 814</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>

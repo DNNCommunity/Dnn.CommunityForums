@@ -948,9 +948,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", GetTopic(TabId, ForumId, TopicId, Subject, sBodyTitle, UserId, AuthorId, ReplyCount, -1, sTopicURL) + sPollImage);
 
                     var displayName = UserProfiles.GetDisplayName(ForumModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, AuthorId, AuthorUserName, AuthorFirstName, AuthorLastName, AuthorDisplayName).ToString().Replace("&amp;#", "&#");
-                    if (Utilities.StripHTMLTag(displayName) == "Anonymous")
+                    if (Utilities.StripHTMLTag(displayName) == Utilities.GetSharedResource("[RESX:Anonymous]"))
                     {
-                        displayName = displayName.Replace("Anonymous", AuthorName);
+                        displayName = displayName.Replace(Utilities.GetSharedResource("[RESX:Anonymous]"), AuthorName);
                     }
                     sTopicsTemplate = sTopicsTemplate.Replace("[STARTEDBY]", displayName);
                     sTopicsTemplate = sTopicsTemplate.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(DateCreated,PortalId,UserId));

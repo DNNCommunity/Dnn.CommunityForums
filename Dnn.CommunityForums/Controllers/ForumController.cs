@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadSubForums();
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (forums == null)
             {
                 forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId).OrderBy(f => f.ForumGroup.SortOrder).ThenBy(f => f.SortOrder))
+                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in base.Get(moduleId).Where(f => f.ParentForumId == forumId).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder))
                 {
                     forum.LoadForumGroup();
                     forum.LoadProperties();
@@ -120,19 +120,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 switch (permissionType)
                 {
                     case "CanView":
-                        roles = f.Security.View;
+                        roles = f.Security?.View;
                         break;
                     case "CanRead":
-                        roles = f.Security.Read;
+                        roles = f.Security?.Read;
                         break;
                     case "CanApprove":
-                        roles = f.Security.ModApprove;
+                        roles = f.Security?.ModApprove;
                         break;
                     case "CanEdit":
-                        roles = f.Security.ModEdit;
+                        roles = f.Security?.ModEdit;
                         break;
                     default:
-                        roles = f.Security.View;
+                        roles = f.Security?.View;
                         break;
                 }
 
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             var sb = new StringBuilder();
             int index = 1;
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, currentUser.UserRoles)));
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && (f.ForumGroup!=null) && !(f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)));
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser,
                 fi =>
                 {
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     if (groupId != f.ForumGroupId)
                     {
-                        groups.Append("<group groupid=\"" + f.ForumGroupId.ToString() + "\" active=\"" + f.ForumGroup.Active.ToString().ToLowerInvariant() + "\" hidden=\"" + f.ForumGroup.Hidden.ToString().ToLowerInvariant() + "\">");
+                        groups.Append("<group groupid=\"" + f.ForumGroupId.ToString() + "\" active=\"" + f.ForumGroup?.Active.ToString().ToLowerInvariant() + "\" hidden=\"" + f.ForumGroup?.Hidden.ToString().ToLowerInvariant() + "\">");
                         groups.Append("<name><![CDATA[" + f.GroupName.ToString() + "]]></name>");
                         //If Not String.IsNullOrEmpty(f.ForumGroup.SEO) Then
                         //    groups.Append(f.ForumGroup.SEO)
@@ -219,31 +219,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append(" lastpostauthorid=\"" + f.LastPostUserID + "\"");
                     forums.Append(" lastpostdate=\"" + f.LastPostDateTime.ToString() + "\"");
                     forums.Append(" lastread=\"" + f.LastRead.ToString() + "\"");
-                    forums.Append(" allowrss=\"" + f.ForumSettings["ALLOWRSS"].ToString() + "\"");
+                    forums.Append(" allowrss=\"" + f.AllowRSS.ToString() + "\"");
                     forums.Append(" parentforumid=\"" + f.ParentForumId.ToString() + "\"");
-                    forums.Append(" viewroles=\"" + f.Security.View.ToString() + "\"");
-                    forums.Append(" readroles=\"" + f.Security.Read.ToString() + "\"");
-                    forums.Append(" replyroles=\"" + f.Security.Reply.ToString() + "\"");
-                    forums.Append(" modroles=\"" + f.Security.ModApprove.ToString() + "\"");
-                    forums.Append(" modmove=\"" + f.Security.ModMove.ToString() + "\"");
+                    forums.Append(" viewroles=\"" + f.Security?.View.ToString() + "\"");
+                    forums.Append(" readroles=\"" + f.Security?.Read.ToString() + "\"");
+                    forums.Append(" replyroles=\"" + f.Security?.Reply.ToString() + "\"");
+                    forums.Append(" modroles=\"" + f.Security?.ModApprove.ToString() + "\"");
+                    forums.Append(" modmove=\"" + f.Security?.ModMove.ToString() + "\"");
                     forums.Append(">");
                     forums.Append("<name><![CDATA[" + f.ForumName + "]]></name>");
                     forums.Append("<description><![CDATA[" + f.ForumDesc + "]]></description>");
                     forums.Append("<security>");
-                    forums.Append("<view>" + f.Security.View + "</view>");
-                    forums.Append("<read>" + f.Security.Read + "</read>");
-                    forums.Append("<create>" + f.Security.Create + "</create>");
-                    forums.Append("<reply>" + f.Security.Reply + "</reply>");
-                    forums.Append("<edit>" + f.Security.Edit + "</edit>");
-                    forums.Append("<delete>" + f.Security.Delete + "</delete>");
-                    forums.Append("<lock>" + f.Security.Lock + "</lock>");
-                    forums.Append("<pin>" + f.Security.Pin + "</pin>");
-                    forums.Append("<modapprove>" + f.Security.ModApprove + "</modapprove>");
-                    forums.Append("<modedit>" + f.Security.ModEdit + "</modedit>");
-                    forums.Append("<moddelete>" + f.Security.ModDelete + "</moddelete>");
-                    forums.Append("<modlock>" + f.Security.ModLock + "</modlock>");
-                    forums.Append("<modpin>" + f.Security.ModPin + "</modpin>");
-                    forums.Append("<modmove>" + f.Security.ModMove + "</modmove>");
+                    forums.Append("<view>" + f.Security?.View + "</view>");
+                    forums.Append("<read>" + f.Security?.Read + "</read>");
+                    forums.Append("<create>" + f.Security?.Create + "</create>");
+                    forums.Append("<reply>" + f.Security?.Reply + "</reply>");
+                    forums.Append("<edit>" + f.Security?.Edit + "</edit>");
+                    forums.Append("<delete>" + f.Security?.Delete + "</delete>");
+                    forums.Append("<lock>" + f.Security?.Lock + "</lock>");
+                    forums.Append("<pin>" + f.Security?.Pin + "</pin>");
+                    forums.Append("<modapprove>" + f.Security?.ModApprove + "</modapprove>");
+                    forums.Append("<modedit>" + f.Security?.ModEdit + "</modedit>");
+                    forums.Append("<moddelete>" + f.Security?.ModDelete + "</moddelete>");
+                    forums.Append("<modlock>" + f.Security?.ModLock + "</modlock>");
+                    forums.Append("<modpin>" + f.Security?.ModPin + "</modpin>");
+                    forums.Append("<modmove>" + f.Security?.ModMove + "</modmove>");
                     forums.Append("</security>");
                     //If Not String.IsNullOrEmpty(f.SEO) Then
                     //    forums.Append(f.SEO)
@@ -336,7 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subForumAction) 
         {
             string tmpGroupKey = string.Empty;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, currentUser.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles))))
             {
                 string GroupKey = $"{fi.GroupName}{fi.ForumGroupId}";
                 if (tmpGroupKey != GroupKey)
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (fi.ParentForumId == 0)
                 {
                     forumAction(fi);
-                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, currentUser.UserRoles)))))
+                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)))))
                     {
                         subForumAction(subforum);
                     }
