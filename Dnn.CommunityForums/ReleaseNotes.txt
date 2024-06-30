@@ -96,6 +96,21 @@
 	<div class="dnnClear">
 		<h2>Release Notes</h2>
 		<hr />
+		 
+		<h3>08.01.01</h3>
+		<hr />
+
+		
+		<h4>Bug Fixes</h4>
+		<ul>
+			<li>BUG: [DISPLAYNAME] not included in email notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/923">Issue 923</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+		 
+		<hr />
+		<h3>08.01.00</h3>
+		<hr />
+
+		<!--
 		<h3>08.01.00 <span class="muy-importante">RELEASE CANDIDATE 1</span></h3>
 
 		<p class="muy-importante">
@@ -106,7 +121,7 @@
 		<p class="muy-importante">This release is <strong>not supported</strong> and is <strong>only provided for testing purposes</strong>, to allow others to test 
 			their websites first, before we deploy an official release.  
 		</p>
-
+		-->
 		<h4>New Features &amp; Enhancements</h4>
 		<ul>
 			<li>NEW: Adds a new Bootstrap 4 &amp; 5 theme/template for the forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/734">Issue 734</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
