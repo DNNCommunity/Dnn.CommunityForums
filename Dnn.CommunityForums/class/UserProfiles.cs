@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
             outputName = Utilities.SafeTrim(outputName);
 
             if (string.IsNullOrWhiteSpace(outputName))
-                outputName = userId > 0 ? "Deleted User" : "Anonymous";
+                outputName = userId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
 
             outputName = HttpUtility.HtmlEncode(outputName);
 

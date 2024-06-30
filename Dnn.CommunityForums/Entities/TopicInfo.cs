@@ -148,14 +148,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             if (userInfo != null)
             {
                 _Author.Email = userInfo?.Email;
-                _Author.FirstName = userInfo?.FirstName;
+                _Author.FirstName = userInfo?.FirstName;    
                 _Author.LastName = userInfo?.LastName;
                 _Author.DisplayName = userInfo?.DisplayName;
                 _Author.Username = userInfo?.Username;
             }
             else
             {
-                _Author.DisplayName = Content.AuthorId > 0 ? "Deleted User" : "Anonymous";
+                _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
             return _Author;
         }

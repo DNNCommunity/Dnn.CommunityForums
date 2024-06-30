@@ -1270,10 +1270,10 @@ De
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Subrayar texto</value>
   </data>
-	<data name="[RESX:UnLock].Text" xml:space="preserve">
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
     <value>Desbloquear</value>
   </data>
-	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Haga clic para desbloquear este tema</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
@@ -1739,5 +1739,20 @@ De
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Ingrese un resumen para mejorar la optimización de motores de búsqueda (SEO)</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anónimo</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Borrado Usuario</value>
+  </data>
+  <data name="[RESX:ForumGroupMissingForForum].Text" xml:space="preserve">
+    <value>El Grupo del Foro {0} para el {1} del Foro no se encuentra en la base de datos; Tendrás que reparar esto en la base de datos, o eliminar el foro y volver a crearlo. Visite el repositorio de Github de los foros de la comunidad (https://github.com/DNNCommunity/Dnn.CommunityForums), donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForumGroup].Text" xml:space="preserve">
+    <value>Los {0} de permisos para los {1} de grupo de foros no se encuentran en la base de datos; Deberá reparar esto en la base de datos o eliminar el grupo del foro y volver a crearlo. Visite el repositorio de Github de los foros de la comunidad (https://github.com/DNNCommunity/Dnn.CommunityForums), donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
+    <value>Los {0} de permisos para los {1} del foro no se encuentran en la base de datos; Tendrás que reparar esto en la base de datos, o eliminar el foro y volver a crearlo. Visite el repositorio de Github de los foros de la comunidad (https://github.com/DNNCommunity/Dnn.CommunityForums), donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
   </data>
 </root>
