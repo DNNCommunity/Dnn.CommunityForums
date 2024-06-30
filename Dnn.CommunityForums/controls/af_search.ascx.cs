@@ -536,7 +536,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var lastName = _currentRow["AuthorLastName"].ToString();
             var displayName = _currentRow["AuthorDisplayName"].ToString();
 
-            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            return UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostAuthor()
@@ -550,7 +550,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var lastName = _currentRow["LastReplyLastName"].ToString();
             var displayName = _currentRow["LastReplyDisplayName"].ToString();
 
-            return UserProfiles.GetDisplayName(ModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            return UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostTime()

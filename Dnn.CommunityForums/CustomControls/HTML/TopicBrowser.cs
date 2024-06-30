@@ -394,8 +394,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				if (int.Parse(row["LastAuthorId"].ToString()) == -1)
 				{
 					try
-					{
-						tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                    {
+                        DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
+                        tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
 					}
 					catch (Exception ex)
 					{
@@ -404,8 +405,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				}
 				else
-				{
-                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                {
+                    DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
+                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
 				}
 
 				if (_canEdit)
