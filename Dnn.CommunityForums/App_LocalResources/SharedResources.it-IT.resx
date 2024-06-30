@@ -1267,10 +1267,10 @@ Da
   <data name="[RESX:UnderlineDesc].Text" xml:space="preserve">
     <value>Sottolinea testo</value>
   </data>
-	<data name="[RESX:UnLock].Text" xml:space="preserve">
+  <data name="[RESX:UnLock].Text" xml:space="preserve">
     <value>Sblocca</value>
   </data>
-	<data name="[RESX:UnLockTopic].Text" xml:space="preserve">
+  <data name="[RESX:UnLockTopic].Text" xml:space="preserve">
     <value>Fai clic per sbloccare questo argomento</value>
   </data>
   <data name="[RESX:UnPin].Text" xml:space="preserve">
@@ -1734,5 +1734,20 @@ Da
   </data>
   <data name="[RESX:SummaryForSEO].Text" xml:space="preserve">
     <value>Inserisci un riepilogo per migliorare l'ottimizzazione dei motori di ricerca (SEO)</value>
+  </data>
+  <data name="[RESX:Anonymous].Text" xml:space="preserve">
+    <value>Anonimo</value>
+  </data>
+  <data name="[RESX:DeletedUser].Text" xml:space="preserve">
+    <value>Eliminato Utente</value>
+  </data>
+  <data name="[RESX:ForumGroupMissingForForum].Text" xml:space="preserve">
+    <value>Il {0} del gruppo di forum per il forum {1} non è presente nel database; Dovrai ripararlo nel database, o eliminare il forum e ricrearlo. Visita il repository Github dei forum della community (https://github.com/DNNCommunity/Dnn.CommunityForums), dove puoi pubblicare un problema o rivedere il wiki per la risoluzione dei problemi.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForumGroup].Text" xml:space="preserve">
+    <value>Le {0} delle autorizzazioni per i {1} del gruppo di forum non sono presenti nel database; Sarà necessario ripararlo nel database o eliminare il gruppo del forum e ricrearlo. Visita il repository Github dei forum della community (https://github.com/DNNCommunity/Dnn.CommunityForums), dove puoi pubblicare un problema o rivedere il wiki per la risoluzione dei problemi.</value>
+  </data>
+  <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
+    <value>Le {0} delle autorizzazioni per i {1} del forum non sono presenti nel database; Dovrai ripararlo nel database, o eliminare il forum e ricrearlo. Visita il repository Github dei forum della community (https://github.com/DNNCommunity/Dnn.CommunityForums), dove puoi pubblicare un problema o rivedere il wiki per la risoluzione dei problemi.</value>
   </data>
 </root>
