@@ -96,6 +96,20 @@
 	<div class="dnnClear">
 		<h2>Release Notes</h2>
 		<hr />
+		 
+		<h3>08.01.01</h3>
+		<hr />
+
+		
+		<h4>Bug Fixes</h4>
+		<ul>
+			<li>BUG: [DISPLAYNAME] not included in email notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/923">Issue 923</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+		</ul>
+		<hr />
+		 
+		<h3>08.01.00</h3>
+		<hr />
+
 		<h3>08.01.00<!-- <span class="muy-importante">RELEASE CANDIDATE 1</span>--></h3>
 
 		<!--
@@ -108,7 +122,6 @@
 			their websites first, before we deploy an official release.  
 		</p>
 		-->
-
 		<h4>New Features &amp; Enhancements</h4>
 		<ul>
 			<li>NEW: Adds a new Bootstrap 4 &amp; 5 theme/template for the forum (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/734">Issue 734</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
@@ -131,7 +144,7 @@
 			</li>
 			<li>NEW: Added language pack files to support Spanish (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/813">Pull 813</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)
 				<ul>
-					<li>Thank you so much to <a href="http://www.disgrafic.com/" target="_blank">Vicenç Masanas</a> (<a href="https://github.com/vmasanas" target="_blank">@vmasanas</a>) for checking this language pack!</li>
+					<li>Thank you so much to <a href="http://www.disgrafic.com/" target="_blank">VicenÃ§ Masanas</a> (<a href="https://github.com/vmasanas" target="_blank">@vmasanas</a>) for checking this language pack!</li>
 				</ul>			
 			</li>
 			<li>NEW: Added language pack files to support Italian (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/pulls/814">Pull 814</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
