@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tUid);
                     if (ui != null)
                     {
-                        sDisplayName = UserProfiles.GetDisplayName(ModuleId, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
+                        sDisplayName = UserProfiles.GetDisplayName(PortalSettings, ModuleId, false,false,false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
                     }
 
                 }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 tUid = UserId;
-                sDisplayName = UserProfiles.GetDisplayName(ModuleId, UserId, UserInfo.Username, UserInfo.FirstName, UserInfo.LastName, UserInfo.DisplayName);
+                sDisplayName = UserProfiles.GetDisplayName(PortalSettings, ModuleId, false, false, false, UserId, UserInfo.Username, UserInfo.FirstName, UserInfo.LastName, UserInfo.DisplayName);
             }
             lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
             if (MainSettings.UseSkinBreadCrumb)

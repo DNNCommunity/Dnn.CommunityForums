@@ -20,6 +20,7 @@
 
 using System;
 using System.Text;
+using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -38,8 +39,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (sb.Length > 0)
                         sb.Append(", ");
-
-                    sb.Append(UserProfiles.GetDisplayName(moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
+                    var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
+                    sb.Append(UserProfiles.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
                 }
 
                 dr.Close();

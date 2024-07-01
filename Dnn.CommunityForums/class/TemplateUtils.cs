@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var result = new StringBuilder(sOut);
 
-            result.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(moduleID, userId, authorName, sFirstName, sLastName, sDisplayName));
+            result.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, moduleID,false,false,false, userId, authorName, sFirstName, sLastName, sDisplayName));
             result.Replace("[USERNAME]", sUsername);
             result.Replace("[USERID]", userId.ToString());
             result.Replace("[FORUMNAME]", fi.ForumName);
@@ -627,7 +627,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 result.Replace("[AF:PROFILE:AVATAR]", sAvatar);
 
                 // Display Name
-                result.Replace("[AF:PROFILE:DISPLAYNAME]", UserProfiles.GetDisplayName(moduleId, true, isMod, isAdmin, up.UserId, up.UserName, up.FirstName, up.LastName, up.DisplayName));
+                DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(portalId);
+                result.Replace("[AF:PROFILE:DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, moduleId, true, isMod, isAdmin, up.UserId, up.UserName, up.FirstName, up.LastName, up.DisplayName));
 
                 // These fields are no longer used
                 result.Replace("[AF:PROFILE:LOCATION]", string.Empty);
