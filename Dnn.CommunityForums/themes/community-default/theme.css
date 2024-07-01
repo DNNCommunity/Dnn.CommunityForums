@@ -385,16 +385,18 @@
   margin: 0;
   color: black;
 }
-.dnn-community-forums .dcf-topics-view .dcf-forum-title {
-  margin-top: 0;
-  font-size: 1.2em;
+.dnn-community-forums .dcf-topics-view .dcf-forum-title-wrap {
   flex-grow: 1;
   width: 100%;
 }
 @media screen and (min-width: 768px) {
-  .dnn-community-forums .dcf-topics-view .dcf-forum-title {
+  .dnn-community-forums .dcf-topics-view .dcf-forum-title-wrap {
     width: auto;
   }
+}
+.dnn-community-forums .dcf-topics-view .dcf-forum-title {
+  margin-top: 0;
+  font-size: 1.2em;
 }
 .dnn-community-forums .dcf-topics-view .dcf-forum-search-subscribe .dcf-forum-search {
   padding-bottom: 1rem;
