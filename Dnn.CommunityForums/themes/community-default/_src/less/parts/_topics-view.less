@@ -1,23 +1,31 @@
 .dcf-topics-view {
 
 
+    .dcf-forum-title-wrap {
+        flex-grow: 1;
+        width: 100%;
+
+        @media screen and (min-width: @break-tablet) {
+            width: auto;
+        }
+
+    }
+
     .dcf-forum-title {
 
         margin-top: 0;
         font-size: @title-2-size;
-        flex-grow: 1;
-        width: 100%;
-        @media screen and (min-width: @break-tablet){
-            width: auto;
-        }
+
+
     }
 
-    .dcf-forum-search-subscribe{
-        .dcf-forum-search{
+    .dcf-forum-search-subscribe {
+        .dcf-forum-search {
             padding-bottom: @dist-md;
         }
-        .dcf-subscribe-forum{
-            .amaf-chk-subs{
+
+        .dcf-subscribe-forum {
+            .amaf-chk-subs {
                 margin: 0 @dist-sm 0 @dist-xs ;
             }
         }
@@ -32,17 +40,18 @@
 
     // Table head
 
-    .dcf-table-head-row{
+    .dcf-table-head-row {
         .dcf-col-title {
             width: 100%; // Push other THs to the right
+
             .dcf-title {
                 margin: 0;
                 font-size: @title-3-size;
             }
-    
+
         }
     }
-    
+
 
 
     // Topics 
@@ -52,7 +61,7 @@
 
         padding-bottom: 3em;
 
-        &:empty{
+        &:empty {
 
             padding-bottom: 0;
         }
@@ -61,7 +70,7 @@
             padding-top: 1.9em;
         }
 
-        .dcf-col-subject{
+        .dcf-col-subject {
 
             width: 100%; // Push other TDs to the right
         }
