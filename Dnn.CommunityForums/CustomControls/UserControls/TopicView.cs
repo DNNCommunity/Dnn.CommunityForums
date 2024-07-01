@@ -251,11 +251,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
-            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
+            string cacheKey = string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, _rowIndex, _pageSize);
+            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
             if (ds == null)
             {
                 ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
-                DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value), ds); ;
+                DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
             }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
