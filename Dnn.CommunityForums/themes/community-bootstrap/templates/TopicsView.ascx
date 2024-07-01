@@ -162,7 +162,7 @@
 										<div class="dcf-topic-started">[RESX:StartedHeader]
 											<i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]
 										</div>
-										<div class="dcf-topic-description">[BODYTITLE]</div>
+										<div class="dcf-topic-description text-break">[BODYTITLE]</div>
 										<div class="dcf-topic-tools">
 								[AF:QUICKEDITLINK]
 								[ACTIONS:DELETE]
