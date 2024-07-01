@@ -79,7 +79,6 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 return SettingsBase.GetModuleSettings(this.ModuleId);
-                // return new ModuleSettings { ModuleId = this.ModuleId, MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
             }
         }
 

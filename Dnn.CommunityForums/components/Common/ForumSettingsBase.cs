@@ -43,6 +43,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, newValue);
         }
+        private void UpdateTabModuleSettingCaseSensitive(string key, string newValue)
+        {
+            var oldValue = Settings.GetString(key);
+            if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
+            {
+                // changed but case-insensitive identical: empty the setting first
+                UpdateTabModuleSettingCaseSensitive(key, "");
+            }
+            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateTabModuleSetting(TabModuleId, key, newValue);
+        }
 
         public string Mode
         {
@@ -66,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             set
             {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
+                this.UpdateTabModuleSettingCaseSensitive(SettingKeys.Theme, value);
             }
         }
 
@@ -287,7 +297,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             set
             {
-                this.UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
+                this.UpdateTabModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
             }
         }
 
