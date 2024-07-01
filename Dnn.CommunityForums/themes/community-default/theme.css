@@ -20,6 +20,9 @@
     display: initial;
   }
 }
+.dcf-text-end {
+  text-align: end;
+}
 .dnn-community-forums .afeditor {
   background: #fff;
   border: none;
@@ -353,7 +356,7 @@
 .dnn-community-forums .dcf-group-title-wrap .dcf-group-title {
   font-size: 1.4em;
   color: black;
-  text-rowansform: uppercase;
+  text-transform: uppercase;
   margin: 0;
   flex-grow: 1;
 }
