@@ -815,7 +815,8 @@ namespace DotNetNuke.Modules.ActiveForums
             
             try
             {
-                DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
+                DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
+                DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicsViewPrefix, ForumModuleId));
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
 
                 if (ti.IsApproved == false)
