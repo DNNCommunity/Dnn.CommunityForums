@@ -32,29 +32,38 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// </summary>
     public class ReplyController : ControllerBase<ReplyController>
     {
+        public struct ReplyDto
+        {
+            public int ForumId { get; set; }
+            public int TopicId { get; set; }
+            public int ReplyId { get; set; }
+        }
 #pragma warning disable CS1570
+
         /// <summary>
         /// Marks a reply as the answer to a topic
         /// </summary>
-        /// <param name="forumId" type="int"></param>
-        /// <param name="replyId" type="int"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/MarkAsAnswer?forumId=xxx&replyId=yyy</remarks>
+        /// <remarks>https://dnndev.me/API/ActiveForums/Reply/MarkAsAnswer</remarks>
 #pragma warning restore CS1570
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModEdit)]
         [ForumsAuthorize(SecureActions.Edit)]
-        public HttpResponseMessage MarkAsAnswer(int forumId, int replyId)
+        public HttpResponseMessage MarkAsAnswer(ReplyDto dto)
         {
-            if (forumId > 0 && replyId > 0)
+            int forumId = dto.ForumId;
+            int topicId = dto.TopicId;
+            int replyId = dto.ReplyId; 
+            if (forumId > 0 && topicId > 0 && replyId > 0)
             {
                 var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                 if (r != null)
                 {
-                    if ((UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";",UserInfo.Roles)))
+                    if ((UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
                     {
-                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, r.TopicId, replyId, UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", UserInfo.Roles)));
+                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, r.TopicId, replyId, UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))));
                         DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
                         return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }

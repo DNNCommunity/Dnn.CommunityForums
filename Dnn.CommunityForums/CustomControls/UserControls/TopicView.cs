@@ -1446,7 +1446,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else
             {
                 // Not Answered
-                if ((UserId == _topicAuthorId && !_bLocked) || _bModEdit)
+                if (replyId > 0 && ((UserId == _topicAuthorId && !_bLocked) || _bModEdit))
                 {
                     // Can mark answer
                     if (_useListActions)
