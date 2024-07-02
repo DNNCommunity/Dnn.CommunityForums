@@ -379,23 +379,24 @@
               <name>08.00.00.SqlDataProvider</name>
               <version>08.00.00</version>
             </script>
-			  <script type="Install">
-				  <path>sql</path>
-				  <name>08.01.00.SqlDataProvider</name>
-				  <version>08.01.00</version>
-			  </script>
-			  <script type="Install">
-				  <path>sql</path>
-				  <name>08.01.01.SqlDataProvider</name>
-				  <version>08.01.01</version>
-			  </script><script type="UnInstall">
+            <script type="Install">
+              <path>sql</path>
+              <name>08.01.00.SqlDataProvider</name>
+              <version>08.01.00</version>
+            </script>
+            <script type="Install">
+              <path>sql</path>
+              <name>08.01.01.SqlDataProvider</name>
+              <version>08.01.01</version>
+            </script>
+            <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
               <version>08.01.01</version>
             </script>
           </scripts>
         </component>
-		  
+
         <component type="ResourceFile">
           <resourceFiles>
             <basePath>DesktopModules\ActiveForums</basePath>
@@ -405,7 +406,7 @@
             </resourceFile>
           </resourceFiles>
         </component>
-		  
+
         <component type="Config">
           <config>
             <configFile>web.config</configFile>
@@ -428,7 +429,7 @@
         <component type="Cleanup" version="07.00.03" fileName="07.00.03.txt" />
         <component type="Cleanup" version="07.00.11" fileName="07.00.11.txt" />
         <component type="Cleanup" version="08.00.00" fileName="08.00.00.txt" />
-		  <component type="Cleanup" version="08.01.00" fileName="08.01.00.txt" />
+        <component type="Cleanup" version="08.01.00" fileName="08.01.00.txt" />
       </components>
     </package>
 
