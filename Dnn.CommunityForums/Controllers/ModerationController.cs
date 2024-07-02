@@ -1,4 +1,4 @@
-﻿//
+//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -51,23 +51,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
                     subject = Utilities.GetSharedResource("NotificationSubjectReply");
-                    subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
-                    subject = subject.Replace("[TopicSubject]", reply.Topic.Content.Subject);
+                    subject = subject.Replace("[DisplayName]", reply.Content?.AuthorName);
+                    subject = subject.Replace("[TopicSubject]", reply.Topic?.Content.Subject);
                     body = Utilities.GetSharedResource("NotificationBodyReply");
-                    body = body.Replace("[DisplayName]", reply.Content.AuthorName);
-                    body = body.Replace("[TopicSubject]", reply.Content.Subject);
+                    body = body.Replace("[DisplayName]", reply.Content?.AuthorName);
+                    body = body.Replace("[TopicSubject]", reply.Content?.Subject);
                     authorId = reply.Content.AuthorId;
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
-                    subject = Utilities.GetSharedResource("NotificationSubjectReply");
-                    subject = subject.Replace("[DisplayName]", reply.Content.AuthorName);
-                    subject = subject.Replace("[TopicSubject]", reply.Topic.Content.Subject);
-                    body = Utilities.GetSharedResource("NotificationBodyReply");
-                    body = body.Replace("[DisplayName]", reply.Content.AuthorName);
-                    body = body.Replace("[TopicSubject]", reply.Content.Subject);
-                    authorId = reply.Content.AuthorId;
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                    subject = Utilities.GetSharedResource("NotificationSubjectTopic");
+                    subject = subject.Replace("[DisplayName]", topic.Content?.AuthorName);
+                    subject = subject.Replace("[TopicSubject]", topic.Content?.Subject);
+                    body = Utilities.GetSharedResource("NotificationBodyTopic");
+                    body = body.Replace("[DisplayName]", topic.Content?.AuthorName);
+                    body = body.Replace("[TopicSubject]", topic.Content?.Subject);
+                    authorId = topic.Content.AuthorId;
                 }
                 string modLink = Utilities.NavigateURL(TabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={ForumId}" });
                 body = body.Replace("[MODLINK]", modLink);

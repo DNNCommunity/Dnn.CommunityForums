@@ -5,7 +5,10 @@
 	<div class="dcf-breadcrumb"><i class="fa fa-home"></i>  [FORUMMAINLINK] <i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]</div>
 	<div class="dcf-actions dcf-actions-top dcf-cols">
 		
+		<div class="dcf-forum-title-wrap">
 		<h2 class="dcf-forum-title">[TRESX:Forum]: [FORUMLINK]</h2>
+		<div class="dcf-buttons">[ADDTOPIC]</div>
+		</div>
 		
 		
 		<div class="dcf-forum-search-subscribe">

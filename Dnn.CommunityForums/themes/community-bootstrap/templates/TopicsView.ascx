@@ -2,13 +2,17 @@
 	<%@ Register TagPrefix="am" TagName="MarkForumRead" Src="~/DesktopModules/ActiveForums/controls/af_markallread.ascx"%>
 		<%@ Register TagPrefix="am" TagName="MiniSearch" Src="~/DesktopModules/ActiveForums/controls/af_searchquick.ascx"%>
 			<div class="dcf-topics-view">
+				<div class="dcf-breadcrumb py-2 border-bottom border-top">
+					<i class="fa fa-home"></i>  [FORUMMAINLINK]
+					<i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]
+				</div>
+				
 				<div class="d-flex">
+
 					<div class="flex-grow-1">
-						<div class="dcf-breadcrumb py-2">
-							<i class="fa fa-home"></i>  [FORUMMAINLINK]
-							<i class="fa fa-chevron-right"></i> [FORUMGROUPLINK]
-						</div>
-						<h2 class="dcf-forum-title h4 mb-0">[TRESX:Forum]: [FORUMLINK]</h2>
+						
+						<h2 class="dcf-forum-title h4 mb-0 mt-2">[TRESX:Forum]: [FORUMLINK]</h2>
+						<div class="dcf-buttons mt-4">[ADDTOPIC]</div>
 					</div>
 					<div class="text-right text-end">
 						<div class="dcf-actions dcf-actions-top">
@@ -158,7 +162,7 @@
 										<div class="dcf-topic-started">[RESX:StartedHeader]
 											<i class="fa fa-user fa-blue"></i>&nbsp;[STARTEDBY][AF:UI:MINIPAGER]
 										</div>
-										<div class="dcf-topic-description">[BODYTITLE]</div>
+										<div class="dcf-topic-description text-break">[BODYTITLE]</div>
 										<div class="dcf-topic-tools">
 								[AF:QUICKEDITLINK]
 								[ACTIONS:DELETE]

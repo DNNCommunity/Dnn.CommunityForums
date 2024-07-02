@@ -563,13 +563,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (postId == TopicId)
                         {
                             ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
                         }
                         else
                         {
                             var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(postId);
                             ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, PortalId, UserId));
+                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, PortalId, UserId));
                         }
 
                         if (ci != null)
@@ -815,7 +815,8 @@ namespace DotNetNuke.Modules.ActiveForums
             
             try
             {
-                DataCache.ContentCacheClear(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ForumModuleId, TopicId, authorId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
+                DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
+                DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicsViewPrefix, ForumModuleId));
                 DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.ForumViewPrefix, ForumModuleId));
 
                 if (ti.IsApproved == false)

@@ -251,11 +251,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Get our Row Index
             _rowIndex = (pageId - 1) * _pageSize;
-            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value));
+            string cacheKey = string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, _rowIndex, _pageSize);
+            DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
             if (ds == null)
             {
                 ds = DataProvider.Instance().UI_TopicView(PortalId, ForumModuleId, ForumId, TopicId, UserId, _rowIndex, _pageSize, UserInfo.IsSuperUser, _defaultSort); 
-                DataCache.ContentCacheStore(ModuleId, string.Format(CacheKeys.TopicViewForUser, ModuleId, TopicId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value), ds); ;
+                DataCache.ContentCacheStore(ModuleId, cacheKey, ds); ;
             }
             // Test for a proper dataset
             if (ds.Tables.Count < 4 || ds.Tables[0].Rows.Count == 0 || ds.Tables[1].Rows.Count == 0)
@@ -991,12 +992,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // View Count
             sbOutput.Replace("[VIEWCOUNT]", _viewCount.ToString());
 
+
+            DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
             // Last Post
             sbOutput.Replace("[AF:LABEL:LastPostDate]", _lastPostDate);
-            sbOutput.Replace("[AF:LABEL:LastPostAuthor]", UserProfiles.GetDisplayName(ForumModuleId, true, _bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, _lastPostAuthor.AuthorId, _lastPostAuthor.Username, _lastPostAuthor.FirstName, _lastPostAuthor.LastName, _lastPostAuthor.DisplayName));
+            sbOutput.Replace("[AF:LABEL:LastPostAuthor]", UserProfiles.GetDisplayName(portalSettings, ForumModuleId, true, _bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, _lastPostAuthor.AuthorId, _lastPostAuthor.Username, _lastPostAuthor.FirstName, _lastPostAuthor.LastName, _lastPostAuthor.DisplayName));
 
             // Topic Info
-            sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(ForumModuleId, _topicAuthorId, _topicAuthorDisplayName, string.Empty, string.Empty, _topicAuthorDisplayName));
+            sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(portalSettings, ForumModuleId, false, false, false, _topicAuthorId, _topicAuthorDisplayName, string.Empty, string.Empty, _topicAuthorDisplayName));
             sbOutput.Replace("[AF:LABEL:TopicDateCreated]", _topicDateCreated);
 
 
@@ -1443,7 +1446,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else
             {
                 // Not Answered
-                if ((UserId == _topicAuthorId && !_bLocked) || _bModEdit)
+                if (replyId > 0 && ((UserId == _topicAuthorId && !_bLocked) || _bModEdit))
                 {
                     // Can mark answer
                     if (_useListActions)
