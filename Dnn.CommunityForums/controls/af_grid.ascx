@@ -20,15 +20,110 @@
 		<asp:ListItem Value="80640"></asp:ListItem>
 	</asp:DropDownList>  
 </div>
-<div class="af-search-bar">
+<%--<div class="af-search-bar">
     <span class="af-search-title"><%= GetSharedResource("[RESX:SearchByTopics]") %></span>
-</div>
+</div>--%>
 <asp:Panel ID="pnlMessage" runat="server" Visible="false" CssClass="af-search-noresults">
     <asp:Literal ID="litMessage" runat="server" />
 </asp:Panel>
+<style>
+	td.af-colstats {
+		width: 10%;
+		font-size: 14px;
+		font-weight: 300;
+		color: #333;
+	}
+
+td.af-lastpost {
+	width: 20%;
+	white-space: nowrap;
+	font-size: 14px;
+	font-weight: 400;
+	color: #888;
+}
+
+td.af-lastpost div {
+	text-align: left;
+	width: 175px;
+	overflow: hidden;
+	white-space: normal !important;
+}
+
+td.af-lastpost div a:link,
+td.af-lastpost div a:visited {
+	text-decoration: none;
+	font-size: 12px;
+	font-weight: 700;
+	color: #333;
+	word-break: break-word;
+}
+
+.aftopictitle,
+.aftopictitle a  {
+	font-size: 15px;
+	/*display: block;*/
+	font-weight: 700;
+	color: #333 !important;
+	letter-spacing: -0.5px;
+	line-height: 1.25;
+}
+
+td.af-content td.afsubject {
+	vertical-align: top;
+	width: 100%;
+	padding-right: 10px;
+}
+
+	td.af-content td.afsubject > a {
+		color: #333;
+		font-weight: 700;
+		font-size: 13px;
+	}
+
+
+td.af-content td.afsubject .aftopicstarted a {
+	color: #333;
+	font-weight: 700;
+	font-size: 14px;
+	display: inline-block;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+.aftopicstarted {
+	display: block !important;
+	color: #888;
+	font-size: 14px;
+}
+.aftopicsubtitle {
+	display: inline-block;
+	font-size: 15px;
+	font-weight: 400;
+	display: block;
+	color: #888;
+	word-break: break-word;
+	overflow: hidden;
+}
+
+
+/* 40 Part of the Theme  but never added to the theme :) */
+.af-colstats_responsive,
+.af_lastpost_responsive {
+	display: none;
+	white-space: nowrap;
+}
+</style>
 <div class="af-search-results" style="position: relative;">
     <asp:repeater id="rptTopics" runat="server">
         <HeaderTemplate>
+            <table class="afgrid" cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                    <td class="aftopicrow afsubject">[RESX:Subject]</td>
+                    <td class="aftopicrow af-colstats af-colstats-replies">[RESX:REPLIESHEADER]</td>
+                    <td class="aftopicrow af-colstats af-colstats-views">[RESX:Views]</td>
+                    <td class="aftopicrow af-lastpost">[RESX:LASTPOSTHEADER]</td>
+                </tr>
+            </table>
         	<table class="afgrid" cellspacing="0" cellpadding="0" width="100%">
         </HeaderTemplate>
         <ItemTemplate>
@@ -58,6 +153,7 @@
 						</td>
 					</tr>
 				</table>
+			<hr />
 			</td>
 		</tr>
 				
