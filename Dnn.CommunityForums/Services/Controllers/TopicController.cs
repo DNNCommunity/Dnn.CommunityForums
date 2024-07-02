@@ -309,8 +309,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: ActiveModule.PortalID, ModuleId: ForumModuleId, TopicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
                     if (dto.Topic.IsLocked != originalTopic.IsLocked &&
-                        (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", UserInfo.Roles)) ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.ModLock, string.Join(";", UserInfo.Roles))
+                        (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))) ||
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.ModLock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles)))
                         )
                         )
                     {
@@ -318,8 +318,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     };
 
                     if (dto.Topic.IsPinned != originalTopic.IsPinned &&
-                        (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", UserInfo.Roles)) ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.ModPin, string.Join(";", UserInfo.Roles))
+                        (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))) ||
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.ModPin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles)))
                         )
                         )
                     {
@@ -359,7 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);
                     Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
 
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Tag, string.Join(";", UserInfo.Roles)))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Tag, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
                     {
                         if (!string.IsNullOrEmpty(dto.Topic.Tags))
                         {
@@ -373,7 +373,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             }
                         }
                     }
-                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", UserInfo.Roles)))
+                    if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
                     {
                         if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
                         {
