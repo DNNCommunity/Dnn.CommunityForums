@@ -1,4 +1,4 @@
-﻿//
+#//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     subject = Utilities.GetSharedResource("NotificationSubjectTopic");
                     subject = subject.Replace("[DisplayName]", topic.Content?.AuthorName);
                     subject = subject.Replace("[TopicSubject]", topic.Content?.Subject);
-                    body = Utilities.GetSharedResource("NotificationBodyReply");
+                    body = Utilities.GetSharedResource("NotificationBodyTopic");
                     body = body.Replace("[DisplayName]", topic.Content?.AuthorName);
                     body = body.Replace("[TopicSubject]", topic.Content?.Subject);
                     authorId = topic.Content.AuthorId;
