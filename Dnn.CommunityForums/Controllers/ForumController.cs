@@ -277,7 +277,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
         {
-            var permissionsId = -1;
             var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(fi.ForumGroupId, fi.ModuleId);
             if (useGroupSecurity)
             {
@@ -288,10 +287,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             else
             {
-                fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, fi.PermissionsId); 
-                permissionsId = fi.PermissionsId;
-                isNew = true;
+                if (isNew || (fi?.PermissionsId == fg?.PermissionsId)) /* new forum or switching from group security to forum security */
+                {
+                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, fi.PermissionsId);
+                }
             }
             fi.ForumSettingsKey = useGroupFeatures ? (fg != null ? fg.GroupSettingsKey : string.Empty) : (fi.ForumID > 0 ? $"F:{fi.ForumID}" : string.Empty);
 
