@@ -154,6 +154,9 @@
     display: inline;
   }
 }
+.dnn-community-forums .dcf-toolbar-drop-down-menu-content .dcf-link-text {
+  display: inline-block;
+}
 .dnn-community-forums .dcf-actions {
   padding: 1rem 0;
 }
