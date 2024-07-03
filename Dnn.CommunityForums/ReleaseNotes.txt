@@ -96,75 +96,56 @@
 	<div class="dnnClear">
 		<h2>Release Notes</h2>
 		<hr />
-		<h3>08.01.02<!-- <span class="muy-importante">RELEASE CANDIDATE 1</span>--></h3>
+		<h3>08.01.02</h3>
 
-<!--
-<p class="muy-importante">
-	<strong>IMPORTANT!!!</strong> This is a release candidate (RC).  Please <strong>DO NOT</strong> use this installation/upgrade package for any production 
-	websites of any kind.  
-</p>
+		<h4>New Features &amp; Enhancements</h4>
+		<ul>
+			<li>UPDATE: Make sure Filtered Topics dropdown text is visibile on mobile (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/959">Issue 959</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<!--<li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
 
-<p class="muy-importante">This release is <strong>not supported</strong> and is <strong>only provided for testing purposes</strong>, to allow others to test 
-	their websites first, before we deploy an official release.  
-</p>
--->
+		<h4>Bug Fixes</h4>
+		<ul>
+			<li>BUG: Not redirected to new page after submitting edits to an existing reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/963">Issue 963</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Clicking Save in forum control panel restores default security when forum is not inheriting security from group (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/964">Issue 964</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
 
-<h4>New Features &amp; Enhancements</h4>
-<ul>
-	<li>UPDATE: Make sure Filtered Topics dropdown text is visibile on mobile (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/959">Issue 959</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-	<!--<li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
-</ul>
+		<h4>Tasks / Development Updates (and Technical Debt)</h4>
+		<ul>
+			<li>None at this time.</li>
+			<!--<li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
+		<hr />
+		
+		<h3>08.01.01</h3>
 
-<h4>Bug Fixes</h4>
-<ul>
-	<li>BUG: Not redirected to new page after submitting edits to an existing reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/963">Issue 963</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>BUG: Clicking Save in forum control panel restores default security when forum is not inheriting security from group (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/964">Issue 964</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
-</ul>
+		<h4>New Features &amp; Enhancements</h4>
+		<ul>
+			<li>UPDATE: No Longer Listing Informative Posts as &quot;Unanswered&quot; (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/946">Issue 946</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>UPDATE: Added Headings to Filtered Topic Overviews (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/949">Issue 949</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>UPDATE: Added 'Add Reply' Buttons on Top of TopicsView (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/941">Issue 941</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>UPDATE: Added Alignment for 'Next' in the community-default Forum Theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/934">Issue 934</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
+			<!--<li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
 
-<h4>Tasks / Development Updates (and Technical Debt)</h4>
-<ul>
-	<li>None at this time.</li>
-	<!--<li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
-</ul>
-<hr /><h3>08.01.01<!-- <span class="muy-importante">RELEASE CANDIDATE 1</span>--></h3>
+		<h4>Bug Fixes</h4>
+		<ul>
+			<li>BUG: [DISPLAYNAME] Not Included in Email Notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/923">Issue 923</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved Alignment Issues in the Active Topics Filtered List (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/948">Issue 948</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Resolved Issue Attempting to Mark Topic as Answered (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/945">Issue 945</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Added Cache Keys to Resolve Topic Paging Issues (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/933">Issue 933</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Moderation Email Not Sent if Disapproving a New Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/938">Issue 938</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
 
-<!--
-<p class="muy-importante">
-	<strong>IMPORTANT!!!</strong> This is a release candidate (RC).  Please <strong>DO NOT</strong> use this installation/upgrade package for any production 
-	websites of any kind.  
-</p>
+		<h4>Tasks / Development Updates (and Technical Debt)</h4>
+		<ul>
+			<li>None at this time.</li>
+			<!--<li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
+		</ul>
+		<hr />
 
-<p class="muy-importante">This release is <strong>not supported</strong> and is <strong>only provided for testing purposes</strong>, to allow others to test 
-	their websites first, before we deploy an official release.  
-</p>
--->
-
-<h4>New Features &amp; Enhancements</h4>
-<ul>
-	<li>UPDATE: No Longer Listing Informative Posts as &quot;Unanswered&quot; (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/946">Issue 946</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>UPDATE: Added Headings to Filtered Topic Overviews (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/949">Issue 949</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>UPDATE: Added 'Add Reply' Buttons on Top of TopicsView (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/941">Issue 941</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>UPDATE: Added Alignment for 'Next' in the community-default Forum Theme (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/934">Issue 934</a>, thanks <a href="https://github.com/Timo-Breumelhof" target="_blank">@Timo-Breumelhof</a>!)</li>
-	<!--<li>UPDATE:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
-</ul>
-
-<h4>Bug Fixes</h4>
-<ul>
-	<li>BUG: [DISPLAYNAME] Not Included in Email Notifications (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/923">Issue 923</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>BUG: Resolved Alignment Issues in the Active Topics Filtered List (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/948">Issue 948</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>BUG: Resolved Issue Attempting to Mark Topic as Answered (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/945">Issue 945</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>BUG: Added Cache Keys to Resolve Topic Paging Issues (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/933">Issue 933</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<li>BUG: Moderation Email Not Sent if Disapproving a New Topic (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/938">Issue 938</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
-	<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
-</ul>
-
-<h4>Tasks / Development Updates (and Technical Debt)</h4>
-<ul>
-	<li>None at this time.</li>
-	<!--<li>TASK:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
-</ul>
-<hr />
 		<h3>08.01.00<!-- <span class="muy-importante">RELEASE CANDIDATE 1</span>--></h3>
 
 		<!--

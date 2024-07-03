@@ -86,7 +86,7 @@
             <assembly>
               <name>DotNetNuke.Modules.ActiveForums.dll</name>
               <sourceFileName>bin\DotNetNuke.Modules.ActiveForums.dll</sourceFileName>
-              <version>08.01.01</version>
+              <version>08.01.02</version>
             </assembly>
           </assemblies>
         </component>
@@ -392,7 +392,7 @@
             <script type="UnInstall">
               <path>sql</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>08.01.01</version>
+              <version>08.01.02</version>
             </script>
           </scripts>
         </component>
