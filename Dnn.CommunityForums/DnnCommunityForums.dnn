@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Active Forums" type="Module" version="08.01.01">
+    <package name="Active Forums" type="Module" version="08.01.02">
       <friendlyName>DNN Community Forums</friendlyName>
       <description>DNN Community Forums: The official online forums module for the DNN Community.</description>
       <iconFile>DesktopModules/ActiveForums/images/branding/logo/DNN-Community-Forums-Icon-64px.png</iconFile>
@@ -433,7 +433,7 @@
       </components>
     </package>
 
-    <package name="Active Forums What's New" type="Module" version="08.01.01">
+    <package name="Active Forums What's New" type="Module" version="08.01.02">
 
       <friendlyName>DNN Community Forums What's New</friendlyName>
       <foldername>ActiveForumsWhatsNew</foldername>
@@ -503,7 +503,7 @@
       </components>
     </package>
 
-    <package name="Active Forums Viewer" type="Module" version="08.01.01">
+    <package name="Active Forums Viewer" type="Module" version="08.01.02">
       <friendlyName>DNN Community Forums Forums Viewer</friendlyName>
       <foldername>ActiveForumsViewer</foldername>
       <description>DNN Community Forums: Display any forum topic view on any page within your site.</description>
