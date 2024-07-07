@@ -33,6 +33,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Http.Controllers;
 using System.Xml.Linq;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -87,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicId > 0)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, topicId, -1);
+
                 if (UserId > 0)
                 {
                     //TODO: update this to be consistent with reply count
@@ -173,14 +175,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
         }
-        public static int SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId = -1)
+        public static void SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId = -1)
         {
+            DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ForumId);
             DataCache.ContentCacheClear(ModuleId, string.Format(CacheKeys.ForumInfo, ModuleId, ForumId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicViewPrefix, ModuleId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ModuleId));
-            return Convert.ToInt32(DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId));
         }
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
