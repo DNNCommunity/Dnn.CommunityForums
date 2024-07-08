@@ -486,7 +486,8 @@ namespace DotNetNuke.Modules.ActiveForums
             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security.View, userInfo.UserID, forum.PortalId);
             if ((template.ToString().Contains("[FORUMICON]")) || (template.ToString().Contains("[FORUMICONCSS]")) || (template.ToString().Contains("[FORUMICONSM]")))
             {
-                string sIcon = TemplateUtils.ShowIcon(canView, forum.ForumID, userInfo.UserID, forum.LastPostDateTime, forum.LastRead, forum.LastPostID);
+                string sIcon = TemplateUtils.ShowIcon(canView, forum.ForumID, userInfo.UserID, forum.LastPostDateTime, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetLastReadTopicByUser(forum.ForumID, userInfo.UserID), forum.LastPostID);
+
                 if (template.ToString().Contains("[FORUMICON]"))
                 {
                     string sIconImage = "<img alt=\"" + forum.ForumName + "\" src=\"" + mainSettings.ThemeLocation + "images/" + sIcon + "\" />";
