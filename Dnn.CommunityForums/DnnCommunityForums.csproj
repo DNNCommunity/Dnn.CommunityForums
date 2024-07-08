@@ -289,8 +289,6 @@
     <EmbeddedResource Include="App_LocalResources\SharedResources.nl-NL.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="App_LocalResources\SharedResources.nl-NL.resx" />
-    <EmbeddedResource Include="App_LocalResources\TokenResources.resx" />
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.nl-NL.resx" />
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.it-IT.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.it-IT.resx" />

@@ -174,6 +174,17 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         }
 
         [IgnoreColumn()]
+        public DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo LastReply
+        {
+            get => _lastReply ?? (_lastReply = GetLastReply());
+            set => _lastReply = value;
+        }
+        internal DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo GetLastReply()
+        {
+            _lastReply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(LastReplyId);
+            return _lastReply;
+        }
+        [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author LastReplyAuthor
         {
             get => _lastReplyAuthor ?? (_lastReplyAuthor = GetLastReplyAuthor());
@@ -194,9 +205,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
             else
             {
-                _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                _lastReplyAuthor.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
-            return _Author;
+            return _lastReplyAuthor;
         }
         [IgnoreColumn()]
         public string Tags

@@ -126,6 +126,18 @@
   <data name="[FORUMGROUPLINK].Text" xml:space="preserve">
     <value>&lt;a href="{0}" class="dcf-forumgroup-link"&gt;{1}&lt;/a&gt;</value>
   </data>
+  <data name="[FORUMICONCSS-Forbidden].Text" xml:space="preserve">
+    <value>&lt;div class="dcf-forum-icon" style="height:30px;margin-right:10px;"&gt;&lt;i class="fa fa-folder fa-grey fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="[FORUMICONCSS-New-Topics].Text" xml:space="preserve">
+    <value>&lt;div class="dcf-forum-icon" style="height:30px;margin-right:10px;"&gt;&lt;i class="fa fa-folder fa-red fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="[FORUMICONCSS-No-Topics].Text" xml:space="preserve">
+    <value>&lt;div class="dcf-forum-icon" style="height:30px;margin-right:10px;"&gt;&lt;i class="fa fa-folder-o fa-grey fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>
+  </data>
+  <data name="[FORUMICONCSS-No-Unread-Topics].Text" xml:space="preserve">
+    <value>&lt;div class="dcf-forum-icon" style="height:30px;margin-right:10px;"&gt;&lt;i class="fa fa-folder fa-blue fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>
+  </data>
   <data name="[FORUMICONCSS].Text" xml:space="preserve">
     <value>&lt;div class="dcf-forum-icon" style="height:30px;margin-right:10px;"&gt;&lt;i class="fa {0} fa-2x"&gt;&lt;/i&gt;&lt;/div&gt;</value>
   </data>
