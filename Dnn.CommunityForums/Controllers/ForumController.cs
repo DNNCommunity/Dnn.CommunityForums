@@ -24,6 +24,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using Microsoft.ApplicationBlocks.Data;
 
@@ -472,7 +473,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static int Forum_GetByTopicId(int TopicId)
         {
-            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>( "activeforums_ForumGetByTopicId", TopicId);
+            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>("activeforums_ForumGetByTopicId", TopicId);
+        }
+        public static DateTime Forum_GetLastReadTopicByUser(int ForumId, int UserId)
+        {
+            try
+            {
+                return DataContext.Instance().ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", ForumId, UserId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
+                return DateTime.MinValue;
+            }
         }
         internal static bool RecalculateTopicPointers(int forumId)
         {
