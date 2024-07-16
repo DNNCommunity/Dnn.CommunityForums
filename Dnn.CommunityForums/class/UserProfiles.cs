@@ -52,10 +52,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Concat("<img class='af-avatar' src='", string.Format(Common.Globals.UserProfilePicFormattedUrl(), userID, avatarWidth, avatarHeight), "' />");
             }
         }
+        #region "Deprecated Methods"
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use method with PortalSettings as a parameter.")]
         public static string GetDisplayName(int moduleId, int userID, string username, string firstName = "", string lastName = "", string displayName = "", string profileNameClass = "af-profile-name") => GetDisplayName(portalSettings: null, moduleId, linkProfile: false, false, false, userID, username, firstName, lastName, displayName, null, profileNameClass);
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use method with PortalSettings as a parameter.")]
         public static string GetDisplayName(int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name") => GetDisplayName(null, moduleId, linkProfile, isMod, isAdmin, userId, username, firstName, lastName, displayName, profileLinkClass, profileNameClass);
+        #endregion "Deprecated Methods"
 
         internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
         {
@@ -175,7 +177,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return string.Format(outputTemplate, outputName);
         }
-
+        #region "Deprecated Methods"
+        [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Not used.")]
         public static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline")
         {
             if (isUserOnline)
@@ -185,36 +188,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-red\"></i></span>";
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank()")]
         /// <summary>
         /// Returns the Rank for the user
         /// </summary>
         /// <returns>ReturnType 0 Returns RankDisplay ReturnType 1 Returns RankName</returns>
         public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType)
         {
-            //ReturnType 0 for RankDisplay
-            //ReturnType 1 for RankName
-            try
-            {
-                var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
-                var rc = new RewardController();
-                var sRank = string.Empty;
-                foreach (var ri in rc.Reward_List(portalId, moduleID, true).Where(ri => ri.MinPosts <= posts && ri.MaxPosts > posts))
-                {
-                    if (returnType == 0)
-                    {
-                        sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "ActiveForums/images/Ranks"), ri.RankName);
-                        break;
-                    }
-                    sRank = ri.RankName;
-                    break;
-                }
-                return sRank;
-            }
-            catch (Exception ex)
-            {
-                return string.Empty;
-            }
+            var forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(userID);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserRank(moduleID, forumUser, returnType);
+
         }
+        #endregion "Deprecated Methods"
     }
 }

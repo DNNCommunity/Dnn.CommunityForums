@@ -29,6 +29,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
+using System.Net;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -113,8 +114,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 							break;
 						}
 					}
-				}
-				output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,UserId));
+                }
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserId);
+                output = TemplateUtils.ParseProfileTemplate(ModuleId, tmp, user, string.Empty, CurrentUserTypes.Anon, false, false, false, string.Empty, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId, UserId));
 				output = Utilities.LocalizeControl(output);
 				writer.Write(output);
 			}

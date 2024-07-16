@@ -320,15 +320,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topicTemplateID = ForumInfo.TopicTemplateId;
                     message = Utilities.CleanString(PortalId, message, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, ImagePath, ForumInfo.AllowEmoticons);
                     message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
-                    var uc = new UserController();
-                    var up = uc.GetUser(PortalId, ForumModuleId, UserId) ?? new User
-                    {
-                        UserId = -1,
-                        UserName = "guest",
-                        Profile = { TopicCount = 0, ReplyCount = 0 },
-                        DateCreated = DateTime.UtcNow
-                    };
-                    message = TemplateUtils.PreviewTopic(topicTemplateID, PortalId, ForumModuleId, TabId, ForumInfo, UserId, message, ImagePath, up, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
+                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserId);
+                    message = TemplateUtils.PreviewTopic(topicTemplateID, ForumInfo, user, message, ImagePath, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
                     hidPreviewText.Value = message;
                     break;
             }

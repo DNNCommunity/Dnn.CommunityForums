@@ -27,6 +27,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Security.Cryptography;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -125,7 +126,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
-                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType,false,false,false,string.Empty,-1, TimeZoneOffset);
+                        var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+                        sRow = TemplateUtils.ParseProfileTemplate(ForumModuleId,sRow, user, ImagePath, CurrentUserType, false, false, false, string.Empty, -1, TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }

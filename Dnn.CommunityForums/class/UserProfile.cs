@@ -28,8 +28,9 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     #region UserProfileInfo
     public class UserProfileInfo
-    { 
-        #region Constructors
+    {
+        #region Constructors        
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo.")]
         public UserProfileInfo()
         {
             IsUserOnline = false;
@@ -43,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
             PrefDefaultShowReplies = false;
             PrefTopicSubscribe = false;
         }
-
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public UserProfileInfo(int UserId, int PortalId)
         {
             IsUserOnline = false;

@@ -1247,6 +1247,7 @@
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.09.SqlDataProvider" />
     <None Include="sql\07.00.10.SqlDataProvider" />
+    <None Include="sql\08.02.00.SqlDataProvider" />
     <None Include="sql\Enterprise.sql" />
     <Content Include="config\templates\StatsTemplate.ascx" />
     <Content Include="config\defaultsetup.config">
@@ -1354,7 +1355,7 @@
     <Compile Include="Controllers\TopicRatingController.cs" />
     <Compile Include="Controllers\TopicTagController.cs" />
     <Compile Include="Controllers\UrlController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ForumUserController.cs" />
     <Compile Include="controls\profile_mysubscriptions.ascx.cs">
       <DependentUpon>profile_mysubscriptions.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1371,6 +1372,7 @@
     <Compile Include="Entities\ForumCollection.cs" />
     <Compile Include="Entities\ForumGroupInfo.cs" />
     <Compile Include="Entities\ForumInfo.cs" />
+    <Compile Include="Entities\ForumUserInfo.cs" />
     <Compile Include="Entities\LikeInfo.cs" />
     <Compile Include="Entities\Like.cs" />
     <Compile Include="Entities\FilterInfo.cs" />

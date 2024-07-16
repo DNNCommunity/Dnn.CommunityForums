@@ -21,17 +21,47 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Web;
 using DotNetNuke.Data;
+using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
-    internal static class UserController
+    internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
-        private class ContentForUser
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetById(int UserId)
+        {
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user = base.GetById(UserId);
+            if (user == null)
+            {
+                user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo
+                {
+                    UserID = -1,
+                    TopicCount = 0,
+                    ReplyCount = 0,
+                    DateCreated = DateTime.UtcNow,
+                    UserInfo = new DotNetNuke.Entities.Users.UserInfo
+                    {
+                        UserID = -1,
+                        Username = "guest"
+                    }
+                };
+            }
+            return user;
+        }
+        public static int Save(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
+        {
+            user.DateUpdated = DateTime.UtcNow; 
+            var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.UserID);
+            UserProfileController.Profiles_ClearCache(user.ModuleId, user.UserID);
+            return user.UserID;
+        }
+        private struct JournalContentForUser
         {
             internal int ForumId { get; set; }
             internal int TopicId { get; set; }
@@ -70,7 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 StringBuilder postsRemoved = new StringBuilder();
 
-                var contentForBannedUser = DataContext.Instance().ExecuteQuery<ContentForUser>(System.Data.CommandType.StoredProcedure, "activeforums_Content_GetJournalKeysForUser", bannedUser.UserID, ModuleId).ToList();
+                var contentForBannedUser = DataContext.Instance().ExecuteQuery<JournalContentForUser>(System.Data.CommandType.StoredProcedure, "activeforums_Content_GetJournalKeysForUser", bannedUser.UserID, ModuleId).ToList();
                 string objectKey;
                 contentForBannedUser.ForEach(c =>
                 {
@@ -105,6 +135,43 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 bannedUser.Membership.Approved = false;
                 DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: PortalId, user: bannedUser, loggedAction: true);
                 DataCache.CacheClearPrefix(ModuleId, string.Format("AF-FV-{0}-{1}", PortalId, ModuleId));
+            }
+        }
+        /// <summary>
+        /// Returns the Rank for the user
+        /// </summary>
+        /// <returns>ReturnType 0 Returns RankDisplay ReturnType 1 Returns RankName</returns>
+        public static string GetUserRank(int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, int returnType)
+        {
+            //ReturnType 0 for RankDisplay
+            //ReturnType 1 for RankName
+            try
+            {
+                string sRank = string.Empty;
+                var mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+                if (mainSettings.EnablePoints && user.UserID > 0)
+                {
+                    var totalPoints = user.PostCount;
+                    totalPoints = (user.TopicCount * mainSettings.TopicPointValue) + (user.ReplyCount * mainSettings.ReplyPointValue) + (user.AnswerCount * mainSettings.AnswerPointValue) + user.RewardPoints;
+
+                    var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
+                    var rc = new RewardController();
+                    foreach (var ri in rc.Reward_List(user.PortalId, ModuleId, true).Where(ri => ri.MinPosts <= totalPoints && ri.MaxPosts > totalPoints))
+                    {
+                        if (returnType == 0)
+                        {
+                            sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "ActiveForums/images/Ranks"), ri.RankName);
+                            break;
+                        }
+                        sRank = ri.RankName;
+                        break;
+                    }
+                }
+                return sRank;
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
             }
         }
     }

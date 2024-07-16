@@ -1240,7 +1240,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (author != null) up.Email = author.Email;
 
             //Perform Profile Related replacements
-            sOutput = TemplateUtils.ParseProfileTemplate(sOutput, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, true, UserPrefHideAvatars, UserPrefHideSigs, ipAddress, UserId, TimeZoneOffset);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            sOutput = TemplateUtils.ParseProfileTemplate(ForumModuleId,  sOutput, user, ImagePath, CurrentUserType, true, UserPrefHideAvatars, UserPrefHideSigs, ipAddress, UserId, TimeZoneOffset);
+
 
             // Replace Tags Control
             if (string.IsNullOrWhiteSpace(tags))

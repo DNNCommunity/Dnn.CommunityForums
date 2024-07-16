@@ -29,6 +29,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Reflection;
+using System.Net;
 
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -125,10 +126,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
             }
             Literal lit = new Literal();
-            UserController upc = new UserController();
-            User up = upc.GetUser(PortalId, ForumModuleId, UID);
-            up.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
-            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, false, false, false, string.Empty, UserInfo.UserID, TimeZoneOffset);
+            
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UID);
+            user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(user.UserRoles, PortalId, ForumModuleId, "CanRead");
+            sTemplate = TemplateUtils.ParseProfileTemplate(ForumModuleId, sTemplate, user, ImagePath, CurrentUserType, true, UserPrefHideAvatars, UserPrefHideSigs, string.Empty, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
@@ -200,21 +201,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_adminsettings.ascx"));
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
-                tmpCtl.UserProfile = up.Profile;
+                tmpCtl.ForumUserInfo = user;
                 plhProfileAdminSettings.Controls.Add(tmpCtl);
             }
             if (plhProfilePrefs != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_mypreferences.ascx"));
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
-                tmpCtl.UserProfile = up.Profile;
+                tmpCtl.ForumUserInfo = user;
                 plhProfilePrefs.Controls.Add(tmpCtl);
             }
             if (plhProfileUserAccount != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)(this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_useraccount.ascx"));
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
-                tmpCtl.UserProfile = up.Profile;
+                tmpCtl.ForumUserInfo = user;
                 plhProfileUserAccount.Controls.Add(tmpCtl);
             }
             if (plhTracker != null)
@@ -223,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(ForumModuleId,"ForumTracking", 0);
                 ctlForums.CurrentUserId = UID;
-                ctlForums.ForumIds = up.UserForums;
+                ctlForums.ForumIds = user.UserForums;
                 plhTracker.Controls.Add(ctlForums);
             }
             if (btnProfileEdit != null)
