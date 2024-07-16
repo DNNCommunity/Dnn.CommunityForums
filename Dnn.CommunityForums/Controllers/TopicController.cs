@@ -167,6 +167,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(NewForumId);
 
             DataProvider.Instance().Topics_Move(ti.PortalId, ti.ModuleId, NewForumId, TopicId);
+            ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+
+            if (oldForum.ModMoveTemplateId > 0 & ti?.Author?.AuthorId > 0)
+            {
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(oldForum.ModMoveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId,forumId:  ti.Forum.ForumID, ti.TopicId, -1, string.Empty, ti.Author);
+            }
+
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: oldForum.ForumGroupId, forumId: oldForum.ForumID, topicId: TopicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
             new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UpdateForumLastUpdated, ti.PortalId, tabId: -1, moduleId: ti.ModuleId, forumGroupId: newForum.ForumGroupId, forumId: newForum.ForumID, topicId: TopicId, replyId: -1, authorId: ti.Content.AuthorId, requestUrl: null);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
