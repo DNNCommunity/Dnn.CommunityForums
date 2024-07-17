@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                         }
                     }
-                    else
+                    else if (trForums.CheckedNodes.Count > 0)
                     {
                         var sv = trForums.CheckedNodes[0].Value;
                         if (sv.Contains("F:"))
