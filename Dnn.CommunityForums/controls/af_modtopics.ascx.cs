@@ -272,11 +272,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     if (bModDelete)
                     {
-                        sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
+                        sb.Append("<span class=\"dnnTertiaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                     }
                     if (bModEdit)
                     {
-                        sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
+                        sb.Append("<span class=\"dnnTertiaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
                     }
                     if (bModBan)
                     {
