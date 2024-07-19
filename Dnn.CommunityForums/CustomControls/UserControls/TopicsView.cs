@@ -32,6 +32,8 @@ using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
 using System.Linq;
 using System.Net;
+using DotNetNuke.Common.Utilities;
+using DotNetNuke.Services.Authentication;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
@@ -541,7 +543,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = sOutput.Replace("[MARKFORUMREAD]", string.Empty);
             }
 
-            if (CanCreate)
+
+            if (!Request.IsAuthenticated)
+            {
+                DotNetNuke.Abstractions.Portals.IPortalSettings PortalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+                string LoginUrl = PortalSettings.LoginTabId > 0 ? Utilities.NavigateURL(PortalSettings.LoginTabId, "", "returnUrl=" + Request.RawUrl) : Utilities.NavigateURL(TabId, "", "ctl=login&returnUrl=" + Request.RawUrl);
+
+                string onclick = string.Empty;
+                if (PortalSettings.EnablePopUps && PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
+                {
+                    onclick = " onclick=\"return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(LoginUrl), this, this.PortalSettings, true, false, 300, 650) + "\"";
+                }
+                sOutput = sOutput.Replace("[ADDTOPIC]", $"<span class=\"dcf-auth-false-login\">{string.Format(Utilities.GetSharedResource("[RESX:NotAuthorizedTopicPleaseLogin]"), LoginUrl, onclick)}</span>");
+            }           
+            else if (CanCreate)
             {
                 string[] Params = { };
                 if (SocialGroupId <= 0)

@@ -311,7 +311,9 @@
     <EmbeddedResource Include="App_LocalResources\ControlPanel.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\ForumSettings.ascx.fr-FR.resx" />
     <EmbeddedResource Include="App_LocalResources\Messages.ascx.fr-FR.resx" />
-    <EmbeddedResource Include="App_LocalResources\SharedResources.fr-FR.resx" />
+    <EmbeddedResource Include="App_LocalResources\SharedResources.fr-FR.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="App_LocalResources\WhatsNew.ascx.fr-FR.resx" />
     <EmbeddedResource Include="CustomControls\Resources\ActiveGrid.js" />
     <EmbeddedResource Include="CustomControls\Resources\asc.gif" />
