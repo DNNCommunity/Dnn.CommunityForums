@@ -221,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void SaveQuickReply()
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, forumUser: ForumUser, forumInfo: forumInfo))
             {
                 UserProfileController upc = new UserProfileController();
                 UserProfileInfo upi = upc.Profiles_Get(PortalId, ModuleId, this.UserId);
@@ -243,22 +243,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
                 }
             }
-            UserProfileInfo ui = new UserProfileInfo();
+
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo();
             if (UserId > 0)
             {
-                ui = ForumUser.Profile;
+                user = ForumUser;
             }
             else
             {
-                ui.TopicCount = 0;
-                ui.ReplyCount = 0;
-                ui.RewardPoints = 0;
-                ui.IsMod = false;
-                ui.TrustLevel = -1;
+                user.TopicCount = 0;
+                user.ReplyCount = 0;
+                user.RewardPoints = 0;
+                user.TrustLevel = -1;
 
             }
             bool UserIsTrusted = false;
-            UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ui.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, ui.PostCount);
+            UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, user.PostCount);
             bool isApproved = false;
             isApproved = Convert.ToBoolean(((ForumInfo.IsModerated == true) ? false : true));
             if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles))

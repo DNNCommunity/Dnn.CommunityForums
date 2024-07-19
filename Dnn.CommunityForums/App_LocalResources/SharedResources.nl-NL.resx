@@ -1768,4 +1768,7 @@ Van,
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
     <value>&lt;a href="{0}"{1}&gt;log in&lt;/a&gt; om een ​​onderwerp toe te voegen.</value>
   </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Geen uitstaande berichten</value>
+  </data>
 </root>

@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 
@@ -80,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if(!_jumpToLastPost.HasValue)
                 {
-                    _jumpToLastPost = UserController.GetUser(PortalId, UserId).Profile.PrefJumpLastPost;
+                    _jumpToLastPost = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserId).PrefJumpLastPost;
                 }
 
                 return _jumpToLastPost.Value;
@@ -387,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
-                    else if (ForumUser.UserId <= 0)
+                    else if (ForumUser.UserID <= 0)
                         _canCreate = false;
 
                     else
@@ -417,7 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
-                    else if (ForumUser.UserId <= 0)
+                    else if (ForumUser.UserID <= 0)
                         _canReply = false;
 
                     else
@@ -521,8 +522,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if(!string.IsNullOrWhiteSpace(sort))
                 {
                     var defaultSort = (Request.IsAuthenticated &&
-                                       !string.IsNullOrWhiteSpace(ForumUser.Profile.PrefDefaultSort))
-                                          ? ForumUser.Profile.PrefDefaultSort.ToUpperInvariant().Trim()
+                                       !string.IsNullOrWhiteSpace(ForumUser.PrefDefaultSort))
+                                          ? ForumUser.PrefDefaultSort.ToUpperInvariant().Trim()
                                           : "ASC";
 
                     sort = sort.ToUpperInvariant();

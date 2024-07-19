@@ -22,6 +22,7 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 using System.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
+using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -32,10 +33,26 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private DotNetNuke.Entities.Users.UserInfo _userInfo;
         private Hashtable _properties = null;
         private string _userRoles = Globals.DefaultAnonRoles + "|-1;||";
+        private int moduleId = -1;
 
+        public ForumUserInfo()
+        {
+            UserID = -1;
+            TopicCount = 0;
+            ReplyCount = 0;
+            DateCreated = DateTime.UtcNow;
+            UserRoles = Globals.DefaultAnonRoles + "|-1;||";
+            UserInfo = new DotNetNuke.Entities.Users.UserInfo
+            {
+                UserID = -1,
+                Username = "guest",
+                IsDeleted = false,
+                IsSuperUser = false,
+            };
+        }
         public int ProfileId { get; set; } = -1;
         public int UserID { get; set; } = -1;
-        public int ModuleId { get; set; }
+        public int ModuleId { set => moduleId = -1; } /* this is always -1 so don't provide getter as unreliable */
         public int PortalId { get; set; }
         public int TopicCount { get; set; }
         public int ReplyCount { get; set; }
@@ -76,8 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Username => UserInfo.Username;
         [IgnoreColumn] 
         public string Email => UserInfo.Email;
-        [IgnoreColumn]
-        public bool IsMod => (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(UserRoles, PortalId, ModuleId, "CanApprove"))));
+
+        public bool GetIsMod(int ModuleId)
+        {
+            return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(UserRoles, PortalId, ModuleId, "CanApprove"))));
+        }
+
         [IgnoreColumn]
         public bool IsSuperUser => UserInfo.IsSuperUser;
         [IgnoreColumn]

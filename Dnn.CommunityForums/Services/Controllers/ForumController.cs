@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.ModMove)]
         public HttpResponseMessage ListForHtml(ForumDto dto)
         {
-            DotNetNuke.Modules.ActiveForums.User user = new DotNetNuke.Modules.ActiveForums.UserController().LoadUser(UserInfo);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(ForumModuleId, user));
         }
     }

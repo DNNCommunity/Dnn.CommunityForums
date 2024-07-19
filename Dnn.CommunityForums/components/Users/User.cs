@@ -24,40 +24,7 @@ using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-    public class User
-    {
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string DisplayName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public DateTime DateCreated { get; set; }
-        public DateTime DateUpdated { get; set; }
-        public bool IsAdmin { get; set; } = false;
-        public bool IsSuperUser { get; set; } = false;
-
-        public UserProfileInfo Profile { get; set; } = null;
-
-        public System.Collections.Hashtable Properties { get; set; } = null;
-
-        public int UserId { get; set; } = -1;
-        public string UserName { get; set; } = string.Empty;
-
-        public string UserRoles { get; set; }
-        public bool PrefBlockSignatures => Profile.PrefBlockSignatures;
-        public bool PrefBlockAvatars => Profile.PrefBlockAvatars;
-        public int PostCount => Profile.PostCount;
-        public int TrustLevel => Profile.TrustLevel;
-        public bool PrefTopicSubscribe => Profile.PrefTopicSubscribe;
-        public CurrentUserTypes CurrentUserType => Profile.CurrentUserType;
-        public string UserForums { get; set; } = string.Empty;
-        public User()
-        {
-            UserId = -1;
-            IsSuperUser = false;
-            IsAdmin = false;
-            Profile = new UserProfileInfo();
-            UserRoles = Globals.DefaultAnonRoles + "|-1;||";
-        }
-    }
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Replaced by DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ")]
+    public class User : DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo {}
 }
 

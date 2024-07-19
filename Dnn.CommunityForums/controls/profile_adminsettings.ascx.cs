@@ -40,7 +40,6 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = ForumUserInfo;
             if (forumUserInfo == null & UID > 0)
             {
-                UserController up = new UserController();
                 forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UID);
             }
 
@@ -72,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     forumUserInfo.TrustLevel = Convert.ToInt32(e.Parameters[5]);
                     forumUserInfo.AdminWatch = Convert.ToBoolean(e.Parameters[6]);
                     forumUserInfo.AttachDisabled = Convert.ToBoolean(e.Parameters[7]);
-                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(forumUserInfo);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(ForumModuleId, forumUserInfo);
                 }
             }
         }

@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (Forums == null)
                     {
-                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserId, ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
+                        string cachekey = string.Format(CacheKeys.ForumViewForUser, ForumModuleId, ForumUser.UserID, ForumIds, HttpContext.Current?.Response?.Cookies["language"]?.Value);
                         var obj = DataCache.ContentCacheRetrieve(ForumModuleId, cachekey);
                         if (obj == null)
                         {

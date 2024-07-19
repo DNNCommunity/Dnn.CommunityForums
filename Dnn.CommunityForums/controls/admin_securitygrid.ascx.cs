@@ -318,11 +318,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (secType == 1)
 				{
-					UserController uc = new UserController();
-					User ui = uc.GetUser(PortalId, ModuleId, secId);
+					var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(Convert.ToInt32(secId));
 					if (ui != null)
 					{
-						secId = ui.UserId.ToString();
+						secId = ui.UserID.ToString();
 					}
 					else
 					{

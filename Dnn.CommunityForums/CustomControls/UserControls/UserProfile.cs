@@ -342,54 +342,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (CanEditMode())
             {
-                DotNetNuke.Entities.Users.UserInfo objuser = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UID);
-                UserProfileController upc = new UserProfileController();
-                UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(PortalId, ForumModuleId, UID).Profile;
-                if (upi != null)
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UID);
+                if (user != null)
                 {
                     if (MainSettings.AllowSignatures == 1)
                     {
-                        upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
-                        upi.Signature = Utilities.StripHTMLTag(upi.Signature);
-                        upi.Signature = HttpUtility.HtmlEncode(upi.Signature);
+                        user.Signature = Utilities.XSSFilter(txtSignature.Text, true);
+                        user.Signature = Utilities.StripHTMLTag(user.Signature);
+                        user.Signature = HttpUtility.HtmlEncode(user.Signature);
                     }
                     else if (MainSettings.AllowSignatures == 2)
                     {
-                        upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
+                        user.Signature = Utilities.XSSFilter(txtSignature.Text, false);
                     }
 
 
-
-                    upc.Profiles_Save(upi);
-                    bool blnSaveProfile = false;
-
-                    DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection profproperties = new DotNetNuke.Entities.Profile.ProfilePropertyDefinitionCollection();
-                    profproperties = objuser.Profile.ProfileProperties;
-                    foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition profprop in profproperties)
-                    {
-                        Control ctl = RecursiveFind(this, "dnnctl" + profprop.PropertyName);
-                        if (ctl != null)
-                        {
-                            if (ctl is TextBox)
-                            {
-                                TextBox txt = (TextBox)ctl;
-                                if (txt.ID.Contains("dnnctl"))
-                                {
-                                    blnSaveProfile = true;
-                                    string propName = txt.ID.Replace("dnnctl", string.Empty);
-                                    objuser.Profile.GetProperty(propName).PropertyValue = txt.Text;
-                                }
-
-                            }
-                        }
-                    }
-
-                    if (blnSaveProfile)
-                    {
-                        DotNetNuke.Entities.Users.UserController.UpdateUser(PortalId, objuser);
-                    }
                 }
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.UserID);
+
             }
             return true;
         }

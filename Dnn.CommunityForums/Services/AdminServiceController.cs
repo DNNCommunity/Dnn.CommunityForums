@@ -17,6 +17,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -160,9 +161,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.SecurityType == 1)
                         {
-                            var uc = new UserController();
-                            var ui = uc.GetUser(PortalSettings.PortalId, dto.ModuleId, dto.SecurityId);
-                            dto.SecurityId = ui != null ? ui.UserId.ToString() : string.Empty;
+                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(Convert.ToInt32(dto.SecurityId));
+                            dto.SecurityId = ui != null ? ui.UserID.ToString() : string.Empty;
                         }
                         else
                         {

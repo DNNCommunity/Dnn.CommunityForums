@@ -434,15 +434,17 @@ namespace DotNetNuke.Modules.ActiveForums
             lbForums.Items.Add(new ListItem("All Forums", "0") { Selected = forumsToSearch.Count == 0 && ForumId <= 0 });
 
             var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums, ForumUser,
-                fi => {
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums, ForumUser, fi =>
+            {
                 lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
+            },
+                fi =>
+                {
+                    lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) });
                 },
-                fi => {
-                lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) });
-                },
-                fi => {
-                lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) } );
+                fi =>
+                {
+                    lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) });
                 }
                 );
         }

@@ -47,8 +47,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
            
             if (UID > 0 && !Page.IsPostBack)
-            {  
-                UserProfileInfo ui = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
+            {
+                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserId);
                 drpPrefDefaultSort.SelectedIndex = drpPrefDefaultSort.Items.IndexOf(drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
                 drpPrefPageSize.SelectedIndex = drpPrefPageSize.Items.IndexOf(drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
 
@@ -60,16 +60,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetString(string key)
-        {
-            return Utilities.GetSharedResource(key);
-        }
+        public string GetString(string key) => Utilities.GetSharedResource(key);
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
             if (UserId == UID || (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                UserProfileInfo upi = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
+                var upi=  new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UID);
                 if (upi != null)
                 {
                     upi.PrefDefaultSort = Utilities.XSSFilter(drpPrefDefaultSort.SelectedItem.Value, true);
@@ -90,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
                     }
-                    new UserProfileController().Profiles_Save(upi);
+                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(upi, upi.UserID);
 
                     Response.Redirect(NavigateUrl(TabId));
 

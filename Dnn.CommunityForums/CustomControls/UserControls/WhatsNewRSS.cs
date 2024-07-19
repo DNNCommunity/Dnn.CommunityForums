@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int? _PortalId;
         private WhatsNewModuleSettings _settings;
         private string _authorizedForums;
-        private User _currentUser;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo _currentUser;
         private string _cacheKey;
 
         #endregion
@@ -125,9 +125,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private User CurrentUser
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo CurrentUser
         {
-            get { return _currentUser ?? (_currentUser = new UserController().GetUser(PortalId, -1)); }
+            get { return _currentUser ?? (_currentUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, -1)); }
         }
 
         private string AuthorizedForums

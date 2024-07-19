@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
 	public class HandlerBase : System.Web.IHttpHandler
 	{
-		internal enum OutputCodes: int
+		internal enum OutputCodes : int
 		{
 			Success,
 			UnsupportedRequest,
@@ -38,7 +38,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 			NoResults,
 			AccessDenied
 		}
-		private User _userProfile;
 		private Hashtable _params;
 		private bool _isValid = false;
 		private int _gid = -1;
@@ -61,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 		private int _pid = -1;
 		private int _mid = -1;
 		private int _UserId = -1;
+
 		public int UserId
 		{
 			get
@@ -170,50 +170,29 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 				return _params;
 			}
 		}
-
-		public int UPID
-		{
-			get
-			{
-				return _upid;
-			}
-		}
-
-		private bool _IsAuthenticated = false;
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+		public int UPID => throw new NotImplementedException();
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
 		public bool IsAuthenticated
 		{
-			get
-			{
-				return _IsAuthenticated;
-			}
-			set
-			{
-				_IsAuthenticated = value;
-			}
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
 		}
-		private string _Username = string.Empty;
+		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
 		public string Username
+		{ 
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException(); 
+		}
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
 		{
 			get
 			{
-				return _Username;
-			}
-			set
-			{
-				_Username = value;
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
 			}
 		}
-		internal User ForumUser
-		{
-			get
-			{
-				UserController uc = new UserController();
-				return uc.GetUser(PortalId, ModuleId);
-			}
-		}
-
-
-		public virtual bool IsReusable
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public virtual bool IsReusable
 		{
 			get
 			{
@@ -439,7 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 				if (HttpContext.Current.Request.IsAuthenticated)
 				{
-					UserId = UserController.GetUserIdByUserName(PortalId, HttpContext.Current.User.Identity.Name);
+					UserId = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetUserIdByUserName(PortalId, HttpContext.Current.User.Identity.Name);
 				}
 				else
 				{

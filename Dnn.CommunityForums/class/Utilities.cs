@@ -38,6 +38,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Modules.ActiveForums.Controls;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.Modules.ActiveForums.Queue;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
@@ -202,7 +203,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return text;
         }
-        internal static bool HasFloodIntervalPassed(int floodInterval, User user, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
+        internal static bool HasFloodIntervalPassed(int floodInterval, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             /* flood interval check passes if
             1) flood interval <= 0 (disabled)
@@ -213,15 +214,15 @@ namespace DotNetNuke.Modules.ActiveForums
             6) time span for since user's last post or reply exceeds flood interval
             */
             return floodInterval <= 0
-                   || user == null
-                   || user.IsAdmin
-                   || user.IsSuperUser
-                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: user.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, user.UserRoles), forumInfo.AutoTrustLevel, user.PostCount)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, user.UserRoles)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModEdit, user.UserRoles)
-                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModDelete, user.UserRoles)
-                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastPost, DateTime.UtcNow) > floodInterval
-                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, user.Profile.DateLastReply, DateTime.UtcNow) > floodInterval;
+                   || forumUser == null
+                   || forumUser.IsAdmin
+                   || forumUser.IsSuperUser
+                   || Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, userTrustLevel: forumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, forumUser.UserRoles), forumInfo.AutoTrustLevel, forumUser.PostCount)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, forumUser.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModEdit, forumUser.UserRoles)
+                   || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModDelete, forumUser.UserRoles)
+                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, forumUser.DateLastPost, DateTime.UtcNow) > floodInterval
+                   || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, forumUser.DateLastReply, DateTime.UtcNow) > floodInterval;
         }
         public static bool IsTrusted(int forumTrustLevel, int userTrustLevel, bool isTrustedRole, int autoTrustLevel = 0, int userPostCount = 0)
         {

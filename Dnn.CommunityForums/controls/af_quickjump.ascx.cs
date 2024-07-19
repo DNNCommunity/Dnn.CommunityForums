@@ -80,13 +80,12 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 drpForums.Items.Insert(index, new ListItem(fi.GroupName, $"GROUPJUMP:{fi.ForumGroupId}"));
                 index += 1;
-            },
-            fi =>
+            }, fi =>
             {
                 drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP{fi.ForumID}"));
                 index += 1;
             },
-            fi  =>
+            fi =>
             {
                 drpForums.Items.Insert(index, new ListItem(
                     fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,

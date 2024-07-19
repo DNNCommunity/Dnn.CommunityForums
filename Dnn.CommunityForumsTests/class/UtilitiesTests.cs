@@ -53,13 +53,14 @@ namespace DotNetNuke.Modules.ActiveForumsTests
         [TestCase(20, 25, false, ExpectedResult = true)]
         [TestCase(200, 25, true, ExpectedResult = true)] // user is an admin
         [TestCase(200, 25, false, ExpectedResult = false)] // interval is 200, last post is 25, expect false
-        public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isAdmin)
+        public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isSuperUser)
         {
             //Arrange
-            var mockUser = new Mock<User>();
-            mockUser.Object.IsAdmin = isAdmin;
-            mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
-            mockUser.Object.Profile.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
+            var mockUser = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>();
+            mockUser.Object.UserInfo = new DotNetNuke.Entities.Users.UserInfo();
+            mockUser.Object.UserInfo.IsSuperUser = isSuperUser;
+            mockUser.Object.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
+            mockUser.Object.DateLastReply = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
             var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
             mockForum.Object.ForumSettings = new System.Collections.Hashtable();
             mockForum.Object.ForumSettings.Add(ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted);

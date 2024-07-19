@@ -1740,4 +1740,7 @@ De,
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
     <value>Veuillez vous &lt;a href="{0}"{1}&gt;connectez-vous&lt;/a&gt; pour ajouter un sujet.</value>
   </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Pas de contenu en attente</value>
+  </data>
 </root>

@@ -155,11 +155,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				_IncludeClasses = value;
 			}
 		}
-		private User forumUser = null;
+		private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser = null;
 		protected override void Render(HtmlTextWriter writer)
 		{
-			UserController uc = new UserController();
-			forumUser = uc.GetUser(PortalId, ModuleId);
+			forumUser = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
 			Controls.ForumContent fd = new Controls.ForumContent();
 			fd.ModuleId = ModuleId;
 			fd.TabId = TabId;

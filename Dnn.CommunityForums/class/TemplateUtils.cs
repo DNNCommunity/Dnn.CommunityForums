@@ -390,12 +390,12 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use GetPostInfo(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)")]
         public static string GetPostInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, int timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return GetPostInfo(moduleId, user, imagePath, isMod, ipAddress, isUserOnline, currentUserType, currentUserId, userPrefHideAvatar, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
         public static string GetPostInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, bool isUserOnline, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return GetPostInfo(moduleId, user, imagePath, isMod, ipAddress, isUserOnline, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
         }
         #endregion "Deprecated Methods"
@@ -425,13 +425,13 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileInfo(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)")]
         public static string ParseProfileInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, int timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileInfo(moduleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileInfo(DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)")]
         public static string ParseProfileInfo(int portalId, int moduleId, int userId, string username, User up, string imagePath, bool isMod, string ipAddress, CurrentUserTypes currentUserType, int currentUserId, bool userPrefHideAvatar, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileInfo(moduleId, user, imagePath, isMod, ipAddress, currentUserType, currentUserId, userPrefHideAvatar, timeZoneOffset);
         }
         #endregion "Deprecated Methods"
@@ -445,7 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 myTemplate = TemplateCache.GetCachedTemplate(ModuleId, "ProfileInfo", -1);
                 if (cacheKey != string.Empty)
-                    DataCache.SettingsCacheStore(user.ModuleId, cacheKey, myTemplate);
+                    DataCache.SettingsCacheStore(ModuleId, cacheKey, myTemplate);
             }
             myTemplate = ParseProfileTemplate(ModuleId, myTemplate, user, imagePath, currentUserType, true, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);
             return myTemplate;
@@ -462,63 +462,63 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, int timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, false, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, false, false, false, string.Empty, -1, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, int timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, false, false, false, string.Empty, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, false, false, false, string.Empty, -1, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, -1, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, int currentUserId, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, false, false, false, string.Empty, currentUserId, timeZoneOffset);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, int timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, new TimeSpan(hours: 0, minutes: timeZoneOffset, seconds: 0));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use ParseProfileTemplate(string profileTemplate, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)")]
         public static string ParseProfileTemplate(string profileTemplate, User up, int portalId, int moduleId, string imagePath, CurrentUserTypes currentUserType, bool legacyTemplate, bool userPrefHideAvatar, bool userPrefHideSignature, string ipAddress, int currentUserId, TimeSpan timeZoneOffset)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserID);
             return ParseProfileTemplate(moduleId, profileTemplate, user, imagePath, currentUserType, legacyTemplate, userPrefHideAvatar, userPrefHideSignature, ipAddress, currentUserId, timeZoneOffset);
         }
 

@@ -26,6 +26,7 @@ using System.Xml;
 using DotNetNuke.Data;
 using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
+using DotNetNuke.Modules.ActiveForums.Entities;
 using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -146,13 +147,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forumIds;
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use  GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)")]
         public static string GetForumsHtmlOption(int moduleId, User currentUser)
+        {
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(currentUser.UserID);
+            return GetForumsHtmlOption(moduleId, user);
+        }
+        internal static string GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)
         {
             var sb = new StringBuilder();
             int index = 1;
-            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && (f.ForumGroup!=null) && !(f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)));
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser,
-                fi =>
+            var forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId).Where(f => !f.Hidden && (f.ForumGroup != null) && !(f.ForumGroup.Hidden) && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)));
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(forums.ToList(), currentUser, fi =>
                 {
                     sb.AppendFormat("<option value=\"{0}\">{1}</option>", "-1", fi.GroupName);
                     index += 1;
@@ -331,13 +337,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
         }
 
-        internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, User currentUser, 
+        internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, ForumUserInfo forumUserInfo,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> groupAction,
             Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forumAction,
-            Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subForumAction) 
+            Action<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subForumAction)
         {
             string tmpGroupKey = string.Empty;
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in forums.Where(f => !f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, forumUserInfo.UserRoles))))
             {
                 string GroupKey = $"{fi.GroupName}{fi.ForumGroupId}";
                 if (tmpGroupKey != GroupKey)
@@ -348,7 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 if (fi.ParentForumId == 0)
                 {
                     forumAction(fi);
-                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (currentUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, currentUser.UserRoles)))))
+                    foreach (var subforum in forums.Where(f => f.ParentForumId == fi.ForumID && (!f.Hidden && f.ForumGroup != null && !f.ForumGroup.Hidden && (forumUserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security?.View, forumUserInfo.UserRoles)))))
                     {
                         subForumAction(subforum);
                     }

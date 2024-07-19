@@ -1728,4 +1728,7 @@ Von
   <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
     <value>Bitte &lt;a href="{0}"{1}&gt;melden Sie sich an&lt;/a&gt;, um ein Thema hinzuzufügen.</value>
   </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Keine ausstehenden Beiträge</value>
+  </data>
 </root>

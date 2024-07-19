@@ -26,248 +26,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
 	public class TopicBrowser
 	{
-		private int _PortalId = -1;
-		public int PortalId
-		{
-			get
-			{
-				return _PortalId;
-			}
-			set
-			{
-				_PortalId = value;
-			}
-		}
-		private int _ModuleId = -1;
-		public int ModuleId
-		{
-			get
-			{
-				return _ModuleId;
-			}
-			set
-			{
-				_ModuleId = value;
-			}
-		}
-		private int _TabId = -1;
-		public int TabId
-		{
-			get
-			{
-				return _TabId;
-			}
-			set
-			{
-				_TabId = value;
-			}
-		}
-		private string _ForumIds = string.Empty;
-		public string ForumIds
-		{
-			get
-			{
-				return _ForumIds;
-			}
-			set
-			{
-				_ForumIds = value;
-			}
-		}
-		private int _ForumId = -1;
-		public int ForumId
-		{
-			get
-			{
-				return _ForumId;
-			}
-			set
-			{
-				_ForumId = value;
-			}
-		}
-		private int _ForumGroupId = -1;
-		public int ForumGroupId
-		{
-			get
-			{
-				return _ForumGroupId;
-			}
-			set
-			{
-				_ForumGroupId = value;
-			}
-		}
-		private int _ParentForumId = -1;
-		public int ParentForumId
-		{
-			get
-			{
-				return _ParentForumId;
-			}
-			set
-			{
-				_ParentForumId = value;
-			}
-		}
-		private int _TopicId = -1;
-		public int TopicId
-		{
-			get
-			{
-				return _TopicId;
-			}
-			set
-			{
-				_TopicId = value;
-			}
-		}
-		private string _Topic = string.Empty;
-		public string Topic
-		{
-			get
-			{
-				return _Topic;
-			}
-			set
-			{
-				_Topic = value;
-			}
-		}
-		private string _Template = string.Empty;
-		public string Template
-		{
-			get
-			{
-				return _Template;
-			}
-			set
-			{
-				_Template = value;
-			}
-		}
-		private string _HeaderTemplate = string.Empty;
-		public string HeaderTemplate
-		{
-			get
-			{
-				return _HeaderTemplate;
-			}
-			set
-			{
-				_HeaderTemplate = value;
-			}
-		}
-		private string _FooterTemplate = string.Empty;
-		public string FooterTemplate
-		{
-			get
-			{
-				return _FooterTemplate;
-			}
-			set
-			{
-				_FooterTemplate = value;
-			}
-		}
-		public User ForumUser {get; set;}
-		private int _CategoryId = -1;
-		public int CategoryId
-		{
-			get
-			{
-				return _CategoryId;
-			}
-			set
-			{
-				_CategoryId = value;
-			}
-		}
-		private int _TagId = -1;
-		public int TagId
-		{
-			get
-			{
-				return _TagId;
-			}
-			set
-			{
-				_TagId = value;
-			}
-		}
-		private int _PageIndex = 1;
-		public int PageIndex
-		{
-			get
-			{
-				return _PageIndex;
-			}
-			set
-			{
-				_PageIndex = value;
-			}
-		}
-		private int _PageSize = 20;
-		public int PageSize
-		{
-			get
-			{
-				return _PageSize;
-			}
-			set
-			{
-				_PageSize = value;
-			}
-		}
-		private string _ItemCss = "aftb-topic";
-		public string ItemCss
-		{
-			get
-			{
-				return _ItemCss;
-			}
-			set
-			{
-				_ItemCss = value;
-			}
-		}
-		private string _AltItemCSS = "aftb-topic-alt";
-		public string AltItemCSS
-		{
-			get
-			{
-				return _AltItemCSS;
-			}
-			set
-			{
-				_AltItemCSS = value;
-			}
-		}
-		private string _ImagePath = string.Empty;
-		public string ImagePath
-		{
-			get
-			{
-				return _ImagePath;
-			}
-			set
-			{
-				_ImagePath = value;
-			}
-		}
-		private bool _MaintainPage = false;
-		public bool MaintainPage
-		{
-			get
-			{
-				return _MaintainPage;
-			}
-			set
-			{
-				_MaintainPage = value;
-			}
-		}
-		private SettingsInfo _mainSettings = null;
+        public int PortalId { get; set; } = -1;
+        public int ModuleId { get; set; } = -1;
+        public int TabId { get; set; } = -1;
+        public string ForumIds { get; set; } = string.Empty;
+        public int ForumId { get; set; } = -1;
+        public int ForumGroupId { get; set; } = -1;
+        public int ParentForumId { get; set; } = -1;
+        public int TopicId { get; set; } = -1;
+        public string Topic { get; set; } = string.Empty;
+        public string Template { get; set; } = string.Empty;
+        public string HeaderTemplate { get; set; } = string.Empty;
+        public string FooterTemplate { get; set; } = string.Empty;
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser {get; set;}
+        public int CategoryId { get; set; } = -1;
+        public int TagId { get; set; } = -1;
+        public int PageIndex { get; set; } = 1;
+        public int PageSize { get; set; } = 20;
+        public string ItemCss { get; set; } = "aftb-topic";
+        public string AltItemCSS { get; set; } = "aftb-topic-alt";
+        public string ImagePath { get; set; } = string.Empty;
+        public bool MaintainPage { get; set; } = false;
+        private SettingsInfo _mainSettings = null;
 		private bool _canEdit = false;
 
         public int UserId { get; set; } = -1;
@@ -384,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					try
                     {
                         DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
-                        tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                        tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.GetIsMod(ModuleId), ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
 					}
 					catch (Exception ex)
 					{
@@ -395,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				else
                 {
                     DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
-                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.GetIsMod(ModuleId), ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
 				}
 
 				if (_canEdit)

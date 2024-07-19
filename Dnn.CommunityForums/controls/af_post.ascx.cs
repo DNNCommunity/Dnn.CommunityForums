@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public string PreviewText = string.Empty;
         private bool _isEdit;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _fi;
-        private UserProfileInfo _ui = new UserProfileInfo();
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo _user = new DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo();
         private string _themePath = string.Empty;
         private bool _userIsTrusted;
         private int _contentId = -1;
@@ -99,23 +99,23 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (!_canEdit && (Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.TopicEdit || Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.ReplyEdit))
                     Response.Redirect(NavigateUrl(TabId));
-                }
+            }
 
             if (CanCreate == false && CanReply == false)
                 Response.Redirect(NavigateUrl(TabId, "", "ctl=login") + "?returnurl=" + Server.UrlEncode(Request.RawUrl));
 
-            if (UserId > 0)
-                _ui = ForumUser.Profile;
+            if (UserId > 0) {
+                _user = ForumUser;
+            }
             else
             {
-                _ui.TopicCount = 0;
-                _ui.ReplyCount = 0;
-                _ui.RewardPoints = 0;
-                _ui.IsMod = false;
-                _ui.TrustLevel = -1;
+                ForumUser.TopicCount = 0;
+                ForumUser.ReplyCount = 0;
+                ForumUser.RewardPoints = 0;
+                ForumUser.TrustLevel = -1;
             }
 
-            _userIsTrusted = Utilities.IsTrusted((int)_fi.DefaultTrustValue, _ui.TrustLevel, _canTrust, _fi.AutoTrustLevel, _ui.PostCount);
+            _userIsTrusted = Utilities.IsTrusted((int)_fi.DefaultTrustValue, _user.TrustLevel, _canTrust, _fi.AutoTrustLevel, _user.PostCount);
             _themePath = Page.ResolveUrl(MainSettings.ThemeLocation);
             Spinner = Page.ResolveUrl(_themePath + "/images/loading.gif");
             _isApproved = !_fi.IsModerated || _userIsTrusted || _canModApprove;
@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // if someone activates this checkbox send him home :-)
                 Response.Redirect("about:blank");
             }
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, forumUser: ForumUser, forumInfo: ForumInfo))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;

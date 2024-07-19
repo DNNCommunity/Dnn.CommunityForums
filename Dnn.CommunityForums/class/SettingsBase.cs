@@ -42,12 +42,11 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Public Properties
-        internal User ForumUser
+        internal DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser
         {
             get
             {
-                var uc = new UserController();
-                return uc.GetUser(PortalId, ForumModuleId);
+                return new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ForumModuleId);
             }
         }
 
@@ -145,30 +144,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool ShowToolbar { get; set; } = true;
         #endregion
-
-        public UserController UserController
-        {
-            get
-            {
-                const string userControllerContextKey = "AF|UserController";
-                var userController = HttpContext.Current.Items[userControllerContextKey] as UserController;
-                if (userController == null)
-                {
-                    userController = new UserController();
-                    HttpContext.Current.Items[userControllerContextKey] = userController;
-                }
-                return userController;
-            }
-        }
-
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public ForumsDB ForumsDB
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public UserController UserController => throw new NotImplementedException();
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        public ForumsDB ForumsDB => throw new NotImplementedException();
 
         #region Public Properties - User Preferences
         public CurrentUserTypes CurrentUserType
@@ -185,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         return CurrentUserTypes.Admin;
                     }
-                    if (ForumUser.Profile.IsMod)
+                    if (ForumUser.GetIsMod(ForumModuleId))
                     {
                         return CurrentUserTypes.ForumMod;
                     }
@@ -205,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 if (ForumUser != null)
                 {
-                    return ForumUser.Profile.IsMod;
+                    return ForumUser.GetIsMod(ForumModuleId);
                 }
                 return false;
             }
@@ -217,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (UserId != -1)
                 {
-                    return ForumUser.Profile.PrefDefaultSort;
+                    return ForumUser.PrefDefaultSort;
                 }
                 return "ASC";
             }
@@ -229,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (UserId != -1)
                 {
-                    return ForumUser.Profile.PrefPageSize;
+                    return ForumUser.PrefPageSize;
                 }
                 return MainSettings.PageSize;
             }
@@ -243,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     try
                     {
-                        return ForumUser.Profile.PrefBlockSignatures;
+                        return ForumUser.PrefBlockSignatures;
                     }
                     catch (Exception ex)
                     {
@@ -260,7 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (UserId != -1)
                 {
-                    return ForumUser.Profile.PrefBlockAvatars;
+                    return ForumUser.PrefBlockAvatars;
                 }
                 return false;
             }
@@ -272,7 +251,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (UserId != -1)
                 {
-                    return ForumUser.Profile.PrefJumpLastPost;
+                    return ForumUser.PrefJumpLastPost;
                 }
                 return false;
             }
@@ -284,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (UserId != -1)
                 {
-                    return ForumUser.Profile.PrefDefaultShowReplies;
+                    return ForumUser.PrefDefaultShowReplies;
                 }
                 return false;
             }
@@ -296,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (UserId != -1)
                 {
-                    return ForumUser.Profile.PrefTopicSubscribe;
+                    return ForumUser.PrefTopicSubscribe;
                 }
                 return false;
             }

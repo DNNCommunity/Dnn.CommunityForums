@@ -29,69 +29,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
 	public class ForumDirectory
 	{
-		private int _PortalId = -1;
-		public int PortalId
-		{
-			get
-			{
-				return _PortalId;
-			}
-			set
-			{
-				_PortalId = value;
-			}
-		}
-		private int _ModuleId = -1;
-		public int ModuleId
-		{
-			get
-			{
-				return _ModuleId;
-			}
-			set
-			{
-				_ModuleId = value;
-			}
-		}
-		private int _TabId = -1;
-		public int TabId
-		{
-			get
-			{
-				return _TabId;
-			}
-			set
-			{
-				_TabId = value;
-			}
-		}
-		public User ForumUser {get; set;}
-		private string _ForumIds = string.Empty;
-		public string ForumIds
-		{
-			get
-			{
-				return _ForumIds;
-			}
-			set
-			{
-				_ForumIds = value;
-			}
-		}
-		private string _Template = string.Empty;
-		public string Template
-		{
-			get
-			{
-				return _Template;
-			}
-			set
-			{
-				_Template = value;
-			}
-		}
+        public int PortalId { get; set; } = -1;
+        public int ModuleId { get; set; } = -1;
+        public int TabId { get; set; } = -1;
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser {get; set;}
+        public string ForumIds { get; set; } = string.Empty;
+        public string Template { get; set; } = string.Empty;
 
-		public string Render()
+        public string Render()
 		{
 			if (string.IsNullOrEmpty(Template))
 			{

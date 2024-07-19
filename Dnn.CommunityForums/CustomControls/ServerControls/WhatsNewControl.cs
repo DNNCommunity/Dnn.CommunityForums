@@ -180,9 +180,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             IDataReader dr;
             if (ForumIds == string.Empty && FilterByUserId > 0)
             {
-                var uc = new UserController();
-                var u = uc.DNNGetCurrentUser(PortalId, -1);
-                ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, -1);
+                var u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().DNNGetCurrentUser(PortalId, -1);
+                ForumIds = u.UserForums; // DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, -1);
                 ForumIds = ForumIds.Replace(";", ":");
                 dr = DataProvider.Instance().GetPostsByUser(PortalId, Rows, UserInfo.IsSuperUser, UserInfo.UserID, FilterByUserId, TopicsOnly, ForumIds);
             }

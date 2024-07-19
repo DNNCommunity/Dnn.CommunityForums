@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				_FooterTemplate = value;
 			}
 		}
-		public User ForumUser {get; set;}
+		public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo ForumUser {get; set;}
 		private int _PageIndex = 1;
 		public int PageIndex
 		{

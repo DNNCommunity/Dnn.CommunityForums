@@ -79,9 +79,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (ForumUser != null)
                         {
                             DateTime dtLastAccess = DateTime.UtcNow;
-                            if (!(ForumUser.Profile.DateLastActivity == Utilities.NullDate()))
+                            if (!(ForumUser.DateLastActivity == Utilities.NullDate()))
                             {
-                                dtLastAccess = ForumUser.Profile.DateLastActivity;
+                                dtLastAccess = ForumUser.DateLastActivity;
                             }
                             UserLastAccess = dtLastAccess;
                         }
@@ -410,7 +410,7 @@ namespace DotNetNuke.Modules.ActiveForums
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "afscripts", sb.ToString(), true);
 
 
-            if (ForumUser.Profile.IsMod)
+            if (ForumUser.GetIsMod(ForumModuleId))
             {
                 ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afmod.js");
                 ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");

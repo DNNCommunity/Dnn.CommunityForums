@@ -176,7 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void SaveQuickReply()
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, forumUser: ForumUser, forumInfo: forumInfo))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;

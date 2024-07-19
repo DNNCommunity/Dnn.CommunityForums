@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (string.IsNullOrWhiteSpace(_defaultSort) || (_defaultSort != "ASC" && _defaultSort != "DESC"))
                     {
                         // If we still don't have a valid sort, try and use the value from the users profile
-                        _defaultSort = (ForumUser.Profile.PrefDefaultSort + string.Empty).Trim().ToUpper();
+                        _defaultSort = (ForumUser.PrefDefaultSort + string.Empty).Trim().ToUpper();
                         if (string.IsNullOrWhiteSpace(_defaultSort) || (_defaultSort != "ASC" && _defaultSort != "DESC"))
                         {
                             // No other option than to just use ASC
@@ -1209,38 +1209,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var dateLastActivity = dr.GetDateTime("DateLastActivity");
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
              
-            DotNetNuke.Entities.Users.UserInfo author = DotNetNuke.Entities.Users.UserController.Instance.GetUser(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, authorId);
-
-            // Populate the user object with the post author info.  
-            var up = new User
-            {
-                UserId = authorId,
-                UserName = username,
-                FirstName = firstName.Replace("&amp;#", "&#"),
-                LastName = lastName.Replace("&amp;#", "&#"),
-                DisplayName = displayName.Replace("&amp;#", "&#"),
-                Profile =
-                {
-                    UserCaption = userCaption,
-                    Signature = signature,
-                    DateCreated = memberSince,
-                    AvatarDisabled = avatarDisabled,
-                    Roles = userRoles,
-                    ReplyCount = userReplyCount,
-                    TopicCount = userTopicCount,
-                    AnswerCount = answerCount,
-                    RewardPoints = rewardPoints,
-                    DateLastActivity = dateLastActivity,
-                    PrefBlockAvatars = UserPrefHideAvatars,
-                    PrefBlockSignatures = UserPrefHideSigs,
-                    IsUserOnline = isUserOnline,
-                    SignatureDisabled = signatureDisabled
-                }
-            };
-            if (author != null) up.Email = author.Email;
+            var author = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(authorId);
 
             //Perform Profile Related replacements
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(up.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(author.UserID);
             sOutput = TemplateUtils.ParseProfileTemplate(ForumModuleId,  sOutput, user, ImagePath, CurrentUserType, true, UserPrefHideAvatars, UserPrefHideSigs, ipAddress, UserId, TimeZoneOffset);
 
 
@@ -1313,7 +1285,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             // Parse Roles -- This should actually be taken care of in ParseProfileTemplate
             //if (sOutput.Contains("[ROLES:"))
-            //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Profile.Roles);
+            //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Roles);
 
             // Delete Action
             if (_bModDelete || ((_bDelete && authorId == UserId && !_bLocked) && ((replyId == 0 && _replyCount == 0) || replyId > 0)))

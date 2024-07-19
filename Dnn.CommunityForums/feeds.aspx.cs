@@ -110,11 +110,9 @@ namespace DotNetNuke.Modules.ActiveForums
         private string BuildRSS(int PortalId, int TabId, int ModuleId, int intPosts, int ForumID, bool IngnoreSecurity, bool IncludeBody)
         {
             PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
-            DotNetNuke.Entities.Users.UserInfo ou = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            UserController uc = new UserController();
-            User u = uc.GetUser(PortalId, ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
 
-            DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumID, ou.UserID, 0, 20, ou.IsSuperUser, SortColumns.ReplyCreated);
+            DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumID, u.UserID, 0, 20, u.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
             {
                 offSet = Convert.ToInt32( ps.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);
