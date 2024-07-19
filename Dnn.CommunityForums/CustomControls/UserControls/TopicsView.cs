@@ -543,6 +543,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = sOutput.Replace("[MARKFORUMREAD]", string.Empty);
             }
 
+
             if (CanCreate)
             {
                 string[] Params = { };
