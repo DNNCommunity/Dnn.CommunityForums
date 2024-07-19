@@ -83,7 +83,6 @@
                     type: "POST",
                     data: JSON.stringify(params),
                     contentType: "application/json",
-                    dataType: "json",
                     beforeSend: opts.servicesFramework.setModuleHeaders
                 }).done(function (data) {
                     editUserDialog.dialog('close');
