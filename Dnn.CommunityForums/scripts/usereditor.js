@@ -86,6 +86,7 @@
                     beforeSend: opts.servicesFramework.setModuleHeaders
                 }).done(function (data) {
                     editUserDialog.dialog('close');
+                    afreload();
                 }).fail(function (xhr, status) {
                     alert('Error Updating User Profile');
                 });   
