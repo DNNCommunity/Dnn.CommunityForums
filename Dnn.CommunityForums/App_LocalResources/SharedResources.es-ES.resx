@@ -1755,4 +1755,7 @@ De
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>Los {0} de permisos para los {1} del foro no se encuentran en la base de datos; Tendrás que reparar esto en la base de datos, o eliminar el foro y volver a crearlo. Visite el repositorio de Github de los foros de la comunidad (https://github.com/DNNCommunity/Dnn.CommunityForums), donde puede publicar un problema o revisar la wiki para conocer los pasos de solución de problemas.</value>
   </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"{1}&gt;inicie sesión&lt;/a&gt; para agregar un tema.</value>
+  </data>
 </root>

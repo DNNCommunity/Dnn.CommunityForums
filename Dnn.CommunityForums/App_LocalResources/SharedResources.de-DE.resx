@@ -1752,4 +1752,7 @@ Von
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>Die Berechtigungen {0} für Forum-{1} werden nicht in der Datenbank gefunden. Sie müssen dies in der Datenbank reparieren oder das Forum löschen und neu erstellen. Bitte besuchen Sie das Github-Repository (https://github.com/DNNCommunity/Dnn.CommunityForums), wo Sie ein Problem posten oder das Wiki für Schritte zur Fehlerbehebung überprüfen können.</value>
   </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>Bitte &lt;a href="{0}"{1}&gt;melden Sie sich an&lt;/a&gt;, um ein Thema hinzuzufügen.</value>
+  </data>
 </root>
