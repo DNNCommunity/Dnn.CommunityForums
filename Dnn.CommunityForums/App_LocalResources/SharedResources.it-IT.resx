@@ -1753,4 +1753,7 @@ Da
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>Nessun contenuto in sospeso</value>
   </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"{1}&gt;accedi&lt;/a&gt; per aggiungere un argomento.</value>
+  </data>
 </root>

@@ -1758,4 +1758,7 @@ From,
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>No Pending Content</value>
   </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>Please &lt;a href="{0}"{1}&gt;login&lt;/a&gt; to add a topic.</value>
+  </data>
 </root>

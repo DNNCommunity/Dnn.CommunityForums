@@ -1758,4 +1758,7 @@ De
   <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
     <value>No hay contenido pendientes</value>
   </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"{1}&gt;inicie sesión&lt;/a&gt; para agregar un tema.</value>
+  </data>
 </root>
