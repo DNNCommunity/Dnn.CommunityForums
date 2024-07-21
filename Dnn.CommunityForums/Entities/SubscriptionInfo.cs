@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public bool ForumSubscriber { get => (ForumId > 0 && TopicId == 0); }
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => _user ?? (_user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserId));
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo User => _user ?? (_user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserId));
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => _forumInfo ?? (_forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId)); 
         [IgnoreColumn()]

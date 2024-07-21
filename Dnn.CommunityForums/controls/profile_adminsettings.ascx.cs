@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = ForumUserInfo;
             if (forumUserInfo == null & UID > 0)
             {
-                forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UID);
+                forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UID);
             }
 
             if (forumUserInfo != null)
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (!(CurrentUserType == CurrentUserTypes.Anon) && !(CurrentUserType == CurrentUserTypes.Auth))
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UID);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUserInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UID);
                 if (forumUserInfo != null)
                 {
                     forumUserInfo.RewardPoints = Convert.ToInt32(e.Parameters[1]);
@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     forumUserInfo.TrustLevel = Convert.ToInt32(e.Parameters[5]);
                     forumUserInfo.AdminWatch = Convert.ToBoolean(e.Parameters[6]);
                     forumUserInfo.AttachDisabled = Convert.ToBoolean(e.Parameters[7]);
-                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(ForumModuleId, forumUserInfo);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(forumUserInfo);
                 }
             }
         }

@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, forumUser: ForumUser, forumInfo: forumInfo))
             {
-                var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(this.UserId);
+                var upi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(this.UserId);
                 if (upi != null)
                 {
                     if (SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Second, upi.DateLastPost, DateTime.UtcNow) < MainSettings.FloodInterval)

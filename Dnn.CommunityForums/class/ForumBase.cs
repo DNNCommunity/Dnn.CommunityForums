@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if(!_jumpToLastPost.HasValue)
                 {
-                    _jumpToLastPost = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserId).PrefJumpLastPost;
+                    _jumpToLastPost = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserId).PrefJumpLastPost;
                 }
 
                 return _jumpToLastPost.Value;
@@ -388,7 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canCreate = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
-                    else if (ForumUser.UserID <= 0)
+                    else if (ForumUser.UserId <= 0)
                         _canCreate = false;
 
                     else
@@ -418,7 +418,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _canReply = true;
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
-                    else if (ForumUser.UserID <= 0)
+                    else if (ForumUser.UserId <= 0)
                         _canReply = false;
 
                     else

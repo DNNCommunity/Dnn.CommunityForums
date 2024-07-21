@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
             PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo u = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUser(PortalId, ModuleId);
 
-            DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumID, u.UserID, 0, 20, u.IsSuperUser, SortColumns.ReplyCreated);
+            DataSet ds = DataProvider.Instance().UI_TopicsView(PortalId, ModuleId, ForumID, u.UserId, 0, 20, u.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
             {
                 offSet = Convert.ToInt32( ps.TimeZone.GetUtcOffset(DateTime.UtcNow).TotalMinutes);

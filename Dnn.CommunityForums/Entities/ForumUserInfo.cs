@@ -31,13 +31,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class ForumUserInfo
     {
         private DotNetNuke.Entities.Users.UserInfo _userInfo;
-        private Hashtable _properties = null;
         private string _userRoles = Globals.DefaultAnonRoles + "|-1;||";
         private int moduleId = -1;
 
         public ForumUserInfo()
         {
-            UserID = -1;
+            UserId = -1;
             TopicCount = 0;
             ReplyCount = 0;
             DateCreated = DateTime.UtcNow;
@@ -58,9 +57,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             PrefDefaultSort = "ASC";
             PrefPageSize = 20;
         }
-        public int ProfileId { get; set; } = -1;
-        public int UserID { get; set; } = -1;
-        public int ModuleId { set => moduleId = -1; } /* this is always -1 so don't provide getter as unreliable */
+        public int ProfileId { get; set; }
+        public int UserId { get; set; } = -1;
+        public int ModuleId { set => moduleId = -1; get => moduleId; }// => moduleId = -1; } /* this is always -1 so getter is unreliable but required for PetaPoco*/
         public int PortalId { get; set; }
         public int TopicCount { get; set; }
         public int ReplyCount { get; set; }
@@ -101,7 +100,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Username => UserInfo.Username;
         [IgnoreColumn] 
         public string Email => UserInfo.Email;
-
+        
+        [IgnoreColumn] 
         public bool GetIsMod(int ModuleId)
         {
             return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(UserRoles, PortalId, ModuleId, "CanApprove"))));
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn]
         public DotNetNuke.Entities.Users.UserInfo UserInfo
         {
-            get => _userInfo ?? (_userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, UserID));
+            get => _userInfo ?? (_userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, UserId));
             set => _userInfo = value;
         }
         [IgnoreColumn]
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     ids += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
                 }
-                ids += "|" + UserID + "|" + string.Empty + "|";
+                ids += "|" + UserId + "|" + string.Empty + "|";
                 _userRoles = ids;
                 return ids;
             }

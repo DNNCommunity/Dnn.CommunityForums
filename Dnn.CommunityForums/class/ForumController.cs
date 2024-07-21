@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList().")]
         public string GetForumsHtmlOption(int portalId, int moduleId, User currentUser)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(currentUser.UserID);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(currentUser.UserId);
             return DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(moduleId, user);
         }
 
