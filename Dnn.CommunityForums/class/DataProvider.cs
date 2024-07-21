@@ -107,9 +107,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public abstract DataSet Profiles_Get(int PortalId, int ModuleId, int UserId);
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public abstract void Profiles_Save(int PortalId, int ModuleId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize);
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public abstract IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval);
         #endregion
         public abstract void Profiles_UpdateActivity(int PortalId, int ModuleId, int UserId);
-        public abstract IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval);
         public abstract IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter);
         public abstract IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval);
         #endregion

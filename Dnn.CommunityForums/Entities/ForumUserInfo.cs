@@ -23,6 +23,7 @@ using System.Collections;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.UI.UserControls;
+using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
@@ -34,29 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         private string _userRoles = Globals.DefaultAnonRoles + "|-1;||";
         private int moduleId = -1;
 
-        public ForumUserInfo()
-        {
-            UserId = -1;
-            TopicCount = 0;
-            ReplyCount = 0;
-            DateCreated = DateTime.UtcNow;
-            UserRoles = Globals.DefaultAnonRoles + "|-1;||";
-            UserInfo = new DotNetNuke.Entities.Users.UserInfo
-            {
-                UserID = -1,
-                Username = "guest",
-                IsDeleted = false,
-                IsSuperUser = false,
-            };
-            IsUserOnline = false;
-            PrefBlockSignatures = false;
-            PrefBlockAvatars = false;
-            PrefTopicSubscribe = false;
-            PrefJumpLastPost = false;
-            PrefDefaultShowReplies = false;
-            PrefDefaultSort = "ASC";
-            PrefPageSize = 20;
-        }
         public int ProfileId { get; set; }
         public int UserId { get; set; } = -1;
         public int ModuleId { set => moduleId = -1; get => moduleId; }// => moduleId = -1; } /* this is always -1 so getter is unreliable but required for PetaPoco*/
@@ -106,7 +84,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return (!(string.IsNullOrEmpty(DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(UserRoles, PortalId, ModuleId, "CanApprove"))));
         }
-
         [IgnoreColumn]
         public bool IsSuperUser => UserInfo.IsSuperUser;
         [IgnoreColumn]
@@ -183,5 +160,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
             return RoleIds;
         }
+
     }
 }

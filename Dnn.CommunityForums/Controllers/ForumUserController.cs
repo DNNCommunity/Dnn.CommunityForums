@@ -41,8 +41,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class ForumUserController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo>
     {
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int UserId)
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetById(int ProfileId)
         {
+            throw new NotImplementedException("There is no need to call this method; if you do, you probably should be using GetByUserId.");
+        }
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo GetByUserId(int UserId)
+        { 
             DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user = null;
             if (UserId > 0)
             {
@@ -64,7 +68,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         UserID = -1,
                         Username = "guest"
-                    }
+                    },
+                    IsUserOnline = false,
+                    PrefBlockSignatures = false,
+                    PrefBlockAvatars = false,
+                    PrefTopicSubscribe = false,
+                    PrefJumpLastPost = false,
+                    PrefDefaultShowReplies = false,
+                    PrefDefaultSort = "ASC",
+                    PrefPageSize = 20,
                 };
             }
             return user;
@@ -417,7 +429,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             sSql += "{databaseOwner}{objectQualifier}activeforums_Content as c ON t.ContentId = c.ContentId AND c.AuthorId = @1 INNER JOIN ";
             sSql += "{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId INNER JOIN ";
             sSql += "{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId ";
+            sSql += "WHERE c.AuthorId = @AuthorId AND t.IsApproved = 1 AND t.IsDeleted=0 AND f.PortalId=@0),0) ";
+            sSql += "WHERE UserId = @1 AND PortalId = @0";
             DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, PortalId, UserId);
+        }
+        internal string GetUsersOnline(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo forumUser)
+        {
+            bool isAdmin = forumUser.IsAdmin || forumUser.IsSuperUser; 
+            var sb = new StringBuilder();
+            var users = base.Find("WHERE PortalId = @0 AND DateLastActivity >= CAST(DATEADD(mi,@1,GETUTCDATE()) as datetime)", portalSettings.PortalId, -2);
+            foreach (var user in users)
+            {
+                if (sb.Length > 0)
+                {
+                    sb.Append(",");
+                }
+                sb.Append(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, user.UserId, user.Username, user.FirstName, user.LastName, user.DisplayName));
+            }
+                return sb.ToString();
         }
     }
 }

@@ -502,3 +502,28 @@ GO
 /* issue 761 end : remove unneeded user preferences */
 
 /* --------------------- */
+
+
+
+/* issue 976 begin : add index for last activity for users online */
+
+/* --------------------- */
+
+
+/* activeforums_UserProfiles_Opt4  */
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt4')
+DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt4] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+GO
+CREATE NONCLUSTERED INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt4] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles
+(
+	[PortalId] ASC,
+	[DateLastActivity] DESC,
+	[UserId] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) 
+GO
+
+
+/* issue 976 End :  add index for last activity for users online */
+
+/* --------------------- */

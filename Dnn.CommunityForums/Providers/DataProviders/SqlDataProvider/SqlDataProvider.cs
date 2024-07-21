@@ -593,16 +593,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_Save", PortalId, -1, UserId, TopicCount, ReplyCount, ViewCount, AnswerCount, RewardPoints, UserCaption, Signature, SignatureDisabled, TrustLevel, AdminWatch, AttachDisabled, Avatar, AvatarType, AvatarDisabled, PrefDefaultSort, PrefDefaultShowReplies, PrefJumpLastPost, PrefTopicSubscribe, PrefSubscriptionType, PrefBlockAvatars, PrefBlockSignatures, PrefPageSize);
         }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
+        public override IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval)
+        {
+            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval));
+        }
         #endregion
         public override void Profiles_UpdateActivity(int PortalId, int ModuleId, int UserId)
         {
             SqlHelper.ExecuteNonQuery(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_UpdateActivity", PortalId, ModuleId, UserId);
         }
-        public override IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval)
-        {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval));
-        }
-        public override IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval)
+       public override IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, -1, Interval));
         }

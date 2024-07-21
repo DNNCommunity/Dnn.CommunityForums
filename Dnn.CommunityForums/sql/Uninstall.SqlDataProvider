@@ -516,6 +516,9 @@ GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt3')
 DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt3] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
 GO
+IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_UserProfiles') AND name = N'idx_{objectQualifier}activeforums_UserProfiles_Opt4')
+DROP INDEX [idx_{objectQualifier}activeforums_UserProfiles_Opt4] ON {databaseOwner}{objectQualifier}activeforums_UserProfiles 
+GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Content') AND name = N'idx_{objectQualifier}activeforums_Content_Opt1')
 DROP INDEX [idx_{objectQualifier}activeforums_Content_Opt1] ON {databaseOwner}{objectQualifier}activeforums_Content 
 GO
