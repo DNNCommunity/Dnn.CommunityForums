@@ -963,7 +963,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECT]", Subject + sPollImage);
                     sTopicsTemplate = sTopicsTemplate.Replace("[SUBJECTLINK]", GetTopic(TabId, ForumId, TopicId, Subject, sBodyTitle, UserId, AuthorId, ReplyCount, -1, sTopicURL) + sPollImage);
 
-                    var displayName = UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, AuthorId, AuthorUserName, AuthorFirstName, AuthorLastName, AuthorDisplayName).ToString().Replace("&amp;#", "&#");
+                    var displayName = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(PortalSettings, ForumModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, AuthorId, AuthorUserName, AuthorFirstName, AuthorLastName, AuthorDisplayName).ToString().Replace("&amp;#", "&#");
                     if (Utilities.StripHTMLTag(displayName) == Utilities.GetSharedResource("[RESX:Anonymous]"))
                     {
                         displayName = displayName.Replace(Utilities.GetSharedResource("[RESX:Anonymous]"), AuthorName);
@@ -1029,7 +1029,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             //sLastReplyTemp = sLastReplyTemp.Replace("[RESX:BY]", Utilities.GetSharedResource("By.Text"))
                             if (LastReplyAuthorId > 0)
                             {
-                                sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, LastReplyAuthorId, LastReplyUserName, LastReplyFirstName, LastReplyLastName, LastReplyDisplayName).ToString().Replace("&amp;#", "&#"));
+                                sLastReplyTemp = sLastReplyTemp.Replace("[LASTPOSTDISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(PortalSettings, ForumModuleId, true, bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, LastReplyAuthorId, LastReplyUserName, LastReplyFirstName, LastReplyLastName, LastReplyDisplayName).ToString().Replace("&amp;#", "&#"));
                             }
                             else
                             {

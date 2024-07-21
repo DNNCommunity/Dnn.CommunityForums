@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var result = new StringBuilder(sOut);
 
-            result.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, moduleID,false,false,false, userId, authorName, sFirstName, sLastName, sDisplayName));
+            result.Replace("[DISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleID,false,false,false, userId, authorName, sFirstName, sLastName, sDisplayName));
             result.Replace("[USERNAME]", sUsername);
             result.Replace("[USERID]", userId.ToString());
             result.Replace("[FORUMNAME]", fi.ForumName);
@@ -594,7 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // User Status
                 var sUserStatus = string.Empty;
                 if (mainSettings.UsersOnlineEnabled && user.UserID > 0)
-                    sUserStatus = UserProfiles.UserStatus(imagePath, user.IsUserOnline, user.UserID, ModuleId, "[RESX:UserOnline]", "[RESX:UserOffline]");
+                    sUserStatus = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.UserStatus(imagePath, user.IsUserOnline, user.UserID, ModuleId, "[RESX:UserOnline]", "[RESX:UserOffline]");
 
                 result.Replace("[AF:PROFILE:USERSTATUS]", sUserStatus);
                 result.Replace("[AF:PROFILE:USERSTATUS:CSS]", sUserStatus.Contains("online") ? "af-status-online" : "af-status-offline");
@@ -650,13 +650,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Avatar
                 var sAvatar = string.Empty;
                 if (!userPrefHideAvatar && !user.AvatarDisabled)
-                    sAvatar = UserProfiles.GetAvatar(user.UserID, mainSettings.AvatarWidth, mainSettings.AvatarHeight);
+                    sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(user.UserID, mainSettings.AvatarWidth, mainSettings.AvatarHeight);
 
                 result.Replace("[AF:PROFILE:AVATAR]", sAvatar);
 
                 // Display Name
                 DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(user.PortalId);
-                result.Replace("[AF:PROFILE:DISPLAYNAME]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, isMod, isAdmin, user.UserID, user.Username, user.FirstName, user.LastName, user.DisplayName));
+                result.Replace("[AF:PROFILE:DISPLAYNAME]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, ModuleId, true, isMod, isAdmin, user.UserID, user.Username, user.FirstName, user.LastName, user.DisplayName));
 
                 // These fields are no longer used
                 result.Replace("[AF:PROFILE:LOCATION]", string.Empty);

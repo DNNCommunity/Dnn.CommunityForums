@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					try
                     {
                         DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
-                        tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.GetIsMod(ModuleId), ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                        tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, ModuleId, true, ForumUser.GetIsMod(ModuleId), ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
 					}
 					catch (Exception ex)
 					{
@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				else
                 {
                     DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
-                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.GetIsMod(ModuleId), ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                    tmp = tmp.Replace("[LASTAUTHOR]", DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, ModuleId, true, ForumUser.GetIsMod(ModuleId), ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
 				}
 
 				if (_canEdit)
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				//
 
 				tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
-				var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, _mainSettings.AvatarWidth, _mainSettings.AvatarHeight);
+				var sAvatar = DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetAvatar(auth.AuthorId, _mainSettings.AvatarWidth, _mainSettings.AvatarHeight);
 
 				tmp = tmp.Replace("[AF:AVATAR]", sAvatar);
 				return tmp;

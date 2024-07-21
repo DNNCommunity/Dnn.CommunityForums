@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (sb.Length > 0)
                         sb.Append(", ");
                     var portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
-                    sb.Append(UserProfiles.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
+                    sb.Append(DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(portalSettings, moduleId, true, false, isAdmin, dr.GetInt("UserId"), dr.GetString("Username"), dr.GetString("FirstName"), dr.GetString("LastName"), dr.GetString("DisplayName")));
                 }
 
                 dr.Close();

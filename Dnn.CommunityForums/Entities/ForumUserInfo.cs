@@ -49,6 +49,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 IsDeleted = false,
                 IsSuperUser = false,
             };
+            IsUserOnline = false;
+            PrefBlockSignatures = false;
+            PrefBlockAvatars = false;
+            PrefTopicSubscribe = false;
+            PrefJumpLastPost = false;
+            PrefDefaultShowReplies = false;
+            PrefDefaultSort = "ASC";
+            PrefPageSize = 20;
         }
         public int ProfileId { get; set; } = -1;
         public int UserID { get; set; } = -1;

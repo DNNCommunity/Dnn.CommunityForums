@@ -29,6 +29,8 @@ using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+
     public class UserController
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

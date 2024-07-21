@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
-            UserProfileController.Profiles_ClearCache(ModuleId, ri.Content.AuthorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ri.Content.AuthorId);
 
             DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ri.ForumId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));

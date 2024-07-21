@@ -56,7 +56,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (dto.ForumId > 0)
             {
 
-                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(ActiveModule.PortalID, ForumModuleId, UserInfo.UserID).Roles;
+                string userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(UserInfo.UserID).UserRoles;
+
                 int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ForumModuleId, dto.ForumId, -1, 1, UserInfo.UserID, userRoles);
                 return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
             }

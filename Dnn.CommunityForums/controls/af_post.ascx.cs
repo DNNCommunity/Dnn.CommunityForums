@@ -556,13 +556,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (postId == TopicId)
                         {
                             ci = ti.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
+                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(PortalSettings, ForumModuleId, true, false, false, ti.Content.AuthorId, ti.Author.Username, ti.Author.FirstName, ti.Author.LastName, ti.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ti.Content.DateCreated, PortalId, UserId));
                         }
                         else
                         {
                             var ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(postId);
                             ci = ri.Content;
-                            sPostedBy = string.Format(sPostedBy, UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, PortalId, UserId));
+                            sPostedBy = string.Format(sPostedBy, DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.GetDisplayName(PortalSettings, ForumModuleId, true, false, false, ri.Content.AuthorId, ri.Author.Username, ri.Author.FirstName, ri.Author.LastName, ri.Author.DisplayName), Utilities.GetSharedResource("On.Text"), Utilities.GetUserFormattedDateTime(ri.Content.DateCreated, PortalId, UserId));
                         }
 
                         if (ci != null)
@@ -738,11 +738,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
 
             SaveAttachments(ti.ContentId);
-            if (ti.IsApproved && ti.Author.AuthorId > 0)
-            {//TODO: move this to more appropriate place and make consistent with reply count
-                var uc = new Data.Profiles();
-                uc.Profile_UpdateTopicCount(PortalId, ti.Author.AuthorId);
-            }
 
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {

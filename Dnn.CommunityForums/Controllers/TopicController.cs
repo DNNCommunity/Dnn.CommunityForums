@@ -25,6 +25,7 @@ using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.UI.UserControls;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -88,13 +89,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (topicId > 0)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, topicId, -1);
-
-                if (UserId > 0)
-                {
-                    //TODO: update this to be consistent with reply count
-                    Data.Profiles uc = new Data.Profiles();
-                    uc.Profile_UpdateTopicCount(PortalId, UserId);
-                }
             }
             return topicId;
         }
@@ -192,12 +186,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.Content.DateCreated = DateTime.UtcNow;
             }
-            UserProfileController.Profiles_ClearCache(ti.ModuleId, ti.Content.AuthorId);
             if (ti.IsApproved && ti.Author.AuthorId > 0)
             {   //TODO: put this in a better place and make it consistent with reply counter
-                var uc = new Data.Profiles();
-                uc.Profile_UpdateTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().UpdateUserTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
             }
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(ti.Content.AuthorId);
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
             DataCache.ContentCacheClear(ti.ModuleId, string.Format(CacheKeys.ForumInfo, ti.ModuleId, ti.ForumId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ti.ModuleId));

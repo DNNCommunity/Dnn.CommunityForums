@@ -25,6 +25,7 @@ using System.Web;
 using System.Web.Http;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
+using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
 
 
@@ -94,9 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpGet]
         public HttpResponseMessage GetUserProfile(int userId)
         {
-            var upc = new UserProfileController();
-            var up = upc.Profiles_Get(PortalSettings.PortalId, ActiveModule.ModuleID, userId);
-
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(userId);
             if(up == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
 
@@ -115,8 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage UpdateUserProfile(UserProfileDTO dto)
         {
-            var upc = new UserProfileController();
-            var up = upc.Profiles_Get(PortalSettings.PortalId, ActiveModule.ModuleID, dto.UserId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetById(dto.UserId);
 
             if (up == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -130,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
             if (dto.RewardPoints.HasValue)
                 up.RewardPoints = dto.RewardPoints.Value;
 
-            upc.Profiles_Save(up);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.Save(-1, up);
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }

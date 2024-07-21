@@ -405,6 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CachePrefix = "AF-";
         public const string CacheModulePrefix = "AF-{0}-";
         public const string UserProfile = "AF-{0}-prof-{1}";
+        public const string ForumUser = "AF-user-{0}";
         public const string Rewards = "AF-{0}-rwd";
 		public const string ProfileInfo = "AF-{0}-pi";
 		public const string ForumInfo = "AF-{0}-fi-{1}";

@@ -133,6 +133,16 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
+        public static void UserCacheClear(string cacheKey)
+        {
+            try
+            {
+                Common.Utilities.DataCache.RemoveCache(CacheKey: cacheKey);
+            }
+            catch
+            {
+            }
+        }
         public static void SettingsCacheClear(int ModuleId, string cacheKey)
         {
             try

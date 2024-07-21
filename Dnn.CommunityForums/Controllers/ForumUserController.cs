@@ -20,17 +20,22 @@
 // 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Web;
 using DotNetNuke.Data;
+using DotNetNuke.Entities.Portals;
+using DotNetNuke.Entities.Users;
+using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Log.EventLog;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.UI.UserControls;
+using Microsoft.ApplicationBlocks.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
@@ -63,6 +68,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 };
             }
             return user;
+        }
+        public static void ClearCache(int UserId)
+        {
+            DataCache.UserCacheClear(string.Format(CacheKeys.ForumUser,UserId));
         }
         internal static int GetUserIdByUserName(int PortalId, string UserName)
         {
@@ -133,9 +142,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public static int Save(int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo user)
         {
-            user.DateUpdated = DateTime.UtcNow; 
-            var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.UserID);
-            UserProfileController.Profiles_ClearCache(ModuleId, user.UserID);
+            user.DateUpdated = DateTime.UtcNow;
+            var x = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().Save<int>(user, user.ProfileId);
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController.ClearCache(user.UserID);
             return user.UserID;
         }
         private struct JournalContentForUser
@@ -250,6 +259,165 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return string.Empty;
             }
+        }
+        internal static string GetDisplayName(DotNetNuke.Entities.Portals.PortalSettings portalSettings, int moduleId, bool linkProfile, bool isMod, bool isAdmin, int userId, string username, string firstName = "", string lastName = "", string displayName = "", string profileLinkClass = "af-profile-link", string profileNameClass = "af-profile-name")
+        {
+            if (portalSettings == null)
+            {
+                portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+            }
+            if (portalSettings == null)
+            {
+                return null;
+            }
+
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
+
+            var outputTemplate = string.IsNullOrWhiteSpace(profileLinkClass) ? "{0}" : string.Concat("<span class='", profileNameClass, "'>{0}</span>");
+
+            if (linkProfile && userId > 0)
+            {
+                var profileVisibility = mainSettings.ProfileVisibility;
+
+                switch (profileVisibility)
+                {
+                    case ProfileVisibilities.Disabled:
+                        linkProfile = false;
+                        break;
+
+                    case ProfileVisibilities.Everyone: // Nothing to do in this case
+                        break;
+
+                    case ProfileVisibilities.RegisteredUsers:
+                        linkProfile = HttpContext.Current.Request.IsAuthenticated;
+                        break;
+
+                    case ProfileVisibilities.Moderators:
+                        linkProfile = isMod || isAdmin;
+                        break;
+
+                    case ProfileVisibilities.Admins:
+                        linkProfile = isAdmin;
+                        break;
+                }
+
+                if (linkProfile && portalSettings.UserTabId != null && portalSettings.UserTabId != DotNetNuke.Common.Utilities.Null.NullInteger && portalSettings.UserTabId != -1)
+                    outputTemplate = string.Concat("<a href='", Utilities.NavigateURL(portalSettings.UserTabId, string.Empty, new[] { "userid=" + userId }), "' class='", profileLinkClass, "' rel='nofollow'>{0}</a>");
+            }
+
+            var displayMode = mainSettings.UserNameDisplay + string.Empty;
+
+            string outputName = null;
+            UserInfo user;
+
+            switch (displayMode.ToUpperInvariant())
+            {
+                case "DISPLAYNAME":
+
+                    if (string.IsNullOrWhiteSpace(username) && userId > 0)
+                    {
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        displayName = (user != null) ? user.DisplayName : null;
+                    }
+
+                    outputName = displayName;
+                    break;
+
+                case "USERNAME":
+
+                    if (string.IsNullOrWhiteSpace(username) && userId > 0)
+                    {
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        username = (user != null) ? user.Username : null;
+                    }
+
+                    outputName = username;
+                    break;
+
+                case "FIRSTNAME":
+
+                    if (string.IsNullOrWhiteSpace(firstName) && userId > 0)
+                    {
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        firstName = (user != null) ? user.FirstName : null;
+                    }
+
+                    outputName = firstName;
+                    break;
+
+                case "LASTNAME":
+
+                    if (string.IsNullOrWhiteSpace(lastName) && userId > 0)
+                    {
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        lastName = (user != null) ? user.LastName : null;
+                    }
+
+                    outputName = lastName;
+                    break;
+
+                case "FULLNAME":
+                    if (string.IsNullOrWhiteSpace(firstName) && string.IsNullOrWhiteSpace(lastName) && userId > 0)
+                    {
+                        user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userId);
+                        firstName = (user != null) ? Utilities.SafeTrim(user.FirstName) : null;
+                        lastName = (user != null) ? Utilities.SafeTrim(user.LastName) : null;
+                    }
+
+                    outputName = string.Concat(firstName, " ", lastName);
+                    break;
+            }
+
+
+            outputName = Utilities.SafeTrim(outputName);
+
+            if (string.IsNullOrWhiteSpace(outputName))
+                outputName = userId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+
+            outputName = HttpUtility.HtmlEncode(outputName);
+
+            return string.Format(outputTemplate, outputName);
+        }
+        internal static string UserStatus(string themePath, bool isUserOnline, int userID, int moduleID, string altOnlineText = "User is Online", string altOfflineText = "User is Offline")
+        {
+            if (isUserOnline)
+            {
+                return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-blue\"></i></span>";
+            }
+
+            return "<span class=\"af-user-status\"><i class=\"fa fa-circle fa-red\"></i></span>";
+        }
+        internal static string GetAvatar(int userID, int avatarWidth, int avatarHeight)
+        {
+            PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
+
+            if (portalSettings == null)
+                return string.Empty;
+
+            //GIF files when reduced using DNN class losses its animation, so for gifs send them as is
+            var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
+            string imgUrl = string.Empty;
+
+            if (user != null) imgUrl = user.Profile.PhotoURL;
+
+            if (!string.IsNullOrWhiteSpace(imgUrl) && imgUrl.ToLower().EndsWith("gif"))
+            {
+                return string.Format("<img class='af-avatar' alt='' src='{0}' height='{1}px' width='{2}px' />", imgUrl, avatarHeight, avatarWidth);
+            }
+            else
+            {
+                return string.Concat("<img class='af-avatar' src='", string.Format(Common.Globals.UserProfilePicFormattedUrl(), userID, avatarWidth, avatarHeight), "' />");
+            }
+        }
+
+        internal void UpdateUserTopicCount(int PortalId, int UserId)
+        {
+            string sSql = "UPDATE databaseOwner}{objectQualifier}activeforums_UserProfiles SET TopicCount = ISNULL((Select Count(t.TopicId) FROM ";
+            sSql += "{databaseOwner}{objectQualifier}activeforums_Topics as t INNER JOIN ";
+            sSql += "{databaseOwner}{objectQualifier}activeforums_Content as c ON t.ContentId = c.ContentId AND c.AuthorId = @1 INNER JOIN ";
+            sSql += "{databaseOwner}{objectQualifier}activeforums_ForumTopics as ft ON ft.TopicId = t.TopicId INNER JOIN ";
+            sSql += "{databaseOwner}{objectQualifier}activeforums_Forums as f ON ft.ForumId = f.ForumId ";
+            DataContext.Instance().Execute(System.Data.CommandType.Text, sSql, PortalId, UserId);
         }
     }
 }
