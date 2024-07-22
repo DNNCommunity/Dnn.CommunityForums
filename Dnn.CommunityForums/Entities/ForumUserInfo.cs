@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_UserProfiles")]
     [PrimaryKey("ProfileId", AutoIncrement = true)]
+    [Scope("PortalId")]
     public class ForumUserInfo
     {
         private DotNetNuke.Entities.Users.UserInfo _userInfo;
@@ -140,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
             {
                 string roleName = r.RoleName;
-                foreach (string role in u.Roles)
+                foreach (string role in u?.Roles)
                 {
                     if (!string.IsNullOrEmpty(role))
                     {
@@ -153,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 }
             }
 
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in u.Social.Roles)
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in u?.Social?.Roles)
             {
                 RoleIds += r.RoleID.ToString() + ";";
             }
