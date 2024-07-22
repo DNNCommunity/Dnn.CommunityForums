@@ -318,7 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 			{
 				if (secType == 1)
 				{
-					var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(Convert.ToInt32(secId));
+					var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, Convert.ToInt32(secId));
 					if (ui != null)
 					{
 						secId = ui.UserId.ToString();

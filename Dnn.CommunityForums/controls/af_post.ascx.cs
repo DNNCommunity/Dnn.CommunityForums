@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var topicTemplateID = ForumInfo.TopicTemplateId;
                     message = Utilities.CleanString(PortalId, message, _allowHTML, _editorType, ForumInfo.UseFilter, ForumInfo.AllowScript, ForumModuleId, ImagePath, ForumInfo.AllowEmoticons);
                     message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
-                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserId);
+                    var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UserId);
                     message = TemplateUtils.PreviewTopic(topicTemplateID, ForumInfo, user, message, ImagePath, DateTime.UtcNow, CurrentUserType, UserId, TimeZoneOffset);
                     hidPreviewText.Value = message;
                     break;

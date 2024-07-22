@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
-                        var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(up.UserId);
+                        var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, up.UserId);
                         sRow = TemplateUtils.ParseProfileTemplate(ForumModuleId,sRow, user, ImagePath, CurrentUserType, false, false, false, string.Empty, -1, TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 while (dr.Read())
                 {
 
-                    upl.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(Convert.ToInt32(dr["UserId"].ToString())));
+                    upl.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, Convert.ToInt32(dr["UserId"].ToString())));
                 }
             }
             catch (Exception ex)

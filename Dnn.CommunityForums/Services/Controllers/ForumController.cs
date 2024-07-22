@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (dto.ForumId > 0)
             {
 
-                string userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserInfo.UserID).UserRoles;
+                string userRoles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(ActiveModule.PortalID, UserInfo.UserID).UserRoles;
 
                 int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ForumModuleId, dto.ForumId, -1, 1, UserInfo.UserID, userRoles);
                 return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.ModMove)]
         public HttpResponseMessage ListForHtml(ForumDto dto)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserInfo.UserID);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(ActiveModule.PortalID, UserInfo.UserID);
             return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(ForumModuleId, user));
         }
     }

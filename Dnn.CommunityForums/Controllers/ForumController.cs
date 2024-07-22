@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use  GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)")]
         public static string GetForumsHtmlOption(int moduleId, User currentUser)
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(currentUser.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, currentUser.UserId);
             return GetForumsHtmlOption(moduleId, user);
         }
         internal static string GetForumsHtmlOption(int moduleId, DotNetNuke.Modules.ActiveForums.Entities.ForumUserInfo currentUser)

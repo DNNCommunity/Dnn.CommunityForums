@@ -1369,6 +1369,7 @@
     <Compile Include="Deprecated\Cache.cs" />
     <Compile Include="Deprecated\MiniPager.cs" />
     <Compile Include="Deprecated\Utilities.cs" />
+    <Compile Include="Entities\AuthorInfo.cs" />
     <Compile Include="Entities\CategoryInfo.cs" />
     <Compile Include="Entities\ContentInfo.cs" />
     <Compile Include="Entities\ForumCollection.cs" />

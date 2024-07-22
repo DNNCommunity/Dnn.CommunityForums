@@ -1209,10 +1209,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var dateLastActivity = dr.GetDateTime("DateLastActivity");
             var signatureDisabled = dr.GetBoolean("SignatureDisabled");
              
-            var author = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(authorId);
+            var author = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, authorId);
 
             //Perform Profile Related replacements
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(author.UserId);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, author.UserId);
             sOutput = TemplateUtils.ParseProfileTemplate(ForumModuleId,  sOutput, user, ImagePath, CurrentUserType, true, UserPrefHideAvatars, UserPrefHideSigs, ipAddress, UserId, TimeZoneOffset);
 
 

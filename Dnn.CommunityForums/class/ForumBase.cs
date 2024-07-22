@@ -81,7 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if(!_jumpToLastPost.HasValue)
                 {
-                    _jumpToLastPost = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserId).PrefJumpLastPost;
+                    _jumpToLastPost = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UserId).PrefJumpLastPost;
                 }
 
                 return _jumpToLastPost.Value;

@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ActiveModule.ModuleID, ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
                 }
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserInfo.UserID);
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(ActiveModule.PortalID, UserInfo.UserID);
                 string sOnlineList = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUsersOnline(PortalSettings, ForumModuleId, user);
                 IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalSettings.PortalId, ForumModuleId, 2);
                 int anonCount = 0;

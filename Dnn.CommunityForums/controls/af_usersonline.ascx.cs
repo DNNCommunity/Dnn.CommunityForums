@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Methods
         private void BindUsersOnline()
         {
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserInfo.UserID);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UserInfo.UserID);
             string sOnlineList = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetUsersOnline(PortalSettings, ForumModuleId, user);
             IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalId, -1, 2);
             int anonCount = 0;

@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
            
             if (UID > 0 && !Page.IsPostBack)
             {
-                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserId);
+                var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UserId);
                 drpPrefDefaultSort.SelectedIndex = drpPrefDefaultSort.Items.IndexOf(drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
                 drpPrefPageSize.SelectedIndex = drpPrefPageSize.Items.IndexOf(drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (UserId == UID || (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                var upi=  new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UID);
+                var upi=  new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UID);
                 if (upi != null)
                 {
                     upi.PrefDefaultSort = Utilities.XSSFilter(drpPrefDefaultSort.SelectedItem.Value, true);

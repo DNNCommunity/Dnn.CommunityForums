@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User DNNGetCurrentUser(int PortalId, int ModuleId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().DNNGetCurrentUser(PortalId, ModuleId);
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        private User GetDNNUser(int portalId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(userId);
+        private User GetDNNUser(int portalId, int userId) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, userId);
         private User GetDNNUser(int portalId, string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetDNNUser(portalId, userName);
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public User GetDNNUser(string userName) => (User)new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetDNNUser(userName);

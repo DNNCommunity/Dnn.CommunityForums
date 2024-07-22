@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpGet]
         public HttpResponseMessage GetUserProfile(int userId)
         {
-            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(userId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(ActiveModule.PortalID, userId);
             if(up == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
 
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpPost]
         public HttpResponseMessage UpdateUserProfile(UserProfileDTO dto)
         {
-            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(dto.UserId);
+            var up = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(ActiveModule.PortalID, dto.UserId);
 
             if (up == null)
                 return Request.CreateResponse(HttpStatusCode.NotFound);
@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         if (dto.SecurityType == 1)
                         {
-                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(Convert.ToInt32(dto.SecurityId));
+                            var ui = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(ActiveModule.PortalID, Convert.ToInt32(dto.SecurityId));
                             dto.SecurityId = ui != null ? ui.UserId.ToString() : string.Empty;
                         }
                         else

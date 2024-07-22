@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             Literal lit = new Literal();
             
-            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UID);
+            var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UID);
             user.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(user.UserRoles, PortalId, ForumModuleId, "CanRead");
             sTemplate = TemplateUtils.ParseProfileTemplate(ForumModuleId, sTemplate, user, ImagePath, CurrentUserType, true, UserPrefHideAvatars, UserPrefHideSigs, string.Empty, UserInfo.UserID, TimeZoneOffset);
             sTemplate = RenderModals(sTemplate);
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (CanEditMode())
             {
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UID);
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UID);
                 if (user != null)
                 {
                     if (MainSettings.AllowSignatures == 1)

@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
         {
-            var roles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UID).UserRoles;
+            var roles = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(PortalId, UID).UserRoles;
             var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(roles, PortalId, ForumModuleId);
             var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
             {

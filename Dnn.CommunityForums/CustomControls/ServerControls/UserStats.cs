@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 						}
 					}
                 }
-                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(UserId);
+                var user = new DotNetNuke.Modules.ActiveForums.Controllers.ForumUserController().GetByUserId(portalId, UserId);
                 output = TemplateUtils.ParseProfileTemplate(ModuleId, tmp, user, string.Empty, CurrentUserTypes.Anon, false, false, false, string.Empty, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId, UserId));
 				output = Utilities.LocalizeControl(output);
 				writer.Write(output);
