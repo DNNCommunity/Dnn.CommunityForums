@@ -26,9 +26,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Permissions")]
     [PrimaryKey("PermissionsId", AutoIncrement = true)]
     [Cacheable("activeforums_Permissions", CacheItemPriority.Low)]
+    [Scope("ModuleId")]
     public partial class PermissionInfo
     {
         public int PermissionsId { get; set; }
+        public int ModuleId { get; set; }
         [ColumnName("CanView")] public string View { get; set; }
         [ColumnName("CanRead")] public string Read { get; set; }
         [ColumnName("CanCreate")] public string Create { get; set; }
