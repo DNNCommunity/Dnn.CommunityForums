@@ -290,7 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 if (isNew || (fi?.PermissionsId == fg?.PermissionsId)) /* new forum or switching from group security to forum security */
                 {
-                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString()).PermissionsId;
+                    fi.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), fi.ModuleId).PermissionsId;
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, fi.PermissionsId);
                 }
             }
@@ -372,7 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var groupAdmin = string.Concat(socialGroupId.ToString(), ":0");
                 var groupMember = socialGroupId.ToString();
 
-                int permissionsId = (pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString())).PermissionsId;
+                int permissionsId = (pc.CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), moduleId)).PermissionsId;
                
                 DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo
                 {

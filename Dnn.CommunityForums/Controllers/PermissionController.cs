@@ -37,48 +37,36 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
         private const string emptyPermissions = "||||";
-        internal new void DeleteById<TProperty>(TProperty permissionsId)
+        internal new void DeleteById<TProperty>(TProperty permissionsId, int moduleId)
         {
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionsId);
+            DataCache.SettingsCacheClear(moduleId, cachekey);
             base.DeleteById(permissionsId);
-            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionsId);
-            DataCache.SettingsCacheClear(-1, cachekey);
         }
         internal new void Delete(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, permissionInfo.ModuleId, permissionInfo.PermissionsId);
+            DataCache.SettingsCacheClear(permissionInfo.ModuleId, cachekey);
             base.Delete(permissionInfo);
-            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionInfo.PermissionsId);
-            DataCache.SettingsCacheClear(-1, cachekey);
         }
         internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             base.Insert(permissionInfo);
-            return GetById(permissionInfo.PermissionsId);
+            return GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
         internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             base.Update(permissionInfo);
-            return GetById(permissionInfo.PermissionsId);
+            return GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
-        /// GetById needs to intercept and route to GetById without scope since PermissionsInfo does not yet have ModuleId
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionId, int moduleId)
         {
-            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionId);
-            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DataCache.SettingsCacheRetrieve(-1, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
+            var cachekey = string.Format(CacheKeys.PermissionsInfo, moduleId, permissionId);
+            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DataCache.SettingsCacheRetrieve(moduleId, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
             if (permissions == null)
             {
-                permissions = base.GetById(permissionId);
-                DataCache.SettingsCacheStore(-1, cachekey, permissions);
-            }
-            return permissions;
-        }
-        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionId)
-        {
-            var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionId);
-            DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissions = DataCache.SettingsCacheRetrieve(-1, cachekey) as DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo;
-            if (permissions == null)
-            {
-                permissions = base.GetById(permissionId);
-                DataCache.SettingsCacheStore(-1, cachekey, permissions);
+                permissions = base.GetById(permissionId, moduleId);
+                DataCache.SettingsCacheStore(moduleId, cachekey, permissions);
             }
             return permissions;
         }
@@ -114,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, RegisteredUsersRoleId, 0);
             }
         }
-        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole)
+        internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo CreateAdminPermissions(string adminRole, int moduleId)
         {
             string adminRoleId = $"{adminRole};{emptyPermissions}";
             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo
@@ -141,7 +129,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModUser = adminRoleId,
                 ModEdit = adminRoleId,
                 ModLock = adminRoleId,
-                ModPin = adminRoleId
+                ModPin = adminRoleId,
+                ModuleId = moduleId
             };
             Insert(permissionInfo);
             return permissionInfo;
@@ -356,7 +345,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
         public string SavePermSet(int ModuleId, int PermissionsId, string requestedAccess, string PermSet)
         {
-            var permission = GetById(PermissionsId);
+            var permission = GetById(PermissionsId, ModuleId);
             if (permission != null)
             {
                 SetRolesForRequestedAccess(permission, requestedAccess, PermSet);
