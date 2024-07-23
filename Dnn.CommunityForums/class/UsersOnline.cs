@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             bool isAdmin = user.IsInRole(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName) || user.IsSuperUser;
             var sb = new StringBuilder();
-            var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, moduleId, 2);
+            var dr = DataProvider.Instance().Profiles_GetUsersOnline(portalId, 2);
             try
             {
 

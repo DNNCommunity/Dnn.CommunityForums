@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 RowIndex = ((PageId * PageSize) - PageSize);
             }
-            IDataReader dr = DataProvider.Instance().Profiles_MemberList(PortalId, ModuleId, PageSize, RowIndex, Filter);
+            IDataReader dr = DataProvider.Instance().Profiles_MemberList(PortalId, PageSize, RowIndex, Filter);
             try
             {
                 dr.Read();

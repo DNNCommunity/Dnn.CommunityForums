@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
             UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId));
             if (upi == null)
             {
-                DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
+                DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, UserId);
                 if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     IDataReader dr;
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public void Profiles_Save(UserProfileInfo upi)
         {
-            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.ModuleId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize);
+            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefUseAjax, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize, upi.Yahoo, upi.MSN, upi.ICQ, upi.AOL, upi.Occupation, upi.Location, upi.Interests, upi.WebSite, upi.Badges);
             DataCache.SettingsCacheStore(upi.ModuleId, string.Format(CacheKeys.UserProfile, upi.ModuleId, upi.UserID), upi);
         }
 
