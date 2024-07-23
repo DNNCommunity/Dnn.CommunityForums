@@ -264,9 +264,6 @@
   <data name="SecGrid:modedit.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Editar</value>
   </data>
-  <data name="SecGrid:modlock.Text" xml:space="preserve" lastModified="2024-05-27 11:18:35">
-    <value>Bloquear</value>
-  </data>
   <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-05-16 19:52:23">
     <value>Mover</value>
   </data>

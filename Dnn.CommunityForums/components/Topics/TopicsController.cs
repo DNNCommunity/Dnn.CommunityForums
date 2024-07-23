@@ -267,6 +267,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     break;
+                case "08.02.00":
+                    try
+                    {
+                        ForumsConfig.Merge_Permissions_080200();
+                        DotNetNuke.Modules.ActiveForums.Helpers.UpgradeModuleSettings.UpgradeSocialGroupForumConfigModuleSettings_080200();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogError(ex.Message, ex);
+                        Exceptions.LogException(ex);
+                        return "Failed";
+                    }
+
+                    break;
                 default:
                     break;
             }

@@ -1,0 +1,17 @@
+/* issue 926 - begin - combine CanLock / CanModLock in activeforums_Permissions */
+
+
+UPDATE {databaseOwner}{objectQualifier}activeforums_Permissions
+SET CanLock = RTRIM(CanLock) + '::::' RTRIM(CanModLock)
+WHERE RTRIM(CanModLock) <> '' 
+OR CanModLock IS NOT NULL
+
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModLock' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Permissions] DROP COLUMN CanModLock
+GO
+
+
+
+/* issue 926 - end - combine CanLock / CanModLock in activeforums_Permissions */

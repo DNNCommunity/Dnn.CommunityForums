@@ -345,9 +345,6 @@
   <data name="SecGrid:modedit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>
-  <data name="SecGrid:modlock.Text" xml:space="preserve">
-    <value>Lock</value>
-  </data>
   <data name="SecGrid:modmove.Text" xml:space="preserve">
     <value>Move</value>
   </data>

@@ -36,8 +36,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class PermissionController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>
     {
-        private const string emptyPermissions = "||||";
-        internal new void DeleteById<TProperty>(TProperty permissionsId)
+        private const string emptyPermissions = ";|||";
+        internal new void DeleteById<TProperty>(TProperty permissionsId, int moduleId)
         {
             base.DeleteById(permissionsId);
             var cachekey = string.Format(CacheKeys.PermissionsInfo, -1, permissionsId);
@@ -140,8 +140,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModDelete = adminRoleId,
                 ModUser = adminRoleId,
                 ModEdit = adminRoleId,
-                ModLock = adminRoleId,
-                ModPin = adminRoleId
+                ModPin = adminRoleId,
+                ModuleId = moduleId
             };
             Insert(permissionInfo);
             return permissionInfo;
@@ -171,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModDelete = emptyPermissions,
                 ModUser = emptyPermissions,
                 ModEdit = emptyPermissions,
-                ModLock = emptyPermissions,
                 ModPin = emptyPermissions
             };
         }
@@ -502,7 +501,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.ModApprove, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModDelete, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModEdit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModLock, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModMove, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModPin, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModSplit, objectType, roleObjects);
@@ -527,7 +525,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (string.IsNullOrEmpty(permSet))
             {
-                permSet = portalSettings.AdministratorRoleId + ";||||";
+                permSet = portalSettings.AdministratorRoleId + ";|||";
             }
             string[] perms = permSet.Split('|');
             if (perms[index] != null)
@@ -616,9 +614,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 case "MODEDIT":
                     access = permission.ModEdit;
                     break;
-                case "MODLOCK":
-                    access = permission.ModLock;
-                    break;
                 case "MODMOVE":
                     access = permission.ModMove;
                     break;
@@ -703,9 +698,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                     case "MODEDIT":
                         permission.ModEdit = PermSet; 
-                        break;
-                    case "MODLOCK":
-                        permission.ModLock = PermSet; 
                         break;
                     case "MODMOVE":
                         permission.ModMove = PermSet; 

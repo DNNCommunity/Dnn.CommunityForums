@@ -53,7 +53,6 @@ namespace DotNetNuke.Modules.ActiveForums
         ModDelete,
         ModUser,
         ModEdit,
-        ModLock,
         ModPin
     }
 

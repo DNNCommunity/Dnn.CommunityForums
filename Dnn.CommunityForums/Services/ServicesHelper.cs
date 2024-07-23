@@ -97,9 +97,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 case SecureActions.ModEdit:
                     roles = fi.Security.ModEdit;
                     break;
-                case SecureActions.ModLock:
-                    roles = fi.Security.ModLock;
-                    break;
                 case SecureActions.ModPin:
                     roles = fi.Security.ModPin;
                     break;

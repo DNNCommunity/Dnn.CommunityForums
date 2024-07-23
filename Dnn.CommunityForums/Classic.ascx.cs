@@ -68,7 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             SetupPage();
-
             try
             {
                 if (MainSettings != null && MainSettings.InstallDate > Utilities.NullDate())

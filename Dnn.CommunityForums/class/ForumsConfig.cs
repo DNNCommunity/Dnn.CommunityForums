@@ -42,6 +42,9 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using System.Globalization;
+using System.EnterpriseServices;
+using DotNetNuke.Modules.ActiveForums.API;
+using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -476,9 +479,9 @@ namespace DotNetNuke.Modules.ActiveForums
 					tc.Update(topicInfo); 
                 }
                 dr.Close();
-            } 
-		}
-		internal static void Install_BanUser_NotificationType_080100()
+            }
+        }
+        internal static void Install_BanUser_NotificationType_080100()
         {
             string notificationTypeName = Globals.BanUserNotificationType;
             string notificationTypeDescription = Globals.BanUserNotificationTypeDescription;
@@ -486,9 +489,118 @@ namespace DotNetNuke.Modules.ActiveForums
 
             NotificationType type = new NotificationType { Name = notificationTypeName, Description = notificationTypeDescription, DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(notificationTypeName) == null)
+            {
+                NotificationsController.Instance.CreateNotificationType(type);
+            }
+        }
+        internal static void Merge_Permissions_080200()
+        {
+            /* SQL for 08.02.00 will append two permissions sets being merged and put "::::" between them, ex. 0;|||::::2;|||
+             * this method will separate them into two pieces, 0;||| and 2;||| and then merge them back together as 0;2;|||
+			 */
+            foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get()) 
 			{
-				NotificationsController.Instance.CreateNotificationType(type);
+				string unmergedPerms = perms.Lock;
+				perms.Lock = Merge_PermSet_080200(perms.Lock);
+                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+                var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                string message = $"Merged LOCK permissions from: {unmergedPerms} to {perms.Lock}";
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 			}
-		}
-	}
+
+        }
+        private static string Merge_PermSet_080200(string tempSet)
+        {
+            string newSet = tempSet;
+            if (!string.IsNullOrEmpty(tempSet) && tempSet.Contains("::::"))
+            {
+                try
+                {
+                    string oldSet1 = tempSet.Split("::::".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[0];
+                    string oldSet2 = tempSet.Split("::::".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)[1];
+
+					
+                    List<string> oldSet1permSet = oldSet1.Split('|').ToList();
+                    List<string> oldSet1authRoles = oldSet1permSet[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+					List<string> oldSet1authUsers = new List<string>();
+                    List<string> oldSet1authGroups = new List<string>();
+
+
+                    if (!(string.IsNullOrEmpty(oldSet1permSet[1])) && oldSet1permSet[1].Contains(";"))
+					{
+						oldSet1authUsers = oldSet1permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+					}
+					if (!(string.IsNullOrEmpty(oldSet1permSet[2])) && oldSet1permSet[2].Contains(";"))
+					{
+						oldSet1authGroups = oldSet1permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+					}
+
+                    List<string> oldSet2permSet = oldSet2.Split('|').ToList();
+                    List<string> oldSet2authRoles = oldSet2permSet[0].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+                    List<string> oldSet2authUsers = new List<string>();
+                    List<string> oldSet2authGroups = new List<string>();
+
+                    if (!(string.IsNullOrEmpty(oldSet2permSet[1])) && oldSet2permSet[1].Contains(";"))
+					{
+						oldSet2authUsers = oldSet2permSet[1].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+					}
+					if (!(string.IsNullOrEmpty(oldSet2permSet[2])) && oldSet2permSet[2].Contains(";"))
+					{
+						oldSet2authGroups = oldSet2permSet[2].Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+					}
+
+                    List<string> newAuthRoles = oldSet1authRoles;
+                    foreach (string oldSet2authRole in oldSet2authRoles)
+                    {
+                        if (!newAuthRoles.Contains(oldSet2authRole))
+                        {
+                            newAuthRoles.Add(oldSet2authRole);
+                        }
+                    }
+                    List<string> newAuthUsers = oldSet1authUsers;
+                    foreach (string oldSet2authUser in oldSet2authUsers)
+                    {
+                        if (!newAuthUsers.Contains(oldSet2authUser))
+                        {
+                            newAuthUsers.Add(oldSet2authUser);
+                        }
+                    }
+                    List<string> newAuthGroups = oldSet1authGroups;
+                    foreach (string oldSet2authGroup in oldSet2authGroups)
+                    {
+                        if (!newAuthGroups.Contains(oldSet2authGroup))
+                        {
+                            newAuthGroups.Add(oldSet2authGroup);
+                        }
+                    }
+                    string newRoles = string.Join(";", newAuthRoles);
+                    if (!string.IsNullOrEmpty(newRoles))
+                    {
+                        newRoles += ";";
+                    }
+                    string newUsers = string.Join(";", newAuthUsers);
+                    if (!string.IsNullOrEmpty(newUsers))
+                    {
+                        newUsers += ";";
+                    }
+                    string newGroups = string.Join(";", newAuthGroups);
+                    if (!string.IsNullOrEmpty(newGroups))
+                    {
+                        newGroups += ";";
+                    }
+
+                    newSet = string.Concat(newRoles, "|", newUsers, "|", newGroups, "|");
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                }
+            }
+
+			return newSet;
+        }
+
+    }
 }
