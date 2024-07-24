@@ -51,7 +51,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [ColumnName("CanModApprove")] public string ModApprove { get; set; }
         [ColumnName("CanModMove")] public string ModMove { get; set; }
         [ColumnName("CanModSplit")] public string ModSplit { get; set; }
-        [ColumnName("CanModDelete")] public string ModDelete { get; set; }
         [ColumnName("CanModUser")] public string ModUser { get; set; }
         [ColumnName("CanModEdit")] public string ModEdit { get; set; }
         [IgnoreColumn()] public ObjectType Type { get; set; }

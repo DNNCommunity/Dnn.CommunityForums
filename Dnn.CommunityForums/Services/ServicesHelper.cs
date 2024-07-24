@@ -88,9 +88,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                 case SecureActions.ModSplit:
                     roles = fi.Security.ModSplit;
                     break;
-                case SecureActions.ModDelete:
-                    roles = fi.Security.ModDelete;
-                    break;
                 case SecureActions.ModUser:
                     roles = fi.Security.ModUser;
                     break;

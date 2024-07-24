@@ -204,10 +204,8 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                     if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 17)
                                     {
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modlock").RemoveAll();
-                                    }
-                                    if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 16)
-                                    {
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modpin").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moddelete").RemoveAll();
                                     }
                                 }
                                 ForumConfig = xDoc.OuterXml;

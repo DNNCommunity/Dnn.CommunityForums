@@ -363,9 +363,6 @@
   <data name="SecGrid:modapprove.Text" xml:space="preserve">
     <value>Genehmigen</value>
   </data>
-  <data name="SecGrid:moddelete.Text" xml:space="preserve">
-    <value>Löschen</value>
-  </data>
   <data name="SecGrid:modedit.Text" xml:space="preserve">
     <value>Bearbeiten</value>
   </data>

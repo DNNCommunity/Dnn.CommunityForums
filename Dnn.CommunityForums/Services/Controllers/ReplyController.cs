@@ -85,7 +85,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpDelete]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Delete)]
-        [ForumsAuthorize(SecureActions.ModDelete)]
         public HttpResponseMessage Delete(int forumId, int replyId)
         {
             if (forumId > 0 && replyId > 0)

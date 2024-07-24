@@ -339,9 +339,6 @@
   <data name="SecGrid:modapprove.Text" xml:space="preserve">
     <value>Approve</value>
   </data>
-  <data name="SecGrid:moddelete.Text" xml:space="preserve">
-    <value>Delete</value>
-  </data>
   <data name="SecGrid:modedit.Text" xml:space="preserve">
     <value>Edit</value>
   </data>

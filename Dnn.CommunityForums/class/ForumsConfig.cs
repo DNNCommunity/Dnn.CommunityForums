@@ -517,6 +517,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 message = $"Merged Pin permissions from: {unmergedPerms} to {perms.Pin}";
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+
+                unmergedPerms = perms.Delete;
+                perms.Delete = Merge_PermSet_080200(perms.Delete);
+                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+                log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                message = $"Merged Delete permissions from: {unmergedPerms} to {perms.Delete}";
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
 
         }

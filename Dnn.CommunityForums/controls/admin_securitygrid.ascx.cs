@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     public partial class admin_securitygrid : ActiveAdminBase
 	{
-        private const int _permCount = 23;
+        private const int _permCount = 22;
 		public string imgOn;
 		public string imgOff;
         public bool ReadOnly { get; set; } = false;
@@ -194,9 +194,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 grid[i, 20] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModApprove));
                 grid[i, 21] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModMove));
                 grid[i, 22] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModSplit));
-                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModDelete));
-                grid[i, 24] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModUser));
-                grid[i, 25] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModEdit));
+                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModUser));
+                grid[i, 24] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModEdit));
 
 
 				i += 1;

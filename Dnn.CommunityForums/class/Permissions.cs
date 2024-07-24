@@ -50,7 +50,6 @@ namespace DotNetNuke.Modules.ActiveForums
         ModApprove,
         ModMove,
         ModSplit,
-        ModDelete,
         ModUser,
         ModEdit
     }

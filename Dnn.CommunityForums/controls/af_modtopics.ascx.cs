@@ -317,17 +317,14 @@ namespace DotNetNuke.Modules.ActiveForums
             bModMove = false;
             bModBan = false;
             bCanMod = false;
-            if (f != null)
+            if (f != null && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles))
             {
-                bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModDelete, ForumUser.UserRoles);
+                bCanMod = true;
+                bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.Delete, ForumUser.UserRoles);
                 bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles);
                 bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModMove, ForumUser.UserRoles);
                 bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles);
                 bModBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModUser, ForumUser.UserRoles);
-                if (bModDelete || bModApprove || bModMove || bModEdit)
-                {
-                    bCanMod = true;
-                }
 
             }
 

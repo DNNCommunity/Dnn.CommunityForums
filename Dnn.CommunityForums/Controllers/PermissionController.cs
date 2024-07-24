@@ -125,7 +125,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModApprove = adminRoleId,
                 ModMove = adminRoleId,
                 ModSplit = adminRoleId,
-                ModDelete = adminRoleId,
                 ModUser = adminRoleId,
                 ModEdit = adminRoleId,
                 ModuleId = moduleId
@@ -155,7 +154,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModApprove = emptyPermissions,
                 ModMove = emptyPermissions,
                 ModSplit = emptyPermissions,
-                ModDelete = emptyPermissions,
                 ModUser = emptyPermissions,
                 ModEdit = emptyPermissions
             };
@@ -485,7 +483,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.Edit, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Lock, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModApprove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModDelete, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModEdit, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModMove, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModSplit, objectType, roleObjects);
@@ -593,9 +590,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 case "MODAPPROVE":
                     access = permission.ModApprove;
                     break;
-                case "MODDELETE":
-                    access = permission.ModDelete;
-                    break;
                 case "MODEDIT":
                     access = permission.ModEdit;
                     break;
@@ -674,9 +668,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                     case "MODAPPROVE":
                         permission.ModApprove = PermSet; 
-                        break;
-                    case "MODDELETE":
-                        permission.ModDelete = PermSet; 
                         break;
                     case "MODEDIT":
                         permission.ModEdit = PermSet; 

@@ -67,7 +67,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool bModApprove = false;
         private bool bModMove = false;
         private bool bModSplit = false;
-        private bool bModDelete = false;
         private bool bModEdit = false;
         private bool bAllowRSS = false;
         private int RowIndex = 1;
@@ -263,7 +262,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
                         bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
                         bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
-                        bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
                         bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
                         bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
                         bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
@@ -611,7 +609,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[FORUMNAME]", ForumName);
             sOutput = sOutput.Replace("[FORUMID]", ForumId.ToString());
             sOutput = sOutput.Replace("[GROUPNAME]", GroupName);
-            if (bModDelete)
+            if (bModApprove && bDelete)
             {
                 sOutput = sOutput.Replace("[ACTIONS:DELETE]", "<a href=\"javascript:void(0)\" onclick=\"amaf_modDel(" + ModuleId + "," + ForumId + ",[TOPICID]);\" style=\"vertical-align:middle;\" title=\"[RESX:DeleteTopic]\" /><i class=\"fa fa-trash-o fa-fw fa-blue\"></i></a>");
             }

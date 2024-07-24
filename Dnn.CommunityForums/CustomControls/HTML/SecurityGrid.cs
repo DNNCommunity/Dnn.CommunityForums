@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
     public class SecurityGrid
     {
-        private const int _permCount = 23;
+        private const int _permCount = 22;
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
@@ -143,9 +143,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 grid[i, 20] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModApprove));
                 grid[i, 21] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModMove));
                 grid[i, 22] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModSplit));
-                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModDelete));
-                grid[i, 24] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModUser));
-                grid[i, 25] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModEdit));
+                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModUser));
+                grid[i, 24] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, Security.ModEdit));
 
 
 				i += 1;

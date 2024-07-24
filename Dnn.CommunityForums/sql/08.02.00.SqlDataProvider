@@ -81,4 +81,20 @@ IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModPin' AND [object_id] 
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Permissions] DROP COLUMN CanModPin
 GO
 
-/* issue 927 - end - combine CanPin / CanModLock in activeforums_Permissions */
+/* issue 927 - end - combine CanPin / CanModPin in activeforums_Permissions */
+
+/* --------------------- */
+
+/* issue 928 - begin - combine CanDelete / CanModDelete in activeforums_Permissions */
+UPDATE {databaseOwner}{objectQualifier}activeforums_Permissions
+SET CanLock = RTRIM(CanDelete) + '::::' RTRIM(CanModDelete)
+WHERE RTRIM(CanModDelete) <> '' 
+OR CanModDelete IS NOT NULL
+
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModDelete' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Permissions] DROP COLUMN CanModDelete
+GO
+
+/* issue 928 - end - combine CanDelete / CanModLock in activeforums_Permissions */
