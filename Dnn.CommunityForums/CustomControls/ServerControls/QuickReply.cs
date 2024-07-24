@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
-            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Moderate, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //TODO: Check for allowhtml
             bool allowHtml = false;
             //If forumInfo.AllowHTML Then
-            //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
+            //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModApprove)
             //End If
             sBody = Utilities.CleanString(PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, ModuleId, ThemePath, forumInfo.AllowEmoticons);
             ri.TopicId = TopicId;

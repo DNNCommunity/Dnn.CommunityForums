@@ -428,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				var xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='groupadmin']").ChildNodes;
 				var sb = new StringBuilder();
 				sb.Append("<table cellpadding=\"0\" cellspacing=\"0\">");
-				var rows = new string[14, 5];
+				var rows = new string[13, 5];
 				int i = 0;
 				foreach (XmlNode x in xNodeList)
 				{
@@ -461,14 +461,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + LocalizeString("UserPermissions") + "</td><td colspan=\"6\" class=\"afgridhd sec2\">" + LocalizeString("ModeratorPermissions") + "</td></tr>");
 				sb.Append("<tr id=\"hd2\"><td></td>");
 				string sClass;
-				for (i = 0; i <= 13; i++)
+				for (i = 0; i <= 12; i++)
 				{
 					sClass = "afgridhdsub";
 					if (i == 0)
 					{
 						sClass += " colstart";
 					}
-					else if (i == 13)
+					else if (i == 12)
 					{
 						sClass += " colend";
 					}
@@ -484,7 +484,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + LocalizeString("GroupAdmin") + "</td>");
 				i = 0;
 
-				for (i = 0; i <= 13; i++)
+				for (i = 0; i <= 12; i++)
 				{
 					sClass = "gridcheck";
 					if (i <= 9)
@@ -495,7 +495,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					{
 						sClass += " sec2";
 					}
-					if (i == 13)
+					if (i == 12)
 					{
 						sClass += " colend";
 					}
@@ -518,7 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				sb.Append("</tr>");
 				i = 0;
 				sb.Append("<tr id=\"row2\"><td class=\"rowhd\">" + LocalizeString("GroupMember") + "</td>");
-				for (i = 0; i <= 13; i++)
+				for (i = 0; i <= 12; i++)
 				{
 					sClass = "gridcheck";
 					if (i <= 9)
@@ -529,7 +529,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					{
 						sClass += " sec2";
 					}
-					if (i == 13)
+					if (i == 12)
 					{
 						sClass += " colend";
 					}
@@ -553,7 +553,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 				i = 0;
 				sb.Append("<tr id=\"row3\"><td class=\"rowhd\">" + LocalizeString("RegisteredUser") + "</td>");
-				for (i = 0; i <= 13; i++)
+				for (i = 0; i <= 12; i++)
 				{
 					sClass = "gridcheck";
 					if (i <= 9)
@@ -564,7 +564,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					{
 						sClass += " sec2";
 					}
-					if (i == 13)
+					if (i == 12)
 					{
 						sClass += " colend";
 					}
@@ -587,7 +587,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 				sb.Append("</tr>");
 				i = 0;
 				sb.Append("<tr id=\"row4\"><td class=\"rowhd\">" + LocalizeString("Anon") + "</td>");
-				for (i = 0; i <= 13; i++)
+				for (i = 0; i <= 12; i++)
 				{
 					sClass = "gridcheck";
 					if (i <= 9)
@@ -598,7 +598,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 					{
 						sClass += " sec2";
 					}
-					if (i == 13)
+					if (i == 12)
 					{
 						sClass += " colend";
 					}

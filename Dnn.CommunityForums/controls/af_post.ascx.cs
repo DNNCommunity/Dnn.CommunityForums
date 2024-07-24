@@ -84,9 +84,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             _fi = ForumInfo;
             _authorId = UserId;
-            _canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.ModEdit, ForumUser.UserRoles);
-            _canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.ModApprove, ForumUser.UserRoles);
+            _canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Moderate, ForumUser.UserRoles);
             _canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Edit, ForumUser.UserRoles);
+            _canModEdit = (_canModApprove && _canEdit);
+            
             _canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Attach, ForumUser.UserRoles);
             _canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Trust, ForumUser.UserRoles);
             _canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_fi.Security.Lock, ForumUser.UserRoles);

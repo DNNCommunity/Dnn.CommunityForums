@@ -64,12 +64,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _bDelete;
         private bool _bEdit;
         private bool _bSubscribe;
-        private bool _bModApprove;
-        private bool _bModSplit;
+        private bool _bModerate;
+        private bool _bSplit;
         private bool _bModDelete;
-        private bool _bModEdit;
-        private bool _bModMove;
-        private bool _bModUser;
+        private bool _bMove;
+        private bool _bBan;
         private bool _bLock = false;
         private bool _bPin = false;
         private bool _bAllowRSS;
@@ -308,14 +307,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanLock"].ToString(), ForumUser.UserRoles);
             _bAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanAttach"].ToString(), ForumUser.UserRoles);
             _bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
-            // bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bModSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModSplit"].ToString(), ForumUser.UserRoles);
-            _bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
+            _bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModerate"].ToString(), ForumUser.UserRoles);
+            _bSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanSplit"].ToString(), ForumUser.UserRoles);
             _bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
-            _bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
-            _bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
-            _bModUser = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
+            _bMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanMove"].ToString(), ForumUser.UserRoles);
+            _bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanPin"].ToString(), ForumUser.UserRoles);
+            _bBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanBan"].ToString(), ForumUser.UserRoles);
 
             _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
 
@@ -692,7 +689,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     var ctlQuickReply = (af_quickreplyform)(LoadControl("~/DesktopModules/ActiveForums/controls/af_quickreply.ascx"));
                     ctlQuickReply.ModuleConfiguration = ModuleConfiguration;
                     ctlQuickReply.CanTrust = _bTrust;
-                    ctlQuickReply.ModApprove = _bModApprove;
+                    ctlQuickReply.ModApprove = _bModerate;
                     ctlQuickReply.IsTrusted = _isTrusted;
                     ctlQuickReply.Subject = Utilities.GetSharedResource("[RESX:SubjectPrefix]") + " " + _topicSubject;
                     ctlQuickReply.AllowSubscribe = _allowSubscribe;
@@ -902,7 +899,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
            
-            if ((sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0)))
+            if ((sOutput.Contains("[SPLITBUTTONS]") && (_bSplit && (_bModerate || (_topicAuthorId == UserId))) && (_replyCount > 0)))
             {
                 sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(ForumModuleId, "TopicSplitButtons"));
                 sbOutput.Replace("[TOPICID]", TopicId.ToString());
@@ -995,7 +992,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
             // Last Post
             sbOutput.Replace("[AF:LABEL:LastPostDate]", _lastPostDate);
-            sbOutput.Replace("[AF:LABEL:LastPostAuthor]", UserProfiles.GetDisplayName(portalSettings, ForumModuleId, true, _bModApprove, ForumUser.IsAdmin || ForumUser.IsSuperUser, _lastPostAuthor.AuthorId, _lastPostAuthor.Username, _lastPostAuthor.FirstName, _lastPostAuthor.LastName, _lastPostAuthor.DisplayName));
+            sbOutput.Replace("[AF:LABEL:LastPostAuthor]", UserProfiles.GetDisplayName(portalSettings, ForumModuleId, true, _bModerate, ForumUser.IsAdmin || ForumUser.IsSuperUser, _lastPostAuthor.AuthorId, _lastPostAuthor.Username, _lastPostAuthor.FirstName, _lastPostAuthor.LastName, _lastPostAuthor.DisplayName));
 
             // Topic Info
             sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(portalSettings, ForumModuleId, false, false, false, _topicAuthorId, _topicAuthorDisplayName, string.Empty, string.Empty, _topicAuthorDisplayName));
@@ -1064,7 +1061,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Topic Status
-            if (((_bRead && _topicAuthorId == UserId) || _bModEdit) & _statusId >= 0)
+            if (((_bRead && _topicAuthorId == UserId) || (_bModerate && _bEdit)) & _statusId >= 0)
             {
                 sbOutput.Replace("[AF:CONTROL:STATUS]", "<asp:placeholder id=\"plhStatus\" runat=\"server\" />");
                 //sbOutput.Replace("[AF:CONTROL:STATUSICON]", "<img alt=\"[RESX:PostStatus" + _statusId.ToString() + "]\" src=\"" + _myThemePath + "/images/status" + _statusId.ToString() + ".png\" />");
@@ -1263,7 +1260,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             var sbOutput = new StringBuilder(sOutput);
 
-            if (_bModSplit)
+            if (_bSplit && (_bModerate || _topicAuthorId == UserId))
             {
                 sbOutput = sbOutput.Replace("[SPLITCHECKBOX]", "<div class=\"dcf-split-checkbox\" style=\"display:none;\"><input id=\"dcf-split-checkbox-" + replyId + "\" type=\"checkbox\" onChange=\"amaf_splitCheck(this);\" value=\"" + replyId + "\" /><label for=\"dcf-split-checkbox-" + replyId + "\" class=\"dcf-split-checkbox-label\">[RESX:SplitCreate]</label></div>");
             }
@@ -1313,7 +1310,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Profile.Roles);
 
             // Delete Action
-            if ((_bModApprove && _bDelete) || ((_bDelete && authorId == UserId && !_bLocked) && ((replyId == 0 && _replyCount == 0) || replyId > 0)))
+            if ((_bModerate && _bDelete) || ((_bDelete && authorId == UserId && !_bLocked) && ((replyId == 0 && _replyCount == 0) || replyId > 0)))
             {
                 if (_useListActions)
                     sbOutput.Replace("[ACTIONS:DELETE]", "<li onclick=\"amaf_postDel(" + ForumModuleId + "," + ForumId + "," + topicId + "," + replyId + ");\" title=\"[RESX:Delete]\"><i class=\"fa fa-trash-o fa-fw fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Delete]</span></li>");
@@ -1325,7 +1322,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:DELETE]", string.Empty);
             }
 
-            if ((ForumUser.IsAdmin || ForumUser.IsSuperUser || _bModUser) && (authorId != -1) && (authorId != UserId) && (author != null) && (!author.IsSuperUser) && (!author.IsAdmin))
+            if ((ForumUser.IsAdmin || ForumUser.IsSuperUser || _bBan) && (authorId != -1) && (authorId != UserId) && (author != null) && (!author.IsSuperUser) && (!author.IsAdmin))
             {
                 var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ReplyId + "=" + replyId, ParamKeys.AuthorId + "=" + authorId };
                 if (_useListActions)
@@ -1342,7 +1339,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:BAN]", string.Empty);
             }
             // Edit Action
-            if (_bModEdit || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
+            if ((_bModerate && _bEdit) || (_bEdit && authorId == UserId && (_editInterval == 0 || SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, dateCreated, DateTime.UtcNow) < _editInterval)))
             {
                 var sAction = PostActions.ReplyEdit;
                 if (replyId == 0)
@@ -1388,7 +1385,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[ACTIONS:REPLY]", string.Empty);
             }
 
-            if (_bModMove)
+            if (_bMove && (_bModerate || (authorId == UserId)))
             {
                 sbOutput.Replace("[ACTIONS:MOVE]", "<li onclick=\"javascript:amaf_openMove(" + ModuleId + "," + ForumId + ",[TOPICID])\"';\" title=\"[RESX:Move]\"><i class=\"fa fa-exchange fa-rotate-90 fa-blue\"></i><span class=\"dcf-link-text\">[RESX:Move]</span></li>");
             }
@@ -1397,7 +1394,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput = sbOutput.Replace("[ACTIONS:MOVE]", string.Empty);
             }
 
-            if (_bLock)
+            if (_bLock && (_bModerate || (authorId == UserId)))
             {
                 if (_bLocked)
                 {
@@ -1412,7 +1409,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", string.Empty);
             }
-            if (_bPin)
+            if (_bPin && (_bModerate || (authorId == UserId))) 
             {
                 if (_bPinned)
                 {
@@ -1445,7 +1442,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             else
             {
                 // Not Answered
-                if (replyId > 0 && ((UserId == _topicAuthorId && !_bLocked) || _bModEdit))
+                if (replyId > 0 && ((UserId == _topicAuthorId && !_bLocked) || (_bModerate && _bEdit)))
                 {
                     // Can mark answer
                     if (_useListActions)
@@ -1471,7 +1468,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             // Mod Edit Date
-            if (_bModEdit)
+            if (_bModerate && _bEdit)
             {
                 if (dateCreated == dateUpdated || dateUpdated == DateTime.MinValue || dateUpdated == Utilities.NullDate())
                     sbOutput.Replace("[MODEDITDATE]", string.Empty);

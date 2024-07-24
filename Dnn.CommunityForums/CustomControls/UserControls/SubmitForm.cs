@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _topicReviewTemplate = string.Empty;
         private int _topicPriority;
         private bool canModEdit;
-        private bool canModApprove;
+        private bool canModerate;
         private bool canEdit;
         private bool canReply;
         private bool canCreate;
@@ -722,7 +722,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var sb = new StringBuilder();
             bool bHasOptions = false;
             sb.Append("<table cellpadding=\"2\" cellspacing=\"0\">");
-            if (ForumInfo.IsModerated && canModApprove && ShowModOptions)
+            if (ForumInfo.IsModerated && canModerate && ShowModOptions)
             {
                 sb.Append("<tr><td>[RESX:Approved]:</td>");
                 sb.Append("<td><asp:checkbox id=\"chkApproved\" Text=\"[RESX:Approved:Note]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
@@ -942,9 +942,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles);
-            canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles);
+            canModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Moderate, ForumUser.UserRoles);
             canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Edit, ForumUser.UserRoles);
+            canModEdit = (canModerate && canEdit);
             canReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Reply, ForumUser.UserRoles);
             canCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Create, ForumUser.UserRoles);
             canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Attach, ForumUser.UserRoles);

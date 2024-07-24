@@ -53,11 +53,14 @@ GO
 /* --------------------- */
 
 /* issue 926 - begin - combine CanLock / CanModLock in activeforums_Permissions */
-UPDATE {databaseOwner}{objectQualifier}activeforums_Permissions
-SET CanLock = RTRIM(CanLock) + '::::' RTRIM(CanModLock)
-WHERE RTRIM(CanModLock) <> '' 
-OR CanModLock IS NOT NULL
 
+IF EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'CanModLock' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))    
+BEGIN 
+	exec sp_sqlexec 'UPDATE {databaseOwner}[{objectQualifier}activeforums_Permissions]
+	SET CanLock = RTRIM(CanLock) + ''::::'' + RTRIM(CanModLock)
+	WHERE RTRIM(CanModLock) <> '''' 
+	OR CanModLock IS NOT NULL'
+END
 GO
 
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModLock' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
@@ -70,11 +73,14 @@ GO
 /* --------------------- */
 
 /* issue 927 - begin - combine CanPin / CanModPin in activeforums_Permissions */
-UPDATE {databaseOwner}{objectQualifier}activeforums_Permissions
-SET CanLock = RTRIM(CanPin) + '::::' RTRIM(CanModPin)
-WHERE RTRIM(CanModPin) <> '' 
-OR CanModPin IS NOT NULL
 
+IF EXISTS(SELECT * FROM SYS.COLUMNS WHERE Name = N'CanModPin' and Object_ID = Object_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))    
+BEGIN 
+	exec sp_sqlexec 'UPDATE {databaseOwner}[{objectQualifier}activeforums_Permissions]
+	SET CanPin = RTRIM(CanPin) + ''::::'' + RTRIM(CanModPin)
+	WHERE RTRIM(CanModPin) <> '''' 
+	OR CanModPin IS NOT NULL'
+END
 GO
 
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModPin' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
@@ -86,15 +92,58 @@ GO
 /* --------------------- */
 
 /* issue 928 - begin - combine CanDelete / CanModDelete in activeforums_Permissions */
-UPDATE {databaseOwner}{objectQualifier}activeforums_Permissions
-SET CanLock = RTRIM(CanDelete) + '::::' RTRIM(CanModDelete)
-WHERE RTRIM(CanModDelete) <> '' 
-OR CanModDelete IS NOT NULL
-
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModDelete' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+BEGIN
+	exec sp_sqlexec 'UPDATE {databaseOwner}[{objectQualifier}activeforums_Permissions]
+	SET CanDelete = RTRIM(CanDelete) + ''::::'' + RTRIM(CanModDelete)
+	WHERE RTRIM(CanModDelete) <> '''' 
+	OR CanModDelete IS NOT NULL'
+END
 GO
 
 IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModDelete' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
 ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Permissions] DROP COLUMN CanModDelete
 GO
 
-/* issue 928 - end - combine CanDelete / CanModLock in activeforums_Permissions */
+/* issue 928 - end - combine CanDelete / CanModDelete in activeforums_Permissions */
+
+/* --------------------- */
+
+/* issue 929 - begin - combine CanEdit / CanModEdit in activeforums_Permissions */
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModEdit' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+BEGIN
+	exec sp_sqlexec 'UPDATE {databaseOwner}[{objectQualifier}activeforums_Permissions]
+	SET CanEdit = RTRIM(CanEdit) + ''::::'' + RTRIM(CanModEdit)
+	WHERE RTRIM(CanModEdit) <> '''' 
+	OR CanModEdit IS NOT NULL'
+END
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModEdit' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+ALTER TABLE {databaseOwner}[{objectQualifier}activeforums_Permissions] DROP COLUMN CanModEdit
+GO
+
+/* issue 929 - end - combine CanEdit / CanModLock in activeforums_Permissions */
+
+
+/* --------------------- */
+/* issue 930 - begin - Rename CanModApprove -> CanModerate, CanModMove -> CanMove, CanModSplit -> CanSplit, CanModUser -> CanBan in activeforums_Permissions */
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModApprove' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Permissions.CanModApprove', 'CanModerate', 'COLUMN'
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModMove' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Permissions.CanModMove', 'CanMove', 'COLUMN'
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModSplit' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Permissions.CanModSplit', 'CanSplit', 'COLUMN'
+GO
+
+IF EXISTS(SELECT * FROM sys.columns WHERE [name] = N'CanModUser' AND [object_id] = OBJECT_ID(N'{databaseOwner}[{objectQualifier}activeforums_Permissions]'))
+exec sp_rename '{databaseOwner}{objectQualifier}activeforums_Permissions.CanModUser', 'CanBan', 'COLUMN'
+GO
+
+/* issue 929 - end - Rename ModApprove -> CanModerate, CanModMove -> CanMove, CanModSplit -> CanSplit, CanModUser -> CanBan in activeforums_Permissions */

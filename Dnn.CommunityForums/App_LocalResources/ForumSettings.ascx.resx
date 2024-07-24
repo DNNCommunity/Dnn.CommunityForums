@@ -339,10 +339,7 @@
   <data name="SecGrid:modapprove.Text" xml:space="preserve">
     <value>Approve</value>
   </data>
-  <data name="SecGrid:modedit.Text" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="SecGrid:modmove.Text" xml:space="preserve">
+  <data name="SecGrid:move.Text" xml:space="preserve">
     <value>Move</value>
   </data>
   <data name="SecGrid:moduser.Text" xml:space="preserve">

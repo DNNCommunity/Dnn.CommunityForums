@@ -258,10 +258,7 @@
   <data name="SecGrid:modapprove.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Approvare</value>
   </data>
-  <data name="SecGrid:modedit.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
-    <value>Redigere</value>
-  </data>
-  <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
+  <data name="SecGrid:move.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">
     <value>Sposta</value>
   </data>
   <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 19:42:19">

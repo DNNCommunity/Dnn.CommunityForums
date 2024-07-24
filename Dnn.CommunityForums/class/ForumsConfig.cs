@@ -526,6 +526,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 message = $"Merged Delete permissions from: {unmergedPerms} to {perms.Delete}";
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+
+                unmergedPerms = perms.Edit;
+                perms.Edit = Merge_PermSet_080200(perms.Edit);
+                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+                log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                message = $"Merged Edit permissions from: {unmergedPerms} to {perms.Edit}";
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
 
         }

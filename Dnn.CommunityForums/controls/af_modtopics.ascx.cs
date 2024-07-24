@@ -30,9 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool bModDelete = false;
         private bool bModEdit = false;
         private bool bModBan = false;
-        private bool bModApprove = false;
-        private bool bModMove = false;
-        private bool bCanMod = false;
+        private bool bModerate = false;
 
         #endregion
         #region Event Handlers
@@ -239,7 +237,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         SetPermissions(Convert.ToInt32(dr["ForumId"]));
                     }
-                    if (bCanMod)
+                    if (bModerate)
                     {
                         if (!(tmpForum == string.Empty))
                         {
@@ -256,17 +254,17 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     tmpForum = forumKey;
                 }
-                if (bCanMod)
+                if (bModerate)
                 {
                     sb.Append("<div class=\"afmodrow\">");
                     sb.Append("<table width=\"99%\">");
                     sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
                     sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
-                    if (bModApprove)
+                    if (bModerate)
                     {
                         sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                     }
-                    if (bModApprove || bModEdit)
+                    if (bModEdit)
                     {
                         sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                     }
@@ -310,24 +308,12 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         private void SetPermissions(int fId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId,ForumModuleId );
-            bModDelete = false;
-            bModApprove = false;
-            bModEdit = false;
-            bModMove = false;
-            bModBan = false;
-            bCanMod = false;
-            if (f != null && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles))
-            {
-                bCanMod = true;
-                bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.Delete, ForumUser.UserRoles);
-                bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModApprove, ForumUser.UserRoles);
-                bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModMove, ForumUser.UserRoles);
-                bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModEdit, ForumUser.UserRoles);
-                bModBan = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.ModUser, ForumUser.UserRoles);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId, ForumModuleId);
 
-            }
-
+            bModerate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Moderate, ForumUser?.UserRoles);
+            bModDelete = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Delete, ForumUser?.UserRoles));
+            bModEdit = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Edit, ForumUser?.UserRoles));
+            bModBan = (bModerate && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f?.Security?.Ban, ForumUser?.UserRoles));
         }
         private string GetAttachments(int ContentId, int PortalID, int ModuleID, DataTable dtAttach)
         {

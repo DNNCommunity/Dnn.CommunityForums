@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     public partial class admin_securitygrid : ActiveAdminBase
 	{
-        private const int _permCount = 22;
+        private const int _permCount = 21;
 		public string imgOn;
 		public string imgOff;
         public bool ReadOnly { get; set; } = false;
@@ -191,11 +191,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 grid[i, 18] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Categorize));
                 grid[i, 19] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Prioritize));
 
-                grid[i, 20] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModApprove));
-                grid[i, 21] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModMove));
-                grid[i, 22] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModSplit));
-                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModUser));
-                grid[i, 24] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModEdit));
+                grid[i, 20] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Moderate));
+                grid[i, 21] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Move));
+                grid[i, 22] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Split));
+                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Ban));
 
 
 				i += 1;
@@ -226,7 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
             sb.Append("<tr>");
             string keyText = string.Empty;
-            for (int td = 3; td <= _permCount+3; td++)
+            for (int td = 3; td <= _permCount+2; td++)
             {
                 keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(td - 3).ToString()));
                 if (keyText.ToLowerInvariant() == "block")
@@ -246,7 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             for (int x = 0; x < pl.Count; x++)
             {
                 sb.Append("<tr onmouseover=\"this.className='afgridrowover'\" onmouseout=\"this.className='afgridrow'\">");
-                for (int r = 3; r <= _permCount+3; r++)
+                for (int r = 3; r <= _permCount+2; r++)
                 {
                     keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
                     bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)

@@ -423,7 +423,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     perm = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.View, forumUser.UserRoles) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_in.Security.View, forumUser.UserRoles);
                 }
 
-                var modSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.ModSplit, forumUser.UserRoles);
+                var modSplit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum_out.Security.Split, forumUser.UserRoles);
 
                 if (perm && modSplit)
                 {

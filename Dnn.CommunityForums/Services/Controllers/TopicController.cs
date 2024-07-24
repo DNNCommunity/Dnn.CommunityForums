@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Move</remarks>
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModMove)]
+        [ForumsAuthorize(SecureActions.Move)]
         public HttpResponseMessage Move(TopicDto1 dto)
         {
             int topicId = dto.TopicId;
@@ -272,7 +272,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Edit)]
-        [ForumsAuthorize(SecureActions.ModEdit)]
         public HttpResponseMessage Rate(TopicDto1 dto, int rating)
         {
             if (dto.TopicId > 0 && (rating >= 1 && rating <= 5))
@@ -290,7 +289,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Edit)]
-        [ForumsAuthorize(SecureActions.ModEdit)]
         public HttpResponseMessage Update(TopicDto2 dto)
         {
             int forumId = dto.ForumId;

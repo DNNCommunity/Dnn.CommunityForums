@@ -206,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modlock").RemoveAll();
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modpin").RemoveAll();
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moddelete").RemoveAll();
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modedit").RemoveAll();
                                     }
                                 }
                                 ForumConfig = xDoc.OuterXml;

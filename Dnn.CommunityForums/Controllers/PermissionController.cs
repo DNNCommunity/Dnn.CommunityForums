@@ -122,11 +122,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Subscribe = adminRoleId,
                 Announce = adminRoleId,
                 Prioritize = adminRoleId,
-                ModApprove = adminRoleId,
-                ModMove = adminRoleId,
-                ModSplit = adminRoleId,
-                ModUser = adminRoleId,
-                ModEdit = adminRoleId,
+                Moderate = adminRoleId,
+                Move = adminRoleId,
+                Split = adminRoleId,
+                Ban = adminRoleId,
                 ModuleId = moduleId
             };
             Insert(permissionInfo);
@@ -151,11 +150,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Subscribe = emptyPermissions,
                 Announce = emptyPermissions,
                 Prioritize = emptyPermissions,
-                ModApprove = emptyPermissions,
-                ModMove = emptyPermissions,
-                ModSplit = emptyPermissions,
-                ModUser = emptyPermissions,
-                ModEdit = emptyPermissions
+                Moderate = emptyPermissions,
+                Move = emptyPermissions,
+                Split = emptyPermissions,
+                Ban = emptyPermissions
             };
         }
         public static bool HasAccess(string AuthorizedRoles, string UserRoles)
@@ -482,11 +480,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.Delete, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Edit, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Lock, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModApprove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModEdit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModMove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModSplit, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModUser, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Moderate, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Move, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Split, objectType, roleObjects);
+            roleObjects = GetObjFromSecObj(portalSettings, s.Ban, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Pin, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Poll, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Prioritize, objectType, roleObjects);
@@ -587,20 +584,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 case "VIEW":
                     access = permission.View;
                     break;
-                case "MODAPPROVE":
-                    access = permission.ModApprove;
+                case "MODERATE":
+                    access = permission.Moderate;
                     break;
-                case "MODEDIT":
-                    access = permission.ModEdit;
+                case "MOVE":
+                    access = permission.Move;
                     break;
-                case "MODMOVE":
-                    access = permission.ModMove;
+                case "SPLIT":
+                    access = permission.Split;
                     break;
-                case "MODSPLIT":
-                    access = permission.ModSplit;
-                    break;
-                case "MODUSER":
-                    access = permission.ModUser;
+                case "BAN":
+                    access = permission.Ban;
                     break;
                 default:
                     access = emptyPermissions;
@@ -666,20 +660,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     case "VIEW":
                         permission.View = PermSet;
                         break;
-                    case "MODAPPROVE":
-                        permission.ModApprove = PermSet; 
+                    case "MODERATE":
+                        permission.Moderate = PermSet; 
                         break;
-                    case "MODEDIT":
-                        permission.ModEdit = PermSet; 
+                    case "MOVE":
+                        permission.Move = PermSet; 
                         break;
-                    case "MODMOVE":
-                        permission.ModMove = PermSet; 
+                    case "SPLIT":
+                        permission.Split = PermSet; 
                         break;
-                    case "MODSPLIT":
-                        permission.ModSplit = PermSet; 
-                        break;
-                    case "MODUSER":
-                        permission.ModUser = PermSet;
+                    case "BAN":
+                        permission.Ban = PermSet;
                         break;
                     default:
                         break;

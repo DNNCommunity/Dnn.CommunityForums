@@ -49,7 +49,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning restore CS1570
         [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModEdit)]
         [ForumsAuthorize(SecureActions.Edit)]
         public HttpResponseMessage MarkAsAnswer(ReplyDto dto)
         {
@@ -61,9 +60,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                 if (r != null)
                 {
-                    if ((UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
+                    if ((UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
                     {
-                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, r.TopicId, replyId, UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))));
+                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, r.TopicId, replyId, UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.Moderate, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))));
                         DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
                         return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }

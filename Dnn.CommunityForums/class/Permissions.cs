@@ -47,11 +47,10 @@ namespace DotNetNuke.Modules.ActiveForums
         Tag,
         Categorize,
         Prioritize,
-        ModApprove,
-        ModMove,
-        ModSplit,
-        ModUser,
-        ModEdit
+        Moderate,
+        Move,
+        Split,
+        Ban
     }
 
     public enum ObjectType : int

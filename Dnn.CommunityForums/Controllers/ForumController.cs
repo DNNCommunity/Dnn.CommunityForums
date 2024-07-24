@@ -127,10 +127,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         roles = f.Security?.Read;
                         break;
                     case "CanApprove":
-                        roles = f.Security?.ModApprove;
+                        roles = f.Security?.Moderate;
                         break;
                     case "CanEdit":
-                        roles = f.Security?.ModEdit;
+                        roles = f.Security?.Edit;
                         break;
                     default:
                         roles = f.Security?.View;
@@ -225,8 +225,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append(" viewroles=\"" + f.Security?.View.ToString() + "\"");
                     forums.Append(" readroles=\"" + f.Security?.Read.ToString() + "\"");
                     forums.Append(" replyroles=\"" + f.Security?.Reply.ToString() + "\"");
-                    forums.Append(" modroles=\"" + f.Security?.ModApprove.ToString() + "\"");
-                    forums.Append(" modmove=\"" + f.Security?.ModMove.ToString() + "\"");
+                    forums.Append(" moderateroles=\"" + f.Security?.Moderate.ToString() + "\"");
+                    forums.Append(" moveroles=\"" + f.Security?.Move.ToString() + "\"");
                     forums.Append(">");
                     forums.Append("<name><![CDATA[" + f.ForumName + "]]></name>");
                     forums.Append("<description><![CDATA[" + f.ForumDesc + "]]></description>");
@@ -239,9 +239,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append("<delete>" + f.Security?.Delete + "</delete>");
                     forums.Append("<lock>" + f.Security?.Lock + "</lock>");
                     forums.Append("<pin>" + f.Security?.Pin + "</pin>");
-                    forums.Append("<modapprove>" + f.Security?.ModApprove + "</modapprove>");
-                    forums.Append("<modedit>" + f.Security?.ModEdit + "</modedit>");
-                    forums.Append("<modmove>" + f.Security?.ModMove + "</modmove>");
+                    forums.Append("<moderate>" + f.Security?.Moderate + "</moderate>");
+                    forums.Append("<move>" + f.Security?.Move + "</move>");
                     forums.Append("</security>");
                     //If Not String.IsNullOrEmpty(f.SEO) Then
                     //    forums.Append(f.SEO)

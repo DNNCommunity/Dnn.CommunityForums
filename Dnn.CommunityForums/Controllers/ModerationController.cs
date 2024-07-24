@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return null;
 
             var modRoles = new List<DotNetNuke.Security.Roles.RoleInfo>();
-            foreach (var r in fi.Security.ModApprove.Split('|')[0].Split(';'))
+            foreach (var r in fi.Security.Moderate.Split('|')[0].Split(';'))
             {
                 if (!string.IsNullOrEmpty(r))
                 {
