@@ -27,6 +27,7 @@ using System.Web.Razor.Parser.SyntaxTree;
 using System.Web.Security;
 using System.Web.UI.WebControls;
 using DotNetNuke.Abstractions.Portals;
+using DotNetNuke.Common.Controls;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.DAL2;
@@ -745,11 +746,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string sForums = (string) DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
             if (string.IsNullOrEmpty(sForums))
             {
-                foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum in (ModuleId > 0 ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get()))
+                sForums = string.Empty;
+                if (!string.IsNullOrEmpty(ForumIds))
                 {
-                    if (forum.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, UserRoles))
+                    foreach (string forumId in ForumIds.Split(":".ToCharArray(),StringSplitOptions.RemoveEmptyEntries))
                     {
-                        sForums += forum.ForumID.ToString() + ":";
+                        DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Convert.ToInt32(forumId));
+                        if (forum.AllowRSS && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forum.Security?.View, UserRoles))
+                        {
+                            sForums += forum.ForumID.ToString() + ":";
+                        }
                     }
                 }
                 DataCache.SettingsCacheStore(ModuleId, cacheKey, sForums);

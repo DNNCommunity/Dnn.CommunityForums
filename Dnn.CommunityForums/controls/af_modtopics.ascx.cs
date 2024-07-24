@@ -229,72 +229,77 @@ namespace DotNetNuke.Modules.ActiveForums
             DataTable dtAttach = ds.Tables[1];
             string tmpForum = string.Empty;
 
-            sb.Append("<div id=\"afgrid\" style=\"position:relative;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
-            foreach (DataRow dr in dtContent.Rows)
+            if (dtContent.Rows.Count < 1)
             {
-                string forumKey = dr["ForumId"].ToString() + dr["ForumName"].ToString();
-                if (forumKey != tmpForum)
+                lblHeader.Text = Utilities.GetSharedResource("[RESX:NoPendingPosts]");
+            }
+            else
+            {
+                sb.Append("<div id=\"afgrid\" style=\"position:relative;\"><table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">");
+                foreach (DataRow dr in dtContent.Rows)
                 {
-                    if (ForumId == -1)
+                    string forumKey = dr["ForumId"].ToString() + dr["ForumName"].ToString();
+                    if (forumKey != tmpForum)
                     {
-                        SetPermissions(Convert.ToInt32(dr["ForumId"]));
+                        if (ForumId == -1)
+                        {
+                            SetPermissions(Convert.ToInt32(dr["ForumId"]));
+                        }
+                        if (bCanMod)
+                        {
+                            if (!(tmpForum == string.Empty))
+                            {
+                                sb.Append("</td></tr>");
+                            }
+                            int pendingCount = 0;
+                            dtContent.DefaultView.RowFilter = "ForumId = " + Convert.ToInt32(dr["ForumId"]);
+                            pendingCount = dtContent.DefaultView.ToTable().Rows.Count;
+                            dtContent.DefaultView.RowFilter = "";
+                            sb.Append("<tr><td class=\"afgrouprow\" style=\"padding-left:10px;\">" + dr["GroupName"].ToString() + " > " + dr["ForumName"].ToString() + " [RESX:Pending]: (" + pendingCount + ")</td><td class=\"afgrouprow\" align=\"right\" style=\"padding-right:5px;\">");
+                            sb.Append(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: "section" + dr["ForumId"].ToString(), title: string.Empty));
+                            sb.Append("</td></tr>");
+                            sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\"><td colspan=\"2\">");
+                        }
+                        tmpForum = forumKey;
                     }
                     if (bCanMod)
                     {
-                        if (!(tmpForum == string.Empty))
+                        sb.Append("<div class=\"afmodrow\">");
+                        sb.Append("<table width=\"99%\">");
+                        sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
+                        sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
+                        if (bModApprove)
                         {
-                            sb.Append("</td></tr>");
+                            sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                         }
-                        int pendingCount = 0;
-                        dtContent.DefaultView.RowFilter = "ForumId = " + Convert.ToInt32(dr["ForumId"]);
-                        pendingCount = dtContent.DefaultView.ToTable().Rows.Count;
-                        dtContent.DefaultView.RowFilter = "";
-                        sb.Append("<tr><td class=\"afgrouprow\" style=\"padding-left:10px;\">" + dr["GroupName"].ToString() + " > " + dr["ForumName"].ToString() + " [RESX:Pending]: (" + pendingCount + ")</td><td class=\"afgrouprow\" align=\"right\" style=\"padding-right:5px;\">");
-                        sb.Append(DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: "section" + dr["ForumId"].ToString(), title: string.Empty));
+                        if (bModApprove || bModEdit)
+                        {
+                            sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
+                        }
+                        if (bModDelete)
+                        {
+                            sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
+                        }
+                        if (bModEdit)
+                        {
+                            sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
+                        }
+                        if (bModBan)
+                        {
+                            var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
+                            sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
+                        }
+
+
                         sb.Append("</td></tr>");
-                        sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\"><td colspan=\"2\">");
+                        sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + dr["AuthorName"].ToString() + "</td>");
+                        sb.Append("<td><div class=\"afrowsub\">[RESX:Subject]: " + dr["Subject"].ToString() + "</div><div class=\"afrowbod\">" + dr["Body"].ToString() + "</div>");
+                        sb.Append(GetAttachments(Convert.ToInt32(dr["ContentId"]), PortalId, ModuleId, dtAttach) + "</td></tr>");
+                        sb.Append("</table></div>");
                     }
-                    tmpForum = forumKey;
                 }
-                if (bCanMod)
-                {
-                    sb.Append("<div class=\"afmodrow\">");
-                    sb.Append("<table width=\"99%\">");
-                    sb.Append("<tr><td style=\"white-space:nowrap;\">" + Utilities.GetUserFormattedDateTime(Convert.ToDateTime(dr["DateCreated"]), PortalId, UserId) + "</td>");
-                    sb.Append("<td class=\"dnnFormItem dnnActions dnnClear dnnRight\">");
-                    if (bModApprove)
-                    {
-                        sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
-                    }
-                    if (bModApprove || bModEdit)
-                    {
-                        sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
-                    }
-                    if (bModDelete)
-                    {
-                        sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
-                    }
-                    if (bModEdit)
-                    {
-                        sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
-                    }
-                    if (bModBan)
-                    {
-                        var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
-                        sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
-                    }
-
-
-                    sb.Append("</td></tr>");
-                    sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + dr["AuthorName"].ToString() + "</td>");
-                    sb.Append("<td><div class=\"afrowsub\">[RESX:Subject]: " + dr["Subject"].ToString() + "</div><div class=\"afrowbod\">" + dr["Body"].ToString() + "</div>");
-                    sb.Append(GetAttachments(Convert.ToInt32(dr["ContentId"]), PortalId, ModuleId, dtAttach) + "</td></tr>");
-                    sb.Append("</table></div>");
-                }
-
+                sb.Append("</table></div>");
             }
-            sb.Append("</table></div>");
-
             litTopics.Text = Utilities.LocalizeControl(sb.ToString());
         }
         private string TopicEditUrl(int ForumId, int TopicId, int ReplyId)
