@@ -663,9 +663,6 @@ GO
 IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Content') AND name = N'idx_{objectQualifier}activeforums_Content_ModuleId')
 DROP INDEX [IX_{objectQualifier}activeforums_Content_ModuleId] ON {databaseOwner}{objectQualifier}activeforums_Content 
 GO
-IF  EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'{databaseOwner}{objectQualifier}activeforums_Topics') AND name = N'idx_{objectQualifier}activeforums_Topics_ContentId')
-DROP INDEX [IX_{objectQualifier}activeforums_Topics_ContentId] ON {databaseOwner}{objectQualifier}activeforums_Topicsactiveforums_Topics 
-GO
 
 
 
