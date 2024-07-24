@@ -106,7 +106,9 @@
 
 		<h4>Bug Fixes</h4>
 		<ul>
-			<li>BUG: Not redirected to new page after submitting edits to an existing reply (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/963">Issue 963</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Email notifications being sent for topics that have not cleared moderation  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/971">Issue 971</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: After Update to 8.1.1 Visited / Read forums icons not reflecting actual status anymore.  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/973">Issue 973</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
+			<li>BUG: Redirect after editing a post comment  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/962">Issue 962</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<li>BUG: Clicking Save in forum control panel restores default security when forum is not inheriting security from group (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/964">Issue 964</a>, thanks <a href="https://github.com/johnhenley" target="_blank">@johnhenley</a>!)</li>
 			<!--<li>FIXED:  (<a href="https://github.com/DNNCommunity/Dnn.CommunityForums/issues/">Issue </a>, thanks <a href="https://github.com/" target="_blank">@</a>!)</li>-->
 		</ul>

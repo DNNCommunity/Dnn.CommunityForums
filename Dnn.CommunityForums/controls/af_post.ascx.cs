@@ -743,13 +743,7 @@ namespace DotNetNuke.Modules.ActiveForums
             TopicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ForumModuleId, ForumId, TopicId);
             ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-
             SaveAttachments(ti.ContentId);
-            if (ti.IsApproved && ti.Author.AuthorId > 0)
-            {//TODO: move this to more appropriate place and make consistent with reply count
-                var uc = new Data.Profiles();
-                uc.Profile_UpdateTopicCount(PortalId, ti.Author.AuthorId);
-            }
 
             if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Tag, ForumUser.UserRoles))
             {
