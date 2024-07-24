@@ -1,0 +1,4 @@
+﻿DesktopModules/ActiveForums/config/templates/BlogList.ascx
+DesktopModules/ActiveForums/config/templates/BlogsView.ascx
+DesktopModules/ActiveForums/config/templates/BlogView.ascx
+DesktopModules/ActiveForums/config/templates/ForumTracking.ascx

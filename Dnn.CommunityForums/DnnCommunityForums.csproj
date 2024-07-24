@@ -194,6 +194,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="06.04.00.txt" />
+    <Content Include="08.02.00.txt" />
     <Content Include="08.01.00.txt" />
     <Content Include="08.00.00.txt" />
     <Content Include="07.00.11.txt" />
@@ -232,7 +233,6 @@
     <Content Include="config\templates\ToolbarSearchPopup.ascx" />
     <Content Include="config\templates\TopicSplitButtons.ascx" />
     <Content Include="config\templates\TopicsView.ascx" />
-    <Content Include="config\templates\BlogList.ascx" />
     <Content Include="config\templates\DailyDigest.ascx" />
     <Content Include="config\templates\ForumView.ascx" />
     <Content Include="config\templates\QuickReply.ascx" />
@@ -247,7 +247,6 @@
     <Content Include="config\templates\TopicView.ascx" />
     <Content Include="config\templates\ForumDirectory.ascx" />
     <Content Include="config\templates\_MemberList.ascx" />
-    <Content Include="config\templates\ForumTracking.ascx" />
     <Content Include="config\templates\ToolBar.ascx" />
     <Content Include="config\templates\_UserProfile.ascx" />
     <Content Include="controls\admin_properties.ascx">
@@ -1321,7 +1320,6 @@
     <Content Include="scripts\afutils.js" />
     <Content Include="config\templates\TopicEditor.ascx" />
     <Content Include="config\templates\ProfileInfo.ascx" />
-    <Content Include="config\templates\BlogView.ascx" />
     <Content Include="config\templates\UsersOnline.ascx" />
     <Content Include="themes\_legacy\theme.css" />
     <Content Include="feeds.aspx">
@@ -2003,7 +2001,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Content Include="config\templates\BlogsView.ascx" />
     <None Include="sql\05.00.01.SqlDataProvider" />
     <None Include="sql\05.01.00.SqlDataProvider" />
     <AdditionalFiles Include="StyleCop.json" />
