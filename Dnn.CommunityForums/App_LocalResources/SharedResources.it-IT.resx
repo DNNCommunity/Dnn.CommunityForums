@@ -1723,4 +1723,10 @@ Da
   <data name="[RESX:PermissionsMissingForForum].Text" xml:space="preserve">
     <value>Le {0} delle autorizzazioni per i {1} del forum non sono presenti nel database; Dovrai ripararlo nel database, o eliminare il forum e ricrearlo. Visita il repository Github dei forum della community (https://github.com/DNNCommunity/Dnn.CommunityForums), dove puoi pubblicare un problema o rivedere il wiki per la risoluzione dei problemi.</value>
   </data>
+  <data name="[RESX:NoPendingPosts].Text" xml:space="preserve">
+    <value>Nessun contenuto in sospeso</value>
+  </data>
+  <data name="[RESX:NotAuthorizedTopicPleaseLogin].Text" xml:space="preserve">
+    <value>&lt;a href="{0}"{1}&gt;accedi&lt;/a&gt; per aggiungere un argomento.</value>
+  </data>
 </root>

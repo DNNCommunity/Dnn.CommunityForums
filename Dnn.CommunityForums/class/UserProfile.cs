@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         public void Profiles_Save(UserProfileInfo upi)
         {
-            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefUseAjax, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize, upi.Yahoo, upi.MSN, upi.ICQ, upi.AOL, upi.Occupation, upi.Location, upi.Interests, upi.WebSite, upi.Badges);
+            DataProvider.Instance().Profiles_Save(upi.PortalId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize);
             DataCache.SettingsCacheStore(upi.ModuleId, string.Format(CacheKeys.UserProfile, upi.ModuleId, upi.UserID), upi);
         }
 

@@ -170,11 +170,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     plhLoader.Controls.Clear();
                 }
                 ForumBase ctl = null;
-                if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant())
+                if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant() && Request.IsAuthenticated)
                 { 
                     ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
                 }
-                else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant())
+                else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant() && Request.IsAuthenticated)
                 {
                     ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx")));
                 }
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.TopicView());
                 }
-                else if (view.ToUpperInvariant() == "USERSETTINGS".ToUpperInvariant())
+                else if (view.ToUpperInvariant() == "USERSETTINGS".ToUpperInvariant() && Request.IsAuthenticated)
                 {
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_profile.ascx";
