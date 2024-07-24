@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
         public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, PermissionsId, requestedAccess, PermSet);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
-        public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId)).PermissionsId;
+        public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId, -1)).PermissionsId;
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
         public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(ModuleId, ForumIds, UserRoles);
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum().")]
