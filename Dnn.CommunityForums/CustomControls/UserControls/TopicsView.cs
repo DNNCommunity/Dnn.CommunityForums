@@ -69,7 +69,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool bModSplit = false;
         private bool bModDelete = false;
         private bool bModEdit = false;
-        private bool bModPin = false;
         private bool bAllowRSS = false;
         private int RowIndex = 1;
         private int PageSize = 20;
@@ -259,6 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         //bReply = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanReply"].ToString(), ForumUser.UserRoles);
                         bPoll = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanPoll"].ToString(), ForumUser.UserRoles);
                         bLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanLock"].ToString(), ForumUser.UserRoles);
+                        bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanPin"].ToString(), ForumUser.UserRoles);
 
                         bSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanSubscribe"].ToString(), ForumUser.UserRoles);
                         bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
@@ -266,7 +266,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         bModDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModDelete"].ToString(), ForumUser.UserRoles);
                         bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
                         bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
-                        bModPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
                         bModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanModApprove"].ToString(), ForumUser.UserRoles);
 
                         ControlUtils ctlUtils = new ControlUtils();
@@ -648,7 +647,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sOutput = sOutput.Replace("[ACTIONS:LOCK]", string.Empty);
             }
-            if (bModPin)
+            if (bPin)
             {
                 sOutput = sOutput.Replace("[ACTIONS:PIN]", "<a href=\"javascript:void(0)\" class=\"dcf-topic-pin-outer\" onclick=\"javascript:if(confirm('[RESX:Confirm:Pin]')){amaf_Pin(" + ModuleId + "," + ForumId + ",[TOPICID]);};\" title=\"[RESX:PinTopic]\" style=\"vertical-align:middle;\"><i class=\"fa fa-thumb-tack fa-fw fa-blue dcf-topic-pin-pin dcf-topic-pin-inner\"></i></a>");
             }

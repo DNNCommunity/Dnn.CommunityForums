@@ -372,9 +372,6 @@
   <data name="SecGrid:modmove.Text" xml:space="preserve">
     <value>Verschieben</value>
   </data>
-  <data name="SecGrid:modpin.Text" xml:space="preserve">
-    <value>Pinnen</value>
-  </data>
   <data name="SecGrid:moduser.Text" xml:space="preserve">
     <value>Benutzer</value>
   </data>

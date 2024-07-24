@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool _bModMove;
         private bool _bModUser;
         private bool _bLock = false;
-        private bool _bModPin = false;
+        private bool _bPin = false;
         private bool _bAllowRSS;
         private int _rowIndex;
         private int _pageSize = 20;
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _bTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanTrust"].ToString(), ForumUser.UserRoles);
             _bModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModEdit"].ToString(), ForumUser.UserRoles);
             _bModMove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModMove"].ToString(), ForumUser.UserRoles);
-            _bModPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
+            _bPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModPin"].ToString(), ForumUser.UserRoles);
             _bModUser = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanModUser"].ToString(), ForumUser.UserRoles);
 
             _isTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ForumUser.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles));
@@ -1413,7 +1413,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sbOutput = sbOutput.Replace("[ACTIONS:LOCK]", string.Empty);
             }
-            if (_bModPin)
+            if (_bPin)
             {
                 if (_bPinned)
                 {

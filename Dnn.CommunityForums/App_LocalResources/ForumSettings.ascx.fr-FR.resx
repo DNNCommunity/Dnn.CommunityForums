@@ -267,9 +267,6 @@
   <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-06-09 22:26:03">
     <value>Déplacer</value>
   </data>
-  <data name="SecGrid:modpin.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
-    <value>Épingler</value>
-  </data>
   <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 15:23:34">
     <value>Utilisateur</value>
   </data>

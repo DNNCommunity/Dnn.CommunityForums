@@ -242,7 +242,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append("<modapprove>" + f.Security?.ModApprove + "</modapprove>");
                     forums.Append("<modedit>" + f.Security?.ModEdit + "</modedit>");
                     forums.Append("<moddelete>" + f.Security?.ModDelete + "</moddelete>");
-                    forums.Append("<modpin>" + f.Security?.ModPin + "</modpin>");
                     forums.Append("<modmove>" + f.Security?.ModMove + "</modmove>");
                     forums.Append("</security>");
                     //If Not String.IsNullOrEmpty(f.SEO) Then

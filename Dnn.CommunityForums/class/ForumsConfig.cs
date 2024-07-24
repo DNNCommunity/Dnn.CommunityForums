@@ -498,17 +498,26 @@ namespace DotNetNuke.Modules.ActiveForums
             /* SQL for 08.02.00 will append two permissions sets being merged and put "::::" between them, ex. 0;|||::::2;|||
              * this method will separate them into two pieces, 0;||| and 2;||| and then merge them back together as 0;2;|||
 			 */
-            foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get()) 
-			{
-				string unmergedPerms = perms.Lock;
-				perms.Lock = Merge_PermSet_080200(perms.Lock);
+            foreach (var perms in new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Get())
+            {
+                string unmergedPerms = perms.Lock;
+                perms.Lock = Merge_PermSet_080200(perms.Lock);
                 new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
                 string message = $"Merged LOCK permissions from: {unmergedPerms} to {perms.Lock}";
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
-			}
+                
+				unmergedPerms = perms.Pin;
+                perms.Pin = Merge_PermSet_080200(perms.Pin);
+                new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().Update(perms);
+                log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
+                log.LogProperties.Add(new LogDetailInfo("Module", Globals.ModuleFriendlyName));
+                message = $"Merged Pin permissions from: {unmergedPerms} to {perms.Pin}";
+                log.AddProperty("Message", message);
+                DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
+            }
 
         }
         private static string Merge_PermSet_080200(string tempSet)

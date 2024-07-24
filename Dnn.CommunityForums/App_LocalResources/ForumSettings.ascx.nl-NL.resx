@@ -267,9 +267,6 @@
   <data name="SecGrid:modmove.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Bewegen</value>
   </data>
-  <data name="SecGrid:modpin.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
-    <value>Speld</value>
-  </data>
   <data name="SecGrid:moduser.Text" xml:space="preserve" lastModified="2024-05-16 19:43:50">
     <value>Gebruiker</value>
   </data>

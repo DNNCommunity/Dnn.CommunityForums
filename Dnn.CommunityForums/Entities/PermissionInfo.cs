@@ -54,7 +54,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [ColumnName("CanModDelete")] public string ModDelete { get; set; }
         [ColumnName("CanModUser")] public string ModUser { get; set; }
         [ColumnName("CanModEdit")] public string ModEdit { get; set; }
-        [ColumnName("CanModPin")] public string ModPin { get; set; }
         [IgnoreColumn()] public ObjectType Type { get; set; }
         [IgnoreColumn()] public string ObjectId { get; set; }
         [IgnoreColumn()] public string ObjectName { get; set; }

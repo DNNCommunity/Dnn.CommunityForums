@@ -52,8 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
         ModSplit,
         ModDelete,
         ModUser,
-        ModEdit,
-        ModPin
+        ModEdit
     }
 
     public enum ObjectType : int

@@ -128,7 +128,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModDelete = adminRoleId,
                 ModUser = adminRoleId,
                 ModEdit = adminRoleId,
-                ModPin = adminRoleId,
                 ModuleId = moduleId
             };
             Insert(permissionInfo);
@@ -158,8 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModSplit = emptyPermissions,
                 ModDelete = emptyPermissions,
                 ModUser = emptyPermissions,
-                ModEdit = emptyPermissions,
-                ModPin = emptyPermissions
+                ModEdit = emptyPermissions
             };
         }
         public static bool HasAccess(string AuthorizedRoles, string UserRoles)
@@ -490,7 +488,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.ModDelete, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModEdit, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModMove, objectType, roleObjects);
-            roleObjects = GetObjFromSecObj(portalSettings, s.ModPin, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModSplit, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.ModUser, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.Pin, objectType, roleObjects);
@@ -605,9 +602,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 case "MODMOVE":
                     access = permission.ModMove;
                     break;
-                case "MODPIN":
-                    access = permission.ModPin;
-                    break;
                 case "MODSPLIT":
                     access = permission.ModSplit;
                     break;
@@ -689,9 +683,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                     case "MODMOVE":
                         permission.ModMove = PermSet; 
-                        break;
-                    case "MODPIN":
-                        permission.ModPin = PermSet; 
                         break;
                     case "MODSPLIT":
                         permission.ModSplit = PermSet; 

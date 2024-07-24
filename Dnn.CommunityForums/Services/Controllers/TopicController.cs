@@ -131,7 +131,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
     [HttpPost]
         [DnnAuthorize]
-        [ForumsAuthorize(SecureActions.ModPin)]
         [ForumsAuthorize(SecureActions.Pin)]
         public HttpResponseMessage Pin(TopicDto1 dto)
         {
@@ -315,9 +314,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     };
 
                     if (dto.Topic.IsPinned != originalTopic.IsPinned &&
-                        (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))) ||
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.ModPin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles)))
-                        )
+                        (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))) )
                         )
                     {
                         originalTopic.IsLocked = dto.Topic.IsLocked;

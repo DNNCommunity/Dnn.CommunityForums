@@ -205,6 +205,10 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                     {
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modlock").RemoveAll();
                                     }
+                                    if (xDoc.DocumentElement.SelectSingleNode(xpath).ChildNodes.Count == 16)
+                                    {
+                                        xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("modpin").RemoveAll();
+                                    }
                                 }
                                 ForumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
