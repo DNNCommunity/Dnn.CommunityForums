@@ -30,26 +30,26 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	[DefaultProperty("Text"), ToolboxData("<{0}:HtmlControlLoader runat=server></{0}:HtmlControlLoader>")]
-	public class HtmlControlLoader : Control
-	{
-		public string ControlId {get; set;}
-		public string Height {get; set;}
-		public string Width {get; set;}
-		public string Name {get; set;}
-		public string FilePath {get; set;}
-		protected override void Render(HtmlTextWriter writer)
-		{
-			this.EnableViewState = false;
-			FilePath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(FilePath);
-			string sControl = Utilities.GetFile(FilePath);
-			sControl = sControl.Replace("{id}", ControlId);
-			sControl = sControl.Replace("{height}", Height);
-			sControl = sControl.Replace("{width}", Width);
-			sControl = sControl.Replace("{name}", Name);
-			writer.Write(sControl);
-		}
+    [DefaultProperty("Text"), ToolboxData("<{0}:HtmlControlLoader runat=server></{0}:HtmlControlLoader>")]
+    public class HtmlControlLoader : Control
+    {
+        public string ControlId {get; set;}
+        public string Height {get; set;}
+        public string Width {get; set;}
+        public string Name {get; set;}
+        public string FilePath {get; set;}
+        protected override void Render(HtmlTextWriter writer)
+        {
+            this.EnableViewState = false;
+            FilePath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(FilePath);
+            string sControl = Utilities.GetFile(FilePath);
+            sControl = sControl.Replace("{id}", ControlId);
+            sControl = sControl.Replace("{height}", Height);
+            sControl = sControl.Replace("{width}", Width);
+            sControl = sControl.Replace("{name}", Name);
+            writer.Write(sControl);
+        }
 
-	}
+    }
 }
 

@@ -26,6 +26,6 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Modules.ActiveForums
 {
 
-	[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo.")]
-	public partial class ForumGroupInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { }
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo.")]
+    public partial class ForumGroupInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { }
 }

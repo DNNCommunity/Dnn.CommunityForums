@@ -30,11 +30,11 @@ namespace DotNetNuke.Modules.ActiveForums
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController")]
     public class FilterController 
     {
-		private DotNetNuke.Modules.ActiveForums.Controllers.FilterController filterController = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController();
+        private DotNetNuke.Modules.ActiveForums.Controllers.FilterController filterController = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Update()")]
         public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Save(DotNetNuke.Modules.ActiveForums.FilterInfo filter)
-		{
+        {
             if (filter.FilterId > 0)
             {
                 filterController.Update(filter);
@@ -47,14 +47,14 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
-		{
-			filterController.DeleteById(FilterId);
-		}
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
-		public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
-		{
-			return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(FilterId, ModuleID);
-		}
-	}
+        {
+            filterController.DeleteById(FilterId);
+        }
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
+        public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
+        {
+            return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(FilterId, ModuleID);
+        }
+    }
 }
 

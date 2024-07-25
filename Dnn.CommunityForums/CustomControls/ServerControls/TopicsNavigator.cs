@@ -30,109 +30,109 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	[DefaultProperty("Text"), ToolboxData("<{0}:TopicsNavigator runat=server></{0}:TopicsNavigator>")]
-	public class TopicsNavigator : ForumBase
-	{
-		private DisplayTemplate _itemTemplate;
+    [DefaultProperty("Text"), ToolboxData("<{0}:TopicsNavigator runat=server></{0}:TopicsNavigator>")]
+    public class TopicsNavigator : ForumBase
+    {
+        private DisplayTemplate _itemTemplate;
 
-		public DisplayTemplate ItemTemplate
-		{
-			get
-			{
-				return _itemTemplate;
-			}
-			set
-			{
-				_itemTemplate = value;
-			}
-		}
-		private DisplayTemplate _headerTemplate;
-		public DisplayTemplate HeaderTemplate
-		{
-			get
-			{
-				return _headerTemplate;
-			}
-			set
-			{
-				_headerTemplate = value;
-			}
-		}
-		private DisplayTemplate _footerTemplate;
-		public DisplayTemplate FooterTemplate
-		{
-			get
-			{
-				return _footerTemplate;
-			}
-			set
-			{
-				_footerTemplate = value;
-			}
-		}
-		private bool _MaintainPage = false;
-		public bool MaintainPage
-		{
-			get
-			{
-				return _MaintainPage;
-			}
-			set
-			{
-				_MaintainPage = value;
-			}
-		}
-		protected override void Render(HtmlTextWriter writer)
-		{
-			Controls.TopicBrowser tb = new Controls.TopicBrowser();
+        public DisplayTemplate ItemTemplate
+        {
+            get
+            {
+                return _itemTemplate;
+            }
+            set
+            {
+                _itemTemplate = value;
+            }
+        }
+        private DisplayTemplate _headerTemplate;
+        public DisplayTemplate HeaderTemplate
+        {
+            get
+            {
+                return _headerTemplate;
+            }
+            set
+            {
+                _headerTemplate = value;
+            }
+        }
+        private DisplayTemplate _footerTemplate;
+        public DisplayTemplate FooterTemplate
+        {
+            get
+            {
+                return _footerTemplate;
+            }
+            set
+            {
+                _footerTemplate = value;
+            }
+        }
+        private bool _MaintainPage = false;
+        public bool MaintainPage
+        {
+            get
+            {
+                return _MaintainPage;
+            }
+            set
+            {
+                _MaintainPage = value;
+            }
+        }
+        protected override void Render(HtmlTextWriter writer)
+        {
+            Controls.TopicBrowser tb = new Controls.TopicBrowser();
 
-			tb.PortalId = PortalId;
-			tb.ModuleId = ForumModuleId;
-			tb.TabId = ForumTabId;
-			if (tb.TabId <= 0)
-			{
-				tb.TabId = int.Parse(Request.QueryString["TabID"]);
-			}
-			tb.ForumGroupId = ForumGroupId;
-			tb.ForumId = ForumId;
+            tb.PortalId = PortalId;
+            tb.ModuleId = ForumModuleId;
+            tb.TabId = ForumTabId;
+            if (tb.TabId <= 0)
+            {
+                tb.TabId = int.Parse(Request.QueryString["TabID"]);
+            }
+            tb.ForumGroupId = ForumGroupId;
+            tb.ForumId = ForumId;
 
-			if (ForumId > 0)
-			{
-				if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
-				{
-					tb.ForumIds = ForumId.ToString();
-				}
-				else
-				{
-					writer.Write(string.Empty);
-					return;
-				}
-			}
-			else
-			{
-				tb.ForumIds = UserForumsList;
-			}
-			if (Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["atg"]))
-			{
-				tb.TagId = int.Parse(Request.QueryString["atg"]);
+            if (ForumId > 0)
+            {
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
+                {
+                    tb.ForumIds = ForumId.ToString();
+                }
+                else
+                {
+                    writer.Write(string.Empty);
+                    return;
+                }
+            }
+            else
+            {
+                tb.ForumIds = UserForumsList;
+            }
+            if (Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["atg"]))
+            {
+                tb.TagId = int.Parse(Request.QueryString["atg"]);
 
-			}
-			if (Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Category]))
-			{
-				tb.CategoryId = int.Parse(Request.QueryString[ParamKeys.Category]);
-			}
-			tb.ForumUser = ForumUser;
-			tb.PageIndex = PageId;
-			tb.PageSize = MainSettings.PageSize;
-			tb.Template = ItemTemplate.Text;
-			tb.HeaderTemplate = HeaderTemplate.Text;
-			tb.FooterTemplate = FooterTemplate.Text;
-			tb.ImagePath = ImagePath;
-			tb.TopicId = TopicId;
-			tb.UserId = UserId;
-			writer.Write(tb.Render());
-		}
+            }
+            if (Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Category]))
+            {
+                tb.CategoryId = int.Parse(Request.QueryString[ParamKeys.Category]);
+            }
+            tb.ForumUser = ForumUser;
+            tb.PageIndex = PageId;
+            tb.PageSize = MainSettings.PageSize;
+            tb.Template = ItemTemplate.Text;
+            tb.HeaderTemplate = HeaderTemplate.Text;
+            tb.FooterTemplate = FooterTemplate.Text;
+            tb.ImagePath = ImagePath;
+            tb.TopicId = TopicId;
+            tb.UserId = UserId;
+            writer.Write(tb.Render());
+        }
 
-	}
+    }
 
 }

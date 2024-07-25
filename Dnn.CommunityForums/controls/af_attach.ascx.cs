@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string AttachmentsClientId { get; set;  }
 
         protected override void OnInit(EventArgs e)
-		{
+        {
             base.OnInit(e);
 
             LocalResourceFile = Globals.SharedResourceFile;

@@ -718,19 +718,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
 
         }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker")))
             {
 #if DEBUG
-				Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));
+                Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));
 
 #else
                 Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.datepicker.js"));

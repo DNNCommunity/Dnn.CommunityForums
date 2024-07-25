@@ -25,8 +25,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public partial class af_topicscripts : SettingsBase
     {
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

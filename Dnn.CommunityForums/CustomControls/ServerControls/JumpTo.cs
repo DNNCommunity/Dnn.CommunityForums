@@ -31,11 +31,11 @@ using System.Web.UI.WebControls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	[DefaultProperty("Text"), ToolboxData("<{0}:jumpto runat=server></{0}:jumpto>")]
-	public class JumpTo : ControlsBase
-	{
+    [DefaultProperty("Text"), ToolboxData("<{0}:jumpto runat=server></{0}:jumpto>")]
+    public class JumpTo : ControlsBase
+    {
 
 
 
-	}
+    }
 }

@@ -30,8 +30,8 @@ namespace DotNetNuke.Modules.ActiveForums
     {
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
             string sMode = MainSettings.MemberListMode;

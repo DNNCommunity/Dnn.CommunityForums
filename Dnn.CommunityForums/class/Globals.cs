@@ -25,86 +25,86 @@ namespace DotNetNuke.Modules.ActiveForums
     #region Enumerations
 
     public enum AttachStores
-	{
-		FILESYSTEM,
-		DATABASE
-	}
+    {
+        FILESYSTEM,
+        DATABASE
+    }
 
-	public enum CurrentUserTypes
-	{
-		Anon,
-		Auth,
-		ForumMod,
-		Admin,
-		SuperUser
-	}
+    public enum CurrentUserTypes
+    {
+        Anon,
+        Auth,
+        ForumMod,
+        Admin,
+        SuperUser
+    }
 
-	public enum EditorTypes
-	{
-		TEXTBOX,
-		ACTIVEEDITOR,
-		HTMLEDITORPROVIDER
-	}
+    public enum EditorTypes
+    {
+        TEXTBOX,
+        ACTIVEEDITOR,
+        HTMLEDITORPROVIDER
+    }
 
-	public enum HTMLPermittedUsers
-	{
-		AllUsers,
-		AuthenticatedUsers,
-		TrustedUsers,
-		Moderators,
-		Administrators
-	}
+    public enum HTMLPermittedUsers
+    {
+        AllUsers,
+        AuthenticatedUsers,
+        TrustedUsers,
+        Moderators,
+        Administrators
+    }
 
-	public enum AvatarTypes
-	{
-		LocalFile,
-		ExternalLink,
-		MultipleLocalFile,
-		MultipleExternalLink
-	}
+    public enum AvatarTypes
+    {
+        LocalFile,
+        ExternalLink,
+        MultipleLocalFile,
+        MultipleExternalLink
+    }
 
-	public enum SubscriptionTypes
-	{
-		Disabled,
-		Instant,
-		DailyDigest,
-		WeeklyDigest
-	}
+    public enum SubscriptionTypes
+    {
+        Disabled,
+        Instant,
+        DailyDigest,
+        WeeklyDigest
+    }
 
-	public enum TopicTypes
-	{
-		Topic,
-		Poll
-	}
+    public enum TopicTypes
+    {
+        Topic,
+        Poll
+    }
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public enum EmailFormats
-	{
-		HTML,
-		PlainText
-	}
+    {
+        HTML,
+        PlainText
+    }
 
-	public enum ProfileVisibilities
-	{
-		Disabled = 0,
-		Everyone = 1,
-		RegisteredUsers = 2,
-		Moderators = 3,
+    public enum ProfileVisibilities
+    {
+        Disabled = 0,
+        Everyone = 1,
+        RegisteredUsers = 2,
+        Moderators = 3,
         Admins = 4
-	}
+    }
 
-	public enum PMTypes
-	{
-		Disabled = 0,
-		Core = 1,
-		Ventrian = 2
-	}
+    public enum PMTypes
+    {
+        Disabled = 0,
+        Core = 1,
+        Ventrian = 2
+    }
 
 
-	public enum TrustTypes
-	{
-		NotTrusted,
-		Trusted
-	}
+    public enum TrustTypes
+    {
+        NotTrusted,
+        Trusted
+    }
 
     public enum ConfirmActions
     {
@@ -130,17 +130,17 @@ namespace DotNetNuke.Modules.ActiveForums
     #endregion
 
     public class Globals
-	{
-		public static string DefaultAnonRoles
-		{
-			get
-			{
+    {
+        public static string DefaultAnonRoles
+        {
+            get
+            {
                 return string.Concat(Common.Globals.glbRoleUnauthUser, ";", Common.Globals.glbRoleAllUsers, ";");
-			}
-		}
+            }
+        }
 
-		public const string ModuleName = "Active Forums";
-		public const string ModuleFriendlyName = "DNN Community Forums";
+        public const string ModuleName = "Active Forums";
+        public const string ModuleFriendlyName = "DNN Community Forums";
         public const string ModulePath = "~/DesktopModules/ActiveForums/";
         public const string ModuleConfigPath = Globals.ModulePath + "config/";
         public const string DefaultTemplatePath = Globals.ModulePath + "config/templates/";
@@ -152,16 +152,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string SharedResourceFile = Globals.ModulePath + "App_LocalResources/SharedResources.resx";
         public const string ControlPanelResourceFile = Globals.ModulePath + "App_LocalResources/ControlPanel.ascx.resx";
         public const string CacheDependencyFile = Globals.ModulePath + "cache/cachedep.resources";
-		
+        
         public const string ForumsControlsRegisterAMTag = "<%@ Register TagPrefix=\"am\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
-		public const string ForumsControlsRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
-		public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
+        public const string ForumsControlsRegisterAFTag = "<%@ Register TagPrefix=\"af\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>";
+        public const string SocialRegisterTag = "<%@ Register TagPrefix=\"social\" Namespace=\"Active.Modules.Social.Controls\" Assembly=\"Active.Modules.Social\" %>";
         public const string DnnControlsRegisterTag = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>";
         public const string BannerRegisterTag = "<%@ Register TagPrefix=\"dnn\" TagName=\"BANNER\" Src=\"~/Admin/Skins/Banner.ascx\" %>";
 
         public const int GroupCount = 10000000;
-		public const int ForumCount = 10000000;
-		public const int SiteCount = -1;
+        public const int ForumCount = 10000000;
+        public const int SiteCount = -1;
 
         public const string ModerationNotificationType = "AF-ForumModeration";
         public const string ContentAlertNotificationType = "AF-ContentAlert";
@@ -169,142 +169,142 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string BanUserNotificationTypeDescription = Globals.ModuleFriendlyName + "User Banned";
     }
 
-	public class SettingKeys
-	{
-		public const string GeneralSettingsKey = "GEN";
-		public const string Mode = "MODE";
-		public const string PageSize = "PAGESIZE";
-		public const string AllowUserPhotos = "ALLOWUSERPHOTOS";
-		public const string AllowUserBio = "ALLOWUSERBIO";
-		public const string AllowSubscribe = "ALLOWSUBSCRIBE";
-		public const string UserNameDisplay = "USERNAMEDISPLAY";
-		public const string DisableUserProfiles = "DISABLEUSERPROFILES";
-		public const string ProfileTabId = "PROFILETABID";
-		public const string AllowAvatars = "ALLOWAVATARS";
-		public const string AllowAvatarLinks = "ALLOWAVATARLINKS";
-		public const string AvatarHeight = "AVATARHEIGHT";
-		public const string AvatarWidth = "AVATARWIDTH";
-		public const string AvatarDefault = "AVATARDEFAULT";
-		public const string AllowSignatures = "ALLOWSIGNATURES";
-		public const string StatsEnabled = "STATSENABLED";
-		public const string StatsTemplate = "STATSTEMPLATE";
-		public const string StatsCache = "STATSCACHE";
-		public const string DateFormatString = "DATEFORMATSTRING";
-		public const string TimeFormatString = "TIMEFORMATSTRING"; 
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+    public class SettingKeys
+    {
+        public const string GeneralSettingsKey = "GEN";
+        public const string Mode = "MODE";
+        public const string PageSize = "PAGESIZE";
+        public const string AllowUserPhotos = "ALLOWUSERPHOTOS";
+        public const string AllowUserBio = "ALLOWUSERBIO";
+        public const string AllowSubscribe = "ALLOWSUBSCRIBE";
+        public const string UserNameDisplay = "USERNAMEDISPLAY";
+        public const string DisableUserProfiles = "DISABLEUSERPROFILES";
+        public const string ProfileTabId = "PROFILETABID";
+        public const string AllowAvatars = "ALLOWAVATARS";
+        public const string AllowAvatarLinks = "ALLOWAVATARLINKS";
+        public const string AvatarHeight = "AVATARHEIGHT";
+        public const string AvatarWidth = "AVATARWIDTH";
+        public const string AvatarDefault = "AVATARDEFAULT";
+        public const string AllowSignatures = "ALLOWSIGNATURES";
+        public const string StatsEnabled = "STATSENABLED";
+        public const string StatsTemplate = "STATSTEMPLATE";
+        public const string StatsCache = "STATSCACHE";
+        public const string DateFormatString = "DATEFORMATSTRING";
+        public const string TimeFormatString = "TIMEFORMATSTRING"; 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string TimeZoneOffset = "TIMEZONEOFFSET";
-		public const string UsersOnlineEnabled = "USERSONLINEENABLED";
-		public const string MemberListMode = "MEMBERLISTMODE";
-		public const string ForumTemplateId = "FORUMTEMPLATEID";
-		public const string DisableAccountTab = "DISABLEACCOUNTTAB";
-		public const string Theme = "THEME";
+        public const string UsersOnlineEnabled = "USERSONLINEENABLED";
+        public const string MemberListMode = "MEMBERLISTMODE";
+        public const string ForumTemplateId = "FORUMTEMPLATEID";
+        public const string DisableAccountTab = "DISABLEACCOUNTTAB";
+        public const string Theme = "THEME";
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string MailQueue = "MAILQUEUE";
         public const string FullText = "FULLTEXT";
-		public const string AllowSubTypes = "ALLOWSUBTYPES";
-		public const string FloodInterval = "FLOODINTERVAL";
-		public const string EditInterval = "EDITINTERVAL";
-		public const string LoggingLevel = "LOGGINGLEVEL";
-		public const string DeleteBehavior = "DELETEBEHAVIOR"; 
-		[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
+        public const string AllowSubTypes = "ALLOWSUBTYPES";
+        public const string FloodInterval = "FLOODINTERVAL";
+        public const string EditInterval = "EDITINTERVAL";
+        public const string LoggingLevel = "LOGGINGLEVEL";
+        public const string DeleteBehavior = "DELETEBEHAVIOR"; 
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public const string ProdKey = "AMFORUMS";
 
-		public const string EnablePoints = "ENABLEPOINTS";
-		public const string TopicPointValue = "TOPICPOINTVALUE";
-		public const string ReplyPointValue = "REPLYPOINTVALUE";
-		public const string AnswerPointValue = "ANSWERPOINTVALUE";
-		public const string ModPointValue = "MODPOINTVALUE";
-		public const string MarkAnswerPointValue = "MARKANSWERPOINTVALUE";
-		public const string PMType = "PMTYPE";
-		public const string PMTabId = "PMTABID";
-		public const string InstallDate = "INSTALLDATE";
-		public const string IsInstalled = "INSTALLED";
-		public const string ProfileVisibility = "PROFILEVISIBILITY";
-		public const string UseShortUrls = "SHORTURLS";
-		public const string RequireCaptcha = "REQCAPTCHA";
-		public const string UseSkinBreadCrumb = "USESKINBC";
-		public const string EnableAutoLink = "AUTOLINK";
-		public const string EnableURLRewriter = "EURLR";
-		public const string PrefixURLBase = "URLBASE";
-		public const string PrefixURLTags = "URLTAGS";
-		public const string PrefixURLCategories = "URLCATS";
-		public const string PrefixURLOther = "URLOTHER";
+        public const string EnablePoints = "ENABLEPOINTS";
+        public const string TopicPointValue = "TOPICPOINTVALUE";
+        public const string ReplyPointValue = "REPLYPOINTVALUE";
+        public const string AnswerPointValue = "ANSWERPOINTVALUE";
+        public const string ModPointValue = "MODPOINTVALUE";
+        public const string MarkAnswerPointValue = "MARKANSWERPOINTVALUE";
+        public const string PMType = "PMTYPE";
+        public const string PMTabId = "PMTABID";
+        public const string InstallDate = "INSTALLDATE";
+        public const string IsInstalled = "INSTALLED";
+        public const string ProfileVisibility = "PROFILEVISIBILITY";
+        public const string UseShortUrls = "SHORTURLS";
+        public const string RequireCaptcha = "REQCAPTCHA";
+        public const string UseSkinBreadCrumb = "USESKINBC";
+        public const string EnableAutoLink = "AUTOLINK";
+        public const string EnableURLRewriter = "EURLR";
+        public const string PrefixURLBase = "URLBASE";
+        public const string PrefixURLTags = "URLTAGS";
+        public const string PrefixURLCategories = "URLCATS";
+        public const string PrefixURLOther = "URLOTHER";
 
         public const string CacheTemplates = "CACHETEMPLATES";
     }
 
-	public class ForumSettingKeys
-	{
-		public const string AllowHTML = "ALLOWHTML";
-		public const string AllowScript = "ALLOWSCRIPT";
-		public const string AllowSubscribe = "ALLOWSUBSCRIBE";
-		public const string AllowEmoticons = "ALLOWEMOTICONS";
-		public const string AllowPostIcon = "ALLOWPOSTICON";
-		public const string EditorType = "EDITORTYPE";
-		public const string EditorWidth = "EDITORWIDTH";
-		public const string EditorHeight = "EDITORHEIGHT";
-		public const string EditorToolbar = "EDITORTOOLBAR";
-		public const string EditorStyle = "EDITORSTYLE";
-		public const string EditorPermittedUsers = "EDITORPERMITTEDUSERS";
+    public class ForumSettingKeys
+    {
+        public const string AllowHTML = "ALLOWHTML";
+        public const string AllowScript = "ALLOWSCRIPT";
+        public const string AllowSubscribe = "ALLOWSUBSCRIBE";
+        public const string AllowEmoticons = "ALLOWEMOTICONS";
+        public const string AllowPostIcon = "ALLOWPOSTICON";
+        public const string EditorType = "EDITORTYPE";
+        public const string EditorWidth = "EDITORWIDTH";
+        public const string EditorHeight = "EDITORHEIGHT";
+        public const string EditorToolbar = "EDITORTOOLBAR";
+        public const string EditorStyle = "EDITORSTYLE";
+        public const string EditorPermittedUsers = "EDITORPERMITTEDUSERS";
         public const string EditorMobile = "EDITORMOBILE";
-		public const string AttachCount = "ATTACHCOUNT";
-		public const string AttachMaxSize = "ATTACHMAXSIZE";
-		public const string AttachTypeAllowed = "ATTACHTYPEALLOWED";
+        public const string AttachCount = "ATTACHCOUNT";
+        public const string AttachMaxSize = "ATTACHMAXSIZE";
+        public const string AttachTypeAllowed = "ATTACHTYPEALLOWED";
         public const string AttachAllowBrowseSite = "ATTACHALLOWBROWSESITE";
-		public const string AttachMaxHeight = "ATTACHMAXHEIGHT";
-		public const string AttachMaxWidth = "ATTACHMAXWIDTH";
+        public const string AttachMaxHeight = "ATTACHMAXHEIGHT";
+        public const string AttachMaxWidth = "ATTACHMAXWIDTH";
         public const string MaxAttachWidth = "MAXATTACHWIDTH";
         public const string MaxAttachHeight = "MAXATTACHHEIGHT";
         public const string AttachInsertAllowed = "ATTACHINSERTALLOWED";
         public const string ConvertingToJpegAllowed = "CONVERTINGTOJPEGALLOWED";
-		public const string IndexContent = "INDEXCONTENT";
-		public const string AllowRSS = "ALLOWRSS";
-		public const string TopicsTemplateId = "TOPICSTEMPLATEID";
-		public const string TopicTemplateId = "TOPICTEMPLATEID";
-		public const string IsModerated = "ISMODERATED";
-		public const string AutoTrustLevel = "AUTOTRUSTLEVEL";
-		public const string DefaultTrustLevel = "DEFAULTTRUSTLEVEL";
-		public const string ModApproveTemplateId = "MODAPPROVETEMPLATEID";
-		public const string ModRejectTemplateId = "MODREJECTTEMPLATEID";
-		public const string ModMoveTemplateId = "MODMOVETEMPLATEID";
-		public const string ModDeleteTemplateId = "MODDELETETEMPLATEID";
-		public const string ModNotifyTemplateId = "MODNOTIFYTEMPLATEID";
-		public const string EmailAddress = "EMAILADDRESS";
-		public const string UseFilter = "USEFILTER";
-		public const string AllowAttach = "ALLOWATTACH";
-		public const string TopicFormId = "TOPICFORMID";
-		public const string ReplyFormId = "REPLYFORMID";
-		public const string QuickReplyFormId = "QUICKREPLYFORMID";
-		public const string ProfileTemplateId = "PROFILETEMPLATEID";
-		public const string AutoSubscribeEnabled = "AUTOSUBSCRIBEENABLED";
-		public const string AutoSubscribeRoles = "AUTOSUBSCRIBEROLES";
-		public const string AutoSubscribeNewTopicsOnly = "AUTOSUBSCRIBENEWTOPICSONLY";
-		public const string AllowTags = "ALLOWTAGS";
-	    public const string CreatePostCount = "CREATEPOSTCOUNT";
-	    public const string ReplyPostCount = "REPLYPOSTCOUNT";
+        public const string IndexContent = "INDEXCONTENT";
+        public const string AllowRSS = "ALLOWRSS";
+        public const string TopicsTemplateId = "TOPICSTEMPLATEID";
+        public const string TopicTemplateId = "TOPICTEMPLATEID";
+        public const string IsModerated = "ISMODERATED";
+        public const string AutoTrustLevel = "AUTOTRUSTLEVEL";
+        public const string DefaultTrustLevel = "DEFAULTTRUSTLEVEL";
+        public const string ModApproveTemplateId = "MODAPPROVETEMPLATEID";
+        public const string ModRejectTemplateId = "MODREJECTTEMPLATEID";
+        public const string ModMoveTemplateId = "MODMOVETEMPLATEID";
+        public const string ModDeleteTemplateId = "MODDELETETEMPLATEID";
+        public const string ModNotifyTemplateId = "MODNOTIFYTEMPLATEID";
+        public const string EmailAddress = "EMAILADDRESS";
+        public const string UseFilter = "USEFILTER";
+        public const string AllowAttach = "ALLOWATTACH";
+        public const string TopicFormId = "TOPICFORMID";
+        public const string ReplyFormId = "REPLYFORMID";
+        public const string QuickReplyFormId = "QUICKREPLYFORMID";
+        public const string ProfileTemplateId = "PROFILETEMPLATEID";
+        public const string AutoSubscribeEnabled = "AUTOSUBSCRIBEENABLED";
+        public const string AutoSubscribeRoles = "AUTOSUBSCRIBEROLES";
+        public const string AutoSubscribeNewTopicsOnly = "AUTOSUBSCRIBENEWTOPICSONLY";
+        public const string AllowTags = "ALLOWTAGS";
+        public const string CreatePostCount = "CREATEPOSTCOUNT";
+        public const string ReplyPostCount = "REPLYPOSTCOUNT";
         public const string AllowLikes = "ALLOWLIKES";
 
         /*
-		public const string MCEnabled = "MCENABLED";
-		public const string MCUrl = "MCURL";
-		public const string MCAddress = "MCADDRESS";
-		public const string MCRestrictByAlias = "MCRESTRICTALIAS";
-		public const string MCPop3UserName = "MCPOPUSERNAME";
-		public const string MCPop3Password = "MCPOPPASSWORD";
-		public const string MCPop3Server = "MCPOPSERVER";
-		public const string MCAutoResponseTemplateId = "MCAUTORESPONSE";
-		public const string MCAdminNotifyTemplateId = "MCADMINNOTIFY";
-		public const string MCSubNotifyTemplateId = "MCSUBNOTIFY";
-		public const string MCRejectTemplateId = "MCREJECTNOTIFY";
-		public const string MCAutoCreateUsers = "MCAUTOCREATEUSERS";
-		public const string MCModType = "MCMODTYPE";
-		public const string MCEOMTag = "MCEOMTAG";
-		public const string MCEOMTagRequired = "MCEOMTAGREQ";
-		public const string MCRemoveHTML = "MCSTRIPHTML";
+        public const string MCEnabled = "MCENABLED";
+        public const string MCUrl = "MCURL";
+        public const string MCAddress = "MCADDRESS";
+        public const string MCRestrictByAlias = "MCRESTRICTALIAS";
+        public const string MCPop3UserName = "MCPOPUSERNAME";
+        public const string MCPop3Password = "MCPOPPASSWORD";
+        public const string MCPop3Server = "MCPOPSERVER";
+        public const string MCAutoResponseTemplateId = "MCAUTORESPONSE";
+        public const string MCAdminNotifyTemplateId = "MCADMINNOTIFY";
+        public const string MCSubNotifyTemplateId = "MCSUBNOTIFY";
+        public const string MCRejectTemplateId = "MCREJECTNOTIFY";
+        public const string MCAutoCreateUsers = "MCAUTOCREATEUSERS";
+        public const string MCModType = "MCMODTYPE";
+        public const string MCEOMTag = "MCEOMTAG";
+        public const string MCEOMTagRequired = "MCEOMTAGREQ";
+        public const string MCRemoveHTML = "MCSTRIPHTML";
         */
     }
 
-	public class SearchParamKeys
+    public class SearchParamKeys
     {
         public const string Tag = "tg";
         public const string Query = "q";
@@ -320,19 +320,19 @@ namespace DotNetNuke.Modules.ActiveForums
     }
     public class ParamKeys
     {
-		public const string ForumId = "aff";
+        public const string ForumId = "aff";
         public const string GroupId = "afg";
         public const string TopicId = "aft";
-		public const string ReplyId = "afr";
-		public const string ViewType = "afv";
-		public const string QuoteId = "afq";
+        public const string ReplyId = "afr";
+        public const string ViewType = "afv";
+        public const string QuoteId = "afq";
         public const string PageId = "afpg";
         public const string PostId = "postid";
         public const string UserId = "uid";
         public const string Sort = "afs";
         public const string PageJumpId = "afpgj";
-		public const string ContentJumpId = "afc";
-		public const string ConfirmActionId = "afca";
+        public const string ContentJumpId = "afc";
+        public const string ConfirmActionId = "afca";
         public const string Tags = "aftg";
         public const string FirstNewPost = "afnp";
         public const string AuthorId = "authorid";
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TimeSpan = "ts";
         public const string mode = "mode";
     }
-	public class Modes
+    public class Modes
     {
         public const string edit = "edit";
     }
@@ -358,11 +358,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PostId = "PostId";
         public const string PageId = "PageId";
     }
-	public class SortOptions
-	{
-		public const string Descending = "DESC";
-		public const string Ascending = "ASC";
-	}
+    public class SortOptions
+    {
+        public const string Descending = "DESC";
+        public const string Ascending = "ASC";
+    }
 
     public class Views
     {
@@ -408,8 +408,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CacheModulePrefix = "AF-{0}-";
         public const string UserProfile = "AF-{0}-prof-{1}";
         public const string Rewards = "AF-{0}-rwd";
-		public const string ProfileInfo = "AF-{0}-pi";
-		public const string ForumInfo = "AF-{0}-fi-{1}";
+        public const string ProfileInfo = "AF-{0}-pi";
+        public const string ForumInfo = "AF-{0}-fi-{1}";
         public const string ForumInfoWithUser = "AF-{0}-fi-{1}-{2}";
         public const string HostUrl = "AF-{0}-url";
         public const string MainSettings = "AF-{0}-ms";
@@ -435,7 +435,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string CacheUpdate = "AF-{0}-cu";
         public const string WhatsNew = "AF-{0}-tp";
         public const string RssTemplate = "AF-{0}-tprss-_{1}";
-		public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
+        public const string ViewRolesForForum = "AF-{0}-CanView-{1}";
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
         public const string ForumSettings = "AF-{0}-fs-{1}";
@@ -459,10 +459,10 @@ namespace DotNetNuke.Modules.ActiveForums
     }
 
     public class SortColumns
-	{
-		public const string ReplyCreated = "ReplyCreated";
-		public const string TopicCreated = "TopicCreated";
-	}
+    {
+        public const string ReplyCreated = "ReplyCreated";
+        public const string TopicCreated = "TopicCreated";
+    }
 
     public class ForumViewerSettingsKeys
     {

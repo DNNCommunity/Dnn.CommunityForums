@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         protected override void OnInit(EventArgs e)
         {
- 	        base.OnInit(e);
+            base.OnInit(e);
             LocalResourceFile = Globals.ControlPanelResourceFile;
         }
 

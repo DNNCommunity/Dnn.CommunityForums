@@ -31,8 +31,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public int UID { get; set; }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             btnSave.Click += new System.EventHandler(btnSave_Click);
 

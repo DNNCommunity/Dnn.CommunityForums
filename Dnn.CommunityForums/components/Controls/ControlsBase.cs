@@ -28,100 +28,100 @@ using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	public class ControlsBase : ForumBase
-	{
-		private string _template;
-		private string _templateFile;
-		private string _currentView = "forumview";
-		private bool _parseTemplate = false;
-		[Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
-		public string DisplayTemplate
-		{
-			get
-			{
-				if (string.IsNullOrEmpty(_template) && ! (string.IsNullOrEmpty(TemplateFile)))
-				{
-					if (! (string.IsNullOrEmpty(ControlConfig.TemplatePath)))
-					{
-						_template = ControlConfig.TemplatePath + TemplateFile;
-					}
-					else
-					{
-						_template = TemplateFile;
-					}
-					_template = Utilities.GetTemplate(Page.ResolveUrl(_template));
-					_template = Utilities.ParseTokenConfig(ForumModuleId,_template, "default", ControlConfig);
-				}
-				return _template;
-			}
-			set
-			{
-				_template = value;
-			}
-		}
-		public string CurrentView
-		{
-			get
-			{
-				return _currentView;
-			}
-			set
-			{
-				_currentView = value;
-			}
-		}
-		public bool ParseTemplateFile
-		{
-			get
-			{
-				return _parseTemplate;
-			}
-			set
-			{
-				_parseTemplate = value;
-			}
-		}
-		public int DataPageId
-		{
-			get
-			{
-				if (HttpContext.Current.Request.QueryString[ParamKeys.PageId] == null)
-				{
-					return 1;
-				}
-				else
-				{
-					return int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.PageId].ToString());
-				}
-			}
-		}
+    public class ControlsBase : ForumBase
+    {
+        private string _template;
+        private string _templateFile;
+        private string _currentView = "forumview";
+        private bool _parseTemplate = false;
+        [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
+        public string DisplayTemplate
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_template) && ! (string.IsNullOrEmpty(TemplateFile)))
+                {
+                    if (! (string.IsNullOrEmpty(ControlConfig.TemplatePath)))
+                    {
+                        _template = ControlConfig.TemplatePath + TemplateFile;
+                    }
+                    else
+                    {
+                        _template = TemplateFile;
+                    }
+                    _template = Utilities.GetTemplate(Page.ResolveUrl(_template));
+                    _template = Utilities.ParseTokenConfig(ForumModuleId,_template, "default", ControlConfig);
+                }
+                return _template;
+            }
+            set
+            {
+                _template = value;
+            }
+        }
+        public string CurrentView
+        {
+            get
+            {
+                return _currentView;
+            }
+            set
+            {
+                _currentView = value;
+            }
+        }
+        public bool ParseTemplateFile
+        {
+            get
+            {
+                return _parseTemplate;
+            }
+            set
+            {
+                _parseTemplate = value;
+            }
+        }
+        public int DataPageId
+        {
+            get
+            {
+                if (HttpContext.Current.Request.QueryString[ParamKeys.PageId] == null)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.PageId].ToString());
+                }
+            }
+        }
         protected override void OnInit(EventArgs e)
-		{
-			try
-			{
+        {
+            try
+            {
 
-			base.OnInit(e);
+            base.OnInit(e);
 
-			if (ParseTemplateFile)
-			{
-				if (! (string.IsNullOrEmpty(DisplayTemplate)))
-				{
-					Control ctl = Page.ParseControl(DisplayTemplate);
-					LinkControls(ctl.Controls);
-					this.Controls.Add(ctl);
-				}
-			}
-			}
-			catch (Exception ex)
-			{
+            if (ParseTemplateFile)
+            {
+                if (! (string.IsNullOrEmpty(DisplayTemplate)))
+                {
+                    Control ctl = Page.ParseControl(DisplayTemplate);
+                    LinkControls(ctl.Controls);
+                    this.Controls.Add(ctl);
+                }
+            }
+            }
+            catch (Exception ex)
+            {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 throw;
-			}
-		}
-		private void LinkControls(ControlCollection ctrls)
-		{
-			try
-			{
+            }
+        }
+        private void LinkControls(ControlCollection ctrls)
+        {
+            try
+            {
 
                 foreach (Control ctrl in ctrls)
                 {
@@ -141,11 +141,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
             }
-			catch (Exception ex)
-			{
+            catch (Exception ex)
+            {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 throw;
-			}
-		}
-	}
+            }
+        }
+    }
 }

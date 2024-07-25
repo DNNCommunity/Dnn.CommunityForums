@@ -29,16 +29,16 @@ namespace DotNetNuke.Modules.ActiveForums
         public static int _AFModId;
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int AFModID
-		{
-			get
-			{
-				return _AFModId;
-			}
-			set
-			{
-				_AFModId = value;
-			}
-		}
+        {
+            get
+            {
+                return _AFModId;
+            }
+            set
+            {
+                _AFModId = value;
+            }
+        }
         //Public ReadOnly Property PortalId() As Integer
         //    Get
         //        Return CInt(Request.QueryString["pid"])
@@ -46,21 +46,21 @@ namespace DotNetNuke.Modules.ActiveForums
         //End Property
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static SettingsInfo MainSettings
-		{
-			get
-			{
+        {
+            get
+            {
                 return DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings(AFModID);
-			}
-		}
+            }
+        }
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int TabId
-		{
-			get
-			{
-				return Convert.ToInt32(HttpContext.Current.Request.QueryString["tabid"]);
-			}
-		}
+        {
+            get
+            {
+                return Convert.ToInt32(HttpContext.Current.Request.QueryString["tabid"]);
+            }
+        }
 
 
-	}
+    }
 }

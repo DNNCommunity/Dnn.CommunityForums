@@ -29,8 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Event Handlers
         
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (btnMarkAllRead == null)
                 return;
@@ -55,8 +55,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.

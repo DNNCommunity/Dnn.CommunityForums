@@ -25,9 +25,9 @@ using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class UsersOnline
+    public class UsersOnline
     {
-		public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)
+        public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)
         {
             bool isAdmin = user.IsInRole(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().AdministratorRoleName) || user.IsSuperUser;
             var sb = new StringBuilder();
@@ -61,5 +61,5 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return GetUsersOnline(portalId, moduleId, DotNetNuke.Entities.Users.UserController.Instance.GetUser(portalId, user.UserId));
         }
-	}
+    }
 }

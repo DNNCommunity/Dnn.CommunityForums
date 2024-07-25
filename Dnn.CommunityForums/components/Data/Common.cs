@@ -26,8 +26,8 @@ using System.Data;
 using Microsoft.ApplicationBlocks.Data;
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
-	public class Common : DataConfig
-	{
+    public class Common : DataConfig
+    {
         #region Security
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
         public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
@@ -49,29 +49,29 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         #region Views
 
         public DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
-		{
-			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_ActiveView", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
-		}
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_ActiveView", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+        }
 
-		public DataSet UI_NotReadView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
-		{
-			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_NotRead", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
-		}
+        public DataSet UI_NotReadView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_NotRead", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+        }
 
-		public DataSet UI_UnansweredView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
-		{
-			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_UnansweredView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
-		}
+        public DataSet UI_UnansweredView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_UnansweredView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+        }
 
-		public DataSet UI_TagsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds, int tagId)
-		{
-			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_TagsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds, tagId);
-		}
+        public DataSet UI_TagsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds, int tagId)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_TagsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds, tagId);
+        }
 
-		public DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
-		{
-			return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
-		}
+        public DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
+        {
+            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+        }
         public DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
-		public DataSet UI_Announcements(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
+        public DataSet UI_Announcements(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_Announcements", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
@@ -92,140 +92,140 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         #region TagCloud
         public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
-		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
-		}
-		#endregion
-		#region Tags
-		public int Tag_GetIdByName(int PortalId, int ModuleId, string TagName, bool IsCategory)
-		{
-			return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
-		}
-		#endregion
-		#region TopMembers
-		public IDataReader TopMembers_Get(int PortalId, int Rows)
-		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopMembers", PortalId, Rows);
-		}
-		#endregion
-		#region CustomURLS
-		public Dictionary<string, string> GetPrefixes(int PortalId)
-		{
-			Dictionary<string, string> dict = new Dictionary<string, string>();
-			using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Forums_GetPrefixes", PortalId))
-			{
-				while (dr.Read())
-				{
-					string prefix = dr["PrefixURL"].ToString();
-					string tabid = dr["TabId"].ToString();
-					string forumid = dr["ForumId"].ToString();
-					string moduleId = dr["ModuleId"].ToString();
-					string archived = dr["Archived"].ToString();
-					string forumgroupId = dr["ForumGroupId"].ToString();
-					string groupPrefix = dr["GroupPrefixURL"].ToString();
-					if (!(string.IsNullOrEmpty(groupPrefix)))
-					{
-						prefix = groupPrefix + "/" + prefix;
-					}
-					dict.Add(prefix, tabid + "|" + forumid + "|" + moduleId + "|" + archived + "|" + forumgroupId + "|" + groupPrefix);
-				}
-				dr.Close();
-			}
-			return dict;
-		}
-		public string GetUrl(int ModuleId, int ForumGroupId, int ForumId, int TopicId, int UserId, int ContentId)
-		{
-			try
-			{
-				return Convert.ToString(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Util_GetUrl", ModuleId, ForumGroupId, ForumId, TopicId, UserId, ContentId));
-			}
-			catch (Exception ex)
-			{
-				return string.Empty;
-			}
-		}
-		public IDataReader FindByURL(int PortalId, string URL)
-		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "FindByURL", PortalId, URL);
-		}
-		public IDataReader URLSearch(int PortalId, string URL)
-		{
-			return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "URL_Search", PortalId, URL);
-		}
-		public void ArchiveURL(int PortalId, int ForumGroupId, int ForumId, int TopicId, string URL)
-		{
-			SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "URL_Archive", PortalId, ForumGroupId, ForumId, TopicId, URL);
-		}
-		public bool CheckForumURL(int PortalId, int ModuleId, string VanityName, int ForumId, int ForumGroupId)
-		{
-			try
-			{
-				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+        {
+            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
+        }
+        #endregion
+        #region Tags
+        public int Tag_GetIdByName(int PortalId, int ModuleId, string TagName, bool IsCategory)
+        {
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
+        }
+        #endregion
+        #region TopMembers
+        public IDataReader TopMembers_Get(int PortalId, int Rows)
+        {
+            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopMembers", PortalId, Rows);
+        }
+        #endregion
+        #region CustomURLS
+        public Dictionary<string, string> GetPrefixes(int PortalId)
+        {
+            Dictionary<string, string> dict = new Dictionary<string, string>();
+            using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Forums_GetPrefixes", PortalId))
+            {
+                while (dr.Read())
+                {
+                    string prefix = dr["PrefixURL"].ToString();
+                    string tabid = dr["TabId"].ToString();
+                    string forumid = dr["ForumId"].ToString();
+                    string moduleId = dr["ModuleId"].ToString();
+                    string archived = dr["Archived"].ToString();
+                    string forumgroupId = dr["ForumGroupId"].ToString();
+                    string groupPrefix = dr["GroupPrefixURL"].ToString();
+                    if (!(string.IsNullOrEmpty(groupPrefix)))
+                    {
+                        prefix = groupPrefix + "/" + prefix;
+                    }
+                    dict.Add(prefix, tabid + "|" + forumid + "|" + moduleId + "|" + archived + "|" + forumgroupId + "|" + groupPrefix);
+                }
+                dr.Close();
+            }
+            return dict;
+        }
+        public string GetUrl(int ModuleId, int ForumGroupId, int ForumId, int TopicId, int UserId, int ContentId)
+        {
+            try
+            {
+                return Convert.ToString(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Util_GetUrl", ModuleId, ForumGroupId, ForumId, TopicId, UserId, ContentId));
+            }
+            catch (Exception ex)
+            {
+                return string.Empty;
+            }
+        }
+        public IDataReader FindByURL(int PortalId, string URL)
+        {
+            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "FindByURL", PortalId, URL);
+        }
+        public IDataReader URLSearch(int PortalId, string URL)
+        {
+            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "URL_Search", PortalId, URL);
+        }
+        public void ArchiveURL(int PortalId, int ForumGroupId, int ForumId, int TopicId, string URL)
+        {
+            SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "URL_Archive", PortalId, ForumGroupId, ForumId, TopicId, URL);
+        }
+        public bool CheckForumURL(int PortalId, int ModuleId, string VanityName, int ForumId, int ForumGroupId)
+        {
+            try
+            {
+                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
-				if (!(string.IsNullOrEmpty(fg.PrefixURL)))
-				{
-					VanityName = fg.PrefixURL + "/" + VanityName;
-				}
-				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
-				{
-					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
-				}
-				int tmpForumId = -1;
-				tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckForumVanity", PortalId, VanityName));
-				if (tmpForumId > 0 && ForumId == -1)
-				{
-					return false;
-				}
-				else if (tmpForumId == ForumId && ForumId > 0)
-				{
-					return true;
-				}
-				else if (tmpForumId <= 0)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				return false;
+                if (!(string.IsNullOrEmpty(fg.PrefixURL)))
+                {
+                    VanityName = fg.PrefixURL + "/" + VanityName;
+                }
+                if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
+                {
+                    VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
+                }
+                int tmpForumId = -1;
+                tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckForumVanity", PortalId, VanityName));
+                if (tmpForumId > 0 && ForumId == -1)
+                {
+                    return false;
+                }
+                else if (tmpForumId == ForumId && ForumId > 0)
+                {
+                    return true;
+                }
+                else if (tmpForumId <= 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
 
-			}
+            }
 
-			return false;
-		}
-		public bool CheckGroupURL(int PortalId, int ModuleId, string VanityName, int ForumGroupId)
-		{
-			try
-			{
-				SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-				if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
-				{
-					VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
-				}
-				int tmpForumGroupId = -1;
-				tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckGroupVanity", PortalId, VanityName));
-				if (tmpForumGroupId > 0 && ForumGroupId == -1)
-				{
-					return false;
-				}
-				else if (tmpForumGroupId == ForumGroupId && ForumGroupId > 0)
-				{
-					return true;
-				}
-				else if (tmpForumGroupId <= 0)
-				{
-					return true;
-				}
-			}
-			catch (Exception ex)
-			{
-				return false;
+            return false;
+        }
+        public bool CheckGroupURL(int PortalId, int ModuleId, string VanityName, int ForumGroupId)
+        {
+            try
+            {
+                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+                if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
+                {
+                    VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
+                }
+                int tmpForumGroupId = -1;
+                tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckGroupVanity", PortalId, VanityName));
+                if (tmpForumGroupId > 0 && ForumGroupId == -1)
+                {
+                    return false;
+                }
+                else if (tmpForumGroupId == ForumGroupId && ForumGroupId > 0)
+                {
+                    return true;
+                }
+                else if (tmpForumGroupId <= 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
 
-			}
+            }
 
-			return false;
-		}
+            return false;
+        }
 
-		#endregion
-	}
+        #endregion
+    }
 }

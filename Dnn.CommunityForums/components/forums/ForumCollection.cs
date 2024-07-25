@@ -24,7 +24,7 @@ using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	[Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumCollection")]
-	public class ForumCollection : DotNetNuke.Modules.ActiveForums.Entities.ForumCollection { }
+    [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumCollection")]
+    public class ForumCollection : DotNetNuke.Modules.ActiveForums.Entities.ForumCollection { }
 }
 

@@ -174,8 +174,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             if (Context == null || Page == null)
             {

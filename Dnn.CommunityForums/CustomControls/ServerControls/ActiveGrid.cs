@@ -647,8 +647,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Callback(cb, e);
         }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid")))
             {

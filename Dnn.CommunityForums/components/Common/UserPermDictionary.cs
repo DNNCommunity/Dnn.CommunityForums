@@ -24,47 +24,47 @@ using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class UserRolesDictionary
-	{
-		internal static string GetRoles(int PortalId, int UserId)
-		{
-			try
-			{
+    public class UserRolesDictionary
+    {
+        internal static string GetRoles(int PortalId, int UserId)
+        {
+            try
+            {
                 Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
-				return (dict !=null && (dict.ContainsKey(UserId.ToString()))) ? dict[UserId.ToString()] : string.Empty;
-				
-			}
-			catch
-			{
-				return string.Empty;
-			}
-		}
-		internal static bool AddRoles(int PortalId, int UserId, string Roles)
-		{
-			try
-			{
+                return (dict !=null && (dict.ContainsKey(UserId.ToString()))) ? dict[UserId.ToString()] : string.Empty;
+                
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
+        internal static bool AddRoles(int PortalId, int UserId, string Roles)
+        {
+            try
+            {
                 Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
-				if (dict == null)
-				{
-					dict = new Dictionary<string, string>();
-				}
+                if (dict == null)
+                {
+                    dict = new Dictionary<string, string>();
+                }
 
                 if (dict.ContainsKey(UserId.ToString()))
-				{
-					dict[UserId.ToString()] = Roles;
-				}
-				else
-				{
-					dict.Add(UserId.ToString(), Roles);
-				}
-				DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
-	}
+                {
+                    dict[UserId.ToString()] = Roles;
+                }
+                else
+                {
+                    dict.Add(UserId.ToString(), Roles);
+                }
+                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
 }
 

@@ -59,8 +59,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #endregion
         #region Event Handlers
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             ambtnSubmit.Click += new System.EventHandler(ambtnSubmit_Click);
 
@@ -111,8 +111,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {

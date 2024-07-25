@@ -38,8 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {

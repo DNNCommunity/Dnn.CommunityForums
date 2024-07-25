@@ -118,18 +118,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             if (Menu == null) return;
 
             Controls.Clear();
             Controls.Add(Menu);
-		}
+        }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu")))
             {

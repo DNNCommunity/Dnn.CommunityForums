@@ -38,8 +38,8 @@ namespace DotNetNuke.Modules.ActiveForums
             /* Until this is resolved, content caching for this module is always enabled, for 2 minutes */
 
             /* Track whether caching is being used at all in this module; this setting itself is cached to avoid repeated module lookups; 
-			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
-			*/
+               so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
+            */
             /*
             if (ModuleId < 0)
             {
@@ -69,8 +69,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             /* DNN module caching uses "output caching" which doesn't work correctly with this module; in particular, CSS files are not referenced */
             /* Track caching being used for this module; this setting itself is cached to avoid repeated module lookups; 
-			   so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
-			*/
+               so it is stored/retrieved directly using DNN API rather than local APIs since if caching is disabled would never return the correct value for this setting
+            */
 
             /*
             if (ModuleId < 0)

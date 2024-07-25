@@ -24,10 +24,10 @@ using System.Data;
 using System.Xml;
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public static class ConfigUtils
+    public static class ConfigUtils
     {
         private const string _web_config_system_webserver_modules_node_XPath = "//system.webServer/modules"; 
-		private const string _ForumsRewriterTypeNameFull = "DotNetNuke.Modules.ActiveForums.ForumsReWriter, DotNetNuke.Modules.ActiveForums";
+        private const string _ForumsRewriterTypeNameFull = "DotNetNuke.Modules.ActiveForums.ForumsReWriter, DotNetNuke.Modules.ActiveForums";
         private const string _ForumsRewriterTypeNameShort = "ForumsReWriter";
         private const string _attribute_name = "name";
         private const string _attribute_type = "type";
@@ -74,78 +74,78 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
         public static bool InstallRewriter(string configPath)
-		{
-			if (IsRewriterInstalled(configPath))
-			{
-				return true;
-			}
-			try
-			{
-				XmlDocument xDoc = new XmlDocument();
-				xDoc.Load(configPath);
-				if (xDoc != null)
-				{
-					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
-					if (xNode != null)
-					{
-						XmlElement xNewNode = xDoc.CreateElement("add");
-						XmlAttribute xAttrib = xDoc.CreateAttribute(_attribute_name);
-						xAttrib.Value = _ForumsRewriterTypeNameShort;
-						xNewNode.Attributes.Append(xAttrib);
-						xAttrib = xDoc.CreateAttribute(_attribute_type);
-						xAttrib.Value = _ForumsRewriterTypeNameFull;
-						xNewNode.Attributes.Append(xAttrib);
-						xAttrib = xDoc.CreateAttribute(_attribute_precondition);
-						xAttrib.Value = "managedHandler";
-						xNewNode.Attributes.Append(xAttrib);
-						xNode.PrependChild(xNewNode);
-						xDoc.Save(configPath);
-					}
-				}
-				return true;
-			}
+        {
+            if (IsRewriterInstalled(configPath))
+            {
+                return true;
+            }
+            try
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load(configPath);
+                if (xDoc != null)
+                {
+                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
+                    if (xNode != null)
+                    {
+                        XmlElement xNewNode = xDoc.CreateElement("add");
+                        XmlAttribute xAttrib = xDoc.CreateAttribute(_attribute_name);
+                        xAttrib.Value = _ForumsRewriterTypeNameShort;
+                        xNewNode.Attributes.Append(xAttrib);
+                        xAttrib = xDoc.CreateAttribute(_attribute_type);
+                        xAttrib.Value = _ForumsRewriterTypeNameFull;
+                        xNewNode.Attributes.Append(xAttrib);
+                        xAttrib = xDoc.CreateAttribute(_attribute_precondition);
+                        xAttrib.Value = "managedHandler";
+                        xNewNode.Attributes.Append(xAttrib);
+                        xNode.PrependChild(xNewNode);
+                        xDoc.Save(configPath);
+                    }
+                }
+                return true;
+            }
             catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-				return false;
-			}
-		}
-		public static bool UninstallRewriter(string configPath)
-		{
+                return false;
+            }
+        }
+        public static bool UninstallRewriter(string configPath)
+        {
             if (!IsRewriterInstalled(configPath))
             {
                 return true;
             }
             try
-			{
-				XmlDocument xDoc = new XmlDocument();
-				xDoc.Load(configPath);
-				if (xDoc != null)
-				{
-					System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-					System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
-					if (xNode != null)
-					{
-						foreach (XmlNode n in xNode.ChildNodes)
-						{
-							if (n.Attributes[_attribute_name].Value == _ForumsRewriterTypeNameShort)
-							{
-								xNode.RemoveChild(n);
-								break;
-							}
-						}
-						xDoc.Save(configPath);
-					}
-				}
-				return true;
-			}
-			catch (Exception ex)
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load(configPath);
+                if (xDoc != null)
+                {
+                    System.Xml.XmlNode xRoot = xDoc.DocumentElement;
+                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
+                    if (xNode != null)
+                    {
+                        foreach (XmlNode n in xNode.ChildNodes)
+                        {
+                            if (n.Attributes[_attribute_name].Value == _ForumsRewriterTypeNameShort)
+                            {
+                                xNode.RemoveChild(n);
+                                break;
+                            }
+                        }
+                        xDoc.Save(configPath);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 return false;
-			}
-		}
-	}
+            }
+        }
+    }
 }
 

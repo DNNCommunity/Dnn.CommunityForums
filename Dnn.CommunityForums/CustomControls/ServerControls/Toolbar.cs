@@ -37,8 +37,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             string sTemp = string.Empty;
             //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")

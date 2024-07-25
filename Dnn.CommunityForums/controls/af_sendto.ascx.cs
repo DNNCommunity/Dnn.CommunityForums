@@ -32,8 +32,8 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private bool bcUpdated = false;
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             btnCancel.Click += new System.EventHandler(btnCancel_Click);
             btnSend.Click += new System.EventHandler(btnSend_Click);

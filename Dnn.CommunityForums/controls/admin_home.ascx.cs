@@ -31,8 +31,8 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             BindDashboard();
         }

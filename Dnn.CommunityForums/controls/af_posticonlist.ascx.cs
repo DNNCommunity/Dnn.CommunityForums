@@ -31,8 +31,8 @@ namespace DotNetNuke.Modules.ActiveForums
         public string Theme { get; set; }
         public string PostIcon { get; set; }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {

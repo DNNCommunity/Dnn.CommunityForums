@@ -106,8 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation")))
             {

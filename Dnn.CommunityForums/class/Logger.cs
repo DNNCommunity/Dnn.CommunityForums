@@ -22,13 +22,13 @@ using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public abstract class Logger
-	{
-		public static void Log(string Msg)
-		{
-			string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
-			Msg = Msg + System.Environment.NewLine;
-			System.IO.File.AppendAllText(sPath, Msg);
+    public abstract class Logger
+    {
+        public static void Log(string Msg)
+        {
+            string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
+            Msg = Msg + System.Environment.NewLine;
+            System.IO.File.AppendAllText(sPath, Msg);
         }
-	}
+    }
 }

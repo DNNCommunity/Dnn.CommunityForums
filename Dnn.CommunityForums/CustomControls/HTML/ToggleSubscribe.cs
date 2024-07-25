@@ -26,8 +26,8 @@ using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	public class ToggleSubscribe
-	{
+    public class ToggleSubscribe
+    {
         public int ToggleMode { get; set; } = 0;
         public int DisplayMode { get; set; } = 0;
         public int ModuleId { get; set; } = -1;
@@ -37,55 +37,55 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Text { get; set; } = string.Empty;
         public int UserId { get; set; } = -1;
         public string ImageURL { get; set; } = string.Empty;
-		[Obsolete("Deprecated in Community Forums. Removing in 09.00.00. Use ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)")]
+        [Obsolete("Deprecated in Community Forums. Removing in 09.00.00. Use ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)")]
         public ToggleSubscribe(int m, int f, int t)
-		{
+        {
             ModuleId = -1; 
-			ToggleMode = m;
-			ForumId = f;
+            ToggleMode = m;
+            ForumId = f;
             TopicId = t;    
 
         }
 
         public ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)
         {
-			this.ToggleMode = ToggleMode;
+            this.ToggleMode = ToggleMode;
             this.ModuleId = ModuleId;
             this.ForumId = ForumId;
             this.TopicId = TopicId; 
         }
-		//amaf_topicSubscribe
-		public string Render()
-		{
-			StringBuilder sb = new StringBuilder();
-			if (DisplayMode == 0)
-			{
-				sb.Append("<span class=\"afnormal\">");
-				sb.Append("<input id=\"amaf-chk-subs\" class=\"amaf-chk-subs\" type=\"checkbox\" ");
-				if (Checked)
-				{
-					sb.Append("checked=\"checked\" ");
-				}
-				if (ToggleMode == 0)
-				{
-					sb.Append(" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ");\" />");
-				}
-				else
-				{
-					sb.Append(" onclick=\"amaf_topicSubscribe(" + ModuleId + "," + ForumId + "," + TopicId + ");\" />");
-				}
+        //amaf_topicSubscribe
+        public string Render()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (DisplayMode == 0)
+            {
+                sb.Append("<span class=\"afnormal\">");
+                sb.Append("<input id=\"amaf-chk-subs\" class=\"amaf-chk-subs\" type=\"checkbox\" ");
+                if (Checked)
+                {
+                    sb.Append("checked=\"checked\" ");
+                }
+                if (ToggleMode == 0)
+                {
+                    sb.Append(" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ");\" />");
+                }
+                else
+                {
+                    sb.Append(" onclick=\"amaf_topicSubscribe(" + ModuleId + "," + ForumId + "," + TopicId + ");\" />");
+                }
 
-				sb.Append("<label for=\"amaf-chk-subs\">" + Text + "</label>");
-				sb.Append("</span>");
-			}
-			else
-			{
-				sb.Append("<img src=\"" + ImageURL + "\" border=\"0\" alt=\"" + Text + "\" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ", " + UserId + ");\" id=\"amaf-sub-" + ForumId + "\" />");
-			}
+                sb.Append("<label for=\"amaf-chk-subs\">" + Text + "</label>");
+                sb.Append("</span>");
+            }
+            else
+            {
+                sb.Append("<img src=\"" + ImageURL + "\" border=\"0\" alt=\"" + Text + "\" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ", " + UserId + ");\" id=\"amaf-sub-" + ForumId + "\" />");
+            }
 
-			return sb.ToString();
-		}
+            return sb.ToString();
+        }
 
-	}
+    }
 }
 

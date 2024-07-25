@@ -287,8 +287,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             if (Context == null || Page == null)
             {
@@ -316,8 +316,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         protected override void OnPreRender(EventArgs e)
-		{
-			base.OnPreRender(e);
+        {
+            base.OnPreRender(e);
 
             if (Visible == true)
             {

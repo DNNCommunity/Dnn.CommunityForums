@@ -227,8 +227,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Events/Subs
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             if (Context == null || Page == null)
             {
@@ -511,8 +511,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 CallbackEvent(this, e);
         }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback")))
             {

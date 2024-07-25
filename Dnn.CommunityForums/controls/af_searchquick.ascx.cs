@@ -35,8 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             try
             {
@@ -67,8 +67,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             LocalResourceFile = Globals.SharedResourceFile;
 

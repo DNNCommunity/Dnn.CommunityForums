@@ -116,8 +116,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
          
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
             string template = TemplateCache.GetCachedTemplate(ForumModuleId, "QuickReply", ForumInfo.QuickReplyFormId);
 
             try

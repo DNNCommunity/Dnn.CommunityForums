@@ -79,9 +79,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var ms = new SettingsInfo { MainSettings = moduleInfo.ModuleSettings };
             /* if not using soft deletes, remove and rebuild entire index; 
-			   note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
-			   and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
-			*/
+               note that this "internals" method is suggested by blog post (https://www.dnnsoftware.com/community-blog/cid/154913/integrating-with-search-introducing-modulesearchbase#Comment106)
+               and also is used by the Community Links module (https://github.com/DNNCommunity/DNN.Links/blob/development/Components/FeatureController.cs)
+            */
             if (ms.DeleteBehavior != 1)
             {
                 DotNetNuke.Services.Search.Internals.InternalSearchController.Instance.DeleteSearchDocumentsByModule(moduleInfo.PortalID, moduleInfo.ModuleID, moduleInfo.ModuleDefID);

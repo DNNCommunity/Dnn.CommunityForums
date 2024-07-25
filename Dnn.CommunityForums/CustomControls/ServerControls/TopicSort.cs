@@ -76,8 +76,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             drpSort.SelectedIndexChanged += new System.EventHandler(drpSort_SelectedIndexChanged);
 
@@ -100,8 +100,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             if (!Page.IsPostBack)
             {

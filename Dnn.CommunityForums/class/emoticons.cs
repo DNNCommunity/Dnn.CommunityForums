@@ -24,18 +24,18 @@ using System.Web;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	[Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-	public class emoticons
-	{
+    [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
+    public class emoticons
+    {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
         public string LoadEmoticons(EditorTypes Type, int ModuleId, string ImagePath)
-		{
-			return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, Type);
-		}
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, Type);
+        }
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
         public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
-		{
-			return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, InsertType);
+        {
+            return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, InsertType);
         }
     }
 }

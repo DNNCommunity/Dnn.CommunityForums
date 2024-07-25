@@ -52,8 +52,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Subs/Functions
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             /*if (TextSuggest && !(Page.ClientScript.IsClientScriptIncludeRegistered("AMTextSuggest")))
             {

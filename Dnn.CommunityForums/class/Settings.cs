@@ -25,9 +25,9 @@ using DotNetNuke.Entities.Profile;
 namespace DotNetNuke.Modules.ActiveForums
 {
     #region SettingsInfo
-	
+    
     public class SettingsInfo
-	{
+    {
         public Hashtable MainSettings { get; set; }
 
         public int PageSize
@@ -91,9 +91,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public string TimeFormatString
-		{
-			get { return MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
-		}
+        {
+            get { return MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
+        }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int TimeZoneOffset
         {
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public string MemberListMode
-		{
-			get
-			{
-				return "Enabled";
-			}
-		}
+        {
+            get
+            {
+                return "Enabled";
+            }
+        }
 
         public int ForumTemplateID
         {
@@ -119,9 +119,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public DateTime InstallDate
-		{
-			get { return Utilities.SafeConvertDateTime(MainSettings[SettingKeys.InstallDate], Utilities.NullDate()); }
-		}
+        {
+            get { return Utilities.SafeConvertDateTime(MainSettings[SettingKeys.InstallDate], Utilities.NullDate()); }
+        }
 
         public bool IsInstalled
         {
@@ -151,12 +151,12 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public string Theme
-		{
+        {
             get
-			{
-			    var result = MainSettings.GetString(SettingKeys.Theme);
-			    return string.IsNullOrWhiteSpace(result) ? "_legacy" : result; 
-			}
+            {
+                var result = MainSettings.GetString(SettingKeys.Theme);
+                return string.IsNullOrWhiteSpace(result) ? "_legacy" : result; 
+            }
         }
         public string ThemeLocation
         {
@@ -274,47 +274,47 @@ namespace DotNetNuke.Modules.ActiveForums
             MainSettings = new Hashtable();
         }
 
-	}
+    }
 
     #endregion
 
-	public class Settings
-	{
-		public static Hashtable GeneralSettings(int moduleId, string groupKey)
-		{
-			var ht = new Hashtable();
-		    var dr = DataProvider.Instance().Settings_List(moduleId, groupKey);
-			while (dr.Read())
-			{
-				ht.Add(dr.GetString("SettingName"), dr.GetString("SettingValue"));
-			}
-			dr.Close();
-			return ht;
-		}
+    public class Settings
+    {
+        public static Hashtable GeneralSettings(int moduleId, string groupKey)
+        {
+            var ht = new Hashtable();
+            var dr = DataProvider.Instance().Settings_List(moduleId, groupKey);
+            while (dr.Read())
+            {
+                ht.Add(dr.GetString("SettingName"), dr.GetString("SettingValue"));
+            }
+            dr.Close();
+            return ht;
+        }
 
-		public static string GetSetting(int moduleId, string groupKey, string settingName)
-		{
-			try
-			{
-				return DataProvider.Instance().Settings_Get(moduleId, groupKey, settingName);
-			}
-			catch (Exception)
-			{
-			    return string.Empty;
-			}
-		}
+        public static string GetSetting(int moduleId, string groupKey, string settingName)
+        {
+            try
+            {
+                return DataProvider.Instance().Settings_Get(moduleId, groupKey, settingName);
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
 
-		public static bool SaveSetting(int moduleId, string groupKey, string settingName, string settingValue)
-		{
-			try
-			{
-				DataProvider.Instance().Settings_Save(moduleId, groupKey, settingName, settingValue);
-			    return true;
-			}
-			catch (Exception ex)
-			{
-			    return false;
-			}
-		}
-	}
+        public static bool SaveSetting(int moduleId, string groupKey, string settingName, string settingValue)
+        {
+            try
+            {
+                DataProvider.Instance().Settings_Save(moduleId, groupKey, settingName, settingValue);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+    }
 }

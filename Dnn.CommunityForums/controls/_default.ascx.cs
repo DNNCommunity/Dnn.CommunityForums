@@ -25,29 +25,29 @@ using System.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public partial class _default : ForumBase
-	{
-		protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+    public partial class _default : ForumBase
+    {
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
 
-			btnContinue.Visible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
+            btnContinue.Visible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
             btnContinue.Click += new System.EventHandler(btnContinue_Click);
-		}
+        }
 
-		private void btnContinue_Click(object sender, System.EventArgs e)
-		{
-			ForumsConfig fc = new ForumsConfig();
-			bool init = false;
-			init = fc.ForumsInit(PortalId, ModuleId);
-			if (init == true)
-			{
+        private void btnContinue_Click(object sender, System.EventArgs e)
+        {
+            ForumsConfig fc = new ForumsConfig();
+            bool init = false;
+            init = fc.ForumsInit(PortalId, ModuleId);
+            if (init == true)
+            {
 
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", init.ToString());
                 DataCache.ClearAllCache(ModuleId);
-				DataCache.ClearAllCacheForTabId(TabId);
+                DataCache.ClearAllCacheForTabId(TabId);
                 Response.Redirect(EditUrl());
-			}
-		}
-	}
+            }
+        }
+    }
 }

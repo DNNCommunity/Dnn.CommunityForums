@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Event Handlers
 
         protected override void OnInit(EventArgs e)
-		{
+        {
             base.OnInit(e);
         }
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             SocialGroupId = -1;
             if (Request.QueryString[Literals.GroupId] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.GroupId]))

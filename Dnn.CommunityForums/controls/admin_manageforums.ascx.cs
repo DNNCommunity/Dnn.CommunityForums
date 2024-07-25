@@ -45,8 +45,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
             imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");

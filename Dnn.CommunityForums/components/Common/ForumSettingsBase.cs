@@ -22,8 +22,8 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class ForumSettingsBase : ModuleSettingsBase
-	{
+    public class ForumSettingsBase : ModuleSettingsBase
+    {
         /// <summary>
         /// This method is only needed because of an issue in DNN as of 8.0.4 where settings don't get updated if they are equal when compared case insensitively
         /// </summary>
@@ -40,29 +40,29 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, newValue);
         }
 
-		public string Mode
-		{
-			get
-			{
+        public string Mode
+        {
+            get
+            {
                 return Settings.GetString(SettingKeys.Mode, "Standard");
-			}
-			set
-			{
+            }
+            set
+            {
                 UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
-			}
-		}
+            }
+        }
 
-		public string Theme
-		{
-			get
-			{
+        public string Theme
+        {
+            get
+            {
                 return Settings.GetString(SettingKeys.Theme, "_legacy");
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
+            }
+        }
 
         public string TimeFormatString
         {
@@ -88,89 +88,89 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-		public int TemplateId
-		{
-			get
-			{
-				return Settings.GetInt(SettingKeys.ForumTemplateId);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
-			}
-		}
+        public int TemplateId
+        {
+            get
+            {
+                return Settings.GetInt(SettingKeys.ForumTemplateId);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
+            }
+        }
 
-		public int PageSize
-		{
-			get
-			{
-				return Settings.GetInt(SettingKeys.PageSize, 25);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
-			}
-		}
+        public int PageSize
+        {
+            get
+            {
+                return Settings.GetInt(SettingKeys.PageSize, 25);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
+            }
+        }
 
-		public int FloodInterval
-		{
-			get
-			{
+        public int FloodInterval
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.FloodInterval);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
+            }
+        }
 
-		public int EditInterval
-		{
-			get
-			{
+        public int EditInterval
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.EditInterval);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
+            }
+        }
 
-		public bool AutoLink
-		{
-			get
-			{
+        public bool AutoLink
+        {
+            get
+            {
                 return Settings.GetBoolean(SettingKeys.EnableAutoLink, true);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
+            }
+        }
 
-		public int DeleteBehavior
-		{
-			get
-			{
+        public int DeleteBehavior
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.DeleteBehavior);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
+            }
+        }
 
-		public int ProfileVisibility
-		{
-			get
-			{
-				return Settings.GetInt(SettingKeys.ProfileVisibility, (int)ProfileVisibilities.Everyone);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
-			}
-		}
+        public int ProfileVisibility
+        {
+            get
+            {
+                return Settings.GetInt(SettingKeys.ProfileVisibility, (int)ProfileVisibilities.Everyone);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
+            }
+        }
 
         public int MessagingType
         {
@@ -196,105 +196,105 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-		public int Signatures
-		{
-			get
-			{
+        public int Signatures
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.AllowSignatures, 1);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
+            }
+        }
 
-		public string UserNameDisplay
-		{
-			get
-			{
-				return Settings.GetString(SettingKeys.UserNameDisplay, "Username");
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
-			}
-		}
+        public string UserNameDisplay
+        {
+            get
+            {
+                return Settings.GetString(SettingKeys.UserNameDisplay, "Username");
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
+            }
+        }
 
-		public bool FriendlyURLs
-		{
-			get
-			{
-				return Settings.GetBoolean(SettingKeys.EnableURLRewriter);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
-			}
-		}
+        public bool FriendlyURLs
+        {
+            get
+            {
+                return Settings.GetBoolean(SettingKeys.EnableURLRewriter);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
+            }
+        }
 
-		public string PrefixURLBase
-		{
-			get
-			{
-				return Settings.GetString(SettingKeys.PrefixURLBase, "forums");
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
-			}
-		}
+        public string PrefixURLBase
+        {
+            get
+            {
+                return Settings.GetString(SettingKeys.PrefixURLBase, "forums");
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
+            }
+        }
 
-		public string PrefixURLTag
-		{
-			get
-			{
-				return Settings.GetString(SettingKeys.PrefixURLTags, "tag");
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
-			}
-		}
+        public string PrefixURLTag
+        {
+            get
+            {
+                return Settings.GetString(SettingKeys.PrefixURLTags, "tag");
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
+            }
+        }
 
-		public string PrefixURLCategory
-		{
-			get
-			{
+        public string PrefixURLCategory
+        {
+            get
+            {
                 return Settings.GetString(SettingKeys.PrefixURLCategories, "category");
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
+            }
+        }
 
-		public string PrefixURLOther
-		{
-			get
-			{
+        public string PrefixURLOther
+        {
+            get
+            {
                 return Settings.GetString(SettingKeys.PrefixURLOther, "views");
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
+            }
+        }
 
-		public bool FullTextSearch
-		{
-			get
-			{
+        public bool FullTextSearch
+        {
+            get
+            {
                 return Settings.GetBoolean(SettingKeys.FullText);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
                 if (Settings.ContainsKey(SettingKeys.FullText))
                     Settings[SettingKeys.FullText] = value.ToString();
                 else
                     Settings.Add(SettingKeys.FullText, value.ToString());
             }
-		}
+        }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public bool MailQueue => true;
@@ -312,124 +312,124 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
         public bool EnablePoints
-		{
-			get
-			{
-				return Settings.GetBoolean(SettingKeys.EnablePoints);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
-			}
-		}
+        {
+            get
+            {
+                return Settings.GetBoolean(SettingKeys.EnablePoints);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
+            }
+        }
 
-		public int TopicPointValue
-		{
-			get
-			{
-				return Settings.GetInt(SettingKeys.TopicPointValue, 1);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
-			}
-		}
+        public int TopicPointValue
+        {
+            get
+            {
+                return Settings.GetInt(SettingKeys.TopicPointValue, 1);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
+            }
+        }
 
-		public int ReplyPointValue
-		{
-			get
-			{
-				return Settings.GetInt(SettingKeys.ReplyPointValue, 1);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
-			}
-		}
+        public int ReplyPointValue
+        {
+            get
+            {
+                return Settings.GetInt(SettingKeys.ReplyPointValue, 1);
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
+            }
+        }
 
-		public int AnswerPointValue
-		{
-			get
-			{
+        public int AnswerPointValue
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.AnswerPointValue, 1);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
+            }
+        }
 
-		public int MarkAsAnswerPointValue
-		{
-			get
-			{
+        public int MarkAsAnswerPointValue
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.MarkAnswerPointValue, 1);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
+            }
+        }
 
-		public int ModPointValue
-		{
-			get
-			{
+        public int ModPointValue
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.ModPointValue, 1);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
+            }
+        }
 
-		public int ForumGroupTemplate
-		{
-			get
-			{
+        public int ForumGroupTemplate
+        {
+            get
+            {
                 return Settings.GetInt("ForumGroupTemplate", -1);
-			}
-			set
-			{
+            }
+            set
+            {
                 UpdateModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
-			}
-		}
+            }
+        }
 
-		public string ForumConfig
-		{
-			get
-			{
-				return Settings.GetString("ForumConfig", string.Empty);
-			}
-			set
-			{
+        public string ForumConfig
+        {
+            get
+            {
+                return Settings.GetString("ForumConfig", string.Empty);
+            }
+            set
+            {
                 UpdateModuleSettingCaseSensitive("ForumConfig", value);
-			}
-		}
+            }
+        }
 
-		public int AvatarHeight
-		{
-			get
-			{
+        public int AvatarHeight
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.AvatarHeight, 48);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
+            }
+        }
 
-		public int AvatarWidth
-		{
-			get
-			{
+        public int AvatarWidth
+        {
+            get
+            {
                 return Settings.GetInt(SettingKeys.AvatarWidth, 48);
-			}
-			set
-			{
-				UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
-			}
-		}
+            }
+            set
+            {
+                UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
+            }
+        }
 
         public bool EnableUsersOnline
         {
@@ -454,6 +454,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
             }
         }
-	}
+    }
 }
 

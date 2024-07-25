@@ -32,100 +32,100 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
-	[DefaultProperty("Text"), ToolboxData("<{0}:UserStats runat=server></{0}:UserStats>")]
-	public class UserStats : WebControl
-	{
+    [DefaultProperty("Text"), ToolboxData("<{0}:UserStats runat=server></{0}:UserStats>")]
+    public class UserStats : WebControl
+    {
 
-		private DisplayTemplate _template;
-		private int _userId = -1;
-		private int _moduleId = -1;
-		public DisplayTemplate Template
-		{
-			get
-			{
-				return _template;
-			}
-			set
-			{
-				_template = value;
-			}
-		}
-		public int UserId
-		{
-			get
-			{
-				return _userId;
-			}
-			set
-			{
-				try
-				{
-					_userId = value;
-				}
-				catch (Exception ex)
-				{
-					_userId = -1;
-				}
+        private DisplayTemplate _template;
+        private int _userId = -1;
+        private int _moduleId = -1;
+        public DisplayTemplate Template
+        {
+            get
+            {
+                return _template;
+            }
+            set
+            {
+                _template = value;
+            }
+        }
+        public int UserId
+        {
+            get
+            {
+                return _userId;
+            }
+            set
+            {
+                try
+                {
+                    _userId = value;
+                }
+                catch (Exception ex)
+                {
+                    _userId = -1;
+                }
 
-			}
-		}
-		public int ModuleId
-		{
-			get
-			{
-				return _moduleId;
-			}
-			set
-			{
-				_moduleId = value;
-			}
-		}
-		protected override void RenderContents(HtmlTextWriter writer)
-		{
-			if (UserId == -1)
-			{
-				return;
-			}
-			try
-			{
-				string output = string.Empty;
+            }
+        }
+        public int ModuleId
+        {
+            get
+            {
+                return _moduleId;
+            }
+            set
+            {
+                _moduleId = value;
+            }
+        }
+        protected override void RenderContents(HtmlTextWriter writer)
+        {
+            if (UserId == -1)
+            {
+                return;
+            }
+            try
+            {
+                string output = string.Empty;
                 PortalSettings ps = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
 
                 DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-				string imagePath = string.Empty;
-				int portalId = ps.PortalId;
-				string tmp = string.Empty;
-				if (Template == null)
-				{
-					tmp = "<span class=\"aslabelsmbold\">[RESX:Posts]:</span> [AF:PROFILE:POSTCOUNT]<br />" + "<span class=\"aslabelsmbold\">[RESX:RankName]:</span> [AF:PROFILE:RANKNAME]<br />" + "<span class=\"aslabelsmbold\">[RESX:RankDisplay]:</span> [AF:PROFILE:RANKDISPLAY] <br />" + "<span class=\"aslabelsmbold\">[RESX:LastUpdate]:</span> [AF:PROFILE:DATELASTACTIVITY:d] <br />" + "<span class=\"aslabelsmbold\">[RESX:MemberSince]:</span> [AF:PROFILE:DATECREATED:d]";
-				}
-				else
-				{
-					tmp = Template.Text;
-				}
-				if (ModuleId == -1)
-				{
-					foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId))
-					{
-						if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
-						{
-							ModuleId = mi.ModuleID;
-							break;
-						}
-					}
-				}
-				output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,UserId));
-				output = Utilities.LocalizeControl(output);
-				writer.Write(output);
-			}
-			catch (Exception ex)
-			{
-				writer.Write(ex.Message);
-			}
+                string imagePath = string.Empty;
+                int portalId = ps.PortalId;
+                string tmp = string.Empty;
+                if (Template == null)
+                {
+                    tmp = "<span class=\"aslabelsmbold\">[RESX:Posts]:</span> [AF:PROFILE:POSTCOUNT]<br />" + "<span class=\"aslabelsmbold\">[RESX:RankName]:</span> [AF:PROFILE:RANKNAME]<br />" + "<span class=\"aslabelsmbold\">[RESX:RankDisplay]:</span> [AF:PROFILE:RANKDISPLAY] <br />" + "<span class=\"aslabelsmbold\">[RESX:LastUpdate]:</span> [AF:PROFILE:DATELASTACTIVITY:d] <br />" + "<span class=\"aslabelsmbold\">[RESX:MemberSince]:</span> [AF:PROFILE:DATECREATED:d]";
+                }
+                else
+                {
+                    tmp = Template.Text;
+                }
+                if (ModuleId == -1)
+                {
+                    foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId))
+                    {
+                        if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
+                        {
+                            ModuleId = mi.ModuleID;
+                            break;
+                        }
+                    }
+                }
+                output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,UserId));
+                output = Utilities.LocalizeControl(output);
+                writer.Write(output);
+            }
+            catch (Exception ex)
+            {
+                writer.Write(ex.Message);
+            }
 
-		}
+        }
 
-	}
+    }
 
 }
 

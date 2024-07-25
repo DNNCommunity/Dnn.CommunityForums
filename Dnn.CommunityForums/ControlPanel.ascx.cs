@@ -41,8 +41,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             IsCallBack = cbShell.IsCallback;
 

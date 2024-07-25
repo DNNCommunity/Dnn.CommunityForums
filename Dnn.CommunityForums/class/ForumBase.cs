@@ -477,8 +477,8 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             // If printmode, simply exit.
             if (Request.QueryString["dnnprintmode"] != null)
@@ -564,6 +564,6 @@ namespace DotNetNuke.Modules.ActiveForums
             Response.Status = "301 Moved Permanently";
             Response.AddHeader("Location", sURL);
             Response.End();
-		}
+        }
     }
 }

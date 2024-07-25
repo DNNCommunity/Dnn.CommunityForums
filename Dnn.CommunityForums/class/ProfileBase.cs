@@ -23,28 +23,28 @@ using System;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
-	public class ProfileBase : SettingsBase
-	{
-		private int _UID = -1;
-	    public UserProfileInfo UserProfile { get; set; }
+    public class ProfileBase : SettingsBase
+    {
+        private int _UID = -1;
+        public UserProfileInfo UserProfile { get; set; }
 
-	    public int UID
-		{
-			get
-			{
-				if (Request.Params[ParamKeys.UserId] != null)
-				{
-					if (SimulateIsNumeric.IsNumeric(Request.Params[ParamKeys.UserId]))
-					{
-						_UID = Convert.ToInt32(Request.Params[ParamKeys.UserId]);
-					}
-				}
-				else
-				{
-					_UID = UserId;
-				}
-				return _UID;
-			}
-		}
+        public int UID
+        {
+            get
+            {
+                if (Request.Params[ParamKeys.UserId] != null)
+                {
+                    if (SimulateIsNumeric.IsNumeric(Request.Params[ParamKeys.UserId]))
+                    {
+                        _UID = Convert.ToInt32(Request.Params[ParamKeys.UserId]);
+                    }
+                }
+                else
+                {
+                    _UID = UserId;
+                }
+                return _UID;
+            }
+        }
     }
 }

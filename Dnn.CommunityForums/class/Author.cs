@@ -22,27 +22,27 @@
 namespace DotNetNuke.Modules.ActiveForums
 {
 #region AuthorInfo
-	public class Author
-	{
+    public class Author
+    {
 #region Private Members
 
-	    #endregion
+        #endregion
 #region Public Properties
 
-	    public int AuthorId { get; set; }
+        public int AuthorId { get; set; }
 
-	    public string FirstName { get; set; }
+        public string FirstName { get; set; }
 
-	    public string LastName { get; set; }
+        public string LastName { get; set; }
 
-	    public string DisplayName { get; set; }
+        public string DisplayName { get; set; }
 
-	    public string Username { get; set; }
+        public string Username { get; set; }
 
-	    public string Email { get; set; }
+        public string Email { get; set; }
 
-	    #endregion
-	}
+        #endregion
+    }
 #endregion
 
 }

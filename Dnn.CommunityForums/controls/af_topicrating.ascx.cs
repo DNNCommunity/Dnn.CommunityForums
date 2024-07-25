@@ -81,8 +81,8 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
             RenderRating();
             string sRating = "function afchangerate(rate){var rd = document.getElementById('ratingdiv');rd.className=rate;};";

@@ -50,8 +50,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private DateTime LastBuildDate = DateTime.MinValue;
         private int offSet = 0;
         protected override void OnLoad(EventArgs e)
-		{
-			base.OnLoad(e);
+        {
+            base.OnLoad(e);
 
 
             //Put user code to initialize the page here
@@ -342,8 +342,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
-		{
-			base.OnInit(e);
+        {
+            base.OnInit(e);
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.

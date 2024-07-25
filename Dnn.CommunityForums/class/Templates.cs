@@ -28,57 +28,57 @@ using System.Web;
 namespace DotNetNuke.Modules.ActiveForums
 {
 #region Templates
-	public class Templates
-	{
-		public enum TemplateTypes: int
-		{
-			All, //0
-			System, //1
-			ForumView, //2
-			TopicView, //3
-			TopicsView, //4
-			TopicForm, //5
-			ReplyForm, //6
-			QuickReplyForm, //7
-			Email, //8
-			Profile, //9
-			ModEmail, //10
-			PostInfo //11
-		}
+    public class Templates
+    {
+        public enum TemplateTypes: int
+        {
+            All, //0
+            System, //1
+            ForumView, //2
+            TopicView, //3
+            TopicsView, //4
+            TopicForm, //5
+            ReplyForm, //6
+            QuickReplyForm, //7
+            Email, //8
+            Profile, //9
+            ModEmail, //10
+            PostInfo //11
+        }
 
-	}
+    }
 #endregion
 #region TemplateInfo
-	public class TemplateInfo
-	{
+    public class TemplateInfo
+    {
 #region Private Members
 
-	    #endregion
+        #endregion
 #region Public Properties
 
-	    public int TemplateId { get; set; }
+        public int TemplateId { get; set; }
 
-	    public int PortalId { get; set; }
+        public int PortalId { get; set; }
 
-	    public int ModuleId { get; set; }
+        public int ModuleId { get; set; }
 
-	    public Templates.TemplateTypes TemplateType { get; set; }
+        public Templates.TemplateTypes TemplateType { get; set; }
 
-	    public bool IsSystem { get; set; }
+        public bool IsSystem { get; set; }
 
-	    public string Subject { get; set; }
+        public string Subject { get; set; }
 
-	    public string Title { get; set; }
+        public string Title { get; set; }
 
-	    public string Template { get; set; }
+        public string Template { get; set; }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
         public string TemplateHTML { get; set; }
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
         public string TemplateText { get; set; }
 
-	    public DateTime DateCreated { get; set; }
+        public DateTime DateCreated { get; set; }
 
-	    public DateTime DateUpdated { get; set; }
+        public DateTime DateUpdated { get; set; }
         public string FileName { get; set; }
 
         #endregion
@@ -86,14 +86,14 @@ namespace DotNetNuke.Modules.ActiveForums
     }
 #endregion
 #region Template Controller
-	public class TemplateController
-	{
+    public class TemplateController
+    {
 #region Public Methods
-		//'<summary>
-		//'Function to save template.</summary>
-		//'<param name="info">TemplateInfo object</param>
-		public int Template_Save(TemplateInfo templateInfo)
-		{
+        //'<summary>
+        //'Function to save template.</summary>
+        //'<param name="info">TemplateInfo object</param>
+        public int Template_Save(TemplateInfo templateInfo)
+        {
             // save updated template to database; will return TemplateId which is critical if new template
             int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
             // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
@@ -124,22 +124,22 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception exc)
             {
-				Exceptions.LogException(exc);
+                Exceptions.LogException(exc);
             }
 
             return TemplateId;
         }
-		public List<TemplateInfo> Template_List(int PortalId, int ModuleId)
-		{
-			return GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
-		}
-		public List<TemplateInfo> Template_List(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
-		{
-			return GetTemplateList(PortalId, ModuleId, TemplateType);
-		}
+        public List<TemplateInfo> Template_List(int PortalId, int ModuleId)
+        {
+            return GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
+        }
+        public List<TemplateInfo> Template_List(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
+        {
+            return GetTemplateList(PortalId, ModuleId, TemplateType);
+        }
 
-		public void Template_Delete(int TemplateId, int PortalId, int ModuleId)
-		{
+        public void Template_Delete(int TemplateId, int PortalId, int ModuleId)
+        {
 
             TemplateInfo templateInfo = Template_Get(TemplateId);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
             ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
-			return ti;
+            return ti;
         }
         public TemplateInfo Template_Get(int TemplateId)
         {
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Private Methods
         private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
-		{
+        {
             var tl = new List<TemplateInfo>();
             try
             {
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
             catch (Exception ex)
-			{
+            {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
             return tl;
