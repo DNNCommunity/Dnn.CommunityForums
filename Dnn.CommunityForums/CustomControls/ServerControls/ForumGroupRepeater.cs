@@ -49,12 +49,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _repeatDirection;
+                return this._repeatDirection;
             }
 
             set
             {
-                _repeatDirection = value;
+                this._repeatDirection = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _repeatColumns;
+                return this._repeatColumns;
             }
 
             set
             {
-                _repeatColumns = value;
+                this._repeatColumns = value;
             }
         }
 
@@ -76,12 +76,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _headerTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                _headerTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -90,12 +90,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _footerTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                _footerTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -104,12 +104,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _noResults;
+                return this._noResults;
             }
 
             set
             {
-                _noResults = value;
+                this._noResults = value;
             }
         }
 
@@ -124,24 +124,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _toggleBehavior;
+                return this._toggleBehavior;
             }
 
             set
             {
-                _toggleBehavior = value;
+                this._toggleBehavior = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
             //writer.Write(Text)
-            writer.Write(HeaderTemplate);
+            writer.Write(this.HeaderTemplate);
             int i = 0;
-            if (ForumData != null)
+            if (this.ForumData != null)
             {
-                string tmp = DisplayTemplate;
-                System.Xml.XmlNodeList xGroups = ForumData.SelectNodes("//groups/group");
+                string tmp = this.DisplayTemplate;
+                System.Xml.XmlNodeList xGroups = this.ForumData.SelectNodes("//groups/group");
                 ForumDisplay fd = null;
                 foreach (System.Xml.XmlNode xNode in xGroups)
                 {
@@ -152,11 +152,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     fd.ControlConfig = this.ControlConfig;
                     fd.ModuleConfiguration = this.ModuleConfiguration;
                     //fd.ForumData = ForumData
-                    if (i == 0 && ToggleBehavior == 1)
+                    if (i == 0 && this.ToggleBehavior == 1)
                     {
                         fd.ToggleBehavior = 0;
                     }
-                    else if (i > 0 && ToggleBehavior == 1)
+                    else if (i > 0 && this.ToggleBehavior == 1)
                     {
                         fd.ToggleBehavior = 1;
                     }
@@ -168,10 +168,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                writer.Write(NoResultsTemplate);
+                writer.Write(this.NoResultsTemplate);
             }
 
-            writer.Write(FooterTemplate);
+            writer.Write(this.FooterTemplate);
         }
 
         protected override void OnLoad(EventArgs e)

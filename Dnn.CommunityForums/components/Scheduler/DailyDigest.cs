@@ -38,16 +38,16 @@ namespace DotNetNuke.Modules.ActiveForums
             {
 
                 Subscriptions.SendSubscriptions(SubscriptionTypes.DailyDigest, DateTime.UtcNow);
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
-                ScheduleHistoryItem.AddLogNote("Daily Digest Complete");
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
+                this.ScheduleHistoryItem.AddLogNote("Daily Digest Complete");
 
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote("Daily Digest Failed: " + ex.ToString());
-                Errored(ref ex);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote("Daily Digest Failed: " + ex.ToString());
+                this.Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }

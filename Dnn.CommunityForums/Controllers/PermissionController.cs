@@ -57,13 +57,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Insert(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             base.Insert(permissionInfo);
-            return GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
+            return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
 
         internal new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Update(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo permissionInfo)
         {
             base.Update(permissionInfo);
-            return GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
+            return this.GetById(permissionInfo.PermissionsId, permissionInfo.ModuleId);
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo GetById(int permissionId, int moduleId)
@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ModPin = adminRoleId,
                 ModuleId = moduleId
             };
-            Insert(permissionInfo);
+            this.Insert(permissionInfo);
             return permissionInfo;
         }
 
@@ -377,19 +377,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public string GetPermSet(int ModuleId, int PermissionsId, string requestedAccess)
         {
-            var permission = GetById(PermissionsId, ModuleId);
-            return GetRolesForRequestedAccess(permission, requestedAccess);
+            var permission = this.GetById(PermissionsId, ModuleId);
+            return this.GetRolesForRequestedAccess(permission, requestedAccess);
         }
 
         public string SavePermSet(int ModuleId, int PermissionsId, string requestedAccess, string PermSet)
         {
-            var permission = GetById(PermissionsId, ModuleId);
+            var permission = this.GetById(PermissionsId, ModuleId);
             if (permission != null)
             {
-                SetRolesForRequestedAccess(permission, requestedAccess, PermSet);
+                this.SetRolesForRequestedAccess(permission, requestedAccess, PermSet);
             }
 
-            return GetPermSet(ModuleId, PermissionsId, requestedAccess);
+            return this.GetPermSet(ModuleId, PermissionsId, requestedAccess);
         }
 
         public static void AddObjectToPermissions(int ModuleId, int PermissionsId, string requestedAccess, string objectId, int objectType)
@@ -770,7 +770,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         break;
                 }
 
-                Update(permission);
+                this.Update(permission);
             }
 ;
         }

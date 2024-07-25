@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     {
         public IDataReader ForumContent_List(int PortalId, int ModuleId, int ForumGroupId, int ForumId, int ParentForumId)
         {
-            return SqlHelper.ExecuteReader(connectionString, dbPrefix + "ForumContent_List", PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "ForumContent_List", PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId);
         }
     }
 }

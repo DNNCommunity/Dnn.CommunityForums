@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
 
-                return _debug;
+                return this._debug;
             }
 
             set
             {
-                _debug = value;
+                this._debug = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _refreshInterval;
+                return this._refreshInterval;
             }
 
             set
             {
-                _refreshInterval = value;
+                this._refreshInterval = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _parameter;
+                return this._parameter;
             }
 
             set
             {
-                _parameter = value;
+                this._parameter = value;
             }
         }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                string s = Convert.ToString(ViewState["OnCallbackComplete"]);
+                string s = Convert.ToString(this.ViewState["OnCallbackComplete"]);
                 if (s == null)
                 {
                     return "null";
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             set
             {
-                ViewState["OnCallbackComplete"] = value;
+                this.ViewState["OnCallbackComplete"] = value;
             }
         }
 
@@ -141,13 +141,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
-                return _content;
+                this.EnsureChildControls();
+                return this._content;
             }
 
             set
             {
-                _content = value;
+                this._content = value;
             }
         }
 
@@ -156,12 +156,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _loadingtemplate;
+                return this._loadingtemplate;
             }
 
             set
             {
-                _loadingtemplate = value;
+                this._loadingtemplate = value;
             }
         }
 
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
@@ -179,25 +179,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (Context != null && Context.Request != null)
+                if (this.Context != null && this.Context.Request != null)
                 {
-                    string sId = ClientID;
-                    if (!string.IsNullOrEmpty(ForceId))
+                    string sId = this.ClientID;
+                    if (!string.IsNullOrEmpty(this.ForceId))
                     {
-                        sId = ForceId;
+                        sId = this.ForceId;
                     }
 
-                    if (!(Context.Request.Params[string.Format("amCB_{0}", sId)] == null))
+                    if (!(this.Context.Request.Params[string.Format("amCB_{0}", sId)] == null))
                     {
-                        _isCallback = true;
+                        this._isCallback = true;
                     }
                     else
                     {
-                        _isCallback = false;
+                        this._isCallback = false;
                     }
                 }
 
-                return _isCallback;
+                return this._isCallback;
             }
         }
 
@@ -205,12 +205,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _resourceFile;
+                return this._resourceFile;
             }
 
             set
             {
-                _resourceFile = value;
+                this._resourceFile = value;
             }
         }
 
@@ -218,12 +218,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PostURL;
+                return this._PostURL;
             }
 
             set
             {
-                _PostURL = value;
+                this._PostURL = value;
             }
         }
 
@@ -233,12 +233,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _forceId;
+                return this._forceId;
             }
 
             set
             {
-                _forceId = value;
+                this._forceId = value;
             }
         }
 
@@ -250,15 +250,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (Context == null || Page == null)
+            if (this.Context == null || this.Page == null)
             {
                 return;
             }
 
-            if (Content != null)
+            if (this.Content != null)
             {
                 //Try
-                this.Controls.Add(Content);
+                this.Controls.Add(this.Content);
                 //Catch ex As Exception
 
                 //End Try
@@ -268,7 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter output)
         {
-            if (Enabled)
+            if (this.Enabled)
             {
                 //Dim sID As String = Me.ClientID
                 //Dim args() As String = GetArgs()
@@ -286,12 +286,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //End If
                 //output.RenderEndTag()
                 string sID = this.ClientID;
-                if (!string.IsNullOrEmpty(ForceId))
+                if (!string.IsNullOrEmpty(this.ForceId))
                 {
-                    sID = ForceId;
+                    sID = this.ForceId;
                 }
 
-                string[] args = GetArgs();
+                string[] args = this.GetArgs();
                 if (args != null)
                 {
                     if (args.Length > 0)
@@ -302,9 +302,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 output = new HtmlTextWriter(output, string.Empty);
-                if (string.IsNullOrEmpty(ForceId))
+                if (string.IsNullOrEmpty(this.ForceId))
                 {
-                    AddAttributesToRender(output);
+                    this.AddAttributesToRender(output);
                 }
                 else
                 {
@@ -314,15 +314,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 // Me.ID = sID
 
                 output.RenderBeginTag(HtmlTextWriterTag.Div);
-                if (Content != null)
+                if (this.Content != null)
                 {
-                    Content.RenderControl(output);
+                    this.Content.RenderControl(output);
                 }
 
                 output.RenderEndTag();
-                if (Page != null & Context != null & Context.Request != null & !(Context.Request.Form["amCB_" + sID] == null) & !(Context.Request.Form["amCB_" + sID] == ""))
+                if (this.Page != null & this.Context != null & this.Context.Request != null & !(this.Context.Request.Form["amCB_" + sID] == null) & !(this.Context.Request.Form["amCB_" + sID] == ""))
                 {
-                    this.OnCallback(new CallBackEventArgs(output, Context.Request.Form["amCB_" + sID]));
+                    this.OnCallback(new CallBackEventArgs(output, this.Context.Request.Form["amCB_" + sID]));
                 }
 
                 if (HttpContext.Current.Request.Params["amcbdebug"] == "true" || HttpContext.Current.Request.Params["amdebug"] == "true")
@@ -332,19 +332,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 StringBuilder str = new StringBuilder();
                 str.Append("<script type=\"text/javascript\">");
-                if (!string.IsNullOrEmpty(OnCallbackComplete))
+                if (!string.IsNullOrEmpty(this.OnCallbackComplete))
                 {
-                    str.Append("window.objCB.prototype.CBC_" + sID + "=" + OnCallbackComplete + ";");
+                    str.Append("window.objCB.prototype.CBC_" + sID + "=" + this.OnCallbackComplete + ";");
                 }
 
-                if (LoadingTemplate != null)
+                if (this.LoadingTemplate != null)
                 {
-                    str.Append("window.objCB.prototype.LT_" + sID + "='" + LoadingTemplate.Text.Replace("\\r", "").Replace("'", "\\\\'").Replace("\\n", "").Replace("\n", "").Replace("\r", "") + "';");
+                    str.Append("window.objCB.prototype.LT_" + sID + "='" + this.LoadingTemplate.Text.Replace("\\r", "").Replace("'", "\\\\'").Replace("\\n", "").Replace("\n", "").Replace("\r", "") + "';");
                 }
 
                 str.AppendFormat("window.{0}=new objCB('{0}');", sID);
-                str.Append(sID + ".Debug=" + Debug.ToString().ToLower() + ";");
-                string URL = PostURL;
+                str.Append(sID + ".Debug=" + this.Debug.ToString().ToLower() + ";");
+                string URL = this.PostURL;
                 if (URL == "")
                 {
                     //  URL = GetResponseUrl(Context)
@@ -355,14 +355,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //End If
                 if (!string.IsNullOrEmpty(URL))
                 {
-                    URL = XSSFilter(URL);
+                    URL = this.XSSFilter(URL);
                     str.Append(sID + ".Location='" + URL.Replace("'", "\\\\'").Replace(";", string.Empty) + "';");
                 }
 
-                str.Append(sID + ".Parameter='" + Parameter + "';");
-                if (RefreshInterval > 0)
+                str.Append(sID + ".Parameter='" + this.Parameter + "';");
+                if (this.RefreshInterval > 0)
                 {
-                    str.AppendFormat("setInterval('{0}.Callback({0}.Parameter)',{1});", sID, RefreshInterval);
+                    str.AppendFormat("setInterval('{0}.Callback({0}.Parameter)',{1});", sID, this.RefreshInterval);
                 }
 
                 str.Append("</script>");
@@ -383,11 +383,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void CreateChildControls()
         {
-            if (Content != null)
+            if (this.Content != null)
             {
                 //Try
-                Controls.Clear();
-                this.Controls.Add(Content);
+                this.Controls.Clear();
+                this.Controls.Add(this.Content);
                 //Catch ex As Exception
 
                 //End Try
@@ -401,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                if (_validState == 1)
+                if (this._validState == 1)
                 {
                     using (StringWriter strWriter = new StringWriter())
                     {
@@ -412,23 +412,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             oWriter.Close();
                         }
 
-                        Context.Response.Clear();
-                        Context.Response.ContentType = "text/xml";
-                        Context.Response.Write("<CallbackData><![CDATA[");
+                        this.Context.Response.Clear();
+                        this.Context.Response.ContentType = "text/xml";
+                        this.Context.Response.Write("<CallbackData><![CDATA[");
                         string sTemp = strWriter.ToString();
                         sTemp = sTemp.Replace("//<![CDATA[", string.Empty);
                         sTemp = sTemp.Replace("//]]>", string.Empty);
-                        Context.Response.Write(sTemp);
+                        this.Context.Response.Write(sTemp);
                     }
 
-                    Context.Response.Write("]]></CallbackData>");
+                    this.Context.Response.Write("]]></CallbackData>");
                     //Context.Response.Flush()
 
-                    Context.Response.End();
+                    this.Context.Response.End();
 
                     //HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
-                else if (_validState == -1)
+                else if (this._validState == -1)
                 {
                     throw new Exception("Incomplete Request");
                 }
@@ -456,10 +456,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (!(ex is System.Threading.ThreadAbortException))
                 {
-                    Context.Response.Clear();
-                    Context.Response.ContentType = "text/xml";
-                    Context.Response.Write("<CallbackError><![CDATA[" + ex.ToString() + "]]></CallbackError>");
-                    Context.Response.End();
+                    this.Context.Response.Clear();
+                    this.Context.Response.ContentType = "text/xml";
+                    this.Context.Response.Write("<CallbackError><![CDATA[" + ex.ToString() + "]]></CallbackError>");
+                    this.Context.Response.End();
                     //HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
             }
@@ -485,15 +485,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         //End Function
         private string[] GetArgs()
         {
-            string sId = ClientID;
-            if (!string.IsNullOrEmpty(ForceId))
+            string sId = this.ClientID;
+            if (!string.IsNullOrEmpty(this.ForceId))
             {
-                sId = ForceId;
+                sId = this.ForceId;
             }
 
             string idname = string.Format("amCB_{0}", sId);
             string[] args = null;
-            if (Context != null)
+            if (this.Context != null)
             {
                 string cName = "amcit";
 
@@ -503,17 +503,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string token = HttpContext.Current.Request.Cookies[cName].Value;
                     string tokenname = "hidreq";
                     string tokenvalue = string.Empty;
-                    if (Context.Request.Params[tokenname] != null)
+                    if (this.Context.Request.Params[tokenname] != null)
                     {
-                        tokenvalue = Context.Request.Params[tokenname];
+                        tokenvalue = this.Context.Request.Params[tokenname];
                     }
 
-                    args = Context.Request.Params.GetValues(idname);
+                    args = this.Context.Request.Params.GetValues(idname);
                     if (args != null)
                     {
                         if (string.IsNullOrEmpty(tokenvalue))
                         {
-                            _validState = -1;
+                            this._validState = -1;
                             //Throw New Exception("Error validating request.")
                         }
                         else
@@ -523,11 +523,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         if (!(token == tokenvalue))
                         {
-                            _validState = -1;
+                            this._validState = -1;
                         }
                         else
                         {
-                            _validState = 1;
+                            this._validState = 1;
                             for (int x = 0; x <= (args.Length - 1); x++)
                             {
                                 args[x] = args[x].Replace("!AM#", "&").Replace("#AM!", "=").Replace("#MA!", "+");
@@ -543,9 +543,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void OnCallback(CallBackEventArgs e)
         {
-            if (CallbackEvent != null)
+            if (this.CallbackEvent != null)
             {
-                CallbackEvent(this, e);
+                this.CallbackEvent(this, e);
             }
         }
 
@@ -553,7 +553,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
             {
                 bool cbloaded = false;
                 if (HttpContext.Current.Items["cbld"] != null)
@@ -561,7 +561,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     cbloaded = bool.Parse(HttpContext.Current.Items["cbld"].ToString());
                 }
 
-                if (!this.IsCallback && !Page.IsPostBack)
+                if (!this.IsCallback && !this.Page.IsPostBack)
                 {
                     if (cbloaded == false && HttpContext.Current.Request.Params["hidreq"] == null)
                     {
@@ -583,12 +583,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         myCookie.Expires = DateTime.UtcNow.AddHours(2);
                         myCookie.Value = ticket;
                         HttpContext.Current.Response.Cookies.Add(myCookie);
-                        Page.ClientScript.RegisterHiddenField("amcbid", ticket);
+                        this.Page.ClientScript.RegisterHiddenField("amcbid", ticket);
                         HttpContext.Current.Items.Add("cbld", "True");
                     }
                 }
 
-                Page.ClientScript.RegisterClientScriptInclude("AMCallback", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMCallback", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
             }
         }
         #endregion
@@ -605,13 +605,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         internal CallBackEventArgs(HtmlTextWriter _writer)
         {
-            Output = _writer;
+            this.Output = _writer;
         }
 
         internal CallBackEventArgs(HtmlTextWriter _writer, string sParam)
         {
-            Output = _writer;
-            Parameter = sParam;
+            this.Output = _writer;
+            this.Parameter = sParam;
         }
     }
 

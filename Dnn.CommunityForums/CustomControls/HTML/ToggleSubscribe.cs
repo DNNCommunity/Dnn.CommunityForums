@@ -48,10 +48,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         [Obsolete("Deprecated in Community Forums. Removing in 09.00.00. Use ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)")]
         public ToggleSubscribe(int m, int f, int t)
         {
-            ModuleId = -1;
-            ToggleMode = m;
-            ForumId = f;
-            TopicId = t;
+            this.ModuleId = -1;
+            this.ToggleMode = m;
+            this.ForumId = f;
+            this.TopicId = t;
 
         }
 
@@ -67,30 +67,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Render()
         {
             StringBuilder sb = new StringBuilder();
-            if (DisplayMode == 0)
+            if (this.DisplayMode == 0)
             {
                 sb.Append("<span class=\"afnormal\">");
                 sb.Append("<input id=\"amaf-chk-subs\" class=\"amaf-chk-subs\" type=\"checkbox\" ");
-                if (Checked)
+                if (this.Checked)
                 {
                     sb.Append("checked=\"checked\" ");
                 }
 
-                if (ToggleMode == 0)
+                if (this.ToggleMode == 0)
                 {
-                    sb.Append(" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ");\" />");
+                    sb.Append(" onclick=\"amaf_forumSubscribe(" + this.ModuleId + "," + this.ForumId + ");\" />");
                 }
                 else
                 {
-                    sb.Append(" onclick=\"amaf_topicSubscribe(" + ModuleId + "," + ForumId + "," + TopicId + ");\" />");
+                    sb.Append(" onclick=\"amaf_topicSubscribe(" + this.ModuleId + "," + this.ForumId + "," + this.TopicId + ");\" />");
                 }
 
-                sb.Append("<label for=\"amaf-chk-subs\">" + Text + "</label>");
+                sb.Append("<label for=\"amaf-chk-subs\">" + this.Text + "</label>");
                 sb.Append("</span>");
             }
             else
             {
-                sb.Append("<img src=\"" + ImageURL + "\" border=\"0\" alt=\"" + Text + "\" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ", " + UserId + ");\" id=\"amaf-sub-" + ForumId + "\" />");
+                sb.Append("<img src=\"" + this.ImageURL + "\" border=\"0\" alt=\"" + this.Text + "\" onclick=\"amaf_forumSubscribe(" + this.ModuleId + "," + this.ForumId + ", " + this.UserId + ");\" id=\"amaf-sub-" + this.ForumId + "\" />");
             }
 
             return sb.ToString();

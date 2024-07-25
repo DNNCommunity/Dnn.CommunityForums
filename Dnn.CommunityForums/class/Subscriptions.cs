@@ -327,7 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public WeeklyDigest(DotNetNuke.Services.Scheduling.ScheduleHistoryItem objScheduleHistoryItem) : base()
         {
-            ScheduleHistoryItem = objScheduleHistoryItem;
+            this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -335,16 +335,16 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 Subscriptions.SendSubscriptions(SubscriptionTypes.WeeklyDigest, GetStartOfWeek(DateTime.UtcNow.AddDays(-1)));
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
-                ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
+                this.ScheduleHistoryItem.AddLogNote("Weekly Digest Complete");
 
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Weekly Digest Failed:", ex));
-                Errored(ref ex);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote(string.Concat("Weekly Digest Failed:", ex));
+                this.Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }

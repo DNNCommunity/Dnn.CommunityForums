@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         /// <param name="permissionNeeded"></param>
         public ForumsAuthorizeAttribute(SecureActions permissionNeeded)
         {
-            PermissionNeeded = permissionNeeded;
+            this.PermissionNeeded = permissionNeeded;
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     ModuleInfo moduleInfo = context.ActionContext.Request.FindModuleInfo();
                     UserInfo userInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings().UserInfo;
                     int moduleId = DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(moduleInfo.ModuleID, moduleInfo.TabID);
-                    return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, PermissionNeeded, userInfo);
+                    return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, this.PermissionNeeded, userInfo);
                 }
             }
 

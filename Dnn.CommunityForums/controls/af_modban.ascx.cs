@@ -28,8 +28,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
             this.LocalResourceFile = "~/DesktopModules/ActiveForums/App_LocalResources/af_modban.ascx.resx";
-            btnBan.Click += new System.EventHandler(btnBan_Click);
-            btnCancel.Click += new System.EventHandler(btnCancel_Click);
+            this.btnBan.Click += new System.EventHandler(this.btnBan_Click);
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -37,9 +37,9 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
             try
             {
-                if (!Request.IsAuthenticated)
+                if (!this.Request.IsAuthenticated)
                 {
-                    Response.Redirect(Utilities.NavigateURL(TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
                 }
             }
             catch (Exception ex)
@@ -54,28 +54,28 @@ namespace DotNetNuke.Modules.ActiveForums
             HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = html.Replace("[AF:LINK:FORUMMAIN]", "<a href=\"" + Utilities.NavigateURL(TabId) + "\">[RESX:FORUMS]</a>");
-            html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + Utilities.NavigateURL(TabId, "", ParamKeys.GroupId + "=" + ForumInfo.ForumGroupId) + "\">" + ForumInfo.GroupName + "</a>");
-            html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>");
+            html = html.Replace("[AF:LINK:FORUMMAIN]", "<a href=\"" + Utilities.NavigateURL(this.TabId) + "\">[RESX:FORUMS]</a>");
+            html = html.Replace("[AF:LINK:FORUMGROUP]", "<a href=\"" + Utilities.NavigateURL(this.TabId, "", ParamKeys.GroupId + "=" + this.ForumInfo.ForumGroupId) + "\">" + this.ForumInfo.GroupName + "</a>");
+            html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + this.ForumInfo.ForumName + "</a>");
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {
-            Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }));
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }));
         }
 
         private void btnBan_Click(object sender, System.EventArgs e)
         {
-            if (!Request.IsAuthenticated)
+            if (!this.Request.IsAuthenticated)
             {
-                Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }));
+                this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId }));
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId:PortalId, ModuleId:ForumModuleId, ModuleTitle: ModuleContext.Configuration.ModuleTitle, TabId:TabId, ForumId:ForumId, TopicId: TopicId, ReplyId:ReplyId, BannedBy: UserInfo, AuthorId: AuthorId);
-                Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ReplyId > 0 ? ParamKeys.TopicId + "=" + TopicId : string.Empty, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.UserBanned + (SocialGroupId > 0 ? "&" + Literals.GroupId + "=" + SocialGroupId : string.Empty) }));
+                DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId:this.PortalId, ModuleId:this.ForumModuleId, ModuleTitle: this.ModuleContext.Configuration.ModuleTitle, TabId:this.TabId, ForumId:this.ForumId, TopicId: this.TopicId, ReplyId:this.ReplyId, BannedBy: this.UserInfo, AuthorId: this.AuthorId);
+                this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, this.ReplyId > 0 ? ParamKeys.TopicId + "=" + this.TopicId : string.Empty, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.UserBanned + (this.SocialGroupId > 0 ? "&" + Literals.GroupId + "=" + this.SocialGroupId : string.Empty) }));
             }
         }
     }

@@ -37,26 +37,26 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbShell.CallbackEvent += cbShell_Callback;
-            cbModal.CallbackEvent += cbModal_Callback;
+            this.cbShell.CallbackEvent += this.cbShell_Callback;
+            this.cbModal.CallbackEvent += this.cbModal_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            IsCallBack = cbShell.IsCallback;
+            this.IsCallBack = this.cbShell.IsCallback;
 
-            btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(TabId) + "';";
-            cbModal.LoadingTemplate = GetLoadingTemplateSmall();
-            Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).ModuleSettings;
+            this.btnReturn.ClientSideScript = "window.location.href = '" + Utilities.NavigateURL(this.TabId) + "';";
+            this.cbModal.LoadingTemplate = this.GetLoadingTemplateSmall();
+            Hashtable Settings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ModuleId, tabId: this.TabId, ignoreCache: false).ModuleSettings;
             if (Convert.ToBoolean(Settings["AFINSTALLED"]) == false)
             {
                 try
                 {
                     var fc = new ForumsConfig();
-                    bool configComplete = fc.ForumsInit(PortalId, ModuleId);
-                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", configComplete.ToString());
+                    bool configComplete = fc.ForumsInit(this.PortalId, this.ModuleId);
+                    DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", configComplete.ToString());
                 }
                 catch (Exception ex)
                 {
@@ -64,31 +64,31 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            ClientResourceManager.RegisterStyleSheet(Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
-            ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/themes/", MainSettings.Theme, "/jquery-ui.min.css"));
-            ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
+            ClientResourceManager.RegisterStyleSheet(this.Page, "~/DesktopModules/ActiveForums/ControlPanel.css");
+            ClientResourceManager.RegisterStyleSheet(this.Page, string.Concat("~/DesktopModules/ActiveForums/themes/", this.MainSettings.Theme, "/jquery-ui.min.css"));
+            ClientResourceManager.RegisterStyleSheet(this.Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
 
-            lblProd.Visible = true;
-            lblCopy.Visible = true;
+            this.lblProd.Visible = true;
+            this.lblCopy.Visible = true;
             //TODO: this should be resources instead of harcoded text?
-            lblProd.Text = string.Concat("DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
-            lblCopy.Text = string.Concat("&copy; ", DateTime.UtcNow.Year, " DNN Community");
+            this.lblProd.Text = string.Concat("DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version);
+            this.lblCopy.Text = string.Concat("&copy; ", DateTime.UtcNow.Year, " DNN Community");
 
             try
             {
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    GetControl(CurrentView, Params, IsCallBack);
+                    this.GetControl(this.CurrentView, this.Params, this.IsCallBack);
                 }
 
             }
             catch (Exception ex)
             {
 
-                if (Request.QueryString["cptry"] == null)
+                if (this.Request.QueryString["cptry"] == null)
                 {
-                    string sURL = EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
-                    Response.Redirect(sURL);
+                    string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
+                    this.Response.Redirect(sURL);
                 }
                 else
                 {
@@ -96,21 +96,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/json2009.min.js", 101);
-            ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/jquery.history.js", 102);
-            ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/afadmin.js", 103);
-            ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/scripts/jquery.listreorder.js", 104);
-            ClientResourceManager.RegisterScript(Page, "~/desktopmodules/activeforums/active/amlib.js", 105);
+            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/json2009.min.js", 101);
+            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/jquery.history.js", 102);
+            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/afadmin.js", 103);
+            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/scripts/jquery.listreorder.js", 104);
+            ClientResourceManager.RegisterScript(this.Page, "~/desktopmodules/activeforums/active/amlib.js", 105);
 
             string lang = "en-US";
-            if (Request.QueryString["language"] != null)
+            if (this.Request.QueryString["language"] != null)
             {
-                lang = Request.QueryString["language"];
+                lang = this.Request.QueryString["language"];
             }
 
             if (string.IsNullOrEmpty(lang))
             {
-                lang = PortalSettings.DefaultLanguage;
+                lang = this.PortalSettings.DefaultLanguage;
             }
 
             if (string.IsNullOrEmpty(lang))
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 lang = "en-US";
             }
 
-            string adminHandler = VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/handlers/adminhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
+            string adminHandler = VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/handlers/adminhelper.ashx") + "?TabId=" + this.TabId.ToString() + "&PortalId=" + this.PortalId.ToString() + "&moduleid=" + this.ModuleId + "&language=" + lang;
             var sb = new StringBuilder();
             sb.AppendLine("var asScriptPath = '" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/scripts/") + "';");
             sb.AppendFormat("var afAdminHandlerURL = '{0}';", adminHandler);
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sLoadImg = "var afSpinLg = new Image();afSpinLg.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner-lg.gif") + "';";
             sLoadImg += "var afSpin = new Image();afSpin.src='" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/images/spinner.gif") + "';";
             sb.AppendLine(sLoadImg);
-            Page.ClientScript.RegisterStartupScript(Page.GetType(), "afscripts", sb.ToString(), true);
+            this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "afscripts", sb.ToString(), true);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
@@ -143,22 +143,22 @@ namespace DotNetNuke.Modules.ActiveForums
                     sOptions = e.Parameters[1];
                 }
 
-                GetControl(e.Parameters[0], sOptions, true);
+                this.GetControl(e.Parameters[0], sOptions, true);
                 if (e.Parameters.Length != 3)
                 {
                     var stringWriter = new System.IO.StringWriter();
                     var htmlWriter = new HtmlTextWriter(stringWriter);
-                    plhControlPanel.RenderControl(e.Output);
+                    this.plhControlPanel.RenderControl(e.Output);
                 }
 
             }
             catch (Exception ex)
             {
 
-                if (Request.QueryString["cptry"] == null)
+                if (this.Request.QueryString["cptry"] == null)
                 {
-                    string sURL = EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
-                    Response.Redirect(sURL);
+                    string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
+                    this.Response.Redirect(sURL);
                 }
                 else
                 {
@@ -173,18 +173,18 @@ namespace DotNetNuke.Modules.ActiveForums
             switch (e.Parameters[0].ToLowerInvariant())
             {
                 case "load":
-                    plhModal.Controls.Clear();
+                    this.plhModal.Controls.Clear();
                     string ctlPath = string.Empty;
                     string ctrl = e.Parameters[1].ToLowerInvariant();
                     string ctlParams = e.Parameters[2].ToLowerInvariant();
-                    LoadModal(ctrl, ctlParams);
+                    this.LoadModal(ctrl, ctlParams);
                     break;
                 case "clear":
-                    plhModal.Controls.Clear();
+                    this.plhModal.Controls.Clear();
                     break;
             }
 
-            plhModal.RenderControl(e.Output);
+            this.plhModal.RenderControl(e.Output);
         }
 
         #endregion
@@ -193,40 +193,40 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                plhControlPanel.Controls.Clear();
+                this.plhControlPanel.Controls.Clear();
                 string ctlPath;
                 if (view == "undefined")
                 {
                     view = "home";
                 }
 
-                CurrentView = view;
+                this.CurrentView = view;
 
-                Params = options;
+                this.Params = options;
                 ctlPath = string.Concat("~/DesktopModules/ActiveForums/controls/admin_", view, ".ascx");
-                var ctl = (ActiveAdminBase)LoadControl(ctlPath);
+                var ctl = (ActiveAdminBase)this.LoadControl(ctlPath);
                 ctl.ID = view;
-                ctl.ModuleConfiguration = ModuleConfiguration;
+                ctl.ModuleConfiguration = this.ModuleConfiguration;
 
                 if (options != string.Empty)
                 {
                     ctl.Params = options;
                 }
 
-                if (!plhControlPanel.Controls.Contains(ctl))
+                if (!this.plhControlPanel.Controls.Contains(ctl))
                 {
-                    plhControlPanel.Controls.Add(ctl);
+                    this.plhControlPanel.Controls.Add(ctl);
                 }
             }
             catch (Exception ex)
             {
-                CurrentView = null;
-                Params = null;
+                this.CurrentView = null;
+                this.Params = null;
 
-                if (Request.QueryString["cptry"] == null)
+                if (this.Request.QueryString["cptry"] == null)
                 {
-                    string sURL = EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
-                    Response.Redirect(sURL);
+                    string sURL = this.EditUrl(string.Empty, string.Empty, "EDIT", "cptry=1");
+                    this.Response.Redirect(sURL);
                 }
                 else
                 {
@@ -238,22 +238,22 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadModal(string ctrl, string @params = "")
         {
-            plhModal.Controls.Clear();
+            this.plhModal.Controls.Clear();
             string ctlPath;
 
             ctlPath = string.Concat("~/DesktopModules/activeforums/controls/", ctrl, ".ascx");
-            var ctl = (ActiveAdminBase)LoadControl(ctlPath);
+            var ctl = (ActiveAdminBase)this.LoadControl(ctlPath);
             ctl.ID = ctrl;
-            ctl.ModuleConfiguration = ModuleConfiguration;
+            ctl.ModuleConfiguration = this.ModuleConfiguration;
 
             if (@params != string.Empty)
             {
                 ctl.Params = @params;
             }
 
-            if (!plhModal.Controls.Contains(ctl))
+            if (!this.plhModal.Controls.Contains(ctl))
             {
-                plhModal.Controls.Add(ctl);
+                this.plhModal.Controls.Add(ctl);
             }
         }
         #endregion

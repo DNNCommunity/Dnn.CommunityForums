@@ -30,41 +30,41 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbAdmin.CallbackEvent += cbAdmin_Callback;
+            this.cbAdmin.CallbackEvent += this.cbAdmin_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            UserProfileInfo ui = UserProfile;
-            if (ui == null & UID > 0)
+            UserProfileInfo ui = this.UserProfile;
+            if (ui == null & this.UID > 0)
             {
                 UserController up = new UserController();
-                ui = up.GetUser(PortalId, ForumModuleId, UID).Profile;
+                ui = up.GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
             }
 
             if (ui != null)
             {
-                txtRewardPoints.Text = ui.RewardPoints.ToString();
-                txtUserCaption.Text = ui.UserCaption;
-                chkDisableSignature.Checked = ui.SignatureDisabled;
-                chkDisableAttachments.Checked = ui.AttachDisabled;
-                chkDisableAvatar.Checked = ui.AvatarDisabled;
-                chkMonitor.Checked = ui.AdminWatch;
-                drpDefaultTrust.SelectedIndex = drpDefaultTrust.Items.IndexOf(drpDefaultTrust.Items.FindByValue(ui.TrustLevel.ToString()));
-                txtRewardPoints.Attributes.Add("onkeypress", "return onlyNumbers(event);");
+                this.txtRewardPoints.Text = ui.RewardPoints.ToString();
+                this.txtUserCaption.Text = ui.UserCaption;
+                this.chkDisableSignature.Checked = ui.SignatureDisabled;
+                this.chkDisableAttachments.Checked = ui.AttachDisabled;
+                this.chkDisableAvatar.Checked = ui.AvatarDisabled;
+                this.chkMonitor.Checked = ui.AdminWatch;
+                this.drpDefaultTrust.SelectedIndex = this.drpDefaultTrust.Items.IndexOf(this.drpDefaultTrust.Items.FindByValue(ui.TrustLevel.ToString()));
+                this.txtRewardPoints.Attributes.Add("onkeypress", "return onlyNumbers(event);");
             }
 
         }
 
         private void cbAdmin_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            if (!(CurrentUserType == CurrentUserTypes.Anon) && !(CurrentUserType == CurrentUserTypes.Auth))
+            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
             {
                 UserProfileController upc = new UserProfileController();
                 UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(PortalId, ForumModuleId, UID).Profile;
+                UserProfileInfo upi = uc.GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
                 if (upi != null)
                 {
                     upi.RewardPoints = Convert.ToInt32(e.Parameters[1]);

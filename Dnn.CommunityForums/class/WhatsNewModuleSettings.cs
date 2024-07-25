@@ -86,18 +86,18 @@ namespace DotNetNuke.Modules.ActiveForums
                     return false;
                 }
 
-                moduleController.UpdateModuleSetting(moduleId, ForumsSettingsKey, Forums);
-                moduleController.UpdateModuleSetting(moduleId, RowsSettingsKey, Rows.ToString());
-                moduleController.UpdateModuleSetting(moduleId, FormatSettingsKey, Format);
-                moduleController.UpdateModuleSetting(moduleId, HeaderSettingsKey, Header);
-                moduleController.UpdateModuleSetting(moduleId, FooterSettingsKey, Footer);
-                moduleController.UpdateModuleSetting(moduleId, RSSEnabledSettingsKey, RSSEnabled.ToString());
-                moduleController.UpdateModuleSetting(moduleId, TopicsOnlySettingsKey, TopicsOnly.ToString());
-                moduleController.UpdateModuleSetting(moduleId, RandomOrderSettingsKey, RandomOrder.ToString());
-                moduleController.UpdateModuleSetting(moduleId, TagsSettingsKey, Tags);
-                moduleController.UpdateModuleSetting(moduleId, RSSIgnoreSecuritySettingsKey, RSSIgnoreSecurity.ToString());
-                moduleController.UpdateModuleSetting(moduleId, RSSIncludeBodySettingsKey, RSSIncludeBody.ToString());
-                moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, RSSCacheTimeout.ToString());
+                moduleController.UpdateModuleSetting(moduleId, ForumsSettingsKey, this.Forums);
+                moduleController.UpdateModuleSetting(moduleId, RowsSettingsKey, this.Rows.ToString());
+                moduleController.UpdateModuleSetting(moduleId, FormatSettingsKey, this.Format);
+                moduleController.UpdateModuleSetting(moduleId, HeaderSettingsKey, this.Header);
+                moduleController.UpdateModuleSetting(moduleId, FooterSettingsKey, this.Footer);
+                moduleController.UpdateModuleSetting(moduleId, RSSEnabledSettingsKey, this.RSSEnabled.ToString());
+                moduleController.UpdateModuleSetting(moduleId, TopicsOnlySettingsKey, this.TopicsOnly.ToString());
+                moduleController.UpdateModuleSetting(moduleId, RandomOrderSettingsKey, this.RandomOrder.ToString());
+                moduleController.UpdateModuleSetting(moduleId, TagsSettingsKey, this.Tags);
+                moduleController.UpdateModuleSetting(moduleId, RSSIgnoreSecuritySettingsKey, this.RSSIgnoreSecurity.ToString());
+                moduleController.UpdateModuleSetting(moduleId, RSSIncludeBodySettingsKey, this.RSSIncludeBody.ToString());
+                moduleController.UpdateModuleSetting(moduleId, RSSCacheTimeoutSettingsKey, this.RSSCacheTimeout.ToString());
 
                 // Clear the cache
                 DataCache.SettingsCacheClear(moduleId,string.Format(CacheKeys.WhatsNew,moduleId));

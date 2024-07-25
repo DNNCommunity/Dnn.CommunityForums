@@ -81,37 +81,37 @@ namespace DotNetNuke.Modules.ActiveForums
         private PermissionInfo _Item;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public void CopyTo(Array array, int index) => List.CopyTo(array, index);
+        public void CopyTo(Array array, int index) => this.List.CopyTo(array, index);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public bool IsSynchronized => List.IsSynchronized;
+        public bool IsSynchronized => this.List.IsSynchronized;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public object SyncRoot => List.SyncRoot;
+        public object SyncRoot => this.List.SyncRoot;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public int Add(PermissionInfo value) => List.Add(value);
+        public int Add(PermissionInfo value) => this.List.Add(value);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public bool Contains(PermissionInfo value) => List.Contains(value);
+        public bool Contains(PermissionInfo value) => this.List.Contains(value);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public int IndexOf(PermissionInfo value) => List.IndexOf(value);
+        public int IndexOf(PermissionInfo value) => this.List.IndexOf(value);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public void Insert(int index, PermissionInfo value) => List.Insert(index, value);
+        public void Insert(int index, PermissionInfo value) => this.List.Insert(index, value);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public bool IsFixedSize => List.IsFixedSize;
+        public bool IsFixedSize => this.List.IsFixedSize;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public bool IsReadOnly => List.IsReadOnly;
+        public bool IsReadOnly => this.List.IsReadOnly;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public PermissionInfo this[int index] { get => _Item; set => _Item = value; }
+        public PermissionInfo this[int index] { get => this._Item; set => this._Item = value; }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public void Remove(PermissionInfo value) => List.Remove(value);
+        public void Remove(PermissionInfo value) => this.List.Remove(value);
     }
 
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]

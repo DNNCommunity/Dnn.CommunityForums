@@ -36,22 +36,22 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 #region Constructors
         public Connection()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
-            var objProvider = (Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
+            this.connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
+            var objProvider = (Framework.Providers.Provider)this._providerConfiguration.Providers[this._providerConfiguration.DefaultProvider];
 
-            objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (objectQualifier != "" && objectQualifier.EndsWith("_") == false)
+            this.objectQualifier = objProvider.Attributes["objectQualifier"];
+            if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)
             {
-                objectQualifier += "_";
+                this.objectQualifier += "_";
             }
 
-            databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (databaseOwner != "" && databaseOwner.EndsWith(".") == false)
+            this.databaseOwner = objProvider.Attributes["databaseOwner"];
+            if (this.databaseOwner != "" && this.databaseOwner.EndsWith(".") == false)
             {
-                databaseOwner += ".";
+                this.databaseOwner += ".";
             }
 
-            dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
+            this.dbPrefix = this.databaseOwner + this.objectQualifier + this.databaseObjectPrefix;
         }
 #endregion
     }

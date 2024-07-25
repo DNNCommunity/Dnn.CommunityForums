@@ -36,26 +36,26 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (filter.FilterId > 0)
             {
-                filterController.Update(filter);
+                this.filterController.Update(filter);
             }
             else
             {
-                filterController.Insert(filter);
+                this.filterController.Insert(filter);
             }
 
-            return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(filter.FilterId);
+            return (DotNetNuke.Modules.ActiveForums.FilterInfo)this.filterController.GetById(filter.FilterId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
         {
-            filterController.DeleteById(FilterId);
+            this.filterController.DeleteById(FilterId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
         public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
         {
-            return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(FilterId, ModuleID);
+            return (DotNetNuke.Modules.ActiveForums.FilterInfo)this.filterController.GetById(FilterId, ModuleID);
         }
     }
 }

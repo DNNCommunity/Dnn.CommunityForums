@@ -39,12 +39,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _itemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                _itemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _headerTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                _headerTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _footerTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                _footerTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -99,12 +99,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -114,12 +114,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -129,12 +129,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumId;
+                return this._ForumId;
             }
 
             set
             {
-                _ForumId = value;
+                this._ForumId = value;
             }
         }
 
@@ -144,12 +144,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumGroupId;
+                return this._ForumGroupId;
             }
 
             set
             {
-                _ForumGroupId = value;
+                this._ForumGroupId = value;
             }
         }
 
@@ -159,12 +159,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ParentForumId;
+                return this._ParentForumId;
             }
 
             set
             {
-                _ParentForumId = value;
+                this._ParentForumId = value;
             }
         }
 
@@ -174,12 +174,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _IncludeClasses;
+                return this._IncludeClasses;
             }
 
             set
             {
-                _IncludeClasses = value;
+                this._IncludeClasses = value;
             }
         }
 
@@ -188,34 +188,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             UserController uc = new UserController();
-            forumUser = uc.GetUser(PortalId, ModuleId);
+            this.forumUser = uc.GetUser(this.PortalId, this.ModuleId);
             CategoryTreeView fd = new CategoryTreeView();
-            fd.ModuleId = ModuleId;
-            fd.TabId = TabId;
-            fd.PortalId = PortalId;
-            fd.ForumUser = forumUser;
-            fd.ForumId = ForumId;
-            fd.ForumGroupId = ForumGroupId;
-            fd.ParentForumId = ParentForumId;
-            fd.IncludeClasses = IncludeClasses;
+            fd.ModuleId = this.ModuleId;
+            fd.TabId = this.TabId;
+            fd.PortalId = this.PortalId;
+            fd.ForumUser = this.forumUser;
+            fd.ForumId = this.ForumId;
+            fd.ForumGroupId = this.ForumGroupId;
+            fd.ParentForumId = this.ParentForumId;
+            fd.IncludeClasses = this.IncludeClasses;
             if (HttpContext.Current.Request.QueryString[ParamKeys.TopicId] != null)
             {
                 fd.TopicId = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.TopicId]);
             }
 
-            if (ItemTemplate != null)
+            if (this.ItemTemplate != null)
             {
-                fd.ItemTemplate = ItemTemplate.Text;
+                fd.ItemTemplate = this.ItemTemplate.Text;
             }
 
-            if (HeaderTemplate != null)
+            if (this.HeaderTemplate != null)
             {
-                fd.HeaderTemplate = HeaderTemplate.Text;
+                fd.HeaderTemplate = this.HeaderTemplate.Text;
             }
 
-            if (FooterTemplate != null)
+            if (this.FooterTemplate != null)
             {
-                fd.FooterTemplate = FooterTemplate.Text;
+                fd.FooterTemplate = this.FooterTemplate.Text;
             }
 
             writer.Write(fd.Render());

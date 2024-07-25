@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbForumEditor.CallbackEvent += cbForumEditor_Callback;
+            this.cbForumEditor.CallbackEvent += this.cbForumEditor_Callback;
 
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
-            imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
+            this.imgOn = this.Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
+            this.imgOff = this.Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
 
-            litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
+            this.litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
 
-            GetControl("admin_manageforums_home", string.Empty);
+            this.GetControl("admin_manageforums_home", string.Empty);
 
         }
 
@@ -66,10 +66,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     sOptions = e.Parameters[1];
                 }
 
-                GetControl(e.Parameters[0], sOptions);
+                this.GetControl(e.Parameters[0], sOptions);
                 System.IO.StringWriter stringWriter = new System.IO.StringWriter();
                 HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
-                plhForumEditor.RenderControl(e.Output);
+                this.plhForumEditor.RenderControl(e.Output);
             }
             catch (Exception ex)
             {
@@ -84,21 +84,21 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             try
             {
-                plhForumEditor.Controls.Clear();
+                this.plhForumEditor.Controls.Clear();
                 string ctlPath = string.Empty;
                 string ctlId = string.Empty;
                 if (view == "admin_manageforums_home")
                 {
-                    ctlPath = Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_home.ascx");
+                    ctlPath = this.Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_home.ascx");
                     ctlId = "admin_manageforums_home";
                 }
                 else
                 {
-                    ctlPath = Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx");
+                    ctlPath = this.Page.ResolveUrl(Globals.ModulePath + "controls/admin_manageforums_forumeditor.ascx");
                     ctlId = "admin_manageforums_forumeditor";
                 }
 
-                ActiveAdminBase ctl = (ActiveAdminBase)LoadControl(ctlPath);
+                ActiveAdminBase ctl = (ActiveAdminBase)this.LoadControl(ctlPath);
                 ctl.ID = ctlId;
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
 
@@ -107,16 +107,16 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctl.Params = options;
                 }
 
-                if (!plhForumEditor.Controls.Contains(ctl))
+                if (!this.plhForumEditor.Controls.Contains(ctl))
                 {
-                    plhForumEditor.Controls.Add(ctl);
+                    this.plhForumEditor.Controls.Add(ctl);
                 }
             }
             catch (Exception ex)
             {
                 LiteralControl lit = new LiteralControl();
                 lit.Text = ex.Message;
-                plhForumEditor.Controls.Add(lit);
+                this.plhForumEditor.Controls.Add(lit);
             }
 
         }

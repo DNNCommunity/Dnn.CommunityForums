@@ -33,78 +33,78 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public int PageSize
         {
-            get { return MainSettings.GetInt(SettingKeys.PageSize, 20); }
+            get { return this.MainSettings.GetInt(SettingKeys.PageSize, 20); }
         }
 
         public string UserNameDisplay
         {
-            get { return MainSettings.GetString(SettingKeys.UserNameDisplay, "USERNAME"); }
+            get { return this.MainSettings.GetString(SettingKeys.UserNameDisplay, "USERNAME"); }
         }
 
         public bool EnablePoints
         {
-            get { return MainSettings.GetBoolean(SettingKeys.EnablePoints); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.EnablePoints); }
         }
 
         public int TopicPointValue
         {
-            get { return MainSettings.GetInt(SettingKeys.TopicPointValue, 1); }
+            get { return this.MainSettings.GetInt(SettingKeys.TopicPointValue, 1); }
         }
 
         public int ReplyPointValue
         {
-            get { return MainSettings.GetInt(SettingKeys.ReplyPointValue, 1); }
+            get { return this.MainSettings.GetInt(SettingKeys.ReplyPointValue, 1); }
         }
 
         public int AnswerPointValue
         {
-            get { return MainSettings.GetInt(SettingKeys.AnswerPointValue, 1); }
+            get { return this.MainSettings.GetInt(SettingKeys.AnswerPointValue, 1); }
         }
 
         public int MarkAsAnswerPointValue
         {
-            get { return MainSettings.GetInt(SettingKeys.MarkAnswerPointValue, 1); }
+            get { return this.MainSettings.GetInt(SettingKeys.MarkAnswerPointValue, 1); }
         }
 
         public int ModPointValue
         {
-            get { return MainSettings.GetInt(SettingKeys.ModPointValue, 1); }
+            get { return this.MainSettings.GetInt(SettingKeys.ModPointValue, 1); }
         }
 
         public int AvatarHeight
         {
-            get { return MainSettings.GetInt(SettingKeys.AvatarHeight, 80); }
+            get { return this.MainSettings.GetInt(SettingKeys.AvatarHeight, 80); }
         }
 
         public int AvatarWidth
         {
-            get { return MainSettings.GetInt(SettingKeys.AvatarWidth, 80); }
+            get { return this.MainSettings.GetInt(SettingKeys.AvatarWidth, 80); }
         }
 
         public int AllowSignatures
         {
-            get { return MainSettings.GetInt(SettingKeys.AllowSignatures); }
+            get { return this.MainSettings.GetInt(SettingKeys.AllowSignatures); }
         }
 
         public string DateFormatString
         {
-            get { return MainSettings.GetString(SettingKeys.DateFormatString, "M/d/yyyy"); }
+            get { return this.MainSettings.GetString(SettingKeys.DateFormatString, "M/d/yyyy"); }
         }
 
         public string TimeFormatString
         {
-            get { return MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
+            get { return this.MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int TimeZoneOffset
         {
-            get { return MainSettings.GetInt(SettingKeys.TimeZoneOffset); }
+            get { return this.MainSettings.GetInt(SettingKeys.TimeZoneOffset); }
         }
 
         public bool UsersOnlineEnabled
         {
-            get { return MainSettings.GetBoolean(SettingKeys.UsersOnlineEnabled); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.UsersOnlineEnabled); }
         }
 
         public string MemberListMode
@@ -117,17 +117,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public int ForumTemplateID
         {
-            get { return MainSettings.GetInt(SettingKeys.ForumTemplateId); }
+            get { return this.MainSettings.GetInt(SettingKeys.ForumTemplateId); }
         }
 
         public DateTime InstallDate
         {
-            get { return Utilities.SafeConvertDateTime(MainSettings[SettingKeys.InstallDate], Utilities.NullDate()); }
+            get { return Utilities.SafeConvertDateTime(this.MainSettings[SettingKeys.InstallDate], Utilities.NullDate()); }
         }
 
         public bool IsInstalled
         {
-            get { return MainSettings.GetBoolean(SettingKeys.IsInstalled); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.IsInstalled); }
         }
 
         public PMTypes PMType
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 PMTypes parsedValue;
-                return Enum.TryParse(MainSettings.GetString(SettingKeys.PMType), true, out parsedValue)
+                return Enum.TryParse(this.MainSettings.GetString(SettingKeys.PMType), true, out parsedValue)
                            ? parsedValue
                            : PMTypes.Disabled;
             }
@@ -143,19 +143,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public int PMTabId
         {
-            get { return MainSettings.GetInt(SettingKeys.PMTabId, -1); }
+            get { return this.MainSettings.GetInt(SettingKeys.PMTabId, -1); }
         }
 
         public bool DisableAccountTab
         {
-            get { return MainSettings.GetBoolean(SettingKeys.DisableAccountTab); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.DisableAccountTab); }
         }
 
         public string Theme
         {
             get
             {
-                var result = MainSettings.GetString(SettingKeys.Theme);
+                var result = this.MainSettings.GetString(SettingKeys.Theme);
                 return string.IsNullOrWhiteSpace(result) ? "_legacy" : result;
             }
         }
@@ -164,7 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return string.Concat(Globals.ThemesPath, "/", Theme, "/");
+                return string.Concat(Globals.ThemesPath, "/", this.Theme, "/");
             }
         }
 
@@ -172,18 +172,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return ThemeLocation + "templates/";
+                return this.ThemeLocation + "templates/";
             }
         }
 
         public bool FullText
         {
-            get { return MainSettings.GetBoolean(SettingKeys.FullText); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.FullText); }
         }
 
         public string AllowSubTypes
         {
-            get { return MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty); }
+            get { return this.MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty); }
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
@@ -191,22 +191,22 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool CacheTemplates
         {
-            get { return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }
         }
 
         public int FloodInterval
         {
-            get { return MainSettings.GetInt(SettingKeys.FloodInterval, 5); }
+            get { return this.MainSettings.GetInt(SettingKeys.FloodInterval, 5); }
         }
 
         public int EditInterval
         {
-            get { return MainSettings.GetInt(SettingKeys.EditInterval); }
+            get { return this.MainSettings.GetInt(SettingKeys.EditInterval); }
         }
 
         public int DeleteBehavior
         {
-            get { return MainSettings.GetInt(SettingKeys.DeleteBehavior); }
+            get { return this.MainSettings.GetInt(SettingKeys.DeleteBehavior); }
         }
 
         public ProfileVisibilities ProfileVisibility
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ProfileVisibilities parsedValue;
 
-                return Enum.TryParse(MainSettings.GetString(SettingKeys.ProfileVisibility), true,
+                return Enum.TryParse(this.MainSettings.GetString(SettingKeys.ProfileVisibility), true,
                                      out parsedValue)
                            ? parsedValue
                            : ProfileVisibilities.Disabled;
@@ -224,36 +224,36 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public bool UseShortUrls
         {
-            get { return MainSettings.GetBoolean(SettingKeys.UseShortUrls); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.UseShortUrls); }
         }
 
         public bool UseSkinBreadCrumb
         {
-            get { return MainSettings.GetBoolean(SettingKeys.UseSkinBreadCrumb); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.UseSkinBreadCrumb); }
         }
 
         public bool AutoLinkEnabled
         {
-            get { return MainSettings.GetBoolean(SettingKeys.EnableAutoLink, true); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.EnableAutoLink, true); }
         }
 
         public bool URLRewriteEnabled
         {
-            get { return MainSettings.GetBoolean(SettingKeys.EnableURLRewriter); }
+            get { return this.MainSettings.GetBoolean(SettingKeys.EnableURLRewriter); }
         }
 
         public string PrefixURLBase
         {
-            get { return MainSettings.GetString(SettingKeys.PrefixURLBase, string.Empty); }
+            get { return this.MainSettings.GetString(SettingKeys.PrefixURLBase, string.Empty); }
         }
 
         public string PrefixURLOther
         {
             get
             {
-                return !URLRewriteEnabled
+                return !this.URLRewriteEnabled
                            ? string.Empty
-                           : MainSettings.GetString(SettingKeys.PrefixURLOther, "other");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLOther, "other");
             }
         }
 
@@ -261,9 +261,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return !URLRewriteEnabled
+                return !this.URLRewriteEnabled
                            ? string.Empty
-                           : MainSettings.GetString(SettingKeys.PrefixURLTags, "tag");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLTags, "tag");
             }
         }
 
@@ -271,15 +271,15 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return !URLRewriteEnabled
+                return !this.URLRewriteEnabled
                            ? string.Empty
-                           : MainSettings.GetString(SettingKeys.PrefixURLCategories, "category");
+                           : this.MainSettings.GetString(SettingKeys.PrefixURLCategories, "category");
             }
         }
 
         public SettingsInfo()
         {
-            MainSettings = new Hashtable();
+            this.MainSettings = new Hashtable();
         }
 
     }

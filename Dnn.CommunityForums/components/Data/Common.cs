@@ -30,10 +30,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     {
         #region Security
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
+        public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(this._connectionString, this.dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
+        public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "Permissions_GetRoles", PortalId);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
         public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, PermissionsId, requestedAccess);
@@ -56,68 +56,68 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public DataSet UI_ActiveView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_ActiveView", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_ActiveView", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
 
         public DataSet UI_NotReadView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_NotRead", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_NotRead", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
         public DataSet UI_UnansweredView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_UnansweredView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_UnansweredView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
         public DataSet UI_TagsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds, int tagId)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_TagsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds, tagId);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_TagsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds, tagId);
         }
 
         public DataSet UI_MyTopicsView(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
         public DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
 
         public DataSet UI_MostReplies(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
 
         public DataSet UI_Announcements(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_Announcements", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_Announcements", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
 
         public DataSet UI_Unresolved(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
-            return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_Unresolved", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
+            return SqlHelper.ExecuteDataset(this._connectionString, this.dbPrefix + "UI_Unresolved", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
         #endregion
 
         #region TagCloud
         public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
         {
-            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
+            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
         }
 
         #endregion
         #region Tags
         public int Tag_GetIdByName(int PortalId, int ModuleId, string TagName, bool IsCategory)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this._connectionString, this.dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
         }
 
         #endregion
         #region TopMembers
         public IDataReader TopMembers_Get(int PortalId, int Rows)
         {
-            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopMembers", PortalId, Rows);
+            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "UI_TopMembers", PortalId, Rows);
         }
 
         #endregion
@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public Dictionary<string, string> GetPrefixes(int PortalId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Forums_GetPrefixes", PortalId))
+            using (IDataReader dr = SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "Forums_GetPrefixes", PortalId))
             {
                 while (dr.Read())
                 {
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             try
             {
-                return Convert.ToString(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Util_GetUrl", ModuleId, ForumGroupId, ForumId, TopicId, UserId, ContentId));
+                return Convert.ToString(SqlHelper.ExecuteScalar(this._connectionString, this.dbPrefix + "Util_GetUrl", ModuleId, ForumGroupId, ForumId, TopicId, UserId, ContentId));
             }
             catch (Exception ex)
             {
@@ -164,17 +164,17 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public IDataReader FindByURL(int PortalId, string URL)
         {
-            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "FindByURL", PortalId, URL);
+            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "FindByURL", PortalId, URL);
         }
 
         public IDataReader URLSearch(int PortalId, string URL)
         {
-            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "URL_Search", PortalId, URL);
+            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "URL_Search", PortalId, URL);
         }
 
         public void ArchiveURL(int PortalId, int ForumGroupId, int ForumId, int TopicId, string URL)
         {
-            SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "URL_Archive", PortalId, ForumGroupId, ForumId, TopicId, URL);
+            SqlHelper.ExecuteNonQuery(this._connectionString, this.dbPrefix + "URL_Archive", PortalId, ForumGroupId, ForumId, TopicId, URL);
         }
 
         public bool CheckForumURL(int PortalId, int ModuleId, string VanityName, int ForumId, int ForumGroupId)
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 }
 
                 int tmpForumId = -1;
-                tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckForumVanity", PortalId, VanityName));
+                tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(this._connectionString, this.dbPrefix + "URL_CheckForumVanity", PortalId, VanityName));
                 if (tmpForumId > 0 && ForumId == -1)
                 {
                     return false;
@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 }
 
                 int tmpForumGroupId = -1;
-                tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckGroupVanity", PortalId, VanityName));
+                tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(this._connectionString, this.dbPrefix + "URL_CheckGroupVanity", PortalId, VanityName));
                 if (tmpForumGroupId > 0 && ForumGroupId == -1)
                 {
                     return false;

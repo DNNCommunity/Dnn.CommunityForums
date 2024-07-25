@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-               Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
+               this.Insert(new DotNetNuke.Modules.ActiveForums.Entities.ProcessQueueInfo
                     {
                         PortalId = portalId,
                         ModuleId = moduleId,
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             try
             {
-                    return Get().OrderBy(m => m.DateCreated).Take(200).ToList();
+                    return this.Get().OrderBy(m => m.DateCreated).Take(200).ToList();
             }
             catch (Exception ex)
             {

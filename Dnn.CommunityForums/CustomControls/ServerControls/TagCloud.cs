@@ -43,12 +43,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _cssOne;
+                return this._cssOne;
             }
 
             set
             {
-                _cssOne = value;
+                this._cssOne = value;
             }
         }
 
@@ -95,12 +95,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _cssTwo;
+                return this._cssTwo;
             }
 
             set
             {
-                _cssTwo = value;
+                this._cssTwo = value;
             }
         }
 
@@ -108,12 +108,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _cssThree;
+                return this._cssThree;
             }
 
             set
             {
-                _cssThree = value;
+                this._cssThree = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumIds;
+                return this._ForumIds;
             }
 
             set
             {
-                _ForumIds = value;
+                this._ForumIds = value;
             }
         }
 
@@ -138,35 +138,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TagCount;
+                return this._TagCount;
             }
 
             set
             {
-                _TagCount = value;
+                this._TagCount = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
             User forumUser = null;
-            if (string.IsNullOrEmpty(ForumIds))
+            if (string.IsNullOrEmpty(this.ForumIds))
             {
                 UserController uc = new UserController();
-                forumUser = uc.GetUser(PortalId, ModuleId);
+                forumUser = uc.GetUser(this.PortalId, this.ModuleId);
                 if (string.IsNullOrEmpty(forumUser.UserForums))
                 {
-                    ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, PortalId, ModuleId);
+                    this.ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(forumUser.UserRoles, this.PortalId, this.ModuleId);
                 }
                 else
                 {
-                    ForumIds = forumUser.UserForums;
+                    this.ForumIds = forumUser.UserForums;
                 }
             }
 
-            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+            SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
             Data.Common db = new Data.Common();
-            IDataReader dr = db.TagCloud_Get(PortalId, ModuleId, ForumIds, TagCount);
+            IDataReader dr = db.TagCloud_Get(this.PortalId, this.ModuleId, this.ForumIds, this.TagCount);
             ControlUtils ctlUtils = new ControlUtils();
             string sURL = string.Empty;
             while (dr.Read())
@@ -179,19 +179,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 switch (priority)
                 {
                     case 1:
-                        css = CSSOne;
+                        css = this.CSSOne;
                         break;
                     case 2:
-                        css = CSSTwo;
+                        css = this.CSSTwo;
                         break;
                     case 3:
-                        css = CSSThree;
+                        css = this.CSSThree;
                         break;
                 }
 
                 writer.Write("<span class=\"" + css + "\">");
                 writer.Write("<a href=\"");
-                sURL = ctlUtils.BuildUrl(TabId, ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
+                sURL = ctlUtils.BuildUrl(this.TabId, this.ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
                 writer.Write(sURL);
                 writer.Write("\" title=\"" + HttpUtility.HtmlAttributeEncode(tagName) + "\">" + tagName + "</a></span> ");
             }
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
     }
 }

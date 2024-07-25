@@ -32,27 +32,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public bool GetForUser(int userId, int postId)
         {
-            return Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
+            return this.Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
         }
 
         public (int count,bool liked) Get(int userId, int postId)
         {
-            return (Count(postId), GetForUser(userId, postId));
+            return (this.Count(postId), this.GetForUser(userId, postId));
         }
 
         public List<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int postId)
         {
-            return Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
+            return this.Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
         }
 
         public int Count(int postId)
         {
-            return Count("WHERE PostId = @0 AND Checked = 1", postId);
+            return this.Count("WHERE PostId = @0 AND Checked = 1", postId);
         }
 
         public int Like(int contentId, int userId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
+            DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = this.Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
             if (like != null)
             {
                 if (like.Checked)
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     like.Checked = true;
                 }
 
-                Update(like);
+                this.Update(like);
             }
             else
             {
@@ -72,10 +72,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 like.PostId = contentId;
                 like.UserId = userId;
                 like.Checked = true;
-                Insert(like);
+                this.Insert(like);
             }
 
-            return Count(contentId);
+            return this.Count(contentId);
         }
     }
 }

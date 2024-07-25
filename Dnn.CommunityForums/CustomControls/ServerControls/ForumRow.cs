@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
@@ -57,13 +57,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
-                return _rowTemplate;
+                this.EnsureChildControls();
+                return this._rowTemplate;
             }
 
             set
             {
-                _rowTemplate = value;
+                this._rowTemplate = value;
             }
         }
 
@@ -71,12 +71,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _forumId;
+                return this._forumId;
             }
 
             set
             {
-                _forumId = value;
+                this._forumId = value;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _forumIcon;
+                return this._forumIcon;
             }
 
             set
             {
-                _forumIcon = value;
+                this._forumIcon = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _readRoles;
+                return this._readRoles;
             }
 
             set
             {
-                _readRoles = value;
+                this._readRoles = value;
             }
         }
 
@@ -110,12 +110,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _viewRoles;
+                return this._viewRoles;
             }
 
             set
             {
-                _viewRoles = value;
+                this._viewRoles = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _userRoles;
+                return this._userRoles;
             }
 
             set
             {
-                _userRoles = value;
+                this._userRoles = value;
             }
         }
 
@@ -136,55 +136,55 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _hidden;
+                return this._hidden;
             }
 
             set
             {
-                _hidden = value;
+                this._hidden = value;
             }
         }
 
         protected override void CreateChildControls()
         {
-            if (Content != null)
+            if (this.Content != null)
             {
-                Controls.Clear();
-                this.Controls.Add(Content);
+                this.Controls.Clear();
+                this.Controls.Add(this.Content);
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ViewRoles, UserRoles);
-            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ReadRoles, UserRoles);
+            bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ViewRoles, this.UserRoles);
+            bool canRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ReadRoles, this.UserRoles);
 
-            if (Content != null)
+            if (this.Content != null)
             {
-                hypForumName = (Link)Content.FindControl("hypForumName" + ForumId);
-                hypForumName.Enabled = canView;
+                this.hypForumName = (Link)this.Content.FindControl("hypForumName" + this.ForumId);
+                this.hypForumName.Enabled = canView;
 
-                plhLastPost = (PlaceHolder)Content.FindControl("plhLastPost" + ForumId);
-                if (plhLastPost != null)
+                this.plhLastPost = (PlaceHolder)this.Content.FindControl("plhLastPost" + this.ForumId);
+                if (this.plhLastPost != null)
                 {
-                    plhLastPost.Visible = canView;
+                    this.plhLastPost.Visible = canView;
                 }
 
-                hypLastPostSubject = (Link)Content.FindControl("hypLastPostSubject" + ForumId);
-                if (hypLastPostSubject != null)
+                this.hypLastPostSubject = (Link)this.Content.FindControl("hypLastPostSubject" + this.ForumId);
+                if (this.hypLastPostSubject != null)
                 {
-                    hypLastPostSubject.Enabled = canView;
+                    this.hypLastPostSubject.Enabled = canView;
                 }
 
             }
 
             if (canView)
             {
-                Content.RenderControl(writer);
+                this.Content.RenderControl(writer);
             }
-            else if (Hidden == false)
+            else if (this.Hidden == false)
             {
-                Content.RenderControl(writer);
+                this.Content.RenderControl(writer);
             }
 
         }
@@ -193,14 +193,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (Context == null || Page == null)
+            if (this.Context == null || this.Page == null)
             {
                 return;
             }
 
-            if (Content != null)
+            if (this.Content != null)
             {
-                this.Controls.Add(Content);
+                this.Controls.Add(this.Content);
             }
         }
     }

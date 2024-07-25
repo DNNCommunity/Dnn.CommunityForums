@@ -59,12 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             if (dto.ForumId > 0)
             {
 
-                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(ActiveModule.PortalID, ForumModuleId, UserInfo.UserID).Roles;
-                int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ForumModuleId, dto.ForumId, -1, 1, UserInfo.UserID, userRoles);
-                return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
+                string userRoles = new DotNetNuke.Modules.ActiveForums.UserProfileController().Profiles_Get(this.ActiveModule.PortalID, this.ForumModuleId, this.UserInfo.UserID).Roles;
+                int subscribed = new SubscriptionController().Subscription_Update(this.ActiveModule.PortalID, this.ForumModuleId, dto.ForumId, -1, 1, this.UserInfo.UserID, userRoles);
+                return this.Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -79,10 +79,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (ForumId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId));
+                return this.Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(this.ActiveModule.PortalID, this.ForumModuleId, ForumId));
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -96,10 +96,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             if (ForumId > 0)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId)} {Utilities.GetSharedResource("[RESX:FORUMSUBSCRIBERCOUNT]", false)}");
+                return this.Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(this.ActiveModule.PortalID, this.ForumModuleId, ForumId)} {Utilities.GetSharedResource("[RESX:FORUMSUBSCRIBERCOUNT]", false)}");
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -113,8 +113,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.ModMove)]
         public HttpResponseMessage ListForHtml(ForumDto dto)
         {
-            DotNetNuke.Modules.ActiveForums.User user = new DotNetNuke.Modules.ActiveForums.UserController().LoadUser(UserInfo);
-            return Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(ForumModuleId, user));
+            DotNetNuke.Modules.ActiveForums.User user = new DotNetNuke.Modules.ActiveForums.UserController().LoadUser(this.UserInfo);
+            return this.Request.CreateResponse(HttpStatusCode.OK, DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsHtmlOption(this.ForumModuleId, user));
         }
     }
 }

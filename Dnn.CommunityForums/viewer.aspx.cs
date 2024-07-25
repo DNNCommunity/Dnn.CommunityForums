@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion
@@ -58,16 +58,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            var attachmentId = Utilities.SafeConvertInt(Request.Params["AttachmentID"], -1);// Used for new attachments where the attachment is the actual file link (shouldn't appear in posts)
-            var attachFileId = Utilities.SafeConvertInt(Request.Params["AttachID"], -1); // Used for legacy attachments where the attachid was actually the file id. (appears in posts)
-            var portalId = Utilities.SafeConvertInt(Request.Params["PortalID"], -1);
-            var moduleId = Utilities.SafeConvertInt(Request.Params["ModuleID"], -1);
+            var attachmentId = Utilities.SafeConvertInt(this.Request.Params["AttachmentID"], -1);// Used for new attachments where the attachment is the actual file link (shouldn't appear in posts)
+            var attachFileId = Utilities.SafeConvertInt(this.Request.Params["AttachID"], -1); // Used for legacy attachments where the attachid was actually the file id. (appears in posts)
+            var portalId = Utilities.SafeConvertInt(this.Request.Params["PortalID"], -1);
+            var moduleId = Utilities.SafeConvertInt(this.Request.Params["ModuleID"], -1);
 
-            if (Page.IsPostBack || (attachmentId < 0 && attachFileId < 0) || portalId < 0 || moduleId < 0)
+            if (this.Page.IsPostBack || (attachmentId < 0 && attachFileId < 0) || portalId < 0 || moduleId < 0)
             {
-                Response.StatusCode = 400;
-                Response.Write("Invalid Request");
-                Response.End();
+                this.Response.StatusCode = 400;
+                this.Response.Write("Invalid Request");
+                this.Response.End();
                 return;
             }
 
@@ -77,9 +77,9 @@ namespace DotNetNuke.Modules.ActiveForums
             // Make sure the attachment exists
             if (attachment == null)
             {
-                Response.StatusCode = 404;
-                Response.Write("Not Found");
-                Response.End();
+                this.Response.StatusCode = 404;
+                this.Response.Write("Not Found");
+                this.Response.End();
                 return;
             }
 
@@ -87,9 +87,9 @@ namespace DotNetNuke.Modules.ActiveForums
             var u = new UserController().GetUser(portalId, moduleId);
             if (u == null || !DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(attachment.CanRead, u.UserRoles))
             {
-                Response.StatusCode = 401;
-                Response.Write("Unauthorized");
-                Response.End();
+                this.Response.StatusCode = 401;
+                this.Response.Write("Unauthorized");
+                this.Response.End();
                 return;
             }
 
@@ -99,19 +99,19 @@ namespace DotNetNuke.Modules.ActiveForums
             // Some legacy attachments may still be stored in the DB.
             if (attachment.FileData != null)
             {
-                Response.ContentType = attachment.ContentType;
+                this.Response.ContentType = attachment.ContentType;
 
                 if (attachmentId > 0)
                 {
-                    Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.HtmlEncode(filename));
+                    this.Response.AddHeader("Content-Disposition", "attachment; filename=" + this.Server.HtmlEncode(filename));
                 }
                 else // Handle legacy inline attachments a bit differently
                 {
-                    Response.AddHeader("Content-Disposition", "filename=" + Server.HtmlEncode(filename));
+                    this.Response.AddHeader("Content-Disposition", "filename=" + this.Server.HtmlEncode(filename));
                 }
 
-                Response.BinaryWrite(attachment.FileData);
-                Response.End();
+                this.Response.BinaryWrite(attachment.FileData);
+                this.Response.End();
                 return;
             }
 
@@ -132,21 +132,21 @@ namespace DotNetNuke.Modules.ActiveForums
                 // Otherwise check the attachments directory (current and legacy)
             else
             {
-                filePath = Utilities.MapPath(PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
+                filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "activeforums_Attach/") + attachment.FileName;
 
                 // This is another check to support legacy attachments.
                 if (!File.Exists(filePath))
                 {
-                    filePath = Utilities.MapPath(PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
+                    filePath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "NTForums_Attach/") + attachment.FileName;
                 }
             }
 
             // At this point, we should have a valid file path
             if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
             {
-                Response.StatusCode = 404;
-                Response.Write("Not Found");
-                Response.End();
+                this.Response.StatusCode = 404;
+                this.Response.Write("Not Found");
+                this.Response.End();
                 return;
             }
 
@@ -156,23 +156,23 @@ namespace DotNetNuke.Modules.ActiveForums
                 length = new System.IO.FileInfo(filePath).Length;
             }
 
-            Response.Clear();
-            Response.ContentType = attachment.ContentType;
+            this.Response.Clear();
+            this.Response.ContentType = attachment.ContentType;
 
             if(attachmentId > 0)
             {
-                Response.AddHeader("Content-Disposition", "attachment; filename=" + Server.HtmlEncode(filename));
+                this.Response.AddHeader("Content-Disposition", "attachment; filename=" + this.Server.HtmlEncode(filename));
             }
             else // Handle legacy inline attachments a bit differently
             {
-                Response.AddHeader("Content-Disposition", "filename=" + Server.HtmlEncode(filename));
+                this.Response.AddHeader("Content-Disposition", "filename=" + this.Server.HtmlEncode(filename));
             }
 
-            Response.AddHeader("Content-Length", length.ToString());
-            Response.WriteFile(filePath);
-            Response.Flush();
-            Response.Close();
-            Response.End();
+            this.Response.AddHeader("Content-Length", length.ToString());
+            this.Response.WriteFile(filePath);
+            this.Response.Flush();
+            this.Response.Close();
+            this.Response.End();
         }
     }
 }

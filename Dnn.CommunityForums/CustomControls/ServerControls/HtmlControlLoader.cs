@@ -45,12 +45,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             this.EnableViewState = false;
-            FilePath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(FilePath);
-            string sControl = Utilities.GetFile(FilePath);
-            sControl = sControl.Replace("{id}", ControlId);
-            sControl = sControl.Replace("{height}", Height);
-            sControl = sControl.Replace("{width}", Width);
-            sControl = sControl.Replace("{name}", Name);
+            this.FilePath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(this.FilePath);
+            string sControl = Utilities.GetFile(this.FilePath);
+            sControl = sControl.Replace("{id}", this.ControlId);
+            sControl = sControl.Replace("{height}", this.Height);
+            sControl = sControl.Replace("{width}", this.Width);
+            sControl = sControl.Replace("{name}", this.Name);
             writer.Write(sControl);
         }
 

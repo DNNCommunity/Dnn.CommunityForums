@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public override void Initialize(System.ComponentModel.IComponent component)
         {
-            m_ControlInstance = (ActiveTabs)component;
+            this.m_ControlInstance = (ActiveTabs)component;
 
             base.Initialize(component);
         }
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override string GetErrorDesignTimeHtml(System.Exception e)
         {
             //Return MyBase.GetErrorDesignTimeHtml(e)
-            return CreatePlaceHolderDesignTimeHtml("Error!");
+            return this.CreatePlaceHolderDesignTimeHtml("Error!");
         }
 
         public override System.Web.UI.Design.TemplateGroupCollection TemplateGroups
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public override string GetDesignTimeHtml(System.Web.UI.Design.DesignerRegionCollection regions)
         {
             string message = "This <b>TabularMultiView</b> control represents the look and feel of the Multiview control, but with a tabular like interface. Each tab corresponds to a View. Use the properties on each tab (TabularView) to modify each Tab. <hr/> <small> Control Library - Tiger</small>";
-            return CreatePlaceHolderDesignTimeHtml(message);
+            return this.CreatePlaceHolderDesignTimeHtml(message);
         }
 
     }

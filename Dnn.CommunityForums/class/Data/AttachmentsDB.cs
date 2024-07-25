@@ -30,19 +30,19 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     {
         public int Save(int contentId, int userId, string fileName, string contentType, long fileSize, int? fileId)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(connectionString, dbPrefix + "Attachments_Save", contentId, userId, fileName, contentType, fileSize, fileId));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Attachments_Save", contentId, userId, fileName, contentType, fileSize, fileId));
         }
 
         public void Delete(int attachId)
         {
-            SqlHelper.ExecuteNonQuery(connectionString, dbPrefix + "Attachments_Delete", attachId);
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Attachments_Delete", attachId);
         }
 
         // FileId is used for legacy attachments
         public PermissionAttachment Get(int attachmentId, int fileId, bool withSecurity)
         {
             PermissionAttachment result = null;
-            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, dbPrefix + "Attachments_Get", attachmentId, fileId, withSecurity))
+            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Attachments_Get", attachmentId, fileId, withSecurity))
             {
                 if (dr.Read())
                 {
@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public List<Attachment> ListForContent(int contentId)
         {
             var al = new List<Attachment>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, dbPrefix + "Attachments_ListForContent", contentId))
+            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Attachments_ListForContent", contentId))
             {
                 while (dr.Read())
                 {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public List<Attachment> ListForPost(int topicId, int? replyId)
         {
             var al = new List<Attachment>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(connectionString, dbPrefix + "Attachments_ListForPost", topicId, replyId))
+            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Attachments_ListForPost", topicId, replyId))
             {
                 while (dr.Read())
                 {

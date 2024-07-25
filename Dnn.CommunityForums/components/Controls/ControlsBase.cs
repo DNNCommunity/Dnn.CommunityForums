@@ -39,27 +39,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(_template) && ! string.IsNullOrEmpty(TemplateFile))
+                if (string.IsNullOrEmpty(this._template) && ! string.IsNullOrEmpty(this.TemplateFile))
                 {
-                    if (! string.IsNullOrEmpty(ControlConfig.TemplatePath))
+                    if (! string.IsNullOrEmpty(this.ControlConfig.TemplatePath))
                     {
-                        _template = ControlConfig.TemplatePath + TemplateFile;
+                        this._template = this.ControlConfig.TemplatePath + this.TemplateFile;
                     }
                     else
                     {
-                        _template = TemplateFile;
+                        this._template = this.TemplateFile;
                     }
 
-                    _template = Utilities.GetTemplate(Page.ResolveUrl(_template));
-                    _template = Utilities.ParseTokenConfig(ForumModuleId,_template, "default", ControlConfig);
+                    this._template = Utilities.GetTemplate(this.Page.ResolveUrl(this._template));
+                    this._template = Utilities.ParseTokenConfig(this.ForumModuleId,this._template, "default", this.ControlConfig);
                 }
 
-                return _template;
+                return this._template;
             }
 
             set
             {
-                _template = value;
+                this._template = value;
             }
         }
 
@@ -67,12 +67,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _currentView;
+                return this._currentView;
             }
 
             set
             {
-                _currentView = value;
+                this._currentView = value;
             }
         }
 
@@ -80,12 +80,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _parseTemplate;
+                return this._parseTemplate;
             }
 
             set
             {
-                _parseTemplate = value;
+                this._parseTemplate = value;
             }
         }
 
@@ -111,12 +111,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             base.OnInit(e);
 
-            if (ParseTemplateFile)
+            if (this.ParseTemplateFile)
             {
-                if (! string.IsNullOrEmpty(DisplayTemplate))
+                if (! string.IsNullOrEmpty(this.DisplayTemplate))
                 {
-                    Control ctl = Page.ParseControl(DisplayTemplate);
-                    LinkControls(ctl.Controls);
+                    Control ctl = this.Page.ParseControl(this.DisplayTemplate);
+                    this.LinkControls(ctl.Controls);
                     this.Controls.Add(ctl);
                 }
             }
@@ -137,19 +137,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (ctrl is Controls.ForumRow)
                     {
-                        ((Controls.ForumRow)ctrl).UserRoles = ForumUser.UserRoles;
+                        ((Controls.ForumRow)ctrl).UserRoles = this.ForumUser.UserRoles;
                     }
 
                     if (ctrl is Controls.ControlsBase)
                     {
                         ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
-                        ((Controls.ControlsBase)ctrl).ForumData = ForumData;
-                        ((Controls.ControlsBase)ctrl).ForumInfo = ForumInfo;
+                        ((Controls.ControlsBase)ctrl).ForumData = this.ForumData;
+                        ((Controls.ControlsBase)ctrl).ForumInfo = this.ForumInfo;
                     }
 
                     if (ctrl.Controls.Count > 0)
                     {
-                        LinkControls(ctrl.Controls);
+                        this.LinkControls(ctrl.Controls);
                     }
                 }
             }

@@ -48,20 +48,20 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.HostUrl, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.HostUrl, this.ModuleId));
                 if (obj == null)
                 {
                     string sURL;
-                    if (Request.IsSecureConnection)
+                    if (this.Request.IsSecureConnection)
                     {
-                        sURL = string.Concat("https://", Common.Globals.GetDomainName(Request), "/");
+                        sURL = string.Concat("https://", Common.Globals.GetDomainName(this.Request), "/");
                     }
                     else
                     {
-                        sURL = string.Concat("http://", Common.Globals.GetDomainName(Request), "/");
+                        sURL = string.Concat("http://", Common.Globals.GetDomainName(this.Request), "/");
                     }
 
-                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.HostUrl, ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
+                    DataCache.SettingsCacheStore(this.ModuleId,string.Format(CacheKeys.HostUrl, this.ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
 
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public string GetWarningImage(string ImageId, string WarningMessage)
         {
-            return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
+            return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", this.Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
         }
 
         protected string GetSharedResource(string key)
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return MainSettings.MainSettings;
+                return this.MainSettings.MainSettings;
             }
         }
 
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: ModuleId).ModuleSettings };
+                return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: this.ModuleId).ModuleSettings };
             }
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.CacheUpdate, this.ModuleId));
                 if (obj != null)
                 {
                     return Convert.ToDateTime(obj);
@@ -113,15 +113,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
             set
             {
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId), value);
-                _CacheUpdatedTime = value;
+                DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.CacheUpdate, this.ModuleId), value);
+                this._CacheUpdatedTime = value;
             }
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            LocalResourceFile = Globals.ControlPanelResourceFile;
+            this.LocalResourceFile = Globals.ControlPanelResourceFile;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var htmlWriter = new HtmlTextWriter(stringWriter);
             base.Render(htmlWriter);
             string html = stringWriter.ToString();
-            html = LocalizeControl(html);
+            html = this.LocalizeControl(html);
             writer.Write(html);
         }
 
@@ -152,14 +152,14 @@ namespace DotNetNuke.Modules.ActiveForums
         public Controls.ClientTemplate GetLoadingTemplate()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
+            template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
             return template;
         }
 
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
-            template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
+            template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
             return template;
         }
 
@@ -168,7 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var tc = new TemplateController();
             drp.DataTextField = "Title";
             drp.DataValueField = "TemplateID";
-            drp.DataSource = tc.Template_List(PortalId, ModuleId, TemplateType);
+            drp.DataSource = tc.Template_List(this.PortalId, this.ModuleId, TemplateType);
             drp.DataBind();
             drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
         }
@@ -177,14 +177,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (Session[ViewKey] != null)
+                if (this.Session[ViewKey] != null)
                 {
-                    return Session[ViewKey].ToString();
+                    return this.Session[ViewKey].ToString();
                 }
 
-                if (_currentView != string.Empty)
+                if (this._currentView != string.Empty)
                 {
-                    return _currentView;
+                    return this._currentView;
                 }
 
                 return DefaultView;
@@ -192,8 +192,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             set
             {
-                Session[ViewKey] = value;
-                _currentView = value;
+                this.Session[ViewKey] = value;
+                this._currentView = value;
             }
         }
 

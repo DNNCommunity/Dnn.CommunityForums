@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                string s = Convert.ToString(ViewState["Text"]);
+                string s = Convert.ToString(this.ViewState["Text"]);
                 if (s == null)
                 {
                     return string.Empty;
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             set
             {
-                ViewState["Text"] = value;
+                this.ViewState["Text"] = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CallBackOnComplete;
+                return this._CallBackOnComplete;
             }
 
             set
             {
-                _CallBackOnComplete = value;
+                this._CallBackOnComplete = value;
             }
         }
 
@@ -75,49 +75,49 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
-                if (plh == null)
+                this.EnsureChildControls();
+                if (this.plh == null)
                 {
-                    plh = new PlaceHolder();
+                    this.plh = new PlaceHolder();
                 }
 
-                return plh;
+                return this.plh;
             }
 
             set
             {
-                plh = value;
+                this.plh = value;
             }
         }
 
         protected override void CreateChildControls()
         {
-            cb = new Callback();
-            cb.ID = "CB_" + this.ClientID;
+            this.cb = new Callback();
+            this.cb.ID = "CB_" + this.ClientID;
             if (HttpContext.Current.Request.Params["amtsdebug"] == "true" || HttpContext.Current.Request.Params["amdebug"] == "true")
             {
-                cb.Debug = true;
+                this.cb.Debug = true;
             }
             else
             {
-                cb.Debug = false;
+                this.cb.Debug = false;
             }
 
-            if (!(CallBackOnComplete == string.Empty))
+            if (!(this.CallBackOnComplete == string.Empty))
             {
-                cb.OnCallbackComplete = CallBackOnComplete;
+                this.cb.OnCallbackComplete = this.CallBackOnComplete;
             }
 
             Controls.CallBackContent cnt = new Controls.CallBackContent();
-            cnt.Controls.Add(ModalContent);
-            cb.Content = cnt;
-            this.Controls.Add(cb);
-            ChildControlsCreated = true;
+            cnt.Controls.Add(this.ModalContent);
+            this.cb.Content = cnt;
+            this.Controls.Add(this.cb);
+            this.ChildControlsCreated = true;
         }
 
         protected override void RenderChildren(System.Web.UI.HtmlTextWriter writer)
         {
-            foreach (Control childControl in Controls)
+            foreach (Control childControl in this.Controls)
             {
                 childControl.RenderControl(writer);
             }
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.AddAttribute("class", "amModalCloseImg");
             writer.AddAttribute("onclick", "amaf_closeDialog();");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            writer.AddAttribute("src", Page.ResolveUrl( "~/DesktopModules/ActiveForums/images/close.gif"));
+            writer.AddAttribute("src", this.Page.ResolveUrl( "~/DesktopModules/ActiveForums/images/close.gif"));
             writer.AddAttribute("alt", "[RESX:Close]");
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag(); //Close image
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.AddAttribute("class", "amModalFrame");
             writer.AddAttribute("id", "amModalFrameDiv");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            cb.RenderControl(writer);
+            this.cb.RenderControl(writer);
             writer.RenderEndTag(); //Close Content Area
             //END Content AREA
             //END Main Div
@@ -209,7 +209,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("            if (modFrame != undefined){");
             sb.Append("                modFrame.height = '0';");
             sb.Append("            };");
-            sb.Append("        " + cb.ClientID + ".Callback('load',key,optional);");
+            sb.Append("        " + this.cb.ClientID + ".Callback('load',key,optional);");
             sb.Append("};");
             sb.Append("function amaf_closeDialog(){");
             sb.Append("        var modFrame = document.getElementById('amModalFrame');");
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("        var dlg=document.getElementById('amModal');");
             sb.Append("        dlg.style.display='none';");
             sb.Append(" var mask = document.getElementById('amModalMask');");
-            sb.Append("        var cModal = document.getElementById('" + cb.ClientID + "');");
+            sb.Append("        var cModal = document.getElementById('" + this.cb.ClientID + "');");
             sb.Append("        cModal.removeChild(cModal.firstChild);");
             sb.Append("        mask.style.display='none';");
             sb.Append("};</script>");
@@ -234,14 +234,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public void RaiseCallback(object sender, CallBackEventArgs e) // Implements ICallbackEventHandler.RaiseCallback
         {
-            OnCallback(e);
+            this.OnCallback(e);
         }
 
         protected virtual void OnCallback(CallBackEventArgs e)
         {
-            if (Callback != null)
+            if (this.Callback != null)
             {
-                Callback(cb, e);
+                this.Callback(this.cb, e);
             }
         }
 
@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            cb.CallbackEvent += RaiseCallback;
+            this.cb.CallbackEvent += this.RaiseCallback;
         }
     }
 }

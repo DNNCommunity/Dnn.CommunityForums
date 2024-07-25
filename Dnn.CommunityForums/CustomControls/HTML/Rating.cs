@@ -39,22 +39,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public Ratings(int m, int f, int t, bool enable, int r)
         {
-            ModuleId = m;
-            ForumId = f;
-            TopicId = t;
-            Enabled = enable;
-            Rating = r;
+            this.ModuleId = m;
+            this.ForumId = f;
+            this.TopicId = t;
+            this.Enabled = enable;
+            this.Rating = r;
         }
 
         public string Render()
         {
             StringBuilder sb = new StringBuilder();
-            if (Rating == -1)
+            if (this.Rating == -1)
             {
-                Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
+                this.Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: this.TopicId);
             }
 
-            if (Enabled)
+            if (this.Enabled)
             {
                 sb.Append("<ul id=\"af-rater\" class=\"fa-rater ");
             }
@@ -63,20 +63,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<ul class=\"fa-rater ");
             }
 
-            if (Rating > 0)
+            if (this.Rating > 0)
             {
-                sb.Append(" fa-rate" + Rating.ToString());
+                sb.Append(" fa-rate" + this.Rating.ToString());
             }
 
             sb.Append("\">");
-            if (Enabled)
+            if (this.Enabled)
             {
 
-                sb.Append("<li onmouseover=\"amaf_hoverRate(this,1);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + TopicId.ToString() + ",1);\"><i class=\"fa fa-star1\"></i></li>");
-                sb.Append("<li onmouseover=\"amaf_hoverRate(this,2);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + TopicId.ToString() + ",2);\"><i class=\"fa fa-star2\"></i></li>");
-                sb.Append("<li onmouseover=\"amaf_hoverRate(this,3);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + TopicId.ToString() + ",3);\"><i class=\"fa fa-star3\"></i></li>");
-                sb.Append("<li onmouseover=\"amaf_hoverRate(this,4);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + TopicId.ToString() + ",4);\"><i class=\"fa fa-star4\"></i></li>");
-                sb.Append("<li onmouseover=\"amaf_hoverRate(this,5);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + ModuleId.ToString() + "," + ForumId.ToString() + "," + TopicId.ToString() + ",5);\"><i class=\"fa fa-star5\"></i></li>");
+                sb.Append("<li onmouseover=\"amaf_hoverRate(this,1);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",1);\"><i class=\"fa fa-star1\"></i></li>");
+                sb.Append("<li onmouseover=\"amaf_hoverRate(this,2);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",2);\"><i class=\"fa fa-star2\"></i></li>");
+                sb.Append("<li onmouseover=\"amaf_hoverRate(this,3);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",3);\"><i class=\"fa fa-star3\"></i></li>");
+                sb.Append("<li onmouseover=\"amaf_hoverRate(this,4);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",4);\"><i class=\"fa fa-star4\"></i></li>");
+                sb.Append("<li onmouseover=\"amaf_hoverRate(this,5);\" onmouseout=\"amaf_hoverRate(this);\" onclick=\"amaf_ChangeTopicRating(" + this.ModuleId.ToString() + "," + this.ForumId.ToString() + "," + this.TopicId.ToString() + ",5);\"><i class=\"fa fa-star5\"></i></li>");
             }
             else
             {
@@ -88,9 +88,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sb.Append("</ul>");
-            if (Enabled)
+            if (this.Enabled)
             {
-                sb.Append("<input type=\"hidden\" value=\"" + Rating.ToString() + "\" id=\"af-rate-value\" />");
+                sb.Append("<input type=\"hidden\" value=\"" + this.Rating.ToString() + "\" id=\"af-rate-value\" />");
             }
 
             return sb.ToString();

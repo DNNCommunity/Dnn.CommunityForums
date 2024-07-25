@@ -30,17 +30,17 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            agTemplates.Callback += agTemplates_Callback;
-            agTemplates.ItemBound += agTemplates_ItemBound;
+            this.agTemplates.Callback += this.agTemplates_Callback;
+            this.agTemplates.ItemBound += this.agTemplates_ItemBound;
 
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
-            txtThemeName.Text = moduleSettings.Theme;
-            txtTemplateFolder.Text = Server.MapPath(moduleSettings.TemplatePath);
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            this.txtThemeName.Text = moduleSettings.Theme;
+            this.txtTemplateFolder.Text = this.Server.MapPath(moduleSettings.TemplatePath);
         }
 
         private void agTemplates_Callback(object sender, Controls.CallBackEventArgs e)
@@ -57,8 +57,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 RowIndex = ((PageIndex + 1) * PageSize) - PageSize;
             }
 
-            agTemplates.Datasource = DataProvider.Instance().Templates_List(PortalId, ModuleId, 0, RowIndex, PageSize);
-            agTemplates.Refresh(e.Output);
+            this.agTemplates.Datasource = DataProvider.Instance().Templates_List(this.PortalId, this.ModuleId, 0, RowIndex, PageSize);
+            this.agTemplates.Refresh(e.Output);
         }
 
         private void agTemplates_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string sValue = string.Empty;
             try
             {
-                sValue = GetSharedResource("[RESX:" + Convert.ToString(Enum.Parse(typeof(Templates.TemplateTypes), e.Item[1].ToString())) + "]");
+                sValue = this.GetSharedResource("[RESX:" + Convert.ToString(Enum.Parse(typeof(Templates.TemplateTypes), e.Item[1].ToString())) + "]");
             }
             catch (Exception ex)
             {

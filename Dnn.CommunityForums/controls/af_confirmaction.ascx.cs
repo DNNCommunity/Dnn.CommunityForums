@@ -39,82 +39,82 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 //Put user code to initialize the page here
-                if (Request.Params["afmsg"] != null)
+                if (this.Request.Params["afmsg"] != null)
                 {
-                    switch (Request.Params["afmsg"].ToUpper())
+                    switch (this.Request.Params["afmsg"].ToUpper())
                     {
                         case "MOVE":
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Moved]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Moved]", "Messages.ascx");
                             break;
                         case "MODALERT":
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Alert]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Alert]", "Messages.ascx");
                             break;
                         case "PENDINGMOD":
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:PendingMod]", "Messages.ascx");
-                            hypPost.Visible = false;
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:PendingMod]", "Messages.ascx");
+                            this.hypPost.Visible = false;
                             break;
                         case "EMAILSENT":
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Sent]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Sent]", "Messages.ascx");
                             break;
                         case "POSTSUBMIT":
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Submit]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Submit]", "Messages.ascx");
                             break;
                     }
                 }
-                else if (Request.QueryString[ParamKeys.ConfirmActionId] != null)
+                else if (this.Request.QueryString[ParamKeys.ConfirmActionId] != null)
                 {
-                    ConfirmActions action = (ConfirmActions)Enum.Parse(typeof(ConfirmActions), Request.QueryString[ParamKeys.ConfirmActionId],true);
+                    ConfirmActions action = (ConfirmActions)Enum.Parse(typeof(ConfirmActions), this.Request.QueryString[ParamKeys.ConfirmActionId],true);
                     switch (action)
                     {
                         case ConfirmActions.AlertSent:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Alert]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Alert]", "Messages.ascx");
                             break;
                         case ConfirmActions.MessageDeleted:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Deleted]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Deleted]", "Messages.ascx");
                             break;
                         case ConfirmActions.MessageMoved:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Moved]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Moved]", "Messages.ascx");
                             break;
                         case ConfirmActions.MessagePending:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:PendingMod]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:PendingMod]", "Messages.ascx");
                             break;
                         case ConfirmActions.TopicSaved:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Saved]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Saved]", "Messages.ascx");
                             break;
                         case ConfirmActions.TopicDeleted:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Deleted]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Topic:Deleted]", "Messages.ascx");
                             break;
                         case ConfirmActions.ReplyDeleted:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Reply:Deleted]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Reply:Deleted]", "Messages.ascx");
                             break;
                         case ConfirmActions.ReplySaved:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Reply:Saved]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Reply:Saved]", "Messages.ascx");
                             break;
                         case ConfirmActions.SendToComplete:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Sent]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Sent]", "Messages.ascx");
                             break;
                         case ConfirmActions.SendToFailed:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Failed]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:Email:Failed]", "Messages.ascx");
                             break;
                         case ConfirmActions.UserBanned:
-                            lblMessage.Text = Utilities.GetSharedResource("[RESX:User:Banned]", "Messages.ascx");
+                            this.lblMessage.Text = Utilities.GetSharedResource("[RESX:User:Banned]", "Messages.ascx");
                             break;
                     }
 
                 }
 
-                hypForums.NavigateUrl = NavigateUrl(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId });
-                hypPost.NavigateUrl = NavigateUrl(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId });
-                if (TopicId == -1)
+                this.hypForums.NavigateUrl = this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + this.ForumId });
+                this.hypPost.NavigateUrl = this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId });
+                if (this.TopicId == -1)
                 {
-                    hypPost.Visible = false;
+                    this.hypPost.Visible = false;
                 }
                 else
                 {
-                    hypPost.Visible = true;
+                    this.hypPost.Visible = true;
                 }
 
-                hypHome.NavigateUrl = NavigateUrl(TabId);
+                this.hypHome.NavigateUrl = this.NavigateUrl(this.TabId);
             }
             catch (Exception exc)
             {
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
             this.LocalResourceFile = Globals.SharedResourceFile;
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion

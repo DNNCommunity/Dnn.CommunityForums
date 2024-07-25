@@ -33,28 +33,28 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            btnSave.Click += new System.EventHandler(btnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
 
-            if (Request.QueryString[Literals.UserId] == null)
+            if (this.Request.QueryString[Literals.UserId] == null)
             {
-                UID = UserInfo.UserID;
+                this.UID = this.UserInfo.UserID;
             }
             else
             {
-                UID = Convert.ToInt32(Request.QueryString[Literals.UserId]);
+                this.UID = Convert.ToInt32(this.Request.QueryString[Literals.UserId]);
             }
 
-            if (UID > 0 && !Page.IsPostBack)
+            if (this.UID > 0 && !this.Page.IsPostBack)
             {
-                UserProfileInfo ui = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
-                drpPrefDefaultSort.SelectedIndex = drpPrefDefaultSort.Items.IndexOf(drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
-                drpPrefPageSize.SelectedIndex = drpPrefPageSize.Items.IndexOf(drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
+                UserProfileInfo ui = new UserController().GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
+                this.drpPrefDefaultSort.SelectedIndex = this.drpPrefDefaultSort.Items.IndexOf(this.drpPrefDefaultSort.Items.FindByValue(ui.PrefDefaultSort.Trim()));
+                this.drpPrefPageSize.SelectedIndex = this.drpPrefPageSize.Items.IndexOf(this.drpPrefPageSize.Items.FindByValue(ui.PrefPageSize.ToString()));
 
-                chkPrefJumpToLastPost.Checked = ui.PrefJumpLastPost;
-                chkPrefTopicSubscribe.Checked = ui.PrefTopicSubscribe;
-                chkPrefBlockAvatars.Checked = ui.PrefBlockAvatars;
-                chkPrefBlockSignatures.Checked = ui.PrefBlockSignatures;
-                txtSignature.Text = ui.Signature;
+                this.chkPrefJumpToLastPost.Checked = ui.PrefJumpLastPost;
+                this.chkPrefTopicSubscribe.Checked = ui.PrefTopicSubscribe;
+                this.chkPrefBlockAvatars.Checked = ui.PrefBlockAvatars;
+                this.chkPrefBlockSignatures.Checked = ui.PrefBlockSignatures;
+                this.txtSignature.Text = ui.Signature;
             }
         }
 
@@ -66,34 +66,34 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
-            if (UserId == UID || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
+            if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
             {
-                UserProfileInfo upi = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
+                UserProfileInfo upi = new UserController().GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
                 if (upi != null)
                 {
-                    upi.PrefDefaultSort = Utilities.XSSFilter(drpPrefDefaultSort.SelectedItem.Value, true);
-                    upi.PrefPageSize = Convert.ToInt32((Convert.ToInt32(drpPrefPageSize.SelectedValue) < 5) ? 5 : Convert.ToInt32(drpPrefPageSize.SelectedValue));
+                    upi.PrefDefaultSort = Utilities.XSSFilter(this.drpPrefDefaultSort.SelectedItem.Value, true);
+                    upi.PrefPageSize = Convert.ToInt32((Convert.ToInt32(this.drpPrefPageSize.SelectedValue) < 5) ? 5 : Convert.ToInt32(this.drpPrefPageSize.SelectedValue));
                     upi.PrefDefaultShowReplies = false;
-                    upi.PrefJumpLastPost = chkPrefJumpToLastPost.Checked;
-                    upi.PrefTopicSubscribe = chkPrefTopicSubscribe.Checked;
+                    upi.PrefJumpLastPost = this.chkPrefJumpToLastPost.Checked;
+                    upi.PrefTopicSubscribe = this.chkPrefTopicSubscribe.Checked;
                     upi.PrefSubscriptionType = SubscriptionTypes.Instant;
                     upi.PrefUseAjax = false;
-                    upi.PrefBlockAvatars = chkPrefBlockAvatars.Checked;
-                    upi.PrefBlockSignatures = chkPrefBlockSignatures.Checked;
-                    if (MainSettings.AllowSignatures == 1 || MainSettings.AllowSignatures == 0)
+                    upi.PrefBlockAvatars = this.chkPrefBlockAvatars.Checked;
+                    upi.PrefBlockSignatures = this.chkPrefBlockSignatures.Checked;
+                    if (this.MainSettings.AllowSignatures == 1 || this.MainSettings.AllowSignatures == 0)
                     {
-                        upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
+                        upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
                         upi.Signature = System.Web.HttpUtility.HtmlEncode(upi.Signature);
                     }
-                    else if (MainSettings.AllowSignatures == 2)
+                    else if (this.MainSettings.AllowSignatures == 2)
                     {
-                        upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
+                        upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
 
                     new UserProfileController().Profiles_Save(upi);
 
-                    Response.Redirect(NavigateUrl(TabId));
+                    this.Response.Redirect(this.NavigateUrl(this.TabId));
 
                 }
             }

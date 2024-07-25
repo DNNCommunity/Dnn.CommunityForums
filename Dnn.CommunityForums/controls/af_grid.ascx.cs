@@ -46,37 +46,37 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            foreach (ListItem timeFrameItem in drpTimeFrame.Items)
+            foreach (ListItem timeFrameItem in this.drpTimeFrame.Items)
             {
-                timeFrameItem.Text = GetSharedResource($"ActiveTopics-{timeFrameItem.Value}min.Text");
+                timeFrameItem.Text = this.GetSharedResource($"ActiveTopics-{timeFrameItem.Value}min.Text");
             }
 
-            _currentTheme = MainSettings.Theme;
+            this._currentTheme = this.MainSettings.Theme;
 
-            drpTimeFrame.SelectedIndexChanged += DrpTimeFrameSelectedIndexChanged;
-            btnMarkRead.ServerClick += BtnMarkReadClick;
+            this.drpTimeFrame.SelectedIndexChanged += this.DrpTimeFrameSelectedIndexChanged;
+            this.btnMarkRead.ServerClick += this.BtnMarkReadClick;
 
-            rptTopics.ItemCreated += RepeaterOnItemCreated;
+            this.rptTopics.ItemCreated += this.RepeaterOnItemCreated;
 
-            var sortDirection = Request.Params[ParamKeys.Sort] ?? SortOptions.Descending;
+            var sortDirection = this.Request.Params[ParamKeys.Sort] ?? SortOptions.Descending;
 
-            BindPosts(sortDirection);
+            this.BindPosts(sortDirection);
         }
 
         private void DrpTimeFrameSelectedIndexChanged(object sender, EventArgs e)
         {
-            var timeframe = Utilities.SafeConvertInt(drpTimeFrame.SelectedItem.Value, 1440);
-            Response.Redirect(Utilities.NavigateURL(TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=" + Request.Params[$"{ParamKeys.GridType}"], $"{ParamKeys.TimeSpan}={timeframe}" }));
+            var timeframe = Utilities.SafeConvertInt(this.drpTimeFrame.SelectedItem.Value, 1440);
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=" + this.Request.Params[$"{ParamKeys.GridType}"], $"{ParamKeys.TimeSpan}={timeframe}" }));
         }
 
         private void BtnMarkReadClick(object sender, EventArgs e)
         {
-            if(UserId >= 0)
+            if(this.UserId >= 0)
             {
-                DataProvider.Instance().Utility_MarkAllRead(ForumModuleId, UserId, 0);
+                DataProvider.Instance().Utility_MarkAllRead(this.ForumModuleId, this.UserId, 0);
             }
 
-            Response.Redirect(Utilities.NavigateURL(TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.NotRead}" }));
+            this.Response.Redirect(Utilities.NavigateURL(this.TabId, string.Empty, new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.NotRead}" }));
         }
 
         private void RepeaterOnItemCreated(object sender, RepeaterItemEventArgs repeaterItemEventArgs)
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            _currentRow = dataRowView.Row;
+            this._currentRow = dataRowView.Row;
         }
 
         #endregion
@@ -97,210 +97,210 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindPosts(string sort = "ASC")
         {
-            _pageSize = MainSettings.PageSize;
+            this._pageSize = this.MainSettings.PageSize;
 
-            if (UserId > 0)
+            if (this.UserId > 0)
             {
-                _pageSize = UserDefaultPageSize;
+                this._pageSize = this.UserDefaultPageSize;
             }
 
-            if (_pageSize < 5)
+            if (this._pageSize < 5)
             {
-                _pageSize = 10;
+                this._pageSize = 10;
             }
 
-            _rowIndex = (PageId == 1) ? 0 : ((PageId * _pageSize) - _pageSize);
+            this._rowIndex = (this.PageId == 1) ? 0 : ((this.PageId * this._pageSize) - this._pageSize);
 
             var db = new Data.Common();
-            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanRead");
+            var forumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
 
-            var sCrumb = "<a href=\"" + Utilities.NavigateURL(TabId, "", new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
+            var sCrumb = "<a href=\"" + Utilities.NavigateURL(this.TabId, "", new[] { ParamKeys.ViewType + $"={Views.Grid}", $"{ParamKeys.GridType}=xxx" }) + "\">yyyy</a>";
             sCrumb = sCrumb.Replace("xxx", "{0}").Replace("yyyy", "{1}");
 
-            if (Request.Params[ParamKeys.GridType] != null)
+            if (this.Request.Params[ParamKeys.GridType] != null)
             {
-                var gview = Utilities.XSSFilter(Request.Params[ParamKeys.GridType]).ToLowerInvariant();
-                var timeFrame = Utilities.SafeConvertInt(Request.Params[ParamKeys.TimeSpan], 1440);
+                var gview = Utilities.XSSFilter(this.Request.Params[ParamKeys.GridType]).ToLowerInvariant();
+                var timeFrame = Utilities.SafeConvertInt(this.Request.Params[ParamKeys.TimeSpan], 1440);
                 switch (gview)
                 {
                     case GridTypes.NotRead:
 
-                        if (UserId != -1)
+                        if (this.UserId != -1)
                         {
-                            lblHeader.Text = GetSharedResource("[RESX:NotRead]");
-                            _dtResults = db.UI_NotReadView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
-                            if (_dtResults.Rows.Count > 0)
+                            this.lblHeader.Text = this.GetSharedResource("[RESX:NotRead]");
+                            this._dtResults = db.UI_NotReadView(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, forumIds).Tables[0];
+                            if (this._dtResults.Rows.Count > 0)
                             {
-                                rowCount = _dtResults.Rows[0].GetInt("RecordCount");
-                                btnMarkRead.Visible = true;
-                                btnMarkRead.InnerText = GetSharedResource("[RESX:MarkAllRead]");
+                                this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
+                                this.btnMarkRead.Visible = true;
+                                this.btnMarkRead.InnerText = this.GetSharedResource("[RESX:MarkAllRead]");
                             }
                         }
                         else
-                            Response.Redirect(Utilities.NavigateURL(TabId), true);
+                            this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
                         break;
 
                     case GridTypes.Announcements:
 
-                        lblHeader.Text = GetSharedResource("[RESX:Announcements]");
-                        _dtResults = db.UI_Announcements(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:Announcements]");
+                        this._dtResults = db.UI_Announcements(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, forumIds).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
 
                     case GridTypes.Unresolved:
 
-                        lblHeader.Text = GetSharedResource("[RESX:Unresolved]");
-                        _dtResults = db.UI_Unresolved(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:Unresolved]");
+                        this._dtResults = db.UI_Unresolved(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, forumIds).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
                     case GridTypes.Unanswered:
 
-                        lblHeader.Text = GetSharedResource("[RESX:Unanswered]");
-                        _dtResults = db.UI_UnansweredView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:Unanswered]");
+                        this._dtResults = db.UI_UnansweredView(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, forumIds).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
                     case GridTypes.Tags:
 
                         var tagId = -1;
-                        if (Request.QueryString[ParamKeys.Tags] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Tags]))
+                        if (this.Request.QueryString[ParamKeys.Tags] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.Tags]))
                         {
-                            tagId = int.Parse(Request.QueryString[ParamKeys.Tags]);
+                            tagId = int.Parse(this.Request.QueryString[ParamKeys.Tags]);
                         }
 
-                        lblHeader.Text = GetSharedResource("[RESX:Tags]");
-                        _dtResults = db.UI_TagsView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds, tagId).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:Tags]");
+                        this._dtResults = db.UI_TagsView(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, forumIds, tagId).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
 
                     case GridTypes.MyTopics:
 
-                        if (UserId != -1)
+                        if (this.UserId != -1)
                         {
-                            lblHeader.Text = GetSharedResource("[RESX:MyTopics]");
-                            _dtResults = db.UI_MyTopicsView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
-                            if (_dtResults.Rows.Count > 0)
+                            this.lblHeader.Text = this.GetSharedResource("[RESX:MyTopics]");
+                            this._dtResults = db.UI_MyTopicsView(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, forumIds).Tables[0];
+                            if (this._dtResults.Rows.Count > 0)
                             {
-                                rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                                this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
                             }
                         }
                         else
-                            Response.Redirect(Utilities.NavigateURL(TabId), true);
+                            this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
 
                         break;
 
                     case GridTypes.ActiveTopics:
 
-                        lblHeader.Text = GetSharedResource("[RESX:ActiveTopics]");
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:ActiveTopics]");
 
                         if (timeFrame < 15 | timeFrame > 80640)
                         {
                             timeFrame = 1440;
                         }
 
-                        drpTimeFrame.Visible = true;
-                        drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        _dtResults = db.UI_ActiveView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.drpTimeFrame.Visible = true;
+                        this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
+                        this._dtResults = db.UI_ActiveView(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, timeFrame, forumIds).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
+                            this.rowCount = Convert.ToInt32(this._dtResults.Rows[0]["RecordCount"]);
                         }
 
                         break;
 
                     case GridTypes.MostLiked:
 
-                        lblHeader.Text = GetSharedResource("[RESX:MostLiked]");
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:MostLiked]");
                         if (timeFrame < 15 | timeFrame > 80640)
                         {
                             timeFrame = 1440;
                         }
 
-                        drpTimeFrame.Visible = true;
-                        drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        _dtResults = db.UI_MostLiked(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.drpTimeFrame.Visible = true;
+                        this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
+                        this._dtResults = db.UI_MostLiked(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, timeFrame, forumIds).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            this.rowCount = this._dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
 
                     case GridTypes.MostReplies:
 
-                        lblHeader.Text = GetSharedResource("[RESX:MostReplies]");
+                        this.lblHeader.Text = this.GetSharedResource("[RESX:MostReplies]");
 
                         if (timeFrame < 15 | timeFrame > 80640)
                         {
                             timeFrame = 1440;
                         }
 
-                        drpTimeFrame.Visible = true;
-                        drpTimeFrame.SelectedIndex = drpTimeFrame.Items.IndexOf(drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
-                        _dtResults = db.UI_MostReplies(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
-                        if (_dtResults.Rows.Count > 0)
+                        this.drpTimeFrame.Visible = true;
+                        this.drpTimeFrame.SelectedIndex = this.drpTimeFrame.Items.IndexOf(this.drpTimeFrame.Items.FindByValue(timeFrame.ToString()));
+                        this._dtResults = db.UI_MostReplies(this.PortalId, this.ForumModuleId, this.UserId, this._rowIndex, this._pageSize, sort, timeFrame, forumIds).Tables[0];
+                        if (this._dtResults.Rows.Count > 0)
                         {
-                            rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
+                            this.rowCount = Convert.ToInt32(this._dtResults.Rows[0]["RecordCount"]);
                         }
 
                         break;
 
                     default:
-                        Response.Redirect(Utilities.NavigateURL(TabId), true);
+                        this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);
                         break;
                 }
 
-                sCrumb = string.Format(sCrumb, gview, lblHeader.Text);
+                sCrumb = string.Format(sCrumb, gview, this.lblHeader.Text);
 
-                if (MainSettings.UseSkinBreadCrumb)
+                if (this.MainSettings.UseSkinBreadCrumb)
                 {
-                    Environment.UpdateBreadCrumb(Page.Controls, sCrumb);
+                    Environment.UpdateBreadCrumb(this.Page.Controls, sCrumb);
                 }
 
-                var tempVar = BasePage;
-                Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
+                var tempVar = this.BasePage;
+                Environment.UpdateMeta(ref tempVar, "[VALUE] - " + this.lblHeader.Text, "[VALUE]", "[VALUE]");
             }
 
-            if (_dtResults != null && _dtResults.Rows.Count > 0)
+            if (this._dtResults != null && this._dtResults.Rows.Count > 0)
             {
-                litRecordCount.Text = string.Format(GetSharedResource("[RESX:SearchRecords]"), _rowIndex + 1, _rowIndex + _dtResults.Rows.Count, rowCount);
+                this.litRecordCount.Text = string.Format(this.GetSharedResource("[RESX:SearchRecords]"), this._rowIndex + 1, this._rowIndex + this._dtResults.Rows.Count, this.rowCount);
 
-                pnlMessage.Visible = false;
+                this.pnlMessage.Visible = false;
 
                 try
                 {
-                    rptTopics.Visible = true;
-                    rptTopics.DataSource = _dtResults;
-                    rptTopics.DataBind();
-                    BuildPager(PagerTop);
-                    BuildPager(PagerBottom);
+                    this.rptTopics.Visible = true;
+                    this.rptTopics.DataSource = this._dtResults;
+                    this.rptTopics.DataBind();
+                    this.BuildPager(this.PagerTop);
+                    this.BuildPager(this.PagerBottom);
                 }
                 catch (Exception ex)
                 {
-                    litMessage.Text = ex.Message;
-                    pnlMessage.Visible = true;
-                    rptTopics.Visible = false;
+                    this.litMessage.Text = ex.Message;
+                    this.pnlMessage.Visible = true;
+                    this.rptTopics.Visible = false;
                 }
             }
             else
             {
-                litMessage.Text = GetSharedResource("[RESX:SearchNoResults]");
-                pnlMessage.Visible = true;
+                this.litMessage.Text = this.GetSharedResource("[RESX:SearchNoResults]");
+                this.pnlMessage.Visible = true;
             }
 
         }
@@ -312,48 +312,48 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var intPages = Convert.ToInt32(Math.Ceiling(rowCount/(double) _pageSize));
+            var intPages = Convert.ToInt32(Math.Ceiling(this.rowCount/(double) this._pageSize));
 
             string[] @params;
-            if (Request.Params[ParamKeys.Sort] != null)
+            if (this.Request.Params[ParamKeys.Sort] != null)
                 @params = new[] {
-                    $"{ParamKeys.GridType}={Request.Params[ParamKeys.GridType]}",
-                    $"{ParamKeys.Sort}={Request.Params[ParamKeys.Sort]}",
-                    "afcol=" + Request.Params["afcol"]
+                    $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
+                    $"{ParamKeys.Sort}={this.Request.Params[ParamKeys.Sort]}",
+                    "afcol=" + this.Request.Params["afcol"]
                 };
-            else if (Request.Params[ParamKeys.TimeSpan] != null)
+            else if (this.Request.Params[ParamKeys.TimeSpan] != null)
                 @params = new[] {
-                    $"{ParamKeys.GridType}={Request.Params[ParamKeys.GridType]}",
-                    $"{ParamKeys.TimeSpan}={Request.Params[ParamKeys.TimeSpan]}"
+                    $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}",
+                    $"{ParamKeys.TimeSpan}={this.Request.Params[ParamKeys.TimeSpan]}"
                 };
             else
                 @params = new[] {
-                    $"{ParamKeys.GridType}={Request.Params[ParamKeys.GridType]}"
+                    $"{ParamKeys.GridType}={this.Request.Params[ParamKeys.GridType]}"
                 };
 
             pager.PageCount = intPages;
-            pager.CurrentPage = PageId;
-            pager.TabID = TabId;
-            pager.ForumID = ForumId;
+            pager.CurrentPage = this.PageId;
+            pager.TabID = this.TabId;
+            pager.ForumID = this.ForumId;
             pager.PageText = Utilities.GetSharedResource("[RESX:Page]");
             pager.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
             pager.View = Views.Grid;
 
             pager.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
 
-            if (MainSettings.URLRewriteEnabled)
+            if (this.MainSettings.URLRewriteEnabled)
             {
-                if (!string.IsNullOrEmpty(MainSettings.PrefixURLBase))
+                if (!string.IsNullOrEmpty(this.MainSettings.PrefixURLBase))
                 {
-                    pager.BaseURL = "/" + MainSettings.PrefixURLBase;
+                    pager.BaseURL = "/" + this.MainSettings.PrefixURLBase;
                 }
 
-                if (!string.IsNullOrEmpty(MainSettings.PrefixURLOther))
+                if (!string.IsNullOrEmpty(this.MainSettings.PrefixURLOther))
                 {
-                    pager.BaseURL += "/" + MainSettings.PrefixURLOther;
+                    pager.BaseURL += "/" + this.MainSettings.PrefixURLOther;
                 }
 
-                pager.BaseURL += "/" + Request.Params[ParamKeys.GridType] + "/";
+                pager.BaseURL += "/" + this.Request.Params[ParamKeys.GridType] + "/";
             }
 
             pager.Params = @params;
@@ -365,105 +365,105 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string GetForumUrl()
         {
-            if (_currentRow == null)
+            if (this._currentRow == null)
             {
                 return null;
             }
 
-            int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
-            int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
-            return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, SocialGroupId);
+            int ForumId = Utilities.SafeConvertInt(this._currentRow["ForumId"].ToString());
+            int ForumGroupId = Utilities.SafeConvertInt(this._currentRow["ForumGroupId"].ToString());
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, this.ForumModuleId);
+            return new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
         }
 
         public string GetThreadUrl()
         {
-            if (_currentRow == null)
+            if (this._currentRow == null)
             {
                 return null;
             }
 
-            int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
-            int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
-            int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
-            return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, SocialGroupId);
+            int ForumId = Utilities.SafeConvertInt(this._currentRow["ForumId"].ToString());
+            int ForumGroupId = Utilities.SafeConvertInt(this._currentRow["ForumGroupId"].ToString());
+            int TopicId = Utilities.SafeConvertInt(this._currentRow["TopicId"].ToString());
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, this.ForumModuleId);
+            return new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, this._currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, -1, this.SocialGroupId);
 
         }
 
         public string GetLastRead()
         {
-            if (_currentRow == null)
+            if (this._currentRow == null)
             {
                 return null;
             }
 
-            int ForumId = Utilities.SafeConvertInt(_currentRow["ForumId"].ToString());
-            int ForumGroupId = Utilities.SafeConvertInt(_currentRow["ForumGroupId"].ToString());
-            int TopicId = Utilities.SafeConvertInt(_currentRow["TopicId"].ToString());
-            int userLastRead = Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"].ToString());
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
-            return new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, _currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, SocialGroupId);
+            int ForumId = Utilities.SafeConvertInt(this._currentRow["ForumId"].ToString());
+            int ForumGroupId = Utilities.SafeConvertInt(this._currentRow["ForumGroupId"].ToString());
+            int TopicId = Utilities.SafeConvertInt(this._currentRow["TopicId"].ToString());
+            int userLastRead = Utilities.SafeConvertInt(this._currentRow["UserLastTopicRead"].ToString());
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, this.ForumModuleId);
+            return new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumGroupId, ForumId, TopicId, this._currentRow["TopicUrl"].ToString(), -1, -1, string.Empty, 1, userLastRead, this.SocialGroupId);
 
         }
 
         public string GetArrowPath()
         {
-            string theme = Page.ResolveUrl(MainSettings.ThemeLocation + "/images/miniarrow_down.png");
+            string theme = this.Page.ResolveUrl(this.MainSettings.ThemeLocation + "/images/miniarrow_down.png");
             return theme;
         }
 
         public string GetPostTime()
         {
-            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["DateCreated"]), ForumModuleId, UserInfo);
+            return (this._currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this._currentRow["DateCreated"]), this.ForumModuleId, this.UserInfo);
         }
 
         public string GetAuthor()
         {
-            if (_currentRow == null)
+            if (this._currentRow == null)
             {
                 return null;
             }
 
-            var userId = Convert.ToInt32(_currentRow["AuthorId"]);
-            var userName = _currentRow["AuthorUserName"].ToString();
-            var firstName = _currentRow["AuthorFirstName"].ToString();
-            var lastName = _currentRow["AuthorLastName"].ToString();
-            var displayName = _currentRow["AuthorDisplayName"].ToString();
-            return UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            var userId = Convert.ToInt32(this._currentRow["AuthorId"]);
+            var userName = this._currentRow["AuthorUserName"].ToString();
+            var firstName = this._currentRow["AuthorFirstName"].ToString();
+            var lastName = this._currentRow["AuthorLastName"].ToString();
+            var displayName = this._currentRow["AuthorDisplayName"].ToString();
+            return UserProfiles.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostAuthor()
         {
-            if (_currentRow == null)
+            if (this._currentRow == null)
             {
                 return null;
             }
 
-            var userId = Convert.ToInt32(_currentRow["LastReplyAuthorId"]);
-            var userName = _currentRow["LastReplyUserName"].ToString();
-            var firstName = _currentRow["LastReplyFirstName"].ToString();
-            var lastName = _currentRow["LastReplyLastName"].ToString();
-            var displayName = _currentRow["LastReplyDisplayName"].ToString();
-            return UserProfiles.GetDisplayName(PortalSettings, ForumModuleId, true, false, ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
+            var userId = Convert.ToInt32(this._currentRow["LastReplyAuthorId"]);
+            var userName = this._currentRow["LastReplyUserName"].ToString();
+            var firstName = this._currentRow["LastReplyFirstName"].ToString();
+            var lastName = this._currentRow["LastReplyLastName"].ToString();
+            var displayName = this._currentRow["LastReplyDisplayName"].ToString();
+            return UserProfiles.GetDisplayName(this.PortalSettings, this.ForumModuleId, true, false, this.ForumUser.IsAdmin, userId, userName, firstName, lastName, displayName);
         }
 
         public string GetLastPostTime()
         {
-            return (_currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(_currentRow["LastReplyDate"]), ForumModuleId, UserInfo);
+            return (this._currentRow == null) ? null : Utilities.GetUserFriendlyDateTimeString(Convert.ToDateTime(this._currentRow["LastReplyDate"]), this.ForumModuleId, this.UserInfo);
         }
 
         public string GetIcon()
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetTopicIcon(
-                Utilities.SafeConvertInt(_currentRow["TopicId"].ToString()),
-                ThemePath,
-                Utilities.SafeConvertInt(_currentRow["UserLastTopicRead"]),
-                Utilities.SafeConvertInt(_currentRow["UserLastReplyRead"]));
+                Utilities.SafeConvertInt(this._currentRow["TopicId"].ToString()),
+                this.ThemePath,
+                Utilities.SafeConvertInt(this._currentRow["UserLastTopicRead"]),
+                Utilities.SafeConvertInt(this._currentRow["UserLastReplyRead"]));
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public string GetMiniPager() => MiniPager.GetMiniPager(_currentRow, TabId, SocialGroupId, _pageSize);
+        public string GetMiniPager() => MiniPager.GetMiniPager(this._currentRow, this.TabId, this.SocialGroupId, this._pageSize);
 
         #endregion
     }

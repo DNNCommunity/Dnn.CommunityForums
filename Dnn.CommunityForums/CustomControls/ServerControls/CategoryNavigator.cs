@@ -38,12 +38,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _itemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                _itemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -53,12 +53,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _headerTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                _headerTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -68,12 +68,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _footerTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                _footerTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _renderMode;
+                return this._renderMode;
             }
 
             set
             {
-                _renderMode = value;
+                this._renderMode = value;
             }
         }
 
@@ -98,12 +98,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -113,12 +113,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -128,12 +128,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -143,12 +143,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumId;
+                return this._ForumId;
             }
 
             set
             {
-                _ForumId = value;
+                this._ForumId = value;
             }
         }
 
@@ -158,29 +158,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumGroupId;
+                return this._ForumGroupId;
             }
 
             set
             {
-                _ForumGroupId = value;
+                this._ForumGroupId = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            Controls.CategoriesList tb = new Controls.CategoriesList(PortalId, ModuleId, ForumId, ForumGroupId);
-            tb.TabId = TabId;
-            tb.Template = ItemTemplate.Text;
-            tb.HeaderTemplate = HeaderTemplate.Text;
-            tb.FooterTemplate = FooterTemplate.Text;
-            tb.CSSClass = CssClass;
+            Controls.CategoriesList tb = new Controls.CategoriesList(this.PortalId, this.ModuleId, this.ForumId, this.ForumGroupId);
+            tb.TabId = this.TabId;
+            tb.Template = this.ItemTemplate.Text;
+            tb.HeaderTemplate = this.HeaderTemplate.Text;
+            tb.FooterTemplate = this.FooterTemplate.Text;
+            tb.CSSClass = this.CssClass;
             if (HttpContext.Current.Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(HttpContext.Current.Request.QueryString[ParamKeys.Category]))
             {
                 tb.SelectedCategory = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.Category]);
             }
 
-            if (RenderMode == 0)
+            if (this.RenderMode == 0)
             {
                 writer.Write(tb.RenderView());
             }

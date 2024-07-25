@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
         {
-            var ri = GetById(ReplyId);
+            var ri = this.GetById(ReplyId);
             DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ForumId);
 
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     Summary = string.Empty
                 }
             };
-            replyId = Reply_Save(PortalId, ModuleId, ri);
+            replyId = this.Reply_Save(PortalId, ModuleId, ri);
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             return replyId;
         }

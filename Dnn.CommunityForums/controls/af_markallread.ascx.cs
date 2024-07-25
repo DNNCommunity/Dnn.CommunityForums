@@ -32,16 +32,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (btnMarkAllRead == null)
+            if (this.btnMarkAllRead == null)
             {
                 return;
             }
 
-            btnMarkAllRead.Visible = UserId != -1;
+            this.btnMarkAllRead.Visible = this.UserId != -1;
 
-            if (!string.IsNullOrWhiteSpace(CSSClass))
+            if (!string.IsNullOrWhiteSpace(this.CSSClass))
             {
-                btnMarkAllRead.CssClass = CSSClass;
+                this.btnMarkAllRead.CssClass = this.CSSClass;
             }
         }
 
@@ -65,24 +65,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
-            LocalResourceFile = Globals.SharedResourceFile;
-            InitializeComponent();
+            this.LocalResourceFile = Globals.SharedResourceFile;
+            this.InitializeComponent();
 
-            btnMarkAllRead.Click += BtnMarkAllReadClick;
+            this.btnMarkAllRead.Click += this.BtnMarkAllReadClick;
         }
 
         #endregion
 
         private void BtnMarkAllReadClick(object sender, EventArgs e)
         {
-            if (!Request.IsAuthenticated)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
 
-            DataProvider.Instance().Utility_MarkAllRead(ModuleId, UserId, ForumId > 0 ? ForumId : 0);
+            DataProvider.Instance().Utility_MarkAllRead(this.ModuleId, this.UserId, this.ForumId > 0 ? this.ForumId : 0);
 
-            Response.Redirect(Request.RawUrl);
+            this.Response.Redirect(this.Request.RawUrl);
         }
     }
 

@@ -38,12 +38,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _itemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                _itemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -53,12 +53,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -68,12 +68,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -97,15 +97,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             UserController uc = new UserController();
-            forumUser = uc.GetUser(PortalId, ModuleId);
+            this.forumUser = uc.GetUser(this.PortalId, this.ModuleId);
             Controls.ForumDirectory fd = new Controls.ForumDirectory();
-            fd.ModuleId = ModuleId;
-            fd.TabId = TabId;
-            fd.PortalId = PortalId;
-            fd.ForumUser = forumUser;
-            if (ItemTemplate != null)
+            fd.ModuleId = this.ModuleId;
+            fd.TabId = this.TabId;
+            fd.PortalId = this.PortalId;
+            fd.ForumUser = this.forumUser;
+            if (this.ItemTemplate != null)
             {
-                fd.Template = ItemTemplate.Text;
+                fd.Template = this.ItemTemplate.Text;
             }
 
             writer.Write(fd.Render());

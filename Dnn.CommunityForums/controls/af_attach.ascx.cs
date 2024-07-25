@@ -34,11 +34,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            LocalResourceFile = Globals.SharedResourceFile;
+            this.LocalResourceFile = Globals.SharedResourceFile;
 
-            jQuery.RegisterFileUpload(Page);
+            jQuery.RegisterFileUpload(this.Page);
 
-            ClientResourceManager.RegisterScript(Page, Globals.ModulePath + "scripts/jquery.afFileUpload.js", 102);
+            ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/jquery.afFileUpload.js", 102);
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
     }

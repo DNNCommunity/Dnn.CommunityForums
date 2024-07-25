@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
     {
         public Scheduler(ScheduleHistoryItem scheduleHistoryItem)
         {
-            ScheduleHistoryItem = scheduleHistoryItem;
+            this.ScheduleHistoryItem = scheduleHistoryItem;
         }
 
         public override void DoWork()
@@ -39,14 +39,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
             try
             {
                 var intQueueCount = ProcessQueue();
-                ScheduleHistoryItem.Succeeded = true;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " items"));
+                this.ScheduleHistoryItem.Succeeded = true;
+                this.ScheduleHistoryItem.AddLogNote(string.Concat("Processed ", intQueueCount, " items"));
             }
             catch (Exception ex)
             {
-                ScheduleHistoryItem.Succeeded = false;
-                ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
-                Errored(ref ex);
+                this.ScheduleHistoryItem.Succeeded = false;
+                this.ScheduleHistoryItem.AddLogNote(string.Concat("Process Queue Failed. ", ex));
+                this.Errored(ref ex);
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }

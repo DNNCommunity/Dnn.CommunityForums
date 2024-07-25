@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
         public void AddTopicToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
         {
-            AddTopicToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
+            this.AddTopicToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
         }
 
         internal void AddTopicToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]
         public void AddReplyToJournal(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, int SecurityOption, string ReadRoles, int SocialGroupId)
         {
-            AddReplyToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, ReplyId: ReplyId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
+            this.AddReplyToJournal(PortalId: PortalId, ModuleId: ModuleId, TabId: -1, ForumId: ForumId, TopicId: TopicId, ReplyId: ReplyId, UserId: UserId, URL: URL, Subject: Subject, Summary: Summary, Body: Body, ReadRoles: ReadRoles, SocialGroupId: SocialGroupId);
         }
 
         internal void AddReplyToJournal(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int UserId, string URL, string Subject, string Summary, string Body, string ReadRoles, int SocialGroupId)

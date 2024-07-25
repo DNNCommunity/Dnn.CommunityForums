@@ -45,23 +45,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            cbSecurityToggle.CallbackEvent += cbSecurityToggle_Callback;
-            cbSecGrid.CallbackEvent += cbSecGrid_Callback;
+            this.cbSecurityToggle.CallbackEvent += this.cbSecurityToggle_Callback;
+            this.cbSecGrid.CallbackEvent += this.cbSecGrid_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            imgOn = Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
-            imgOff = Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
-            BindRoles();
-            if (ReadOnly)
+            this.imgOn = this.Page.ResolveUrl(Globals.ModulePath + "images/admin_check.png");
+            this.imgOff = this.Page.ResolveUrl(Globals.ModulePath + "images/admin_stop.png");
+            this.BindRoles();
+            if (this.ReadOnly)
             {
-                gridActions.Visible = false;
+                this.gridActions.Visible = false;
             }
 
-            BuildNewGrid(Perms, PermissionsId);
+            this.BuildNewGrid(this.Perms, this.PermissionsId);
 
         }
 
@@ -72,19 +72,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("<option value=\"\">[RESX:DropDownDefault]</option>");
             sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleAllUsers}\">{DotNetNuke.Common.Globals.glbRoleAllUsersName}</option>");
             sb.Append($"<option value=\"{DotNetNuke.Common.Globals.glbRoleUnauthUser}\">{DotNetNuke.Common.Globals.glbRoleUnauthUserName}</option>");
-            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(PortalId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoles(this.PortalId))
             {
                 sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }
 
             sb.Append("</select>");
-            litRoles.Text = sb.ToString();
+            this.litRoles.Text = sb.ToString();
         }
 
         private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security, int permissionsId)
         {
             //Roles
-            string[] roles = GetSecureObjectList(security, 0).Split(';');
+            string[] roles = this.GetSecureObjectList(security, 0).Split(';');
             int[] roleIds = new int[roles.Length - 2 + 1];
             int i = 0;
             for (i = 0; i <= roles.Length - 2; i++)
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
-            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(PortalId, tmp);
+            NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalId, tmp);
             foreach (string key in nvc.AllKeys)
             {
                 DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pi.ObjectName = nvc[key];
                 if (string.IsNullOrEmpty(pi.ObjectName))
                 {
-                    pi.ObjectName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: Convert.ToInt32(key)).RoleName;
+                    pi.ObjectName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: Convert.ToInt32(key)).RoleName;
                 }
 
                 pi.Type = ObjectType.RoleId;
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             //Users
-            string users = GetSecureObjectList(security, 1);
+            string users = this.GetSecureObjectList(security, 1);
             string userNames = string.Empty;
             if (! string.IsNullOrEmpty(users))
             {
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (! string.IsNullOrEmpty(uid))
                     {
-                        DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
+                        DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, Convert.ToInt32(uid));
                         if (u != null)
                         {
                             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             //Groups
-            string groups = GetSecureObjectList(security, 2);
+            string groups = this.GetSecureObjectList(security, 2);
             if (! string.IsNullOrEmpty(groups))
             {
                 foreach (string g in groups.Split(';'))
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         string gType = g.Split(':')[1];
                         int groupId = Convert.ToInt32(g.Split(':')[0]);
-                        RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: groupId);
+                        RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: groupId);
                         string groupName = role.RoleName;
                         if (! string.IsNullOrEmpty(groupName))
                         {
@@ -183,32 +183,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 grid[i, 0] = pi.ObjectId;
                 grid[i, 1] = pi.ObjectName;
                 grid[i, 2] = Convert.ToInt16(pi.Type).ToString();
-                grid[i, 3] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.View));
-                grid[i, 4] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Read));
-                grid[i, 5] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Create));
-                grid[i, 6] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Reply));
-                grid[i, 7] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Edit));
-                grid[i, 8] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Delete));
-                grid[i, 9] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Lock));
-                grid[i, 10] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Pin));
-                grid[i, 11] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Attach));
-                grid[i, 12] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Poll));
-                grid[i, 13] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Block));
-                grid[i, 14] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Trust));
-                grid[i, 15] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Subscribe));
-                grid[i, 16] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Announce));
-                grid[i, 17] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Tag));
-                grid[i, 18] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Categorize));
-                grid[i, 19] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.Prioritize));
+                grid[i, 3] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.View));
+                grid[i, 4] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Read));
+                grid[i, 5] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Create));
+                grid[i, 6] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Reply));
+                grid[i, 7] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Edit));
+                grid[i, 8] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Delete));
+                grid[i, 9] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Lock));
+                grid[i, 10] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Pin));
+                grid[i, 11] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Attach));
+                grid[i, 12] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Poll));
+                grid[i, 13] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Block));
+                grid[i, 14] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Trust));
+                grid[i, 15] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Subscribe));
+                grid[i, 16] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Announce));
+                grid[i, 17] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Tag));
+                grid[i, 18] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Categorize));
+                grid[i, 19] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.Prioritize));
 
-                grid[i, 20] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModApprove));
-                grid[i, 21] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModMove));
-                grid[i, 22] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModSplit));
-                grid[i, 23] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModDelete));
-                grid[i, 24] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModUser));
-                grid[i, 25] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModEdit));
-                grid[i, 26] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModLock));
-                grid[i, 27] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModPin));
+                grid[i, 20] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModApprove));
+                grid[i, 21] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModMove));
+                grid[i, 22] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModSplit));
+                grid[i, 23] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModDelete));
+                grid[i, 24] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModUser));
+                grid[i, 25] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModEdit));
+                grid[i, 26] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModLock));
+                grid[i, 27] = Convert.ToString(this.PermValue((int)pi.Type, pi.ObjectId, security.ModPin));
 
                 i += 1;
             }
@@ -224,9 +224,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<tr><td style=\"width:16px;\"></td><td class=\"afsecobject\" style=\"white-space:nowrap;\"><div class=\"afsecobjecttxt\" title=\"" + grid[x, 1] + "\" onmouseover=\"this.firstChild.style.display='';\" onmouseout=\"this.firstChild.style.display='none';\"><span style=\"width:16px;height:16px;float:right;display:none;\">");
                 if ((Convert.ToInt32(grid[x, 2]) == 0 && Convert.ToInt32(grid[x, 0]) > 0) | Convert.ToInt32(grid[x, 2]) > 0)
                 {
-                    if (! ReadOnly)
+                    if (! this.ReadOnly)
                     {
-                        sb.Append("<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
+                        sb.Append("<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
                     }
                 }
 
@@ -265,10 +265,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
                     bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
-                    string sState = "<img src=\"" + imgOff + "\" alt=\"Disabled\" />";
+                    string sState = "<img src=\"" + this.imgOff + "\" alt=\"Disabled\" />";
                     if (bState)
                     {
-                        sState = "<img src=\"" + imgOn + "\" alt=\"Enabled\" />";
+                        sState = "<img src=\"" + this.imgOn + "\" alt=\"Enabled\" />";
                     }
 
                     if (keyText.ToLowerInvariant() == "block")
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<div class=\"afsectoggle\" id=\"" + grid[x, 0] + grid[x, 2] + keyText + "\" ");
-                    if (! ReadOnly)
+                    if (! this.ReadOnly)
                     {
                         sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sb.Append("</table></div></td></tr></table>");
-            litSecGrid.Text = sb.ToString();
+            this.litSecGrid.Text = sb.ToString();
             //litNewSecurity.Text = sb.ToString
             //litNewGrid.Text = sb.ToString
 
@@ -315,13 +315,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(PortalSettings, s, objectType);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(this.PortalSettings, s, objectType);
         }
 
         private void cbSecurityToggle_Callback(object sender, CallBackEventArgs e)
         {
             string action = e.Parameters[0].ToString();
-            int pId = PermissionsId;
+            int pId = this.PermissionsId;
             string secId = e.Parameters[2].ToString();
             int secType = Convert.ToInt32(e.Parameters[3].ToString());
             string key = e.Parameters[4].ToString();
@@ -329,7 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sOut = string.Empty;
             if (action == "delete")
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(ModuleId,secId, secType, pId);
+                DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(this.ModuleId,secId, secType, pId);
 
             }
             else if (action == "addobject")
@@ -337,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (secType == 1)
                 {
                     UserController uc = new UserController();
-                    User ui = uc.GetUser(PortalId, ModuleId, secId);
+                    User ui = uc.GetUser(this.PortalId, this.ModuleId, secId);
                     if (ui != null)
                     {
                         secId = ui.UserId.ToString();
@@ -357,7 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (! string.IsNullOrEmpty(secId))
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, "View", secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, "View", secId, secType);
                 }
 
             }
@@ -365,11 +365,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (action == "remove")
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(ModuleId, pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromPermissions(this.ModuleId, pId, key, secId, secType);
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, key, secId, secType);
+                    DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(this.ModuleId, pId, key, secId, secType);
                 }
 
                 sOut = action + "|" + returnId;
@@ -381,8 +381,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void cbSecGrid_Callback(object sender, CallBackEventArgs e)
         {
-            BuildNewGrid(Perms, PermissionsId);
-            litSecGrid.RenderControl(e.Output);
+            this.BuildNewGrid(this.Perms, this.PermissionsId);
+            this.litSecGrid.RenderControl(e.Output);
         }
     }
 }

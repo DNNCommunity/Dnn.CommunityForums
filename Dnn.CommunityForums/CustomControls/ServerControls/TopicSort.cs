@@ -41,12 +41,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _defaultSort;
+                return this._defaultSort;
             }
 
             set
             {
-                _defaultSort = value;
+                this._defaultSort = value;
             }
         }
 
@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _forumId;
+                return this._forumId;
             }
 
             set
             {
-                _forumId = value;
+                this._forumId = value;
             }
         }
 
@@ -67,58 +67,58 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _topicId;
+                return this._topicId;
             }
 
             set
             {
-                _topicId = value;
+                this._topicId = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            drpSort.RenderControl(writer);
+            this.drpSort.RenderControl(writer);
         }
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            drpSort.SelectedIndexChanged += new System.EventHandler(drpSort_SelectedIndexChanged);
+            this.drpSort.SelectedIndexChanged += new System.EventHandler(this.drpSort_SelectedIndexChanged);
 
             //EnableViewState = False
-            drpSort = new DropDownList();
-            drpSort.ID = "drpSort";
-            drpSort.AutoPostBack = true;
-            drpSort.CssClass = CssClass;
-            drpSort.Items.Add(new ListItem("[RESX:TopicSortOldest]", "ASC"));
-            drpSort.Items.Add(new ListItem("[RESX:TopicSortNewest]", "DESC"));
-            this.Controls.Add(drpSort);
+            this.drpSort = new DropDownList();
+            this.drpSort.ID = "drpSort";
+            this.drpSort.AutoPostBack = true;
+            this.drpSort.CssClass = this.CssClass;
+            this.drpSort.Items.Add(new ListItem("[RESX:TopicSortOldest]", "ASC"));
+            this.drpSort.Items.Add(new ListItem("[RESX:TopicSortNewest]", "DESC"));
+            this.Controls.Add(this.drpSort);
         }
 
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            string Sort = drpSort.SelectedItem.Value;
+            string Sort = this.drpSort.SelectedItem.Value;
             int TabId = int.Parse(HttpContext.Current.Request.QueryString["TabId"]);
 
-            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, ParamKeys.Sort + "=" + Sort }));
+            HttpContext.Current.Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.Sort + "=" + Sort }));
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
 
-                string Sort = DefaultSort;
+                string Sort = this.DefaultSort;
                 if (HttpContext.Current.Request.Params[ParamKeys.Sort] != null)
                 {
                     Sort = HttpContext.Current.Request.Params[ParamKeys.Sort];
                 }
 
-                drpSort.SelectedIndex = drpSort.Items.IndexOf(drpSort.Items.FindByValue(Sort));
+                this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(Sort));
             }
         }
     }

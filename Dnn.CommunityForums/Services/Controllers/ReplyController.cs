@@ -64,20 +64,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                 if (r != null)
                 {
-                    if ((UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
+                    if ((this.UserInfo.UserID == r.Topic.Author.AuthorId && !r.Topic.IsLocked) || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))))
                     {
-                        DataProvider.Instance().Reply_UpdateStatus(ActiveModule.PortalID, ForumModuleId, r.TopicId, replyId, UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))));
-                        DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
-                        return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                        DataProvider.Instance().Reply_UpdateStatus(this.ActiveModule.PortalID, this.ForumModuleId, r.TopicId, replyId, this.UserInfo.UserID, 1,  DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(r.Topic.Forum.Security.ModEdit, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))));
+                        DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, this.ForumModuleId));
+                        return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.BadRequest);
+                    return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 #pragma warning disable CS1570
         /// <summary>
@@ -100,12 +100,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 var r = rc.GetById(replyId);
                 if (r != null)
                 {
-                    rc.Reply_Delete(ActiveModule.PortalID, forumId, r.TopicId,replyId, SettingsBase.GetModuleSettings(ForumModuleId).DeleteBehavior);
-                    return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
+                    rc.Reply_Delete(this.ActiveModule.PortalID, forumId, r.TopicId,replyId, SettingsBase.GetModuleSettings(this.ForumModuleId).DeleteBehavior);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }
 }

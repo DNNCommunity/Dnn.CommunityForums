@@ -32,26 +32,26 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <param name="newValue"></param>
         private void UpdateModuleSettingCaseSensitive(string key, string newValue)
         {
-            var oldValue = Settings.GetString(key);
+            var oldValue = this.Settings.GetString(key);
             if (oldValue != null && oldValue != newValue && oldValue.ToLowerInvariant() == newValue.ToLowerInvariant())
             {
                 // changed but case-insensitive identical: empty the setting first
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, "");
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, "");
             }
 
-            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, newValue);
+            DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, newValue);
         }
 
         public string Mode
         {
             get
             {
-                return Settings.GetString(SettingKeys.Mode, "Standard");
+                return this.Settings.GetString(SettingKeys.Mode, "Standard");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.Mode, value);
             }
         }
 
@@ -59,12 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.Theme, "_legacy");
+                return this.Settings.GetString(SettingKeys.Theme, "_legacy");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.Theme, value);
             }
         }
 
@@ -72,12 +72,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.TimeFormatString, "h:mm tt");
+                return this.Settings.GetString(SettingKeys.TimeFormatString, "h:mm tt");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.TimeFormatString, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.TimeFormatString, value);
             }
         }
 
@@ -85,12 +85,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.DateFormatString, "MM/dd/yyyy");
+                return this.Settings.GetString(SettingKeys.DateFormatString, "MM/dd/yyyy");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.DateFormatString, value);
             }
         }
 
@@ -98,12 +98,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.ForumTemplateId);
+                return this.Settings.GetInt(SettingKeys.ForumTemplateId);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.ForumTemplateId, value.ToString());
             }
         }
 
@@ -111,12 +111,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.PageSize, 25);
+                return this.Settings.GetInt(SettingKeys.PageSize, 25);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PageSize, value.ToString());
             }
         }
 
@@ -124,12 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.FloodInterval);
+                return this.Settings.GetInt(SettingKeys.FloodInterval);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.FloodInterval, value.ToString());
             }
         }
 
@@ -137,12 +137,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.EditInterval);
+                return this.Settings.GetInt(SettingKeys.EditInterval);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.EditInterval, value.ToString());
             }
         }
 
@@ -150,12 +150,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.EnableAutoLink, true);
+                return this.Settings.GetBoolean(SettingKeys.EnableAutoLink, true);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.EnableAutoLink, value.ToString());
             }
         }
 
@@ -163,12 +163,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.DeleteBehavior);
+                return this.Settings.GetInt(SettingKeys.DeleteBehavior);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.DeleteBehavior, value.ToString());
             }
         }
 
@@ -176,12 +176,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.ProfileVisibility, (int)ProfileVisibilities.Everyone);
+                return this.Settings.GetInt(SettingKeys.ProfileVisibility, (int)ProfileVisibilities.Everyone);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.ProfileVisibility, value.ToString());
             }
         }
 
@@ -189,12 +189,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.PMType);
+                return this.Settings.GetInt(SettingKeys.PMType);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PMType, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PMType, value.ToString());
             }
         }
 
@@ -202,12 +202,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.PMTabId);
+                return this.Settings.GetInt(SettingKeys.PMTabId);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PMTabId, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PMTabId, value.ToString());
             }
         }
 
@@ -215,12 +215,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.AllowSignatures, 1);
+                return this.Settings.GetInt(SettingKeys.AllowSignatures, 1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.AllowSignatures, value.ToString());
             }
         }
 
@@ -228,12 +228,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.UserNameDisplay, "Username");
+                return this.Settings.GetString(SettingKeys.UserNameDisplay, "Username");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.UserNameDisplay, value);
             }
         }
 
@@ -241,12 +241,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.EnableURLRewriter);
+                return this.Settings.GetBoolean(SettingKeys.EnableURLRewriter);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.EnableURLRewriter, value.ToString());
             }
         }
 
@@ -254,12 +254,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.PrefixURLBase, "forums");
+                return this.Settings.GetString(SettingKeys.PrefixURLBase, "forums");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLBase, value);
             }
         }
 
@@ -267,12 +267,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.PrefixURLTags, "tag");
+                return this.Settings.GetString(SettingKeys.PrefixURLTags, "tag");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLTags, value);
             }
         }
 
@@ -280,12 +280,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.PrefixURLCategories, "category");
+                return this.Settings.GetString(SettingKeys.PrefixURLCategories, "category");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLCategories, value);
             }
         }
 
@@ -293,12 +293,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString(SettingKeys.PrefixURLOther, "views");
+                return this.Settings.GetString(SettingKeys.PrefixURLOther, "views");
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.PrefixURLOther, value);
             }
         }
 
@@ -306,19 +306,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.FullText);
+                return this.Settings.GetBoolean(SettingKeys.FullText);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
-                if (Settings.ContainsKey(SettingKeys.FullText))
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.FullText, value.ToString());
+                if (this.Settings.ContainsKey(SettingKeys.FullText))
                 {
-                    Settings[SettingKeys.FullText] = value.ToString();
+                    this.Settings[SettingKeys.FullText] = value.ToString();
                 }
                 else
                 {
-                    Settings.Add(SettingKeys.FullText, value.ToString());
+                    this.Settings.Add(SettingKeys.FullText, value.ToString());
                 }
             }
         }
@@ -330,12 +330,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.CacheTemplates, true);
+                return this.Settings.GetBoolean(SettingKeys.CacheTemplates, true);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.CacheTemplates, value.ToString());
             }
         }
 
@@ -343,12 +343,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.EnablePoints);
+                return this.Settings.GetBoolean(SettingKeys.EnablePoints);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.EnablePoints, value.ToString());
             }
         }
 
@@ -356,12 +356,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.TopicPointValue, 1);
+                return this.Settings.GetInt(SettingKeys.TopicPointValue, 1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.TopicPointValue, value.ToString());
             }
         }
 
@@ -369,12 +369,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.ReplyPointValue, 1);
+                return this.Settings.GetInt(SettingKeys.ReplyPointValue, 1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.ReplyPointValue, value.ToString());
             }
         }
 
@@ -382,12 +382,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.AnswerPointValue, 1);
+                return this.Settings.GetInt(SettingKeys.AnswerPointValue, 1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.AnswerPointValue, value.ToString());
             }
         }
 
@@ -395,12 +395,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.MarkAnswerPointValue, 1);
+                return this.Settings.GetInt(SettingKeys.MarkAnswerPointValue, 1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.MarkAnswerPointValue, value.ToString());
             }
         }
 
@@ -408,12 +408,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.ModPointValue, 1);
+                return this.Settings.GetInt(SettingKeys.ModPointValue, 1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.ModPointValue, value.ToString());
             }
         }
 
@@ -421,12 +421,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt("ForumGroupTemplate", -1);
+                return this.Settings.GetInt("ForumGroupTemplate", -1);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
+                this.UpdateModuleSettingCaseSensitive("ForumGroupTemplate", value.ToString());
             }
         }
 
@@ -434,12 +434,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetString("ForumConfig", string.Empty);
+                return this.Settings.GetString("ForumConfig", string.Empty);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive("ForumConfig", value);
+                this.UpdateModuleSettingCaseSensitive("ForumConfig", value);
             }
         }
 
@@ -447,12 +447,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.AvatarHeight, 48);
+                return this.Settings.GetInt(SettingKeys.AvatarHeight, 48);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarHeight, value.ToString());
             }
         }
 
@@ -460,12 +460,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetInt(SettingKeys.AvatarWidth, 48);
+                return this.Settings.GetInt(SettingKeys.AvatarWidth, 48);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.AvatarWidth, value.ToString());
             }
         }
 
@@ -473,12 +473,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.UsersOnlineEnabled);
+                return this.Settings.GetBoolean(SettingKeys.UsersOnlineEnabled);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.UsersOnlineEnabled, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.UsersOnlineEnabled, value.ToString());
             }
         }
 
@@ -486,12 +486,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Settings.GetBoolean(SettingKeys.UseSkinBreadCrumb);
+                return this.Settings.GetBoolean(SettingKeys.UseSkinBreadCrumb);
             }
 
             set
             {
-                UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
+                this.UpdateModuleSettingCaseSensitive(SettingKeys.UseSkinBreadCrumb, value.ToString());
             }
         }
     }

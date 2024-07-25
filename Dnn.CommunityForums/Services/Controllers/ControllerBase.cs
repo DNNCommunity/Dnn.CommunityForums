@@ -44,9 +44,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         public HttpResponseMessage HelloWorld()
         {
             Logger.Info("Hello World!");
-            return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
+            return this.Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
         }
 
-        internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ActiveModule.ModuleID, ActiveModule.TabID);
+        internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ActiveModule.ModuleID, this.ActiveModule.TabID);
     }
 }

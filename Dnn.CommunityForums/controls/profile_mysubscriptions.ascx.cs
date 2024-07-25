@@ -43,19 +43,19 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            dgrdTopicSubs.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Group].Text");
-            dgrdTopicSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
-            dgrdTopicSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Topic].Text");
-            dgrdTopicSubs.Columns[6].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:LastPost].Text");
-            dgrdForumSubs.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Group].Text");
-            dgrdForumSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
-            dgrdForumSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:LastPost].Text");
+            this.dgrdTopicSubs.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Group].Text");
+            this.dgrdTopicSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
+            this.dgrdTopicSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Topic].Text");
+            this.dgrdTopicSubs.Columns[6].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:LastPost].Text");
+            this.dgrdForumSubs.Columns[3].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Group].Text");
+            this.dgrdForumSubs.Columns[4].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:Forum].Text");
+            this.dgrdForumSubs.Columns[5].HeaderText = DotNetNuke.Modules.ActiveForums.Utilities.GetSharedResource("[RESX:LastPost].Text");
 
             this.dgrdTopicSubs.PageIndexChanging += this.TopicSubsGridRow_PageIndexChanging;
             this.dgrdTopicSubs.RowDataBound += this.OnTopicSubsGridRowDataBound;
             this.dgrdForumSubs.PageIndexChanging += this.ForumSubsGridRow_PageIndexChanging;
             this.dgrdForumSubs.RowDataBound += this.OnForumSubsGridRowDataBound;
-            this.btnSubscribeAll.Click += btnSubscribeAll_Click;
+            this.btnSubscribeAll.Click += this.btnSubscribeAll_Click;
         }
 
         protected override void OnLoad(EventArgs e)
@@ -63,10 +63,10 @@ namespace DotNetNuke.Modules.ActiveForums
             base.OnLoad(e);
             try
             {
-                int _pageSize = MainSettings.PageSize;
-                if (UserInfo.UserID > 0)
+                int _pageSize = this.MainSettings.PageSize;
+                if (this.UserInfo.UserID > 0)
                 {
-                    _pageSize = UserDefaultPageSize;
+                    _pageSize = this.UserDefaultPageSize;
                 }
 
                 if (_pageSize < 5)
@@ -74,15 +74,15 @@ namespace DotNetNuke.Modules.ActiveForums
                     _pageSize = 10;
                 }
 
-                dgrdForumSubs.PageSize = _pageSize;
-                dgrdTopicSubs.PageSize = _pageSize;
+                this.dgrdForumSubs.PageSize = _pageSize;
+                this.dgrdTopicSubs.PageSize = _pageSize;
 
                 // TODO: Add moderator functionality to edit a user's subscriptions; this currently is just for a user to edit own subscriptions
-                UID = Request.QueryString[Literals.UserId] != null ? Convert.ToInt32(Request.QueryString[Literals.UserId]) : UserInfo.UserID;
-                if (UserId == UID | UserIsMod)
+                this.UID = this.Request.QueryString[Literals.UserId] != null ? Convert.ToInt32(this.Request.QueryString[Literals.UserId]) : this.UserInfo.UserID;
+                if (this.UserId == this.UID | this.UserIsMod)
                 {
-                    BindTopicSubs();
-                    BindForumSubs();
+                    this.BindTopicSubs();
+                    this.BindForumSubs();
                 }
             }
             catch (Exception ex)
@@ -93,41 +93,41 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void BindTopicSubs()
         {
-            var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(PortalId, ForumModuleId, this.UID).OrderBy(s => s.Forum.ForumGroup.SortOrder).ThenBy(s => s.Forum.SortOrder);
+            var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(this.PortalId, this.ForumModuleId, this.UID).OrderBy(s => s.Forum.ForumGroup.SortOrder).ThenBy(s => s.Forum.SortOrder);
             subscribedTopics.ForEach(s =>
             {
                 s.Subscribed = true;
             });
-            dgrdTopicSubs.DataSource = subscribedTopics.ToList();
-            dgrdTopicSubs.DataBind();
+            this.dgrdTopicSubs.DataSource = subscribedTopics.ToList();
+            this.dgrdTopicSubs.DataBind();
         }
 
         private void BindForumSubs()
         {
-            dgrdForumSubs.DataSource = GetSubscriptions().ToList();
-            dgrdForumSubs.DataBind();
+            this.dgrdForumSubs.DataSource = this.GetSubscriptions().ToList();
+            this.dgrdForumSubs.DataBind();
         }
 
         private void btnSubscribeAll_Click(object sender, System.EventArgs e)
         {
-            GetSubscriptions().Where(s => !s.Subscribed).ForEach(s =>
+            this.GetSubscriptions().Where(s => !s.Subscribed).ForEach(s =>
             {
-               new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, UID, s.ForumId);
+               new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(s.PortalId, s.ModuleId, this.UID, s.ForumId);
             });
-            BindForumSubs();
+            this.BindForumSubs();
         }
 
         private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
         {
-            var roles = new UserController().GetUser(PortalId, ForumModuleId, UID).UserRoles;
-            var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(roles, PortalId, ForumModuleId);
+            var roles = new UserController().GetUser(this.PortalId, this.ForumModuleId, this.UID).UserRoles;
+            var availableForumsString = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(roles, this.PortalId, this.ForumModuleId);
             var availableForums = availableForumsString.Split(separator: new[] { ';' }, options: StringSplitOptions.RemoveEmptyEntries).Select(forum =>
             {
-                var Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forum), ForumModuleId);
+                var Forum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(int.Parse(forum), this.ForumModuleId);
                 return new { ForumId = int.Parse(forum), Forum };
             });
 
-            var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(PortalId, ForumModuleId, this.UID);
+            var forumSubscriptions = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedForums(this.PortalId, this.ForumModuleId, this.UID);
             var subscribedForums = forumSubscriptions.Select(forumSubscription =>
             {
                 return new { forumSubscription.Id, forumSubscription.ForumId };
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                       on af.ForumId equals sf.ForumId into merged
                                       from ms in merged.DefaultIfEmpty()
                                       where af.Forum.AllowSubscribe || ms == null || ms.Id != 0
-                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo(ms?.Id ?? 0, PortalId, ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, ms != null);
+                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo(ms?.Id ?? 0, this.PortalId, this.ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, ms != null);
             return mergedSubscriptions;
         }
 
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             var chkBox = cellControl as CheckBox;
                             if (!(chkBox == null))
                             {
-                                chkBox.Attributes.Add("onclick", "amaf_forumSubscribe(" + ForumModuleId + "," + subscriptionInfo.ForumId + ");");
+                                chkBox.Attributes.Add("onclick", "amaf_forumSubscribe(" + this.ForumModuleId + "," + subscriptionInfo.ForumId + ");");
                                 chkBox.Enabled = true;
                             }
                         }
@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             var chkBox = cellControl as CheckBox;
                             if (!(chkBox == null))
                             {
-                                chkBox.Attributes.Add("onclick", "amaf_topicSubscribe(" + ForumModuleId + "," + subscriptionInfo.ForumId + "," + subscriptionInfo.TopicId + ");");
+                                chkBox.Attributes.Add("onclick", "amaf_topicSubscribe(" + this.ForumModuleId + "," + subscriptionInfo.ForumId + "," + subscriptionInfo.TopicId + ");");
                                 chkBox.Enabled = true;
                             }
                         }
@@ -189,14 +189,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected void ForumSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            dgrdForumSubs.PageIndex = e.NewPageIndex;
-            dgrdForumSubs.DataBind();
+            this.dgrdForumSubs.PageIndex = e.NewPageIndex;
+            this.dgrdForumSubs.DataBind();
         }
 
         protected void TopicSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            dgrdTopicSubs.PageIndex = e.NewPageIndex;
-            dgrdTopicSubs.DataBind();
+            this.dgrdTopicSubs.PageIndex = e.NewPageIndex;
+            this.dgrdTopicSubs.DataBind();
         }
     }
 }

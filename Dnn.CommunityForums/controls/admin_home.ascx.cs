@@ -33,24 +33,24 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            BindDashboard();
+            this.BindDashboard();
         }
 
         #endregion
         #region Private Methods
         private void BindDashboard()
         {
-            DataSet ds = DataProvider.Instance().Dashboard_Get(PortalId, ModuleId);
+            DataSet ds = DataProvider.Instance().Dashboard_Get(this.PortalId, this.ModuleId);
             if (ds != null)
             {
-                BindRecentTopics(ds.Tables[0]);
-                BindRecentMembers(ds.Tables[1]);
-                BindTopForums(ds.Tables[2]);
-                BindTopMembers(ds.Tables[3]);
-                BindQuickStats(ds.Tables[4]);
+                this.BindRecentTopics(ds.Tables[0]);
+                this.BindRecentMembers(ds.Tables[1]);
+                this.BindTopForums(ds.Tables[2]);
+                this.BindTopMembers(ds.Tables[3]);
+                this.BindQuickStats(ds.Tables[4]);
             }
 
-            LoadQuickLinks();
+            this.LoadQuickLinks();
         }
 
         private void LoadQuickLinks()
@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("<tr><td class=\"dashRow\"><a href=\"javascript:void(0);\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</a><br /></td>");
             sb.Append("</tr><tr><td class=\"dashRow\"><a href=\"javascript:void(0);\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</a><br /></td>");
             sb.Append("</tr></table></td></tr></table>");
-            litQuickLinks.Text = sb.ToString();
+            this.litQuickLinks.Text = sb.ToString();
         }
 
         private void BindRecentTopics(DataTable dt)
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             sb.Append("</table>");
-            litRecentTopics.Text = sb.ToString();
+            this.litRecentTopics.Text = sb.ToString();
         }
 
         private void BindRecentMembers(DataTable dt)
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             sb.Append("</table>");
-            litRecentMembers.Text = sb.ToString();
+            this.litRecentMembers.Text = sb.ToString();
         }
 
         private void BindTopForums(DataTable dt)
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             sb.Append("</table>");
-            litTopForums.Text = sb.ToString();
+            this.litTopForums.Text = sb.ToString();
         }
 
         private void BindTopMembers(DataTable dt)
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             sb.Append("</table>");
-            litTopMembers.Text = sb.ToString();
+            this.litTopMembers.Text = sb.ToString();
         }
 
         private void BindQuickStats(DataTable dt)
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             sb.Append("</table>");
-            litQuickStats.Text = sb.ToString();
+            this.litQuickStats.Text = sb.ToString();
         }
         #endregion
     }

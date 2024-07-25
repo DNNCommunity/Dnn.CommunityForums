@@ -32,28 +32,28 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Constructors
         public UserProfileInfo()
         {
-            IsUserOnline = false;
-            IsMod = false;
+            this.IsUserOnline = false;
+            this.IsMod = false;
 
-            PrefDefaultSort = "ASC";
-            PrefPageSize = 20;
-            PrefBlockSignatures = false;
-            PrefBlockAvatars = false;
-            PrefJumpLastPost = false;
-            PrefDefaultShowReplies = false;
-            PrefUseAjax = false;
-            PrefTopicSubscribe = false;
+            this.PrefDefaultSort = "ASC";
+            this.PrefPageSize = 20;
+            this.PrefBlockSignatures = false;
+            this.PrefBlockAvatars = false;
+            this.PrefJumpLastPost = false;
+            this.PrefDefaultShowReplies = false;
+            this.PrefUseAjax = false;
+            this.PrefTopicSubscribe = false;
         }
 
         public UserProfileInfo(int UserId, int PortalId)
         {
-            IsUserOnline = false;
-            IsMod = false;
-            PrefBlockSignatures = false;
-            PrefBlockAvatars = false;
-            PrefTopicSubscribe = false;
-            PrefJumpLastPost = false;
-            PrefDefaultShowReplies = false;
+            this.IsUserOnline = false;
+            this.IsMod = false;
+            this.PrefBlockSignatures = false;
+            this.PrefBlockAvatars = false;
+            this.PrefTopicSubscribe = false;
+            this.PrefJumpLastPost = false;
+            this.PrefDefaultShowReplies = false;
         }
         #endregion
 
@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return TopicCount + ReplyCount;
+                return this.TopicCount + this.ReplyCount;
             }
         }
         #endregion

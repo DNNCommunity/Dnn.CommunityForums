@@ -40,12 +40,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -55,12 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -70,12 +70,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -85,12 +85,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumId;
+                return this._ForumId;
             }
 
             set
             {
-                _ForumId = value;
+                this._ForumId = value;
             }
         }
 
@@ -100,12 +100,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumGroupId;
+                return this._ForumGroupId;
             }
 
             set
             {
-                _ForumGroupId = value;
+                this._ForumGroupId = value;
             }
         }
 
@@ -115,12 +115,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ParentForumId;
+                return this._ParentForumId;
             }
 
             set
             {
-                _ParentForumId = value;
+                this._ParentForumId = value;
             }
         }
 
@@ -130,12 +130,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _GroupBy;
+                return this._GroupBy;
             }
 
             set
             {
-                _GroupBy = value;
+                this._GroupBy = value;
             }
         }
 
@@ -145,12 +145,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TopicId;
+                return this._TopicId;
             }
 
             set
             {
-                _TopicId = value;
+                this._TopicId = value;
             }
         }
 
@@ -160,12 +160,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Topic;
+                return this._Topic;
             }
 
             set
             {
-                _Topic = value;
+                this._Topic = value;
             }
         }
 
@@ -175,12 +175,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemTemplate;
+                return this._ItemTemplate;
             }
 
             set
             {
-                _ItemTemplate = value;
+                this._ItemTemplate = value;
             }
         }
 
@@ -190,12 +190,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _HeaderTemplate;
+                return this._HeaderTemplate;
             }
 
             set
             {
-                _HeaderTemplate = value;
+                this._HeaderTemplate = value;
             }
         }
 
@@ -205,12 +205,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _FooterTemplate;
+                return this._FooterTemplate;
             }
 
             set
             {
-                _FooterTemplate = value;
+                this._FooterTemplate = value;
             }
         }
 
@@ -222,12 +222,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _IncludeClasses;
+                return this._IncludeClasses;
             }
 
             set
             {
-                _IncludeClasses = value;
+                this._IncludeClasses = value;
             }
         }
 
@@ -245,12 +245,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
             //Dim _forumGroupId As Integer = -1
-            if (ParentForumId == -1)
+            if (this.ParentForumId == -1)
             {
-                ParentForumId = ForumId;
+                this.ParentForumId = this.ForumId;
             }
 
-            using (IDataReader dr = db.ForumContent_List(PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId))
+            using (IDataReader dr = db.ForumContent_List(this.PortalId, this.ModuleId, this.ForumGroupId, this.ForumId, this.ParentForumId))
             {
                 //ParentForum Section
                 dr.Read();
@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         catKey = dr["CategoryName"].ToString() + dr["CategoryId"].ToString();
                     }
 
-                    if (TopicId == Convert.ToInt32(dr["TopicId"].ToString()))
+                    if (this.TopicId == Convert.ToInt32(dr["TopicId"].ToString()))
                     {
                         sb.Append("<li class=\"fcv-selected\">");
                         sb.Replace("<li class=\"category\" id=\"afcat-" + dr["CategoryId"].ToString() + "\">", "<li class=\"category cat-selected\" id=\"afcat-" + dr["CategoryId"].ToString() + "\">");
@@ -298,11 +298,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     //Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
                     string[] Params = {ParamKeys.TopicId + "=" + dr["TopicId"].ToString()};
                     //Dim sTopicURL As String = ctlUtils.BuildUrl(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, Integer.Parse(dr("TopicId").ToString), dr("URL").ToString, -1, -1, String.Empty, 1)
-                    string sTopicURL = ctlUtils.TopicURL(dr, TabId, ModuleId);
+                    string sTopicURL = ctlUtils.TopicURL(dr, this.TabId, this.ModuleId);
                     sb.Append("<a href=\"" + sTopicURL + "\"><span>" + dr["Subject"].ToString() + "</span></a></li>");
-                    if (TopicId > 0)
+                    if (this.TopicId > 0)
                     {
-                        if (Convert.ToInt32(dr["TopicId"].ToString()) == TopicId)
+                        if (Convert.ToInt32(dr["TopicId"].ToString()) == this.TopicId)
                         {
                             //  RenderTopic(dr)
                         }

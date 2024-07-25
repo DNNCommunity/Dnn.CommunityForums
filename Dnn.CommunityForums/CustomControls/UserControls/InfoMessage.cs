@@ -43,12 +43,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _message;
+                return this._message;
             }
 
             set
             {
-                _message = value;
+                this._message = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _header;
+                return this._header;
             }
 
             set
             {
-                _header = value;
+                this._header = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _returnUrl;
+                return this._returnUrl;
             }
 
             set
             {
-                _returnUrl = value;
+                this._returnUrl = value;
             }
         }
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 #region Protected Methods
         protected override void RenderContents(HtmlTextWriter writer)
         {
-            writer.Write(Message);
+            writer.Write(this.Message);
         }
 #endregion
     }

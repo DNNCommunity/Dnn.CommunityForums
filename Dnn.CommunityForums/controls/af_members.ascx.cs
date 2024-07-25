@@ -32,22 +32,22 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
-            string sMode = MainSettings.MemberListMode;
-            if (!UserInfo.IsSuperUser)
+            this.lblHeader.Text = Utilities.GetSharedResource("[RESX:MemberDirectory]");
+            string sMode = this.MainSettings.MemberListMode;
+            if (!this.UserInfo.IsSuperUser)
             {
                 if (sMode == "DISABLED")
                 {
-                    Response.Redirect(Utilities.NavigateURL(TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
                 }
 
-                if (!Request.IsAuthenticated & (sMode == "ENABLEDREG" || sMode == "ENABLEDMOD"))
+                if (!this.Request.IsAuthenticated & (sMode == "ENABLEDREG" || sMode == "ENABLEDMOD"))
                 {
-                    Response.Redirect(Utilities.NavigateURL(TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
                 }
-                else if (Request.IsAuthenticated && sMode == "ENABLEDMOD" && !UserIsMod)
+                else if (this.Request.IsAuthenticated && sMode == "ENABLEDMOD" && !this.UserIsMod)
                 {
-                    Response.Redirect(Utilities.NavigateURL(TabId));
+                    this.Response.Redirect(Utilities.NavigateURL(this.TabId));
                 }
             }
 
@@ -60,8 +60,8 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
-            plhMembers.Controls.Add(ctl);
+            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + this.lblHeader.Text, "[VALUE]", "[VALUE]");
+            this.plhMembers.Controls.Add(ctl);
 
         }
     }

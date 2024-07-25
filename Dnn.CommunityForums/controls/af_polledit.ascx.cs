@@ -34,12 +34,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _PollQuestion;
+                return this._PollQuestion;
             }
 
             set
             {
-                _PollQuestion = value;
+                this._PollQuestion = value;
             }
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _PollType;
+                return this._PollType;
             }
 
             set
             {
-                _PollType = value;
+                this._PollType = value;
             }
         }
 
@@ -60,12 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _PollOptions;
+                return this._PollOptions;
             }
 
             set
             {
-                _PollOptions = value;
+                this._PollOptions = value;
             }
         }
 
@@ -73,11 +73,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
-                txtPollQuestion.Text = PollQuestion;
-                rdPollType.SelectedIndex = rdPollType.Items.IndexOf(rdPollType.Items.FindByValue(PollType));
-                txtPollOptions.Text = PollOptions;
+                this.txtPollQuestion.Text = this.PollQuestion;
+                this.rdPollType.SelectedIndex = this.rdPollType.Items.IndexOf(this.rdPollType.Items.FindByValue(this.PollType));
+                this.txtPollOptions.Text = this.PollOptions;
             }
         }
     }

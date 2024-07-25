@@ -40,19 +40,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            drpForums.SelectedIndexChanged += new System.EventHandler(drpForums_SelectedIndexChanged);
+            this.drpForums.SelectedIndexChanged += new System.EventHandler(this.drpForums_SelectedIndexChanged);
 
             try
             {
-                if (drpForums == null)
+                if (this.drpForums == null)
                 {
-                    drpForums = new DropDownList();
+                    this.drpForums = new DropDownList();
                 }
 
-                drpForums.AutoPostBack = true;
-                drpForums.CssClass = "afdropdown";
-                BindForums();
-                Controls.Add(drpForums);
+                this.drpForums.AutoPostBack = true;
+                this.drpForums.CssClass = "afdropdown";
+                this.BindForums();
+                this.Controls.Add(this.drpForums);
             }
             catch (Exception exc)
             {
@@ -64,54 +64,54 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             #region "backward compatibilty - remove when removing dtForums property"
             /* this is for backward compatibility -- remove when removing dtForums property */
-            if (dtForums != null)
+            if (this.dtForums != null)
             {
-                Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
-                foreach (DataRow dr in dtForums.DefaultView.ToTable().Rows)
+                this.Forums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
+                foreach (DataRow dr in this.dtForums.DefaultView.ToTable().Rows)
                 {
-                    Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), ForumModuleId));
+                    this.Forums.Add(new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(Utilities.SafeConvertInt(dr["ForumId"]), this.ForumModuleId));
                 }
             }
             #endregion
 
-            if (Forums == null)
+            if (this.Forums == null)
             {
-                Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
+                this.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ForumModuleId);
             }
 
-            drpForums.Items.Clear();
-            drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));
+            this.drpForums.Items.Clear();
+            this.drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));
             int index = 1;
-            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(Forums, ForumUser, fi =>
+            DotNetNuke.Modules.ActiveForums.Controllers.ForumController.IterateForumsList(this.Forums, this.ForumUser, fi =>
             {
-                drpForums.Items.Insert(index, new ListItem(fi.GroupName, $"GROUPJUMP:{fi.ForumGroupId}"));
+                this.drpForums.Items.Insert(index, new ListItem(fi.GroupName, $"GROUPJUMP:{fi.ForumGroupId}"));
                 index += 1;
             },
             fi =>
             {
-                drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP{fi.ForumID}"));
+                this.drpForums.Items.Insert(index, new ListItem($"--{fi.ForumName}", $"FORUMJUMP{fi.ForumID}"));
                 index += 1;
             },
             fi  =>
             {
-                drpForums.Items.Insert(index, new ListItem(
+                this.drpForums.Items.Insert(index, new ListItem(
                     fi.ForumName.Length > 30 ? $"{fi.ForumName.Substring(0, 27)}..." : fi.ForumName,
                     $"FORUMJUMP{fi.ForumID}"));
                 index += 1;
             });
 
-            if (GetViewType != null)
+            if (this.GetViewType != null)
             {
-                if (GetViewType == "TOPICS" || GetViewType == "TOPIC")
+                if (this.GetViewType == "TOPICS" || this.GetViewType == "TOPIC")
                 {
-                    drpForums.SelectedIndex = drpForums.Items.IndexOf(drpForums.Items.FindByValue($"FORUMJUMP{ForumId}"));
+                    this.drpForums.SelectedIndex = this.drpForums.Items.IndexOf(this.drpForums.Items.FindByValue($"FORUMJUMP{this.ForumId}"));
                 }
             }
         }
 
         private void drpForums_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            string sJumpValue = drpForums.SelectedItem.Value;
+            string sJumpValue = this.drpForums.SelectedItem.Value;
             if (!(sJumpValue == string.Empty) && !(sJumpValue == ""))
             {
                 string sJumpType = sJumpValue.Substring(0, sJumpValue.IndexOf(":", 0) + 1 - 1);
@@ -119,11 +119,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 switch (sJumpType)
                 {
                     case "GROUPJUMP":
-                        Response.Redirect(NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + sJumpID));
+                        this.Response.Redirect(this.NavigateUrl(this.TabId, "", ParamKeys.GroupId + "=" + sJumpID));
                         break;
                     case "FORUMJUMP":
                         string[] Params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + sJumpID };
-                        Response.Redirect(NavigateUrl(TabId, "", Params));
+                        this.Response.Redirect(this.NavigateUrl(this.TabId, "", Params));
                         break;
                 }
             }

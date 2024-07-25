@@ -221,7 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -234,7 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     catch (Exception ex)
                     {
-                        LogError(ex.Message, ex);
+                        this.LogError(ex.Message, ex);
                         Exceptions.LogException(ex);
                         return "Failed";
                     }

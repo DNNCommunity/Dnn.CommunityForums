@@ -38,24 +38,24 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                ForumModuleId = MID;
-                if (ForumId < 1)
+                this.ForumModuleId = this.MID;
+                if (this.ForumId < 1)
                 {
-                    ForumId = FID;
+                    this.ForumId = this.FID;
                 }
 
-                if (ForumTabId < 1)
+                if (this.ForumTabId < 1)
                 {
-                    ForumTabId = TID;
+                    this.ForumTabId = this.TID;
                 }
 
-                if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
+                if (this.Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString["GroupId"]))
                 {
-                    SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);
+                    this.SocialGroupId = Convert.ToInt32(this.Request.QueryString["GroupId"]);
                 }
 
                 //Put user code to initialize the page here
-                txtSearch.Attributes.Add("onkeydown", "if(event.keyCode == 13){document.getElementById('" + lnkSearch.ClientID + "').click();}");
+                this.txtSearch.Attributes.Add("onkeydown", "if(event.keyCode == 13){document.getElementById('" + this.lnkSearch.ClientID + "').click();}");
             }
             catch (Exception exc)
             {
@@ -69,27 +69,27 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            LocalResourceFile = Globals.SharedResourceFile;
+            this.LocalResourceFile = Globals.SharedResourceFile;
 
-            lnkSearch.Click += lnkSearch_Click;
+            this.lnkSearch.Click += this.lnkSearch_Click;
         }
 
         private void lnkSearch_Click(object sender, EventArgs e)
         {
-            if (txtSearch.Text.Trim() != "")
+            if (this.txtSearch.Text.Trim() != "")
             {
                 var @params = new List<string> {
                     $"{ParamKeys.ViewType}={Views.Search}",
-                    $"{ParamKeys.ForumId}={ForumId}",
-                    $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(txtSearch.Text.Trim())}"
+                    $"{ParamKeys.ForumId}={this.ForumId}",
+                    $"{SearchParamKeys.Query}={HttpUtility.UrlEncode(this.txtSearch.Text.Trim())}"
                 };
 
-                if (SocialGroupId > 0)
+                if (this.SocialGroupId > 0)
                 {
-                    @params.Add($"{Literals.GroupId}={SocialGroupId}");
+                    @params.Add($"{Literals.GroupId}={this.SocialGroupId}");
                 }
 
-                Response.Redirect(NavigateUrl(ForumTabId, "", @params.ToArray()));
+                this.Response.Redirect(this.NavigateUrl(this.ForumTabId, "", @params.ToArray()));
             }
 
         }

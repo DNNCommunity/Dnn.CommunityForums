@@ -38,12 +38,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _itemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                _itemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -53,12 +53,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _headerTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                _headerTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -68,12 +68,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _footerTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                _footerTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _MaintainPage;
+                return this._MaintainPage;
             }
 
             set
             {
-                _MaintainPage = value;
+                this._MaintainPage = value;
             }
         }
 
@@ -96,22 +96,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             Controls.TopicBrowser tb = new Controls.TopicBrowser();
 
-            tb.PortalId = PortalId;
-            tb.ModuleId = ForumModuleId;
-            tb.TabId = ForumTabId;
+            tb.PortalId = this.PortalId;
+            tb.ModuleId = this.ForumModuleId;
+            tb.TabId = this.ForumTabId;
             if (tb.TabId <= 0)
             {
-                tb.TabId = int.Parse(Request.QueryString["TabID"]);
+                tb.TabId = int.Parse(this.Request.QueryString["TabID"]);
             }
 
-            tb.ForumGroupId = ForumGroupId;
-            tb.ForumId = ForumId;
+            tb.ForumGroupId = this.ForumGroupId;
+            tb.ForumId = this.ForumId;
 
-            if (ForumId > 0)
+            if (this.ForumId > 0)
             {
-                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(ForumInfo.Security.View, ForumUser.UserRoles))
+                if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.ForumInfo.Security.View, this.ForumUser.UserRoles))
                 {
-                    tb.ForumIds = ForumId.ToString();
+                    tb.ForumIds = this.ForumId.ToString();
                 }
                 else
                 {
@@ -121,29 +121,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                tb.ForumIds = UserForumsList;
+                tb.ForumIds = this.UserForumsList;
             }
 
-            if (Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["atg"]))
+            if (this.Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString["atg"]))
             {
-                tb.TagId = int.Parse(Request.QueryString["atg"]);
+                tb.TagId = int.Parse(this.Request.QueryString["atg"]);
 
             }
 
-            if (Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Category]))
+            if (this.Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.Category]))
             {
-                tb.CategoryId = int.Parse(Request.QueryString[ParamKeys.Category]);
+                tb.CategoryId = int.Parse(this.Request.QueryString[ParamKeys.Category]);
             }
 
-            tb.ForumUser = ForumUser;
-            tb.PageIndex = PageId;
-            tb.PageSize = MainSettings.PageSize;
-            tb.Template = ItemTemplate.Text;
-            tb.HeaderTemplate = HeaderTemplate.Text;
-            tb.FooterTemplate = FooterTemplate.Text;
-            tb.ImagePath = ImagePath;
-            tb.TopicId = TopicId;
-            tb.UserId = UserId;
+            tb.ForumUser = this.ForumUser;
+            tb.PageIndex = this.PageId;
+            tb.PageSize = this.MainSettings.PageSize;
+            tb.Template = this.ItemTemplate.Text;
+            tb.HeaderTemplate = this.HeaderTemplate.Text;
+            tb.FooterTemplate = this.FooterTemplate.Text;
+            tb.ImagePath = this.ImagePath;
+            tb.TopicId = this.TopicId;
+            tb.UserId = this.UserId;
             writer.Write(tb.Render());
         }
 

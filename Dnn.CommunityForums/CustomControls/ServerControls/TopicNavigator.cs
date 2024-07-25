@@ -39,12 +39,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _itemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                _itemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _headerTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                _headerTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _footerTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                _footerTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -82,16 +82,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             Controls.TopicViewer tb = new Controls.TopicViewer();
 
-            tb.PortalId = PortalId;
-            tb.ModuleId = ForumModuleId;
-            tb.TabId = ForumTabId;
-            tb.PageIndex = PageId;
-            tb.PageSize = MainSettings.PageSize;
-            tb.Template = ItemTemplate.Text;
+            tb.PortalId = this.PortalId;
+            tb.ModuleId = this.ForumModuleId;
+            tb.TabId = this.ForumTabId;
+            tb.PageIndex = this.PageId;
+            tb.PageSize = this.MainSettings.PageSize;
+            tb.Template = this.ItemTemplate.Text;
             //tb.HeaderTemplate = HeaderTemplate.Text
             //tb.FooterTemplate = FooterTemplate.Text
-            tb.TopicId = TopicId;
-            tb.UserId = UserId;
+            tb.TopicId = this.TopicId;
+            tb.UserId = this.UserId;
             writer.Write(tb.Render());
         }
 

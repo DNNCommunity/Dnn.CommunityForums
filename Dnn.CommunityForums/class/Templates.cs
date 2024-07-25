@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // save updated template to database; will return TemplateId which is critical if new template
             int TemplateId = Convert.ToInt32(DataProvider.Instance().Templates_Save(templateInfo.TemplateId, templateInfo.PortalId, templateInfo.ModuleId, (int)templateInfo.TemplateType, templateInfo.IsSystem, templateInfo.Title, templateInfo.Subject, templateInfo.Template));
             // retrieve the template from the database, which will return the filename but will also get the template text from the file which has not been updated yet
-            TemplateInfo TemplateInfo = Template_Get(TemplateId);
+            TemplateInfo TemplateInfo = this.Template_Get(TemplateId);
             // override the template text with what is being saved
             TemplateInfo.Template = templateInfo.Template;
             // now save to the template file
@@ -138,18 +138,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public List<TemplateInfo> Template_List(int PortalId, int ModuleId)
         {
-            return GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
+            return this.GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
         }
 
         public List<TemplateInfo> Template_List(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
         {
-            return GetTemplateList(PortalId, ModuleId, TemplateType);
+            return this.GetTemplateList(PortalId, ModuleId, TemplateType);
         }
 
         public void Template_Delete(int TemplateId, int PortalId, int ModuleId)
         {
 
-            TemplateInfo templateInfo = Template_Get(TemplateId);
+            TemplateInfo templateInfo = this.Template_Get(TemplateId);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
             string templateFile = Utilities.MapPath(moduleSettings.TemplatePath + templateInfo.FileName);
             try
@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             string templateFileName = string.Empty;
             string templateFilePathFileName = string.Empty;
-            TemplateInfo ti = Template_List(PortalId, ModuleId).Where(t => t.Title.ToUpperInvariant() == TemplateName.ToUpperInvariant() && t.ModuleId == ModuleId).FirstOrDefault();
+            TemplateInfo ti = this.Template_List(PortalId, ModuleId).Where(t => t.Title.ToUpperInvariant() == TemplateName.ToUpperInvariant() && t.ModuleId == ModuleId).FirstOrDefault();
 
             if (ti != null && !string.IsNullOrEmpty(ti.FileName))
             {

@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Params == null ? new string[]{} : Params.Keys.Select(key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(Params[key].ToString()))).ToArray();
+                return this.Params == null ? new string[]{} : this.Params.Keys.Select(key => string.Format("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(this.Params[key].ToString()))).ToArray();
             }
         }
 
@@ -40,18 +40,18 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return ParamArray.Aggregate(string.Empty, (current, param) => current + (string.IsNullOrWhiteSpace(current) ? string.Empty : "&") + param);
+                return this.ParamArray.Aggregate(string.Empty, (current, param) => current + (string.IsNullOrWhiteSpace(current) ? string.Empty : "&") + param);
             }
         }
 
         public ParamBuilder()
         {
-            Params = new Dictionary<string, object>();
+            this.Params = new Dictionary<string, object>();
         }
 
         public ParamBuilder(Dictionary<string, object> parameters)
         {
-            Params = parameters;
+            this.Params = parameters;
         }
 
         public ParamBuilder(string queryString, bool urlEncoded = true)
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 queryString = queryString.Substring(1);
             }
 
-            Params = new Dictionary<string, object>();
+            this.Params = new Dictionary<string, object>();
 
             var parameters = queryString.Split('&');
             foreach(var p in parameters)
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     value = HttpUtility.UrlDecode(value);
                 }
 
-                Params[key] = value;
+                this.Params[key] = value;
             }
         }
 
@@ -94,12 +94,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            if (Params == null)
+            if (this.Params == null)
             {
-                Params = new Dictionary<string, object>();
+                this.Params = new Dictionary<string, object>();
             }
 
-            Params[key] = value ?? string.Empty;
+            this.Params[key] = value ?? string.Empty;
         }
     }
 }

@@ -38,16 +38,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (_tagInfo == null)
+                if (this._tagInfo == null)
                 {
-                    _tagInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(TagId);
-                    if (_tagInfo == null)
+                    this._tagInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(this.TagId);
+                    if (this._tagInfo == null)
                     {
-                        _tagInfo = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo();
+                        this._tagInfo = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo();
                     }
                 }
 
-                return _tagInfo;
+                return this._tagInfo;
             }
         }
 
@@ -56,18 +56,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (_topicInfo == null)
+                if (this._topicInfo == null)
                 {
-                    _topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
-                    if (_topicInfo == null)
+                    this._topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
+                    if (this._topicInfo == null)
                     {
-                        _topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-                        _topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+                        this._topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+                        this._topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
 
                     }
                 }
 
-                return _topicInfo;
+                return this._topicInfo;
             }
         }
     }

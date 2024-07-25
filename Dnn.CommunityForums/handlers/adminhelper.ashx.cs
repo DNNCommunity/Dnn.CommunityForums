@@ -49,18 +49,18 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         public override void ProcessRequest(HttpContext context)
         {
-            AdminRequired = true;
+            this.AdminRequired = true;
             base.AdminRequired = true;
             base.ProcessRequest(context);
             string sOut = string.Empty;
             Actions action = Actions.None;
-            if (IsValid)
+            if (this.IsValid)
             {
-                if (Params != null)
+                if (this.Params != null)
                 {
-                    if (Params["action"] != null && SimulateIsNumeric.IsNumeric(Params["action"]))
+                    if (this.Params["action"] != null && SimulateIsNumeric.IsNumeric(this.Params["action"]))
                     {
-                        action = (Actions)Convert.ToInt32(Params["action"].ToString());
+                        action = (Actions)Convert.ToInt32(this.Params["action"].ToString());
                     }
                 }
 
@@ -70,40 +70,40 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     switch (action)
                     {
                         case Actions.PropertySave:
-                            PropertySave();
+                            this.PropertySave();
                             break;
                         case Actions.PropertyDelete:
-                            PropertyDelete();
+                            this.PropertyDelete();
                             break;
                         case Actions.PropertyList:
-                            sOut = "[" + Utilities.LocalizeControl(PropertyList()) + "]";
+                            sOut = "[" + Utilities.LocalizeControl(this.PropertyList()) + "]";
                             break;
                         case Actions.PropertySortSwitch:
-                            UpdateSort();
+                            this.UpdateSort();
                             break;
                         case Actions.ListOfLists:
-                            sOut = GetLists();
+                            sOut = this.GetLists();
                             break;
                         case Actions.LoadView:
-                            sOut = LoadView();
+                            sOut = this.LoadView();
                             break;
                         case Actions.RankGet:
-                            sOut = GetRank();
+                            sOut = this.GetRank();
                             break;
                         case Actions.RankSave:
-                            RankSave();
+                            this.RankSave();
                             break;
                         case Actions.RankDelete:
-                            RankDelete();
+                            this.RankDelete();
                             break;
                         case Actions.FilterGet:
-                            sOut = FilterGet();
+                            sOut = this.FilterGet();
                             break;
                         case Actions.FilterSave:
-                            FilterSave();
+                            this.FilterSave();
                             break;
                         case Actions.FilterDelete:
-                            FilterDelete();
+                            this.FilterDelete();
 
                             break;
                     }
@@ -135,12 +135,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private string FilterGet()
         {
             int FilterId = -1;
-            if (Params.ContainsKey("FilterId"))
+            if (this.Params.ContainsKey("FilterId"))
             {
-                FilterId = Convert.ToInt32(Params["FilterId"]);
+                FilterId = Convert.ToInt32(this.Params["FilterId"]);
             }
 
-            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId, ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId, this.ModuleId);
             string sOut = "{";
             sOut += Utilities.JSON.Pair("FilterId", filter.FilterId.ToString());
             sOut += ",";
@@ -157,26 +157,26 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Entities.FilterInfo();
             filter.FilterId = -1;
-            filter.ModuleId = ModuleId;
-            filter.PortalId = PortalId;
-            if (Params.ContainsKey("FilterId"))
+            filter.ModuleId = this.ModuleId;
+            filter.PortalId = this.PortalId;
+            if (this.Params.ContainsKey("FilterId"))
             {
-                filter.FilterId = Convert.ToInt32(Params["FilterId"]);
+                filter.FilterId = Convert.ToInt32(this.Params["FilterId"]);
             }
 
-            if (Params.ContainsKey("Find"))
+            if (this.Params.ContainsKey("Find"))
             {
-                filter.Find = Params["Find"].ToString();
+                filter.Find = this.Params["Find"].ToString();
             }
 
-            if (Params.ContainsKey("Replacement"))
+            if (this.Params.ContainsKey("Replacement"))
             {
-                filter.Replace = Params["Replacement"].ToString();
+                filter.Replace = this.Params["Replacement"].ToString();
             }
 
-            if (Params.ContainsKey("FilterType"))
+            if (this.Params.ContainsKey("FilterType"))
             {
-                filter.FilterType = Params["FilterType"].ToString();
+                filter.FilterType = this.Params["FilterType"].ToString();
             }
 
             if (filter.FilterId == -1)
@@ -192,9 +192,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private void FilterDelete()
         {
             int FilterId = -1;
-            if (Params.ContainsKey("FilterId"))
+            if (this.Params.ContainsKey("FilterId"))
             {
-                FilterId = Convert.ToInt32(Params["FilterId"]);
+                FilterId = Convert.ToInt32(this.Params["FilterId"]);
             }
 
             if (FilterId == -1)
@@ -209,13 +209,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private string GetRank()
         {
             int RankId = -1;
-            if (Params.ContainsKey("RankId"))
+            if (this.Params.ContainsKey("RankId"))
             {
-                RankId = Convert.ToInt32(Params["RankId"]);
+                RankId = Convert.ToInt32(this.Params["RankId"]);
             }
 
             RewardController rc = new RewardController();
-            RewardInfo rank = rc.Reward_Get(PortalId, ModuleId, RankId);
+            RewardInfo rank = rc.Reward_Get(this.PortalId, this.ModuleId, RankId);
             string sOut = "{";
             sOut += Utilities.JSON.Pair("RankId", rank.RankId.ToString());
             sOut += ",";
@@ -234,31 +234,31 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             RewardInfo rank = new RewardInfo();
             rank.RankId = -1;
-            rank.ModuleId = ModuleId;
-            rank.PortalId = PortalId;
-            if (Params.ContainsKey("RankId"))
+            rank.ModuleId = this.ModuleId;
+            rank.PortalId = this.PortalId;
+            if (this.Params.ContainsKey("RankId"))
             {
-                rank.RankId = Convert.ToInt32(Params["RankId"]);
+                rank.RankId = Convert.ToInt32(this.Params["RankId"]);
             }
 
-            if (Params.ContainsKey("RankName"))
+            if (this.Params.ContainsKey("RankName"))
             {
-                rank.RankName = Params["RankName"].ToString();
+                rank.RankName = this.Params["RankName"].ToString();
             }
 
-            if (Params.ContainsKey("MinPosts"))
+            if (this.Params.ContainsKey("MinPosts"))
             {
-                rank.MinPosts = Convert.ToInt32(Params["MinPosts"]);
+                rank.MinPosts = Convert.ToInt32(this.Params["MinPosts"]);
             }
 
-            if (Params.ContainsKey("MaxPosts"))
+            if (this.Params.ContainsKey("MaxPosts"))
             {
-                rank.MaxPosts = Convert.ToInt32(Params["MaxPosts"]);
+                rank.MaxPosts = Convert.ToInt32(this.Params["MaxPosts"]);
             }
 
-            if (Params.ContainsKey("Display"))
+            if (this.Params.ContainsKey("Display"))
             {
-                rank.Display = Params["Display"].ToString();
+                rank.Display = this.Params["Display"].ToString();
             }
 
             RewardController rc = new RewardController();
@@ -268,9 +268,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private void RankDelete()
         {
             int RankId = -1;
-            if (Params.ContainsKey("RankId"))
+            if (this.Params.ContainsKey("RankId"))
             {
-                RankId = Convert.ToInt32(Params["RankId"]);
+                RankId = Convert.ToInt32(this.Params["RankId"]);
             }
 
             if (RankId == -1)
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
 
             RewardController rc = new RewardController();
-            rc.Reward_Delete(PortalId, ModuleId, RankId);
+            rc.Reward_Delete(this.PortalId, this.ModuleId, RankId);
 
         }
 
@@ -288,8 +288,8 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo();
             pi.PropertyId = -1;
-            pi.PortalId = PortalId;
-            pi = (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo)Utilities.ConvertFromHashTableToObject(Params, pi);
+            pi.PortalId = this.PortalId;
+            pi = (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo)Utilities.ConvertFromHashTableToObject(this.Params, pi);
             pi.Name = Utilities.CleanName(pi.Name);
             if (! string.IsNullOrEmpty(pi.ValidationExpression))
             {
@@ -298,32 +298,32 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
             if (pi.PropertyId == -1)
             {
-                string lbl = Params["Label"].ToString();
+                string lbl = this.Params["Label"].ToString();
                 LocalizationUtils lcUtils = new LocalizationUtils();
-                lcUtils.SaveResource("[RESX:" + pi.Name + "].Text", lbl, PortalId);
+                lcUtils.SaveResource("[RESX:" + pi.Name + "].Text", lbl, this.PortalId);
             }
             else
             {
-                if (Utilities.GetSharedResource("[RESX:" + pi.Name + "]").ToLowerInvariant().Trim() != Params["Label"].ToString().ToLowerInvariant().Trim())
+                if (Utilities.GetSharedResource("[RESX:" + pi.Name + "]").ToLowerInvariant().Trim() != this.Params["Label"].ToString().ToLowerInvariant().Trim())
                 {
                     LocalizationUtils lcUtils = new LocalizationUtils();
-                    lcUtils.SaveResource("[RESX:" + pi.Name + "].Text", Params["Label"].ToString(), PortalId);
+                    lcUtils.SaveResource("[RESX:" + pi.Name + "].Text", this.Params["Label"].ToString(), this.PortalId);
                 }
 
             }
 
             new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
             var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(pi.ObjectOwnerId, ModuleId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(pi.ObjectOwnerId, this.ModuleId);
             fi.HasProperties = true;
-            fc.Forums_Save(PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
+            fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
 
         }
 
         private string PropertyList()
         {
-            return ! string.IsNullOrEmpty(Params["ObjectOwnerId"].ToString())
-                ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(PortalId, Convert.ToInt32(Params["ObjectType"]), Convert.ToInt32(Params["ObjectOwnerId"]))
+            return ! string.IsNullOrEmpty(this.Params["ObjectOwnerId"].ToString())
+                ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(this.PortalId, Convert.ToInt32(this.Params["ObjectType"]), Convert.ToInt32(this.Params["ObjectOwnerId"]))
                 : string.Empty;
 
         }
@@ -335,7 +335,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             int sortOrder = -1;
             DotNetNuke.Modules.ActiveForums.Controllers.PropertyController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
 
-            string props = Params["props"].ToString();
+            string props = this.Params["props"].ToString();
             props = props.Remove(props.LastIndexOf("^"));
             foreach (string s in props.Split('^'))
             {
@@ -356,16 +356,16 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         internal void PropertyDelete()
         {
             DotNetNuke.Modules.ActiveForums.Controllers.PropertyController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
-            DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo prop = pc.GetById(Convert.ToInt32(Params["propertyid"]));
+            DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo prop = pc.GetById(Convert.ToInt32(this.Params["propertyid"]));
             if (prop != null)
             {
-                pc.DeleteById(Convert.ToInt32(Params["propertyid"]));
-                if (! (pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2" ,PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
+                pc.DeleteById(Convert.ToInt32(this.Params["propertyid"]));
+                if (! (pc.Count("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2" ,this.PortalId, prop.ObjectType, prop.ObjectOwnerId) > 0))
                 {
                     var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(prop.ObjectOwnerId, ModuleId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(prop.ObjectOwnerId, this.ModuleId);
                     fi.HasProperties = false;
-                    fc.Forums_Save(PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
+                    fc.Forums_Save(this.PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
                 }
             }
 
@@ -375,10 +375,10 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             StringBuilder sb = new StringBuilder();
             DotNetNuke.Common.Lists.ListController lists = new DotNetNuke.Common.Lists.ListController();
-            DotNetNuke.Common.Lists.ListInfoCollection lc = lists.GetListInfoCollection(string.Empty, string.Empty, PortalId);
+            DotNetNuke.Common.Lists.ListInfoCollection lc = lists.GetListInfoCollection(string.Empty, string.Empty, this.PortalId);
             foreach (DotNetNuke.Common.Lists.ListInfo l in lc)
             {
-                if (l.PortalID == PortalId)
+                if (l.PortalID == this.PortalId)
                 {
                     sb.Append("{");
                     sb.Append(Utilities.JSON.Pair("listname", l.Name));
@@ -402,9 +402,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             StringBuilder sb = new StringBuilder();
             string view = "home";
-            if (Params["view"] != null)
+            if (this.Params["view"] != null)
             {
-                view = Params["view"].ToString().ToLowerInvariant();
+                view = this.Params["view"].ToString().ToLowerInvariant();
             }
 
             string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.ModulePath);
@@ -416,7 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     break;
             }
 
-            Controls.ControlPanel cpControls = new Controls.ControlPanel(PortalId, ModuleId);
+            Controls.ControlPanel cpControls = new Controls.ControlPanel(this.PortalId, this.ModuleId);
             sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICSTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicsView));
             sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicView));
             sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICFORMTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicForm));

@@ -33,12 +33,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _pollId;
+                return this._pollId;
             }
 
             set
             {
-                _pollId = value;
+                this._pollId = value;
             }
         }
 
@@ -46,15 +46,15 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (TopicId > 0)
+            if (this.TopicId > 0)
             {
                 try
                 {
                     Polls Polls = new Polls();
                     bool ShowResults = false;
-                    if (UserId > 0)
+                    if (this.UserId > 0)
                     {
-                        if (Polls.HasVoted(TopicId, UserId))
+                        if (Polls.HasVoted(this.TopicId, this.UserId))
                         {
                             ShowResults = true;
                         }
@@ -67,13 +67,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (ShowResults)
                     {
                         Literal lit = new Literal();
-                        lit.Text = Polls.PollResults(TopicId, ImagePath);
+                        lit.Text = Polls.PollResults(this.TopicId, this.ImagePath);
                         this.Controls.Add(lit);
                     }
                     else
                     {
                         //Show Questions
-                        ForumBase ctl = (ForumBase)this.LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/af_pollvote.ascx"));
+                        ForumBase ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "controls/af_pollvote.ascx"));
                         ctl.ModuleConfiguration = this.ModuleConfiguration;
                         ctl.ForumId = this.ForumId;
                         ctl.TopicId = this.TopicId;

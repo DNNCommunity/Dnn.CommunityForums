@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.FilterInfo> GetEmoticons(int moduleID)
         {
-            return Find("WHERE ModuleId = @0 AND FilterType = @1", moduleID, FilterTypes.EMOTICON);
+            return this.Find("WHERE ModuleId = @0 AND FilterType = @1", moduleID, FilterTypes.EMOTICON);
         }
     }
 }

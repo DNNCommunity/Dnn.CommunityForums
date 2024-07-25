@@ -26,14 +26,14 @@
             get
             {
                 //TODO : clean this up to use DAL2
-                if (forumId < 1)
+                if (this.forumId < 1)
                 {
-                    forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+                    this.forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
                 }
 
-                return forumId;
+                return this.forumId;
             }
-            set => forumId = value;
+            set => this.forumId = value;
         }
 
         public int ReplyId { get; set; }
@@ -53,73 +53,73 @@
         public bool IsDeleted { get; set; }
 
         [IgnoreColumn()]
-        public int PortalId { get => Forum.PortalId; }
+        public int PortalId { get => this.Forum.PortalId; }
 
         [IgnoreColumn()]
-        public int ModuleId { get => Forum.ModuleId; }
+        public int ModuleId { get => this.Forum.ModuleId; }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
-            get => _topicInfo ?? (_topicInfo = GetTopic());
-            set => _topicInfo = value;
+            get => this._topicInfo ?? (this._topicInfo = this.GetTopic());
+            set => this._topicInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
         }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => _contentInfo ?? (_contentInfo = GetContent());
-            set => _contentInfo = value;
+            get => this._contentInfo ?? (this._contentInfo = this.GetContent());
+            set => this._contentInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(this.ContentId);
         }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => _forumInfo ?? (_forumInfo = GetForum());
-            set => _forumInfo = value;
+            get => this._forumInfo ?? (this._forumInfo = this.GetForum());
+            set => this._forumInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId); /* can't get using moduleId since ModuleId comes from Forum */
+            return new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId); /* can't get using moduleId since ModuleId comes from Forum */
         }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get => _Author ?? (GetAuthor());
-            set => _Author = value;
+            get => this._Author ?? (this.GetAuthor());
+            set => this._Author = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
         {
-            _Author = new DotNetNuke.Modules.ActiveForums.Author();
-            _Author.AuthorId = Content.AuthorId;
-            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Content.AuthorId);
+            this._Author = new DotNetNuke.Modules.ActiveForums.Author();
+            this._Author.AuthorId = this.Content.AuthorId;
+            var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.Content.AuthorId);
             if (userInfo != null)
             {
-                _Author.Email = userInfo?.Email;
-                _Author.FirstName = userInfo?.FirstName;
-                _Author.LastName = userInfo?.LastName;
-                _Author.DisplayName = userInfo?.DisplayName;
-                _Author.Username = userInfo?.Username;
+                this._Author.Email = userInfo?.Email;
+                this._Author.FirstName = userInfo?.FirstName;
+                this._Author.LastName = userInfo?.LastName;
+                this._Author.DisplayName = userInfo?.DisplayName;
+                this._Author.Username = userInfo?.Username;
             }
             else
             {
-                _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]"); ;
+                this._Author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]"); ;
             }
 
-            return _Author;
+            return this._Author;
         }
     }
 }

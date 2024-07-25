@@ -32,9 +32,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ServicesFramework.Instance.RequestAjaxScriptSupport();
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AFUserEditor"))
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AFUserEditor"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/usereditor.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AFUserEditor", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/scripts/usereditor.js"));
             }
         }
     }

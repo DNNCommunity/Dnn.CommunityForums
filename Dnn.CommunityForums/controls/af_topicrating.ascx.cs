@@ -45,12 +45,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _Rating;
+                return this._Rating;
             }
 
             set
             {
-                _Rating = value;
+                this._Rating = value;
             }
         }
 
@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _Enabled;
+                return this._Enabled;
             }
 
             set
             {
-                _Enabled = value;
+                this._Enabled = value;
             }
         }
         #endregion
@@ -73,12 +73,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            Rate1.Click += Rate1_Click;
-            Rate2.Click += Rate2_Click;
-            Rate3.Click += Rate3_Click;
-            Rate4.Click += Rate4_Click;
-            Rate5.Click += Rate5_Click;
-            cbRating.CallbackEvent += cbRating_Callback;
+            this.Rate1.Click += this.Rate1_Click;
+            this.Rate2.Click += this.Rate2_Click;
+            this.Rate3.Click += this.Rate3_Click;
+            this.Rate4.Click += this.Rate4_Click;
+            this.Rate5.Click += this.Rate5_Click;
+            this.cbRating.CallbackEvent += this.cbRating_Callback;
 
         }
 
@@ -86,34 +86,34 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            RenderRating();
+            this.RenderRating();
             string sRating = "function afchangerate(rate){var rd = document.getElementById('ratingdiv');rd.className=rate;};";
-            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "afratescript", sRating, true);
+            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "afratescript", sRating, true);
         }
 
         private void Rate1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 1, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 1, IpAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 2, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 2, IpAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 3, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 3, IpAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate4_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 4, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 4, IpAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate5_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 5, IpAddress: Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 5, IpAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void cbRating_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
@@ -123,90 +123,90 @@ namespace DotNetNuke.Modules.ActiveForums
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: rate, IpAddress: Request.UserHostAddress.ToString());
+                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, IpAddress: this.Request.UserHostAddress.ToString());
                 }
             }
 
-            Rating = -1;
-            RenderRating();
-            plhRating.RenderControl(e.Output);
+            this.Rating = -1;
+            this.RenderRating();
+            this.plhRating.RenderControl(e.Output);
         }
 
         #endregion
         #region Private Methods
         private void RenderRating()
         {
-            if (Rating == -1)
+            if (this.Rating == -1)
             {
-                Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
+                this.Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: this.TopicId);
             }
 
-            RatingClass = "rating" + Rating.ToString();
-            plhRating.Controls.Clear();
-            Rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");
-            Rate1.Enabled = Enabled;
-            Rate2.Attributes.Add("onmouseover", "afchangerate('rating2');");
-            Rate2.Enabled = Enabled;
-            Rate3.Attributes.Add("onmouseover", "afchangerate('rating3');");
-            Rate3.Enabled = Enabled;
-            Rate4.Attributes.Add("onmouseover", "afchangerate('rating4');");
-            Rate4.Enabled = Enabled;
-            Rate5.Attributes.Add("onmouseover", "afchangerate('rating5');");
-            Rate5.Enabled = Enabled;
+            this.RatingClass = "rating" + this.Rating.ToString();
+            this.plhRating.Controls.Clear();
+            this.Rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");
+            this.Rate1.Enabled = this.Enabled;
+            this.Rate2.Attributes.Add("onmouseover", "afchangerate('rating2');");
+            this.Rate2.Enabled = this.Enabled;
+            this.Rate3.Attributes.Add("onmouseover", "afchangerate('rating3');");
+            this.Rate3.Enabled = this.Enabled;
+            this.Rate4.Attributes.Add("onmouseover", "afchangerate('rating4');");
+            this.Rate4.Enabled = this.Enabled;
+            this.Rate5.Attributes.Add("onmouseover", "afchangerate('rating5');");
+            this.Rate5.Enabled = this.Enabled;
 
             Literal lit = new Literal();
-            lit.Text = "<div class=\"" + RatingClass + "\" id=\"ratingdiv\" onmouseout=\"this.className='" + RatingClass + "'\">";
-            plhRating.Controls.Add(lit);
-            Rate1.ID = "Rate1";
-            Rate1.CausesValidation = false;
-            Rate1.Width = 13;
-            Rate1.Height = 14;
-            Rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate1);
-            Rate2.ID = "Rate2";
-            Rate2.CausesValidation = false;
-            Rate2.Width = 14;
-            Rate2.Height = 14;
-            Rate2.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate2);
-            Rate3.ID = "Rate3";
-            Rate3.CausesValidation = false;
-            Rate3.Width = 14;
-            Rate3.Height = 14;
-            Rate3.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate3);
-            Rate4.ID = "Rate4";
-            Rate4.CausesValidation = false;
-            Rate4.Width = 14;
-            Rate4.Height = 14;
-            Rate4.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            plhRating.Controls.Add(Rate4);
-            Rate5.ID = "Rate5";
-            Rate5.CausesValidation = false;
-            Rate5.Width = 14;
-            Rate5.Height = 14;
-            Rate5.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            lit.Text = "<div class=\"" + this.RatingClass + "\" id=\"ratingdiv\" onmouseout=\"this.className='" + this.RatingClass + "'\">";
+            this.plhRating.Controls.Add(lit);
+            this.Rate1.ID = "Rate1";
+            this.Rate1.CausesValidation = false;
+            this.Rate1.Width = 13;
+            this.Rate1.Height = 14;
+            this.Rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.Rate1);
+            this.Rate2.ID = "Rate2";
+            this.Rate2.CausesValidation = false;
+            this.Rate2.Width = 14;
+            this.Rate2.Height = 14;
+            this.Rate2.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.Rate2);
+            this.Rate3.ID = "Rate3";
+            this.Rate3.CausesValidation = false;
+            this.Rate3.Width = 14;
+            this.Rate3.Height = 14;
+            this.Rate3.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.Rate3);
+            this.Rate4.ID = "Rate4";
+            this.Rate4.CausesValidation = false;
+            this.Rate4.Width = 14;
+            this.Rate4.Height = 14;
+            this.Rate4.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.Rate4);
+            this.Rate5.ID = "Rate5";
+            this.Rate5.CausesValidation = false;
+            this.Rate5.Width = 14;
+            this.Rate5.Height = 14;
+            this.Rate5.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
 
-            plhRating.Controls.Add(Rate5);
+            this.plhRating.Controls.Add(this.Rate5);
             lit = new Literal();
             lit.Text = "</div>";
-            plhRating.Controls.Add(lit);
-            if (UseAjax)
+            this.plhRating.Controls.Add(lit);
+            if (this.UseAjax)
             {
-                Rate1.OnClientClick = "af_rateTopic(1);return false;";
-                Rate2.OnClientClick = "af_rateTopic(2);return false;";
-                Rate3.OnClientClick = "af_rateTopic(3);return false;";
-                Rate4.OnClientClick = "af_rateTopic(4);return false;";
-                Rate5.OnClientClick = "af_rateTopic(5);return false;";
-                AddRatingScript();
+                this.Rate1.OnClientClick = "af_rateTopic(1);return false;";
+                this.Rate2.OnClientClick = "af_rateTopic(2);return false;";
+                this.Rate3.OnClientClick = "af_rateTopic(3);return false;";
+                this.Rate4.OnClientClick = "af_rateTopic(4);return false;";
+                this.Rate5.OnClientClick = "af_rateTopic(5);return false;";
+                this.AddRatingScript();
             }
         }
 
         private void AddRatingScript()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.Append("function af_rateTopic(rate){" + cbRating.ClientID + ".Callback(rate);};");
-            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "afrate", sb.ToString(), true);
+            sb.Append("function af_rateTopic(rate){" + this.cbRating.ClientID + ".Callback(rate);};");
+            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "afrate", sb.ToString(), true);
         }
         #endregion
 

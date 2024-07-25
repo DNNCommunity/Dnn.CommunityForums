@@ -32,48 +32,48 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                if (Settings[ForumViewerSettingsKeys.AFForumModuleId] != null)
+                if (this.Settings[ForumViewerSettingsKeys.AFForumModuleId] != null)
                 {
-                    string viewType = Convert.ToString(Settings[ForumViewerSettingsKeys.AFViewType]);
-                    int tmpModuleId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumModuleId]);
-                    int tmpForumId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumGroupId]);
+                    string viewType = Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFViewType]);
+                    int tmpModuleId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumModuleId]);
+                    int tmpForumId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumGroupId]);
                     if (viewType.ToLowerInvariant() == "topics")
                     {
                         viewType = Views.Topics;
-                        ctlForumLoader.ForumId = tmpForumId;
+                        this.ctlForumLoader.ForumId = tmpForumId;
                     }
                     else
                     {
                         viewType = Views.ForumView;
-                        ctlForumLoader.ForumGroupId = tmpForumId;
+                        this.ctlForumLoader.ForumGroupId = tmpForumId;
                     }
 
-                    ctlForumLoader.DefaultView = viewType;
-                    ctlForumLoader.ForumModuleId = tmpModuleId;
-                    ctlForumLoader.ForumTabId = ForumTabId;
+                    this.ctlForumLoader.DefaultView = viewType;
+                    this.ctlForumLoader.ForumModuleId = tmpModuleId;
+                    this.ctlForumLoader.ForumTabId = this.ForumTabId;
                     int tmpForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(tmpModuleId).FirstOrDefault().TabID;
-                    if (tmpForumTabId <= 0) { tmpForumTabId = TabId; }
-                    ctlForumLoader.ForumTabId = tmpForumTabId;
-                    ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
-                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
+                    if (tmpForumTabId <= 0) { tmpForumTabId = this.TabId; }
+                    this.ctlForumLoader.ForumTabId = tmpForumTabId;
+                    this.ctlForumLoader.ModuleConfiguration = this.ModuleConfiguration;
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
                     {
-                        ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]);
+                        this.ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFTopicsTemplate]);
                     }
 
-                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
                     {
-                        ctlForumLoader.DefaultForumViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]);
+                        this.ctlForumLoader.DefaultForumViewTemplateId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFForumViewTemplate]);
                     }
 
-                    if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
+                    if (!(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
                     {
-                        ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFTopicTemplate]);
+                        this.ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(this.Settings[ForumViewerSettingsKeys.AFTopicTemplate]);
                     }
 
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";
                     oLink.Attributes["type"] = "text/css";
-                    oLink.Attributes["href"] = Page.ResolveUrl(Globals.ModulePath + "module.css");
+                    oLink.Attributes["href"] = this.Page.ResolveUrl(Globals.ModulePath + "module.css");
                     System.Web.UI.Control oCSS = this.Page.FindControl("CSS");
                     if (oCSS != null)
                         {

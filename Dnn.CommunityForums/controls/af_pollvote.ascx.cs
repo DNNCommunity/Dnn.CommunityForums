@@ -35,11 +35,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            btnVote.Click += new System.EventHandler(btnVote_Click);
+            this.btnVote.Click += new System.EventHandler(this.btnVote_Click);
 
-            if (TopicId > 0)
+            if (this.TopicId > 0)
             {
-                BindPoll();
+                this.BindPoll();
             }
         }
 
@@ -58,33 +58,33 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                DataSet ds = DataProvider.Instance().Poll_Get(TopicId);
+                DataSet ds = DataProvider.Instance().Poll_Get(this.TopicId);
                 if (ds.Tables.Count > 0)
                 {
                     DataTable dtPoll = ds.Tables[0];
                     DataTable dtOptions = ds.Tables[1];
                     if (dtPoll.Rows.Count > 0)
                     {
-                        lblQuestion.Text = dtPoll.Rows[0]["Question"].ToString();
-                        PollType = dtPoll.Rows[0]["PollType"].ToString();
-                        PollId = Convert.ToInt32(dtPoll.Rows[0]["PollId"]);
-                        if (PollType == "S")
+                        this.lblQuestion.Text = dtPoll.Rows[0]["Question"].ToString();
+                        this.PollType = dtPoll.Rows[0]["PollType"].ToString();
+                        this.PollId = Convert.ToInt32(dtPoll.Rows[0]["PollId"]);
+                        if (this.PollType == "S")
                         {
-                            rdbtnOptions.DataTextField = "OptionName";
-                            rdbtnOptions.DataValueField = "PollOptionsID";
-                            rdbtnOptions.DataSource = dtOptions;
-                            rdbtnOptions.DataBind();
-                            rdbtnOptions.Visible = true;
-                            cblstOptions.Visible = false;
+                            this.rdbtnOptions.DataTextField = "OptionName";
+                            this.rdbtnOptions.DataValueField = "PollOptionsID";
+                            this.rdbtnOptions.DataSource = dtOptions;
+                            this.rdbtnOptions.DataBind();
+                            this.rdbtnOptions.Visible = true;
+                            this.cblstOptions.Visible = false;
                         }
                         else
                         {
-                            cblstOptions.DataTextField = "OptionName";
-                            cblstOptions.DataValueField = "PollOptionsID";
-                            cblstOptions.DataSource = dtOptions;
-                            cblstOptions.DataBind();
-                            rdbtnOptions.Visible = false;
-                            cblstOptions.Visible = true;
+                            this.cblstOptions.DataTextField = "OptionName";
+                            this.cblstOptions.DataValueField = "PollOptionsID";
+                            this.cblstOptions.DataSource = dtOptions;
+                            this.cblstOptions.DataBind();
+                            this.rdbtnOptions.Visible = false;
+                            this.cblstOptions.Visible = true;
                         }
 
                     }
@@ -101,34 +101,34 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 int optionId = -1;
-                if (rdbtnOptions.Visible == true)
+                if (this.rdbtnOptions.Visible == true)
                 {
-                    if (rdbtnOptions.SelectedIndex > -1)
+                    if (this.rdbtnOptions.SelectedIndex > -1)
                     {
-                        optionId = Convert.ToInt32(rdbtnOptions.SelectedItem.Value);
+                        optionId = Convert.ToInt32(this.rdbtnOptions.SelectedItem.Value);
                     }
 
-                    if (PollId > 0 & optionId > 0)
+                    if (this.PollId > 0 & optionId > 0)
                     {
-                        DataProvider.Instance().Poll_Vote(PollId, optionId, string.Empty, Request.UserHostAddress, this.UserId);
+                        DataProvider.Instance().Poll_Vote(this.PollId, optionId, string.Empty, this.Request.UserHostAddress, this.UserId);
                     }
                 }
-                else if (cblstOptions.Visible == true)
+                else if (this.cblstOptions.Visible == true)
                 {
-                    if (cblstOptions.SelectedIndex > -1)
+                    if (this.cblstOptions.SelectedIndex > -1)
                     {
-                        foreach (ListItem item in cblstOptions.Items)
+                        foreach (ListItem item in this.cblstOptions.Items)
                         {
                             if (item.Selected)
                             {
                                 optionId = Convert.ToInt32(item.Value);
-                                DataProvider.Instance().Poll_Vote(PollId, optionId, string.Empty, Request.UserHostAddress, this.UserId);
+                                DataProvider.Instance().Poll_Vote(this.PollId, optionId, string.Empty, this.Request.UserHostAddress, this.UserId);
                             }
                         }
                     }
                 }
 
-                Response.Redirect(Request.RawUrl);
+                this.Response.Redirect(this.Request.RawUrl);
 
             }
             catch (Exception ex)

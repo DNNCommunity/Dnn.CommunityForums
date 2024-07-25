@@ -42,12 +42,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -55,12 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _rows;
+                return this._rows;
             }
 
             set
             {
-                _rows = value;
+                this._rows = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _itemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                _itemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _headerTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                _headerTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _footerTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                _footerTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -110,28 +110,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             string sHeaderTemplate = string.Empty;
             string sFooterTemplate = string.Empty;
-            if (HeaderTemplate != null)
+            if (this.HeaderTemplate != null)
             {
-                sHeaderTemplate = HeaderTemplate.Text;
+                sHeaderTemplate = this.HeaderTemplate.Text;
             }
 
-            if (FooterTemplate != null)
+            if (this.FooterTemplate != null)
             {
-                sFooterTemplate = FooterTemplate.Text;
+                sFooterTemplate = this.FooterTemplate.Text;
             }
 
             string sTemplate = "[DISPLAYNAME]";
             Data.Common db = new Data.Common();
-            IDataReader dr = db.TopMembers_Get(PortalId, Rows);
-            if (ItemTemplate != null)
+            IDataReader dr = db.TopMembers_Get(this.PortalId, this.Rows);
+            if (this.ItemTemplate != null)
             {
-                sTemplate = ItemTemplate.Text;
+                sTemplate = this.ItemTemplate.Text;
             }
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            if (string.IsNullOrEmpty(CssClass))
+            if (string.IsNullOrEmpty(this.CssClass))
             {
-                CssClass = "aflist2";
+                this.CssClass = "aflist2";
             }
 
             while (dr.Read())

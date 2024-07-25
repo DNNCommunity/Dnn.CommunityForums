@@ -35,13 +35,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (string.IsNullOrEmpty(currentURL))
+                if (string.IsNullOrEmpty(this.currentURL))
                 {
-                    currentURL = string.Concat(Request.IsSecureConnection ? SEOConstants.HTTPS : SEOConstants.HTTP,
-                        Request.Url.Host, Request.RawUrl);
+                    this.currentURL = string.Concat(this.Request.IsSecureConnection ? SEOConstants.HTTPS : SEOConstants.HTTP,
+                        this.Request.Url.Host, this.Request.RawUrl);
                 }
 
-                return currentURL;
+                return this.currentURL;
             }
         }
 
@@ -54,8 +54,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 var actions = new ModuleActionCollection
                 {
                     {
-                        GetNextActionID(), Utilities.GetSharedResource("[RESX:ControlPanel]"),
-                        ModuleActionType.AddContent, string.Empty, string.Empty, EditUrl(), false,
+                        this.GetNextActionID(), Utilities.GetSharedResource("[RESX:ControlPanel]"),
+                        ModuleActionType.AddContent, string.Empty, string.Empty, this.EditUrl(), false,
                         Security.SecurityAccessLevel.Edit, true, false
                     }
                 };
@@ -71,11 +71,11 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void  OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var ctl = (ForumBase)LoadControl(Page.ResolveUrl(Globals.ModulePath + "classic.ascx"));
-            ctl.ModuleConfiguration = ModuleConfiguration;
-            plhAF.Controls.Add(ctl);
+            var ctl = (ForumBase)this.LoadControl(this.Page.ResolveUrl(Globals.ModulePath + "classic.ascx"));
+            ctl.ModuleConfiguration = this.ModuleConfiguration;
+            this.plhAF.Controls.Add(ctl);
 
-            this.Page.Header.Controls.Add(new LiteralControl(string.Format(SEOConstants.FORMAT_CANONICAL_TAG, CurrentUrl)));
+            this.Page.Header.Controls.Add(new LiteralControl(string.Format(SEOConstants.FORMAT_CANONICAL_TAG, this.CurrentUrl)));
         }
 
         #endregion

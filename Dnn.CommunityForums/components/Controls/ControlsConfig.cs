@@ -48,12 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _adminRoles;
+                return this._adminRoles;
             }
 
             set
             {
-                _adminRoles = value;
+                this._adminRoles = value;
             }
         }
 
@@ -61,12 +61,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _appPath;
+                return this._appPath;
             }
 
             set
             {
-                _appPath = value;
+                this._appPath = value;
             }
         }
 
@@ -74,12 +74,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _contentId;
+                return this._contentId;
             }
 
             set
             {
-                _contentId = value;
+                this._contentId = value;
             }
         }
 
@@ -87,12 +87,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _defaultViewRoles;
+                return this._defaultViewRoles;
             }
 
             set
             {
-                _defaultViewRoles = value;
+                this._defaultViewRoles = value;
             }
         }
 
@@ -100,12 +100,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _forumId;
+                return this._forumId;
             }
 
             set
             {
-                _forumId = value;
+                this._forumId = value;
             }
         }
 
@@ -113,12 +113,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -126,12 +126,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _membersLink;
+                return this._membersLink;
             }
 
             set
             {
-                _membersLink = value;
+                this._membersLink = value;
             }
         }
 
@@ -139,12 +139,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _pageId;
+                return this._pageId;
             }
 
             set
             {
-                _pageId = value;
+                this._pageId = value;
             }
         }
 
@@ -152,12 +152,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _profileLink;
+                return this._profileLink;
             }
 
             set
             {
-                _profileLink = value;
+                this._profileLink = value;
             }
         }
 
@@ -165,12 +165,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -178,12 +178,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _templatePath;
+                return this._templatePath;
             }
 
             set
             {
-                _templatePath = value;
+                this._templatePath = value;
             }
         }
 
@@ -191,12 +191,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _themePath;
+                return this._themePath;
             }
 
             set
             {
-                _themePath = value;
+                this._themePath = value;
             }
         }
 
@@ -204,12 +204,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _topicId;
+                return this._topicId;
             }
 
             set
             {
-                _topicId = value;
+                this._topicId = value;
             }
         }
 
@@ -217,12 +217,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _user;
+                return this._user;
             }
 
             set
             {
-                _user = value;
+                this._user = value;
             }
         }
 

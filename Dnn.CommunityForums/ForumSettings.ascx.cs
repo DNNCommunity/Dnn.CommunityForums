@@ -41,12 +41,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if(!_fullTextStatus.HasValue)
+                if(!this._fullTextStatus.HasValue)
                 {
-                    _fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
+                    this._fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
                 }
 
-                return _fullTextStatus.HasValue ? _fullTextStatus.Value : -5;
+                return this._fullTextStatus.HasValue ? this._fullTextStatus.Value : -5;
             }
         }
 
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return FullTextStatus != -5 && FullTextStatus != -4 && FullTextStatus != 0;
+                return this.FullTextStatus != -5 && this.FullTextStatus != -4 && this.FullTextStatus != 0;
             }
         }
 
@@ -64,16 +64,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            drpPageSize.Style.Add("float", "none");
+            this.drpPageSize.Style.Add("float", "none");
 
             if (!Utilities.IsRewriteLoaded())
             {
-                rdEnableURLRewriter.SelectedIndex = 1;
-                rdEnableURLRewriter.Enabled = false;
+                this.rdEnableURLRewriter.SelectedIndex = 1;
+                this.rdEnableURLRewriter.Enabled = false;
             }
             else
             {
-                rdEnableURLRewriter.Enabled = true;
+                this.rdEnableURLRewriter.Enabled = true;
             }
 
             var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
@@ -81,29 +81,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (Utilities.IsRewriteLoaded())
                 {
-                    litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configdisable',this); return false;\">Uninstall DNN Community Forums URL Handler</a>";
+                    this.litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configdisable',this); return false;\">Uninstall DNN Community Forums URL Handler</a>";
                 }
                 else
                 {
-                    litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install DNN Community Forums URL Handler</a>";
+                    this.litToggleConfig.Text = "<a href=\"javascript:void(0);\" onclick=\"amaf_toggleConfig('configenable',this); return false;\">Install DNN Community Forums URL Handler</a>";
                 }
 
             }
 
             // Full Text
-            rdFullTextSearch.Enabled = IsFullTextAvailable;
-            switch (FullTextStatus)
+            this.rdFullTextSearch.Enabled = this.IsFullTextAvailable;
+            switch (this.FullTextStatus)
             {
                 case -4:
-                    ltrFullTextMessage.Text = LocalizeString("FullTextAzure");
-                    ltrFullTextMessage.Visible = true;
+                    this.ltrFullTextMessage.Text = this.LocalizeString("FullTextAzure");
+                    this.ltrFullTextMessage.Visible = true;
                     break;
                 case 0:
-                    ltrFullTextMessage.Text = LocalizeString("FullTextNotInstalled");
-                    ltrFullTextMessage.Visible = true;
+                    this.ltrFullTextMessage.Text = this.LocalizeString("FullTextNotInstalled");
+                    this.ltrFullTextMessage.Visible = true;
                     break;
                 default:
-                    ltrFullTextMessage.Visible = false;
+                    this.ltrFullTextMessage.Visible = false;
                     break;
             }
         }
@@ -127,53 +127,53 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 //if (Page.IsPostBack == false)
                 //{
-                    BindThemes();
-                    BindTemplates();
-                    BindPrivateMessaging();
-                    BindForumGroups();
-                    BindForumSecurity();
+                    this.BindThemes();
+                    this.BindTemplates();
+                    this.BindPrivateMessaging();
+                    this.BindForumGroups();
+                    this.BindForumSecurity();
 
-                    Utilities.SelectListItemByValue(drpPageSize, PageSize);
+                    Utilities.SelectListItemByValue(this.drpPageSize, this.PageSize);
 
-                    txtFloodInterval.Text = FloodInterval.ToString(); ;
-                    txtEditInterval.Text = EditInterval.ToString();
+                    this.txtFloodInterval.Text = this.FloodInterval.ToString(); ;
+                    this.txtEditInterval.Text = this.EditInterval.ToString();
 
-                    Utilities.SelectListItemByValue(drpMode, Mode);
-                    Utilities.SelectListItemByValue(drpThemes, Theme);
-                    Utilities.SelectListItemByValue(drpTemplates, TemplateId);
+                    Utilities.SelectListItemByValue(this.drpMode, this.Mode);
+                    Utilities.SelectListItemByValue(this.drpThemes, this.Theme);
+                    Utilities.SelectListItemByValue(this.drpTemplates, this.TemplateId);
 
-                    Utilities.SelectListItemByValue(rdAutoLinks, AutoLink);
-                    Utilities.SelectListItemByValue(drpDeleteBehavior, DeleteBehavior);
-                    Utilities.SelectListItemByValue(drpProfileVisibility, ProfileVisibility);
-                    Utilities.SelectListItemByValue(drpSignatures, Signatures);
-                    Utilities.SelectListItemByValue(drpUserDisplayMode, UserNameDisplay);
-                    Utilities.SelectListItemByValue(rdEnableURLRewriter, FriendlyURLs);
+                    Utilities.SelectListItemByValue(this.rdAutoLinks, this.AutoLink);
+                    Utilities.SelectListItemByValue(this.drpDeleteBehavior, this.DeleteBehavior);
+                    Utilities.SelectListItemByValue(this.drpProfileVisibility, this.ProfileVisibility);
+                    Utilities.SelectListItemByValue(this.drpSignatures, this.Signatures);
+                    Utilities.SelectListItemByValue(this.drpUserDisplayMode, this.UserNameDisplay);
+                    Utilities.SelectListItemByValue(this.rdEnableURLRewriter, this.FriendlyURLs);
 
-                    Utilities.SelectListItemByValue(rdFullTextSearch, FullTextSearch && FullTextStatus == 1); // 1 = Enabled Status
+                    Utilities.SelectListItemByValue(this.rdFullTextSearch, this.FullTextSearch && this.FullTextStatus == 1); // 1 = Enabled Status
 
-                    Utilities.SelectListItemByValue(rdCacheTemplates, CacheTemplates);
-                    Utilities.SelectListItemByValue(rdPoints, EnablePoints);
-                    Utilities.SelectListItemByValue(rdUsersOnline, EnableUsersOnline);
-                    Utilities.SelectListItemByValue(rdUseSkinBreadCrumb, UseSkinBreadCrumb);
+                    Utilities.SelectListItemByValue(this.rdCacheTemplates, this.CacheTemplates);
+                    Utilities.SelectListItemByValue(this.rdPoints, this.EnablePoints);
+                    Utilities.SelectListItemByValue(this.rdUsersOnline, this.EnableUsersOnline);
+                    Utilities.SelectListItemByValue(this.rdUseSkinBreadCrumb, this.UseSkinBreadCrumb);
 
-                    txtAnswerPointValue.Text = AnswerPointValue.ToString();
-                    txtTopicPointValue.Text = TopicPointValue.ToString();
-                    txtReplyPointValue.Text = ReplyPointValue.ToString();
-                    txtMarkAnswerPointValue.Text = MarkAsAnswerPointValue.ToString();
-                    txtModPointValue.Text = ModPointValue.ToString();
+                    this.txtAnswerPointValue.Text = this.AnswerPointValue.ToString();
+                    this.txtTopicPointValue.Text = this.TopicPointValue.ToString();
+                    this.txtReplyPointValue.Text = this.ReplyPointValue.ToString();
+                    this.txtMarkAnswerPointValue.Text = this.MarkAsAnswerPointValue.ToString();
+                    this.txtModPointValue.Text = this.ModPointValue.ToString();
 
-                    txtURLPrefixBase.Text = PrefixURLBase;
-                    txtURLPrefixCategory.Text = PrefixURLCategory;
-                    txtURLPrefixOther.Text = PrefixURLOther;
-                    txtURLPrefixTags.Text = PrefixURLTag;
+                    this.txtURLPrefixBase.Text = this.PrefixURLBase;
+                    this.txtURLPrefixCategory.Text = this.PrefixURLCategory;
+                    this.txtURLPrefixOther.Text = this.PrefixURLOther;
+                    this.txtURLPrefixTags.Text = this.PrefixURLTag;
 
-                    txtAvatarHeight.Text = AvatarHeight.ToString();
-                    txtAvatarWidth.Text = AvatarWidth.ToString();
+                    this.txtAvatarHeight.Text = this.AvatarHeight.ToString();
+                    this.txtAvatarWidth.Text = this.AvatarWidth.ToString();
 
-                    txtTimeFormat.Text = TimeFormatString;
-                    txtDateFormat.Text = DateFormatString;
+                    this.txtTimeFormat.Text = this.TimeFormatString;
+                    this.txtDateFormat.Text = this.DateFormatString;
 
-                    Utilities.SelectListItemByValue(drpForumGroupTemplate, ForumGroupTemplate);
+                    Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
                 //}
             }
             catch (Exception exc) //Module failed to load
@@ -196,29 +196,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                Theme = drpThemes.SelectedValue;
-                Mode = drpMode.SelectedValue;
-                TemplateId = Utilities.SafeConvertInt(drpTemplates.SelectedValue);
-                PageSize = Utilities.SafeConvertInt(drpPageSize.SelectedValue, 10);
-                FloodInterval = Math.Max(0,Utilities.SafeConvertInt(txtFloodInterval.Text,0));
-                EditInterval = Math.Max(0,Utilities.SafeConvertInt(txtEditInterval.Text,0));
-                AutoLink = Utilities.SafeConvertBool(rdAutoLinks.SelectedValue);
-                DeleteBehavior = Utilities.SafeConvertInt(drpDeleteBehavior.SelectedValue);
-                ProfileVisibility = Utilities.SafeConvertInt(drpProfileVisibility.SelectedValue);
-                Signatures = Utilities.SafeConvertInt(drpSignatures.SelectedValue);
-                UserNameDisplay = drpUserDisplayMode.SelectedValue;
-                FriendlyURLs = Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue);
+                this.Theme = this.drpThemes.SelectedValue;
+                this.Mode = this.drpMode.SelectedValue;
+                this.TemplateId = Utilities.SafeConvertInt(this.drpTemplates.SelectedValue);
+                this.PageSize = Utilities.SafeConvertInt(this.drpPageSize.SelectedValue, 10);
+                this.FloodInterval = Math.Max(0,Utilities.SafeConvertInt(this.txtFloodInterval.Text,0));
+                this.EditInterval = Math.Max(0,Utilities.SafeConvertInt(this.txtEditInterval.Text,0));
+                this.AutoLink = Utilities.SafeConvertBool(this.rdAutoLinks.SelectedValue);
+                this.DeleteBehavior = Utilities.SafeConvertInt(this.drpDeleteBehavior.SelectedValue);
+                this.ProfileVisibility = Utilities.SafeConvertInt(this.drpProfileVisibility.SelectedValue);
+                this.Signatures = Utilities.SafeConvertInt(this.drpSignatures.SelectedValue);
+                this.UserNameDisplay = this.drpUserDisplayMode.SelectedValue;
+                this.FriendlyURLs = Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue);
 
-                var urlSettings = new FriendlyUrlSettings(PortalId);
+                var urlSettings = new FriendlyUrlSettings(this.PortalId);
                 string DoNotRedirectRegex = urlSettings.DoNotRedirectRegex;
                 const string ignoreForumsRegex = "("+ParamKeys.ForumId+"=|"+ParamKeys.GroupId+"=|"+ParamKeys.TopicId+"=|"+ParamKeys.GridType+"=|"+ParamKeys.Tags+"=|"+ParamKeys.ViewType+"=|"+ParamKeys.Category+"=|"+ParamKeys.PageId+"=)|";
 
-                if (Utilities.SafeConvertBool(rdEnableURLRewriter.SelectedValue))
+                if (Utilities.SafeConvertBool(this.rdEnableURLRewriter.SelectedValue))
                 {
                     if (!DoNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
                         DoNotRedirectRegex = string.Concat(ignoreForumsRegex, DoNotRedirectRegex);
-                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
                 else
@@ -226,54 +226,54 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (DoNotRedirectRegex.Contains(ignoreForumsRegex))
                     {
                         DoNotRedirectRegex.Replace(ignoreForumsRegex, string.Empty);
-                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
+                        DotNetNuke.Entities.Portals.PortalController.Instance.UpdatePortalSetting(portalID: this.PortalId, settingName: FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, settingValue: DoNotRedirectRegex, clearCache: true, cultureCode: DotNetNuke.Common.Utilities.Null.NullString, isSecure: false);
                     }
                 }
 
-                FullTextSearch = Utilities.SafeConvertBool(rdFullTextSearch.SelectedValue);
-                CacheTemplates = Utilities.SafeConvertBool(rdCacheTemplates.SelectedValue);
+                this.FullTextSearch = Utilities.SafeConvertBool(this.rdFullTextSearch.SelectedValue);
+                this.CacheTemplates = Utilities.SafeConvertBool(this.rdCacheTemplates.SelectedValue);
 
-                MessagingType = Utilities.SafeConvertInt(drpMessagingType.SelectedValue);
+                this.MessagingType = Utilities.SafeConvertInt(this.drpMessagingType.SelectedValue);
 
-                EnableUsersOnline = Utilities.SafeConvertBool(rdUsersOnline.SelectedValue);
-                UseSkinBreadCrumb = Utilities.SafeConvertBool(rdUseSkinBreadCrumb.SelectedValue);
+                this.EnableUsersOnline = Utilities.SafeConvertBool(this.rdUsersOnline.SelectedValue);
+                this.UseSkinBreadCrumb = Utilities.SafeConvertBool(this.rdUseSkinBreadCrumb.SelectedValue);
 
-                if(drpMessagingTab.SelectedItem != null)
+                if(this.drpMessagingTab.SelectedItem != null)
                 {
-                    MessagingTabId = Utilities.SafeConvertInt(drpMessagingTab.SelectedValue);
+                    this.MessagingTabId = Utilities.SafeConvertInt(this.drpMessagingTab.SelectedValue);
                 }
 
-                PrefixURLBase = txtURLPrefixBase.Text;
-                PrefixURLCategory = txtURLPrefixCategory.Text;
-                PrefixURLOther = txtURLPrefixOther.Text;
-                PrefixURLTag = txtURLPrefixTags.Text;
+                this.PrefixURLBase = this.txtURLPrefixBase.Text;
+                this.PrefixURLCategory = this.txtURLPrefixCategory.Text;
+                this.PrefixURLOther = this.txtURLPrefixOther.Text;
+                this.PrefixURLTag = this.txtURLPrefixTags.Text;
 
-                EnablePoints = Utilities.SafeConvertBool(rdPoints.SelectedValue);
-                AnswerPointValue = Utilities.SafeConvertInt(txtAnswerPointValue.Text, 1);
-                ReplyPointValue = Utilities.SafeConvertInt(txtReplyPointValue.Text, 1);
-                MarkAsAnswerPointValue = Utilities.SafeConvertInt(txtMarkAnswerPointValue.Text, 1);
-                TopicPointValue = Utilities.SafeConvertInt(txtTopicPointValue.Text, 1);
-                ModPointValue = Utilities.SafeConvertInt(txtModPointValue.Text, 1);
+                this.EnablePoints = Utilities.SafeConvertBool(this.rdPoints.SelectedValue);
+                this.AnswerPointValue = Utilities.SafeConvertInt(this.txtAnswerPointValue.Text, 1);
+                this.ReplyPointValue = Utilities.SafeConvertInt(this.txtReplyPointValue.Text, 1);
+                this.MarkAsAnswerPointValue = Utilities.SafeConvertInt(this.txtMarkAnswerPointValue.Text, 1);
+                this.TopicPointValue = Utilities.SafeConvertInt(this.txtTopicPointValue.Text, 1);
+                this.ModPointValue = Utilities.SafeConvertInt(this.txtModPointValue.Text, 1);
 
-                AvatarHeight = Utilities.SafeConvertInt(txtAvatarHeight.Text, 48);
-                AvatarWidth = Utilities.SafeConvertInt(txtAvatarWidth.Text, 48);
+                this.AvatarHeight = Utilities.SafeConvertInt(this.txtAvatarHeight.Text, 48);
+                this.AvatarWidth = Utilities.SafeConvertInt(this.txtAvatarWidth.Text, 48);
 
-                TimeFormatString = !string.IsNullOrWhiteSpace(txtTimeFormat.Text) ? txtTimeFormat.Text : "h:mm tt";
-                DateFormatString = !string.IsNullOrWhiteSpace(txtDateFormat.Text) ? txtDateFormat.Text : "M/d/yyyy";
+                this.TimeFormatString = !string.IsNullOrWhiteSpace(this.txtTimeFormat.Text) ? this.txtTimeFormat.Text : "h:mm tt";
+                this.DateFormatString = !string.IsNullOrWhiteSpace(this.txtDateFormat.Text) ? this.txtDateFormat.Text : "M/d/yyyy";
 
-                ForumGroupTemplate = Utilities.SafeConvertInt(drpForumGroupTemplate.SelectedValue);
-                var adminSec = txtGroupModSec.Value.Split(',');
-                SaveForumSecurity("groupadmin", adminSec);
-                var memSec = txtGroupMemSec.Value.Split(',');
-                SaveForumSecurity("groupmember", memSec);
-                var regSec = txtGroupRegSec.Value.Split(',');
-                SaveForumSecurity("registereduser", regSec);
-                var anonSec = txtGroupAnonSec.Value.Split(',');
-                SaveForumSecurity("anon", anonSec);
+                this.ForumGroupTemplate = Utilities.SafeConvertInt(this.drpForumGroupTemplate.SelectedValue);
+                var adminSec = this.txtGroupModSec.Value.Split(',');
+                this.SaveForumSecurity("groupadmin", adminSec);
+                var memSec = this.txtGroupMemSec.Value.Split(',');
+                this.SaveForumSecurity("groupmember", memSec);
+                var regSec = this.txtGroupRegSec.Value.Split(',');
+                this.SaveForumSecurity("registereduser", regSec);
+                var anonSec = this.txtGroupAnonSec.Value.Split(',');
+                this.SaveForumSecurity("anon", anonSec);
 
                 try
                 {
-                    if (IsFullTextAvailable && FullTextSearch && FullTextStatus != 1) // Available, selected and not currently installed
+                    if (this.IsFullTextAvailable && this.FullTextSearch && this.FullTextStatus != 1) // Available, selected and not currently installed
                     {
                         // Note: We have to jump through some hoops here to maintain Azure compatibility and prevent a race condition in the procs.
 
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         fullTextInstallScript = Utilities.GetSqlString("DotNetNuke.Modules.ActiveForums.sql.FullTextInstallPart2.sql");
                         DotNetNuke.Data.DataProvider.Instance().ExecuteScript(fullTextInstallScript);
                     }
-                    else if (IsFullTextAvailable && !FullTextSearch) // Available, but not selected
+                    else if (this.IsFullTextAvailable && !this.FullTextSearch) // Available, but not selected
                     {
                         try
                         {
@@ -307,15 +307,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 catch (Exception ex)
                 {
-                    FullTextSearch = false;
+                    this.FullTextSearch = false;
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
 
                 // Clear out the cache
-                DataCache.ClearSettingsCache(ModuleId);
+                DataCache.ClearSettingsCache(this.ModuleId);
 
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.APPLICATION_SHUTTING_DOWN.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("ModuleId", ModuleId.ToString()));
+                log.LogProperties.Add(new LogDetailInfo("ModuleId", this.ModuleId.ToString()));
                 log.AddProperty("Message", this.LocalizeString("ApplicationRestart"));
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
                 DotNetNuke.Common.Utilities.Config.Touch();
@@ -334,70 +334,70 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BindTemplates()
         {
             var tc = new TemplateController();
-            var tl = tc.Template_List(PortalId, ModuleId, Templates.TemplateTypes.ForumView);
-            drpTemplates.DataTextField = "Title";
-            drpTemplates.DataValueField = "TemplateId";
-            drpTemplates.DataSource = tl;
-            drpTemplates.DataBind();
-            drpTemplates.Items.Insert(0, new ListItem(LocalizeString("Default"), "0"));
+            var tl = tc.Template_List(this.PortalId, this.ModuleId, Templates.TemplateTypes.ForumView);
+            this.drpTemplates.DataTextField = "Title";
+            this.drpTemplates.DataValueField = "TemplateId";
+            this.drpTemplates.DataSource = tl;
+            this.drpTemplates.DataBind();
+            this.drpTemplates.Items.Insert(0, new ListItem(this.LocalizeString("Default"), "0"));
         }
 
         private void BindThemes()
         {
             var di = new System.IO.DirectoryInfo(Utilities.MapPath(Globals.ModulePath + "themes"));
-            drpThemes.DataSource = di.GetDirectories();
-            drpThemes.DataBind();
+            this.drpThemes.DataSource = di.GetDirectories();
+            this.drpThemes.DataBind();
         }
 
         private void BindPrivateMessaging()
         {
-            var selectedMessagingType = drpMessagingType.Items.FindByValue(MessagingType.ToString());
+            var selectedMessagingType = this.drpMessagingType.Items.FindByValue(this.MessagingType.ToString());
             if (selectedMessagingType != null)
             {
                 selectedMessagingType.Selected = true;
             }
 
-            BindPrivateMessagingTab();
+            this.BindPrivateMessagingTab();
         }
 
         private void BindPrivateMessagingTab()
         {
-            drpMessagingTab.Items.Clear();
-            drpMessagingTab.ClearSelection();
+            this.drpMessagingTab.Items.Clear();
+            this.drpMessagingTab.ClearSelection();
 
             var mc = new DotNetNuke.Entities.Modules.ModuleController();
             var tc = new TabController();
 
-            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(PortalId))
+            foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in mc.GetModules(this.PortalId))
             {
                 if (!mi.DesktopModule.ModuleName.Contains("DnnForge - PrivateMessages") || mi.IsDeleted)
                 {
                     continue;
                 }
 
-                var ti = tc.GetTab(mi.TabID, PortalId, false);
+                var ti = tc.GetTab(mi.TabID, this.PortalId, false);
                 if (ti != null && !ti.IsDeleted)
                 {
-                    drpMessagingTab.Items.Add(new ListItem
+                    this.drpMessagingTab.Items.Add(new ListItem
                     {
                         Text = ti.TabName + " - Ventrian Messages",
                         Value = ti.TabID.ToString(),
-                        Selected = ti.TabID == MessagingTabId
+                        Selected = ti.TabID == this.MessagingTabId
                     });
                 }
             }
 
-            if (drpMessagingTab.Items.Count == 0)
+            if (this.drpMessagingTab.Items.Count == 0)
             {
-                drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
-                drpMessagingTab.Enabled = false;
+                this.drpMessagingTab.Items.Add(new ListItem("No Messaging Tabs Found", "-1"));
+                this.drpMessagingTab.Enabled = false;
             }
 
         }
 
         private void BindForumGroups()
         {
-            using (IDataReader dr = DataProvider.Instance().Forums_List(PortalId, ModuleId, -1, -1, false))
+            using (IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false))
             {
                 var dt = new DataTable("Forums");
                 dt.Load(dr);
@@ -408,7 +408,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (tmpGroup != row["ForumGroupId"].ToString())
                     {
-                        drpForumGroupTemplate.Items.Add(new ListItem(row["GroupName"].ToString(), row["ForumGroupId"].ToString()));
+                        this.drpForumGroupTemplate.Items.Add(new ListItem(row["GroupName"].ToString(), row["ForumGroupId"].ToString()));
                         tmpGroup = row["ForumGroupId"].ToString();
                     }
 
@@ -420,13 +420,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BindForumSecurity()
         {
             var xDoc = new XmlDocument();
-            if (string.IsNullOrEmpty(ForumConfig))
+            if (string.IsNullOrEmpty(this.ForumConfig))
             {
                 xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
             }
             else
             {
-                xDoc.LoadXml(ForumConfig);
+                xDoc.LoadXml(this.ForumConfig);
             }
 
             if (xDoc != null)
@@ -469,7 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 i = 0;
-                sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + LocalizeString("UserPermissions") + "</td><td colspan=\"7\" class=\"afgridhd sec2\">" + LocalizeString("ModeratorPermissions") + "</td></tr>");
+                sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + this.LocalizeString("UserPermissions") + "</td><td colspan=\"7\" class=\"afgridhd sec2\">" + this.LocalizeString("ModeratorPermissions") + "</td></tr>");
                 sb.Append("<tr id=\"hd2\"><td></td>");
                 string sClass;
                 for (i = 0; i <= 16; i++)
@@ -490,11 +490,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     sb.Append("<td class=\"" + sClass + "\">");
-                    sb.Append(LocalizeString("SecGrid:" + rows[i, 0]));
+                    sb.Append(this.LocalizeString("SecGrid:" + rows[i, 0]));
                     sb.Append("</td>");
                 }
 
-                sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + LocalizeString("GroupAdmin") + "</td>");
+                sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + this.LocalizeString("GroupAdmin") + "</td>");
                 i = 0;
 
                 for (i = 0; i <= 16; i++)
@@ -535,7 +535,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 sb.Append("</tr>");
                 i = 0;
-                sb.Append("<tr id=\"row2\"><td class=\"rowhd\">" + LocalizeString("GroupMember") + "</td>");
+                sb.Append("<tr id=\"row2\"><td class=\"rowhd\">" + this.LocalizeString("GroupMember") + "</td>");
                 for (i = 0; i <= 16; i++)
                 {
                     sClass = "gridcheck";
@@ -574,7 +574,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("</tr>");
 
                 i = 0;
-                sb.Append("<tr id=\"row3\"><td class=\"rowhd\">" + LocalizeString("RegisteredUser") + "</td>");
+                sb.Append("<tr id=\"row3\"><td class=\"rowhd\">" + this.LocalizeString("RegisteredUser") + "</td>");
                 for (i = 0; i <= 16; i++)
                 {
                     sClass = "gridcheck";
@@ -612,7 +612,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 sb.Append("</tr>");
                 i = 0;
-                sb.Append("<tr id=\"row4\"><td class=\"rowhd\">" + LocalizeString("Anon") + "</td>");
+                sb.Append("<tr id=\"row4\"><td class=\"rowhd\">" + this.LocalizeString("Anon") + "</td>");
                 for (i = 0; i <= 16; i++)
                 {
                     sClass = "gridcheck";
@@ -651,20 +651,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("</tr>");
 
                 sb.Append("</table>");
-                litForumSecurity.Text = sb.ToString();
+                this.litForumSecurity.Text = sb.ToString();
             }
         }
 
         private void SaveForumSecurity(string sectype, string[] security)
         {
             var xDoc = new XmlDocument();
-            if (string.IsNullOrEmpty(ForumConfig))
+            if (string.IsNullOrEmpty(this.ForumConfig))
             {
                 xDoc.Load(Utilities.MapPath(Globals.ModulePath + "config/defaultgroupforums.config"));
             }
             else
             {
-                xDoc.LoadXml(ForumConfig);
+                xDoc.LoadXml(this.ForumConfig);
             }
 
             XmlNode xRoot = xDoc.DocumentElement;
@@ -679,7 +679,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            ForumConfig = xDoc.OuterXml;
+            this.ForumConfig = xDoc.OuterXml;
 
         }
 

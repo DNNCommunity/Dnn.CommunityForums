@@ -34,12 +34,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _status;
+                return this._status;
             }
 
             set
             {
-                _status = value;
+                this._status = value;
             }
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _autoPostBack;
+                return this._autoPostBack;
             }
 
             set
             {
-                _autoPostBack = value;
+                this._autoPostBack = value;
             }
         }
 
@@ -60,37 +60,37 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            drpStatus.SelectedIndexChanged += new System.EventHandler(drpStatus_SelectedIndexChanged);
+            this.drpStatus.SelectedIndexChanged += new System.EventHandler(this.drpStatus_SelectedIndexChanged);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            drpStatus.AutoPostBack = AutoPostBack;
-            foreach (ListItem li in drpStatus.Items)
+            this.drpStatus.AutoPostBack = this.AutoPostBack;
+            foreach (ListItem li in this.drpStatus.Items)
             {
                 li.Text = Utilities.GetSharedResource(li.Text);
             }
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
-                drpStatus.SelectedIndex = drpStatus.Items.IndexOf(drpStatus.Items.FindByValue(Status.ToString()));
+                this.drpStatus.SelectedIndex = this.drpStatus.Items.IndexOf(this.drpStatus.Items.FindByValue(this.Status.ToString()));
             }
         }
 
         private void drpStatus_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            if (AutoPostBack == true)
+            if (this.AutoPostBack == true)
             {
                 int intStatus = 0;
-                intStatus = Convert.ToInt32(drpStatus.SelectedItem.Value);
+                intStatus = Convert.ToInt32(this.drpStatus.SelectedItem.Value);
                 if (intStatus >= -1 && intStatus <= 3)
                 {
-                    DataProvider.Instance().Topics_UpdateStatus(PortalId, ModuleId, TopicId, -1, intStatus, -1, this.UserId);
+                    DataProvider.Instance().Topics_UpdateStatus(this.PortalId, this.ModuleId, this.TopicId, -1, intStatus, -1, this.UserId);
                 }
 
-                Response.Redirect(Request.RawUrl);
+                this.Response.Redirect(this.Request.RawUrl);
             }
 
         }

@@ -32,19 +32,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (Request.Params[ParamKeys.UserId] != null)
+                if (this.Request.Params[ParamKeys.UserId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params[ParamKeys.UserId]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.UserId]))
                     {
-                        _UID = Convert.ToInt32(Request.Params[ParamKeys.UserId]);
+                        this._UID = Convert.ToInt32(this.Request.Params[ParamKeys.UserId]);
                     }
                 }
                 else
                 {
-                    _UID = UserId;
+                    this._UID = this.UserId;
                 }
 
-                return _UID;
+                return this._UID;
             }
         }
     }

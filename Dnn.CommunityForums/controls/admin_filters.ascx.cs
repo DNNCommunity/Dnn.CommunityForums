@@ -33,8 +33,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            agFilters.Callback += agFilters_Callback;
-            agFilters.ItemBound += agFilters_ItemBound;
+            this.agFilters.Callback += this.agFilters_Callback;
+            this.agFilters.ItemBound += this.agFilters_ItemBound;
 
         }
 
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            agFilters.ColDelimiter = "||";
+            this.agFilters.ColDelimiter = "||";
         }
 
         private void agFilters_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
@@ -63,8 +63,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             break;
                         case "DEFAULTS":
-                            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteByModuleId(ModuleId);
-                            Controllers.FilterController.ImportFilter(PortalId, ModuleId);
+                            new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteByModuleId(this.ModuleId);
+                            Controllers.FilterController.ImportFilter(this.PortalId, this.ModuleId);
                             break;
                     }
 
@@ -74,8 +74,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 int PageSize = Convert.ToInt32(e.Parameters[1]);
                 string SortColumn = e.Parameters[2].ToString();
                 string Sort = e.Parameters[3].ToString();
-                agFilters.Datasource = DataProvider.Instance().Filters_List(PortalId, ModuleId, PageIndex, PageSize, Sort, SortColumn);
-                agFilters.Refresh(e.Output);
+                this.agFilters.Datasource = DataProvider.Instance().Filters_List(this.PortalId, this.ModuleId, PageIndex, PageSize, Sort, SortColumn);
+                this.agFilters.Refresh(e.Output);
             }
             catch (Exception ex)
             {
@@ -86,9 +86,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void agFilters_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
         {
-            e.Item[1] = Server.HtmlEncode(e.Item[1].ToString());
-            e.Item[2] = Server.HtmlEncode(e.Item[2].ToString());
-            e.Item[4] = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
+            e.Item[1] = this.Server.HtmlEncode(e.Item[1].ToString());
+            e.Item[2] = this.Server.HtmlEncode(e.Item[2].ToString());
+            e.Item[4] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
         #endregion
     }

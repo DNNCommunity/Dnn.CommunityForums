@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     {
         public CategoryInfo() : base()
         {
-            IsCategory = true;
+            this.IsCategory = true;
         }
     }
 }

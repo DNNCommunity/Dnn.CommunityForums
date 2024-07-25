@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId));
             if (obj == null)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = GetForums(ModuleId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = this.GetForums(ModuleId);
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
                 sb.AppendLine();

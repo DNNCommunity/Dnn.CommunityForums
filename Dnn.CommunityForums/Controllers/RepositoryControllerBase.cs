@@ -36,38 +36,38 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         internal RepositoryControllerBase()
         {
             var ctx = DataContext.Instance();
-            Repo = ctx.GetRepository<T>();
+            this.Repo = ctx.GetRepository<T>();
         }
 
         internal IEnumerable<T> Get()
         {
-            return Repo.Get();
+            return this.Repo.Get();
         }
 
         internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
-            return Repo.Get(scopeValue);
+            return this.Repo.Get(scopeValue);
         }
 
         internal T GetById<TProperty>(TProperty id)
         {
-            return Repo.GetById(id);
+            return this.Repo.GetById(id);
         }
 
         internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
-            return Repo.GetById(id, scopeValue);
+            return this.Repo.GetById(id, scopeValue);
         }
 
         internal T Save<TProperty>(T item, TProperty id)
         {
-            if (id == null || id.Equals(0) || id.Equals(-1) || GetById(id) == null)
+            if (id == null || id.Equals(0) || id.Equals(-1) || this.GetById(id) == null)
             {
-                Insert(item);
+                this.Insert(item);
             }
             else
             {
-                Update(item);
+                this.Update(item);
             }
 
             return item;
@@ -75,62 +75,62 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? Get() : Repo.Find(sqlCondition, args);
+            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.Repo.Find(sqlCondition, args);
         }
 
         internal IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
         {
-            return Repo.Find(pageIndex, pageSize, sqlCondition, args);
+            return this.Repo.Find(pageIndex, pageSize, sqlCondition, args);
         }
 
         internal void Update(T item)
         {
-            Repo.Update(item);
+            this.Repo.Update(item);
         }
 
         public void Update(string sqlCondition, params object[] args)
         {
-            Repo.Update(sqlCondition, args);
+            this.Repo.Update(sqlCondition, args);
         }
 
         internal void Insert(T item)
         {
-            Repo.Insert(item);
+            this.Repo.Insert(item);
         }
 
         internal void Delete(string sqlCondition, params object[] args)
         {
-            Repo.Delete(sqlCondition, args);
+            this.Repo.Delete(sqlCondition, args);
         }
 
         internal void DeleteById<TProperty>(TProperty id)
         {
-            Repo.Delete(Repo.GetById(id));
+            this.Repo.Delete(this.Repo.GetById(id));
         }
 
         internal void Delete(T item)
         {
-            Repo.Delete(item);
+            this.Repo.Delete(item);
         }
 
         internal void DeleteByModuleId(int ModuleId)
         {
-            Repo.Delete("WHERE (ModuleId = @0)", ModuleId);
+            this.Repo.Delete("WHERE (ModuleId = @0)", ModuleId);
         }
 
         internal int Count(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? Repo.Get().Count() : Repo.Find(sqlCondition, args).Count();
+            return string.IsNullOrEmpty(sqlCondition) ? this.Repo.Get().Count() : this.Repo.Find(sqlCondition, args).Count();
         }
 
         internal IPagedList<T> GetPage(int pageIndex, int pageSize)
         {
-            return Repo.GetPage(pageIndex, pageSize);
+            return this.Repo.GetPage(pageIndex, pageSize);
         }
 
         internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
-            return Repo.GetPage(scopeValue, pageIndex, pageSize);
+            return this.Repo.GetPage(scopeValue, pageIndex, pageSize);
         }
     }
 }

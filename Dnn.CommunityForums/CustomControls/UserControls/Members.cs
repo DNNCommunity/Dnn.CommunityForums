@@ -52,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             this.AppRelativeVirtualPath = "~/";
-            if (Request.Params["affilter"] != null)
+            if (this.Request.Params["affilter"] != null)
             {
-                Filter = Convert.ToString(Request.Params["affilter"]).Substring(0, 1);
+                this.Filter = Convert.ToString(this.Request.Params["affilter"]).Substring(0, 1);
             }
             else
             {
-                Filter = string.Empty;
+                this.Filter = string.Empty;
             }
         }
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                BuildControl();
+                this.BuildControl();
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                LinkControls(Controls);
+                this.LinkControls(this.Controls);
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                BuildPager();
+                this.BuildPager();
             }
             catch (Exception ex)
             {
@@ -101,8 +101,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder(1024);
-            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ForumModuleId);
-            string sTemplate = TemplateCache.GetCachedTemplate(ForumModuleId, "_memberlist", 0);
+            SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(this.ForumModuleId);
+            string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "_memberlist", 0);
             if (!(sTemplate == string.Empty))
             {
                 string sGrid = TemplateUtils.GetTemplateSection(sTemplate, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sGrid = TemplateUtils.ReplaceSubSection(sGrid, sHeader, "[AF:CONTROL:LIST:HEADER]", "[/AF:CONTROL:LIST:HEADER]");
                 sGrid = TemplateUtils.ReplaceSubSection(sGrid, sFooter, "[AF:CONTROL:LIST:FOOTER]", "[/AF:CONTROL:LIST:FOOTER]");
 
-                List<User> upl = GetMemberList();
+                List<User> upl = this.GetMemberList();
                 if (upl != null)
                 {
                     int i = 0;
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sRow = sAltRow;
                         }
 
-                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType,false,false,false,string.Empty,-1, TimeZoneOffset);
+                        sRow = TemplateUtils.ParseProfileTemplate(sRow, up, this.PortalId, this.ModuleId, this.ImagePath, this.CurrentUserType,false,false,false,string.Empty,-1, this.TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             sTemplate = sTemplate.Replace("[AF:CONTROL:PAGER]", "<am:pagernav id=\"Pager1\" runat=\"server\" />");
-            sTemplate = sTemplate.Replace("[AF:CONTROL:ALPHABAR]", BuildAlphaList());
+            sTemplate = sTemplate.Replace("[AF:CONTROL:ALPHABAR]", this.BuildAlphaList());
             Control ctl = this.ParseControl(sTemplate);
 
             this.Controls.Add(ctl);
@@ -155,13 +155,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 switch (ctrl.ID)
                 {
                     case "Pager1":
-                        Pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)ctrl;
+                        this.Pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)ctrl;
                         break;
                 }
 
                 if (ctrl.Controls.Count > 0)
                 {
-                    LinkControls(ctrl.Controls);
+                    this.LinkControls(ctrl.Controls);
                 }
             }
         }
@@ -169,27 +169,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BuildPager()
         {
             int intPages = 0;
-            intPages = Convert.ToInt32(System.Math.Ceiling(_memberCount / (double)PageSize));
-            Pager1.PageCount = intPages;
-            Pager1.CurrentPage = PageId;
-            Pager1.TabID = TabId;
-            Pager1.ForumID = -1;
-            Pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
-            Pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
-            Pager1.View = "members";
-            if (UseAjax)
+            intPages = Convert.ToInt32(System.Math.Ceiling(this._memberCount / (double)this.PageSize));
+            this.Pager1.PageCount = intPages;
+            this.Pager1.CurrentPage = this.PageId;
+            this.Pager1.TabID = this.TabId;
+            this.Pager1.ForumID = -1;
+            this.Pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
+            this.Pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
+            this.Pager1.View = "members";
+            if (this.UseAjax)
             {
-                Pager1.PageMode = PagerNav.Mode.CallBack;
+                this.Pager1.PageMode = PagerNav.Mode.CallBack;
             }
             else
             {
-                Pager1.PageMode = PagerNav.Mode.Links;
+                this.Pager1.PageMode = PagerNav.Mode.Links;
             }
 
-            if (Request.Params["affilter"] != null)
+            if (this.Request.Params["affilter"] != null)
             {
-                string[] Params = { "affilter=" + Request.Params["affilter"] };
-                Pager1.Params = Params;
+                string[] Params = { "affilter=" + this.Request.Params["affilter"] };
+                this.Pager1.Params = Params;
             }
         }
 
@@ -206,13 +206,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("<td align=\"center\">");
                 char strChar = (char)i;
                 string[] Params = { ParamKeys.ViewType + "=members", "affilter=" + strChar };
-                sb.Append("<a href=\"" + NavigateUrl(TabId, "", Params) + "\" class=\"CommandButton\">");
+                sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, "", Params) + "\" class=\"CommandButton\">");
                 sb.Append(strChar);
                 sb.Append("</a></td>");
             }
 
             sb.Append("<td align=center>");
-            sb.Append("<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ViewType + "=members") + "\" class=\"CommandButton\">");
+            sb.Append("<a href=\"" + this.NavigateUrl(this.TabId, "", ParamKeys.ViewType + "=members") + "\" class=\"CommandButton\">");
             sb.Append(Utilities.GetSharedResource("[RESX:All]"));
             sb.Append("</a></td></tr></table></div>");
             return sb.ToString();
@@ -222,21 +222,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             List<User> upl = new List<User>();
             User upi = null;
-            PageSize = MainSettings.PageSize;
-            if (PageId == 1)
+            this.PageSize = this.MainSettings.PageSize;
+            if (this.PageId == 1)
             {
-                RowIndex = 0;
+                this.RowIndex = 0;
             }
             else
             {
-                RowIndex = (PageId * PageSize) - PageSize;
+                this.RowIndex = (this.PageId * this.PageSize) - this.PageSize;
             }
 
-            IDataReader dr = DataProvider.Instance().Profiles_MemberList(PortalId, ModuleId, PageSize, RowIndex, Filter);
+            IDataReader dr = DataProvider.Instance().Profiles_MemberList(this.PortalId, this.ModuleId, this.PageSize, this.RowIndex, this.Filter);
             try
             {
                 dr.Read();
-                _memberCount = Convert.ToInt32(dr[0]);
+                this._memberCount = Convert.ToInt32(dr[0]);
                 dr.NextResult();
                 while (dr.Read())
                 {

@@ -44,12 +44,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _template;
+                return this._template;
             }
 
             set
             {
-                _template = value;
+                this._template = value;
             }
         }
 
@@ -57,18 +57,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _userId;
+                return this._userId;
             }
 
             set
             {
                 try
                 {
-                    _userId = value;
+                    this._userId = value;
                 }
                 catch (Exception ex)
                 {
-                    _userId = -1;
+                    this._userId = -1;
                 }
 
             }
@@ -78,18 +78,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _moduleId;
+                return this._moduleId;
             }
 
             set
             {
-                _moduleId = value;
+                this._moduleId = value;
             }
         }
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
-            if (UserId == -1)
+            if (this.UserId == -1)
             {
                 return;
             }
@@ -103,28 +103,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string imagePath = string.Empty;
                 int portalId = ps.PortalId;
                 string tmp = string.Empty;
-                if (Template == null)
+                if (this.Template == null)
                 {
                     tmp = "<span class=\"aslabelsmbold\">[RESX:Posts]:</span> [AF:PROFILE:POSTCOUNT]<br />" + "<span class=\"aslabelsmbold\">[RESX:RankName]:</span> [AF:PROFILE:RANKNAME]<br />" + "<span class=\"aslabelsmbold\">[RESX:RankDisplay]:</span> [AF:PROFILE:RANKDISPLAY] <br />" + "<span class=\"aslabelsmbold\">[RESX:LastUpdate]:</span> [AF:PROFILE:DATELASTACTIVITY:d] <br />" + "<span class=\"aslabelsmbold\">[RESX:MemberSince]:</span> [AF:PROFILE:DATECREATED:d]";
                 }
                 else
                 {
-                    tmp = Template.Text;
+                    tmp = this.Template.Text;
                 }
 
-                if (ModuleId == -1)
+                if (this.ModuleId == -1)
                 {
                     foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId))
                     {
                         if (mi.DesktopModule.ModuleName.ToUpperInvariant() == Globals.ModuleName.ToUpperInvariant())
                         {
-                            ModuleId = mi.ModuleID;
+                            this.ModuleId = mi.ModuleID;
                             break;
                         }
                     }
                 }
 
-                output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,UserId));
+                output = TemplateUtils.ParseProfileTemplate(tmp, this.UserId, portalId, this.ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,this.UserId));
                 output = Utilities.LocalizeControl(output);
                 writer.Write(output);
             }

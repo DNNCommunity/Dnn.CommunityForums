@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public PropertyController(IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties)
         {
-            Properties = properties;
+            this.Properties = properties;
         }
 
         internal string ListPropertiesJSON(int PortalId, int ObjectType, int ObjectOwnerId)

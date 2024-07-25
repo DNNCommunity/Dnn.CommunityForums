@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public RewardInfo Reward_Save(RewardInfo reward)
         {
             int rankId = DataProvider.Instance().Ranks_Save(reward.PortalId, reward.ModuleId, reward.RankId, reward.RankName, reward.MinPosts, reward.MaxPosts, reward.Display);
-            return Reward_Get(reward.PortalId, reward.ModuleId, rankId);
+            return this.Reward_Get(reward.PortalId, reward.ModuleId, rankId);
         }
 
         public void Reward_Delete(int PortalId, int ModuleId, int RankId)
@@ -88,13 +88,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(ModuleId,cacheKey);
                 if (rl == null)
                 {
-                    rl = Reward_List(PortalId, ModuleId);
+                    rl = this.Reward_List(PortalId, ModuleId);
                     DataCache.SettingsCacheStore(ModuleId,cacheKey, rl);
                 }
             }
             else
             {
-                rl = Reward_List(PortalId, ModuleId);
+                rl = this.Reward_List(PortalId, ModuleId);
             }
 
             return rl;

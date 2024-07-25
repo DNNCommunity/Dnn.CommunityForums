@@ -57,20 +57,20 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 //Initial Settings
-                LoadSettings(PortalId, ModuleId);
+                this.LoadSettings(PortalId, ModuleId);
                 //Add Default Templates
-                LoadTemplates(PortalId, ModuleId);
+                this.LoadTemplates(PortalId, ModuleId);
                 //Add Default Status
-                LoadFilters(PortalId, ModuleId);
+                this.LoadFilters(PortalId, ModuleId);
                 //Add Default Steps
-                LoadRanks(PortalId, ModuleId);
+                this.LoadRanks(PortalId, ModuleId);
                 //Add Default Forums
-                LoadDefaultForums(PortalId, ModuleId);
+                this.LoadDefaultForums(PortalId, ModuleId);
 
-                Install_Or_Upgrade_MoveTemplates();
+                this.Install_Or_Upgrade_MoveTemplates();
 
                 // templates are loaded; map new forumview template id
-                UpdateForumViewTemplateId(PortalId, ModuleId);
+                this.UpdateForumViewTemplateId(PortalId, ModuleId);
 
                 // Create "User Banned" core messaging notification type new in 08.01.00
                 ForumsConfig.Install_BanUser_NotificationType_080100();
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var objModules = new DotNetNuke.Entities.Modules.ModuleController();
                 var xDoc = new System.Xml.XmlDocument();
-                xDoc.Load(sPath);
+                xDoc.Load(this.sPath);
                 if (xDoc != null)
                 {
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var xDoc = new System.Xml.XmlDocument();
-                xDoc.Load(sPath);
+                xDoc.Load(this.sPath);
                 if (xDoc != null)
                 {
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
@@ -175,7 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 var xDoc = new System.Xml.XmlDocument();
-                xDoc.Load(sPath);
+                xDoc.Load(this.sPath);
                 if (xDoc != null)
                 {
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
@@ -199,7 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void LoadDefaultForums(int PortalId, int ModuleId)
         {
             var xDoc = new System.Xml.XmlDocument();
-            xDoc.Load(sPath);
+            xDoc.Load(this.sPath);
             if (xDoc != null)
             {
                 System.Xml.XmlNode xRoot = xDoc.DocumentElement;

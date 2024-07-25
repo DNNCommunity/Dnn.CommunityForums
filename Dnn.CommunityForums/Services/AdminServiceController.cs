@@ -45,11 +45,11 @@ namespace DotNetNuke.Modules.ActiveForums
             if (Utilities.IsRewriteLoaded())
             {
                 ConfigUtils.UninstallRewriter(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/web.config"));
-                return Request.CreateResponse(HttpStatusCode.OK, "disabled");
+                return this.Request.CreateResponse(HttpStatusCode.OK, "disabled");
             }
 
             ConfigUtils.InstallRewriter(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/web.config"));
-            return Request.CreateResponse(HttpStatusCode.OK, "enabled");
+            return this.Request.CreateResponse(HttpStatusCode.OK, "enabled");
         }
 
         //DTO for RunMaintenance
@@ -76,10 +76,10 @@ namespace DotNetNuke.Modules.ActiveForums
             var rows = DataProvider.Instance().Forum_Maintenance(dto.ForumId, dto.OlderThan, dto.LastActive, dto.ByUserId, dto.WithNoReplies, dto.DryRun, moduleSettings.DeleteBehavior);
             if (dto.DryRun)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { Result = string.Format(Utilities.GetSharedResource("[RESX:Maint:DryRunResults]", true), rows.ToString()) });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = string.Format(Utilities.GetSharedResource("[RESX:Maint:DryRunResults]", true), rows.ToString()) });
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { Result = Utilities.GetSharedResource("[RESX:ProcessComplete]", true) });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = Utilities.GetSharedResource("[RESX:ProcessComplete]", true) });
         }
 
         public string GetSecurityGrid(int groupId, int forumId)  // Needs DTO
@@ -106,11 +106,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public HttpResponseMessage GetUserProfile(int userId)
         {
             var upc = new UserProfileController();
-            var up = upc.Profiles_Get(PortalSettings.PortalId, ActiveModule.ModuleID, userId);
+            var up = upc.Profiles_Get(this.PortalSettings.PortalId, this.ActiveModule.ModuleID, userId);
 
             if(up == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
             var result = new
@@ -122,18 +122,18 @@ namespace DotNetNuke.Modules.ActiveForums
                                  up.RewardPoints
                              };
 
-            return Request.CreateResponse(HttpStatusCode.OK, result);
+            return this.Request.CreateResponse(HttpStatusCode.OK, result);
         }
 
         [HttpPost]
         public HttpResponseMessage UpdateUserProfile(UserProfileDTO dto)
         {
             var upc = new UserProfileController();
-            var up = upc.Profiles_Get(PortalSettings.PortalId, ActiveModule.ModuleID, dto.UserId);
+            var up = upc.Profiles_Get(this.PortalSettings.PortalId, this.ActiveModule.ModuleID, dto.UserId);
 
             if (up == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
             if (dto.TrustLevel.HasValue)
@@ -151,7 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             upc.Profiles_Save(up);
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
         //DTO for ToggleSecurity
@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 case "delete":
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, dto.SecurityType, dto.PermissionsId);
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        return this.Request.CreateResponse(HttpStatusCode.OK);
                     }
 
                 case "addobject":
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (dto.SecurityType == 1)
                         {
                             var uc = new UserController();
-                            var ui = uc.GetUser(PortalSettings.PortalId, dto.ModuleId, dto.SecurityId);
+                            var ui = uc.GetUser(this.PortalSettings.PortalId, dto.ModuleId, dto.SecurityId);
                             dto.SecurityId = ui != null ? ui.UserId.ToString() : string.Empty;
                         }
                         else
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, "View", dto.SecurityId, dto.SecurityType);
                         }
 
-                        return Request.CreateResponse(HttpStatusCode.OK);
+                        return this.Request.CreateResponse(HttpStatusCode.OK);
                     }
 
                 default:
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
                         }
 ;
-                        return Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);
+                        return this.Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);
                     }
             }
         }

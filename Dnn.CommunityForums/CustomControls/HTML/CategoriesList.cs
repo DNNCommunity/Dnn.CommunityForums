@@ -33,12 +33,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -48,12 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -63,12 +63,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -78,12 +78,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumId;
+                return this._ForumId;
             }
 
             set
             {
-                _ForumId = value;
+                this._ForumId = value;
             }
         }
 
@@ -93,12 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumGroupId;
+                return this._ForumGroupId;
             }
 
             set
             {
-                _ForumGroupId = value;
+                this._ForumGroupId = value;
             }
         }
 
@@ -108,12 +108,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _SelectedValues;
+                return this._SelectedValues;
             }
 
             set
             {
-                _SelectedValues = value;
+                this._SelectedValues = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Template;
+                return this._Template;
             }
 
             set
             {
-                _Template = value;
+                this._Template = value;
             }
         }
 
@@ -138,12 +138,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _HeaderTemplate;
+                return this._HeaderTemplate;
             }
 
             set
             {
-                _HeaderTemplate = value;
+                this._HeaderTemplate = value;
             }
         }
 
@@ -153,12 +153,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _FooterTemplate;
+                return this._FooterTemplate;
             }
 
             set
             {
-                _FooterTemplate = value;
+                this._FooterTemplate = value;
             }
         }
 
@@ -168,12 +168,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _SelectedCategory;
+                return this._SelectedCategory;
             }
 
             set
             {
-                _SelectedCategory = value;
+                this._SelectedCategory = value;
             }
         }
 
@@ -183,12 +183,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CSSClass;
+                return this._CSSClass;
             }
 
             set
             {
-                _CSSClass = value;
+                this._CSSClass = value;
             }
         }
 
@@ -212,9 +212,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = null;
             string groupPrefix = string.Empty;
             string forumPrefix = string.Empty;
-            if (ForumId > 0)
+            if (this.ForumId > 0)
             {
-                forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId);
+                forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
                 if (forumInfo != null)
                 {
                     groupPrefix = forumInfo.ForumGroup.PrefixURL;
@@ -224,22 +224,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             ControlUtils cUtils = new ControlUtils();
-            using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, ModuleId, true, 0, 200, "ASC", "TagName", ForumId, ForumGroupId))
+            using (IDataReader dr = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, true, 0, 200, "ASC", "TagName", this.ForumId, this.ForumGroupId))
             {
                 dr.NextResult();
                 while (dr.Read())
                 {
-                    string tmp = Template;
+                    string tmp = this.Template;
                     string categoryName = dr["TagName"].ToString();
-                    tmp = tmp.Replace("[CATEGORYURL]", cUtils.BuildUrl(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, -1, int.Parse(dr["TagId"].ToString()), Utilities.CleanName(categoryName), 1, -1, -1));
+                    tmp = tmp.Replace("[CATEGORYURL]", cUtils.BuildUrl(this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, -1, int.Parse(dr["TagId"].ToString()), Utilities.CleanName(categoryName), 1, -1, -1));
                     tmp = tmp.Replace("[CATEGORYNAME]", categoryName);
-                    if (int.Parse(dr["TagId"].ToString()) == SelectedCategory)
+                    if (int.Parse(dr["TagId"].ToString()) == this.SelectedCategory)
                     {
-                        tmp = tmp.Replace("[CSSCLASS]", CSSClass + "-selected");
+                        tmp = tmp.Replace("[CSSCLASS]", this.CSSClass + "-selected");
                     }
                     else
                     {
-                        tmp = tmp.Replace("[CSSCLASS]", CSSClass);
+                        tmp = tmp.Replace("[CSSCLASS]", this.CSSClass);
                     }
 
                     sb.Append(tmp);
@@ -250,8 +250,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (sb.Length > 0)
             {
-                sb.Insert(0, HeaderTemplate);
-                sb.Append(FooterTemplate);
+                sb.Insert(0, this.HeaderTemplate);
+                sb.Append(this.FooterTemplate);
             }
 
             return sb.ToString();
@@ -261,14 +261,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             StringBuilder sb = new StringBuilder();
             string sSelected = string.Empty;
-            using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, ModuleId, true, 0, 200, "ASC", "TagName", ForumId, ForumGroupId))
+            using (IDataReader dr = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, true, 0, 200, "ASC", "TagName", this.ForumId, this.ForumGroupId))
             {
                 dr.NextResult();
                 while (dr.Read())
                 {
                     sb.Append("<li>");
                     sb.Append("<input type=\"checkbox\"");
-                    if (IsSelected(Utilities.SafeConvertInt(dr["TagId"].ToString())))
+                    if (this.IsSelected(Utilities.SafeConvertInt(dr["TagId"].ToString())))
                     {
                         sb.Append(" checked=\"checked\" ");
                         sSelected += dr["TagId"].ToString() + ";";
@@ -294,13 +294,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private bool IsSelected(int CategoryId) /* Category is stored in Tag table with 'isCategory' = true */
         {
-            if (string.IsNullOrEmpty(SelectedValues))
+            if (string.IsNullOrEmpty(this.SelectedValues))
             {
                 return false;
             }
             else
             {
-                foreach (string s in SelectedValues.Split(';'))
+                foreach (string s in this.SelectedValues.Split(';'))
                 {
                     if (! string.IsNullOrEmpty(s))
                     {

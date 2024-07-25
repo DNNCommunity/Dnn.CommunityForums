@@ -35,32 +35,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tab;
+                return this._tab;
             }
 
             set
             {
-                _tab = value;
+                this._tab = value;
             }
         }
 
         public TabCollection()
         {
-            _count = 0;
+            this._count = 0;
             //_contents = New ArrayList
 
         }
 
         public void Add(Tab item)
         {
-            _contents.Add(item);
-            _count = _count + 1;
+            this._contents.Add(item);
+            this._count = this._count + 1;
         }
 
         public void Clear()
         {
-            _contents = null;
-            _count = 0;
+            this._contents = null;
+            this._count = 0;
 
         }
 
@@ -69,10 +69,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             bool inList = false;
 
             int i = 0;
-            for (i = 0; i <= Count; i++)
+            for (i = 0; i <= this.Count; i++)
             {
 
-                if (((Tab)_contents[i]).Text.ToLower() == item.Text.ToLower())
+                if (((Tab)this._contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
                     inList = true;
                     break;
@@ -86,9 +86,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             int j = arrayIndex;
             int i = 0;
-            for (i = 0; i <= Count; i++)
+            for (i = 0; i <= this.Count; i++)
             {
-                array.SetValue(_contents[i], j);
+                array.SetValue(this._contents[i], j);
                 j = j + 1;
             }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _count;
+                return this._count;
             }
         }
 
@@ -112,13 +112,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public bool Remove(Tab item)
         {
-            RemoveAt(IndexOf(item));
+            this.RemoveAt(this.IndexOf(item));
             return true;
         }
 
         IEnumerator<Tab> IEnumerable<Tab>.GetEnumerator()
         {
-            return new TabEnum(_contents);
+            return new TabEnum(this._contents);
         }
 
         public int IndexOf(Tab item)
@@ -126,10 +126,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int itemIndex = -1;
 
             int i = 0;
-            for (i = 0; i <= Count; i++)
+            for (i = 0; i <= this.Count; i++)
             {
 
-                if (((Tab)_contents[i]).Text.ToLower() == item.Text.ToLower())
+                if (((Tab)this._contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
 
                     itemIndex = i;
@@ -145,15 +145,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public void Insert(int index, Tab item)
         {
-            _count = _count + 1;
+            this._count = this._count + 1;
 
             int i = 0;
-            for (i = Count - 1; i <= index; i++)
+            for (i = this.Count - 1; i <= index; i++)
             {
-                _contents[i] = _contents[i - 1];
+                this._contents[i] = this._contents[i - 1];
             }
 
-            _contents[index] = item;
+            this._contents[index] = item;
 
         }
 
@@ -161,28 +161,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return (Tab)_contents[index];
+                return (Tab)this._contents[index];
             }
 
             set
             {
-                _contents[index] = value;
+                this._contents[index] = value;
             }
         }
 
         public void RemoveAt(int index)
         {
-            if (index >= 0 && index < Count)
+            if (index >= 0 && index < this.Count)
             {
 
                 int i = 0;
-                for (i = index; i < Count; i++)
+                for (i = index; i < this.Count; i++)
                 {
 
-                    _contents[i] = _contents[i + 1];
+                    this._contents[i] = this._contents[i + 1];
                 }
 
-                _count = _count - 1;
+                this._count = this._count - 1;
 
             }
 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _contents.GetEnumerator();
+            return this._contents.GetEnumerator();
         }
     }
 
@@ -203,18 +203,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public TabEnum(List<Tab> list)
         {
-            _tabs = list;
+            this._tabs = list;
         }
 
         public bool MoveNext()
         {
-            position = position + 1;
-            return position < _tabs.Count;
+            this.position = this.position + 1;
+            return this.position < this._tabs.Count;
         }
 
         public void Reset()
         {
-            position = -1;
+            this.position = -1;
         }
 
         object IEnumerator.Current
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 try
                 {
-                    return _tabs[position];
+                    return this._tabs[this.position];
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabs[position];
+                return this._tabs[this.position];
             }
         }
 

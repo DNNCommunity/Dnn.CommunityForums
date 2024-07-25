@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public IDataReader Groups_Get(int ModuleId, int ForumGroupId)
         {
-            return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Groups_Get", ModuleId, ForumGroupId);
+            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "Groups_Get", ModuleId, ForumGroupId);
         }
     }
 }

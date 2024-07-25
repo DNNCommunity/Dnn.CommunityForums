@@ -36,12 +36,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _text;
+                return this._text;
             }
 
             set
             {
-                _text = value;
+                this._text = value;
             }
         }
 
@@ -49,12 +49,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CSSClass;
+                return this._CSSClass;
             }
 
             set
             {
-                _CSSClass = value;
+                this._CSSClass = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _onClick;
+                return this._onClick;
             }
 
             set
             {
-                _onClick = value;
+                this._onClick = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _controlKey;
+                return this._controlKey;
             }
 
             set
             {
-                _controlKey = value;
+                this._controlKey = value;
             }
         }
 
@@ -88,12 +88,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabContent;
+                return this._tabContent;
             }
 
             set
             {
-                _tabContent = value;
+                this._tabContent = value;
             }
         }
 

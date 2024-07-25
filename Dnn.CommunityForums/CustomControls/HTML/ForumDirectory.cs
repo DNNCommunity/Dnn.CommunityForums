@@ -35,12 +35,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -50,12 +50,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -65,12 +65,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumIds;
+                return this._ForumIds;
             }
 
             set
             {
-                _ForumIds = value;
+                this._ForumIds = value;
             }
         }
 
@@ -97,32 +97,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Template;
+                return this._Template;
             }
 
             set
             {
-                _Template = value;
+                this._Template = value;
             }
         }
 
         public string Render()
         {
-            if (string.IsNullOrEmpty(Template))
+            if (string.IsNullOrEmpty(this.Template))
             {
                 return "Please specify a template";
             }
 
             StringBuilder sb = new StringBuilder();
-            string groupTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
-            string forumTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
-            string subForumTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:SUBFORUM]", "[/AF:DIR:SUBFORUM]");
+            string groupTemplate = TemplateUtils.GetTemplateSection(this.Template, "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
+            string forumTemplate = TemplateUtils.GetTemplateSection(this.Template, "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
+            string subForumTemplate = TemplateUtils.GetTemplateSection(this.Template, "[AF:DIR:SUBFORUM]", "[/AF:DIR:SUBFORUM]");
             int currGroup = -1;
             string gtmp = string.Empty;
             string ftmp = string.Empty;
             string subtmp = string.Empty;
             StringBuilder list = new StringBuilder();
-            var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, ForumUser.UserRoles));
+            var filteredForums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(this.ModuleId).Where(f => f.ForumGroup.Active && f.Active && f.ParentForumId == 0 && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, this.ForumUser.UserRoles));
             foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in filteredForums)
             {
                 if (currGroup != f.ForumGroupId)
@@ -135,19 +135,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     gtmp = groupTemplate;
                     gtmp = TemplateUtils.ReplaceSubSection(gtmp, "[FORUMHOLDER]", "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
-                    gtmp = ParseForumGroup(f.ForumGroup, gtmp);
+                    gtmp = this.ParseForumGroup(f.ForumGroup, gtmp);
                     ftmp = forumTemplate;
                     ftmp = TemplateUtils.ReplaceSubSection(ftmp, "[SUBFORUMHOLDER]", "[AF:DIR:SUBFORUM]", "[/AF:DIR:SUBFORUM]");
                     subtmp = subForumTemplate;
                     currGroup = f.ForumGroupId;
                 }
 
-                string forums = ParseForum(f, ftmp);
+                string forums = this.ParseForum(f, ftmp);
                 if (f.SubForums != null)
                 {
                     foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo s in f.SubForums)
                     {
-                        forums = forums.Replace("[SUBFORUMHOLDER]", ParseForum(s, subtmp) + "[SUBFORUMHOLDER]");
+                        forums = forums.Replace("[SUBFORUMHOLDER]", this.ParseForum(s, subtmp) + "[SUBFORUMHOLDER]");
                     }
                 }
 
@@ -158,8 +158,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             gtmp = gtmp.Replace("[FORUMHOLDER]", string.Empty);
             list.Append(gtmp);
-            Template = TemplateUtils.ReplaceSubSection(Template, list.ToString(), "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
-            return Template;
+            this.Template = TemplateUtils.ReplaceSubSection(this.Template, list.ToString(), "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
+            return this.Template;
         }
 
         private string ParseForumGroup(DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo f, string template)

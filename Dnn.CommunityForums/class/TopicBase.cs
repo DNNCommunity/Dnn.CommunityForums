@@ -35,28 +35,28 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_TopicId == -1)
+                if (this._TopicId == -1)
                 {
-                    if (Request.Params[ParamKeys.TopicId] != null)
+                    if (this.Request.Params[ParamKeys.TopicId] != null)
                     {
-                        if (SimulateIsNumeric.IsNumeric(Request.Params[ParamKeys.TopicId]))
+                        if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.TopicId]))
                         {
-                            _TopicId = Convert.ToInt32(Request.Params[ParamKeys.TopicId]);
-                            return _TopicId;
+                            this._TopicId = Convert.ToInt32(this.Request.Params[ParamKeys.TopicId]);
+                            return this._TopicId;
                         }
 
-                        return _TopicId;
+                        return this._TopicId;
                     }
 
-                    return _TopicId;
+                    return this._TopicId;
                 }
 
-                return _TopicId;
+                return this._TopicId;
             }
 
             set
             {
-                _TopicId = value;
+                this._TopicId = value;
             }
         }
         #endregion

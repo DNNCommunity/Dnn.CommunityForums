@@ -53,22 +53,22 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void Init(System.Web.HttpApplication context)
         {
-            context.BeginRequest += OnBeginRequest;
+            context.BeginRequest += this.OnBeginRequest;
         }
 
         public void OnBeginRequest(object s, EventArgs e)
         {
-            _forumId = -1;
-            _tabId = -1;
-            _moduleId = -1;
-            _topicId = -1;
-            _page = 0;
-            _contentId = -1;
-            _archived = 0;
-            _forumgroupId = -1;
-            _mainSettings = null;
-            _categoryId = -1;
-            _tagId = -1;
+            this._forumId = -1;
+            this._tabId = -1;
+            this._moduleId = -1;
+            this._topicId = -1;
+            this._page = 0;
+            this._contentId = -1;
+            this._archived = 0;
+            this._forumgroupId = -1;
+            this._mainSettings = null;
+            this._categoryId = -1;
+            this._tagId = -1;
 
             HttpApplication app = (HttpApplication)s;
             HttpServerUtility Server = app.Server;
@@ -208,14 +208,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     while (dr.Read())
                     {
-                        _tabId = int.Parse(dr["TabID"].ToString());
-                        _moduleId = int.Parse(dr["ModuleId"].ToString());
-                        _forumgroupId = int.Parse(dr["ForumGroupId"].ToString());
-                        _forumId = int.Parse(dr["ForumId"].ToString());
-                        _topicId = int.Parse(dr["TopicId"].ToString());
-                        _archived = int.Parse(dr["Archived"].ToString());
-                        _otherId = int.Parse(dr["OtherId"].ToString());
-                        _urlType = int.Parse(dr["UrlType"].ToString());
+                        this._tabId = int.Parse(dr["TabID"].ToString());
+                        this._moduleId = int.Parse(dr["ModuleId"].ToString());
+                        this._forumgroupId = int.Parse(dr["ForumGroupId"].ToString());
+                        this._forumId = int.Parse(dr["ForumId"].ToString());
+                        this._topicId = int.Parse(dr["TopicId"].ToString());
+                        this._archived = int.Parse(dr["Archived"].ToString());
+                        this._otherId = int.Parse(dr["OtherId"].ToString());
+                        this._urlType = int.Parse(dr["UrlType"].ToString());
                         canContinue = true;
                     }
 
@@ -229,21 +229,21 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (! string.IsNullOrEmpty(catName))
             {
-                _categoryId = db.Tag_GetIdByName(PortalId, _moduleId, catName, true);
-                _otherId = _categoryId;
-                _urlType = 2;
+                this._categoryId = db.Tag_GetIdByName(PortalId, this._moduleId, catName, true);
+                this._otherId = this._categoryId;
+                this._urlType = 2;
             }
 
             if (! string.IsNullOrEmpty(tagName))
             {
-                _tagId = db.Tag_GetIdByName(PortalId, _moduleId, tagName, false);
-                _otherId = _tagId;
-                _urlType = 3;
+                this._tagId = db.Tag_GetIdByName(PortalId, this._moduleId, tagName, false);
+                this._otherId = this._tagId;
+                this._urlType = 3;
             }
 
-            if (_archived == 1)
+            if (this._archived == 1)
             {
-                sUrl = db.GetUrl(_moduleId, _forumgroupId, _forumId, _topicId, _userId, -1);
+                sUrl = db.GetUrl(this._moduleId, this._forumgroupId, this._forumId, this._topicId, this._userId, -1);
                 if (! string.IsNullOrEmpty(sUrl))
                 {
                     string sHost = objPortalAliasInfo.HTTPAlias;
@@ -283,25 +283,25 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (_moduleId > 0)
+            if (this._moduleId > 0)
             {
-                _mainSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: _moduleId, tabId: _tabId, ignoreCache: false).ModuleSettings };
+                this._mainSettings = new SettingsInfo { MainSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this._moduleId, tabId: this._tabId, ignoreCache: false).ModuleSettings };
 
             }
 
-            if (_mainSettings == null)
+            if (this._mainSettings == null)
             {
                 return;
             }
 
-            if (! _mainSettings.URLRewriteEnabled)
+            if (! this._mainSettings.URLRewriteEnabled)
             {
                 return;
             }
 
             if (! canContinue && (Request.RawUrl.Contains(ParamKeys.TopicId) || Request.RawUrl.Contains(ParamKeys.ForumId) || Request.RawUrl.Contains(ParamKeys.GroupId)))
             {
-                sUrl = HandleOldUrls(Request.RawUrl, objPortalAliasInfo.HTTPAlias);
+                sUrl = this.HandleOldUrls(Request.RawUrl, objPortalAliasInfo.HTTPAlias);
                 if (! string.IsNullOrEmpty(sUrl))
                 {
                     if (! sUrl.StartsWith("http"))
@@ -340,10 +340,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (! string.IsNullOrEmpty(topicUrl))
                 {
                     Data.Topics topicsDb = new Data.Topics();
-                    _topicId = topicsDb.TopicIdByUrl(PortalId, _moduleId, topicUrl.ToLowerInvariant());
-                    if (_topicId > 0)
+                    this._topicId = topicsDb.TopicIdByUrl(PortalId, this._moduleId, topicUrl.ToLowerInvariant());
+                    if (this._topicId > 0)
                     {
-                        sUrl = db.GetUrl(_moduleId, _forumgroupId, _forumId, _topicId, _userId, -1);
+                        sUrl = db.GetUrl(this._moduleId, this._forumgroupId, this._forumId, this._topicId, this._userId, -1);
                     }
                     else
                     {
@@ -425,11 +425,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (SimulateIsNumeric.IsNumeric(urlTail))
                     {
-                        _page = Convert.ToInt32(urlTail);
+                        this._page = Convert.ToInt32(urlTail);
                     }
                 }
 
-                string sPage = _page != 0 ? $"&{ParamKeys.PageId}={_page}" : string.Empty;
+                string sPage = this._page != 0 ? $"&{ParamKeys.PageId}={this._page}" : string.Empty;
                 string qs = string.Empty;
                 if (sUrl.Contains("?"))
                 {
@@ -437,33 +437,33 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 string catQS = string.Empty;
-                if (_categoryId > 0)
+                if (this._categoryId > 0)
                 {
-                    catQS = $"&{ParamKeys.Category}=" + _categoryId.ToString();
+                    catQS = $"&{ParamKeys.Category}=" + this._categoryId.ToString();
                 }
 
                 string sendTo = string.Empty;
-                if ((_topicId > 0) || (_forumId > 0) || (_forumgroupId > 0))
+                if ((this._topicId > 0) || (this._forumId > 0) || (this._forumgroupId > 0))
                 {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, $"~/default.aspx?tabid={_tabId}" +
-                                (_forumgroupId > 0 ? $"&{ParamKeys.GroupId}={_forumgroupId}" : string.Empty) +
-                                (_forumId > 0 ? $"&{ParamKeys.ForumId}={_forumId}" : string.Empty) +
-                                (_topicId > 0 ? $"&{ParamKeys.TopicId}={_topicId}" : string.Empty) +
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, $"~/default.aspx?tabid={this._tabId}" +
+                                (this._forumgroupId > 0 ? $"&{ParamKeys.GroupId}={this._forumgroupId}" : string.Empty) +
+                                (this._forumId > 0 ? $"&{ParamKeys.ForumId}={this._forumId}" : string.Empty) +
+                                (this._topicId > 0 ? $"&{ParamKeys.TopicId}={this._topicId}" : string.Empty) +
                                 sPage + qs +
-                                ((_forumgroupId > 0 || _forumId > 0) ? catQS : string.Empty));
+                                ((this._forumgroupId > 0 || this._forumId > 0) ? catQS : string.Empty));
                 }
-                else if (_urlType == 2 && _otherId > 0)
+                else if (this._urlType == 2 && this._otherId > 0)
                 {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.Category}=" + _otherId + sPage + qs);
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this._tabId + $"&{ParamKeys.Category}=" + this._otherId + sPage + qs);
                 }
-                else if (_urlType == 3 && _otherId > 0)
+                else if (this._urlType == 3 && this._otherId > 0)
                 {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Tags}&{ParamKeys.Tags}=" + _otherId + sPage + qs);
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this._tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}={Views.Tags}&{ParamKeys.Tags}=" + this._otherId + sPage + qs);
                 }
-                else if (_urlType == 1)
+                else if (this._urlType == 1)
                 {
                     string v = string.Empty;
-                    switch (_otherId)
+                    switch (this._otherId)
                     {
                         case 1:
                             v = GridTypes.Unanswered;
@@ -498,11 +498,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     }
 
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this._tabId + $"&{ParamKeys.ViewType}={Views.Grid}&{ParamKeys.GridType}=" + v + sPage + qs);
                 }
-                else if (_tabId > 0)
+                else if (this._tabId > 0)
                 {
-                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + _tabId + sPage + qs);
+                    sendTo = ResolveUrl(app.Context.Request.ApplicationPath, "~/default.aspx?tabid=" + this._tabId + sPage + qs);
                 }
 
                 RewriteUrl(app.Context, sendTo);
@@ -617,57 +617,57 @@ namespace DotNetNuke.Modules.ActiveForums
                         string[] pair = parts[i].Split('=');
                         if (pair[0].ToLowerInvariant() == ParamKeys.ForumId)
                         {
-                            _forumId = int.Parse(pair[1]);
+                            this._forumId = int.Parse(pair[1]);
                         }
                         else if (pair[0].ToLowerInvariant() == ParamKeys.TopicId)
                         {
-                            _topicId = int.Parse(pair[1]);
+                            this._topicId = int.Parse(pair[1]);
                         }
                         else if (pair[0].ToLowerInvariant() == ParamKeys.PageId)
                         {
-                            _page = int.Parse(pair[1]);
+                            this._page = int.Parse(pair[1]);
                         }
                         else if (pair[0].ToLowerInvariant() == ParamKeys.PageJumpId)
                         {
-                            _page = int.Parse(pair[1]);
+                            this._page = int.Parse(pair[1]);
                         }
                         else if (pair[0].ToLowerInvariant() == ParamKeys.ContentJumpId)
                         {
-                            _contentId = int.Parse(pair[1]);
+                            this._contentId = int.Parse(pair[1]);
                         }
                     }
                     else
                     {
                         if (parts[i].ToLowerInvariant() == ParamKeys.ForumId)
                         {
-                            _forumId = int.Parse(parts[i + 1]);
+                            this._forumId = int.Parse(parts[i + 1]);
                         }
                         else if (parts[i].ToLowerInvariant() == ParamKeys.TopicId)
                         {
-                            _topicId = int.Parse(parts[i + 1]);
+                            this._topicId = int.Parse(parts[i + 1]);
                         }
                         else if (parts[i].ToLowerInvariant() == ParamKeys.PageId)
                         {
-                            _page = int.Parse(parts[i + 1]);
+                            this._page = int.Parse(parts[i + 1]);
                         }
                         else if (parts[i].ToLowerInvariant() == ParamKeys.PageJumpId)
                         {
-                            _page = int.Parse(parts[i + 1]);
+                            this._page = int.Parse(parts[i + 1]);
                         }
                         else if (parts[i].ToLowerInvariant() == "tabid")
                         {
-                            _tabId = int.Parse(parts[i + 1]);
+                            this._tabId = int.Parse(parts[i + 1]);
                         }
                         else if (parts[i].ToLowerInvariant() == ParamKeys.ContentJumpId)
                         {
-                            _contentId = int.Parse(parts[i + 1]);
+                            this._contentId = int.Parse(parts[i + 1]);
                         }
                     }
                 }
             }
 
             Data.Common db = new Data.Common();
-            sUrl = db.GetUrl(_moduleId, _forumgroupId, _forumId, _topicId, _userId, _contentId);
+            sUrl = db.GetUrl(this._moduleId, this._forumgroupId, this._forumId, this._topicId, this._userId, this._contentId);
             if (! string.IsNullOrEmpty(sUrl))
             {
 
@@ -688,11 +688,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     sUrl += "/";
                 }
 
-                if (_contentId > 0)
+                if (this._contentId > 0)
                 {
-                    if (_page > 1)
+                    if (this._page > 1)
                     {
-                        sUrl += _page + "/";
+                        sUrl += this._page + "/";
                     }
                 }
 

@@ -46,12 +46,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _navigateUrl;
+                return this._navigateUrl;
             }
 
             set
             {
-                _navigateUrl = value;
+                this._navigateUrl = value;
             }
         }
 
@@ -59,12 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _enabledRoles;
+                return this._enabledRoles;
             }
 
             set
             {
-                _enabledRoles = value;
+                this._enabledRoles = value;
             }
         }
 
@@ -72,12 +72,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _userRoles;
+                return this._userRoles;
             }
 
             set
             {
-                _userRoles = value;
+                this._userRoles = value;
             }
         }
 
@@ -85,12 +85,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _authRequired;
+                return this._authRequired;
             }
 
             set
             {
-                _authRequired = value;
+                this._authRequired = value;
             }
         }
 
@@ -99,12 +99,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _text;
+                return this._text;
             }
 
             set
             {
-                _text = value;
+                this._text = value;
             }
         }
 
@@ -112,12 +112,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _pageId;
+                return this._pageId;
             }
 
             set
             {
-                _pageId = value;
+                this._pageId = value;
             }
         }
 
@@ -125,12 +125,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _params;
+                return this._params;
             }
 
             set
             {
-                _params = value;
+                this._params = value;
             }
         }
 
@@ -138,47 +138,47 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _title;
+                return this._title;
             }
 
             set
             {
-                _title = value;
+                this._title = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (!string.IsNullOrEmpty(EnabledRoles))
+            if (!string.IsNullOrEmpty(this.EnabledRoles))
             {
-                if (string.IsNullOrEmpty(UserRoles))
+                if (string.IsNullOrEmpty(this.UserRoles))
                 {
-                    Visible = false;
+                    this.Visible = false;
                 }
                 else
                 {
-                    Visible = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(EnabledRoles, UserRoles);
+                    this.Visible = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(this.EnabledRoles, this.UserRoles);
                 }
             }
 
-            if (AuthRequired && !HttpContext.Current.Request.IsAuthenticated)
+            if (this.AuthRequired && !HttpContext.Current.Request.IsAuthenticated)
             {
-                Visible = false;
+                this.Visible = false;
             }
 
-            if (string.IsNullOrEmpty(NavigateURL) && string.IsNullOrEmpty(Params))
+            if (string.IsNullOrEmpty(this.NavigateURL) && string.IsNullOrEmpty(this.Params))
             {
-                NavigateURL = Utilities.NavigateURL(PageId);
+                this.NavigateURL = Utilities.NavigateURL(this.PageId);
             }
-            else if (string.IsNullOrEmpty(NavigateURL) && !string.IsNullOrEmpty(Params))
+            else if (string.IsNullOrEmpty(this.NavigateURL) && !string.IsNullOrEmpty(this.Params))
             {
-                NavigateURL = Utilities.NavigateURL(PageId, "", Params.Split(','));
+                this.NavigateURL = Utilities.NavigateURL(this.PageId, "", this.Params.Split(','));
             }
 
             string sTitle = " title=";
-            if (!string.IsNullOrEmpty(Title))
+            if (!string.IsNullOrEmpty(this.Title))
             {
-                sTitle += "\"" + Title + "\"";
+                sTitle += "\"" + this.Title + "\"";
             }
             else
             {
@@ -186,20 +186,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             string sClass = string.Empty;
-            if (!string.IsNullOrEmpty(CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
-                sClass = " class=\"" + CssClass + "\"";
+                sClass = " class=\"" + this.CssClass + "\"";
             }
 
-            if (Visible)
+            if (this.Visible)
             {
-                if (Enabled)
+                if (this.Enabled)
                 {
-                    writer.Write("<a href=\"" + NavigateURL + "\"" + sTitle + sClass + ">");
+                    writer.Write("<a href=\"" + this.NavigateURL + "\"" + sTitle + sClass + ">");
                 }
 
-                writer.Write(Text);
-                if (Enabled)
+                writer.Write(this.Text);
+                if (this.Enabled)
                 {
                     writer.Write("</a>");
                 }
@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
     }
 

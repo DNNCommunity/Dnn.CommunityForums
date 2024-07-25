@@ -87,12 +87,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemTemplate;
+                return this._ItemTemplate;
             }
 
             set
             {
-                _ItemTemplate = value;
+                this._ItemTemplate = value;
             }
         }
 
@@ -105,12 +105,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _HeaderTemplate;
+                return this._HeaderTemplate;
             }
 
             set
             {
-                _HeaderTemplate = value;
+                this._HeaderTemplate = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _FooterTemplate;
+                return this._FooterTemplate;
             }
 
             set
             {
-                _FooterTemplate = value;
+                this._FooterTemplate = value;
             }
         }
 
@@ -140,12 +140,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _rowDelimiter;
+                return this._rowDelimiter;
             }
 
             set
             {
-                _rowDelimiter = value;
+                this._rowDelimiter = value;
             }
         }
 
@@ -157,12 +157,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _colDelimiter;
+                return this._colDelimiter;
             }
 
             set
             {
-                _colDelimiter = value;
+                this._colDelimiter = value;
             }
         }
 
@@ -174,12 +174,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _datasource;
+                return this._datasource;
             }
 
             set
             {
-                _datasource = value;
+                this._datasource = value;
             }
         }
 
@@ -191,12 +191,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PageSize;
+                return this._PageSize;
             }
 
             set
             {
-                _PageSize = value;
+                this._PageSize = value;
             }
         }
 
@@ -208,12 +208,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemStyle;
+                return this._ItemStyle;
             }
 
             set
             {
-                _ItemStyle = value;
+                this._ItemStyle = value;
             }
         }
 
@@ -225,12 +225,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _AltItemStyle;
+                return this._AltItemStyle;
             }
 
             set
             {
-                _AltItemStyle = value;
+                this._AltItemStyle = value;
             }
         }
 
@@ -242,12 +242,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _SelectedStyle;
+                return this._SelectedStyle;
             }
 
             set
             {
-                _SelectedStyle = value;
+                this._SelectedStyle = value;
             }
         }
 
@@ -256,12 +256,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ShowPager;
+                return this._ShowPager;
             }
 
             set
             {
-                _ShowPager = value;
+                this._ShowPager = value;
             }
         }
 
@@ -273,12 +273,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _LoadOnRender;
+                return this._LoadOnRender;
             }
 
             set
             {
-                _LoadOnRender = value;
+                this._LoadOnRender = value;
             }
         }
 
@@ -290,12 +290,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PagerText;
+                return this._PagerText;
             }
 
             set
             {
-                _PagerText = value;
+                this._PagerText = value;
             }
         }
 
@@ -307,12 +307,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ImagePath;
+                return this._ImagePath;
             }
 
             set
             {
-                _ImagePath = value;
+                this._ImagePath = value;
             }
         }
 
@@ -324,12 +324,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PagerPages;
+                return this._PagerPages;
             }
 
             set
             {
-                _PagerPages = value;
+                this._PagerPages = value;
             }
         }
 
@@ -340,12 +340,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultSort;
+                return this._DefaultSort;
             }
 
             set
             {
-                _DefaultSort = value;
+                this._DefaultSort = value;
             }
         }
 
@@ -356,12 +356,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultColumn;
+                return this._DefaultColumn;
             }
 
             set
             {
-                _DefaultColumn = value;
+                this._DefaultColumn = value;
             }
         }
 
@@ -372,12 +372,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultParams;
+                return this._DefaultParams;
             }
 
             set
             {
-                _DefaultParams = value;
+                this._DefaultParams = value;
             }
         }
 
@@ -388,12 +388,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerInfo;
+                return this._CssPagerInfo;
             }
 
             set
             {
-                _CssPagerInfo = value;
+                this._CssPagerInfo = value;
             }
         }
 
@@ -404,12 +404,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerItem;
+                return this._CssPagerItem;
             }
 
             set
             {
-                _CssPagerItem = value;
+                this._CssPagerItem = value;
             }
         }
 
@@ -420,12 +420,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerItem2;
+                return this._CssPagerItem2;
             }
 
             set
             {
-                _CssPagerItem2 = value;
+                this._CssPagerItem2 = value;
             }
         }
 
@@ -436,12 +436,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerCurrentNumber;
+                return this._CssPagerCurrentNumber;
             }
 
             set
             {
-                _CssPagerCurrentNumber = value;
+                this._CssPagerCurrentNumber = value;
             }
         }
 
@@ -452,12 +452,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CssPagerNumber;
+                return this._CssPagerNumber;
             }
 
             set
             {
-                _CssPagerNumber = value;
+                this._CssPagerNumber = value;
             }
         }
 
@@ -468,12 +468,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _SpacerImage;
+                return this._SpacerImage;
             }
 
             set
             {
-                _SpacerImage = value;
+                this._SpacerImage = value;
             }
         }
 
@@ -484,12 +484,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _AscImage;
+                return this._AscImage;
             }
 
             set
             {
-                _AscImage = value;
+                this._AscImage = value;
             }
         }
 
@@ -500,12 +500,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DescImage;
+                return this._DescImage;
             }
 
             set
             {
-                _DescImage = value;
+                this._DescImage = value;
             }
         }
 
@@ -513,13 +513,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return cb.OnCallbackComplete;
+                return this.cb.OnCallbackComplete;
             }
 
             set
             {
-                EnsureChildControls();
-                cb.OnCallbackComplete = value;
+                this.EnsureChildControls();
+                this.cb.OnCallbackComplete = value;
             }
         }
         #endregion
@@ -527,25 +527,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Subs/Functions
         protected override void CreateChildControls()
         {
-            div = new System.Web.UI.HtmlControls.HtmlGenericControl();
-            div.ID = this.ClientID;
-            lit = new Literal();
-            lit.ID = "data_" + this.ClientID;
-            cb = new Callback();
+            this.div = new System.Web.UI.HtmlControls.HtmlGenericControl();
+            this.div.ID = this.ClientID;
+            this.lit = new Literal();
+            this.lit.ID = "data_" + this.ClientID;
+            this.cb = new Callback();
             if (HttpContext.Current.Request.Params["amagdebug"] == "true" || HttpContext.Current.Request.Params["amdebug"] == "true")
             {
-                cb.Debug = true;
+                this.cb.Debug = true;
             }
             else
             {
-                cb.Debug = false;
+                this.cb.Debug = false;
             }
 
-            cb.ID = "CB_" + this.ClientID;
-            cb.Attributes.Add("style", "display:none;");
-            cb.OnCallbackComplete = "function(){" + this.ClientID + ".Build();}";
-            cb.CallbackEvent += new Callback.CallbackEventHandler(RaiseCallback);
-            ChildControlsCreated = true;
+            this.cb.ID = "CB_" + this.ClientID;
+            this.cb.Attributes.Add("style", "display:none;");
+            this.cb.OnCallbackComplete = "function(){" + this.ClientID + ".Build();}";
+            this.cb.CallbackEvent += new Callback.CallbackEventHandler(this.RaiseCallback);
+            this.ChildControlsCreated = true;
         }
 
         protected override void Render(HtmlTextWriter output)
@@ -554,8 +554,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 output = new HtmlTextWriter(output, string.Empty);
                 string sOutput = this.HeaderTemplate.Text + this.ItemTemplate.Text + this.FooterTemplate.Text;
-                div.Controls.Add(Page.ParseControl(sOutput));
-                div.RenderControl(output);
+                this.div.Controls.Add(this.Page.ParseControl(sOutput));
+                this.div.RenderControl(output);
                 if (this.ShowPager)
                 {
                     output.AddAttribute("id", "pager_" + this.ClientID);
@@ -563,23 +563,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     output.RenderEndTag();
                 }
 
-                cb.RenderControl(output);
+                this.cb.RenderControl(output);
                 StringBuilder str = new StringBuilder();
                 str.Append("<script>");
                 str.Append("window." + this.ClientID + "=new ActiveGrid('" + this.ClientID + "');");
                 if (this.SpacerImage == "")
                 {
-                    this.SpacerImage = Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.spacer.gif");
+                    this.SpacerImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.spacer.gif");
                 }
 
                 if (this.AscImage == "")
                 {
-                    this.AscImage = Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.asc.gif");
+                    this.AscImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.asc.gif");
                 }
 
                 if (this.DescImage == "")
                 {
-                    this.DescImage = Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.desc.gif");
+                    this.DescImage = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.desc.gif");
                 }
 
                 str.Append("window." + this.ClientID + ".SpacerImage='" + this.SpacerImage + "';");
@@ -607,7 +607,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 str.Append("window." + this.ClientID + ".Params='" + this.DefaultParams + "';");
                 str.Append("window." + this.ClientID + ".Width='" + this.Width.ToString() + "';");
-                str.Append("window." + this.ClientID + ".ImagePath='" + Page.ResolveUrl(this.ImagePath) + "';");
+                str.Append("window." + this.ClientID + ".ImagePath='" + this.Page.ResolveUrl(this.ImagePath) + "';");
                 str.Append("window." + this.ClientID + ".ItemStyle='" + this.ItemStyle + "';");
                 str.Append("window." + this.ClientID + ".AltItemStyle='" + this.AltItemStyle + "';");
                 str.Append("window." + this.ClientID + ".SelectedStyle='" + this.SelectedStyle + "';");
@@ -615,7 +615,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + this.ClientID + ".RowDelimiter='" + this.RowDelimiter + "';");
                 str.Append("window." + this.ClientID + ".ColDelimiter='" + this.ColDelimiter + "';");
                 str.Append("window." + this.ClientID + ".ShowPager=" + this.ShowPager.ToString().ToLower() + ";");
-                str.Append("window." + this.ClientID + ".CB='" + cb.ClientID + "';");
+                str.Append("window." + this.ClientID + ".CB='" + this.cb.ClientID + "';");
                 if (this.LoadOnRender == true)
                 {
                     str.Append("window." + this.ClientID + ".Callback();");
@@ -634,8 +634,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         /// </summary>
         public void Refresh(HtmlTextWriter data)
         {
-            lit.Text = HandleText();
-            lit.RenderControl(data);
+            this.lit.Text = this.HandleText();
+            this.lit.RenderControl(data);
         }
 
         private string HandleText()
@@ -650,11 +650,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Substring(EndIndex + 4);
             }
 
-            if (!Page.IsPostBack)
+            if (!this.Page.IsPostBack)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append("");
-                IDataReader dr = Datasource;
+                IDataReader dr = this.Datasource;
                 dr.Read();
                 int iCount = Convert.ToInt32(dr[0]);
                 int pageCount = Convert.ToInt32(Math.Ceiling(iCount / (double)this.PageSize));
@@ -668,9 +668,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     ItemBoundEventArgs e = new ItemBoundEventArgs(ItemArray);
-                    if (ItemBound != null)
+                    if (this.ItemBound != null)
                     {
-                        ItemBound(this, e);
+                        this.ItemBound(this, e);
                     }
 
                     foreach (string item in e.Item)
@@ -704,14 +704,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public void RaiseCallback(object sender, CallBackEventArgs e) // Implements ICallbackEventHandler.RaiseCallback
         {
-            OnCallback(e);
+            this.OnCallback(e);
         }
 
         protected virtual void OnCallback(CallBackEventArgs e)
         {
-            if (Callback != null)
+            if (this.Callback != null)
             {
-                Callback(cb, e);
+                this.Callback(this.cb, e);
             }
         }
 
@@ -719,9 +719,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
             }
         }
         #endregion
@@ -734,7 +734,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         internal ItemBoundEventArgs(ArrayList sParam)
         {
-            Item = sParam;
+            this.Item = sParam;
         }
     }
 

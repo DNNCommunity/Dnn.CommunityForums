@@ -33,15 +33,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
             string sDisplayName = string.Empty;
             int tUid = -1;
-            if (Request.Params[ParamKeys.UserId] != null)
+            if (this.Request.Params[ParamKeys.UserId] != null)
             {
-                if (SimulateIsNumeric.IsNumeric(Request.Params[ParamKeys.UserId]))
+                if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.UserId]))
                 {
-                    tUid = Convert.ToInt32(Request.Params[ParamKeys.UserId]);
-                    DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, tUid);
+                    tUid = Convert.ToInt32(this.Request.Params[ParamKeys.UserId]);
+                    DotNetNuke.Entities.Users.UserInfo ui = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, tUid);
                     if (ui != null)
                     {
-                        sDisplayName = UserProfiles.GetDisplayName(PortalSettings, ModuleId, false,false,false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
+                        sDisplayName = UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false,false,false, ui.UserID, ui.Username, ui.FirstName, ui.LastName, ui.DisplayName);
                     }
 
                 }
@@ -49,18 +49,18 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                tUid = UserId;
-                sDisplayName = UserProfiles.GetDisplayName(PortalSettings, ModuleId, false, false, false, UserId, UserInfo.Username, UserInfo.FirstName, UserInfo.LastName, UserInfo.DisplayName);
+                tUid = this.UserId;
+                sDisplayName = UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleId, false, false, false, this.UserId, this.UserInfo.Username, this.UserInfo.FirstName, this.UserInfo.LastName, this.UserInfo.DisplayName);
             }
 
-            lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
-            if (MainSettings.UseSkinBreadCrumb)
+            this.lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
+            if (this.MainSettings.UseSkinBreadCrumb)
             {
-                Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + Utilities.NavigateURL(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}=" + tUid.ToString() }) + "\">" + lblHeader.Text + "</a>");
+                Environment.UpdateBreadCrumb(this.Page.Controls, "<a href=\"" + Utilities.NavigateURL(this.TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}=" + tUid.ToString() }) + "\">" + this.lblHeader.Text + "</a>");
             }
 
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
+            Environment.UpdateMeta(ref tempVar, "[VALUE] - " + this.lblHeader.Text, "[VALUE]", "[VALUE]");
             SettingsBase ctl = null;
             ctl = (SettingsBase)new DotNetNuke.Modules.ActiveForums.Controls.UserProfile();
             ctl.ModuleConfiguration = this.ModuleConfiguration;
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.Params = this.Params;
             }
 
-            plhProfile.Controls.Add(ctl);
+            this.plhProfile.Controls.Add(ctl);
         }
     }
 }

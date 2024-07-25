@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 
         internal URLNavigator()
         {
-            this.navigationManager = DependencyProvider.GetService<INavigationManager>();
+            this.navigationManager = this.DependencyProvider.GetService<INavigationManager>();
         }
 
         internal INavigationManager NavigationManager()
@@ -51,62 +51,62 @@ namespace DotNetNuke.Modules.ActiveForums.Services
 
         internal string NavigateURL()
         {
-            return navigationManager?.NavigateURL();
+            return this.navigationManager?.NavigateURL();
         }
 
         internal string NavigateURL(int tabID)
         {
-            return navigationManager?.NavigateURL(tabID);
+            return this.navigationManager?.NavigateURL(tabID);
         }
 
         internal string NavigateURL(int tabID, bool isSuperTab)
         {
-            return navigationManager?.NavigateURL(tabID, isSuperTab);
+            return this.navigationManager?.NavigateURL(tabID, isSuperTab);
         }
 
         internal string NavigateURL(int tabId, string[] @params)
         {
-            return navigationManager?.NavigateURL(tabId, string.Empty, @params);
+            return this.navigationManager?.NavigateURL(tabId, string.Empty, @params);
         }
 
         internal string NavigateURL(string controlKey)
         {
-            return navigationManager?.NavigateURL(controlKey);
+            return this.navigationManager?.NavigateURL(controlKey);
         }
 
         internal string NavigateURL(string controlKey, params string[] additionalParameters)
         {
-            return navigationManager?.NavigateURL(controlKey, additionalParameters);
+            return this.navigationManager?.NavigateURL(controlKey, additionalParameters);
         }
 
         internal string NavigateURL(int tabID, string controlKey)
         {
-            return navigationManager?.NavigateURL(tabID, controlKey);
+            return this.navigationManager?.NavigateURL(tabID, controlKey);
         }
 
         internal string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
-            return navigationManager?.NavigateURL(tabID, controlKey, additionalParameters);
+            return this.navigationManager?.NavigateURL(tabID, controlKey, additionalParameters);
         }
 
         internal string NavigateURL(int tabID, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return navigationManager?.NavigateURL(tabID, settings, controlKey, additionalParameters);
+            return this.navigationManager?.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
 
         internal  string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
-            return navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
+            return this.navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
 
         internal string  NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
-            return navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
+            return this.navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
 
         internal string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
-            return navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
+            return this.navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);
         }
     }
 }

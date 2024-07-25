@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Tag)]
         public HttpResponseMessage Matches(int ForumId, string MatchString)
         {
-            return Match($"%{CleanAndChopString(MatchString, 20)}%");
+            return this.Match($"%{CleanAndChopString(MatchString, 20)}%");
         }
 
 #pragma warning disable CS1570
@@ -70,25 +70,25 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Tag)]
         public HttpResponseMessage BeginsWith(int ForumId, string MatchString)
         {
-            return Match($"{CleanAndChopString(MatchString, 20)}%");
+            return this.Match($"{CleanAndChopString(MatchString, 20)}%");
         }
 
         private HttpResponseMessage Match(string matchString)
         {
             if (!string.IsNullOrEmpty(matchString))
             {
-                var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", ActiveModule.PortalID, ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
+                var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", this.ActiveModule.PortalID, this.ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
                 if (matchingTags.Count > 0)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, matchingTags);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, matchingTags);
                 }
                 else
                 {
-                    return Request.CreateResponse(HttpStatusCode.NoContent);
+                    return this.Request.CreateResponse(HttpStatusCode.NoContent);
                 }
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         private static string CleanAndChopString(string MatchString, int maxLength)

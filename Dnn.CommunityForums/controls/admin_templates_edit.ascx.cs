@@ -32,20 +32,20 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbAction.CallbackEvent += cbAction_Callback;
+            this.cbAction.CallbackEvent += this.cbAction_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            Utilities.BindEnum(drpTemplateType, typeof(Templates.TemplateTypes), string.Empty, false, true, 0);
-            drpTemplateType.Attributes.Add("onchange", "toggleTextTab()");
-            if (! (Params == string.Empty) && ! (Params == "undefined"))
+            Utilities.BindEnum(this.drpTemplateType, typeof(Templates.TemplateTypes), string.Empty, false, true, 0);
+            this.drpTemplateType.Attributes.Add("onchange", "toggleTextTab()");
+            if (! (this.Params == string.Empty) && ! (this.Params == "undefined"))
             {
                 try
                 {
-                    LoadForm(Convert.ToInt32(Params));
+                    this.LoadForm(Convert.ToInt32(this.Params));
                 }
                 catch (Exception ex)
                 {
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                btnDelete.Visible = false;
+                this.btnDelete.Visible = false;
             }
         }
 
@@ -66,19 +66,19 @@ namespace DotNetNuke.Modules.ActiveForums
             ti = tc.Template_Get(TemplateId);
             if (ti != null)
             {
-                txtTitle.Text = ti.Title;
-                txtSubject.Text = ti.Subject;
+                this.txtTitle.Text = ti.Title;
+                this.txtSubject.Text = ti.Subject;
 
                 SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
-                txtFileName.Text = Utilities.MapPath(moduleSettings.TemplatePath + ti.FileName);
-                txtEditor.Text = Server.HtmlDecode(ti.Template.Replace("[RESX:", "[TRESX:"));
-                drpTemplateType.SelectedIndex = drpTemplateType.Items.IndexOf(drpTemplateType.Items.FindByValue(Convert.ToString(Convert.ToInt32(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString())))));
-                hidTemplateId.Value = Convert.ToString(ti.TemplateId);
+                this.txtFileName.Text = Utilities.MapPath(moduleSettings.TemplatePath + ti.FileName);
+                this.txtEditor.Text = this.Server.HtmlDecode(ti.Template.Replace("[RESX:", "[TRESX:"));
+                this.drpTemplateType.SelectedIndex = this.drpTemplateType.Items.IndexOf(this.drpTemplateType.Items.FindByValue(Convert.ToString(Convert.ToInt32(Enum.Parse(typeof(Templates.TemplateTypes), ti.TemplateType.ToString())))));
+                this.hidTemplateId.Value = Convert.ToString(ti.TemplateId);
                 if (ti.IsSystem)
                 {
-                    btnDelete.Visible = false;
-                    txtTitle.ReadOnly = true;
-                    drpTemplateType.Enabled = false;
+                    this.btnDelete.Visible = false;
+                    this.txtTitle.ReadOnly = true;
+                    this.drpTemplateType.Enabled = false;
                 }
             }
         }
@@ -106,8 +106,8 @@ namespace DotNetNuke.Modules.ActiveForums
                             ti = new TemplateInfo();
                             ti.IsSystem = false;
                             ti.TemplateType = (Templates.TemplateTypes)Convert.ToInt32(e.Parameters[5]);
-                            ti.PortalId = PortalId;
-                            ti.ModuleId = ModuleId;
+                            ti.PortalId = this.PortalId;
+                            ti.ModuleId = this.ModuleId;
                         }
 
                         ti.Title = e.Parameters[2].ToString();
@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         ti.Template = e.Parameters[4];
                         ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                         templateId = tc.Template_Save(ti);
-                        DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.Template, ModuleId, templateId, ti.TemplateType));
+                        DataCache.SettingsCacheClear(this.ModuleId, string.Format(CacheKeys.Template, this.ModuleId, templateId, ti.TemplateType));
                         sMsg = "Template saved successfully!";
                     }
                     catch (Exception ex)
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             ti = tc.Template_Get(templateid);
                             if (! (ti.IsSystem == true))
                             {
-                                tc.Template_Delete(templateid, PortalId, ModuleId);
+                                tc.Template_Delete(templateid, this.PortalId, this.ModuleId);
                                 sMsg = "Template deleted successfully!";
                             }
                             else
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             }
                             }
 
-                        DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TemplatePrefix, ModuleId));
+                        DataCache.CacheClearPrefix(this.ModuleId, string.Format(CacheKeys.TemplatePrefix, this.ModuleId));
                         }
                     catch (Exception ex)
                     {
@@ -161,8 +161,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            cbActionMessage.InnerText = sMsg;
-            cbActionMessage.RenderControl(e.Output);
+            this.cbActionMessage.InnerText = sMsg;
+            this.cbActionMessage.RenderControl(e.Output);
         }
     }
 }

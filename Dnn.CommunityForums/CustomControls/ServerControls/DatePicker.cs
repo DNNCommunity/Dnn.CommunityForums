@@ -71,16 +71,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (_selectedDate != "")
+                if (this._selectedDate != "")
                 {
                     try
                     {
-                        if (Convert.ToDateTime(_selectedDate) <= Convert.ToDateTime(NullDate))
+                        if (Convert.ToDateTime(this._selectedDate) <= Convert.ToDateTime(this.NullDate))
                         {
                             return "";
                         }
 
-                        return _selectedDate;
+                        return this._selectedDate;
                     }
                     catch (Exception ex)
                     {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             set
             {
-                _selectedDate = value;
+                this._selectedDate = value;
             }
         }
 
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _nullDate;
+                return this._nullDate;
             }
 
             set
             {
-                _nullDate = value;
+                this._nullDate = value;
             }
         }
 
@@ -120,12 +120,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _calwidth;
+                return this._calwidth;
             }
 
             set
             {
-                _calwidth = value;
+                this._calwidth = value;
             }
         }
 
@@ -134,12 +134,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _calheight;
+                return this._calheight;
             }
 
             set
             {
-                _calheight = value;
+                this._calheight = value;
             }
         }
 
@@ -151,12 +151,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _dayheaderstyle;
+                return this._dayheaderstyle;
             }
 
             set
             {
-                _dayheaderstyle = value;
+                this._dayheaderstyle = value;
             }
         }
 
@@ -168,12 +168,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _weekendstyle;
+                return this._weekendstyle;
             }
 
             set
             {
-                _weekendstyle = value;
+                this._weekendstyle = value;
             }
         }
 
@@ -185,12 +185,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _weekdaystyle;
+                return this._weekdaystyle;
             }
 
             set
             {
-                _weekdaystyle = value;
+                this._weekdaystyle = value;
             }
         }
 
@@ -202,12 +202,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _monthstyle;
+                return this._monthstyle;
             }
 
             set
             {
-                _monthstyle = value;
+                this._monthstyle = value;
             }
         }
 
@@ -219,12 +219,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _calendarstyle;
+                return this._calendarstyle;
             }
 
             set
             {
-                _calendarstyle = value;
+                this._calendarstyle = value;
             }
         }
 
@@ -236,12 +236,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _selecteddaystyle;
+                return this._selecteddaystyle;
             }
 
             set
             {
-                _selecteddaystyle = value;
+                this._selecteddaystyle = value;
             }
         }
 
@@ -253,12 +253,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _currentdaystyle;
+                return this._currentdaystyle;
             }
 
             set
             {
-                _currentdaystyle = value;
+                this._currentdaystyle = value;
             }
         }
 
@@ -270,12 +270,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _currentmonthdaystyle;
+                return this._currentmonthdaystyle;
             }
 
             set
             {
-                _currentmonthdaystyle = value;
+                this._currentmonthdaystyle = value;
             }
         }
 
@@ -287,12 +287,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _othermonthdaystyle;
+                return this._othermonthdaystyle;
             }
 
             set
             {
-                _othermonthdaystyle = value;
+                this._othermonthdaystyle = value;
             }
         }
 
@@ -304,17 +304,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (_dateFormat == "")
+                if (this._dateFormat == "")
                 {
                     return "MM/dd/yyyy";
                 }
 
-                return _dateFormat;
+                return this._dateFormat;
             }
 
             set
             {
-                _dateFormat = value;
+                this._dateFormat = value;
             }
         }
 
@@ -326,17 +326,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (_dateFormat == "")
+                if (this._dateFormat == "")
                 {
                     return "h:nn tt";
                 }
 
-                return _timeFormat;
+                return this._timeFormat;
             }
 
             set
             {
-                _timeFormat = value;
+                this._timeFormat = value;
             }
         }
 
@@ -348,12 +348,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _imageUrl;
+                return this._imageUrl;
             }
 
             set
             {
-                _imageUrl = value;
+                this._imageUrl = value;
             }
         }
 
@@ -383,12 +383,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _defaultTime;
+                return this._defaultTime;
             }
 
             set
             {
-                _defaultTime = value;
+                this._defaultTime = value;
             }
         }
 
@@ -397,27 +397,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (_selectedTime == "")
+                if (this._selectedTime == "")
                 {
-                    if (SelectedDate == "")
+                    if (this.SelectedDate == "")
                     {
-                        return _defaultTime;
+                        return this._defaultTime;
                     }
 
-                    if (Convert.ToDateTime(SelectedDate).Year == 1900)
+                    if (Convert.ToDateTime(this.SelectedDate).Year == 1900)
                     {
                         return string.Empty;
                     }
 
-                    return Convert.ToDateTime(SelectedDate).ToString(TimeFormat);
+                    return Convert.ToDateTime(this.SelectedDate).ToString(this.TimeFormat);
                 }
 
-                return _selectedTime;
+                return this._selectedTime;
             }
 
             set
             {
-                _selectedTime = value;
+                this._selectedTime = value;
             }
         }
 
@@ -429,12 +429,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _showDateBox;
+                return this._showDateBox;
             }
 
             set
             {
-                _showDateBox = value;
+                this._showDateBox = value;
             }
         }
 
@@ -446,12 +446,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _callbackFlag;
+                return this._callbackFlag;
             }
 
             set
             {
-                _callbackFlag = value;
+                this._callbackFlag = value;
             }
         }
 
@@ -471,15 +471,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DateTime tmpDate;
                 try
                 {
-                    tmpDate = this.SelectedDate == "" ? DateTime.UtcNow : Convert.ToDateTime(SelectedDate);
+                    tmpDate = this.SelectedDate == "" ? DateTime.UtcNow : Convert.ToDateTime(this.SelectedDate);
                 }
                 catch (Exception ex)
                 {
                     tmpDate = DateTime.UtcNow;
                 }
 
-                string temp = CssClass;
-                CssClass = "";
+                string temp = this.CssClass;
+                this.CssClass = "";
                 if (temp == "")
                 {
                     temp = "ampicker";
@@ -487,67 +487,67 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 writer.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0");
                 writer.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0");
-                writer.AddAttribute(HtmlTextWriterAttribute.Width, Width.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Width, this.Width.ToString());
                 writer.RenderBeginTag(HtmlTextWriterTag.Table);
                 writer.RenderBeginTag(HtmlTextWriterTag.Tr);
-                if (Text != "")
+                if (this.Text != "")
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Style, "white-space:nowrap");
                     writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                    writer.Write(Text);
+                    writer.Write(this.Text);
                     writer.RenderEndTag();
                 }
 
-                writer.AddAttribute(HtmlTextWriterAttribute.Width, Width.ToString());
+                writer.AddAttribute(HtmlTextWriterAttribute.Width, this.Width.ToString());
                 writer.RenderBeginTag(HtmlTextWriterTag.Td);
                 writer.AddAttribute("class", temp);
-                writer.AddAttribute("id", ClientID);
-                writer.AddAttribute("name", ClientID);
-                writer.AddAttribute("onblur", "return window." + ClientID + ".onblur(this);");
-                writer.AddAttribute("onkeypress", "return window." + ClientID + ".onlyDateChars(event);");
+                writer.AddAttribute("id", this.ClientID);
+                writer.AddAttribute("name", this.ClientID);
+                writer.AddAttribute("onblur", "return window." + this.ClientID + ".onblur(this);");
+                writer.AddAttribute("onkeypress", "return window." + this.ClientID + ".onlyDateChars(event);");
                 //writer.AddAttribute("onkeydown", "return window." & Me.ClientID & ".KeyPress(event);")
                 //writer.AddAttribute("onclick", "return window." & Me.ClientID & ".Click(event);showalert();")
-                if (Enabled == false)
+                if (this.Enabled == false)
                 {
                     writer.AddAttribute("disabled", "disabled");
                 }
 
-                if (ShowDateBox)
+                if (this.ShowDateBox)
                 {
                     writer.RenderBeginTag(HtmlTextWriterTag.Input);
                     writer.RenderEndTag();
 
                 }
 
-                dtFI = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
-                if (!string.IsNullOrEmpty(SelectedDate))
+                this.dtFI = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
+                if (!string.IsNullOrEmpty(this.SelectedDate))
                 {
-                    DateTime dte = DateTime.Parse(SelectedDate);
-                    SelectedDate = dte.ToString(dtFI.ShortDatePattern + " " + dtFI.ShortTimePattern);
+                    DateTime dte = DateTime.Parse(this.SelectedDate);
+                    this.SelectedDate = dte.ToString(this.dtFI.ShortDatePattern + " " + this.dtFI.ShortTimePattern);
                 }
 
                 writer.AddAttribute("type", "hidden");
-                writer.AddAttribute("id", "hid_" + ClientID);
-                writer.AddAttribute("name", "hid_" + ClientID);
-                writer.AddAttribute("value", SelectedDate);
+                writer.AddAttribute("id", "hid_" + this.ClientID);
+                writer.AddAttribute("name", "hid_" + this.ClientID);
+                writer.AddAttribute("value", this.SelectedDate);
                 writer.RenderBeginTag(HtmlTextWriterTag.Input);
                 writer.RenderEndTag();
-                writer.AddAttribute("id", "cal_" + ClientID);
+                writer.AddAttribute("id", "cal_" + this.ClientID);
                 writer.AddAttribute("style", "display:none;position:absolute;");
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
                 writer.RenderEndTag();
                 writer.RenderEndTag();
                 writer.RenderBeginTag(HtmlTextWriterTag.Td);
-                if (ImageUrl == string.Empty)
+                if (this.ImageUrl == string.Empty)
                 {
-                    ImageUrl = Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.calendar.gif");
+                    this.ImageUrl = this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.calendar.gif");
                 }
 
-                if (Enabled)
+                if (this.Enabled)
                 {
-                    writer.AddAttribute("src", ImageUrl);
-                    writer.AddAttribute("onclick", "window." + ClientID + ".Toggle(event);");
-                    writer.AddAttribute("id", "img_" + ClientID);
+                    writer.AddAttribute("src", this.ImageUrl);
+                    writer.AddAttribute("onclick", "window." + this.ClientID + ".Toggle(event);");
+                    writer.AddAttribute("id", "img_" + this.ClientID);
                     writer.RenderBeginTag(HtmlTextWriterTag.Img);
                     writer.RenderEndTag();
                 }
@@ -558,113 +558,113 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var str = new StringBuilder();
                 str.Append("<script type=\"text/javascript\">");
 
-                cal = new System.Globalization.GregorianCalendar();
+                this.cal = new System.Globalization.GregorianCalendar();
                 if (Thread.CurrentThread.CurrentCulture != null)
                 {
-                    cal = Thread.CurrentThread.CurrentCulture.Calendar;
+                    this.cal = Thread.CurrentThread.CurrentCulture.Calendar;
                 }
 
-                DateFormat = dtFI.ShortDatePattern;
-                TimeFormat = dtFI.ShortTimePattern;
-                str.Append("window." + ClientID + "=new asDatePicker('" + ClientID + "');");
-                str.Append("window." + ClientID + ".Locale='" + Context.Request.UserLanguages[0].Substring(0, 2).ToUpper() + "';");
-                str.Append("window." + ClientID + ".SelectedDate='" + SelectedDate + "';");
-                str.Append("window." + ClientID + ".Width='" + CalendarWidth + "';");
-                str.Append("window." + ClientID + ".Height='" + CalendarHeight + "';");
-                str.Append("window." + ClientID + ".DateFormat='" + dtFI.ShortDatePattern + "';");
-                str.Append("window." + ClientID + ".TimeFormat='" + dtFI.ShortTimePattern + "';");
-                str.Append("window." + ClientID + ".Year=" + tmpDate.Year + ";");
-                str.Append("window." + ClientID + ".Month=" + (tmpDate.Month - 1) + ";");
-                str.Append("window." + ClientID + ".Day=" + tmpDate.Day + ";");
-                str.Append("window." + ClientID + ".SelectedYear=" + tmpDate.Year + ";");
-                str.Append("window." + ClientID + ".SelectedMonth=" + (tmpDate.Month - 1) + ";");
-                str.Append("window." + ClientID + ".SelectedDay=" + tmpDate.Day + ";");
-                str.Append("window." + ClientID + ".ShowTime=" + ShowTime.ToString().ToLower() + ";");
-                str.Append("window." + ClientID + ".DefaultTime='" + DefaultTime + "';");
-                str.Append("window." + ClientID + ".CallbackFlag='" + CallbackFlag + "';");
-                if (!string.IsNullOrEmpty(RelatedControl))
+                this.DateFormat = this.dtFI.ShortDatePattern;
+                this.TimeFormat = this.dtFI.ShortTimePattern;
+                str.Append("window." + this.ClientID + "=new asDatePicker('" + this.ClientID + "');");
+                str.Append("window." + this.ClientID + ".Locale='" + this.Context.Request.UserLanguages[0].Substring(0, 2).ToUpper() + "';");
+                str.Append("window." + this.ClientID + ".SelectedDate='" + this.SelectedDate + "';");
+                str.Append("window." + this.ClientID + ".Width='" + this.CalendarWidth + "';");
+                str.Append("window." + this.ClientID + ".Height='" + this.CalendarHeight + "';");
+                str.Append("window." + this.ClientID + ".DateFormat='" + this.dtFI.ShortDatePattern + "';");
+                str.Append("window." + this.ClientID + ".TimeFormat='" + this.dtFI.ShortTimePattern + "';");
+                str.Append("window." + this.ClientID + ".Year=" + tmpDate.Year + ";");
+                str.Append("window." + this.ClientID + ".Month=" + (tmpDate.Month - 1) + ";");
+                str.Append("window." + this.ClientID + ".Day=" + tmpDate.Day + ";");
+                str.Append("window." + this.ClientID + ".SelectedYear=" + tmpDate.Year + ";");
+                str.Append("window." + this.ClientID + ".SelectedMonth=" + (tmpDate.Month - 1) + ";");
+                str.Append("window." + this.ClientID + ".SelectedDay=" + tmpDate.Day + ";");
+                str.Append("window." + this.ClientID + ".ShowTime=" + this.ShowTime.ToString().ToLower() + ";");
+                str.Append("window." + this.ClientID + ".DefaultTime='" + this.DefaultTime + "';");
+                str.Append("window." + this.ClientID + ".CallbackFlag='" + this.CallbackFlag + "';");
+                if (!string.IsNullOrEmpty(this.RelatedControl))
                 {
-                    Control ctl = Parent.FindControl(RelatedControl);
+                    Control ctl = this.Parent.FindControl(this.RelatedControl);
                     if (ctl == null)
                     {
-                        ctl = Page.FindControl(RelatedControl);
+                        ctl = this.Page.FindControl(this.RelatedControl);
                     }
 
                     if (ctl == null)
                     {
-                        RelatedControl = string.Empty;
+                        this.RelatedControl = string.Empty;
                     }
                     else
                     {
-                        RelatedControl = ctl.ClientID;
+                        this.RelatedControl = ctl.ClientID;
                     }
                 }
 
-                str.Append("window." + ClientID + ".linkedControl='" + RelatedControl + "';");
-                if (IsEndDate)
+                str.Append("window." + this.ClientID + ".linkedControl='" + this.RelatedControl + "';");
+                if (this.IsEndDate)
                 {
-                    str.Append("window." + ClientID + ".isEndDate=true;");
+                    str.Append("window." + this.ClientID + ".isEndDate=true;");
                 }
                 else
                 {
-                    str.Append("window." + ClientID + ".isEndDate=false;");
+                    str.Append("window." + this.ClientID + ".isEndDate=false;");
                 }
 
                 string sTime = string.Empty;
-                SelectedTime = tmpDate.ToString(TimeFormat);
-                if (ShowTime)
+                this.SelectedTime = tmpDate.ToString(this.TimeFormat);
+                if (this.ShowTime)
                 {
-                    if (SelectedTime != "12:00 AM")
+                    if (this.SelectedTime != "12:00 AM")
                     {
-                        sTime = SelectedTime;
+                        sTime = this.SelectedTime;
                     }
 
-                    if (TimeRequired)
+                    if (this.TimeRequired)
                     {
-                        str.Append("window." + ClientID + ".RequireTime=true;");
+                        str.Append("window." + this.ClientID + ".RequireTime=true;");
                     }
                     else
                     {
-                        str.Append("window." + ClientID + ".RequireTime=false;");
+                        str.Append("window." + this.ClientID + ".RequireTime=false;");
                     }
                 }
                 else
                 {
-                    str.Append("window." + ClientID + ".RequireTime=false;");
+                    str.Append("window." + this.ClientID + ".RequireTime=false;");
                 }
 
-                str.Append("window." + ClientID + ".SelectedTime='" + sTime + "';");
-                if (string.IsNullOrEmpty(ImgNext))
+                str.Append("window." + this.ClientID + ".SelectedTime='" + sTime + "';");
+                if (string.IsNullOrEmpty(this.ImgNext))
                 {
-                    str.Append("window." + ClientID + ".ImgNext='" + Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_nextMonth.gif") + "';");
+                    str.Append("window." + this.ClientID + ".ImgNext='" + this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_nextMonth.gif") + "';");
                 }
                 else
                 {
-                    str.Append("window." + ClientID + ".ImgNext='" + Page.ResolveUrl(ImgNext) + "';");
+                    str.Append("window." + this.ClientID + ".ImgNext='" + this.Page.ResolveUrl(this.ImgNext) + "';");
                 }
 
-                if (string.IsNullOrEmpty(ImgPrev) )
+                if (string.IsNullOrEmpty(this.ImgPrev) )
                 {
-                    str.Append("window." + ClientID + ".ImgPrev='" + Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_prevMonth.gif") + "';");
+                    str.Append("window." + this.ClientID + ".ImgPrev='" + this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_prevMonth.gif") + "';");
                 }
                 else
                 {
-                    str.Append("window." + ClientID + ".ImgPrev='" + Page.ResolveUrl(ImgPrev) + "';");
+                    str.Append("window." + this.ClientID + ".ImgPrev='" + this.Page.ResolveUrl(this.ImgPrev) + "';");
                 }
 
-                if (SelectedDate != "")
+                if (this.SelectedDate != "")
                 {
                     try
                     {
-                        if (ShowTime == false && sTime == string.Empty)
+                        if (this.ShowTime == false && sTime == string.Empty)
                         {
-                            str.Append("window." + ClientID + ".textbox.value=new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + ").formatDP('" + DateFormat + "','" + ClientID + "');");
-                            str.Append("window." + ClientID + ".dateSel = new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + ",0,0,0,0);");
+                            str.Append("window." + this.ClientID + ".textbox.value=new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + ").formatDP('" + this.DateFormat + "','" + this.ClientID + "');");
+                            str.Append("window." + this.ClientID + ".dateSel = new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + ",0,0,0,0);");
                         }
                         else
                         {
-                            str.Append("window." + ClientID + ".textbox.value=new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + "," + tmpDate.Hour + "," + tmpDate.Minute + ",0).formatDP('" + DateFormat + " " + TimeFormat + "','" + ClientID + "');");
-                            str.Append("window." + ClientID + ".dateSel = new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + "," + tmpDate.Hour + "," + tmpDate.Minute + ",0);");
+                            str.Append("window." + this.ClientID + ".textbox.value=new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + "," + tmpDate.Hour + "," + tmpDate.Minute + ",0).formatDP('" + this.DateFormat + " " + this.TimeFormat + "','" + this.ClientID + "');");
+                            str.Append("window." + this.ClientID + ".dateSel = new Date(" + tmpDate.Year + "," + (tmpDate.Month - 1) + "," + tmpDate.Day + "," + tmpDate.Hour + "," + tmpDate.Minute + ",0);");
                         }
                     }
                     catch (Exception ex)
@@ -674,15 +674,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 }
 
-                int xMonths = cal.GetMonthsInYear(cal.GetYear(tmpDate), cal.GetEra(tmpDate));
-                int currMonth = cal.GetMonth(tmpDate);
-                int currYear = cal.GetYear(tmpDate);
-                int currDay = cal.GetDayOfMonth(tmpDate);
+                int xMonths = this.cal.GetMonthsInYear(this.cal.GetYear(tmpDate), this.cal.GetEra(tmpDate));
+                int currMonth = this.cal.GetMonth(tmpDate);
+                int currYear = this.cal.GetYear(tmpDate);
+                int currDay = this.cal.GetDayOfMonth(tmpDate);
 
-                str.Append("window." + ClientID + ".MonthDays = new Array(");
+                str.Append("window." + this.ClientID + ".MonthDays = new Array(");
                 for (int i = 0; i < xMonths; i++)
                 {
-                    str.Append(cal.GetDaysInMonth(currYear, i + 1));
+                    str.Append(this.cal.GetDaysInMonth(currYear, i + 1));
                     if (i < (xMonths - 1))
                     {
                         str.Append(",");
@@ -692,8 +692,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append(");");
                 str.AppendLine();
 
-                string[] mNames = dtFI.MonthNames;
-                str.Append("window." + ClientID + ".MonthNames = new Array(");
+                string[] mNames = this.dtFI.MonthNames;
+                str.Append("window." + this.ClientID + ".MonthNames = new Array(");
                 for (int i = 0; i < xMonths; i++)
                 {
 
@@ -706,8 +706,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 str.Append(");");
                 str.AppendLine();
-                str.Append("window." + ClientID + ".ShortMonthNames = new Array(");
-                string[] mAbbr = dtFI.AbbreviatedMonthNames;
+                str.Append("window." + this.ClientID + ".ShortMonthNames = new Array(");
+                string[] mAbbr = this.dtFI.AbbreviatedMonthNames;
                 for (int i = 0; i < xMonths; i++)
                 {
                     str.Append("'" + mAbbr[i] + "'");
@@ -719,8 +719,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 str.Append(");");
                 str.AppendLine();
-                str.Append("window." + ClientID + ".ShortDayNames = new Array(");
-                string[] dAbbr = dtFI.AbbreviatedDayNames;
+                str.Append("window." + this.ClientID + ".ShortDayNames = new Array(");
+                string[] dAbbr = this.dtFI.AbbreviatedDayNames;
                 for (int i = 0; i <= 6; i++)
                 {
                     str.Append("'" + dAbbr[i] + "'");
@@ -733,18 +733,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append(");");
                 str.AppendLine();
 
-                str.Append("window." + ClientID + ".Class={");
-                str.Append("CssCalendarStyle:'" + CssCalendarStyle + "',");
-                str.Append("CssMonthStyle:'" + CssMonthStyle + "',");
-                str.Append("CssWeekendStyle:'" + CssWeekendStyle + "',");
-                str.Append("CssWeekdayStyle:'" + CssWeekdayStyle + "',");
-                str.Append("CssSelectedDayStyle:'" + CssSelectedDayStyle + "',");
-                str.Append("CssCurrentMonthDayStyle:'" + CssCurrentMonthDayStyle + "',");
-                str.Append("CssOtherMonthDayStyle:'" + CssOtherMonthDayStyle + "',");
-                str.Append("CssDayHeaderStyle:'" + CssDayHeaderStyle + "',");
-                str.Append("CssCurrentDayStyle:'" + CssCurrentDayStyle + "'};");
-                str.Append("window." + ClientID + ".selectedDate=window." + ClientID + ".textbox.value;");
-                str.Append("window." + ClientID + ".timeLabel='[RESX:Time]';");
+                str.Append("window." + this.ClientID + ".Class={");
+                str.Append("CssCalendarStyle:'" + this.CssCalendarStyle + "',");
+                str.Append("CssMonthStyle:'" + this.CssMonthStyle + "',");
+                str.Append("CssWeekendStyle:'" + this.CssWeekendStyle + "',");
+                str.Append("CssWeekdayStyle:'" + this.CssWeekdayStyle + "',");
+                str.Append("CssSelectedDayStyle:'" + this.CssSelectedDayStyle + "',");
+                str.Append("CssCurrentMonthDayStyle:'" + this.CssCurrentMonthDayStyle + "',");
+                str.Append("CssOtherMonthDayStyle:'" + this.CssOtherMonthDayStyle + "',");
+                str.Append("CssDayHeaderStyle:'" + this.CssDayHeaderStyle + "',");
+                str.Append("CssCurrentDayStyle:'" + this.CssCurrentDayStyle + "'};");
+                str.Append("window." + this.ClientID + ".selectedDate=window." + this.ClientID + ".textbox.value;");
+                str.Append("window." + this.ClientID + ".timeLabel='[RESX:Time]';");
 
                 str.Append("</script>");
                 writer.Write(str);
@@ -765,10 +765,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
             {
 #if DEBUG
-                Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", this.Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));
 
 #else
                 Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.datepicker.js"));
@@ -778,9 +778,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                if (Page.IsPostBack)
+                if (this.Page.IsPostBack)
                 {
-                    SelectedDate = Context.Request.Form[ClientID];
+                    this.SelectedDate = this.Context.Request.Form[this.ClientID];
                 }
             }
             catch (Exception ex)

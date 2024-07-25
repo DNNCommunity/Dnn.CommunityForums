@@ -43,12 +43,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _toggleBehavior;
+                return this._toggleBehavior;
             }
 
             set
             {
-                _toggleBehavior = value;
+                this._toggleBehavior = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _key;
+                return this._key;
             }
 
             set
             {
-                _key = value;
+                this._key = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _imagePath;
+                return this._imagePath;
             }
 
             set
             {
-                _imagePath = value;
+                this._imagePath = value;
             }
         }
 
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _cssClassOn;
+                return this._cssClassOn;
             }
 
             set
             {
-                _cssClassOn = value;
+                this._cssClassOn = value;
             }
         }
 
@@ -95,12 +95,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _cssClassOff;
+                return this._cssClassOff;
             }
 
             set
             {
-                _cssClassOff = value;
+                this._cssClassOff = value;
             }
         }
 
@@ -108,24 +108,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _isVisible;
+                return this._isVisible;
             }
 
             set
             {
-                _isVisible = value;
+                this._isVisible = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (IsVisible)
+            if (this.IsVisible)
             {
-                writer.Write("<div id=\"imgGroup" + Key + "\" class=\"" + CssClassOn + "\" onclick=\"toggleGroup('" + Key + "','" + CssClassOn + "','" + CssClassOff + "');\"></div>");
+                writer.Write("<div id=\"imgGroup" + this.Key + "\" class=\"" + this.CssClassOn + "\" onclick=\"toggleGroup('" + this.Key + "','" + this.CssClassOn + "','" + this.CssClassOff + "');\"></div>");
             }
             else
             {
-                writer.Write("<div id=\"imgGroup" + Key + "\" class=\"" + CssClassOff + "\" onclick=\"toggleGroup('" + Key + "','" + CssClassOn + "','" + CssClassOff + "');\"></div>");
+                writer.Write("<div id=\"imgGroup" + this.Key + "\" class=\"" + this.CssClassOff + "\" onclick=\"toggleGroup('" + this.Key + "','" + this.CssClassOn + "','" + this.CssClassOff + "');\"></div>");
             }
         }
 
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            EnableViewState = false;
+            this.EnableViewState = false;
         }
     }
 
@@ -148,12 +148,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _isVisible;
+                return this._isVisible;
             }
 
             set
             {
-                _isVisible = value;
+                this._isVisible = value;
             }
         }
 
@@ -161,12 +161,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _key;
+                return this._key;
             }
 
             set
             {
-                _key = value;
+                this._key = value;
             }
         }
 
@@ -174,17 +174,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
 
         protected override void CreateChildControls()
         {
-            if (Content != null)
+            if (this.Content != null)
             {
-                Controls.Clear();
-                this.Controls.Add(Content);
+                this.Controls.Clear();
+                this.Controls.Add(this.Content);
             }
         }
 
@@ -193,20 +193,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
-                return _content;
+                this.EnsureChildControls();
+                return this._content;
             }
 
             set
             {
-                _content = value;
+                this._content = value;
             }
         }
 
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.Write("<div id=\"group" + Key + "\" class=\"" + CssClass + "\" style=\"display:");
-            if (IsVisible)
+            writer.Write("<div id=\"group" + this.Key + "\" class=\"" + this.CssClass + "\" style=\"display:");
+            if (this.IsVisible)
             {
                 writer.Write("block");
             }
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.Write(";\">");
             try
             {
-                Content.RenderControl(writer);
+                this.Content.RenderControl(writer);
             }
             catch (Exception ex)
             {
@@ -234,14 +234,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (Context == null || Page == null)
+            if (this.Context == null || this.Page == null)
             {
                 return;
             }
 
-            if (Content != null)
+            if (this.Content != null)
             {
-                this.Controls.Add(Content);
+                this.Controls.Add(this.Content);
             }
 
             //EnableViewState = False

@@ -32,12 +32,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -77,12 +77,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumIds;
+                return this._ForumIds;
             }
 
             set
             {
-                _ForumIds = value;
+                this._ForumIds = value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumGroupId;
+                return this._ForumGroupId;
             }
 
             set
             {
-                _ForumGroupId = value;
+                this._ForumGroupId = value;
             }
         }
 
@@ -107,12 +107,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ParentForumId;
+                return this._ParentForumId;
             }
 
             set
             {
-                _ParentForumId = value;
+                this._ParentForumId = value;
             }
         }
 
@@ -122,12 +122,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TopicId;
+                return this._TopicId;
             }
 
             set
             {
-                _TopicId = value;
+                this._TopicId = value;
             }
         }
 
@@ -137,12 +137,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Topic;
+                return this._Topic;
             }
 
             set
             {
-                _Topic = value;
+                this._Topic = value;
             }
         }
 
@@ -152,12 +152,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Template;
+                return this._Template;
             }
 
             set
             {
-                _Template = value;
+                this._Template = value;
             }
         }
 
@@ -167,12 +167,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _HeaderTemplate;
+                return this._HeaderTemplate;
             }
 
             set
             {
-                _HeaderTemplate = value;
+                this._HeaderTemplate = value;
             }
         }
 
@@ -182,12 +182,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _FooterTemplate;
+                return this._FooterTemplate;
             }
 
             set
             {
-                _FooterTemplate = value;
+                this._FooterTemplate = value;
             }
         }
 
@@ -199,12 +199,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PageIndex;
+                return this._PageIndex;
             }
 
             set
             {
-                _PageIndex = value;
+                this._PageIndex = value;
             }
         }
 
@@ -214,12 +214,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PageSize;
+                return this._PageSize;
             }
 
             set
             {
-                _PageSize = value;
+                this._PageSize = value;
             }
         }
 
@@ -229,12 +229,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemCss;
+                return this._ItemCss;
             }
 
             set
             {
-                _ItemCss = value;
+                this._ItemCss = value;
             }
         }
 
@@ -244,12 +244,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _AltItemCSS;
+                return this._AltItemCSS;
             }
 
             set
             {
-                _AltItemCSS = value;
+                this._AltItemCSS = value;
             }
         }
 
@@ -260,40 +260,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             Data.Topics db = new Data.Topics();
 
-            using (IDataReader dr = db.TopicWithReplies(PortalId, TopicId, PageIndex, PageSize))
+            using (IDataReader dr = db.TopicWithReplies(this.PortalId, this.TopicId, this.PageIndex, this.PageSize))
             {
                 while (dr.Read())
                 {
-                    Template = ParseTopic(dr, Template);
+                    this.Template = this.ParseTopic(dr, this.Template);
                 }
 
                 dr.NextResult();
-                string rtemplate = TemplateUtils.GetTemplateSection(Template, "[REPLIES]", "[/REPLIES]");
+                string rtemplate = TemplateUtils.GetTemplateSection(this.Template, "[REPLIES]", "[/REPLIES]");
                 while (dr.Read())
                 {
-                    sb.Append(ParseReply(dr, rtemplate));
+                    sb.Append(this.ParseReply(dr, rtemplate));
                 }
 
                 dr.Close();
             }
 
-            Template = TemplateUtils.ReplaceSubSection(Template, sb.ToString(), "[REPLIES]", "[/REPLIES]");
-            return Template;
+            this.Template = TemplateUtils.ReplaceSubSection(this.Template, sb.ToString(), "[REPLIES]", "[/REPLIES]");
+            return this.Template;
         }
 
         private string ParseTopic(IDataRecord row, string tmp)
         {
-            tmp = ParseDataRow(row, tmp);
+            tmp = this.ParseDataRow(row, tmp);
             ControlUtils cUtils = new ControlUtils();
-            tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, TabId, ModuleId));
-            tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, TabId, ModuleId));
+            tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, this.TabId, this.ModuleId));
+            tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, this.TabId, this.ModuleId));
             tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
             return tmp;
         }
 
         private string ParseReply(IDataRecord row, string tmp)
         {
-            return ParseDataRow(row, tmp);
+            return this.ParseDataRow(row, tmp);
         }
 
         private string ParseDataRow(IDataRecord row, string tmp)
@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     switch (row[i].GetType().ToString())
                     {
                         case "System.DateTime":
-                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId, UserId);
+                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), this.PortalId, this.UserId);
                             break;
                     }
 

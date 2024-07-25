@@ -32,12 +32,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PortalId;
+                return this._PortalId;
             }
 
             set
             {
-                _PortalId = value;
+                this._PortalId = value;
             }
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ModuleId;
+                return this._ModuleId;
             }
 
             set
             {
-                _ModuleId = value;
+                this._ModuleId = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TabId;
+                return this._TabId;
             }
 
             set
             {
-                _TabId = value;
+                this._TabId = value;
             }
         }
 
@@ -77,12 +77,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumIds;
+                return this._ForumIds;
             }
 
             set
             {
-                _ForumIds = value;
+                this._ForumIds = value;
             }
         }
 
@@ -92,12 +92,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumId;
+                return this._ForumId;
             }
 
             set
             {
-                _ForumId = value;
+                this._ForumId = value;
             }
         }
 
@@ -107,12 +107,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ForumGroupId;
+                return this._ForumGroupId;
             }
 
             set
             {
-                _ForumGroupId = value;
+                this._ForumGroupId = value;
             }
         }
 
@@ -122,12 +122,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ParentForumId;
+                return this._ParentForumId;
             }
 
             set
             {
-                _ParentForumId = value;
+                this._ParentForumId = value;
             }
         }
 
@@ -137,12 +137,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TopicId;
+                return this._TopicId;
             }
 
             set
             {
-                _TopicId = value;
+                this._TopicId = value;
             }
         }
 
@@ -152,12 +152,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Topic;
+                return this._Topic;
             }
 
             set
             {
-                _Topic = value;
+                this._Topic = value;
             }
         }
 
@@ -167,12 +167,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Template;
+                return this._Template;
             }
 
             set
             {
-                _Template = value;
+                this._Template = value;
             }
         }
 
@@ -182,12 +182,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _HeaderTemplate;
+                return this._HeaderTemplate;
             }
 
             set
             {
-                _HeaderTemplate = value;
+                this._HeaderTemplate = value;
             }
         }
 
@@ -197,12 +197,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _FooterTemplate;
+                return this._FooterTemplate;
             }
 
             set
             {
-                _FooterTemplate = value;
+                this._FooterTemplate = value;
             }
         }
 
@@ -214,12 +214,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _CategoryId;
+                return this._CategoryId;
             }
 
             set
             {
-                _CategoryId = value;
+                this._CategoryId = value;
             }
         }
 
@@ -229,12 +229,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _TagId;
+                return this._TagId;
             }
 
             set
             {
-                _TagId = value;
+                this._TagId = value;
             }
         }
 
@@ -244,12 +244,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PageIndex;
+                return this._PageIndex;
             }
 
             set
             {
-                _PageIndex = value;
+                this._PageIndex = value;
             }
         }
 
@@ -259,12 +259,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _PageSize;
+                return this._PageSize;
             }
 
             set
             {
-                _PageSize = value;
+                this._PageSize = value;
             }
         }
 
@@ -274,12 +274,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ItemCss;
+                return this._ItemCss;
             }
 
             set
             {
-                _ItemCss = value;
+                this._ItemCss = value;
             }
         }
 
@@ -289,12 +289,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _AltItemCSS;
+                return this._AltItemCSS;
             }
 
             set
             {
-                _AltItemCSS = value;
+                this._AltItemCSS = value;
             }
         }
 
@@ -304,12 +304,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _UseAjax;
+                return this._UseAjax;
             }
 
             set
             {
-                _UseAjax = value;
+                this._UseAjax = value;
             }
         }
 
@@ -319,12 +319,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ImagePath;
+                return this._ImagePath;
             }
 
             set
             {
-                _ImagePath = value;
+                this._ImagePath = value;
             }
         }
 
@@ -334,12 +334,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _MaintainPage;
+                return this._MaintainPage;
             }
 
             set
             {
-                _MaintainPage = value;
+                this._MaintainPage = value;
             }
         }
 
@@ -350,30 +350,30 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public string Render()
         {
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanEdit");
             if (! string.IsNullOrEmpty(fs))
             {
-                _canEdit = true;
+                this._canEdit = true;
             }
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
-            _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-            if (_mainSettings.URLRewriteEnabled)
+            this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            if (this._mainSettings.URLRewriteEnabled)
             {
-                if (ForumId > 0)
+                if (this.ForumId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ModuleId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId);
                     if (f != null)
                     {
                         forumPrefix = f.PrefixURL;
                         groupPrefix = f.ForumGroup.PrefixURL;
                     }
                 }
-                else if (ForumGroupId > 0)
+                else if (this.ForumGroupId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo g = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(this.ForumGroupId, this.ModuleId);
                     if (g != null)
                     {
                         groupPrefix = g.PrefixURL;
@@ -385,8 +385,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Data.Topics db = new Data.Topics();
             int recordCount = 0;
             int i = 0;
-            sb.Append(HeaderTemplate);
-            using (IDataReader dr = db.TopicsList(PortalId, PageIndex, PageSize, ForumIds, CategoryId, TagId))
+            sb.Append(this.HeaderTemplate);
+            using (IDataReader dr = db.TopicsList(this.PortalId, this.PageIndex, this.PageSize, this.ForumIds, this.CategoryId, this.TagId))
             {
                 while (dr.Read())
                 {
@@ -395,14 +395,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         recordCount = int.Parse(dr["RecordCount"].ToString());
                     }
 
-                    tmp = ParseDataRow(dr, Template);
+                    tmp = this.ParseDataRow(dr, this.Template);
                     if (i % 2 == 0)
                     {
-                        tmp = tmp.Replace("[ROWCSS]", ItemCss);
+                        tmp = tmp.Replace("[ROWCSS]", this.ItemCss);
                     }
                     else
                     {
-                        tmp = tmp.Replace("[ROWCSS]", AltItemCSS);
+                        tmp = tmp.Replace("[ROWCSS]", this.AltItemCSS);
                     }
 
                     i += 1;
@@ -412,14 +412,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 dr.Close();
             }
 
-            sb.Append(FooterTemplate);
-            int pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / PageSize));
+            sb.Append(this.FooterTemplate);
+            int pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / this.PageSize));
             ControlUtils cUtils = new ControlUtils();
-            int id = TagId > 0 ? TagId : CategoryId;
+            int id = this.TagId > 0 ? this.TagId : this.CategoryId;
             string otherPrefix = id > 0
                 ? Utilities.CleanName(new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(id).TagName)
                 : string.Empty;
-            sb.Append(cUtils.BuildPager(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, TagId, CategoryId, otherPrefix, PageIndex, pageCount));
+            sb.Append(cUtils.BuildPager(this.TabId, this.ModuleId, groupPrefix, forumPrefix, this.ForumGroupId, this.ForumId, this.TagId, this.CategoryId, otherPrefix, this.PageIndex, pageCount));
             return sb.ToString();
         }
 
@@ -436,7 +436,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     switch (row[i].GetType().ToString())
                     {
                         case "System.DateTime":
-                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId,UserId);
+                            value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), this.PortalId,this.UserId);
                             break;
                     }
 
@@ -462,14 +462,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 auth.FirstName = row[columnPrefix + "AuthorFirstName"].ToString();
                 auth.Username = row[columnPrefix + "AuthorUsername"].ToString();
 
-                tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, TabId, ModuleId));
-                tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, TabId, ModuleId));
+                tmp = tmp.Replace("[TOPICURL]", cUtils.TopicURL(row, this.TabId, this.ModuleId));
+                tmp = tmp.Replace("[FORUMURL]", cUtils.ForumURL(row, this.TabId, this.ModuleId));
                 if (int.Parse(row["LastAuthorId"].ToString()) == -1)
                 {
                     try
                     {
-                        DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
-                        tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                        DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
+                        tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, this.ModuleId, true, this.ForumUser.Profile.IsMod, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, -1, auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                     }
                     catch (Exception ex)
                     {
@@ -479,13 +479,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
-                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, ModuleId, true, ForumUser.Profile.IsMod, ForumUser.IsAdmin || ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
+                    DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(this.PortalId);
+                    tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, this.ModuleId, true, this.ForumUser.Profile.IsMod, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                 }
 
-                if (_canEdit)
+                if (this._canEdit)
                 {
-                    tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + ModuleId + "," + ForumId + row["TopicId"].ToString() + ");\"></span>");
+                    tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + this.ModuleId + "," + this.ForumId + row["TopicId"].ToString() + ");\"></span>");
                 }
                 else
                 {
@@ -495,7 +495,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //
 
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
-                var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, _mainSettings.AvatarWidth, _mainSettings.AvatarHeight);
+                var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, this._mainSettings.AvatarWidth, this._mainSettings.AvatarHeight);
 
                 tmp = tmp.Replace("[AF:AVATAR]", sAvatar);
                 return tmp;

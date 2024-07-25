@@ -63,23 +63,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            ambtnSubmit.Click += new System.EventHandler(ambtnSubmit_Click);
+            this.ambtnSubmit.Click += new System.EventHandler(this.ambtnSubmit_Click);
 
-            ModuleId = ControlConfig.ModuleId;
-            PortalId = ControlConfig.PortalId;
-            if (ForumInfo == null)
+            this.ModuleId = this.ControlConfig.ModuleId;
+            this.PortalId = this.ControlConfig.PortalId;
+            if (this.ForumInfo == null)
             {
-                ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
+                this.ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ModuleId, this.ForumId, false, this.TopicId);
             }
 
             string sTemp = string.Empty;
-            if (ControlConfig != null)
+            if (this.ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId,string.Format(CacheKeys.QuickReply, ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId,string.Format(CacheKeys.QuickReply, this.ModuleId));
                 if (obj == null)
                 {
-                    sTemp = ParseTemplate();
-                    DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.QuickReply, ModuleId), sTemp);
+                    sTemp = this.ParseTemplate();
+                    DataCache.SettingsCacheStore(this.ModuleId,string.Format(CacheKeys.QuickReply, this.ModuleId), sTemp);
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 sTemp = Utilities.LocalizeControl(sTemp);
                 string SubscribedChecked = string.Empty;
-                if (ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId))
+                if (this.ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ModuleId, this.UserId, this.ForumId, this.TopicId))
                 {
                     SubscribedChecked = " checked=true";
                 }
@@ -96,10 +96,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = sTemp.Replace("[AF:CONTROL:SUBSCRIBECHECK]", "<input type=\"checkbox\" id=\"chkSubscribe\" name=\"chkSubscribe\" value=\"1\" " + SubscribedChecked + "\" />");
                 //Security
                 sTemp = sTemp.Replace("[CREATEROLES]", "1;");
-                sTemp = sTemp.Replace("[USERROLES]", ForumUser.UserRoles);
-                sTemp = sTemp.Replace("[THEMEPATH]", ThemePath);
-                sTemp = sTemp.Replace("[SUBJECT]", Subject);
-                sTemp = sTemp.Replace("[REPLYROLES]", ForumInfo.Security.Reply);
+                sTemp = sTemp.Replace("[USERROLES]", this.ForumUser.UserRoles);
+                sTemp = sTemp.Replace("[THEMEPATH]", this.ThemePath);
+                sTemp = sTemp.Replace("[SUBJECT]", this.Subject);
+                sTemp = sTemp.Replace("[REPLYROLES]", this.ForumInfo.Security.Reply);
                 if (!HttpContext.Current.Request.IsAuthenticated)
                 {
                     sTemp = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + sTemp;
@@ -110,8 +110,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
                 }
 
-                Control ctl = Page.ParseControl(sTemp);
-                LinkControls(ctl.Controls);
+                Control ctl = this.Page.ParseControl(sTemp);
+                this.LinkControls(ctl.Controls);
                 this.Controls.Add(ctl);
             }
         }
@@ -128,44 +128,44 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     bolShow = Convert.ToBoolean(HttpContext.Current.Request.Cookies["QRShow"].Value);
                 }
 
-                tgdQR.Visible = bolShow;
-                tgQR.Visible = bolShow;
+                this.tgdQR.Visible = bolShow;
+                this.tgQR.Visible = bolShow;
                 if (!HttpContext.Current.Request.Browser.IsMobileDevice)
                 {
-                    ambtnSubmit.ImageUrl = ThemePath + "save32.png";
-                    ambtnSubmit.ImageLocation = "TOP";
-                    btnSubmit.Visible = false;
-                    ambtnSubmit.Visible = true;
+                    this.ambtnSubmit.ImageUrl = this.ThemePath + "save32.png";
+                    this.ambtnSubmit.ImageLocation = "TOP";
+                    this.btnSubmit.Visible = false;
+                    this.ambtnSubmit.Visible = true;
                     if (!HttpContext.Current.Request.IsAuthenticated)
                     {
-                        trSubscribe.Visible = false;
-                        ambtnSubmit.PostBack = true;
-                        ambtnSubmit.ClientSideScript = "";
-                        reqUserName.Enabled = true;
-                        reqUserName.Text = "<img src=\"" + ThemePath + "warning.png\" />";
-                        reqBody.Text = "<img src=\"" + ThemePath + "warning.png\" />";
-                        reqSecurityCode.Text = "<img src=\"" + ThemePath + "warning.png\" />";
-                        ambtnSubmit.Click += ambtnSubmit_Click;
+                        this.trSubscribe.Visible = false;
+                        this.ambtnSubmit.PostBack = true;
+                        this.ambtnSubmit.ClientSideScript = "";
+                        this.reqUserName.Enabled = true;
+                        this.reqUserName.Text = "<img src=\"" + this.ThemePath + "warning.png\" />";
+                        this.reqBody.Text = "<img src=\"" + this.ThemePath + "warning.png\" />";
+                        this.reqSecurityCode.Text = "<img src=\"" + this.ThemePath + "warning.png\" />";
+                        this.ambtnSubmit.Click += this.ambtnSubmit_Click;
                     }
                     else
                     {
-                        trUsername.Visible = false;
-                        reqUserName.Visible = false;
-                        reqUserName.Enabled = false;
-                        txtUserName.Visible = false;
-                        trCaptcha.Visible = false;
+                        this.trUsername.Visible = false;
+                        this.reqUserName.Visible = false;
+                        this.reqUserName.Enabled = false;
+                        this.txtUserName.Visible = false;
+                        this.trCaptcha.Visible = false;
 
                     }
                 }
                 else
                 {
-                    btnSubmit.Visible = true;
-                    ambtnSubmit.Visible = false;
+                    this.btnSubmit.Visible = true;
+                    this.ambtnSubmit.Visible = false;
                 }
 
                 if (!string.IsNullOrEmpty(HttpContext.Current.Request.Form["txtBody"]) && HttpContext.Current.Request.IsAuthenticated & ((!string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply1"]) && string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply2"])) | HttpContext.Current.Request.Browser.IsMobileDevice))
                 {
-                    SaveQuickReply();
+                    this.SaveQuickReply();
                 }
             }
             catch (Exception ex)
@@ -184,16 +184,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void SaveQuickReply()
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, TopicId);
-            if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: forumInfo))
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ModuleId, this.ForumId, false, this.TopicId);
+            if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, user: this.ForumUser, forumInfo: forumInfo))
             {
-                plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
+                this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
                 return;
             }
 
-            bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
+            bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, this.ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, this.ForumUser.UserRoles), forumInfo.AutoTrustLevel, this.ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean((forumInfo.IsModerated == true) ? false : true);
-            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
+            if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, this.ForumUser.UserRoles))
             {
                 isApproved = true;
             }
@@ -205,11 +205,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sUsername = string.Empty;
             if (HttpContext.Current.Request.IsAuthenticated)
             {
-                sUsername = ControlConfig.User.DisplayName;
+                sUsername = this.ControlConfig.User.DisplayName;
             }
             else
             {
-                sUsername = Utilities.CleanString(PortalId, txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, ModuleId, ThemePath, false);
+                sUsername = Utilities.CleanString(this.PortalId, this.txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, this.ModuleId, this.ThemePath, false);
             }
 
             string sBody = string.Empty;
@@ -218,14 +218,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //If forumInfo.AllowHTML Then
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
             //End If
-            sBody = Utilities.CleanString(PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, ModuleId, ThemePath, forumInfo.AllowEmoticons);
-            ri.TopicId = TopicId;
-            ri.ReplyToId = TopicId;
-            ri.Content.AuthorId = UserId;
+            sBody = Utilities.CleanString(this.PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, this.ModuleId, this.ThemePath, forumInfo.AllowEmoticons);
+            ri.TopicId = this.TopicId;
+            ri.ReplyToId = this.TopicId;
+            ri.Content.AuthorId = this.UserId;
             ri.Content.AuthorName = sUsername;
             ri.Content.Body = sBody;
             ri.Content.IsDeleted = false;
-            ri.Content.Subject = Subject;
+            ri.Content.Subject = this.Subject;
             ri.Content.Summary = string.Empty;
             ri.IsApproved = isApproved;
             ri.IsDeleted = false;
@@ -234,22 +234,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (isApproved)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forumInfo.ForumGroupId, ForumId, TopicId, ReplyId, ri.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
                 //Redirect to show post
-                string fullURL = Utilities.NavigateURL(PageId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
+                string fullURL = Utilities.NavigateURL(this.PageId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, PortalId, ForumId, ri.TopicId, ReplyId, ModuleId, PageId, string.Empty);
-                string[] Params = { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + TopicId };
-                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(PageId, "", Params), false);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.PortalId, this.ForumId, ri.TopicId, ReplyId, this.ModuleId, this.PageId, string.Empty);
+                string[] Params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
+                HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, "", Params), false);
             }
         }
 
         private string ParseTemplate()
         {
-            return DisplayTemplate;
+            return this.DisplayTemplate;
         }
 
         private void LinkControls(ControlCollection ctrls)
@@ -259,44 +259,44 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 switch (ctrl.ID)
                 {
                     case "tgQR":
-                        tgQR = (Toggle)ctrl;
-                        tgQR.ImagePath = ThemePath;
+                        this.tgQR = (Toggle)ctrl;
+                        this.tgQR.ImagePath = this.ThemePath;
                         break;
                     case "tgdQR":
-                        tgdQR = (ToggleDisplay)ctrl;
+                        this.tgdQR = (ToggleDisplay)ctrl;
                         break;
                     case "plhMessage":
-                        plhMessage = (PlaceHolder)ctrl;
+                        this.plhMessage = (PlaceHolder)ctrl;
                         break;
                     case "reqUserName":
-                        reqUserName = (System.Web.UI.WebControls.RequiredFieldValidator)ctrl;
+                        this.reqUserName = (System.Web.UI.WebControls.RequiredFieldValidator)ctrl;
                         break;
                     case "txtUserName":
-                        txtUserName = (System.Web.UI.HtmlControls.HtmlInputText)ctrl;
+                        this.txtUserName = (System.Web.UI.HtmlControls.HtmlInputText)ctrl;
                         break;
                     case "reqBody":
-                        reqBody = (Label)ctrl;
+                        this.reqBody = (Label)ctrl;
                         break;
                     case "reqSecurityCode":
-                        reqSecurityCode = (Label)ctrl;
+                        this.reqSecurityCode = (Label)ctrl;
                         break;
                     case "chkSubscribe":
-                        chkSubscribe = (CheckBox)ctrl;
+                        this.chkSubscribe = (CheckBox)ctrl;
                         break;
                     case "ambtnSubmit":
-                        ambtnSubmit = (ImageButton)ctrl;
+                        this.ambtnSubmit = (ImageButton)ctrl;
                         break;
                     case "btnSubmit":
-                        btnSubmit = (System.Web.UI.HtmlControls.HtmlInputButton)ctrl;
+                        this.btnSubmit = (System.Web.UI.HtmlControls.HtmlInputButton)ctrl;
                         break;
                     case "trUsername":
-                        trUsername = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        this.trUsername = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
                         break;
                     case "trCaptcha":
-                        trCaptcha = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        this.trCaptcha = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
                         break;
                     case "trSubscribe":
-                        trSubscribe = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        this.trSubscribe = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
                         break;
                 }
 
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 if (ctrl.Controls.Count > 0)
                 {
-                    LinkControls(ctrl.Controls);
+                    this.LinkControls(ctrl.Controls);
                 }
             }
         }

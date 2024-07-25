@@ -34,8 +34,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            agTags.Callback += agTags_Callback;
-            agTags.ItemBound += agTags_ItemBound;
+            this.agTags.Callback += this.agTags_Callback;
+            this.agTags.ItemBound += this.agTags_ItemBound;
 
         }
 
@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                 if (!(TagName == string.Empty))
                                 {
-                                    DataProvider.Instance().Tags_Save(PortalId, ModuleId, TagId, TagName, 0, 0, 0, -1, false, -1, -1);
+                                    DataProvider.Instance().Tags_Save(this.PortalId, this.ModuleId, TagId, TagName, 0, 0, 0, -1, false, -1, -1);
                                 }
 
                                 break;
@@ -86,13 +86,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
 
-                agTags.DefaultParams = string.Empty;
+                this.agTags.DefaultParams = string.Empty;
                 int PageIndex = Convert.ToInt32(e.Parameters[0]);
                 int PageSize = Convert.ToInt32(e.Parameters[1]);
                 string SortColumn = e.Parameters[2].ToString();
                 string Sort = e.Parameters[3].ToString();
-                agTags.Datasource = DataProvider.Instance().Tags_List(PortalId, ModuleId, false, PageIndex, PageSize, Sort, SortColumn, -1, -1);
-                agTags.Refresh(e.Output);
+                this.agTags.Datasource = DataProvider.Instance().Tags_List(this.PortalId, this.ModuleId, false, PageIndex, PageSize, Sort, SortColumn, -1, -1);
+                this.agTags.Refresh(e.Output);
             }
             catch (Exception ex)
             {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             //e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
             //e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
-            e.Item[4] = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
+            e.Item[4] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
         #endregion
 

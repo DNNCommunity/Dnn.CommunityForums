@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (file == null)
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound, "File Not Found");
+                return this.Request.CreateResponse(HttpStatusCode.NotFound, "File Not Found");
                 //return Json(new {Result = "error"});
             }
 
@@ -76,12 +76,12 @@ namespace DotNetNuke.Modules.ActiveForums
             ImageUtils.CreateImage(newPhoto.PhysicalPath, dto.Height, dto.Width);
             newPhoto = fileManager.UpdateFile(newPhoto);
 
-            return Request.CreateResponse(HttpStatusCode.OK, newPhoto.ToJson());
+            return this.Request.CreateResponse(HttpStatusCode.OK, newPhoto.ToJson());
         }
 
         public string EncryptTicket(EncryptTicketDTO dto)
         {
-            var x = Common.Globals.LinkClick(dto.Url, ActiveModule.TabID, ActiveModule.ModuleID, false);
+            var x = Common.Globals.LinkClick(dto.Url, this.ActiveModule.TabID, this.ActiveModule.ModuleID, false);
             return UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(dto.Url));
         }
 
@@ -94,10 +94,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Have to a reference to these variables as the internal reference isn't available.
             // in the async result.
-            var request = Request;
-            var portalSettings = PortalSettings;
+            var request = this.Request;
+            var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new UserController().GetUser(ActiveModule.PortalID, ActiveModule.ModuleID, userInfo.UserID);
+            var forumUser = new UserController().GetUser(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, userInfo.UserID);
 
             if (!request.Content.IsMimeMultipartContent())
             {
@@ -107,12 +107,12 @@ namespace DotNetNuke.Modules.ActiveForums
             const string uploadPath = "activeforums_Upload";
 
             var folderManager = FolderManager.Instance;
-            if (!folderManager.FolderExists(ActiveModule.PortalID, uploadPath))
+            if (!folderManager.FolderExists(this.ActiveModule.PortalID, uploadPath))
             {
-                folderManager.AddFolder(ActiveModule.PortalID, uploadPath);
+                folderManager.AddFolder(this.ActiveModule.PortalID, uploadPath);
             }
 
-            var folder = folderManager.GetFolder(ActiveModule.PortalID, uploadPath);
+            var folder = folderManager.GetFolder(this.ActiveModule.PortalID, uploadPath);
 
             var provider = new MultipartFormDataStreamProvider(folder.PhysicalPath);
 
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 // Make sure that we can find the forum and that attachments are allowed
-                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(ActiveModule.PortalID, ActiveModule.ModuleID, forumId, true, -1);
+                var forum = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.ActiveModule.PortalID, this.ActiveModule.ModuleID, forumId, true, -1);
 
                 if (forum == null || !forum.AllowAttach)
                 {
@@ -316,7 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         UploadId = localFileName,
                     };
 
-                    return Request.CreateResponse(HttpStatusCode.Accepted, result, mediaType);
+                    return this.Request.CreateResponse(HttpStatusCode.Accepted, result, mediaType);
                 }
                 else
                 {
@@ -335,11 +335,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (file == null)
             {
-                return Request.CreateResponse(HttpStatusCode.Accepted, "File not found");
+                return this.Request.CreateResponse(HttpStatusCode.Accepted, "File not found");
             }
 
             const string fullpath = "/Portals/{0}/{1}{2}";
-            var userInfo = PortalSettings.UserInfo;
+            var userInfo = this.PortalSettings.UserInfo;
             string portalid;
 
             if (userInfo.IsSuperUser)
@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 portalid = userInfo.PortalID.ToString();
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, string.Format(fullpath, portalid, file.Folder, file.FileName));
+            return this.Request.CreateResponse(HttpStatusCode.OK, string.Format(fullpath, portalid, file.Folder, file.FileName));
         }
 
         /*public class GetUserFileUrlDTO
@@ -362,10 +362,10 @@ namespace DotNetNuke.Modules.ActiveForums
         [HttpGet]
         public HttpResponseMessage GetTopicList(int ForumId)
         {
-            var portalSettings = PortalSettings;
+            var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
 
-            DataSet ds = DataProvider.Instance().UI_TopicsView(portalSettings.PortalId, ActiveModule.ModuleID, ForumId, userInfo.UserID, 0, 20, userInfo.IsSuperUser, SortColumns.ReplyCreated);
+            DataSet ds = DataProvider.Instance().UI_TopicsView(portalSettings.PortalId, this.ActiveModule.ModuleID, ForumId, userInfo.UserID, 0, 20, userInfo.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
             {
                 DataTable dtTopics = ds.Tables[3];
@@ -376,26 +376,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     rows.Add(dr["TopicId"].ToString(), dr["Subject"].ToString());
                 }
 
-                return Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
+                return this.Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
             }
 
-            return Request.CreateResponse(HttpStatusCode.NotFound);
+            return this.Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         [HttpGet]
         public HttpResponseMessage GetForumsList()
         {
-            var portalSettings = PortalSettings;
+            var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
+            var forumUser = new UserController().GetUser(portalSettings.PortalId, this.ActiveModule.ModuleID, userInfo.UserID);
 
             Dictionary<string, string> rows = new Dictionary<string, string>();
-            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
+            foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi in new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Get(this.ActiveModule.ModuleID).Where(f => !f.Hidden && !f.ForumGroup.Hidden && (this.UserInfo.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(f.Security.View, forumUser.UserRoles))))
             {
                 rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
+            return this.Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
         }
 
         public class CreateSplitDTO
@@ -416,15 +416,15 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             if (dto.NewTopicId == dto.OldTopicId)
             {
-                return Request.CreateResponse(HttpStatusCode.OK);
+                return this.Request.CreateResponse(HttpStatusCode.OK);
             }
 
-            var portalSettings = PortalSettings;
+            var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
-            var forumUser = new UserController().GetUser(portalSettings.PortalId, ActiveModule.ModuleID, userInfo.UserID);
+            var forumUser = new UserController().GetUser(portalSettings.PortalId, this.ActiveModule.ModuleID, userInfo.UserID);
 
-            var forum_out = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, ActiveModule.ModuleID, 0, true, dto.OldTopicId);
-            var forum_in = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, ActiveModule.ModuleID);
+            var forum_out = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalSettings.PortalId, this.ActiveModule.ModuleID, 0, true, dto.OldTopicId);
+            var forum_in = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.NewForumId, this.ActiveModule.ModuleID);
             if (forum_out != null && forum_in != null)
             {
                 var perm = false;
@@ -446,11 +446,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (dto.NewTopicId < 1)
                     {
-                        var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorTypes.TEXTBOX, false, false, ActiveModule.ModuleID, string.Empty, false);
+                        var subject = Utilities.CleanString(portalSettings.PortalId, dto.Subject, false, EditorTypes.TEXTBOX, false, false, this.ActiveModule.ModuleID, string.Empty, false);
                         var replies = dto.Replies.Split('|');
                         var firstReply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(Convert.ToInt32(replies[0]));
                         var firstContent = new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(firstReply.ContentId);
-                        topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, Request.GetIPAddress());
+                        topicId = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QuickCreate(portalSettings.PortalId, this.ActiveModule.ModuleID, dto.NewForumId, subject, string.Empty, firstContent.AuthorId, firstContent.AuthorName, true, this.Request.GetIPAddress());
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, true);
                     }
                     else
@@ -459,13 +459,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, topicId);
+                    return this.Request.CreateResponse(HttpStatusCode.OK, topicId);
                 }
 
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                return this.Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
 
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         public class CreateThumbnailDTO

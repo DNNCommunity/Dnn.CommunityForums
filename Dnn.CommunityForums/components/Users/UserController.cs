@@ -52,16 +52,16 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (HttpContext.Current == null)
                 {
-                    u = DNNGetCurrentUser(PortalId, ModuleId);
+                    u = this.DNNGetCurrentUser(PortalId, ModuleId);
                 }
                 else if (HttpContext.Current.Items["AFUserInfo"] != null)
                 {
                     u = (User)HttpContext.Current.Items["AFUserInfo"];
-                    u = FillProfile(PortalId, ModuleId, u);
+                    u = this.FillProfile(PortalId, ModuleId, u);
                 }
                 else
                 {
-                    u = DNNGetCurrentUser(PortalId, ModuleId);
+                    u = this.DNNGetCurrentUser(PortalId, ModuleId);
                 }
 
                 if (u != null)
@@ -84,9 +84,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public User DNNGetCurrentUser(int PortalId, int ModuleId)
         {
             DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            User u = LoadUser(cu);
+            User u = this.LoadUser(cu);
 
-            u = FillProfile(PortalId, ModuleId, u);
+            u = this.FillProfile(PortalId, ModuleId, u);
             string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
             if (!string.IsNullOrEmpty(fs))
             {
@@ -100,23 +100,23 @@ namespace DotNetNuke.Modules.ActiveForums
             return u;
         }
 
-        private User GetDNNUser(int portalId, int userId) => LoadUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
+        private User GetDNNUser(int portalId, int userId) => this.LoadUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
 
-        private User GetDNNUser(int portalId, string userName) => LoadUser(DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName));
+        private User GetDNNUser(int portalId, string userName) => this.LoadUser(DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName));
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetDNNUser(int portalId, string userName).")]
         public User GetDNNUser(string userName)
         {
             DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
-            return LoadUser(dnnUser);
+            return this.LoadUser(dnnUser);
         }
 
         public User GetUser(int PortalId, int ModuleId, int userId)
         {
-            User u = GetDNNUser(PortalId, userId);
+            User u = this.GetDNNUser(PortalId, userId);
             if (u != null)
             {
-                u = FillProfile(PortalId, ModuleId, u);
+                u = this.FillProfile(PortalId, ModuleId, u);
                 string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
                 if (!string.IsNullOrEmpty(fs))
                 {
@@ -133,10 +133,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public User GetUser(int PortalId, int ModuleId, string userName)
         {
-            User u = GetDNNUser(PortalId, userName);
+            User u = this.GetDNNUser(PortalId, userName);
             if (u != null)
             {
-                u = FillProfile(PortalId, ModuleId, u);
+                u = this.FillProfile(PortalId, ModuleId, u);
                 string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
                 if (!string.IsNullOrEmpty(fs) || u.IsSuperUser || u.IsAdmin)
                 {
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 LastName = dnnUser.LastName,
                 DisplayName = dnnUser.DisplayName,
                 Email = dnnUser.Email,
-                UserRoles = GetRoleIds(dnnUser, _portalSettings.PortalId)
+                UserRoles = this.GetRoleIds(dnnUser, _portalSettings.PortalId)
             };
 
             if (dnnUser.IsSuperUser)
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!dnnUser.IsSuperUser)
             {
-                u.Properties = GetUserProperties(dnnUser);
+                u.Properties = this.GetUserProperties(dnnUser);
             }
 
             return u;

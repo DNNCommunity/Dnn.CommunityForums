@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 var uc = new UserController();
-                return uc.GetUser(PortalId, ForumModuleId);
+                return uc.GetUser(this.PortalId, this.ForumModuleId);
             }
         }
 
@@ -57,14 +57,14 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 string forums;
-                if (string.IsNullOrEmpty(ForumUser.UserForums))
+                if (string.IsNullOrEmpty(this.ForumUser.UserForums))
                 {
-                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId);
-                    ForumUser.UserForums = forums;
+                    forums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ForumModuleId);
+                    this.ForumUser.UserForums = forums;
                 }
                 else
                 {
-                    forums = ForumUser.UserForums;
+                    forums = this.ForumUser.UserForums;
                 }
 
                 return forums;
@@ -75,17 +75,17 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (_forumModuleId > 0)
+                if (this._forumModuleId > 0)
                 {
-                    return _forumModuleId;
+                    return this._forumModuleId;
                 }
 
-                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ModuleId, TabId);
+                return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
             }
 
             set
             {
-                _forumModuleId = value;
+                this._forumModuleId = value;
             }
         }
 
@@ -93,12 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _forumTabId;
+                return this._forumTabId;
             }
 
             set
             {
-                _forumTabId = value;
+                this._forumTabId = value;
             }
         }
 
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _Params;
+                return this._Params;
             }
 
             set
             {
-                _Params = value;
+                this._Params = value;
             }
         }
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                bool tempUseAjax = Request.IsAuthenticated && UserPrefUseAjax;
+                bool tempUseAjax = this.Request.IsAuthenticated && this.UserPrefUseAjax;
 
                 return tempUseAjax;
             }
@@ -130,23 +130,23 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 int tempPageId = 0;
-                if (Request.QueryString[ParamKeys.PageId] != null)
+                if (this.Request.QueryString[ParamKeys.PageId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.PageId]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[ParamKeys.PageId]))
                     {
-                        tempPageId = Convert.ToInt32(Request.QueryString[ParamKeys.PageId]);
+                        tempPageId = Convert.ToInt32(this.Request.QueryString[ParamKeys.PageId]);
                     }
                 }
-                else if (Request.QueryString[Literals.page] != null)
+                else if (this.Request.QueryString[Literals.page] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.QueryString[Literals.page]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.QueryString[Literals.page]))
                     {
-                        tempPageId = Convert.ToInt32(Request.QueryString[Literals.page]);
+                        tempPageId = Convert.ToInt32(this.Request.QueryString[Literals.page]);
                     }
                 }
-                else if (Params != string.Empty && Params.Contains(Literals.PageId))
+                else if (this.Params != string.Empty && this.Params.Contains(Literals.PageId))
                 {
-                    tempPageId = Convert.ToInt32(Params.Split('=')[1]);
+                    tempPageId = Convert.ToInt32(this.Params.Split('=')[1]);
                 }
                 else
                 {
@@ -190,19 +190,19 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (Request.IsAuthenticated)
+                if (this.Request.IsAuthenticated)
                 {
-                    if (UserInfo.IsSuperUser)
+                    if (this.UserInfo.IsSuperUser)
                     {
                         return CurrentUserTypes.SuperUser;
                     }
 
-                    if (ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT"))
+                    if (ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "EDIT"))
                     {
                         return CurrentUserTypes.Admin;
                     }
 
-                    if (ForumUser.Profile.IsMod)
+                    if (this.ForumUser.Profile.IsMod)
                     {
                         return CurrentUserTypes.ForumMod;
                     }
@@ -218,14 +218,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId == -1)
+                if (this.UserId == -1)
                 {
                     return false;
                 }
 
-                if (ForumUser != null)
+                if (this.ForumUser != null)
                 {
-                    return ForumUser.Profile.IsMod;
+                    return this.ForumUser.Profile.IsMod;
                 }
 
                 return false;
@@ -236,9 +236,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefDefaultSort;
+                    return this.ForumUser.Profile.PrefDefaultSort;
                 }
 
                 return "ASC";
@@ -249,12 +249,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefPageSize;
+                    return this.ForumUser.Profile.PrefPageSize;
                 }
 
-                return MainSettings.PageSize;
+                return this.MainSettings.PageSize;
             }
         }
 
@@ -262,11 +262,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
                     try
                     {
-                        return ForumUser.Profile.PrefBlockSignatures;
+                        return this.ForumUser.Profile.PrefBlockSignatures;
                     }
                     catch (Exception ex)
                     {
@@ -282,9 +282,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefBlockAvatars;
+                    return this.ForumUser.Profile.PrefBlockAvatars;
                 }
 
                 return false;
@@ -295,9 +295,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefJumpLastPost;
+                    return this.ForumUser.Profile.PrefJumpLastPost;
                 }
 
                 return false;
@@ -308,9 +308,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefUseAjax;
+                    return this.ForumUser.Profile.PrefUseAjax;
                 }
 
                 return false;
@@ -321,9 +321,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefDefaultShowReplies;
+                    return this.ForumUser.Profile.PrefDefaultShowReplies;
                 }
 
                 return false;
@@ -334,9 +334,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (UserId != -1)
+                if (this.UserId != -1)
                 {
-                    return ForumUser.Profile.PrefTopicSubscribe;
+                    return this.ForumUser.Profile.PrefTopicSubscribe;
                 }
 
                 return false;
@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return (Framework.CDefault)Page;
+                return (Framework.CDefault)this.Page;
             }
         }
 
@@ -370,8 +370,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                ForumModuleId = _forumModuleId <= 0 ? ForumModuleId : _forumModuleId;
-                return GetModuleSettings(ForumModuleId);
+                this.ForumModuleId = this._forumModuleId <= 0 ? this.ForumModuleId : this._forumModuleId;
+                return GetModuleSettings(this.ForumModuleId);
             }
         }
 
@@ -379,7 +379,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return Page.ResolveUrl(string.Concat(MainSettings.ThemeLocation, "/images"));
+                return this.Page.ResolveUrl(string.Concat(this.MainSettings.ThemeLocation, "/images"));
             }
         }
 
@@ -387,14 +387,14 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (Request.Params[ParamKeys.ViewType] != null)
+                if (this.Request.Params[ParamKeys.ViewType] != null)
                 {
-                    return Request.Params[ParamKeys.ViewType].ToUpperInvariant();
+                    return this.Request.Params[ParamKeys.ViewType].ToUpperInvariant();
                 }
 
-                if (Request.Params["view"] != null)
+                if (this.Request.Params["view"] != null)
                 {
-                    return Request.Params["view"].ToUpperInvariant();
+                    return this.Request.Params["view"].ToUpperInvariant();
                 }
 
                 return null;
@@ -406,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums
             /* AF now stores datetime in UTC, so this method returns timezoneoffset for current user if available or from portal settings as fallback */
             get
             {
-                return Utilities.GetTimeZoneOffsetForUser(UserInfo);
+                return Utilities.GetTimeZoneOffsetForUser(this.UserInfo);
             }
         }
 
@@ -416,7 +416,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         protected DateTime GetUserDate(DateTime displayDate)
         {
-            return displayDate.AddMinutes(TimeZoneOffset.TotalMinutes);
+            return displayDate.AddMinutes(this.TimeZoneOffset.TotalMinutes);
         }
 
         #endregion
@@ -443,12 +443,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public void RenderMessage(string Title, string Message)
         {
-            RenderMessage(Utilities.GetSharedResource(Title), Message, string.Empty, null);
+            this.RenderMessage(Utilities.GetSharedResource(Title), Message, string.Empty, null);
         }
 
         public void RenderMessage(string Message, string ErrorMsg, Exception ex)
         {
-            RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), Message, ErrorMsg, ex);
+            this.RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), Message, ErrorMsg, ex);
         }
 
         public void RenderMessage(string Title, string Message, string ErrorMsg, Exception ex)
@@ -470,32 +470,32 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            if (Request.Params[Literals.view] != null)
+            if (this.Request.Params[Literals.view] != null)
             {
                 string sUrl;
                 string sParams = string.Empty;
 
-                if (Request.Params[Literals.ForumId] != null)
+                if (this.Request.Params[Literals.ForumId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.ForumId]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[Literals.ForumId]))
                     {
-                        sParams = $"{ParamKeys.ForumId}={Request.Params[Literals.ForumId]}";
+                        sParams = $"{ParamKeys.ForumId}={this.Request.Params[Literals.ForumId]}";
                     }
                 }
 
-                if (Request.Params[Literals.PostId] != null)
+                if (this.Request.Params[Literals.PostId] != null)
                 {
-                    if (SimulateIsNumeric.IsNumeric(Request.Params[Literals.PostId]))
+                    if (SimulateIsNumeric.IsNumeric(this.Request.Params[Literals.PostId]))
                     {
-                        sParams += $"|{ParamKeys.TopicId}={Request.Params[Literals.PostId]}";
+                        sParams += $"|{ParamKeys.TopicId}={this.Request.Params[Literals.PostId]}";
                     }
                 }
 
-                sParams += $"|{ParamKeys.ViewType}={Request.Params[Literals.view]}";
-                sUrl = NavigateUrl(TabId, "", sParams.Split('|'));
+                sParams += $"|{ParamKeys.ViewType}={this.Request.Params[Literals.view]}";
+                sUrl = this.NavigateUrl(this.TabId, "", sParams.Split('|'));
 
-                Response.Status = "301 Moved Permanently";
-                Response.AddHeader("Location", sUrl);
+                this.Response.Status = "301 Moved Permanently";
+                this.Response.AddHeader("Location", sUrl);
             }
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

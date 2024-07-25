@@ -38,35 +38,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
 
-                if (ForumId > 0 && ForumModuleId == -1)
+                if (this.ForumId > 0 && this.ForumModuleId == -1)
                 {
-                    fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
-                    ForumModuleId = fi.ModuleId;
+                    this.fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ForumModuleId);
+                    this.ForumModuleId = this.fi.ModuleId;
                 }
 
-                if (ForumModuleId > 0)
+                if (this.ForumModuleId > 0)
                 {
                     DotNetNuke.Entities.Modules.ModuleInfo modInfo = new DotNetNuke.Entities.Modules.ModuleInfo();
-                    modInfo.TabID = TabId;
-                    modInfo.ModuleID = ModuleId;
-                    modInfo.PortalID = PortalId;
+                    modInfo.TabID = this.TabId;
+                    modInfo.ModuleID = this.ModuleId;
+                    modInfo.PortalID = this.PortalId;
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
 
-                    ForumBase objModule = (ForumBase)LoadControl("~/desktopmodules/ActiveForums/classic.ascx");
+                    ForumBase objModule = (ForumBase)this.LoadControl("~/desktopmodules/ActiveForums/classic.ascx");
                     if (objModule != null)
                     {
                         objModule.ModuleConfiguration = modInfo;
                         objModule.ID = Path.GetFileNameWithoutExtension("~/desktopmodules/ActiveForums/classic.ascx");
-                        objModule.ForumModuleId = ForumModuleId;
-                        objModule.ForumTabId = ForumTabId;
-                        objModule.ForumInfo = fi;
-                        objModule.ForumId = ForumId;
-                        objModule.ForumGroupId = ForumGroupId;
-                        objModule.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
-                        objModule.DefaultTopicsViewTemplateId = DefaultTopicsViewTemplateId;
-                        objModule.DefaultTopicViewTemplateId = DefaultTopicViewTemplateId;
-                        objModule.ParentForumId = ParentForumId;
-                        objModule.ForumIds = ForumIds;
+                        objModule.ForumModuleId = this.ForumModuleId;
+                        objModule.ForumTabId = this.ForumTabId;
+                        objModule.ForumInfo = this.fi;
+                        objModule.ForumId = this.ForumId;
+                        objModule.ForumGroupId = this.ForumGroupId;
+                        objModule.DefaultForumViewTemplateId = this.DefaultForumViewTemplateId;
+                        objModule.DefaultTopicsViewTemplateId = this.DefaultTopicsViewTemplateId;
+                        objModule.DefaultTopicViewTemplateId = this.DefaultTopicViewTemplateId;
+                        objModule.ParentForumId = this.ParentForumId;
+                        objModule.ForumIds = this.ForumIds;
                         this.Controls.Add(objModule);
                     }
                 }

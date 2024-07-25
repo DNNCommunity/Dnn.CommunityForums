@@ -44,12 +44,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _Text;
+                return this._Text;
             }
 
             set
             {
-                _Text = value;
+                this._Text = value;
             }
         }
 
@@ -57,12 +57,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ControlToValidate;
+                return this._ControlToValidate;
             }
 
             set
             {
-                _ControlToValidate = value;
+                this._ControlToValidate = value;
             }
         }
 
@@ -70,12 +70,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ValidationGroup;
+                return this._ValidationGroup;
             }
 
             set
             {
-                _ValidationGroup = value;
+                this._ValidationGroup = value;
             }
         }
 
@@ -83,31 +83,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _DefaultValue;
+                return this._DefaultValue;
             }
 
             set
             {
-                _DefaultValue = value;
+                this._DefaultValue = value;
             }
         }
 
         #endregion
         protected override void Render(System.Web.UI.HtmlTextWriter output)
         {
-            if (Enabled)
+            if (this.Enabled)
             {
-                output.AddAttribute("class", CssClass);
-                output.AddAttribute("id", ClientID);
+                output.AddAttribute("class", this.CssClass);
+                output.AddAttribute("id", this.ClientID);
                 output.RenderBeginTag(HtmlTextWriterTag.Span);
                 output.RenderEndTag();
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<script>");
                 sb.Append("if(!window.AMPage){window.AMPage=new AMValidator();};");
                 Control ctrl = new Control();
-                ctrl = Parent.FindControl(ControlToValidate);
+                ctrl = this.Parent.FindControl(this.ControlToValidate);
                 //Text = Text.Replace("'", "\'")
-                sb.Append("AMPage.Add('" + ClientID + "','" + ctrl.ClientID + "','" + ValidationGroup + "',null,null,null,'" + Text + "','" + DefaultValue + "');");
+                sb.Append("AMPage.Add('" + this.ClientID + "','" + ctrl.ClientID + "','" + this.ValidationGroup + "',null,null,null,'" + this.Text + "','" + this.DefaultValue + "');");
                 sb.Append("</script>");
                 output.Write(sb.ToString());
             }
@@ -118,9 +118,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation"))
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMValidation", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMValidation", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
             }
         }
     }

@@ -31,8 +31,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            agRanks.Callback += agRanks_Callback;
-            agRanks.ItemBound += agRanks_ItemBound;
+            this.agRanks.Callback += this.agRanks_Callback;
+            this.agRanks.ItemBound += this.agRanks_ItemBound;
 
         }
 
@@ -40,24 +40,24 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            BindRankImages();
+            this.BindRankImages();
 
         }
 
         private void agRanks_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            agRanks.Datasource = DataProvider.Instance().Ranks_List(PortalId, ModuleId);
-            agRanks.Refresh(e.Output);
+            this.agRanks.Datasource = DataProvider.Instance().Ranks_List(this.PortalId, this.ModuleId);
+            this.agRanks.Refresh(e.Output);
         }
 
         private void agRanks_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
         {
-            e.Item[4] = GetDisplay(e.Item[4].ToString(), e.Item[1].ToString());
+            e.Item[4] = this.GetDisplay(e.Item[4].ToString(), e.Item[1].ToString());
         }
 
         public string GetDisplay(string Display, string RankName)
         {
-            return "<img src=\"" + HostURL + Display.Replace("activeforums/Ranks", "ActiveForums/images/ranks") + "\" border=\"0\" alt=\"" + RankName + "\" />";
+            return "<img src=\"" + this.HostURL + Display.Replace("activeforums/Ranks", "ActiveForums/images/ranks") + "\" border=\"0\" alt=\"" + RankName + "\" />";
         }
 
         private void BindRankImages()
@@ -72,11 +72,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 string path = null;
                 myFileInfo = new System.IO.FileInfo(FileCollection[i]);
                 path = "DesktopModules/ActiveForums/images/ranks/" + myFileInfo.Name;
-                drpRankImages.Items.Insert(i, new ListItem(myFileInfo.Name, path.ToLowerInvariant()));
+                this.drpRankImages.Items.Insert(i, new ListItem(myFileInfo.Name, path.ToLowerInvariant()));
 
             }
 
-            drpRankImages.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", "-1"));
+            this.drpRankImages.Items.Insert(0, new ListItem("[RESX:DropDownDefault]", "-1"));
             // drpRankImages.Items.Insert(1, New ListItem(Utilities.GetSharedResource("RankCustom.Text"), "0"))
         }
     }

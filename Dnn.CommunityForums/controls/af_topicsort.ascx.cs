@@ -38,12 +38,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return _defaultSort;
+                return this._defaultSort;
             }
 
             set
             {
-                _defaultSort = value;
+                this._defaultSort = value;
             }
         }
         #region Controls
@@ -57,17 +57,17 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 //Put user code to initialize the page here
-                if (!Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
-                    string Sort = DefaultSort;
-                    if (Request.Params[ParamKeys.Sort] != null)
+                    string Sort = this.DefaultSort;
+                    if (this.Request.Params[ParamKeys.Sort] != null)
                     {
-                        Sort = Request.Params[ParamKeys.Sort];
+                        Sort = this.Request.Params[ParamKeys.Sort];
                     }
 
-                    drpSort.SelectedIndex = drpSort.Items.IndexOf(drpSort.Items.FindByValue(Sort));
-                    drpSort.Items[0].Text = GetSharedResource(drpSort.Items[0].Text);
-                    drpSort.Items[1].Text = GetSharedResource(drpSort.Items[1].Text);
+                    this.drpSort.SelectedIndex = this.drpSort.Items.IndexOf(this.drpSort.Items.FindByValue(Sort));
+                    this.drpSort.Items[0].Text = this.GetSharedResource(this.drpSort.Items[0].Text);
+                    this.drpSort.Items[1].Text = this.GetSharedResource(this.drpSort.Items[1].Text);
                 }
 
             }
@@ -97,9 +97,9 @@ namespace DotNetNuke.Modules.ActiveForums
             //CODEGEN: This method call is required by the Web Form Designer
             //Do not modify it using the code editor.
             this.LocalResourceFile = Globals.SharedResourceFile;
-            InitializeComponent();
+            this.InitializeComponent();
 
-            drpSort.SelectedIndexChanged += new System.EventHandler(drpSort_SelectedIndexChanged);
+            this.drpSort.SelectedIndexChanged += new System.EventHandler(this.drpSort_SelectedIndexChanged);
 
         }
 
@@ -107,16 +107,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void drpSort_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-            var sort = drpSort.SelectedItem.Value;
-            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(TabId, "",
+            var sort = this.drpSort.SelectedItem.Value;
+            var dest = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(this.TabId, "",
                                                              new[]
                                                                  {
                                                                      ParamKeys.ViewType + "=" + Views.Topic,
-                                                                     ParamKeys.ForumId + "=" + ForumId,
-                                                                     ParamKeys.TopicId + "=" + TopicId,
+                                                                     ParamKeys.ForumId + "=" + this.ForumId,
+                                                                     ParamKeys.TopicId + "=" + this.TopicId,
                                                                      ParamKeys.Sort + "=" + sort
                                                                  });
-            Response.Redirect(dest);
+            this.Response.Redirect(dest);
         }
     }
 

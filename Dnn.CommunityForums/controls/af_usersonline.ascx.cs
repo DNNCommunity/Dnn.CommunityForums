@@ -44,8 +44,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                Page.ClientScript.RegisterStartupScript(Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + ModuleId.ToString() + ")',50000);", true);
-                BindUsersOnline();
+                this.Page.ClientScript.RegisterStartupScript(this.Page.GetType(), "amaf_uo", "setInterval('amaf_uo(" + this.ModuleId.ToString() + ")',50000);", true);
+                this.BindUsersOnline();
             }
             catch (Exception ex)
             {
@@ -59,8 +59,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private void BindUsersOnline()
         {
             UsersOnline uo = new UsersOnline();
-            string sOnlineList = uo.GetUsersOnline(PortalId, ForumModuleId, UserInfo);
-            IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalId, -1, 2);
+            string sOnlineList = uo.GetUsersOnline(this.PortalId, this.ForumModuleId, this.UserInfo);
+            IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalId, -1, 2);
             int anonCount = 0;
             int memCount = 0;
             int memTotal = 0;
@@ -76,10 +76,10 @@ namespace DotNetNuke.Modules.ActiveForums
             string sUsersOnline = null;
             sGuestsOnline = Utilities.GetSharedResource("[RESX:GuestsOnline]");
             sUsersOnline = Utilities.GetSharedResource("[RESX:UsersOnline]");
-            litGuestsOnline.Text = sGuestsOnline.Replace("[GUESTCOUNT]", anonCount.ToString());
+            this.litGuestsOnline.Text = sGuestsOnline.Replace("[GUESTCOUNT]", anonCount.ToString());
             sUsersOnline = sUsersOnline.Replace("[USERCOUNT]", memCount.ToString());
             sUsersOnline = sUsersOnline.Replace("[TOTALMEMBERCOUNT]", memTotal.ToString());
-            litUsersOnline.Text = sUsersOnline + " " + sOnlineList;
+            this.litUsersOnline.Text = sUsersOnline + " " + sOnlineList;
         }
 
         #endregion

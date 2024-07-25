@@ -40,18 +40,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                defaultResources.Load(GetResourceFile("", Localization.SystemLocale, PortalId));
-                filename = GetResourceFile("Portal", Localization.SystemLocale, PortalId);
+                defaultResources.Load(this.GetResourceFile("", Localization.SystemLocale, PortalId));
+                filename = this.GetResourceFile("Portal", Localization.SystemLocale, PortalId);
                 if (File.Exists(filename))
                 {
                     portalResources.Load(filename);
                 }
                 else
                 {
-                    portalResources.Load(GetResourceFile("", Localization.SystemLocale, PortalId));
+                    portalResources.Load(this.GetResourceFile("", Localization.SystemLocale, PortalId));
                 }
 
-                UpdateResourceFileNode(portalResources, name, resourceText);
+                this.UpdateResourceFileNode(portalResources, name, resourceText);
                 //UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyName + ".Help", resourceText)
                 //UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyCategory + ".Header", prop.PropertyCategory)
 

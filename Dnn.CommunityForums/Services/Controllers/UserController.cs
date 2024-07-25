@@ -50,9 +50,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             try
             {
-                if (UserInfo.UserID > 0)
+                if (this.UserInfo.UserID > 0)
                 {
-                    DataProvider.Instance().Profiles_UpdateActivity(PortalSettings.PortalId, ForumModuleId, UserInfo.UserID);
+                    DataProvider.Instance().Profiles_UpdateActivity(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo.UserID);
                 }
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
 
-            return Request.CreateResponse(HttpStatusCode.OK);
+            return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
         /// <summary>
@@ -75,15 +75,15 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             {
                 // if running from Forums Viewer module, need to get the module for the Forums instance
-                int moduleId = ActiveModule.ModuleID;
-                if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ActiveModule.ModuleID, tabId: ActiveModule.TabID, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                int moduleId = this.ActiveModule.ModuleID;
+                if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: this.ActiveModule.ModuleID, tabId: this.ActiveModule.TabID, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
                 {
-                    moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ActiveModule.ModuleID, ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
+                    moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.ActiveModule.ModuleID, this.ActiveModule.TabID, false).ModuleSettings["AFForumModuleID"]);
                 }
 
                 UsersOnline uo = new UsersOnline();
-                string sOnlineList = uo.GetUsersOnline(PortalSettings.PortalId, ForumModuleId, UserInfo);
-                IDataReader dr = DataProvider.Instance().Profiles_GetStats(PortalSettings.PortalId, ForumModuleId, 2);
+                string sOnlineList = uo.GetUsersOnline(this.PortalSettings.PortalId, this.ForumModuleId, this.UserInfo);
+                IDataReader dr = DataProvider.Instance().Profiles_GetStats(this.PortalSettings.PortalId, this.ForumModuleId, 2);
                 int anonCount = 0;
                 int memCount = 0;
                 int memTotal = 0;
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 sUsersOnline = Utilities.GetSharedResource("[RESX:UsersOnline]");
                 sUsersOnline = sUsersOnline.Replace("[USERCOUNT]", memCount.ToString());
                 sUsersOnline = sUsersOnline.Replace("[TOTALMEMBERCOUNT]", memTotal.ToString());
-                return Request.CreateResponse(HttpStatusCode.OK, sUsersOnline + " " + sOnlineList);
+                return this.Request.CreateResponse(HttpStatusCode.OK, sUsersOnline + " " + sOnlineList);
             }
         }
     }

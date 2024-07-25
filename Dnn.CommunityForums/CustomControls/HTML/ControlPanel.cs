@@ -33,8 +33,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public ControlPanel(int _portalId, int _moduleId)
         {
-            PortalId = _portalId;
-            ModuleId = _moduleId;
+            this.PortalId = _portalId;
+            this.ModuleId = _moduleId;
         }
 
         public string TemplatesOptions(Templates.TemplateTypes templateType)
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             StringBuilder sb = new StringBuilder();
             TemplateController tc = new TemplateController();
             sb.Append("<option value=\"0\">[RESX:Default]</option>");
-            List<TemplateInfo> lc = tc.Template_List(PortalId, ModuleId, templateType);
+            List<TemplateInfo> lc = tc.Template_List(this.PortalId, this.ModuleId, templateType);
             foreach (TemplateInfo l in lc)
             {
                 sb.Append("<option value=\"" + l.TemplateId + "\">" + l.Subject + "</option>");
@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("<option value=\"-1\">" + Utilities.GetSharedResource("DropDownSelect", true) + "</option>");
-            using (IDataReader dr = DataProvider.Instance().Forums_List(PortalId, ModuleId, -1, -1, false))
+            using (IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false))
             {
                 int tmpGroupId = -1;
                 while (dr.Read())
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string BindRolesForSecurityGrid(string rootPath)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo ri in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: this.PortalId))
             {
                 sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }

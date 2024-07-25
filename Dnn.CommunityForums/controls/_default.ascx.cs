@@ -32,22 +32,22 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            btnContinue.Visible = ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT");
-            btnContinue.Click += new System.EventHandler(btnContinue_Click);
+            this.btnContinue.Visible = ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "EDIT");
+            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
         }
 
         private void btnContinue_Click(object sender, System.EventArgs e)
         {
             ForumsConfig fc = new ForumsConfig();
             bool init = false;
-            init = fc.ForumsInit(PortalId, ModuleId);
+            init = fc.ForumsInit(this.PortalId, this.ModuleId);
             if (init == true)
             {
 
-                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, "AFINSTALLED", init.ToString());
-                DataCache.ClearAllCache(ModuleId);
-                DataCache.ClearAllCacheForTabId(TabId);
-                Response.Redirect(EditUrl());
+                DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "AFINSTALLED", init.ToString());
+                DataCache.ClearAllCache(this.ModuleId);
+                DataCache.ClearAllCacheForTabId(this.TabId);
+                this.Response.Redirect(this.EditUrl());
             }
         }
     }

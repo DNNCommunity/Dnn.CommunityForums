@@ -51,12 +51,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _profileMode;
+                return this._profileMode;
             }
 
             set
             {
-                _profileMode = value;
+                this._profileMode = value;
             }
         }
 
@@ -97,32 +97,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            btnProfileEdit.Click += new System.EventHandler(btnProfileEdit_Click);
-            btnProfileCancel.Click += new System.EventHandler(btnProfileCancel_Click);
-            btnProfileSave.Click += new System.EventHandler(btnProfileSave_Click);
+            this.btnProfileEdit.Click += new System.EventHandler(this.btnProfileEdit_Click);
+            this.btnProfileCancel.Click += new System.EventHandler(this.btnProfileCancel_Click);
+            this.btnProfileSave.Click += new System.EventHandler(this.btnProfileSave_Click);
 
             this.AppRelativeVirtualPath = "~/";
             try
             {
-                if (Request.QueryString["mode"] != null)
+                if (this.Request.QueryString["mode"] != null)
                 {
-                    if (Request.QueryString["mode"].ToLowerInvariant() == "edit" && CanEditMode())
+                    if (this.Request.QueryString["mode"].ToLowerInvariant() == "edit" && this.CanEditMode())
                     {
-                        ProfileMode = ProfileModes.Edit;
+                        this.ProfileMode = ProfileModes.Edit;
                     }
                     else
                     {
-                        GoViewURL();
+                        this.GoViewURL();
                     }
                 }
                 else
                 {
-                    ProfileMode = ProfileModes.View;
+                    this.ProfileMode = ProfileModes.View;
                 }
             }
             catch (Exception ex)
             {
-                ProfileMode = ProfileModes.View;
+                this.ProfileMode = ProfileModes.View;
             }
 
         }
@@ -130,27 +130,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            string sTemplate = TemplateCache.GetCachedTemplate(ForumModuleId, "_userprofile", 0);
+            string sTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId, "_userprofile", 0);
 
-            if (ProfileMode == ProfileModes.Edit)
+            if (this.ProfileMode == ProfileModes.Edit)
             {
                 sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
             }
 
             Literal lit = new Literal();
             UserController upc = new UserController();
-            User up = upc.GetUser(PortalId, ForumModuleId, UID);
-            up.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(up.UserRoles, PortalId, ForumModuleId, "CanRead");
-            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, PortalId, ForumModuleId, ImagePath, CurrentUserType, false, false, false, string.Empty, UserInfo.UserID, TimeZoneOffset);
-            sTemplate = RenderModals(sTemplate);
+            User up = upc.GetUser(this.PortalId, this.ForumModuleId, this.UID);
+            up.UserForums = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(up.UserRoles, this.PortalId, this.ForumModuleId, "CanRead");
+            sTemplate = TemplateUtils.ParseProfileTemplate(sTemplate, up, this.PortalId, this.ForumModuleId, this.ImagePath, this.CurrentUserType, false, false, false, string.Empty, this.UserInfo.UserID, this.TimeZoneOffset);
+            sTemplate = this.RenderModals(sTemplate);
 
             sTemplate = sTemplate.Replace("[AM:CONTROLS:AdminProfileSettings]", "<asp:placeholder id=\"plhProfileAdminSettings\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileMyPreferences]", "<asp:placeholder id=\"plhProfilePrefs\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileUserAccount]", "<asp:placeholder id=\"plhProfileUserAccount\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileForumTracker]", "<asp:placeholder id=\"plhTracker\" runat=\"server\" />");
-            sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + NavigateUrl(TabId, "", $"{ParamKeys.ViewType}={Views.Search}&{ParamKeys.UserId}={UID}") + "\">[RESX:ViewPostsByUser]</a>");
+            sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + this.NavigateUrl(this.TabId, "", $"{ParamKeys.ViewType}={Views.Search}&{ParamKeys.UserId}={this.UID}") + "\">[RESX:ViewPostsByUser]</a>");
 
-            sTemplate = GetTabsSection(sTemplate);
+            sTemplate = this.GetTabsSection(sTemplate);
             Control ctl = this.ParseControl(sTemplate);
             this.Controls.Add(ctl);
             while (!(ctl.Controls.Count == 0))
@@ -159,107 +159,107 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             //Begin Load Tab Control
-            plhTabs = (PlaceHolder)this.FindControl("plhTabs");
-            if (plhTabs != null & amTabs != null)
+            this.plhTabs = (PlaceHolder)this.FindControl("plhTabs");
+            if (this.plhTabs != null & this.amTabs != null)
             {
-                plhTabs.Controls.Add(amTabs);
+                this.plhTabs.Controls.Add(this.amTabs);
             }
 
-            LinkControls(Controls);
-            if (plhProfileEditButton != null)
+            this.LinkControls(this.Controls);
+            if (this.plhProfileEditButton != null)
             {
-                btnProfileEdit = new ImageButton();
-                btnProfileEdit.ID = "btnProfileEdit";
-                btnProfileEdit.CssClass = "amimagebutton";
-                btnProfileEdit.PostBack = true;
-                btnProfileEdit.Height = 50;
-                btnProfileEdit.Width = 50;
-                btnProfileEdit.ImageLocation = "TOP";
-                btnProfileEdit.Text = "[RESX:Button:Edit]";
-                btnProfileEdit.ImageUrl = Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "edit32.png");
-                btnProfileEdit.Visible = false;
-                plhProfileEditButton.Controls.Add(btnProfileEdit);
+                this.btnProfileEdit = new ImageButton();
+                this.btnProfileEdit.ID = "btnProfileEdit";
+                this.btnProfileEdit.CssClass = "amimagebutton";
+                this.btnProfileEdit.PostBack = true;
+                this.btnProfileEdit.Height = 50;
+                this.btnProfileEdit.Width = 50;
+                this.btnProfileEdit.ImageLocation = "TOP";
+                this.btnProfileEdit.Text = "[RESX:Button:Edit]";
+                this.btnProfileEdit.ImageUrl = this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "edit32.png");
+                this.btnProfileEdit.Visible = false;
+                this.plhProfileEditButton.Controls.Add(this.btnProfileEdit);
             }
 
-            if (plhProfileCancelButton != null)
+            if (this.plhProfileCancelButton != null)
             {
-                btnProfileCancel = new ImageButton();
-                btnProfileCancel.ID = "btnProfileCancel";
-                btnProfileCancel.CssClass = "amimagebutton";
-                btnProfileCancel.PostBack = true;
-                btnProfileCancel.Height = 50;
-                btnProfileCancel.Width = 50;
-                btnProfileCancel.ImageLocation = "TOP";
-                btnProfileCancel.Text = "[RESX:Button:Cancel]";
-                btnProfileCancel.ImageUrl = Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "cancel32.png");
-                btnProfileCancel.Visible = false;
-                plhProfileCancelButton.Controls.Add(btnProfileCancel);
+                this.btnProfileCancel = new ImageButton();
+                this.btnProfileCancel.ID = "btnProfileCancel";
+                this.btnProfileCancel.CssClass = "amimagebutton";
+                this.btnProfileCancel.PostBack = true;
+                this.btnProfileCancel.Height = 50;
+                this.btnProfileCancel.Width = 50;
+                this.btnProfileCancel.ImageLocation = "TOP";
+                this.btnProfileCancel.Text = "[RESX:Button:Cancel]";
+                this.btnProfileCancel.ImageUrl = this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "cancel32.png");
+                this.btnProfileCancel.Visible = false;
+                this.plhProfileCancelButton.Controls.Add(this.btnProfileCancel);
             }
 
-            if (plhProfileSaveButton != null)
+            if (this.plhProfileSaveButton != null)
             {
-                btnProfileSave = new ImageButton();
-                btnProfileSave.ID = "btnProfileSave";
-                btnProfileSave.CssClass = "amimagebutton";
-                btnProfileSave.PostBack = true;
-                btnProfileSave.Height = 50;
-                btnProfileSave.Width = 50;
-                btnProfileSave.ImageLocation = "TOP";
-                btnProfileSave.Text = "[RESX:Button:Save]";
-                btnProfileSave.ImageUrl = Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "save32.png");
-                btnProfileSave.Visible = false;
-                plhProfileSaveButton.Controls.Add(btnProfileSave);
+                this.btnProfileSave = new ImageButton();
+                this.btnProfileSave.ID = "btnProfileSave";
+                this.btnProfileSave.CssClass = "amimagebutton";
+                this.btnProfileSave.PostBack = true;
+                this.btnProfileSave.Height = 50;
+                this.btnProfileSave.Width = 50;
+                this.btnProfileSave.ImageLocation = "TOP";
+                this.btnProfileSave.Text = "[RESX:Button:Save]";
+                this.btnProfileSave.ImageUrl = this.Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath + "save32.png");
+                this.btnProfileSave.Visible = false;
+                this.plhProfileSaveButton.Controls.Add(this.btnProfileSave);
             }
 
-            if (plhProfileAdminSettings != null)
+            if (this.plhProfileAdminSettings != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_adminsettings.ascx");
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
                 tmpCtl.UserProfile = up.Profile;
-                plhProfileAdminSettings.Controls.Add(tmpCtl);
+                this.plhProfileAdminSettings.Controls.Add(tmpCtl);
             }
 
-            if (plhProfilePrefs != null)
+            if (this.plhProfilePrefs != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_mypreferences.ascx");
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
                 tmpCtl.UserProfile = up.Profile;
-                plhProfilePrefs.Controls.Add(tmpCtl);
+                this.plhProfilePrefs.Controls.Add(tmpCtl);
             }
 
-            if (plhProfileUserAccount != null)
+            if (this.plhProfileUserAccount != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_useraccount.ascx");
                 tmpCtl.ModuleConfiguration = this.ModuleConfiguration;
                 tmpCtl.UserProfile = up.Profile;
-                plhProfileUserAccount.Controls.Add(tmpCtl);
+                this.plhProfileUserAccount.Controls.Add(tmpCtl);
             }
 
-            if (plhTracker != null)
+            if (this.plhTracker != null)
             {
                 ForumView ctlForums = new ForumView();
                 ctlForums.ModuleConfiguration = this.ModuleConfiguration;
-                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(ForumModuleId,"ForumTracking", 0);
-                ctlForums.CurrentUserId = UID;
+                ctlForums.DisplayTemplate = TemplateCache.GetCachedTemplate(this.ForumModuleId,"ForumTracking", 0);
+                ctlForums.CurrentUserId = this.UID;
                 ctlForums.ForumIds = up.UserForums;
-                plhTracker.Controls.Add(ctlForums);
+                this.plhTracker.Controls.Add(ctlForums);
             }
 
-            if (btnProfileEdit != null)
+            if (this.btnProfileEdit != null)
             {
-                if (!(CurrentUserType == CurrentUserTypes.Anon) && (UID == this.UserId || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
+                if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
                 {
-                    if (ProfileMode == ProfileModes.View)
+                    if (this.ProfileMode == ProfileModes.View)
                     {
-                        btnProfileEdit.Visible = true;
-                        btnProfileCancel.Visible = false;
-                        btnProfileSave.Visible = false;
+                        this.btnProfileEdit.Visible = true;
+                        this.btnProfileCancel.Visible = false;
+                        this.btnProfileSave.Visible = false;
                     }
                     else
                     {
-                        btnProfileEdit.Visible = false;
-                        btnProfileCancel.Visible = true;
-                        btnProfileSave.Visible = true;
+                        this.btnProfileEdit.Visible = false;
+                        this.btnProfileCancel.Visible = true;
+                        this.btnProfileSave.Visible = true;
                     }
                 }
             }
@@ -268,22 +268,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void btnProfileEdit_Click(object sender, System.EventArgs e)
         {
-            if (!(CurrentUserType == CurrentUserTypes.Anon) && (UID == this.UserId || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
+            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
             {
-                Response.Redirect(NavigateUrl(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={UID}", $"{ParamKeys.mode}={Modes.edit}" }));
+                this.Response.Redirect(this.NavigateUrl(this.TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}", $"{ParamKeys.mode}={Modes.edit}" }));
             }
         }
 
         private void btnProfileCancel_Click(object sender, System.EventArgs e)
         {
-            GoViewURL();
+            this.GoViewURL();
         }
 
         private void btnProfileSave_Click(object sender, System.EventArgs e)
         {
-            if (SaveProfile())
+            if (this.SaveProfile())
             {
-                GoViewURL();
+                this.GoViewURL();
             }
         }
 
@@ -291,12 +291,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void GoViewURL()
         {
-            Response.Redirect(NavigateUrl(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={UID}" }));
+            this.Response.Redirect(this.NavigateUrl(this.TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={this.UID}" }));
         }
 
         private bool CanEditMode()
         {
-            if (!(CurrentUserType == CurrentUserTypes.Anon) && (UID == this.UserId || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
+            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && (this.UID == this.UserId || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser))
             {
                 return true;
             }
@@ -313,108 +313,108 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 switch (ctrl.ID)
                 {
                     case "plhProfileAdminSettings":
-                        plhProfileAdminSettings = (PlaceHolder)ctrl;
+                        this.plhProfileAdminSettings = (PlaceHolder)ctrl;
                         break;
                     case "plhProfilePrefs":
-                        plhProfilePrefs = (PlaceHolder)ctrl;
+                        this.plhProfilePrefs = (PlaceHolder)ctrl;
                         break;
                     case "plhProfileUserAccount":
-                        plhProfileUserAccount = (PlaceHolder)ctrl;
+                        this.plhProfileUserAccount = (PlaceHolder)ctrl;
                         break;
                     case "plhTracker":
-                        plhTracker = (PlaceHolder)ctrl;
+                        this.plhTracker = (PlaceHolder)ctrl;
                         break;
                     case "plhProfileEditButton":
-                        plhProfileEditButton = (PlaceHolder)ctrl;
+                        this.plhProfileEditButton = (PlaceHolder)ctrl;
                         break;
                     case "plhProfileSaveButton":
-                        plhProfileSaveButton = (PlaceHolder)ctrl;
+                        this.plhProfileSaveButton = (PlaceHolder)ctrl;
                         break;
                     case "plhProfileCancelButton":
-                        plhProfileCancelButton = (PlaceHolder)ctrl;
+                        this.plhProfileCancelButton = (PlaceHolder)ctrl;
                         break;
                     case "txtWebSite":
-                        txtWebSite = (TextBox)ctrl;
+                        this.txtWebSite = (TextBox)ctrl;
                         break;
                     case "txtOccupation":
-                        txtOccupation = (TextBox)ctrl;
+                        this.txtOccupation = (TextBox)ctrl;
                         break;
                     case "txtLocation":
-                        txtLocation = (TextBox)ctrl;
+                        this.txtLocation = (TextBox)ctrl;
                         break;
                     case "txtInterests":
-                        txtInterests = (TextBox)ctrl;
+                        this.txtInterests = (TextBox)ctrl;
 
                         break;
                     case "trAvatarLinks":
-                        trAvatarLinks = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
+                        this.trAvatarLinks = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
                         break;
                     case "tblAvatars":
-                        tblAvatars = (System.Web.UI.HtmlControls.HtmlTable)ctrl;
+                        this.tblAvatars = (System.Web.UI.HtmlControls.HtmlTable)ctrl;
                         break;
                     case "txtYahoo":
-                        txtYahoo = (TextBox)ctrl;
+                        this.txtYahoo = (TextBox)ctrl;
                         break;
                     case "txtMSN":
-                        txtMSN = (TextBox)ctrl;
+                        this.txtMSN = (TextBox)ctrl;
                         break;
                     case "txtICQ":
-                        txtICQ = (TextBox)ctrl;
+                        this.txtICQ = (TextBox)ctrl;
                         break;
                     case "txtAOL":
-                        txtAOL = (TextBox)ctrl;
+                        this.txtAOL = (TextBox)ctrl;
                         break;
                     case "txtSignature":
-                        txtSignature = (TextBox)ctrl;
+                        this.txtSignature = (TextBox)ctrl;
                         break;
                     case "btnProfileEdit":
-                        btnProfileEdit = (ImageButton)ctrl;
+                        this.btnProfileEdit = (ImageButton)ctrl;
                         break;
                     case "btnProfileCancel":
-                        btnProfileCancel = (ImageButton)ctrl;
+                        this.btnProfileCancel = (ImageButton)ctrl;
                         break;
                     case "btnProfileSave":
-                        btnProfileSave = (ImageButton)ctrl;
+                        this.btnProfileSave = (ImageButton)ctrl;
                         break;
                     case "lblAvatarError":
-                        lblAvatarError = (Label)ctrl;
+                        this.lblAvatarError = (Label)ctrl;
                         break;
                 }
 
                 if (ctrl.Controls.Count > 0)
                 {
-                    LinkControls(ctrl.Controls);
+                    this.LinkControls(ctrl.Controls);
                 }
             }
         }
 
         private bool SaveProfile()
         {
-            if (CanEditMode())
+            if (this.CanEditMode())
             {
-                DotNetNuke.Entities.Users.UserInfo objuser = DotNetNuke.Entities.Users.UserController.GetUserById(PortalId, UID);
+                DotNetNuke.Entities.Users.UserInfo objuser = DotNetNuke.Entities.Users.UserController.GetUserById(this.PortalId, this.UID);
                 UserProfileController upc = new UserProfileController();
                 UserController uc = new UserController();
-                UserProfileInfo upi = uc.GetUser(PortalId, ForumModuleId, UID).Profile;
+                UserProfileInfo upi = uc.GetUser(this.PortalId, this.ForumModuleId, this.UID).Profile;
                 if (upi != null)
                 {
-                    upi.WebSite = Utilities.XSSFilter(txtWebSite.Text, true);
-                    upi.Occupation = Utilities.XSSFilter(txtOccupation.Text, true);
-                    upi.Location = Utilities.XSSFilter(txtLocation.Text, true);
-                    upi.Interests = Utilities.XSSFilter(txtInterests.Text, true);
-                    upi.Yahoo = Utilities.XSSFilter(txtYahoo.Text, true);
-                    upi.MSN = Utilities.XSSFilter(txtMSN.Text, true);
-                    upi.ICQ = Utilities.XSSFilter(txtICQ.Text, true);
-                    upi.AOL = Utilities.XSSFilter(txtAOL.Text, true);
-                    if (MainSettings.AllowSignatures == 1)
+                    upi.WebSite = Utilities.XSSFilter(this.txtWebSite.Text, true);
+                    upi.Occupation = Utilities.XSSFilter(this.txtOccupation.Text, true);
+                    upi.Location = Utilities.XSSFilter(this.txtLocation.Text, true);
+                    upi.Interests = Utilities.XSSFilter(this.txtInterests.Text, true);
+                    upi.Yahoo = Utilities.XSSFilter(this.txtYahoo.Text, true);
+                    upi.MSN = Utilities.XSSFilter(this.txtMSN.Text, true);
+                    upi.ICQ = Utilities.XSSFilter(this.txtICQ.Text, true);
+                    upi.AOL = Utilities.XSSFilter(this.txtAOL.Text, true);
+                    if (this.MainSettings.AllowSignatures == 1)
                     {
-                        upi.Signature = Utilities.XSSFilter(txtSignature.Text, true);
+                        upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, true);
                         upi.Signature = Utilities.StripHTMLTag(upi.Signature);
                         upi.Signature = HttpUtility.HtmlEncode(upi.Signature);
                     }
-                    else if (MainSettings.AllowSignatures == 2)
+                    else if (this.MainSettings.AllowSignatures == 2)
                     {
-                        upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
+                        upi.Signature = Utilities.XSSFilter(this.txtSignature.Text, false);
                     }
 
                     upc.Profiles_Save(upi);
@@ -424,7 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     profproperties = objuser.Profile.ProfileProperties;
                     foreach (DotNetNuke.Entities.Profile.ProfilePropertyDefinition profprop in profproperties)
                     {
-                        Control ctl = RecursiveFind(this, "dnnctl" + profprop.PropertyName);
+                        Control ctl = this.RecursiveFind(this, "dnnctl" + profprop.PropertyName);
                         if (ctl != null)
                         {
                             if (ctl is TextBox)
@@ -443,7 +443,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (blnSaveProfile)
                     {
-                        DotNetNuke.Entities.Users.UserController.UpdateUser(PortalId, objuser);
+                        DotNetNuke.Entities.Users.UserController.UpdateUser(this.PortalId, objuser);
                     }
                 }
             }
@@ -460,7 +460,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             foreach (Control tmpctl in ctl.Controls)
             {
-                Control t = RecursiveFind(tmpctl, controlId);
+                Control t = this.RecursiveFind(tmpctl, controlId);
                 if (t != null)
                 {
                     return t;
@@ -491,9 +491,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             bAddModal = true;
                             break;
                         case "private":
-                            if (!(CurrentUserType == CurrentUserTypes.Anon))
+                            if (!(this.CurrentUserType == CurrentUserTypes.Anon))
                             {
-                                if (UserId == UID || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
+                                if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddModal = true;
                                 }
@@ -501,35 +501,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                             break;
                         case "auth":
-                            if (!(CurrentUserType == CurrentUserTypes.Anon))
+                            if (!(this.CurrentUserType == CurrentUserTypes.Anon))
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         case "forummod":
-                            if (!(CurrentUserType == CurrentUserTypes.Anon) && !(CurrentUserType == CurrentUserTypes.Auth))
+                            if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         case "admin":
-                            if (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
+                            if (this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         case "superuser":
-                            if (CurrentUserType == CurrentUserTypes.SuperUser)
+                            if (this.CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddModal = true;
                             }
 
                             break;
                         default:
-                            bAddModal = UserInfo.IsInRole(sec);
+                            bAddModal = this.UserInfo.IsInRole(sec);
                             break;
                     }
 
@@ -569,7 +569,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Regex regExp = new Regex(pattern);
             MatchCollection matches = null;
             matches = regExp.Matches(sOut);
-            amTabs = new DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs();
+            this.amTabs = new DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs();
             foreach (Match match in matches)
             {
                 bool bAddTab = false;
@@ -580,9 +580,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sec = matchValue.Split(':')[1].ToLowerInvariant();
                     if (sec == "private")
                     {
-                        if (!(CurrentUserType == CurrentUserTypes.Anon))
+                        if (!(this.CurrentUserType == CurrentUserTypes.Anon))
                         {
-                            if (UserId == UID || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
+                            if (this.UserId == this.UID || this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddTab = true;
                                 access = CurrentUserTypes.Admin;
@@ -613,28 +613,28 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 bAddTab = true;
                                 break;
                             case CurrentUserTypes.Auth:
-                                if (!(CurrentUserType == CurrentUserTypes.Anon))
+                                if (!(this.CurrentUserType == CurrentUserTypes.Anon))
                                 {
                                     bAddTab = true;
                                 }
 
                                 break;
                             case CurrentUserTypes.ForumMod:
-                                if (!(CurrentUserType == CurrentUserTypes.Anon) && !(CurrentUserType == CurrentUserTypes.Auth))
+                                if (!(this.CurrentUserType == CurrentUserTypes.Anon) && !(this.CurrentUserType == CurrentUserTypes.Auth))
                                 {
                                     bAddTab = true;
                                 }
 
                                 break;
                             case CurrentUserTypes.Admin:
-                                if (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
+                                if (this.CurrentUserType == CurrentUserTypes.Admin || this.CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddTab = true;
                                 }
 
                                 break;
                             case CurrentUserTypes.SuperUser:
-                                if (CurrentUserType == CurrentUserTypes.SuperUser)
+                                if (this.CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddTab = true;
                                 }
@@ -674,7 +674,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         tb.Content = tbc;
                     }
 
-                    amTabs.Tabs.Add(tb);
+                    this.amTabs.Tabs.Add(tb);
                 }
 
             }

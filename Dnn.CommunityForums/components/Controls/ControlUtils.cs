@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    sb.AppendFormat("<td class=\"afpg-page\"><a href=\"{0}\"><span>{1}</span></a></td>", BuildUrl(tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, tagId, categoryId, otherPrefix, i, -1, -1), i);
+                    sb.AppendFormat("<td class=\"afpg-page\"><a href=\"{0}\"><span>{1}</span></a></td>", this.BuildUrl(tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, tagId, categoryId, otherPrefix, i, -1, -1), i);
                 }
 
                 if (i == pageCount)
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
         {
-            return BuildUrl(tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, -1, string.Empty, tagId, categoryId, otherPrefix, pageId, contentId, socialGroupId);
+            return this.BuildUrl(tabId, moduleId, groupPrefix, forumPrefix, forumGroupId, forumID, -1, string.Empty, tagId, categoryId, otherPrefix, pageId, contentId, socialGroupId);
         }
 
         public string BuildUrl(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int topicId, string topicURL, int tagId, int categoryId, string otherPrefix, int pageId, int contentId, int socialGroupId)
@@ -241,12 +241,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string TopicURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)
         {
-            return TopicURL(tabId, moduleId, Convert.ToInt32(row["TopicId"].ToString()), row["GroupPrefixURL"].ToString(), row["PrefixURL"].ToString(), row["URL"].ToString(), pageId);
+            return this.TopicURL(tabId, moduleId, Convert.ToInt32(row["TopicId"].ToString()), row["GroupPrefixURL"].ToString(), row["PrefixURL"].ToString(), row["URL"].ToString(), pageId);
         }
 
         public string ForumURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)
         {
-            return ForumURL(row["GroupPrefixURL"].ToString(), row["PrefixURL"].ToString(), int.Parse(row["ForumID"].ToString()), tabId, moduleId, pageId);
+            return this.ForumURL(row["GroupPrefixURL"].ToString(), row["PrefixURL"].ToString(), int.Parse(row["ForumID"].ToString()), tabId, moduleId, pageId);
         }
 
         public string ForumURL(string groupPrefix, string forumPrefix, int forumId, int tabId, int moduleId, int pageId = 1)

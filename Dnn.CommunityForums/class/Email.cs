@@ -41,10 +41,10 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Email : DotNetNuke.Modules.ActiveForums.Entities.EmailInfo
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyText { get => Body; set => Body = value; }
+        public string BodyText { get => this.Body; set => this.Body = value; }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
-        public string BodyHTML { get => Body; set => Body = value; }
+        public string BodyHTML { get => this.Body; set => this.Body = value; }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEMail().")]
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(templateId, portalId, moduleId, tabId, forumId, topicId, replyId, comments, author);

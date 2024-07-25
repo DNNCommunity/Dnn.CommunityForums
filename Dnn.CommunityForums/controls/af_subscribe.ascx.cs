@@ -37,8 +37,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbSubscribe.CallbackEvent += cbSubscribe_Callback;
-            chkSubscribe.CheckedChanged += new System.EventHandler(chkSubscribe_CheckedChanged);
+            this.cbSubscribe.CallbackEvent += this.cbSubscribe_Callback;
+            this.chkSubscribe.CheckedChanged += new System.EventHandler(this.chkSubscribe_CheckedChanged);
 
         }
 
@@ -46,29 +46,29 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            string SubscribeText = GetSharedResource("[RESX:Subscribe]");
-            chkSubscribe.Text = SubscribeText;
-            chkSubscribe.Checked = IsSubscribed;
-            if (UseAjax)
+            string SubscribeText = this.GetSharedResource("[RESX:Subscribe]");
+            this.chkSubscribe.Text = SubscribeText;
+            this.chkSubscribe.Checked = this.IsSubscribed;
+            if (this.UseAjax)
             {
-                chkSubscribe.Attributes.Add("onclick", "af_toggleSub();");
-                AddToggleScript();
+                this.chkSubscribe.Attributes.Add("onclick", "af_toggleSub();");
+                this.AddToggleScript();
             }
             else
             {
-                chkSubscribe.AutoPostBack = true;
+                this.chkSubscribe.AutoPostBack = true;
             }
         }
 
         private void cbSubscribe_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
-            ToggleSubscribe();
-            chkSubscribe.RenderControl(e.Output);
+            this.ToggleSubscribe();
+            this.chkSubscribe.RenderControl(e.Output);
         }
 
         private void chkSubscribe_CheckedChanged(object sender, System.EventArgs e)
         {
-            ToggleSubscribe();
+            this.ToggleSubscribe();
         }
 
         #endregion
@@ -76,26 +76,26 @@ namespace DotNetNuke.Modules.ActiveForums
         private void AddToggleScript()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            sb.Append("function af_toggleSub(){" + cbSubscribe.ClientID + ".Callback();};");
-            Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "afsubscribe", sb.ToString(), true);
+            sb.Append("function af_toggleSub(){" + this.cbSubscribe.ClientID + ".Callback();};");
+            this.Page.ClientScript.RegisterClientScriptBlock(this.Page.GetType(), "afsubscribe", sb.ToString(), true);
         }
 
         private void ToggleSubscribe()
         {
             int iStatus = 0;
             SubscriptionController sc = new SubscriptionController();
-            iStatus = sc.Subscription_Update(PortalId, ModuleId, ForumId, TopicId, 1, this.UserId, ForumUser.UserRoles);
+            iStatus = sc.Subscription_Update(this.PortalId, this.ModuleId, this.ForumId, this.TopicId, 1, this.UserId, this.ForumUser.UserRoles);
             if (iStatus == 1)
             {
-                IsSubscribed = true;
+                this.IsSubscribed = true;
             }
             else
             {
-                IsSubscribed = false;
+                this.IsSubscribed = false;
             }
 
-            chkSubscribe.Checked = IsSubscribed;
-            chkSubscribe.Text = GetSharedResource("[RESX:Subscribe]");
+            this.chkSubscribe.Checked = this.IsSubscribed;
+            this.chkSubscribe.Text = this.GetSharedResource("[RESX:Subscribe]");
 
         }
         #endregion

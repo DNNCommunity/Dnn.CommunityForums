@@ -45,12 +45,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _rating;
+                return this._rating;
             }
 
             set
             {
-                _rating = value;
+                this._rating = value;
             }
         }
 
@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _ratingCSS;
+                return this._ratingCSS;
             }
 
             set
             {
-                _ratingCSS = value;
+                this._ratingCSS = value;
             }
         }
 
@@ -71,12 +71,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _topicId;
+                return this._topicId;
             }
 
             set
             {
-                _topicId = value;
+                this._topicId = value;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _userId;
+                return this._userId;
             }
 
             set
             {
-                _userId = value;
+                this._userId = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            cb.CallbackEvent += new Callback.CallbackEventHandler(cb_Callback);
+            this.cb.CallbackEvent += new Callback.CallbackEventHandler(this.cb_Callback);
 
-            if (Enabled)
+            if (this.Enabled)
             {
-                cb.ID = "cb";
-                this.Controls.Add(cb);
+                this.cb.ID = "cb";
+                this.Controls.Add(this.cb);
             }
 
         }
@@ -110,14 +110,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void Render(HtmlTextWriter writer)
         {
             Literal lit = new Literal();
-            lit.Text = RenderRating();
-            if (Enabled)
+            lit.Text = this.RenderRating();
+            if (this.Enabled)
             {
                 CallBackContent cbContent = new CallBackContent();
                 cbContent.Controls.Add(lit);
-                cb.Content = cbContent;
+                this.cb.Content = cbContent;
 
-                cb.RenderControl(writer);
+                this.cb.RenderControl(writer);
             }
             else
             {
@@ -128,45 +128,45 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string RenderRating()
         {
-            if (RatingValue > 0)
+            if (this.RatingValue > 0)
             {
-                if (Math.Round(RatingValue, 0) == 1)
+                if (Math.Round(this.RatingValue, 0) == 1)
                 {
-                        RatingCSS += " onepos";
+                        this.RatingCSS += " onepos";
                 }
-                else if (Math.Round(RatingValue, 0) == 2)
+                else if (Math.Round(this.RatingValue, 0) == 2)
                 {
-                        RatingCSS += " twopos";
+                        this.RatingCSS += " twopos";
                 }
-                else if (Math.Round(RatingValue, 0) == 3)
+                else if (Math.Round(this.RatingValue, 0) == 3)
                 {
-                        RatingCSS += " threepos";
+                        this.RatingCSS += " threepos";
                 }
-                else if (Math.Round(RatingValue, 0) == 4)
+                else if (Math.Round(this.RatingValue, 0) == 4)
                 {
-                        RatingCSS += " fourpos";
+                        this.RatingCSS += " fourpos";
                 }
-                else if (Math.Round(RatingValue, 0) == 5)
+                else if (Math.Round(this.RatingValue, 0) == 5)
                 {
-                        RatingCSS += " fivepos";
+                        this.RatingCSS += " fivepos";
                 }
             }
 
-            if (RatingValue == 0 && Enabled == false)
+            if (this.RatingValue == 0 && this.Enabled == false)
             {
                 return string.Empty;
             }
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("<div class=\"" + CssClass + "\">");
-            sb.Append("<ul class=\"" + RatingCSS + "\">");
-            if (Enabled)
+            sb.Append("<div class=\"" + this.CssClass + "\">");
+            sb.Append("<ul class=\"" + this.RatingCSS + "\">");
+            if (this.Enabled)
             {
-                sb.Append("<li class=\"one\"><a title=\"[RESX:Rate:1Star]\" href=\"#\" onclick=\"" + cb.ClientID + ".Callback(1); return false;\">1</a></li>");
-                sb.Append("<li class=\"two\"><a title=\"[RESX:Rate:2Star]\" href=\"#\" onclick=\"" + cb.ClientID + ".Callback(2); return false;\">2</a></li>");
-                sb.Append("<li class=\"three\"><a title=\"[RESX:Rate:3Star]\" href=\"#\" onclick=\"" + cb.ClientID + ".Callback(3); return false;\">3</a></li>");
-                sb.Append("<li class=\"four\"><a title=\"[RESX:Rate:4Star]\" href=\"#\" onclick=\"" + cb.ClientID + ".Callback(4); return false;\">4</a></li>");
-                sb.Append("<li class=\"five\"><a title=\"[RESX:Rate:5Star]\" href=\"#\" onclick=\"" + cb.ClientID + ".Callback(5); return false;\">5</a></li>");
+                sb.Append("<li class=\"one\"><a title=\"[RESX:Rate:1Star]\" href=\"#\" onclick=\"" + this.cb.ClientID + ".Callback(1); return false;\">1</a></li>");
+                sb.Append("<li class=\"two\"><a title=\"[RESX:Rate:2Star]\" href=\"#\" onclick=\"" + this.cb.ClientID + ".Callback(2); return false;\">2</a></li>");
+                sb.Append("<li class=\"three\"><a title=\"[RESX:Rate:3Star]\" href=\"#\" onclick=\"" + this.cb.ClientID + ".Callback(3); return false;\">3</a></li>");
+                sb.Append("<li class=\"four\"><a title=\"[RESX:Rate:4Star]\" href=\"#\" onclick=\"" + this.cb.ClientID + ".Callback(4); return false;\">4</a></li>");
+                sb.Append("<li class=\"five\"><a title=\"[RESX:Rate:5Star]\" href=\"#\" onclick=\"" + this.cb.ClientID + ".Callback(5); return false;\">5</a></li>");
             }
             else
             {
@@ -191,14 +191,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    RatingValue = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: rate, IpAddress: HttpContext.Current.Request.UserHostAddress.ToString());
+                    this.RatingValue = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, IpAddress: HttpContext.Current.Request.UserHostAddress.ToString());
                 }
             }
 
             CallBackContent cbContent = new CallBackContent();
-            cbContent.Controls.Add(new LiteralControl(RenderRating()));
-            cb.Content = cbContent;
-            cb.Content.RenderControl(e.Output);
+            cbContent.Controls.Add(new LiteralControl(this.RenderRating()));
+            this.cb.Content = cbContent;
+            this.cb.Content.RenderControl(e.Output);
         }
     }
 }

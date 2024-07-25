@@ -34,29 +34,29 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            cbGrid.CallbackEvent += cbGrid_Callback;
+            this.cbGrid.CallbackEvent += this.cbGrid_Callback;
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            arrowUp = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/arrow_up.png") + "\" alt=\"" + GetSharedResource("[RESX:MoveUp]") + "\" />";
-            arrowDown = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/arrow_down.png") + "\" alt=\"" + GetSharedResource("[RESX:MoveDown]") + "\" />";
-            edit = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/forum_edit.png") + "\" alt=\"" + GetSharedResource("[RESX:Edit]") + "\" />";
-            if (! cbGrid.IsCallback)
+            this.arrowUp = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/arrow_up.png") + "\" alt=\"" + this.GetSharedResource("[RESX:MoveUp]") + "\" />";
+            this.arrowDown = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/arrow_down.png") + "\" alt=\"" + this.GetSharedResource("[RESX:MoveDown]") + "\" />";
+            this.edit = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/forum_edit.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Edit]") + "\" />";
+            if (! this.cbGrid.IsCallback)
             {
-                BindForums();
+                this.BindForums();
             }
 
         }
 
         private void BindForums()
         {
-            IDataReader dr = DataProvider.Instance().Forums_List(PortalId, ModuleId, -1, -1, false);
+            IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, this.ModuleId, -1, -1, false);
             DataTable dt = new DataTable("Forums");
             dt.Load(dr);
-            int totalGroups = GetGroupCount(dt);
+            int totalGroups = this.GetGroupCount(dt);
             int totalGroupForum = 0;
             string tmpGroup = string.Empty;
             int i = 0;
@@ -73,27 +73,27 @@ namespace DotNetNuke.Modules.ActiveForums
                         string sGroupName = row["GroupName"].ToString();
                         if (groupCount > 0)
                         {
-                            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + RenderSpacer(5, 100) + "</td></tr>");
+                            sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + this.RenderSpacer(5, 100) + "</td></tr>");
                         }
 
-                        sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">");
+                        sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + this.RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">");
                         sb.Append(sGroupName);
-                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">" + edit + "</div></td><td>");
+                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">" + this.edit + "</div></td><td>");
                         if (groupCount > 0)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",-1);\">" + arrowUp + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",-1);\">" + this.arrowUp + "</div>");
                         }
 
                         groupCount += 1;
                         sb.Append("</td><td>");
                         if (groupCount < totalGroups)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",1);\">" + arrowDown + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",1);\">" + this.arrowDown + "</div>");
                         }
 
-                        sb.Append("</td><td class=\"afgroupback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
+                        sb.Append("</td><td class=\"afgroupback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
                         forumCount = 0;
-                        totalGroupForum = GetGroupForumCount(dt, Convert.ToInt32(row["ForumGroupId"]));
+                        totalGroupForum = this.GetGroupForumCount(dt, Convert.ToInt32(row["ForumGroupId"]));
                         tmpGroup = row["ForumGroupId"].ToString();
                     }
 
@@ -105,26 +105,26 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (forumCount < Globals.ForumCount)
                     {
                         string sForumName = row["ForumName"].ToString();
-                        sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">");
+                        sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\" width=\"15\">" + this.RenderSpacer(5, 15) + "</td><td colspan=\"2\" width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">");
                         sb.Append(sForumName);
-                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">" + edit + "</div></td><td>");
+                        sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">" + this.edit + "</div></td><td>");
                         if (forumCount > 0)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + arrowUp + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + this.arrowUp + "</div>");
                         }
 
                         forumCount += 1;
                         sb.Append("</td><td>");
                         if (forumCount < totalGroupForum)
                         {
-                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + arrowDown + "</div>");
+                            sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + this.arrowDown + "</div>");
                         }
 
-                        sb.Append("</td><td class=\"afforumback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
+                        sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
 
-                        if (HasSubForums(Convert.ToInt32(row["ForumId"]), dt) > 0)
+                        if (this.HasSubForums(Convert.ToInt32(row["ForumId"]), dt) > 0)
                         {
-                            sb.Append(AddSubForums(dt, row));
+                            sb.Append(this.AddSubForums(dt, row));
                         }
 
                     }
@@ -139,13 +139,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             sb.Append("<tr><td></td><td></td><td></td><td width=\"100%\"></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td width=\"100%\" colspan=\"2\"></td><td></td><td></td><td></td><td></td></tr></table>");
-            litForums.Text = sb.ToString();
+            this.litForums.Text = sb.ToString();
 
         }
 
         private string RenderSpacer(int Height, int Width)
         {
-            return "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + Height + "\" width=\"" + Width + "\" alt=\"-\" />";
+            return "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + Height + "\" width=\"" + Width + "\" alt=\"-\" />";
         }
 
         private int GetGroupCount(DataTable dt)
@@ -183,29 +183,29 @@ namespace DotNetNuke.Modules.ActiveForums
         private string AddSubForums(DataTable dt, DataRow dr)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
-            int totalSubCount = HasSubForums(Convert.ToInt32(dr["ForumId"]), dt);
+            int totalSubCount = this.HasSubForums(Convert.ToInt32(dr["ForumId"]), dt);
             int subCount = 0;
             foreach (DataRow row in dt.Rows)
             {
                 if (Convert.ToInt32(dr["ForumId"]) == Convert.ToInt32(row["ParentForumId"]))
                 {
                     string sForumName = row["ForumName"].ToString();
-                    sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + RenderSpacer(1, 4) + "</td><td style=\"width:15px;\">" + RenderSpacer(5, 15) + "</td><td style=\"width:15px;\">" + RenderSpacer(5, 15) + "</td><td width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">");
+                    sb.Append("<tr class=\"afforumback\"><td class=\"afforumback_left\">" + this.RenderSpacer(1, 4) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td style=\"width:15px;\">" + this.RenderSpacer(5, 15) + "</td><td width=\"100%\" onmouseover=\"this.className='afrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">");
                     sb.Append(sForumName);
-                    sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">" + edit + "</div></td><td>");
+                    sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumId"].ToString() + "|F');\">" + this.edit + "</div></td><td>");
                     if (subCount > 0)
                     {
-                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + arrowUp + "</div>");
+                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + this.arrowUp + "</div>");
                     }
 
                     subCount += 1;
                     sb.Append("</td><td>");
                     if (subCount < totalSubCount)
                     {
-                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + arrowDown + "</div>");
+                        sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + this.arrowDown + "</div>");
                     }
 
-                    sb.Append("</td><td class=\"afforumback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
+                    sb.Append("</td><td class=\"afforumback_right\">" + this.RenderSpacer(1, 4) + "</td></tr>");
                 }
             }
 
@@ -233,17 +233,17 @@ namespace DotNetNuke.Modules.ActiveForums
             switch (e.Parameters[0].ToString().ToLower())
             {
                 case "g":
-                    DataProvider.Instance().Groups_Move(ModuleId, objectId, dir);
+                    DataProvider.Instance().Groups_Move(this.ModuleId, objectId, dir);
                     break;
                 case "f":
-                    DataProvider.Instance().Forums_Move(ModuleId, objectId, dir);
+                    DataProvider.Instance().Forums_Move(this.ModuleId, objectId, dir);
                     break;
             }
 
-            DataCache.ClearAllCache(ModuleId);
-            DataCache.ClearAllCacheForTabId(TabId);
-            BindForums();
-            litForums.RenderControl(e.Output);
+            DataCache.ClearAllCache(this.ModuleId);
+            DataCache.ClearAllCacheForTabId(this.TabId);
+            this.BindForums();
+            this.litForums.RenderControl(e.Output);
         }
     }
 }

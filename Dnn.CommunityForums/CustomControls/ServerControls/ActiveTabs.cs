@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region  Constructor
         public ActiveTabs()
         {
-            _tabs = new List<Tab>();
+            this._tabs = new List<Tab>();
         }
 
         #endregion
@@ -65,17 +65,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (_tabs == null)
+                if (this._tabs == null)
                 {
-                    _tabs = new List<Tab>();
+                    this._tabs = new List<Tab>();
                 }
 
-                return _tabs;
+                return this._tabs;
             }
 
             set
             {
-                _tabs = value;
+                this._tabs = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _imagesPath;
+                return this._imagesPath;
             }
 
             set
             {
-                _imagesPath = value;
+                this._imagesPath = value;
             }
         }
 
@@ -96,12 +96,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _targetDiv;
+                return this._targetDiv;
             }
 
             set
             {
-                _targetDiv = value;
+                this._targetDiv = value;
             }
         }
 
@@ -110,12 +110,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabDisplayCSS;
+                return this._tabDisplayCSS;
             }
 
             set
             {
-                _tabDisplayCSS = value;
+                this._tabDisplayCSS = value;
             }
         }
 
@@ -124,12 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabStripCSS;
+                return this._tabStripCSS;
             }
 
             set
             {
-                _tabStripCSS = value;
+                this._tabStripCSS = value;
             }
         }
 
@@ -138,12 +138,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabTextCSS;
+                return this._tabTextCSS;
             }
 
             set
             {
-                _tabTextCSS = value;
+                this._tabTextCSS = value;
             }
         }
 
@@ -152,12 +152,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabTextOverCSS;
+                return this._tabTextOverCSS;
             }
 
             set
             {
-                _tabTextOverCSS = value;
+                this._tabTextOverCSS = value;
             }
         }
 
@@ -166,12 +166,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _tabTextSelCSS;
+                return this._tabTextSelCSS;
             }
 
             set
             {
-                _tabTextSelCSS = value;
+                this._tabTextSelCSS = value;
             }
         }
 
@@ -180,12 +180,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _contentBackGround;
+                return this._contentBackGround;
             }
 
             set
             {
-                _contentBackGround = value;
+                this._contentBackGround = value;
             }
         }
 
@@ -206,12 +206,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _contentHeight;
+                return this._contentHeight;
             }
 
             set
             {
-                _contentHeight = value;
+                this._contentHeight = value;
             }
         }
 
@@ -219,12 +219,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return _loadType;
+                return this._loadType;
             }
 
             set
             {
-                _loadType = value;
+                this._loadType = value;
             }
         }
 
@@ -232,21 +232,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
+                this.EnsureChildControls();
                 return base.Controls;
             }
         }
 
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
-            if (Tabs != null && Visible == true)
+            if (this.Tabs != null && this.Visible == true)
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
                 int i = 0;
                 writer = new HtmlTextWriter(writer, string.Empty);
-                AddAttributesToRender(writer);
-                foreach (Tab tab in Tabs)
+                this.AddAttributesToRender(writer);
+                foreach (Tab tab in this.Tabs)
                 {
 
                     writer.AddAttribute(HtmlTextWriterAttribute.Id, "div" + tab.ControlKey);
@@ -283,7 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 writer.AddAttribute(HtmlTextWriterAttribute.Id, "amtabcontent");
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
                 i = 0;
-                foreach (Tab tab in Tabs)
+                foreach (Tab tab in this.Tabs)
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Id, "div" + tab.ControlKey + "_amcnt");
                     writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabdisplay");
@@ -321,14 +321,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (Context == null || Page == null)
+            if (this.Context == null || this.Page == null)
             {
                 return;
             }
 
-            if (Tabs != null)
+            if (this.Tabs != null)
             {
-                foreach (var _Tab in Tabs)
+                foreach (var _Tab in this.Tabs)
                 {
                     if (_Tab.Content != null)
                     {
@@ -350,7 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnPreRender(e);
 
-            if (Visible == true)
+            if (this.Visible == true)
             {
 
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("};");
                 sb.Append("};");
 
-                Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "TabScripts", sb.ToString(), true);
+                this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "TabScripts", sb.ToString(), true);
             }
         }
     }

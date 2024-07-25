@@ -47,13 +47,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                EnsureChildControls();
-                return _menu ?? (_menu = new MenuContent());
+                this.EnsureChildControls();
+                return this._menu ?? (this._menu = new MenuContent());
             }
 
             set
             {
-                _menu = value;
+                this._menu = value;
             }
         }
 
@@ -81,41 +81,41 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public MenuButton()
         {
-            MenuCss = null;
-            MenuWidth = 100;
-            MenuHeight = 100;
-            MenuOverflow = "hidden";
-            OffsetTop = 16;
-            OffsetLeft = 0;
-            AnimationSteps = 5;
-            AnimationDelay = 20;
-            ExpandDirection = ExpandDirections.DownRight;
+            this.MenuCss = null;
+            this.MenuWidth = 100;
+            this.MenuHeight = 100;
+            this.MenuOverflow = "hidden";
+            this.OffsetTop = 16;
+            this.OffsetLeft = 0;
+            this.AnimationSteps = 5;
+            this.AnimationDelay = 20;
+            this.ExpandDirection = ExpandDirections.DownRight;
         }
 
         protected override void Render(HtmlTextWriter output)
         {
-            output.AddAttribute("class", CssClass);
-            output.AddAttribute("onclick", "window." + ClientID + ".Toggle()");
-            output.AddAttribute("id", ClientID);
+            output.AddAttribute("class", this.CssClass);
+            output.AddAttribute("onclick", "window." + this.ClientID + ".Toggle()");
+            output.AddAttribute("id", this.ClientID);
             output.RenderBeginTag(HtmlTextWriterTag.Div);
-            output.Write(Text);
+            output.Write(this.Text);
             output.RenderEndTag();
 
-            output.AddAttribute("class", MenuCss);
+            output.AddAttribute("class", this.MenuCss);
             output.AddStyleAttribute("position", "absolute");
             output.AddStyleAttribute("display", "none");
-            output.AddStyleAttribute("overflow", MenuOverflow);
-            output.AddAttribute("id", ClientID + "_div");
+            output.AddStyleAttribute("overflow", this.MenuOverflow);
+            output.AddAttribute("id", this.ClientID + "_div");
             output.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            if (Menu != null)
+            if (this.Menu != null)
             {
-                Menu.RenderControl(output);
+                this.Menu.RenderControl(output);
             }
 
             output.RenderEndTag();
 
-            var script = "<script type=\"text/javascript\">window." + ClientID + "=new ActiveMenuButton('" + ClientID + "'," + MenuWidth + "," + MenuHeight + "," + AnimationSteps + "," + AnimationDelay + "," + OffsetTop + "," + OffsetLeft + "," + (int)ExpandDirection + ");</script>";
+            var script = "<script type=\"text/javascript\">window." + this.ClientID + "=new ActiveMenuButton('" + this.ClientID + "'," + this.MenuWidth + "," + this.MenuHeight + "," + this.AnimationSteps + "," + this.AnimationDelay + "," + this.OffsetTop + "," + this.OffsetLeft + "," + (int)this.ExpandDirection + ");</script>";
             output.Write(script);
         }
 
@@ -123,22 +123,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            if (Menu == null)
+            if (this.Menu == null)
             {
                 return;
             }
 
-            Controls.Clear();
-            Controls.Add(Menu);
+            this.Controls.Clear();
+            this.Controls.Add(this.Menu);
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
-            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
+            if (!this.Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
             {
-                Page.ClientScript.RegisterClientScriptInclude("AMMenu", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
+                this.Page.ClientScript.RegisterClientScriptInclude("AMMenu", this.Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
             }
         }
 
