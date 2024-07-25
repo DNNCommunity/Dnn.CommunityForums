@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 litString = new LiteralControl();
                 sb.Append("<td align=\"center\">");
-                char strChar = (char)(i);
+                char strChar = (char)i;
                 string[] Params = { ParamKeys.ViewType + "=members", "affilter=" + strChar };
                 sb.Append("<a href=\"" + NavigateUrl(TabId, "", Params) + "\" class=\"CommandButton\">");
                 sb.Append(strChar);
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                RowIndex = ((PageId * PageSize) - PageSize);
+                RowIndex = (PageId * PageSize) - PageSize;
             }
             IDataReader dr = DataProvider.Instance().Profiles_MemberList(PortalId, ModuleId, PageSize, RowIndex, Filter);
             try

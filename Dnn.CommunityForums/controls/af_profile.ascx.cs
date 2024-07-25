@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
             Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
             SettingsBase ctl = null;
-            ctl = (SettingsBase)(new DotNetNuke.Modules.ActiveForums.Controls.UserProfile());
+            ctl = (SettingsBase)new DotNetNuke.Modules.ActiveForums.Controls.UserProfile();
             ctl.ModuleConfiguration = this.ModuleConfiguration;
             if (!(this.Params == string.Empty))
             {

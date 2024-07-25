@@ -33,12 +33,12 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal IDataReader ListProperties(int PortalId, int ObjectType, int ObjectOwnerId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(connectionString, dbPrefix + "Properties_List", PortalId, ObjectType, ObjectOwnerId));
+            return (IDataReader)SqlHelper.ExecuteReader(connectionString, dbPrefix + "Properties_List", PortalId, ObjectType, ObjectOwnerId);
         }
 
         internal IDataReader GetProperties(int PropertyId, int PortalId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(connectionString, dbPrefix + "Properties_Get", PropertyId, PortalId));
+            return (IDataReader)SqlHelper.ExecuteReader(connectionString, dbPrefix + "Properties_Get", PropertyId, PortalId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]

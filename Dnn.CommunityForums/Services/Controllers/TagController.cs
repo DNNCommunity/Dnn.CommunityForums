@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
         private HttpResponseMessage Match(string matchString)
         {
-            if (!(string.IsNullOrEmpty(matchString)))
+            if (!string.IsNullOrEmpty(matchString))
             {
                 var matchingTags = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().Find("WHERE IsCategory=0 AND PortalId = @0 AND ModuleId = @1 AND TagName LIKE @2 ORDER By TagName", ActiveModule.PortalID, ForumModuleId, matchString).Select(t => new { id = t.TagId, name = t.TagName, type = 0 }).ToList();
                 if (matchingTags.Count > 0)
@@ -93,12 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         private static string CleanAndChopString(string MatchString, int maxLength)
         {
             string matchString = string.Empty;
-            if (!(string.IsNullOrEmpty(MatchString)))
+            if (!string.IsNullOrEmpty(MatchString))
             {
                 matchString = MatchString.Trim();
                 matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.RemoveHTML(matchString);
                 matchString = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(matchString);
-                if (!(string.IsNullOrEmpty(matchString)))
+                if (!string.IsNullOrEmpty(matchString))
                 {
                     if (matchString.Length > maxLength)
                     {

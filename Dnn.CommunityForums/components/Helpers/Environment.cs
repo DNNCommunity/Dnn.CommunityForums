@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             string css = "SkinObject";
                             if (cssObject != null)
                             {
-                                if (!(string.IsNullOrEmpty(cssObject.ToString())))
+                                if (!string.IsNullOrEmpty(cssObject.ToString()))
                                 {
                                     css = cssObject.ToString();
                                 }
@@ -63,13 +63,13 @@ namespace DotNetNuke.Modules.ActiveForums
                             string sBread = string.Empty;
                             foreach (string s in bcText)
                             {
-                                if (!(string.IsNullOrEmpty(s)))
+                                if (!string.IsNullOrEmpty(s))
                                 {
                                     var newValue = s.Replace("<a ", "<a class=\"" + css + "\" ");
                                     sBread += sText + newValue;
                                 }
                             }
-                            ((System.Web.UI.WebControls.Label)(ctrl.FindControl("lblBreadCrumb"))).Text += sBread;
+                            ((System.Web.UI.WebControls.Label)ctrl.FindControl("lblBreadCrumb")).Text += sBread;
                             break;
                         }
                     }
@@ -94,9 +94,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             try
             {
-                if (!(string.IsNullOrEmpty(Title)))
+                if (!string.IsNullOrEmpty(Title))
                 {
-                    if (!(string.IsNullOrEmpty(bp.Title)))
+                    if (!string.IsNullOrEmpty(bp.Title))
                     {
                         bp.Title = Title.Replace("[VALUE]", bp.Title);
                     }
@@ -105,10 +105,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         bp.Title = Title.Replace("[VALUE]", string.Empty);
                     }
                 }
-                if (!(string.IsNullOrEmpty(Description)))
+                if (!string.IsNullOrEmpty(Description))
                 {
                     Description = Description.Replace(System.Environment.NewLine, " ");
-                    if (!(string.IsNullOrEmpty(bp.Description)))
+                    if (!string.IsNullOrEmpty(bp.Description))
                     {
                         bp.Description = Description.Replace("[VALUE]", bp.Description);
                     }
@@ -117,9 +117,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         bp.Description = Description.Replace("[VALUE]", string.Empty);
                     }
                 }
-                if (!(string.IsNullOrEmpty(Keywords)))
+                if (!string.IsNullOrEmpty(Keywords))
                 {
-                    if (!(string.IsNullOrEmpty(bp.KeyWords)))
+                    if (!string.IsNullOrEmpty(bp.KeyWords))
                     {
                         string cKey = bp.KeyWords.Trim();
                         if (cKey.StartsWith(","))

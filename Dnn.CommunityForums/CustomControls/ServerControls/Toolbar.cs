@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTemp = Convert.ToString(obj);
                 }
                 sTemp = Utilities.LocalizeControl(sTemp);
-                if (!(sTemp.Contains(Globals.ForumsControlsRegisterAFTag)))
+                if (!sTemp.Contains(Globals.ForumsControlsRegisterAFTag))
                 {
                     sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
                 }

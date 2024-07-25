@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
             var folder = folderManager.GetFolder(file.FolderId);
 
             var ext = file.Extension;
-            if (!(ext.StartsWith(".")))
+            if (!ext.StartsWith("."))
             {
                 ext = "." + ext;
             }

@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -415,7 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var tmpParams = new[] { param };
             int intLength = tmpParams.Length;
-            Array.Resize(ref tmpParams, (intLength + currParams.Length));
+            Array.Resize(ref tmpParams, intLength + currParams.Length);
             currParams.CopyTo(tmpParams, intLength);
             return tmpParams;
         }

@@ -197,7 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 dto.SecurityType = 2;
                             }
                         }
-                        if (!(string.IsNullOrEmpty(dto.SecurityId)))
+                        if (!string.IsNullOrEmpty(dto.SecurityId))
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, "View", dto.SecurityId, dto.SecurityType);
                         }

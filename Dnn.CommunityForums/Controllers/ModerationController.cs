@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 foreach (DotNetNuke.Entities.Users.UserRoleInfo usr in rp.GetUserRoles(portalId, null, role.RoleName))
                 {
                     var ui = uc.GetUser(portalId, usr.UserID);
-                    if (!(mods.Contains(ui)))
+                    if (!mods.Contains(ui))
                     {
                         mods.Add(ui);
                     }

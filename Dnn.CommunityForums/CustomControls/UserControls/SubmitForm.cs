@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
                         //    Body = txtEditor.Text
                         case EditorTypes.HTMLEDITORPROVIDER:
-                            tempBody = ((UI.UserControls.TextEditor)(plhEditor.FindControl("txtBody"))).Text;
+                            tempBody = ((UI.UserControls.TextEditor)plhEditor.FindControl("txtBody")).Text;
                             break;
                         case EditorTypes.TEXTBOX:
                             tempBody = ((TextBox)txtEditor).Text;
@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     return Utilities.NullDate();
                 }
-                if (!(string.IsNullOrEmpty(calStartDate.SelectedDate)))
+                if (!string.IsNullOrEmpty(calStartDate.SelectedDate))
                 {
                     return Convert.ToDateTime(calStartDate.SelectedDate).Date;
                 }
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     return Utilities.NullDate();
                 }
-                if (!(string.IsNullOrEmpty(calEndDate.SelectedDate)))
+                if (!string.IsNullOrEmpty(calEndDate.SelectedDate))
                 {
                     return Convert.ToDateTime(calEndDate.SelectedDate).Date;
                 }
@@ -459,7 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:SECTION:TAGS]", "</td></tr></table>");
             }
             //Properties
-            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && (ForumInfo.Properties != null && ForumInfo.Properties.Count > 0))
+            if ((EditorMode == EditorModes.EditTopic || EditorMode == EditorModes.NewTopic) && ForumInfo.Properties != null && ForumInfo.Properties.Count > 0)
             {
                 string pTemplate = TemplateUtils.GetTemplateSection(template, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
                 string propList = string.Empty;
@@ -534,7 +534,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             string lName = p.DataType.Substring(p.DataType.IndexOf("|") + 1);
                             var lc = lists.GetListEntryInfoCollection(lName, string.Empty);
                             string[] pValues = null;
-                            if (!(string.IsNullOrEmpty(pValue)))
+                            if (!string.IsNullOrEmpty(pValue))
                             {
                                 pValues = pValue.Split(',');
                             }
@@ -782,7 +782,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (TopicId > 0)
                 {
                     var subControl = new ToggleSubscribe(ForumModuleId, ForumInfo.ForumID, TopicId, 1);
-                    subControl.Checked = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId));
+                    subControl.Checked = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId);
                     subControl.Text = "[RESX:Subscribe]";
                     sb.Append("<tr><td colspan=\"2\">" + subControl.Render() + "</td></tr>");
                 }
@@ -843,7 +843,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             plhEditor = new PlaceHolder();
-            plhEditor = (PlaceHolder)(FindControl("plhEditor"));
+            plhEditor = (PlaceHolder)FindControl("plhEditor");
             //'plhEditor.Controls.Clear()
             Unit editorWidth;
             Unit editorHeight;
@@ -876,7 +876,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         //TODO: figure out why the editor no longer has any WYSIWYG functionality
                         var editor = new UI.UserControls.TextEditor();
                         txtEditor = editor;
-                        editor = (UI.UserControls.TextEditor)(LoadControl("~/controls/TextEditor.ascx"));
+                        editor = (UI.UserControls.TextEditor)LoadControl("~/controls/TextEditor.ascx");
                         editor.ID = "txtBody";
                         editor.ChooseMode = false;
                         editor.DefaultMode = "R";
@@ -891,7 +891,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
             }
             plhTopicReview = new PlaceHolder();
-            plhTopicReview = (PlaceHolder)(FindControl("plhTopicReview"));
+            plhTopicReview = (PlaceHolder)FindControl("plhTopicReview");
             if (plhTopicReview != null)
             {
                 var ctlTopicView = new TopicView
@@ -910,7 +910,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public void btnPost_Click(object sender, EventArgs e)
         {
 
-            var captcha = (UI.WebControls.CaptchaControl)(FindControl("ctlCaptcha"));
+            var captcha = (UI.WebControls.CaptchaControl)FindControl("ctlCaptcha");
             if (captcha != null)
             {
                 if (!captcha.IsValid && RequireCaptcha && !Request.IsAuthenticated)
@@ -919,12 +919,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            var rd = (RadioButtonList)(afposticons.FindControl("rblMessageIcons1"));
-            var stat = (DropDownList)(aftopicstatus.FindControl("drpStatus"));
+            var rd = (RadioButtonList)afposticons.FindControl("rblMessageIcons1");
+            var stat = (DropDownList)aftopicstatus.FindControl("drpStatus");
 
-            var pollQuest = (TextBox)(afpolledit.FindControl("txtPollQuestion"));
-            var pType = (RadioButtonList)(afpolledit.FindControl("rdPollType"));
-            var pOpt = (TextBox)(afpolledit.FindControl("txtPollOptions"));
+            var pollQuest = (TextBox)afpolledit.FindControl("txtPollQuestion");
+            var pType = (RadioButtonList)afpolledit.FindControl("rdPollType");
+            var pOpt = (TextBox)afpolledit.FindControl("txtPollOptions");
             if (rd != null)
             {
                 TopicIcon = rd.SelectedItem.Value;
@@ -939,7 +939,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 PollType = pType.SelectedItem.Value;
                 PollOptions = pOpt.Text;
             }
-            if (!(string.IsNullOrEmpty(Body)))
+            if (!string.IsNullOrEmpty(Body))
             {
                 Body = Body.Replace("&nbsp;", " ");
                 string tmpBody = Utilities.StripHTMLTag(Body);
@@ -1091,7 +1091,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
                 //    txtEditor.Text = _Body
                 case EditorTypes.HTMLEDITORPROVIDER:
-                    ((UI.UserControls.TextEditor)(plhEditor.FindControl("txtBody"))).Text = _Body;
+                    ((UI.UserControls.TextEditor)plhEditor.FindControl("txtBody")).Text = _Body;
                     break;
                 case EditorTypes.TEXTBOX:
                     ((TextBox)txtEditor).Text = _Body;
@@ -1150,7 +1150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 var txtEditor = new UI.UserControls.TextEditor();
                                 break;
                             case EditorTypes.TEXTBOX:
-                                var txtEditor1 = (TextBox)(plhEditor.Controls[0]);
+                                var txtEditor1 = (TextBox)plhEditor.Controls[0];
                                 break;
                         }
                         break;

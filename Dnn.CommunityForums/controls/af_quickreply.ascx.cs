@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     subControl.Text = "[RESX:Subscribe]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
-                if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!(string.IsNullOrEmpty(Request.Form["hidReply1"])) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
+                if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!string.IsNullOrEmpty(Request.Form["hidReply1"]) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
                 {
                     SaveQuickReply();
                 }
@@ -268,7 +268,7 @@ namespace DotNetNuke.Modules.ActiveForums
             bool UserIsTrusted = false;
             UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ui.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, ui.PostCount);
             bool isApproved = false;
-            isApproved = Convert.ToBoolean(((ForumInfo.IsModerated == true) ? false : true));
+            isApproved = Convert.ToBoolean((ForumInfo.IsModerated == true) ? false : true);
             if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;

@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 //If Not Page.IsPostBack Then
                 LoadPostIcons();
-                if (!(string.IsNullOrEmpty(PostIcon)))
+                if (!string.IsNullOrEmpty(PostIcon))
                 {
                     rblMessageIcons1.SelectedIndex = rblMessageIcons1.Items.IndexOf(rblMessageIcons1.Items.FindByValue(PostIcon));
                 }

@@ -187,8 +187,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var bodyTrim = string.Empty;
             if (sTemplate.Contains("[BODY:"))
             {
-                var inStart = (sTemplate.IndexOf("[BODY:", StringComparison.Ordinal) + 1) + 5;
-                var inEnd = (sTemplate.IndexOf("]", inStart - 1, StringComparison.Ordinal) + 1) - 1;
+                var inStart = sTemplate.IndexOf("[BODY:", StringComparison.Ordinal) + 1 + 5;
+                var inEnd = sTemplate.IndexOf("]", inStart - 1, StringComparison.Ordinal) + 1 - 1;
                 var sLength = sTemplate.Substring(inStart, inEnd - inStart);
                 bodyLength = Convert.ToInt32(sLength);
                 bodyTrim = "[BODY:" + bodyLength + "]";
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         TabId = Convert.ToInt32(topicTabId);
                     }
 
-                    if (Utilities.UseFriendlyURLs( Utilities.SafeConvertInt(topicModuleId)) && !(string.IsNullOrEmpty(sForumUrl)) && !(string.IsNullOrEmpty(sTopicURL)))
+                    if (Utilities.UseFriendlyURLs( Utilities.SafeConvertInt(topicModuleId)) && !string.IsNullOrEmpty(sForumUrl) && !string.IsNullOrEmpty(sTopicURL))
                     {
                         var ctlUtils = new ControlUtils();
                         sTopicURL = ctlUtils.BuildUrl(Convert.ToInt32(topicTabId), Convert.ToInt32(topicModuleId), sGroupPrefixURL, sForumUrl, Convert.ToInt32(groupId), Convert.ToInt32(forumId), Convert.ToInt32(topicId), sTopicURL, -1, -1, string.Empty, 1, Convert.ToInt32(replyId), -1);
@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         else
                         {
-                            if (!(sTopicURL.EndsWith("/")))
+                            if (!sTopicURL.EndsWith("/"))
                             {
                                 sTopicURL += "/";
                             }

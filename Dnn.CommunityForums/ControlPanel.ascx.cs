@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 Params = options;
                 ctlPath = string.Concat("~/DesktopModules/ActiveForums/controls/admin_", view, ".ascx");
-                var ctl = (ActiveAdminBase)(LoadControl(ctlPath));
+                var ctl = (ActiveAdminBase)LoadControl(ctlPath);
                 ctl.ID = view;
                 ctl.ModuleConfiguration = ModuleConfiguration;
 
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl.Params = options;
                 }
-                if (!(plhControlPanel.Controls.Contains(ctl)))
+                if (!plhControlPanel.Controls.Contains(ctl))
                 {
                     plhControlPanel.Controls.Add(ctl);
                 }
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string ctlPath;
 
             ctlPath = string.Concat("~/DesktopModules/activeforums/controls/", ctrl, ".ascx");
-            var ctl = (ActiveAdminBase)(LoadControl(ctlPath));
+            var ctl = (ActiveAdminBase)LoadControl(ctlPath);
             ctl.ID = ctrl;
             ctl.ModuleConfiguration = ModuleConfiguration;
 
@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ctl.Params = @params;
             }
-            if (!(plhModal.Controls.Contains(ctl)))
+            if (!plhModal.Controls.Contains(ctl))
             {
                 plhModal.Controls.Add(ctl);
             }

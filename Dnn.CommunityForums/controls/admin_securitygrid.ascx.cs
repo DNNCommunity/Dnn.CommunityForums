@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= roles.Length - 2; i++)
             {
-                if (! (string.IsNullOrEmpty(roles[i])))
+                if (! string.IsNullOrEmpty(roles[i]))
                 {
                     roleIds[i] = Convert.ToInt32(roles[i]);
                 }
@@ -117,11 +117,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Users
             string users = GetSecureObjectList(security, 1);
             string userNames = string.Empty;
-            if (! (string.IsNullOrEmpty(users)))
+            if (! string.IsNullOrEmpty(users))
             {
                 foreach (string uid in users.Split(';'))
                 {
-                    if (! (string.IsNullOrEmpty(uid)))
+                    if (! string.IsNullOrEmpty(uid))
                     {
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
                         if (u != null)
@@ -138,18 +138,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             //Groups
             string groups = GetSecureObjectList(security, 2);
-            if (! (string.IsNullOrEmpty(groups)))
+            if (! string.IsNullOrEmpty(groups))
             {
                 foreach (string g in groups.Split(';'))
                 {
-                    if (! (string.IsNullOrEmpty(g)))
+                    if (! string.IsNullOrEmpty(g))
                     {
 
                         string gType = g.Split(':')[1];
                         int groupId = Convert.ToInt32(g.Split(':')[0]);
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: groupId);
                         string groupName = role.RoleName;
-                        if (! (string.IsNullOrEmpty(groupName)))
+                        if (! string.IsNullOrEmpty(groupName))
                         {
                             DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo();
                             pi.ObjectId = g;
@@ -339,7 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         secType = 2;
                     }
                 }
-                if (! (string.IsNullOrEmpty(secId)))
+                if (! string.IsNullOrEmpty(secId))
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, "View", secId, secType);
                 }

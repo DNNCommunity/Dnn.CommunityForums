@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 link = string.Concat(navigationManager.NavigateURL(tabID, portalSettings, string.Empty, (string[])null), "/", new Data.Common().GetUrl(moduleID, -1, forumID, topicId, -1, contentId));
             }
 
-            if (!(link.StartsWith("http")))
+            if (!link.StartsWith("http"))
             {
                 if (!link.StartsWith("/"))
                 {
@@ -322,17 +322,17 @@ namespace DotNetNuke.Modules.ActiveForums
             result.Replace("[FORUMURL]", forumURL);
             result.Replace("[FORUMLINK]", string.Concat("<a href=\"", forumURL, "\">", forumURL, "</a>"));
 
-            result.Replace("[POSTEDORREPLIEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]")));
-            result.Replace("[POSTEDTO]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty));
-            result.Replace("[REPLIEDTO]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:repliedto]") : string.Empty));
-            result.Replace("[NEWPOST]", (replyId <= 0 ? Utilities.GetSharedResource("[RESX:NewPost]") : string.Empty));
-            result.Replace("[NEWREPLY]", (replyId > 0 ? Utilities.GetSharedResource("[RESX:NewReply]") : string.Empty));
-            result.Replace("[SUBSCRIBEDTOPIC]", (topicSubscriber ? Utilities.GetSharedResource("[RESX:SubscribedTopic]") : string.Empty));
-            result.Replace("[SUBSCRIBEDTOPICSUBJECT]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicSubject]"), subject) : string.Empty));
-            result.Replace("[SUBSCRIBEDTOPICFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Empty));
-            result.Replace("[SUBSCRIBEDFORUM]", (topicSubscriber ? string.Empty : "[RESX:SubscribedForum]"));
-            result.Replace("[SUBSCRIBEDFORUMNAME]", (topicSubscriber ? string.Empty : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumName]"), fi.ForumName)));
-            result.Replace("[SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME]", (topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumTopicForumName]"), subject, fi.ForumName)));
+            result.Replace("[POSTEDORREPLIEDTO]", replyId <= 0 ? Utilities.GetSharedResource("[RESX:posted]") : Utilities.GetSharedResource("[RESX:repliedto]"));
+            result.Replace("[POSTEDTO]", replyId <= 0 ? Utilities.GetSharedResource("[RESX:postedto]") : string.Empty);
+            result.Replace("[REPLIEDTO]", replyId > 0 ? Utilities.GetSharedResource("[RESX:repliedto]") : string.Empty);
+            result.Replace("[NEWPOST]", replyId <= 0 ? Utilities.GetSharedResource("[RESX:NewPost]") : string.Empty);
+            result.Replace("[NEWREPLY]", replyId > 0 ? Utilities.GetSharedResource("[RESX:NewReply]") : string.Empty);
+            result.Replace("[SUBSCRIBEDTOPIC]", topicSubscriber ? Utilities.GetSharedResource("[RESX:SubscribedTopic]") : string.Empty);
+            result.Replace("[SUBSCRIBEDTOPICSUBJECT]", topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicSubject]"), subject) : string.Empty);
+            result.Replace("[SUBSCRIBEDTOPICFORUMNAME]", topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Empty);
+            result.Replace("[SUBSCRIBEDFORUM]", topicSubscriber ? string.Empty : "[RESX:SubscribedForum]");
+            result.Replace("[SUBSCRIBEDFORUMNAME]", topicSubscriber ? string.Empty : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumName]"), fi.ForumName));
+            result.Replace("[SUBSCRIBEDFORUMORTOPICSUBJECTFORUMNAME]", topicSubscriber ? string.Format(Utilities.GetSharedResource("[RESX:SubscribedTopicForumName]"), subject, fi.ForumName) : string.Format(Utilities.GetSharedResource("[RESX:SubscribedForumTopicForumName]"), subject, fi.ForumName));
 
             // Introduced for Active Forum Email Connector plug-in Starts
             if (result.ToString().Contains("[EMAILCONNECTORITEMID]"))
@@ -380,7 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string objectQualifier;
             string databaseOwner;
             connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
-            var objProvider = (DotNetNuke.Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+            var objProvider = (DotNetNuke.Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
             objectQualifier = objProvider.Attributes["objectQualifier"];
             if (objectQualifier != "" && objectQualifier.EndsWith("_") == false)
@@ -412,7 +412,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             //dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
-            IDataReader dataReader = (IDataReader)(SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", PortalId, ModuleId, forumID, topicID, ipAddress, userIds.ToString()));
+            IDataReader dataReader = (IDataReader)SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", PortalId, ModuleId, forumID, topicID, ipAddress, userIds.ToString());
             if (dataReader.Read())
             {
                 ItemID = Convert.ToInt32(dataReader["RecordID"]);
@@ -577,10 +577,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 var result = new StringBuilder(pt);
 
                 // Used in a few places to determine if info should be shown or removed.
-                var isMod = (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser);
+                var isMod = currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.ForumMod || currentUserType == CurrentUserTypes.SuperUser;
 
                 // Used in a few places to determine if info should be shown or removed.
-                var isAdmin = (currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser);
+                var isAdmin = currentUserType == CurrentUserTypes.Admin || currentUserType == CurrentUserTypes.SuperUser;
 
                 var isAuthethenticated = currentUserType != CurrentUserTypes.Anon;
 
@@ -705,7 +705,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (pt.Contains("[AF:PROFILE:DATECREATED:"))
                     {
-                        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + (sDateCreatedReplacement.Length), 1);
+                        var sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATECREATED:", StringComparison.Ordinal) + sDateCreatedReplacement.Length, 1);
                         sDateCreated = Utilities.GetUserFormattedDateTime(up.Profile.DateCreated, portalId, currentUserId, sFormat);
                         sDateCreatedReplacement = string.Concat("[AF:PROFILE:DATECREATED:", sFormat, "]");
                     }
@@ -724,7 +724,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (pt.Contains("[AF:PROFILE:DATELASTACTIVITY:"))
                     {
-                        string sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + (sDateLastActivityReplacement.Length), 1);
+                        string sFormat = pt.Substring(pt.IndexOf("[AF:PROFILE:DATELASTACTIVITY:", StringComparison.Ordinal) + sDateLastActivityReplacement.Length, 1);
                         sDateLastActivity = Utilities.GetUserFormattedDateTime(up.Profile.DateLastActivity, portalId, currentUserId, sFormat);
                         sDateLastActivityReplacement = string.Concat("[AF:PROFILE:DATELASTACTIVITY:", sFormat, "]");
                     }

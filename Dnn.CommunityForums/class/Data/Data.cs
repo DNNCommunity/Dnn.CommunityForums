@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public Connection()
         {
             connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
-            var objProvider = (Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+            var objProvider = (Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
             objectQualifier = objProvider.Attributes["objectQualifier"];
             if (objectQualifier != "" && objectQualifier.EndsWith("_") == false)

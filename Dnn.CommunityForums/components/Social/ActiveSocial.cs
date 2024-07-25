@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 JournalController.Instance.DeleteJournalItemByKey(PortalId, ji.ObjectKey);
             }
             string roles = string.Empty;
-            if (!(string.IsNullOrEmpty(ReadRoles)))
+            if (!string.IsNullOrEmpty(ReadRoles))
             {
                 if (ReadRoles.Contains("|"))
                 {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                 {
                     /* cjh - securityset was null and throwing an error, thus journal items weren't added */
-                    if ((ji.SecuritySet != null) && !(ji.SecuritySet.Contains("E,")))
+                    if ((ji.SecuritySet != null) && !ji.SecuritySet.Contains("E,"))
                     {
                         ji.SecuritySet += "E,";
                     }
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     JournalController.Instance.DeleteJournalItemByKey(PortalId, ji.ObjectKey);
                 }
                 string roles = string.Empty;
-                if (!(string.IsNullOrEmpty(ReadRoles)))
+                if (!string.IsNullOrEmpty(ReadRoles))
                 {
                     if (ReadRoles.Contains("|"))
                     {
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if ((s == DotNetNuke.Common.Globals.glbRoleAllUsers) | (s == DotNetNuke.Common.Globals.glbRoleUnauthUser))
                     {
                         /* cjh - securityset was null and throwing an error, thus journal items weren't added */
-                        if ((ji.SecuritySet != null) && (!(ji.SecuritySet.Contains("E,"))))
+                        if ((ji.SecuritySet != null) && (!ji.SecuritySet.Contains("E,")))
                         {
                             ji.SecuritySet += "E,";
                         }

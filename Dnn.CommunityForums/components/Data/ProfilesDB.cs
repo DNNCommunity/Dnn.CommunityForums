@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval));
+            return (IDataReader)SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval);
         }
 
         public IDataReader Profiles_Get(int PortalId, int ModuleId, int UserId)
@@ -56,13 +56,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UserProfiles_Stats", PortalId, ModuleId, Interval));
+            return (IDataReader)SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UserProfiles_Stats", PortalId, ModuleId, Interval);
         }
 
         public IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter)
         {
             //Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
-            return (IDataReader)(SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UserProfiles_List", PortalId, ModuleId, MaxRows, RowIndex, Filter));
+            return (IDataReader)SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UserProfiles_List", PortalId, ModuleId, MaxRows, RowIndex, Filter);
         }
 
         public void Profile_UpdateTopicCount(int PortalId, int UserId)

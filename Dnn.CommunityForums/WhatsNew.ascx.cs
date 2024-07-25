@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sForumUrl = sForumUrl.Substring(1);
                         }
 
-                        if (!(sForumUrl.StartsWith(sHost)))
+                        if (!sForumUrl.StartsWith(sHost))
                         {
                             sForumUrl = sHost + sForumUrl;
                         }
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sTopicUrl = sTopicUrl.Substring(1);
                         }
 
-                        if (!(sTopicUrl.StartsWith(sHost)))
+                        if (!sTopicUrl.StartsWith(sHost))
                         {
                             sTopicUrl = sHost + sTopicUrl;
                         }
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         else
                         {
-                            if (!(sTopicUrl.EndsWith("/")) && !(sTopicUrl.EndsWith("aspx")))
+                            if (!sTopicUrl.EndsWith("/") && !sTopicUrl.EndsWith("aspx"))
                             {
                                 sTopicUrl += "/";
                             }

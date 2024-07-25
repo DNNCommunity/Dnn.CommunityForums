@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!(IsMod(_forumId)))
+            if (!IsMod(_forumId))
             {
                 return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!(IsMod(_forumId)))
+            if (!IsMod(_forumId))
             {
                 return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!(IsMod(_forumId)))
+            if (!IsMod(_forumId))
             {
                 return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
@@ -234,7 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!(IsMod(_forumId)))
+            if (!IsMod(_forumId))
             {
                 return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!(IsMod(_forumId)))
+            if (!IsMod(_forumId))
             {
                 return Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }

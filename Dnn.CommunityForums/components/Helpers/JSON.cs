@@ -41,17 +41,17 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    value = ((char)(34)).ToString() + ((char)(34)).ToString();
+                    value = ((char)34).ToString() + ((char)34).ToString();
                 }
-                else if (! (SimulateIsNumeric.IsNumeric(value)) & ! (value.ToLower() == "true" || value.ToLower() == "false") && isObject == false)
+                else if (! SimulateIsNumeric.IsNumeric(value) & ! (value.ToLower() == "true" || value.ToLower() == "false") && isObject == false)
                 {
-                    value = ((char)(34)).ToString() + JSON.EscapeJsonString(value) + ((char)(34)).ToString();
+                    value = ((char)34).ToString() + JSON.EscapeJsonString(value) + ((char)34).ToString();
                 }
                 else if (value.Trim().ToLowerInvariant() == "true" || value.Trim().ToLowerInvariant() == "false")
                 {
                     value = value.Trim().ToLower();
                 }
-                return ((char)(34)).ToString() + name + ((char)(34)).ToString() + ":" + value;
+                return ((char)34).ToString() + name + ((char)34).ToString() + ":" + value;
             }
 
             public static string ConvertToJSONAssociativeArray(Dictionary<string, string> dict)
@@ -59,9 +59,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 List<string> elements = new List<string>();
                 foreach (KeyValuePair<string, string> Pair in dict)
                 {
-                    if (! (string.IsNullOrEmpty(Pair.Value)))
+                    if (! string.IsNullOrEmpty(Pair.Value))
                     {
-                        elements.Add(string.Format("\"{0}\":{2}{1}{2}", EscapeJsonString(Pair.Key), EscapeJsonString(Pair.Value), ((IsJSONArray(Pair.Value) || IsBoolean(Pair.Value)) ? string.Empty : "\"")));
+                        elements.Add(string.Format("\"{0}\":{2}{1}{2}", EscapeJsonString(Pair.Key), EscapeJsonString(Pair.Value), (IsJSONArray(Pair.Value) || IsBoolean(Pair.Value)) ? string.Empty : "\""));
                     }
                 }
                 return "{" + string.Join(",", elements.ToArray()) + "}";
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             public static bool IsJSONArray(string test)
             {
-                return test.StartsWith("{") && ! (test.StartsWith("{*")) || test.StartsWith("[");
+                return test.StartsWith("{") && ! test.StartsWith("{*") || test.StartsWith("[");
             }
 
             public static bool IsBoolean(string test)
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 builder.Append("[");
                 foreach (string item in list)
                 {
-                    builder.Append(string.Format("{0}{1}{0},", ((IsJSONArray(item) || IsBoolean(item)) ? string.Empty : "\""), EscapeJsonString(item)));
+                    builder.Append(string.Format("{0}{1}{0},", (IsJSONArray(item) || IsBoolean(item)) ? string.Empty : "\"", EscapeJsonString(item)));
                 }
                 builder.Replace(",", "]", builder.Length - 1, 1);
                 return builder.ToString();
@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (dict.Count > 0)
                 {
                     Type myType = InfoObject.GetType();
-                    System.Reflection.PropertyInfo[] myProperties = myType.GetProperties((System.Reflection.BindingFlags.Public | BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance));
+                    System.Reflection.PropertyInfo[] myProperties = myType.GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     string sKey = string.Empty;
                     string sValue = string.Empty;
                     foreach (PropertyInfo pItem in myProperties)
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sValue = dict[sKey];
                         }
-                        if (! (string.IsNullOrEmpty(sValue)))
+                        if (! string.IsNullOrEmpty(sValue))
                         {
                             object obj = null;
                             switch (pItem.PropertyType.ToString())
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             public static List<string> ConvertFromJSONArray(string array)
             {
-                if (! (string.IsNullOrEmpty(array)))
+                if (! string.IsNullOrEmpty(array))
                 {
                     array = array.Replace("[", "").Replace("]", "").Replace("\"", "");
                     return new List<string>(array.Split(','));
@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
             public static Dictionary<string, string> ConvertFromJSONAssoicativeArray(string array)
             {
                 Dictionary<string, string> dict = new Dictionary<string, string>();
-                if (! (string.IsNullOrEmpty(array)))
+                if (! string.IsNullOrEmpty(array))
                 {
                     if (array.StartsWith("{"))
                     {
@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
                     {
-                        if (! (string.IsNullOrEmpty(pair)))
+                        if (! string.IsNullOrEmpty(pair))
                         {
                             string[] pairArray = pair.Split('|');
                             string val = string.Empty;
@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums
             public static Hashtable ConvertFromJSONAssoicativeArrayToHashTable(string array)
             {
                 Hashtable ht = new Hashtable();
-                if (! (string.IsNullOrEmpty(array)))
+                if (! string.IsNullOrEmpty(array))
                 {
                     if (array.StartsWith("{"))
                     {
@@ -222,7 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
                     {
-                        if (! (string.IsNullOrEmpty(pair)))
+                        if (! string.IsNullOrEmpty(pair))
                         {
                             string[] pairArray = pair.Split('|');
                             string val = string.Empty;
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Regex reg = new Regex("\\s+", RegexOptions.Multiline);
                 originalString = reg.Replace(originalString, " ");
-                return ((IsJSONArray(originalString)) ? originalString : originalString.Replace("\\/", "/").Replace("/", "\\/").Replace("\\\"", "\"").Replace("\"", "\\\"").Replace(System.Environment.NewLine, string.Empty));
+                return IsJSONArray(originalString) ? originalString : originalString.Replace("\\/", "/").Replace("/", "\\/").Replace("\\\"", "\"").Replace("\"", "\\\"").Replace(System.Environment.NewLine, string.Empty);
             }
         }
 

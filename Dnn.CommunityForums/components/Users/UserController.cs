@@ -54,9 +54,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     u = DNNGetCurrentUser(PortalId, ModuleId);
                 }
-                else if ((HttpContext.Current.Items["AFUserInfo"]) != null)
+                else if (HttpContext.Current.Items["AFUserInfo"] != null)
                 {
-                    u = (User)(HttpContext.Current.Items["AFUserInfo"]);
+                    u = (User)HttpContext.Current.Items["AFUserInfo"];
                     u = FillProfile(PortalId, ModuleId, u);
                 }
                 else
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             u = FillProfile(PortalId, ModuleId, u);
             string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
-            if (!(string.IsNullOrEmpty(fs)))
+            if (!string.IsNullOrEmpty(fs))
             {
                 u.Profile.IsMod = true;
             }
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 u = FillProfile(PortalId, ModuleId, u);
                 string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
-                if (!(string.IsNullOrEmpty(fs)))
+                if (!string.IsNullOrEmpty(fs))
                 {
                     u.Profile.IsMod = true;
                 }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 u = FillProfile(PortalId, ModuleId, u);
                 string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
-                if (!(string.IsNullOrEmpty(fs)) || u.IsSuperUser || u.IsAdmin)
+                if (!string.IsNullOrEmpty(fs) || u.IsSuperUser || u.IsAdmin)
                 {
                     u.Profile.IsMod = true;
                 }

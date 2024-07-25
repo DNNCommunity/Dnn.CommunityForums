@@ -452,10 +452,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 lbForums.Items.Add(new ListItem(fi.GroupName, $"G{fi.ForumGroupId}"));
                 },
                 fi => {
-                lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) });
+                lbForums.Items.Add(new ListItem($"{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID });
                 },
                 fi => {
-                lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = (forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID) } );
+                lbForums.Items.Add(new ListItem($"--{fi.ForumName}", $"F{fi.ForumID}G{fi.ForumGroupId}") { Selected = forumsToSearch.Contains(fi.ForumID) || ForumId == fi.ForumID } );
                 }
                 );
         }

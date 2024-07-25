@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
             BindRoles();
 
             var sepChar = '|';
-            if (Params != null && !(string.IsNullOrEmpty(Params)))
+            if (Params != null && !string.IsNullOrEmpty(Params))
             {
                 if (Params.Contains("!"))
                 {
@@ -256,10 +256,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         bool inheritSecurity = Utilities.SafeConvertBool(e.Parameters[9]);
 
                         fi.PrefixURL = e.Parameters[10];
-                        if (!(string.IsNullOrEmpty(fi.PrefixURL)))
+                        if (!string.IsNullOrEmpty(fi.PrefixURL))
                         {
                             var db = new Data.Common();
-                            if (!(db.CheckForumURL(PortalId, ModuleId, fi.PrefixURL, fi.ForumID, fi.ForumGroupId)))
+                            if (!db.CheckForumURL(PortalId, ModuleId, fi.PrefixURL, fi.ForumID, fi.ForumGroupId))
                             {
                                 fi.PrefixURL = string.Empty;
                             }
@@ -296,10 +296,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         gi.SortOrder = string.IsNullOrWhiteSpace(e.Parameters[7]) ? 0 : Utilities.SafeConvertInt(e.Parameters[7]);
 
                         gi.PrefixURL = e.Parameters[10];
-                        if (!(string.IsNullOrEmpty(gi.PrefixURL)))
+                        if (!string.IsNullOrEmpty(gi.PrefixURL))
                         {
                             var db = new Data.Common();
-                            if (!(db.CheckGroupURL(PortalId, ModuleId, gi.PrefixURL, gi.ForumGroupId)))
+                            if (!db.CheckGroupURL(PortalId, ModuleId, gi.PrefixURL, gi.ForumGroupId))
                             {
                                 gi.PrefixURL = string.Empty;
                             }

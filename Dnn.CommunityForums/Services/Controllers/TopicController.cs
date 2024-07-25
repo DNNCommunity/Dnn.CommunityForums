@@ -282,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.ModEdit)]
         public HttpResponseMessage Rate(TopicDto1 dto, int rating)
         {
-            if (dto.TopicId > 0 && (rating >= 1 && rating <= 5))
+            if (dto.TopicId > 0 && rating >= 1 && rating <= 5)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(UserInfo.UserID, dto.TopicId, rating, HttpContext.Current.Request.UserHostAddress ?? string.Empty));
             }
@@ -386,7 +386,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             foreach (string c in cats)
                             {
                                 int cid = -1;
-                                if (!(string.IsNullOrEmpty(c)) && SimulateIsNumeric.IsNumeric(c))
+                                if (!string.IsNullOrEmpty(c) && SimulateIsNumeric.IsNumeric(c))
                                 {
                                     cid = Convert.ToInt32(c);
                                     if (cid > 0)

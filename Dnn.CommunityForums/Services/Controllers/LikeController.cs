@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         [ForumsAuthorize(SecureActions.Reply)] 
         public HttpResponseMessage Like(LikeDto dto)
         {
-            if ((new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, ForumModuleId).AllowLikes) &&
+            if (new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(dto.ForumId, ForumModuleId).AllowLikes &&
                 ServicesHelper.IsAuthorized(PortalSettings.PortalId, ForumModuleId, dto.ForumId, SecureActions.Reply, UserInfo))
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.LikeController().Like(dto.ContentId, UserInfo.UserID));

@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     else
                     {
                         //Show Questions
-                        ForumBase ctl = (ForumBase)(this.LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/af_pollvote.ascx")));
+                        ForumBase ctl = (ForumBase)this.LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/af_pollvote.ascx"));
                         ctl.ModuleConfiguration = this.ModuleConfiguration;
                         ctl.ForumId = this.ForumId;
                         ctl.TopicId = this.TopicId;

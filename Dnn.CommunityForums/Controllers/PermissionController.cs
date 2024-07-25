@@ -191,11 +191,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 foreach (string role in AuthorizedRoles)
                 {
-                    if (!(string.IsNullOrEmpty(role)))
+                    if (!string.IsNullOrEmpty(role))
                     {
                         foreach (string AuthRole in UserRoles)
                         {
-                            if (!(string.IsNullOrEmpty(AuthRole)))
+                            if (!string.IsNullOrEmpty(AuthRole))
                             {
                                 if (role == AuthRole)
                                 {
@@ -408,10 +408,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return true;
             }
-            if (!(string.IsNullOrEmpty(permSet[1])))
+            if (!string.IsNullOrEmpty(permSet[1]))
             {
                 string[] authUsers = permSet[1].Split(';');
-                if (!(string.IsNullOrEmpty(userSet[1])))
+                if (!string.IsNullOrEmpty(userSet[1]))
                 {
                     string[] userIds = userSet[1].Split(';');
                     if (HasRequiredPerm(authUsers, userIds))
@@ -420,10 +420,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
-            if (!(string.IsNullOrEmpty(permSet[2])))
+            if (!string.IsNullOrEmpty(permSet[2]))
             {
                 string[] authGroups = permSet[2].Split(';');
-                if (!(string.IsNullOrEmpty(userSet[2])))
+                if (!string.IsNullOrEmpty(userSet[2]))
                 {
                     string[] userGroups = userSet[2].Split(';');
                     if (HasRequiredPerm(authGroups, userGroups))
@@ -447,7 +447,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string newSection = string.Empty;
             foreach (string s in permSection.Split(';'))
             {
-                if (!(string.IsNullOrEmpty(s)))
+                if (!string.IsNullOrEmpty(s))
                 {
                     if (s != objectId)
                     {
@@ -548,11 +548,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             string[] perms = permSet.Split('|');
             if (perms[index] != null)
             {
-                if (!(string.IsNullOrEmpty(perms[index])))
+                if (!string.IsNullOrEmpty(perms[index]))
                 {
                     foreach (string s in perms[index].Split(';'))
                     {
-                        if (!(string.IsNullOrEmpty(s)))
+                        if (!string.IsNullOrEmpty(s))
                         {
                             if (Array.IndexOf(objects.Split(';'), s) == -1)
                             {

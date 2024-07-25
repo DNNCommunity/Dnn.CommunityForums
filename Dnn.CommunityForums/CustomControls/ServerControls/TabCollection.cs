@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             for (i = 0; i <= Count; i++)
             {
 
-                if (((Tab)(_contents[i])).Text.ToLower() == item.Text.ToLower())
+                if (((Tab)_contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
                     inList = true;
                     break;
@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             for (i = 0; i <= Count; i++)
             {
 
-                if (((Tab)(_contents[i])).Text.ToLower() == item.Text.ToLower())
+                if (((Tab)_contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
 
                     itemIndex = i;
@@ -160,7 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return (Tab)(_contents[index]);
+                return (Tab)_contents[index];
             }
 
             set
@@ -207,7 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public bool MoveNext()
         {
             position = position + 1;
-            return (position < _tabs.Count);
+            return position < _tabs.Count;
         }
 
         public void Reset()

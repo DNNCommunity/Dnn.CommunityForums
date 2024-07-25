@@ -161,16 +161,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (Content != null)
             {
-                hypForumName = (Link)(Content.FindControl("hypForumName" + ForumId));
+                hypForumName = (Link)Content.FindControl("hypForumName" + ForumId);
                 hypForumName.Enabled = canView;
 
-                plhLastPost = (PlaceHolder)(Content.FindControl("plhLastPost" + ForumId));
+                plhLastPost = (PlaceHolder)Content.FindControl("plhLastPost" + ForumId);
                 if (plhLastPost != null)
                 {
                     plhLastPost.Visible = canView;
                 }
 
-                hypLastPostSubject = (Link)(Content.FindControl("hypLastPostSubject" + ForumId));
+                hypLastPostSubject = (Link)Content.FindControl("hypLastPostSubject" + ForumId);
                 if (hypLastPostSubject != null)
                 {
                     hypLastPostSubject.Enabled = canView;

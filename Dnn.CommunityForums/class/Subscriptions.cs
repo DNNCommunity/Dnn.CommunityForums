@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         UserId = Convert.ToInt32(dr["UserId"])
                     };
 
-                    if (!(sl.Contains(si)))
+                    if (!sl.Contains(si))
                     {
                         if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(CanSubscribe, si.UserId, PortalId))
                         {
@@ -208,8 +208,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
                         {
                             string sFormat;
-                            int inStart = (sMessageBody.IndexOf("[DATE:", 0) + 1) + 5;
-                            int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
+                            int inStart = sMessageBody.IndexOf("[DATE:", 0) + 1 + 5;
+                            int inEnd = sMessageBody.IndexOf("]", inStart - 1) + 1 - 1;
                             string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
                             sFormat = sValue;
                             sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
@@ -252,8 +252,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if ((sTemp.IndexOf("[BODY:", 0) + 1) > 0)
                 {
-                    int inStart = (sTemp.IndexOf("[BODY:", 0) + 1) + 5;
-                    int inEnd = (sTemp.IndexOf("]", inStart - 1) + 1) - 1;
+                    int inStart = sTemp.IndexOf("[BODY:", 0) + 1 + 5;
+                    int inEnd = sTemp.IndexOf("]", inStart - 1) + 1 - 1;
                     string sLength = sTemp.Substring(inStart, inEnd - inStart);
                     intLength = Convert.ToInt32(sLength);
                 }
@@ -308,8 +308,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 if ((sMessageBody.IndexOf("[DATE:", 0) + 1) > 0)
                 {
                     string sFormat;
-                    int inStart = (sMessageBody.IndexOf("[DATE:", 0) + 1) + 5;
-                    int inEnd = (sMessageBody.IndexOf("]", inStart - 1) + 1) - 1;
+                    int inStart = sMessageBody.IndexOf("[DATE:", 0) + 1 + 5;
+                    int inEnd = sMessageBody.IndexOf("]", inStart - 1) + 1 - 1;
                     string sValue = sMessageBody.Substring(inStart, inEnd - inStart);
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));

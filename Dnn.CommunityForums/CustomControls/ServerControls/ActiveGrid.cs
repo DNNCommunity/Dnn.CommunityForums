@@ -613,7 +613,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 int EndIndex = template.IndexOf("')##");
                 int StartIndex = template.IndexOf("##DataItem('") + 12;
-                order.Add(template.Substring(StartIndex, (EndIndex - StartIndex)));
+                order.Add(template.Substring(StartIndex, EndIndex - StartIndex));
                 template = template.Substring(EndIndex + 4);
             }
             if (!Page.IsPostBack)
@@ -649,7 +649,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                         
                     }
-                    sb.Remove((sb.Length - this.ColDelimiter.Length), this.ColDelimiter.Length);
+                    sb.Remove(sb.Length - this.ColDelimiter.Length, this.ColDelimiter.Length);
                     sb.Append(this.RowDelimiter);
                 }
                 dr.Close();
@@ -682,7 +682,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid")))
+            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMActiveGrid"))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
             }
@@ -711,7 +711,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.Controls.Count > 0 && this.Controls[0] is LiteralControl)
                 {
-                    return ((LiteralControl)(this.Controls[0])).Text;
+                    return ((LiteralControl)this.Controls[0]).Text;
                 }
                 return "";
             }

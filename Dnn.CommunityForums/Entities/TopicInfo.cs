@@ -125,10 +125,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string TopicUrl { get; set; } = string.Empty;
 
         [IgnoreColumn()]
-        public string URL => !(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)) ? ForumURL + TopicUrl : string.Empty;
+        public string URL => !string.IsNullOrEmpty(TopicUrl) && !string.IsNullOrEmpty(ForumURL) ? ForumURL + TopicUrl : string.Empty;
 
         [IgnoreColumn()]
-        public string ForumURL => !(string.IsNullOrEmpty(Forum.PrefixURL)) && !(string.IsNullOrEmpty(TopicUrl)) ? "/" + Forum.PrefixURL + "/" : string.Empty;
+        public string ForumURL => !string.IsNullOrEmpty(Forum.PrefixURL) && !string.IsNullOrEmpty(TopicUrl) ? "/" + Forum.PrefixURL + "/" : string.Empty;
 
         public int NextTopic { get; set; }
 

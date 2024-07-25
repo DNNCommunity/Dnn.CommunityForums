@@ -384,7 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             _topicURL = _drForum["URL"].ToString();
             _topicDateCreated = Utilities.GetUserFormattedDateTime(Utilities.SafeConvertDateTime(_drForum["DateCreated"]), PortalId, UserId); 
             _topicData = _drForum["TopicData"].ToString();
-            _isSubscribedTopic = (new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId)); 
+            _isSubscribedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ForumModuleId, UserId, ForumInfo.ForumID, TopicId); 
 
             if (Page.IsPostBack)
             {
@@ -409,12 +409,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 var db = new Data.Common();
                 sURL = db.GetUrl(ModuleId, ForumGroupId, ForumId, TopicId, UserId, contentJumpId);
 
-                if (!(sURL.StartsWith("/")))
+                if (!sURL.StartsWith("/"))
                 {
                     sURL = "/" + sURL;
                 }
 
-                if (!(sURL.EndsWith("/")))
+                if (!sURL.EndsWith("/"))
                 {
                     sURL += "/";
                 }
@@ -493,7 +493,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[AF:CONTROL:PARENTFORUMID]", ParentForumId.ToString());
 
             // Add Topic Scripts
-            var ctlTopicScripts = (af_topicscripts)(LoadControl("~/DesktopModules/ActiveForums/controls/af_topicscripts.ascx"));
+            var ctlTopicScripts = (af_topicscripts)LoadControl("~/DesktopModules/ActiveForums/controls/af_topicscripts.ascx");
             ctlTopicScripts.ModuleConfiguration = ModuleConfiguration;
             Controls.Add(ctlTopicScripts);
 
@@ -728,7 +728,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ForumInfo = ForumId > 0 ? ForumInfo : null
                 };
 
-                if (!(plh.Controls.Contains(ctlForumJump)))
+                if (!plh.Controls.Contains(ctlForumJump))
                 {
                     plh.Controls.Add(ctlForumJump);
                 }
@@ -755,7 +755,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (plh != null)
                 {
                     plh.Controls.Clear();
-                    var ctlQuickReply = (af_quickreplyform)(LoadControl("~/DesktopModules/ActiveForums/controls/af_quickreply.ascx"));
+                    var ctlQuickReply = (af_quickreplyform)LoadControl("~/DesktopModules/ActiveForums/controls/af_quickreply.ascx");
                     ctlQuickReply.ModuleConfiguration = ModuleConfiguration;
                     ctlQuickReply.CanTrust = _bTrust;
                     ctlQuickReply.ModApprove = _bModApprove;
@@ -784,7 +784,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (plh != null)
             {
                 plh.Controls.Clear();
-                var ctlTopicSort = (af_topicsorter)(LoadControl("~/DesktopModules/ActiveForums/controls/af_topicsort.ascx"));
+                var ctlTopicSort = (af_topicsorter)LoadControl("~/DesktopModules/ActiveForums/controls/af_topicsort.ascx");
                 ctlTopicSort.ModuleConfiguration = ModuleConfiguration;
                 ctlTopicSort.ForumId = ForumId;
                 ctlTopicSort.DefaultSort = _defaultSort;
@@ -801,7 +801,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (plh != null)
             {
                 plh.Controls.Clear();
-                var ctlTopicStatus = (af_topicstatus)(LoadControl("~/DesktopModules/ActiveForums/controls/af_topicstatus.ascx"));
+                var ctlTopicStatus = (af_topicstatus)LoadControl("~/DesktopModules/ActiveForums/controls/af_topicstatus.ascx");
                 ctlTopicStatus.ModuleConfiguration = ModuleConfiguration;
                 ctlTopicStatus.Status = _statusId;
                 ctlTopicStatus.ForumId = ForumId;
@@ -840,9 +840,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Add This -- obsolete so just remove
             if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
-                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
-                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
+                int inStart = sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1 + 19;
+                int inEnd = sOutput.IndexOf("]", inStart - 1) + 1;
+                sOutput.Remove(inStart, inEnd - inStart + 1);
             }
 
             // Banners
@@ -970,7 +970,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[QUICKREPLY]", string.Empty);
             }
 
-            if ((sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0)))
+            if (sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0))
             {
                 sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(ForumModuleId, "TopicSplitButtons"));
                 sbOutput.Replace("[TOPICID]", TopicId.ToString());
@@ -1427,7 +1427,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //    sOutput = TemplateUtils.ParseRoles(sOutput, (up.UserId == -1) ? string.Empty : up.Profile.Roles);
 
             // Delete Action
-            if (_bModDelete || ((_bDelete && authorId == UserId && !_bLocked) && ((replyId == 0 && _replyCount == 0) || replyId > 0)))
+            if (_bModDelete || (_bDelete && authorId == UserId && !_bLocked && ((replyId == 0 && _replyCount == 0) || replyId > 0)))
             {
                 if (_useListActions)
                 {

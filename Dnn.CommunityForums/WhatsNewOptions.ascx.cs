@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (!node.Checked)
                 {
-                    node.Checked = (node.Value == value || state);
+                    node.Checked = node.Value == value || state;
                     if (node.Checked && node.Parent != null)
                     {
                         node.Parent.Expanded = true;
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!cnode.Checked)
                     {
-                        cnode.Checked = (cnode.Value == value || state);
+                        cnode.Checked = cnode.Value == value || state;
                         if (cnode.Checked & cnode.Parent != null)
                         {
                             cnode.Parent.Expanded = true;
@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             continue;
                         }
 
-                        subnode.Checked = (subnode.Value == value || state);
+                        subnode.Checked = subnode.Value == value || state;
                         if (subnode.Checked && subnode.Parent != null)
                         {
                             subnode.Parent.Expanded = true;

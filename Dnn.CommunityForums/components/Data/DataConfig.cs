@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             get
             {
-                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
                 _objectQualifier = objProvider.Attributes["objectQualifier"];
                 if (_objectQualifier != "" && _objectQualifier.EndsWith("_") == false)
                 {
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             get
             {
-                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
                 _databaseOwner = objProvider.Attributes["databaseOwner"];
                 if (_databaseOwner != "" && _databaseOwner.EndsWith(".") == false)
                 {

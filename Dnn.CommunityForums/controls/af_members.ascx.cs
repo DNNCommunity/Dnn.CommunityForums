@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             SettingsBase ctl = null;
-            ctl = (SettingsBase)(new DotNetNuke.Modules.ActiveForums.Controls.Members());
+            ctl = (SettingsBase)new DotNetNuke.Modules.ActiveForums.Controls.Members();
             ctl.ModuleConfiguration = this.ModuleConfiguration;
             if (!(this.Params == string.Empty))
             {

@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlId = "admin_manageforums_forumeditor";
                 }
 
-                ActiveAdminBase ctl = (ActiveAdminBase)(LoadControl(ctlPath));
+                ActiveAdminBase ctl = (ActiveAdminBase)LoadControl(ctlPath);
                 ctl.ID = ctlId;
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
 
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl.Params = options;
                 }
-                if (!(plhForumEditor.Controls.Contains(ctl)))
+                if (!plhForumEditor.Controls.Contains(ctl))
                 {
                     plhForumEditor.Controls.Add(ctl);
                 }

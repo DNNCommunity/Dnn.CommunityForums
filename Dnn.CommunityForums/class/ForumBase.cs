@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public XmlDocument ForumData
         {
-            get => _forumData ?? (_forumData = (ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(PortalId, ModuleId)));
+            get => _forumData ?? (_forumData = ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(PortalId, ModuleId));
             set => _forumData = value;
         }
 

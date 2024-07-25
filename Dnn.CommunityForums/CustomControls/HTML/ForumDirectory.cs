@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (currGroup != f.ForumGroupId)
                 {
-                    if (! (string.IsNullOrEmpty(gtmp)))
+                    if (! string.IsNullOrEmpty(gtmp))
                     {
                         gtmp = gtmp.Replace("[FORUMHOLDER]", string.Empty);
                         list.Append(gtmp);

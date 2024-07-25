@@ -496,7 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 }
                 dtFI = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
-                if (!(string.IsNullOrEmpty(SelectedDate)))
+                if (!string.IsNullOrEmpty(SelectedDate))
                 {
                     DateTime dte = DateTime.Parse(SelectedDate);
                     SelectedDate = dte.ToString(dtFI.ShortDatePattern + " " + dtFI.ShortTimePattern);
@@ -554,7 +554,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + ClientID + ".ShowTime=" + ShowTime.ToString().ToLower() + ";");
                 str.Append("window." + ClientID + ".DefaultTime='" + DefaultTime + "';");
                 str.Append("window." + ClientID + ".CallbackFlag='" + CallbackFlag + "';");
-                if (!(string.IsNullOrEmpty(RelatedControl)))
+                if (!string.IsNullOrEmpty(RelatedControl))
                 {
                     Control ctl = Parent.FindControl(RelatedControl);
                     if (ctl == null)
@@ -727,7 +727,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker")))
+            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
             {
 #if DEBUG
                 Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ResolveUrl("~/DesktopModules/activeforums/customcontrols/resources/datepicker.js"));

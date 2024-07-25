@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -193,10 +193,10 @@ namespace DotNetNuke.Modules.ActiveForums
             StringBuilder sb = new StringBuilder(1024);
             string[] Params = { ParamKeys.ForumId + "=" + dr["ForumID"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic };
             string URL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(PostTabID, "", Params);
-            if (MainSettings.URLRewriteEnabled && !(string.IsNullOrEmpty(dr["FullUrl"].ToString())))
+            if (MainSettings.URLRewriteEnabled && !string.IsNullOrEmpty(dr["FullUrl"].ToString()))
             {
                 string sTopicURL = string.Empty;
-                if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
+                if (!string.IsNullOrEmpty(MainSettings.PrefixURLBase))
                 {
                     sTopicURL = "/" + MainSettings.PrefixURLBase;
                 }
@@ -311,8 +311,8 @@ namespace DotNetNuke.Modules.ActiveForums
             while ((sText.IndexOf("<", 0) + 1) > 0)
             {
                 fFound = true;
-                tempStripHTMLTag = tempStripHTMLTag + " " + sText.Substring(0, (sText.IndexOf("<", 0) + 1) - 1);
-                sText = sText.Substring((sText.IndexOf(">", 0) + 1));
+                tempStripHTMLTag = tempStripHTMLTag + " " + sText.Substring(0, sText.IndexOf("<", 0) + 1 - 1);
+                sText = sText.Substring(sText.IndexOf(">", 0) + 1);
             }
             tempStripHTMLTag = tempStripHTMLTag + sText;
             if (!fFound)

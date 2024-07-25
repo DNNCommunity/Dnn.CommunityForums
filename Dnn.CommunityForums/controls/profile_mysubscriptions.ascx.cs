@@ -134,8 +134,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                       join sf in subscribedForums
                                       on af.ForumId equals sf.ForumId into merged
                                       from ms in merged.DefaultIfEmpty()
-                                      where (af.Forum.AllowSubscribe || ms == null || ms.Id != 0)
-                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0), PortalId, ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, (ms != null));
+                                      where af.Forum.AllowSubscribe || ms == null || ms.Id != 0
+                                      select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo(ms?.Id ?? 0, PortalId, ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, ms != null);
             return mergedSubscriptions;
         }
 

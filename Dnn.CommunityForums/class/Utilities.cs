@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Empty;
             }
 
-            if (!(template.Contains(Globals.ForumsControlsRegisterAMTag)))
+            if (!template.Contains(Globals.ForumsControlsRegisterAMTag))
             {
                 template = Globals.ForumsControlsRegisterAMTag + template;
             }
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var sPath = filePath;
 
-            if (!(sPath.Contains(@"\\")) && !(sPath.Contains(@":\")))
+            if (!sPath.Contains(@"\\") && !sPath.Contains(@":\"))
             {
                 sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(filePath);
             }
@@ -286,7 +286,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (HttpContext.Current?.Items["PortalSettings"] != null)
                 {
-                    return (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                    return (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
                 }
                 else
                 {
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current?.Items["PortalSettings"] != null)
                 {
-                    portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
+                    portalSettings = (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
                     if (portalSettings.PortalId != portalId)
                     {
                         portalSettings = null;
@@ -334,7 +334,7 @@ namespace DotNetNuke.Modules.ActiveForums
             string strHost;
             if (HttpContext.Current.Request.IsSecureConnection)
             {
-                strHost = (string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/")).Replace("http://", "https://");
+                strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/").Replace("http://", "https://");
             }
             else
             {
@@ -368,7 +368,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             var ti = new TabController().GetTab(tabId, portalId, false);
-            var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + ("&" + p));
+            var sURL = additionalParameters.ToList().Aggregate(Common.Globals.ApplicationURL(tabId), (current, p) => current + "&" + p);
 
             pageName = CleanStringForUrl(pageName);
             DotNetNuke.Abstractions.Portals.IPortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalId);
@@ -485,7 +485,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static string AutoLinks(string text, string currentSite)
         {
             var original = text;
-            if (!(string.IsNullOrEmpty(text)))
+            if (!string.IsNullOrEmpty(text))
             {
                 const string encodedHref = "&lt;a.*?href=[\"'](?<url>.*?)[\"'].*?&gt;(http[s]?.*?)&lt;/a&gt;"; // Encoded href regex
 
@@ -625,7 +625,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var strMessage = text;
 
-            if ((strMessage.ToUpper().IndexOf("<CODE", StringComparison.Ordinal)) >= 0)
+            if (strMessage.ToUpper().IndexOf("<CODE", StringComparison.Ordinal) >= 0)
             {
                 var intStart = strMessage.ToUpper().IndexOf("<CODE", StringComparison.Ordinal);
                 var intEnd = strMessage.ToUpper().IndexOf("</CODE>", StringComparison.Ordinal) + 7;
@@ -683,7 +683,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             body = body.Trim();
 
-            if (string.IsNullOrEmpty(StripHTMLTag(body)) && !(body.ToUpper().Contains("<CODE")))
+            if (string.IsNullOrEmpty(StripHTMLTag(body)) && !body.ToUpper().Contains("<CODE"))
             {
                 return false;
             }
@@ -793,7 +793,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public static string StrongEncode(string text)
         {
-            return text.ToCharArray().Aggregate(string.Empty, (current, s) => current + ("&#" + Convert.ToInt32(s) + ";"));
+            return text.ToCharArray().Aggregate(string.Empty, (current, s) => current + "&#" + Convert.ToInt32(s) + ";");
         }
 
         public static string StrongDecode(string text)
@@ -947,7 +947,7 @@ namespace DotNetNuke.Modules.ActiveForums
         internal static string GetFileContent(string filePath)
         {
             var sPath = filePath;
-            if (!(sPath.Contains(@":\")) && !(sPath.Contains(@"\\")))
+            if (!sPath.Contains(@":\") && !sPath.Contains(@"\\"))
             {
                 sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(sPath);
             }
@@ -1256,7 +1256,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 var newValue = match.Value;
-                if (!(string.IsNullOrEmpty(sReplace)))
+                if (!string.IsNullOrEmpty(sReplace))
                 {
                     newValue = sReplace;
                 }
@@ -1320,7 +1320,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public static object ConvertFromHashTableToObject(Hashtable ht, object infoObject)
         {
             var myType = infoObject.GetType();
-            var myProperties = myType.GetProperties((BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance));
+            var myProperties = myType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach (var pItem in myProperties)
             {
                 var sValue = string.Empty;

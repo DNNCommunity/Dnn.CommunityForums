@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    RowIndex = ((PageId * PageSize) - PageSize);
+                    RowIndex = (PageId * PageSize) - PageSize;
                 }
                 string sort = SortColumns.ReplyCreated;
                 if (TopicsTemplate.Contains("[AF:SORT:TOPICCREATED]"))
@@ -323,7 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 TopicsTemplate = TemplateUtils.ReplaceSubSection(TopicsTemplate, string.Empty, "[META]", "[/META]");
                             }
                             //Parse Meta Template
-                            if (!(string.IsNullOrEmpty(MetaTemplate)))
+                            if (!string.IsNullOrEmpty(MetaTemplate))
                             {
                                 MetaTemplate = MetaTemplate.Replace("[FORUMNAME]", ForumName);
                                 MetaTemplate = MetaTemplate.Replace("[GROUPNAME]", GroupName);
@@ -406,7 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 else
                 {
                     string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ForumModuleId, "CanEdit");
-                    if (!(string.IsNullOrEmpty(fs)))
+                    if (!string.IsNullOrEmpty(fs))
                     {
                         bModEdit = true;
                     }
@@ -470,7 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.Controls.Add(this.ParseControl(sOutput));
             BuildPager();
 
-            PlaceHolder plh = (PlaceHolder)(this.FindControl("plhQuickJump"));
+            PlaceHolder plh = (PlaceHolder)this.FindControl("plhQuickJump");
             if (plh != null)
             {
                 ctlForumJump = new af_quickjump();
@@ -485,10 +485,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 plh.Controls.Add(ctlForumJump);
             }
 
-            plh = (PlaceHolder)(this.FindControl("plhSubForums"));
+            plh = (PlaceHolder)this.FindControl("plhSubForums");
             if (plh != null)
             {
-                ctlForumSubs = (ForumView)(LoadControl(typeof(ForumView), null));
+                ctlForumSubs = (ForumView)LoadControl(typeof(ForumView), null);
                 ctlForumSubs.ModuleConfiguration = this.ModuleConfiguration;
                 ctlForumSubs.ForumId = ForumId;
                 ctlForumSubs.Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId).SubForums;
@@ -511,7 +511,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             foreach (Control ctrl in ctrls)
             {
-                if ((ctrl) is ForumBase)
+                if (ctrl is ForumBase)
                 {
                     ((ForumBase)ctrl).ModuleConfiguration = this.ModuleConfiguration;
 
@@ -614,9 +614,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             if (sOutput.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                int inStart = (sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
-                int inEnd = (sOutput.IndexOf("]", inStart - 1) + 1);
-                sOutput.Remove(inStart, ((inEnd - inStart) + 1));
+                int inStart = sOutput.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1 + 19;
+                int inEnd = sOutput.IndexOf("]", inStart - 1) + 1;
+                sOutput.Remove(inStart, inEnd - inStart + 1);
             }
             sOutput = sOutput.Replace("[MINISEARCH]", "<am:MiniSearch  EnableViewState=\"False\" id=\"amMiniSearch\" MID=\"" + ModuleId + "\" TID=\"" + TabId + "\" FID=\"" + ForumId + "\" runat=\"server\" />");
             sOutput = sOutput.Replace("[PAGER1]", "<am:pagernav id=\"Pager1\"  EnableViewState=\"False\" runat=\"server\" />");
@@ -703,8 +703,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int iLength = 0;
             if (sLastReply.Contains("[LASTPOSTSUBJECT:"))
             {
-                int inStart = (sLastReply.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) + 17;
-                int inEnd = (sLastReply.IndexOf("]", inStart - 1) + 1);
+                int inStart = sLastReply.IndexOf("[LASTPOSTSUBJECT:", 0) + 1 + 17;
+                int inEnd = sLastReply.IndexOf("]", inStart - 1) + 1;
                 string sLength = sLastReply.Substring(inStart - 1, inEnd - inStart);
                 iLength = Convert.ToInt32(sLength);
             }
@@ -810,7 +810,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":LABEL]", Utilities.GetSharedResource("[RESX:" + pName + "]"));
                             sTopicsTemplate = sTopicsTemplate.Replace("[AF:PROPERTY:" + pName + ":VALUE]", pValue);
                             string pValueKey = string.Empty;
-                            if (!(string.IsNullOrEmpty(pValue)))
+                            if (!string.IsNullOrEmpty(pValue))
                             {
                                 pValueKey = Utilities.CleanName(pValue).ToLowerInvariant();
                             }
@@ -834,9 +834,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sTopicsTemplate = sTopicsTemplate.Replace("[POSTICON]", "<div><i class=\"fa fa-file-o fa-2x fa-grey\"></i></div>");
                     }
 
-                    if (!(string.IsNullOrEmpty(Summary)))
+                    if (!string.IsNullOrEmpty(Summary))
                     {
-                        if (!(Utilities.HasHTML(Summary)))
+                        if (!Utilities.HasHTML(Summary))
                         {
                             Summary = Summary.Replace(System.Environment.NewLine, "<br />");
                         }
@@ -854,8 +854,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (Template.Contains("[BODY:"))
                     {
-                        int inStart = (Template.IndexOf("[BODY:", 0) + 1) + 5;
-                        int inEnd = (Template.IndexOf("]", inStart - 1) + 1) - 1;
+                        int inStart = Template.IndexOf("[BODY:", 0) + 1 + 5;
+                        int inEnd = Template.IndexOf("]", inStart - 1) + 1 - 1;
                         string sLength = Template.Substring(inStart, inEnd - inStart);
                         BodyLength = Convert.ToInt32(sLength);
                         BodyTrim = "[BODY:" + BodyLength.ToString() + "]";
@@ -904,7 +904,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     string sLastReplyURL = NavigateUrl(TabId, "", @params.ToArray());
 
-                    if (!(string.IsNullOrEmpty(sTopicURL)))
+                    if (!string.IsNullOrEmpty(sTopicURL))
                     {
                         if (sTopicURL.EndsWith("/"))
                         {
@@ -1079,7 +1079,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (TopicRowCount > 0)
             {
                 DotNetNuke.Modules.ActiveForums.Controls.PagerNav Pager1 = null;
-                Pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)(this.FindControl("Pager1"));
+                Pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)this.FindControl("Pager1");
 
                 DotNetNuke.Modules.ActiveForums.Controls.PagerNav Pager2 = null;
                 object obj = this.FindControl("Pager2");
@@ -1441,7 +1441,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return string.Empty;
             }
 
-            if (!(template.Contains(tagRegistration)))
+            if (!template.Contains(tagRegistration))
             {
                 template = tagRegistration + template;
             }

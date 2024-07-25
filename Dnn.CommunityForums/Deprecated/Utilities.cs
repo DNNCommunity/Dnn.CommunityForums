@@ -140,12 +140,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 return GetSharedResource("[RESX:TimeSpan:MonthAgo]");
             }
 
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 11), 0, 0).TotalSeconds))
+            if (delta < Convert.ToDouble(new TimeSpan(24 * 30 * 11, 0, 0).TotalSeconds))
             {
                 return string.Format(GetSharedResource("[RESX:TimeSpan:MonthsAgo]"), Math.Ceiling(ts.Days / 30.0));
             }
 
-            if (delta < Convert.ToDouble(new TimeSpan(((24 * 30) * 18), 0, 0).TotalSeconds))
+            if (delta < Convert.ToDouble(new TimeSpan(24 * 30 * 18, 0, 0).TotalSeconds))
             {
                 return GetSharedResource("[RESX:TimeSpan:YearAgo]");
             }

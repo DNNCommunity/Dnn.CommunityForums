@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (UseCache)
             {
-                rl = (List<RewardInfo>)(DataCache.SettingsCacheRetrieve(ModuleId,cacheKey));
+                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(ModuleId,cacheKey);
                 if (rl == null)
                 {
                     rl = Reward_List(PortalId, ModuleId);

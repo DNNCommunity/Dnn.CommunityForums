@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool TopicSubscriber { get => TopicId > 0; }
 
         [IgnoreColumn()]
-        public bool ForumSubscriber { get => (ForumId > 0 && TopicId == 0); }
+        public bool ForumSubscriber { get => ForumId > 0 && TopicId == 0; }
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.User User => _user ?? (_user = new DotNetNuke.Modules.ActiveForums.UserController().GetUser(PortalId, ModuleId, UserId));
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public string Subject { get => _subject ?? (_subject = string.IsNullOrEmpty(Topic?.Content?.Subject) ? string.Empty : Topic?.Content?.Subject); set => _subject = value; } 
 
         [IgnoreColumn()]
-        public DateTime LastPostDate { get => (DateTime)(_lastPostDate ?? (_lastPostDate = (TopicId > 0 ? Topic?.Content?.DateUpdated : Forum?.LastPostDateTime))); set => _lastPostDate = value; }
+        public DateTime LastPostDate { get => (DateTime)(_lastPostDate ?? (_lastPostDate = TopicId > 0 ? Topic?.Content?.DateUpdated : Forum?.LastPostDateTime)); set => _lastPostDate = value; }
 
         [IgnoreColumn()]
         public bool Subscribed { get; set; }

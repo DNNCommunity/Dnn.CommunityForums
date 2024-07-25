@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= roles.Length - 2; i++)
             {
-                if (! (string.IsNullOrEmpty(roles[i])))
+                if (! string.IsNullOrEmpty(roles[i]))
                 {
                     roleIds[i] = Convert.ToInt32(roles[i]);
                 }
@@ -102,11 +102,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //Users
             string users = GetSecureObjectList(Security, 1);
             string userNames = string.Empty;
-            if (! (string.IsNullOrEmpty(users)))
+            if (! string.IsNullOrEmpty(users))
             { 
                 foreach (string uid in users.Split(';'))
                 {
-                    if (! (string.IsNullOrEmpty(uid)))
+                    if (! string.IsNullOrEmpty(uid))
                     {
                         DotNetNuke.Entities.Users.UserInfo u = DotNetNuke.Entities.Users.UserController.Instance.GetUser(PortalId, Convert.ToInt32(uid));
                         if (u != null)

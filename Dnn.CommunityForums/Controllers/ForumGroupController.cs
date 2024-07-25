@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             if (forumGroupInfo.PermissionsId == -1)
             {
-                forumGroupInfo.PermissionsId = (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId)).PermissionsId;
+                forumGroupInfo.PermissionsId = new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetAdministratorsRoleId(portalId).ToString(), forumGroupInfo.ModuleId).PermissionsId;
             }
 
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo

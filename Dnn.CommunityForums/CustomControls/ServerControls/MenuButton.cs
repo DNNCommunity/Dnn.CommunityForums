@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu")))
+            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMMenu", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));
             }

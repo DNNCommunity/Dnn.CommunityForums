@@ -112,8 +112,8 @@ namespace DotNetNuke.Modules.ActiveForums
             string sJumpValue = drpForums.SelectedItem.Value;
             if (!(sJumpValue == string.Empty) && !(sJumpValue == ""))
             {
-                string sJumpType = sJumpValue.Substring(0, (sJumpValue.IndexOf(":", 0) + 1) - 1);
-                string sJumpID = sJumpValue.Substring((sJumpValue.IndexOf(":", 0) + 1));
+                string sJumpType = sJumpValue.Substring(0, sJumpValue.IndexOf(":", 0) + 1 - 1);
+                string sJumpID = sJumpValue.Substring(sJumpValue.IndexOf(":", 0) + 1);
                 switch (sJumpType)
                 {
                     case "GROUPJUMP":

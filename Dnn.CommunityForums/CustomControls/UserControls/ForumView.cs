@@ -106,17 +106,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 LinkControls(Controls);
                                 if (!SubsOnly)
                                 {
-                                    var plh = (PlaceHolder)(tmpCtl.FindControl("plhQuickJump"));
+                                    var plh = (PlaceHolder)tmpCtl.FindControl("plhQuickJump");
                                     if (plh != null)
                                     {
                                         ctlForumJump = new af_quickjump { ForumModuleId = ForumModuleId, Forums = Forums, ModuleId = ModuleId };
                                         plh.Controls.Add(ctlForumJump);
                                     }
-                                    plh = (PlaceHolder)(tmpCtl.FindControl("plhUsersOnline"));
+                                    plh = (PlaceHolder)tmpCtl.FindControl("plhUsersOnline");
                                     if (plh != null)
                                     {
                                         ForumBase ctlWhosOnline;
-                                        ctlWhosOnline = (ForumBase)(LoadControl($"{Globals.ModulePath}controls/af_usersonline.ascx"));
+                                        ctlWhosOnline = (ForumBase)LoadControl($"{Globals.ModulePath}controls/af_usersonline.ascx");
                                         ctlWhosOnline.ModuleConfiguration = ModuleConfiguration;
                                         plh.Controls.Add(ctlWhosOnline);
                                     }
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             Forums = (List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>)obj;
                         }
                     }
-                    Forums = (Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList());
+                    Forums = Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList();
 
                     string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
                     string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateURL(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         foreach (var fi in Forums.Where(f => !SubsOnly || f.ParentForumId > 0).OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).Take(Globals.ForumCount))
                         {
                             bool canView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security?.View, ForumUser.UserRoles);
-                            if ((UserInfo.IsSuperUser) || (canView) || (!fi.ForumGroup.Hidden))
+                            if (UserInfo.IsSuperUser || canView || (!fi.ForumGroup.Hidden))
                             {
                                 if (tmpGroup != fi.GroupName)
                                 {
@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             foreach (Control ctrl in ctrls)
             {
-                if ((ctrl) is ForumBase)
+                if (ctrl is ForumBase)
                 {
                     ((ForumBase)ctrl).ModuleConfiguration = ModuleConfiguration;
 
@@ -470,9 +470,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Template = canRead ? Template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + fi.ForumName + "','" + ForumURL + "');\"><img src=\"" + ThemePath + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>") : Template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
             if (Template.Contains("[AF:CONTROL:ADDTHIS"))
             {
-                int inStart = (Template.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1) + 19;
-                int inEnd = (Template.IndexOf("]", inStart - 1) + 1);
-                Template.Remove(inStart, ((inEnd - inStart) + 1));
+                int inStart = Template.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1 + 19;
+                int inEnd = Template.IndexOf("]", inStart - 1) + 1;
+                Template.Remove(inStart, inEnd - inStart + 1);
             }
 
             if (fi.ForumDesc != "")
@@ -492,8 +492,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int intLength = 0;
             if ((Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
             {
-                int inStart = (Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) + 17;
-                int inEnd = (Template.IndexOf("]", inStart - 1) + 1);
+                int inStart = Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1 + 17;
+                int inEnd = Template.IndexOf("]", inStart - 1) + 1;
                 string sLength = Template.Substring(inStart - 1, inEnd - inStart);
                 intLength = Convert.ToInt32(sLength);
             }

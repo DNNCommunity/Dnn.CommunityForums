@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sTemp = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + sTemp;
                 }
-                if (!(sTemp.Contains(Globals.ForumsControlsRegisterAFTag)))
+                if (!sTemp.Contains(Globals.ForumsControlsRegisterAFTag))
                 {
                     sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
                 }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     btnSubmit.Visible = true;
                     ambtnSubmit.Visible = false;
                 }
-                if (!(string.IsNullOrEmpty(HttpContext.Current.Request.Form["txtBody"])) && HttpContext.Current.Request.IsAuthenticated & ((!(string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply1"])) && string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply2"])) | HttpContext.Current.Request.Browser.IsMobileDevice))
+                if (!string.IsNullOrEmpty(HttpContext.Current.Request.Form["txtBody"]) && HttpContext.Current.Request.IsAuthenticated & ((!string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply1"]) && string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply2"])) | HttpContext.Current.Request.Browser.IsMobileDevice))
                 {
                     SaveQuickReply();
                 }
@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return;
             }
             bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
-            bool isApproved = Convert.ToBoolean(((forumInfo.IsModerated == true) ? false : true));
+            bool isApproved = Convert.ToBoolean((forumInfo.IsModerated == true) ? false : true);
             if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;

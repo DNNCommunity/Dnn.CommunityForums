@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    if (!(string.IsNullOrEmpty(p.ValidationExpression)) && !(string.IsNullOrEmpty(Request.Form["afprop-" + p.PropertyId].Trim())))
+                    if (!string.IsNullOrEmpty(p.ValidationExpression) && !string.IsNullOrEmpty(Request.Form["afprop-" + p.PropertyId].Trim()))
                     {
                         var isMatch = Regex.IsMatch(Request.Form["afprop-" + p.PropertyId].Trim(), p.ValidationExpression, RegexOptions.IgnoreCase);
                         if (!isMatch)
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Response.Redirect(NavigateUrl(TabId));
             }
-            else if (!_canModEdit && (ti.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval))
+            else if (!_canModEdit && ti.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval)
             {
                 var im = new InfoMessage
                 {
@@ -411,7 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 _contentId = ti.ContentId;
                 _authorId = ti.Author.AuthorId;
 
-                if (!(string.IsNullOrEmpty(ti.TopicData)))
+                if (!string.IsNullOrEmpty(ti.TopicData))
                 {
                     ctlForm.TopicProperties = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(ti.TopicData);
                 }
@@ -456,7 +456,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else if ((ri.Content.AuthorId != UserId && _canModEdit == false) | (ri.Content.AuthorId == UserId && _canEdit == false) | (_canEdit == false && _canModEdit))
                 Response.Redirect(NavigateUrl(TabId));
 
-            else if (!_canModEdit && (ri.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval))
+            else if (!_canModEdit && ri.Content.AuthorId == UserId && _canEdit && MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > MainSettings.EditInterval)
             {
                 var im = new Controls.InfoMessage
                 {
@@ -1005,7 +1005,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (ctlForm.Subscribe && authorId == UserId)
                 {
-                    if (!(sc.Subscribed(PortalId, ForumModuleId, authorId, ForumId, TopicId)))
+                    if (!sc.Subscribed(PortalId, ForumModuleId, authorId, ForumId, TopicId))
                     {
                         //TODO: move to new DAL2 subscription controller
                         new SubscriptionController().Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);

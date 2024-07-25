@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -101,9 +101,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             PageMode = Mode.Links;
 
-            if (!(string.IsNullOrEmpty(BaseURL)))
+            if (!string.IsNullOrEmpty(BaseURL))
             {
-                if (!(BaseURL.EndsWith("/")))
+                if (!BaseURL.EndsWith("/"))
                 {
                     BaseURL += "/";
                 }
@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (Params != null)
                 {
                     var intLength = params2.Length;
-                    Array.Resize(ref params2, (intLength + Params.Length));
+                    Array.Resize(ref params2, intLength + Params.Length);
                     Params.CopyTo(params2, intLength);
                 }
 
@@ -290,7 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (Params != null)
                 {
                     var intLength = params2.Length;
-                    Array.Resize(ref params2, (intLength + Params.Length));
+                    Array.Resize(ref params2, intLength + Params.Length);
                     Params.CopyTo(params2, intLength);
                 }
             }
@@ -300,7 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.PageId + "=" + page };
                     var intLength = params2.Length;
-                    Array.Resize(ref params2, (intLength + Params.Length));
+                    Array.Resize(ref params2, intLength + Params.Length);
                     Params.CopyTo(params2, intLength);
                 }
                 else

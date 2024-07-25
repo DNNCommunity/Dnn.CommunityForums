@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             ti = new TemplateInfo();
                             ti.IsSystem = false;
-                            ti.TemplateType = (Templates.TemplateTypes)(Convert.ToInt32(e.Parameters[5]));
+                            ti.TemplateType = (Templates.TemplateTypes)Convert.ToInt32(e.Parameters[5]);
                             ti.PortalId = PortalId;
                             ti.ModuleId = ModuleId;
                         }

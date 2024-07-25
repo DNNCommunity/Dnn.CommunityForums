@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             // Read the configuration specific information for this provider
-            DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)(_providerConfiguration.Providers[_providerConfiguration.DefaultProvider]);
+            DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
 
             // Read the attributes for this provider
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Dashboard
         public override DataSet Dashboard_Get(int PortalId, int ModuleId)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_DashBoard_Stats", PortalId, ModuleId));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_DashBoard_Stats", PortalId, ModuleId);
         }
 
         #endregion
@@ -144,24 +144,24 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
         public override IDataReader Filters_Get(int PortalId, int ModuleId, int FilterId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_Get", PortalId, ModuleId, FilterId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_Get", PortalId, ModuleId, FilterId);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetEmoticons()")]
         public override IDataReader Filters_GetEmoticons(int ModuleID)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_GetEmoticons", ModuleID));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_GetEmoticons", ModuleID);
         }
 
         public override IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_List", PortalId, ModuleId, PageIndex, PageSize, Sort, SortColumn));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_List", PortalId, ModuleId, PageIndex, PageSize, Sort, SortColumn);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used")]
         public override IDataReader Filters_ListByType(int PortalId, int ModuleId, string FilterType)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_ListByType", PortalId, ModuleId, FilterType));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_ListByType", PortalId, ModuleId, FilterType);
         }
 
         public override int Filters_Save(int PortalId, int ModuleId, int FilterId, string Find, string Replace, string FilterType)
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost);
         }
 
         public override void Forums_Move(int ModuleId, int ForumId, int SortDirection)
@@ -224,13 +224,13 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Groups_Get(int ModuleId, int ForumGroupID)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Groups_Get", ModuleId, ForumGroupID));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Groups_Get", ModuleId, ForumGroupID);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Used by Cache but only Cleared but never Set so not needed.")]
         public override IDataReader Groups_List(int ModuleId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Groups_List", ModuleId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Groups_List", ModuleId);
         }
 
         public override void Groups_Move(int ModuleId, int ForumGroupId, int SortDirection)
@@ -247,12 +247,12 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Polls
         public override DataSet Poll_Get(int TopicId)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Poll_Get", TopicId));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Poll_Get", TopicId);
         }
 
         public override IDataReader Poll_GetResults(int TopicId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Poll_GetResults", TopicId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Poll_GetResults", TopicId);
         }
 
         public override int Poll_HasVoted(int TopicId, int UserId)
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Moderation
         public override DataSet Mod_Pending(int PortalId, int ModuleId, int ForumId, int UserId)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Mod_Pending", PortalId, ModuleId, ForumId, UserId));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Mod_Pending", PortalId, ModuleId, ForumId, UserId);
         }
 
         public override void Mod_Reject(int PortalId, int ModuleId, int UserId, int ForumId, int TopicId, int ReplyId, int Reason, string Comment)
@@ -296,12 +296,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Ranks_Get(int PortalId, int ModuleId, int RankId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Ranks_Get", PortalId, ModuleId, RankId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Ranks_Get", PortalId, ModuleId, RankId);
         }
 
         public override IDataReader Ranks_List(int PortalId, int ModuleId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Ranks_List", PortalId, ModuleId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Ranks_List", PortalId, ModuleId);
         }
 
         public override int Ranks_Save(int PortalId, int ModuleId, int RankId, string RankName, int MinPosts, int MaxPosts, string Display)
@@ -313,7 +313,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Replies/Comments
         public override IDataReader Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Reply_Get", PortalId, ModuleId, TopicId, ReplyId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Reply_Get", PortalId, ModuleId, TopicId, ReplyId);
         }
 
         public override int Reply_Save(int PortalId, int TopicId, int ReplyId, int ReplyToId, int StatusId, bool IsApproved, bool IsDeleted, string Subject, string Body, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress)
@@ -438,12 +438,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Subscriptions_GetDigest(string SubscriptionType, DateTime StartDate)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_DigestGet", SubscriptionType, StartDate));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_DigestGet", SubscriptionType, StartDate);
         }
 
         public override IDataReader Subscriptions_GetSubscribers(int PortalId, int ForumId, int TopicId, int Mode)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_Subscribers", PortalId, ForumId, TopicId, Mode));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Subscriptions_Subscribers", PortalId, ForumId, TopicId, Mode);
         }
 
         public override int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId)
@@ -467,12 +467,12 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Tags_Get(int PortalId, int ModuleId, int TagId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Get", PortalId, ModuleId, TagId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Get", PortalId, ModuleId, TagId);
         }
 
         public override IDataReader Tags_List(int PortalId, int ModuleId, bool IsCategory, int PageIndex, int PageSize, string Sort, string SortColumn, int ForumId, int ForumGroupId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_List", PortalId, ModuleId, IsCategory, PageIndex, PageSize, Sort, SortColumn, ForumId, ForumGroupId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_List", PortalId, ModuleId, IsCategory, PageIndex, PageSize, Sort, SortColumn, ForumId, ForumGroupId);
         }
 
         public override int Tags_Save(int PortalId, int ModuleId, int TagId, string TagName, int Clicks, int Items, int Priority, int TopicId, bool IsCategory, int ForumId, int ForumGroupId)
@@ -483,7 +483,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Tags_Search(int PortalId, int ModuleId, string Search)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Search", PortalId, ModuleId, Search));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Tags_Search", PortalId, ModuleId, Search);
         }
 
         public override void Tags_AddTopicToCategory(int PortalId, int ModuleId, int TagId, int TopicId)
@@ -505,17 +505,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Templates_Get(int TemplateId, int PortalId, int ModuleId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Templates_Get", TemplateId, PortalId, ModuleId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Templates_Get", TemplateId, PortalId, ModuleId);
         }
 
         public override IDataReader Templates_List(int PortalId, int ModuleId, int TemplateType)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, 0, 10000));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, 0, 10000);
         }
 
         public override IDataReader Templates_List(int PortalId, int ModuleId, int TemplateType, int RowIndex, int PageSize)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, RowIndex, PageSize));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Templates_List", PortalId, ModuleId, TemplateType, RowIndex, PageSize);
         }
 
         public override int Templates_Save(int TemplateId, int PortalId, int ModuleId, int TemplateType, bool IsSystem, string Title, string Subject, string Template)
@@ -544,7 +544,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicController.GetById(int TopicId)")]
         public override IDataReader Topics_Get(int PortalId, int ModuleId, int TopicId, int ForumId, int UserId, bool WithSecurity)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Get", PortalId, ModuleId, TopicId, ForumId, UserId, WithSecurity));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Get", PortalId, ModuleId, TopicId, ForumId, UserId, WithSecurity);
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
@@ -556,7 +556,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Topics_List(int ForumId, int PortalId, int ModuleId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_List", ForumId, PortalId, ModuleId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_List", ForumId, PortalId, ModuleId);
         }
 
         public override void Topics_Move(int PortalId, int ModuleId, int ForumId, int TopicId)
@@ -582,7 +582,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public override IDataReader Topics_Replies(int TopicId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Replies", TopicId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Topics_Replies", TopicId);
         }
 
         public override void Topics_UpdateStatus(int PortalId, int ModuleId, int TopicId, int ReplyId, int TopicStatusId, int ReplyStatusId, int UserId)
@@ -595,57 +595,57 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No Longer Used.")]
         public override DataSet UI_ForumView(int PortalId, int ModuleId, int UserId, bool IsSuper, string ForumIds)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_ForumView", PortalId, ModuleId, UserId, IsSuper, -1, ForumIds));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_ForumView", PortalId, ModuleId, UserId, IsSuper, -1, ForumIds);
         }
 
         public override DataSet UI_TopicsView(int PortalId, int ModuleId, int ForumId, int UserId, int PageIndex, int PageSize, bool IsSuper, string SortColumn)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_TopicsView", PortalId, ModuleId, ForumId, UserId, PageIndex, PageSize, IsSuper, SortColumn));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_TopicsView", PortalId, ModuleId, ForumId, UserId, PageIndex, PageSize, IsSuper, SortColumn);
         }
 
         public override DataSet UI_TopicView(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, int PageIndex, int PageSize, bool IsSuper, string Sort)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_TopicView", PortalId, ModuleId, ForumId, TopicId, UserId, PageIndex, PageSize, IsSuper, Sort));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_TopicView", PortalId, ModuleId, ForumId, TopicId, UserId, PageIndex, PageSize, IsSuper, Sort);
         }
 
         public override DataSet UI_NotReadView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_NotRead", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_NotRead", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
         public override DataSet UI_UnansweredView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_UnansweredView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_UnansweredView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
         public override DataSet UI_MyTopicsView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_MyTopicsView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_MyTopicsView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
         public override DataSet UI_ActiveView(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_ActiveView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_ActiveView", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
         public override DataSet UI_MostLiked(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_MostLiked", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_MostLiked", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
         public override DataSet UI_MostReplies(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper, int TimeFrame)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_MostReplies", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_MostReplies", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper, TimeFrame);
         }
 
         public override DataSet UI_Announcements(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_Announcements", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_Announcements", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
         public override DataSet UI_Unresolved(int PortalId, int ModuleId, int UserId, int RowIndex, int MaxRows, string Sort, bool IsSuper)
         {
-            return (DataSet)(SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_Unresolved", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper));
+            return (DataSet)SqlHelper.ExecuteDataset(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UI_Unresolved", PortalId, ModuleId, UserId, RowIndex, MaxRows, Sort, IsSuper);
         }
 
         #endregion
@@ -662,7 +662,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval);
         }
 
         public override DataSet Profiles_Get(int PortalId, int ModuleId, int UserId)
@@ -677,13 +677,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, -1, Interval));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_Stats", PortalId, -1, Interval);
         }
 
         public override IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter)
         {
             //Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_List", PortalId, -1, MaxRows, RowIndex, Filter));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_List", PortalId, -1, MaxRows, RowIndex, Filter);
         }
 
         #endregion
@@ -736,19 +736,19 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Top Posts
         public override IDataReader PortalForums(int PortalId)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_PortalForums", PortalId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_PortalForums", PortalId);
         }
 
         public override IDataReader GetPosts(int PortalId, string Forums, bool TopicsOnly, bool RandomOrder, int Rows, string Tags, int FilterByUserId = -1)
         {
             const bool IgnoreSecurity = false; // Required by proc but not currently used
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_GetPosts", PortalId, Forums, TopicsOnly, RandomOrder, Rows, IgnoreSecurity, Tags, FilterByUserId));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_GetPosts", PortalId, Forums, TopicsOnly, RandomOrder, Rows, IgnoreSecurity, Tags, FilterByUserId);
         }
 
         //
         public override IDataReader GetPostsByUser(int PortalId, int Rows, bool IsSuperUser, int currentUserId, int FilteredUserid, bool TopicsOnly, string ForumIds)
         {
-            return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_GetByUser", PortalId, Rows, IsSuperUser, currentUserId, FilteredUserid, TopicsOnly, ForumIds));
+            return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_GetByUser", PortalId, Rows, IsSuperUser, currentUserId, FilteredUserid, TopicsOnly, ForumIds);
         }
         #endregion
 

@@ -39,9 +39,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (string.IsNullOrEmpty(_template) && ! (string.IsNullOrEmpty(TemplateFile)))
+                if (string.IsNullOrEmpty(_template) && ! string.IsNullOrEmpty(TemplateFile))
                 {
-                    if (! (string.IsNullOrEmpty(ControlConfig.TemplatePath)))
+                    if (! string.IsNullOrEmpty(ControlConfig.TemplatePath))
                     {
                         _template = ControlConfig.TemplatePath + TemplateFile;
                     }
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (ParseTemplateFile)
             {
-                if (! (string.IsNullOrEmpty(DisplayTemplate)))
+                if (! string.IsNullOrEmpty(DisplayTemplate))
                 {
                     Control ctl = Page.ParseControl(DisplayTemplate);
                     LinkControls(ctl.Controls);

@@ -35,12 +35,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             var topicUrl = cleanSubject;
             var urlPrefix = "/";
 
-            if (!(string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL)))
+            if (!string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL))
             {
                 urlPrefix += forumInfo.ForumGroup.PrefixURL + "/";
             }
 
-            if (!(string.IsNullOrEmpty(forumInfo.PrefixURL)))
+            if (!string.IsNullOrEmpty(forumInfo.PrefixURL))
             {
                 urlPrefix += forumInfo.PrefixURL + "/";
             }
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     break;
                 }
 
-                topicUrl = (u + 1) + "-" + cleanSubject;
+                topicUrl = u + 1 + "-" + cleanSubject;
                 urlToCheck = urlPrefix + topicUrl;
             }
             if (topicUrl.Length > 150)
@@ -77,12 +77,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             string url = "/";
 
-            if (!(string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL)))
+            if (!string.IsNullOrEmpty(forumInfo.ForumGroup.PrefixURL))
             {
                 url += forumInfo.ForumGroup.PrefixURL + "/";
             }
 
-            if (!(string.IsNullOrEmpty(forumInfo.PrefixURL)))
+            if (!string.IsNullOrEmpty(forumInfo.PrefixURL))
             {
                 url += forumInfo.PrefixURL + "/";
             }

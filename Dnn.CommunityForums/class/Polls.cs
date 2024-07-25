@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.AppendFormat("{0}</b> ({1})", Convert.ToString(dr["OptionName"]), Convert.ToString(dr["ResultCount"]));
                 sb.Append("</td></tr><tr><td class=\"afnormal\">");
                 sb.Append("<span class=\"afpollbar\">");
-                sb.Append($"<img src=\"{ImagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32((BarWidth * dblPercent))}px !important;\" />");
+                sb.Append($"<img src=\"{ImagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32(BarWidth * dblPercent)}px !important;\" />");
                 sb.AppendFormat("</span>&nbsp;{0}%", Convert.ToInt32(dblPercent * 100).ToString());
                 sb.Append("</td></tr>");
             }

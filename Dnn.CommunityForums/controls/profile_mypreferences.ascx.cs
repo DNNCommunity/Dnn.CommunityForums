@@ -66,13 +66,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void btnSave_Click(object sender, System.EventArgs e)
         {
-            if (UserId == UID || (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
+            if (UserId == UID || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
             {
                 UserProfileInfo upi = new UserController().GetUser(PortalId, ForumModuleId, UID).Profile;
                 if (upi != null)
                 {
                     upi.PrefDefaultSort = Utilities.XSSFilter(drpPrefDefaultSort.SelectedItem.Value, true);
-                    upi.PrefPageSize = Convert.ToInt32(((Convert.ToInt32(drpPrefPageSize.SelectedValue) < 5) ? 5 : Convert.ToInt32(drpPrefPageSize.SelectedValue)));
+                    upi.PrefPageSize = Convert.ToInt32((Convert.ToInt32(drpPrefPageSize.SelectedValue) < 5) ? 5 : Convert.ToInt32(drpPrefPageSize.SelectedValue));
                     upi.PrefDefaultShowReplies = false;
                     upi.PrefJumpLastPost = chkPrefJumpToLastPost.Checked;
                     upi.PrefTopicSubscribe = chkPrefTopicSubscribe.Checked;

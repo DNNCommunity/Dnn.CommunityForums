@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     modInfo.PortalID = PortalId;
                     modInfo.DesktopModule.Permissions = this.ModuleConfiguration.DesktopModule.Permissions;
 
-                    ForumBase objModule = (ForumBase)(LoadControl("~/desktopmodules/ActiveForums/classic.ascx"));
+                    ForumBase objModule = (ForumBase)LoadControl("~/desktopmodules/ActiveForums/classic.ascx");
                     if (objModule != null)
                     {
                         objModule.ModuleConfiguration = modInfo;

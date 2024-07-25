@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             drpPageSize.Style.Add("float", "none");
 
-            if (!(Utilities.IsRewriteLoaded()))
+            if (!Utilities.IsRewriteLoaded())
             {
                 rdEnableURLRewriter.SelectedIndex = 1;
                 rdEnableURLRewriter.Enabled = false;
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 rdEnableURLRewriter.Enabled = true;
             }
             var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
-            if ((u.IsSuperUser) && (HttpRuntime.IISVersion.Major >= 7))
+            if (u.IsSuperUser && (HttpRuntime.IISVersion.Major >= 7))
             {
                 if (Utilities.IsRewriteLoaded())
                 {
@@ -646,7 +646,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             var xNode = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='" + sectype + "']");
             foreach (string s in security)
             {
-                if (!(string.IsNullOrEmpty(s)))
+                if (!string.IsNullOrEmpty(s))
                 {
                     string nodeName = s.Split('=')[0];
                     string nodeValue = s.Split('=')[1];

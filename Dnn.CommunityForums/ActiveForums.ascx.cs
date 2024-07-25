@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
         protected override void  OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            var ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "classic.ascx")));
+            var ctl = (ForumBase)LoadControl(Page.ResolveUrl(Globals.ModulePath + "classic.ascx"));
             ctl.ModuleConfiguration = ModuleConfiguration;
             plhAF.Controls.Add(ctl);
 

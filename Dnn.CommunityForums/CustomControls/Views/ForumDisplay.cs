@@ -56,7 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTemp = Convert.ToString(obj);
             }
             sTemp = Utilities.LocalizeControl(sTemp);
-            if (!(sTemp.Contains(Globals.ForumsControlsRegisterAFTag)))
+            if (!sTemp.Contains(Globals.ForumsControlsRegisterAFTag))
             {
                 sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
             }
@@ -196,8 +196,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int intLength = 0;
             if ((sForum.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
             {
-                int inStart = (sForum.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) + 17;
-                int inEnd = (sForum.IndexOf("]", inStart - 1) + 1);
+                int inStart = sForum.IndexOf("[LASTPOSTSUBJECT:", 0) + 1 + 17;
+                int inEnd = sForum.IndexOf("]", inStart - 1) + 1;
                 string sLength = sForum.Substring(inStart - 1, inEnd - inStart);
                 intLength = Convert.ToInt32(sLength);
             }

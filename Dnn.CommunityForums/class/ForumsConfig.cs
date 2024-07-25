@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -473,11 +473,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 while (dr.Read())
                 {
-                    int portalId = (Utilities.SafeConvertInt(dr["PortalId"]));
-                    int moduleId = (Utilities.SafeConvertInt(dr["ModuleId"]));
-                    int forumId = (Utilities.SafeConvertInt(dr["ForumId"]));
-                    int topicId = (Utilities.SafeConvertInt(dr["TopicId"]));
-                    string subject = (Utilities.SafeConvertString(dr["Subject"]));
+                    int portalId = Utilities.SafeConvertInt(dr["PortalId"]);
+                    int moduleId = Utilities.SafeConvertInt(dr["ModuleId"]);
+                    int forumId = Utilities.SafeConvertInt(dr["ForumId"]);
+                    int topicId = Utilities.SafeConvertInt(dr["TopicId"]);
+                    string subject = Utilities.SafeConvertString(dr["Subject"]);
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.GetById(topicId);
                     topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);

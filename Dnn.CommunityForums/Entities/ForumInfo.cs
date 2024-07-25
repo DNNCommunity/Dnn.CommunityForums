@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> LoadSubForums()
         {
-            return (_subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(ForumID, ModuleId).ToList());
+            return _subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(ForumID, ModuleId).ToList();
         }
 
         private List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> _properties;
@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         internal List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> LoadProperties()
         {
-            return (HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p=> p.PortalId == PortalId && p.ObjectType == 1 && p.ObjectOwnerId == ForumID).ToList() : new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>());
+            return HasProperties ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Get().Where(p=> p.PortalId == PortalId && p.ObjectType == 1 && p.ObjectOwnerId == ForumID).ToList() : new List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>();
         }
 
         #region "Settings & Security"

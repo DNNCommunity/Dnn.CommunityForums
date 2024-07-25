@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (Context != null && Context.Request != null)
                 {
                     string sId = ClientID;
-                    if (!(string.IsNullOrEmpty(ForceId)))
+                    if (!string.IsNullOrEmpty(ForceId))
                     {
                         sId = ForceId;
                     }
@@ -282,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //End If
                 //output.RenderEndTag()
                 string sID = this.ClientID;
-                if (!(string.IsNullOrEmpty(ForceId)))
+                if (!string.IsNullOrEmpty(ForceId))
                 {
                     sID = ForceId;
                 }
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //If URL.Contains("/404.aspx?404;") Then
                 //    URL = URL.Replace("/404.aspx?404;", String.Empty)
                 //End If
-                if (!(string.IsNullOrEmpty(URL)))
+                if (!string.IsNullOrEmpty(URL))
                 {
                     URL = XSSFilter(URL);
                     str.Append(sID + ".Location='" + URL.Replace("'", "\\\\'").Replace(";", string.Empty) + "';");
@@ -437,7 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             catch (Exception ex)
             {
-                if (!((ex) is System.Threading.ThreadAbortException))
+                if (!(ex is System.Threading.ThreadAbortException))
                 {
                     Context.Response.Clear();
                     Context.Response.ContentType = "text/xml";
@@ -450,7 +450,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public static string GetResponseUrl(HttpContext oContext)
         {
-            return oContext.Request.Url.Scheme + Uri.SchemeDelimiter + oContext.Request.Url.Host + (Convert.ToString((oContext.Request.Url.IsDefaultPort ? "" : (":" + oContext.Request.Url.Port)))) + oContext.Response.ApplyAppPathModifier(oContext.Request.RawUrl);
+            return oContext.Request.Url.Scheme + Uri.SchemeDelimiter + oContext.Request.Url.Host + Convert.ToString(oContext.Request.Url.IsDefaultPort ? "" : (":" + oContext.Request.Url.Port)) + oContext.Response.ApplyAppPathModifier(oContext.Request.RawUrl);
         }
 
         //Private Function GetArgs() As String()
@@ -469,7 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string[] GetArgs()
         {
             string sId = ClientID;
-            if (!(string.IsNullOrEmpty(ForceId)))
+            if (!string.IsNullOrEmpty(ForceId))
             {
                 sId = ForceId;
             }
@@ -533,7 +533,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnLoad(e);
 
-            if (!(Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback")))
+            if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
             {
                 bool cbloaded = false;
                 if (HttpContext.Current.Items["cbld"] != null)
@@ -607,7 +607,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.Controls.Count > 0 && this.Controls[0] is LiteralControl)
                 {
-                    return ((LiteralControl)(this.Controls[0])).Text;
+                    return ((LiteralControl)this.Controls[0]).Text;
                 }
                 return "";
             }

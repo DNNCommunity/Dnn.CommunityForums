@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get 
             { 
-                return ParamArray.Aggregate(string.Empty, (current, param) => current + ((string.IsNullOrWhiteSpace(current) ? string.Empty : "&") + param));
+                return ParamArray.Aggregate(string.Empty, (current, param) => current + (string.IsNullOrWhiteSpace(current) ? string.Empty : "&") + param);
             }
         }
 

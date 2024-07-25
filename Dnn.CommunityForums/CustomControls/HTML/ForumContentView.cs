@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                 }
-                if (! (string.IsNullOrEmpty(sSubforums)))
+                if (! string.IsNullOrEmpty(sSubforums))
                 {
                     if (IncludeClasses)
                     {

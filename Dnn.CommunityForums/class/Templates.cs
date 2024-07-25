@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     Subject = Convert.ToString(dr["Subject"]),
                     Title = Convert.ToString(dr["Title"]),
                     FileName = Convert.ToString(dr["FileName"]),
-                    TemplateType = (Templates.TemplateTypes)(dr["TemplateType"]),
+                    TemplateType = (Templates.TemplateTypes)dr["TemplateType"],
                 };
                 SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ti.ModuleId);
                 string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + ti.FileName);

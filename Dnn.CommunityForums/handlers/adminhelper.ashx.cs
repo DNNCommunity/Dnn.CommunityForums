@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 {
                     if (Params["action"] != null && SimulateIsNumeric.IsNumeric(Params["action"]))
                     {
-                        action = (Actions)(Convert.ToInt32(Params["action"].ToString()));
+                        action = (Actions)Convert.ToInt32(Params["action"].ToString());
                     }
                 }
                 try
@@ -272,9 +272,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo pi = new DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo();
             pi.PropertyId = -1;
             pi.PortalId = PortalId;
-            pi = (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo)(Utilities.ConvertFromHashTableToObject(Params, pi));
+            pi = (DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo)Utilities.ConvertFromHashTableToObject(Params, pi);
             pi.Name = Utilities.CleanName(pi.Name);
-            if (! (string.IsNullOrEmpty(pi.ValidationExpression)))
+            if (! string.IsNullOrEmpty(pi.ValidationExpression))
             {
                 pi.ValidationExpression = HttpUtility.UrlDecode(HttpUtility.HtmlDecode(pi.ValidationExpression));
             }
@@ -303,7 +303,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
         private string PropertyList()
         {
-            return ! (string.IsNullOrEmpty(Params["ObjectOwnerId"].ToString()))
+            return ! string.IsNullOrEmpty(Params["ObjectOwnerId"].ToString())
                 ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(PortalId, Convert.ToInt32(Params["ObjectType"]), Convert.ToInt32(Params["ObjectOwnerId"]))
                 : string.Empty;
 
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             props = props.Remove(props.LastIndexOf("^"));
             foreach (string s in props.Split('^'))
             {
-                if (! (string.IsNullOrEmpty(props)))
+                if (! string.IsNullOrEmpty(props))
                 {
                     propertyId = Convert.ToInt32(s.Split('|')[0]);
                     sortOrder = Convert.ToInt32(s.Split('|')[1]);

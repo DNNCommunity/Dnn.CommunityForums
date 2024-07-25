@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
                     while (dr.Read())
                     {
-                        if (!(ht.ContainsKey(dr["SettingName"].ToString())))
+                        if (!ht.ContainsKey(dr["SettingName"].ToString()))
                         {
                             ht.Add(dr["SettingName"].ToString(), string.Empty);
                         }
@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
                 while (dr.Read())
                 {
-                    if (!(ht.ContainsKey(dr["SettingName"].ToString())))
+                    if (!ht.ContainsKey(dr["SettingName"].ToString()))
                     {
                         ht.Add(dr["SettingName"].ToString(), string.Empty);
                     }

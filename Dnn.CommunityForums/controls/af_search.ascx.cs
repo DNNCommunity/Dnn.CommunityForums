@@ -415,11 +415,11 @@ namespace DotNetNuke.Modules.ActiveForums
             // If forums requested is empty or contains and entry less than or equal to zero, return all available forums
             if(!forumsRequested.Any() || forumsRequested.Any(o => o <= 0))
             {
-                forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + ((current.Length == 0 ? string.Empty : ":") + f));
+                forumsToSearch = forumsAllowed.Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? string.Empty : ":") + f);
             }
             else
             {
-                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + ((current.Length == 0 ? String.Empty : ":") + f));
+                forumsToSearch = forumsRequested.Where(forumsAllowed.Contains).Aggregate(forumsToSearch, (current, f) => current + (current.Length == 0 ? String.Empty : ":") + f);
             }
 
             const int maxCacheHours = 1;

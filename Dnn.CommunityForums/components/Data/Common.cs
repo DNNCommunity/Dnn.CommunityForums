@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, PermissionsId, requestedAccess, PermSet);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
-        public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId, -1)).PermissionsId;
+        public int CreatePermSet(string AdminRoleId) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId, -1).PermissionsId;
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
         public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(ModuleId, ForumIds, UserRoles);
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                     string archived = dr["Archived"].ToString();
                     string forumgroupId = dr["ForumGroupId"].ToString();
                     string groupPrefix = dr["GroupPrefixURL"].ToString();
-                    if (!(string.IsNullOrEmpty(groupPrefix)))
+                    if (!string.IsNullOrEmpty(groupPrefix))
                     {
                         prefix = groupPrefix + "/" + prefix;
                     }
@@ -180,11 +180,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
                 DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
-                if (!(string.IsNullOrEmpty(fg.PrefixURL)))
+                if (!string.IsNullOrEmpty(fg.PrefixURL))
                 {
                     VanityName = fg.PrefixURL + "/" + VanityName;
                 }
-                if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
+                if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
                 {
                     VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
                 }
@@ -217,7 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             try
             {
                 SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-                if (!(string.IsNullOrEmpty(_mainSettings.PrefixURLBase)))
+                if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
                 {
                     VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
                 }

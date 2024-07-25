@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
 
                     string ctlPath = Globals.ModulePath + "controls/_default.ascx";
-                    ForumBase ctlDefault = (ForumBase)(LoadControl(ctlPath));
+                    ForumBase ctlDefault = (ForumBase)LoadControl(ctlPath);
                     ctlDefault.ID = "ctlConfig";
                     ctlDefault.ModuleConfiguration = this.ModuleConfiguration;
                     plhLoader.Controls.Clear();
@@ -169,39 +169,39 @@ namespace DotNetNuke.Modules.ActiveForums
                 ForumBase ctl = null;
                 if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant() && Request.IsAuthenticated)
                 { 
-                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx")));
+                    ctl = (ForumBase)LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mypreferences.ascx"));
                 }
                 else if (view.ToUpperInvariant() == Views.MySubscriptions.ToUpperInvariant() && Request.IsAuthenticated)
                 {
-                    ctl = (ForumBase)(LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx")));
+                    ctl = (ForumBase)LoadControl(Page.ResolveUrl(Globals.ModulePath + "controls/profile_mysubscriptions.ascx"));
                 }
                 else if (view.ToUpperInvariant() == "FORUMVIEW")
                 {
-                    ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
+                    ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.ForumView();
                 }
                 else if (view.ToUpperInvariant() == "ADVANCED")
                 {
-                    ctl = (ForumBase)(LoadControl(Globals.ModulePath + "advanced.ascx"));
+                    ctl = (ForumBase)LoadControl(Globals.ModulePath + "advanced.ascx");
                 }
                 else if ((view.ToUpperInvariant() == Views.Topics.ToUpperInvariant()) || (view.ToUpperInvariant() == "topics".ToUpperInvariant()))
                 {
-                    ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.TopicsView());
+                    ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicsView();
                 }
                 else if ((view.ToUpperInvariant() == Views.Topic.ToUpperInvariant()) || (view.ToUpperInvariant() == "topic".ToUpperInvariant()))
                 {
-                    ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.TopicView());
+                    ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.TopicView();
                 }
                 else if (view.ToUpperInvariant() == "USERSETTINGS".ToUpperInvariant() && Request.IsAuthenticated)
                 {
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_profile.ascx";
-                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
+                    if (!System.IO.File.Exists(Utilities.MapPath(ctlPath)))
                     {
-                        ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
+                        ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.ForumView();
                     }
                     else
                     {
-                        ctl = (ForumBase)(LoadControl(ctlPath));
+                        ctl = (ForumBase)LoadControl(ctlPath);
                     }
                 }
                 else
@@ -209,13 +209,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     // this is where af_post.ascx is used
                     string ctlPath = string.Empty;
                     ctlPath = Globals.ModulePath + "controls/af_" + view + ".ascx";
-                    if (!(System.IO.File.Exists(Utilities.MapPath(ctlPath))))
+                    if (!System.IO.File.Exists(Utilities.MapPath(ctlPath)))
                     {
-                        ctl = (ForumBase)(new DotNetNuke.Modules.ActiveForums.Controls.ForumView());
+                        ctl = (ForumBase)new DotNetNuke.Modules.ActiveForums.Controls.ForumView();
                     }
                     else
                     {
-                        ctl = (ForumBase)(LoadControl(ctlPath));
+                        ctl = (ForumBase)LoadControl(ctlPath);
                     }
 
                 }
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ControlConfig = cc;
                 ctl.ControlConfig = cc;
                 LinkControls(ctl.Controls);
-                if (!(plhLoader.Controls.Contains(ctl)))
+                if (!plhLoader.Controls.Contains(ctl))
                 {
                     plhLoader.Controls.Add(ctl);
                 }

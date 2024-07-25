@@ -343,12 +343,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (MainSettings.URLRewriteEnabled)
             {
-                if (!(string.IsNullOrEmpty(MainSettings.PrefixURLBase)))
+                if (!string.IsNullOrEmpty(MainSettings.PrefixURLBase))
                 {
                     pager.BaseURL = "/" + MainSettings.PrefixURLBase;
                 }
 
-                if (!(string.IsNullOrEmpty(MainSettings.PrefixURLOther)))
+                if (!string.IsNullOrEmpty(MainSettings.PrefixURLOther))
                 {
                     pager.BaseURL += "/" + MainSettings.PrefixURLOther;
                 }

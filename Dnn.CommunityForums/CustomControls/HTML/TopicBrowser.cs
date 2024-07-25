@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string Render()
         {
             string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
-            if (! (string.IsNullOrEmpty(fs)))
+            if (! string.IsNullOrEmpty(fs))
             {
                 _canEdit = true;
             }

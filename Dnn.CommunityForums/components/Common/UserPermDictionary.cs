@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
-                return (dict !=null && (dict.ContainsKey(UserId.ToString()))) ? dict[UserId.ToString()] : string.Empty;
+                return (dict !=null && dict.ContainsKey(UserId.ToString())) ? dict[UserId.ToString()] : string.Empty;
                 
             }
             catch

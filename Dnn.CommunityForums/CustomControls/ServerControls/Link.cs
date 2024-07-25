@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (!(string.IsNullOrEmpty(EnabledRoles)))
+            if (!string.IsNullOrEmpty(EnabledRoles))
             {
                 if (string.IsNullOrEmpty(UserRoles))
                 {
@@ -168,12 +168,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 NavigateURL = Utilities.NavigateURL(PageId);
             }
-            else if (string.IsNullOrEmpty(NavigateURL) && !(string.IsNullOrEmpty(Params)))
+            else if (string.IsNullOrEmpty(NavigateURL) && !string.IsNullOrEmpty(Params))
             {
                 NavigateURL = Utilities.NavigateURL(PageId, "", Params.Split(','));
             }
             string sTitle = " title=";
-            if (!(string.IsNullOrEmpty(Title)))
+            if (!string.IsNullOrEmpty(Title))
             {
                 sTitle += "\"" + Title + "\"";
             }
@@ -182,7 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sTitle = string.Empty;
             }
             string sClass = string.Empty;
-            if (!(string.IsNullOrEmpty(CssClass)))
+            if (!string.IsNullOrEmpty(CssClass))
             {
                 sClass = " class=\"" + CssClass + "\"";
             }

@@ -149,11 +149,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 try
                 {
-                    if (!(string.IsNullOrEmpty(ti.Forum.PrefixURL)))
+                    if (!string.IsNullOrEmpty(ti.Forum.PrefixURL))
                     {
                         Data.Common dbC = new Data.Common();
                         string sURL = dbC.GetUrl(ti.ModuleId, ti.Forum.ForumGroupId, oldForumId, TopicId, -1, -1);
-                        if (!(string.IsNullOrEmpty(sURL)))
+                        if (!string.IsNullOrEmpty(sURL))
                         {
                             dbC.ArchiveURL(ti.PortalId, ti.Forum.ForumGroupId, NewForumId, TopicId, sURL);
                         }

@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 if (this.Controls.Count > 0 && this.Controls[0] is LiteralControl)
                 {
-                    return ((LiteralControl)(this.Controls[0])).Text;
+                    return ((LiteralControl)this.Controls[0]).Text;
                 }
                 return "";
             }

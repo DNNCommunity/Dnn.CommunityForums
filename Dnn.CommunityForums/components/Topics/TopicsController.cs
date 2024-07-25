@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string forumUrlPrefix = dr["ForumUrlPrefix"].ToString();
                     int jumpid = (replyId > 0) ? replyId : topicid;
                     body = Common.Utilities.HtmlUtils.Clean(body, false);
-                    if (!(string.IsNullOrEmpty(body)))
+                    if (!string.IsNullOrEmpty(body))
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
                     };
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     // so any code that relies on HttpContext cannot be used...
 
                     string link = new ControlUtils().BuildUrl(moduleInfo.TabID, moduleInfo.ModuleID, forumGroupUrlPrefix, forumUrlPrefix, forumGroupId, forumid, topicid, topicURL, -1, -1, string.Empty, 1, contentid, forumInfo.SocialGroupId);
-                    if (!(string.IsNullOrEmpty(link)) && !(link.StartsWith("http")))
+                    if (!string.IsNullOrEmpty(link) && !link.StartsWith("http"))
                     {
                         link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
                     }
@@ -175,9 +175,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         Url = link,
                         QueryString = queryString,
                         ModifiedTimeUtc = dateupdated,
-                        Tags = (tags.Count > 0 ? tags : null),
+                        Tags = tags.Count > 0 ? tags : null,
                         Permissions = permittedRolesCanView,
-                        IsActive = (isApproved && !isDeleted)
+                        IsActive = isApproved && !isDeleted
                     };
                     searchDocuments.Add(searchDoc);
                 };

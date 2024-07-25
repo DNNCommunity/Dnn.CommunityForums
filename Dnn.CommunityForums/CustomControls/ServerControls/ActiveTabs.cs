@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return Convert.ToInt32(((this.ViewState["tabIndex"] == null) ? 0 : this.ViewState["tabIndex"]));
+                return Convert.ToInt32((this.ViewState["tabIndex"] == null) ? 0 : this.ViewState["tabIndex"]);
             }
 
             set
