@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         action = (Actions)Convert.ToInt32(Params["action"].ToString());
                     }
                 }
+
                 try
                 {
                     sOut = "{\"result\":\"success\"}";
@@ -126,6 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 sOut += Utilities.JSON.Pair("message", "Invalid Request");
                 sOut += "}";
             }
+
             context.Response.ContentType = "text/plain";
             context.Response.Write(sOut);
         }
@@ -137,6 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 FilterId = Convert.ToInt32(Params["FilterId"]);
             }
+
             DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetById(FilterId, ModuleId);
             string sOut = "{";
             sOut += Utilities.JSON.Pair("FilterId", filter.FilterId.ToString());
@@ -160,18 +163,22 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 filter.FilterId = Convert.ToInt32(Params["FilterId"]);
             }
+
             if (Params.ContainsKey("Find"))
             {
                 filter.Find = Params["Find"].ToString();
             }
+
             if (Params.ContainsKey("Replacement"))
             {
                 filter.Replace = Params["Replacement"].ToString();
             }
+
             if (Params.ContainsKey("FilterType"))
             {
                 filter.FilterType = Params["FilterType"].ToString();
             }
+
             if (filter.FilterId == -1)
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Insert(filter);
@@ -189,10 +196,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 FilterId = Convert.ToInt32(Params["FilterId"]);
             }
+
             if (FilterId == -1)
             {
                 return;
             }
+
             new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
 
         }
@@ -204,6 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 RankId = Convert.ToInt32(Params["RankId"]);
             }
+
             RewardController rc = new RewardController();
             RewardInfo rank = rc.Reward_Get(PortalId, ModuleId, RankId);
             string sOut = "{";
@@ -230,22 +240,27 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 rank.RankId = Convert.ToInt32(Params["RankId"]);
             }
+
             if (Params.ContainsKey("RankName"))
             {
                 rank.RankName = Params["RankName"].ToString();
             }
+
             if (Params.ContainsKey("MinPosts"))
             {
                 rank.MinPosts = Convert.ToInt32(Params["MinPosts"]);
             }
+
             if (Params.ContainsKey("MaxPosts"))
             {
                 rank.MaxPosts = Convert.ToInt32(Params["MaxPosts"]);
             }
+
             if (Params.ContainsKey("Display"))
             {
                 rank.Display = Params["Display"].ToString();
             }
+
             RewardController rc = new RewardController();
             rank = rc.Reward_Save(rank);
         }
@@ -257,10 +272,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 RankId = Convert.ToInt32(Params["RankId"]);
             }
+
             if (RankId == -1)
             {
                 return;
             }
+
             RewardController rc = new RewardController();
             rc.Reward_Delete(PortalId, ModuleId, RankId);
 
@@ -278,6 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 pi.ValidationExpression = HttpUtility.UrlDecode(HttpUtility.HtmlDecode(pi.ValidationExpression));
             }
+
             if (pi.PropertyId == -1)
             {
                 string lbl = Params["Label"].ToString();
@@ -293,6 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
 
             }
+
             new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Save<int>(pi, pi.PropertyId);
             var fc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController();
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = fc.GetById(pi.ObjectOwnerId, ModuleId);
@@ -368,12 +387,14 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     sb.Append("},");
                 }
             }
+
             string sOut = sb.ToString();
             if (sOut.EndsWith(","))
             {
                 sOut = sOut.Substring(0, sOut.Length - 1);
                 sOut = "[" + sOut + "]";
             }
+
             return sOut;
         }
 
@@ -385,6 +406,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 view = Params["view"].ToString().ToLowerInvariant();
             }
+
             string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(Globals.ModulePath);
             string sFile = string.Empty;
             switch (view)
@@ -393,6 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     sFile = Utilities.GetFile(sPath + "\\admin\\forumeditor.ascx");
                     break;
             }
+
             Controls.ControlPanel cpControls = new Controls.ControlPanel(PortalId, ModuleId);
             sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICSTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicsView));
             sFile = sFile.Replace("[AF:CONTROLS:SELECTTOPICTEMPLATES]", cpControls.TemplatesOptions(Templates.TemplateTypes.TopicView));

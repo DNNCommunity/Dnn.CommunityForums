@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Response.Redirect(Utilities.NavigateURL(TabId));
                 }
+
                 if (!Request.IsAuthenticated & (sMode == "ENABLEDREG" || sMode == "ENABLEDMOD"))
                 {
                     Response.Redirect(Utilities.NavigateURL(TabId));
@@ -57,6 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ctl.Params = this.Params;
             }
+
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
             Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
             plhMembers.Controls.Add(ctl);

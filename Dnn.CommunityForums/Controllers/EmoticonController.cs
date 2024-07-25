@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     sb.Append("<br />");
                 }
             }
+
             sb.Append("</div></div>");
             return sb.ToString();
         }

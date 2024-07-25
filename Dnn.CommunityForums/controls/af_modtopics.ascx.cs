@@ -86,6 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     fi = ForumInfo;
                 }
+
                 switch (e.Parameters[0].ToLowerInvariant())
                 {
                     case "moddel":
@@ -112,6 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     }
 
                                 }
+
                                 if (tmpForumId > 0 & tmpTopicId > 0 && tmpReplyId == 0)
                                 {
                                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(tmpTopicId);
@@ -119,6 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         auth = ti.Author;
                                     }
+
                                     new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(tmpTopicId);
 
                                 }
@@ -129,13 +132,17 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         auth = ri.Author;
                                     }
+
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(PortalId, tmpForumId, tmpTopicId, tmpReplyId, delAction);
                                 }
+
                                 DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
 
                             }
+
                             break;
                         }
+
                     case "modreject":
                         {
                             int tmpForumId = 0;
@@ -168,6 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             break;
                         }
+
                     case "modappr":
                         {
                             int tmpForumId = -1;
@@ -189,6 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
                                     }
+
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, ForumId, tmpTopicId, -1, ti.Content.AuthorId);
                                 }
@@ -206,16 +215,20 @@ namespace DotNetNuke.Modules.ActiveForums
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, PortalId, ForumModuleId, TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
                                     }
+
                                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(ForumTabId, ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
                                     DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, ForumTabId, ForumModuleId, fi.ForumGroupId, tmpForumId, tmpTopicId, -tmpReplyId, ri.Content.AuthorId);
                                 }
 
                             }
+
                             break;
                         }
                 }
+
                 DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
             }
+
             BuildModList();
             litTopics.RenderControl(e.Output);
         }
@@ -247,12 +260,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             SetPermissions(Convert.ToInt32(dr["ForumId"]));
                         }
+
                         if (bCanMod)
                         {
                             if (!(tmpForum == string.Empty))
                             {
                                 sb.Append("</td></tr>");
                             }
+
                             int pendingCount = 0;
                             dtContent.DefaultView.RowFilter = "ForumId = " + Convert.ToInt32(dr["ForumId"]);
                             pendingCount = dtContent.DefaultView.ToTable().Rows.Count;
@@ -262,8 +277,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             sb.Append("</td></tr>");
                             sb.Append("<tr id=\"section" + dr["ForumId"].ToString() + "\"><td colspan=\"2\">");
                         }
+
                         tmpForum = forumKey;
                     }
+
                     if (bCanMod)
                     {
                         sb.Append("<div class=\"afmodrow\">");
@@ -274,18 +291,22 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append("<span class=\"dnnPrimaryAction\" onclick=\"afmodApprove(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");\">[RESX:Approve]</span>");
                         }
+
                         if (bModApprove || bModEdit)
                         {
                             sb.Append("<span class=\"dnnSecondaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Reject]')){afmodReject(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + "," + dr["AuthorId"].ToString() + ");};\">[RESX:Reject]</span>");
                         }
+
                         if (bModDelete)
                         {
                             sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"javascript:if(confirm('[RESX:Confirm:Delete]')){afmodDelete(" + dr["ForumId"].ToString() + "," + dr["TopicId"].ToString() + "," + dr["ReplyId"].ToString() + ");};\">[RESX:Delete]</span>");
                         }
+
                         if (bModEdit)
                         {
                             sb.Append("<span class=\"dnnTertiaryaryAction\" onclick=\"afmodEdit('" + TopicEditUrl(Convert.ToInt32(dr["ForumId"]), Convert.ToInt32(dr["TopicId"]), Convert.ToInt32(dr["ReplyId"])) + "');\">[RESX:Edit]</span>");
                         }
+
                         if (bModBan)
                         {
                             var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
@@ -299,8 +320,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append("</table></div>");
                     }
                 }
+
                 sb.Append("</table></div>");
             }
+
             litTopics.Text = Utilities.LocalizeControl(sb.ToString());
         }
 
@@ -348,6 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 strHost = strHost.Replace("http://", "https://");
             }
+
             //TODO: Add option for folder storage
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string vpath = null;
@@ -381,6 +405,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+
             sb.Append("<br />");
 
             return sb.ToString();

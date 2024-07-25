@@ -83,6 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     template = template.Replace(match.Value, string.Empty);
                 }
             }
+
             return template;
         }
 

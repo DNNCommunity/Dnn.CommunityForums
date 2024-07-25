@@ -71,6 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings();
             }
+
             if (portalSettings == null)
             {
                 return null;
@@ -217,9 +218,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         sRank = string.Format("<img src='{0}{1}' border='0' alt='{2}' />", strHost, ri.Display.Replace("activeforums/Ranks", "ActiveForums/images/Ranks"), ri.RankName);
                         break;
                     }
+
                     sRank = ri.RankName;
                     break;
                 }
+
                 return sRank;
             }
             catch (Exception ex)

@@ -79,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             return "";
                         }
+
                         return _selectedDate;
                     }
                     catch (Exception ex)
@@ -87,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                 }
+
                 return "";
             }
 
@@ -95,6 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _selectedDate = value;
             }
         }
+
         /// <summary>
         /// Default 1/1/1900.
         /// </summary>
@@ -139,6 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _calheight = value;
             }
         }
+
         /// <summary>
         /// Default amDayHeader.
         /// </summary>
@@ -155,6 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _dayheaderstyle = value;
             }
         }
+
         /// <summary>
         /// Default amOtherMonthDay.
         /// </summary>
@@ -171,6 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _weekendstyle = value;
             }
         }
+
         /// <summary>
         /// Default amOtherMonthDay.
         /// </summary>
@@ -187,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _weekdaystyle = value;
             }
         }
+
         /// <summary>
         /// Default amCalTitle.
         /// </summary>
@@ -203,6 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _monthstyle = value;
             }
         }
+
         /// <summary>
         /// Default amCalendar.
         /// </summary>
@@ -219,6 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _calendarstyle = value;
             }
         }
+
         /// <summary>
         /// Default amSelectedDay.
         /// </summary>
@@ -235,6 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _selecteddaystyle = value;
             }
         }
+
         /// <summary>
         /// Default amCurrentDay.
         /// </summary>
@@ -251,6 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _currentdaystyle = value;
             }
         }
+
         /// <summary>
         /// Default amCurrentMonthDay.
         /// </summary>
@@ -267,6 +278,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _currentmonthdaystyle = value;
             }
         }
+
         /// <summary>
         /// Default amOtherMonthDay.
         /// </summary>
@@ -283,6 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _othermonthdaystyle = value;
             }
         }
+
         /// <summary>
         /// Default MM/dd/yyyy.
         /// </summary>
@@ -295,6 +308,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     return "MM/dd/yyyy";
                 }
+
                 return _dateFormat;
             }
 
@@ -303,6 +317,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _dateFormat = value;
             }
         }
+
         /// <summary>
         /// Default MM/dd/yyyy.
         /// </summary>
@@ -315,6 +330,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     return "h:nn tt";
                 }
+
                 return _timeFormat;
             }
 
@@ -323,6 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _timeFormat = value;
             }
         }
+
         /// <summary>
         /// URL to Calendar image if not using the built in one.
         /// </summary>
@@ -386,12 +403,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         return _defaultTime;
                     }
+
                     if (Convert.ToDateTime(SelectedDate).Year == 1900)
                     {
                         return string.Empty;
                     }
+
                     return Convert.ToDateTime(SelectedDate).ToString(TimeFormat);
                 }
+
                 return _selectedTime;
             }
 
@@ -464,6 +484,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     temp = "ampicker";
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Cellpadding, "0");
                 writer.AddAttribute(HtmlTextWriterAttribute.Cellspacing, "0");
                 writer.AddAttribute(HtmlTextWriterAttribute.Width, Width.ToString());
@@ -476,6 +497,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.Write(Text);
                     writer.RenderEndTag();
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Width, Width.ToString());
                 writer.RenderBeginTag(HtmlTextWriterTag.Td);
                 writer.AddAttribute("class", temp);
@@ -489,18 +511,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     writer.AddAttribute("disabled", "disabled");
                 }
+
                 if (ShowDateBox)
                 {
                     writer.RenderBeginTag(HtmlTextWriterTag.Input);
                     writer.RenderEndTag();
 
                 }
+
                 dtFI = Thread.CurrentThread.CurrentCulture.DateTimeFormat;
                 if (!string.IsNullOrEmpty(SelectedDate))
                 {
                     DateTime dte = DateTime.Parse(SelectedDate);
                     SelectedDate = dte.ToString(dtFI.ShortDatePattern + " " + dtFI.ShortTimePattern);
                 }
+
                 writer.AddAttribute("type", "hidden");
                 writer.AddAttribute("id", "hid_" + ClientID);
                 writer.AddAttribute("name", "hid_" + ClientID);
@@ -517,6 +542,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     ImageUrl = Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.calendar.gif");
                 }
+
                 if (Enabled)
                 {
                     writer.AddAttribute("src", ImageUrl);
@@ -525,6 +551,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.RenderBeginTag(HtmlTextWriterTag.Img);
                     writer.RenderEndTag();
                 }
+
                 writer.RenderEndTag();
                 writer.RenderEndTag();
                 writer.RenderEndTag();
@@ -536,6 +563,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     cal = Thread.CurrentThread.CurrentCulture.Calendar;
                 }
+
                 DateFormat = dtFI.ShortDatePattern;
                 TimeFormat = dtFI.ShortTimePattern;
                 str.Append("window." + ClientID + "=new asDatePicker('" + ClientID + "');");
@@ -561,6 +589,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         ctl = Page.FindControl(RelatedControl);
                     }
+
                     if (ctl == null)
                     {
                         RelatedControl = string.Empty;
@@ -570,6 +599,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         RelatedControl = ctl.ClientID;
                     }
                 }
+
                 str.Append("window." + ClientID + ".linkedControl='" + RelatedControl + "';");
                 if (IsEndDate)
                 {
@@ -588,6 +618,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sTime = SelectedTime;
                     }
+
                     if (TimeRequired)
                     {
                         str.Append("window." + ClientID + ".RequireTime=true;");
@@ -611,6 +642,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     str.Append("window." + ClientID + ".ImgNext='" + Page.ResolveUrl(ImgNext) + "';");
                 }
+
                 if (string.IsNullOrEmpty(ImgPrev) )
                 {
                     str.Append("window." + ClientID + ".ImgPrev='" + Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cal_prevMonth.gif") + "';");
@@ -619,6 +651,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     str.Append("window." + ClientID + ".ImgPrev='" + Page.ResolveUrl(ImgPrev) + "';");
                 }
+
                 if (SelectedDate != "")
                 {
                     try
@@ -640,6 +673,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                 }
+
                 int xMonths = cal.GetMonthsInYear(cal.GetYear(tmpDate), cal.GetEra(tmpDate));
                 int currMonth = cal.GetMonth(tmpDate);
                 int currYear = cal.GetYear(tmpDate);
@@ -654,6 +688,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         str.Append(",");
                     }
                 }
+
                 str.Append(");");
                 str.AppendLine();
 
@@ -668,6 +703,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         str.Append(",");
                     }
                 }
+
                 str.Append(");");
                 str.AppendLine();
                 str.Append("window." + ClientID + ".ShortMonthNames = new Array(");
@@ -680,6 +716,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         str.Append(",");
                     }
                 }
+
                 str.Append(");");
                 str.AppendLine();
                 str.Append("window." + ClientID + ".ShortDayNames = new Array(");
@@ -692,6 +729,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         str.Append(",");
                     }
                 }
+
                 str.Append(");");
                 str.AppendLine();
 
@@ -737,6 +775,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 #endif
 
             }
+
             try
             {
                 if (Page.IsPostBack)

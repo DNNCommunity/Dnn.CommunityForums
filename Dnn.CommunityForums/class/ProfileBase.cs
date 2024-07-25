@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     _UID = UserId;
                 }
+
                 return _UID;
             }
         }

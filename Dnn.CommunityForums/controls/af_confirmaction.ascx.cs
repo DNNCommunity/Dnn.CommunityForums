@@ -113,6 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     hypPost.Visible = true;
                 }
+
                 hypHome.NavigateUrl = NavigateUrl(TabId);
             }
             catch (Exception exc)

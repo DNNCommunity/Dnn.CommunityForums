@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     currentURL = string.Concat(Request.IsSecureConnection ? SEOConstants.HTTPS : SEOConstants.HTTP,
                         Request.Url.Host, Request.RawUrl);
                 }
+
                 return currentURL;
             }
         }

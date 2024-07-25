@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return true;
                 }
             }
+
             return false;
         }
 

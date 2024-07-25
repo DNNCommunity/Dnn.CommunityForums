@@ -87,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ClearForumsByGroupCache(ModuleID, Convert.ToInt32(rd["ForumGroupID"]));
             }
+
             rd.Close();
         }
 
@@ -110,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     SettingsCacheClear(ModuleID, string.Format(CacheKeys.ForumSettings, ModuleID, ForumId));
                     SettingsCacheClear(ModuleID, string.Format(CacheKeys.ForumInfo, ModuleID, ForumId));
                 }
+
                 rd.Close();
             }
             catch

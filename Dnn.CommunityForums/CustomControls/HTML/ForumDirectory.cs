@@ -112,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return "Please specify a template";
             }
+
             StringBuilder sb = new StringBuilder();
             string groupTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
             string forumTemplate = TemplateUtils.GetTemplateSection(Template, "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
@@ -131,6 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         gtmp = gtmp.Replace("[FORUMHOLDER]", string.Empty);
                         list.Append(gtmp);
                     }
+
                     gtmp = groupTemplate;
                     gtmp = TemplateUtils.ReplaceSubSection(gtmp, "[FORUMHOLDER]", "[AF:DIR:FORUM]", "[/AF:DIR:FORUM]");
                     gtmp = ParseForumGroup(f.ForumGroup, gtmp);
@@ -139,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     subtmp = subForumTemplate;
                     currGroup = f.ForumGroupId;
                 }
+
                 string forums = ParseForum(f, ftmp);
                 if (f.SubForums != null)
                 {
@@ -147,10 +150,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         forums = forums.Replace("[SUBFORUMHOLDER]", ParseForum(s, subtmp) + "[SUBFORUMHOLDER]");
                     }
                 }
+
                 forums = forums.Replace("[SUBFORUMHOLDER]", string.Empty);
                 gtmp = gtmp.Replace("[FORUMHOLDER]", forums + "[FORUMHOLDER]");
 
             }
+
             gtmp = gtmp.Replace("[FORUMHOLDER]", string.Empty);
             list.Append(gtmp);
             Template = TemplateUtils.ReplaceSubSection(Template, list.ToString(), "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
@@ -179,6 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 selected = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.ForumId]) == f.ForumID ? "afn-currentforum" : string.Empty;
             }
+
             template = f.ParentForumId > 0
                 ? template.Replace("[AF:DIR:SELECTEDSUBFORUM]", selected)
                 : template.Replace("[AF:DIR:SELECTEDFORUM]", selected);

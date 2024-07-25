@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 BindTopMembers(ds.Tables[3]);
                 BindQuickStats(ds.Tables[4]);
             }
+
             LoadQuickLinks();
         }
 
@@ -83,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td colspan=\"2\" class=\"dashRow\">[RESX:NoTopics]</td></tr>");
             }
+
             sb.Append("</table>");
             litRecentTopics.Text = sb.ToString();
         }
@@ -108,6 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td colspan=\"3\" class=\"dashRow\">[RESX:NoMembers]</td></tr>");
             }
+
             sb.Append("</table>");
             litRecentMembers.Text = sb.ToString();
         }
@@ -132,6 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td colspan=\"3\" class=\"dashRow\">[RESX:NoForums]</td></tr>");
             }
+
             sb.Append("</table>");
             litTopForums.Text = sb.ToString();
         }
@@ -154,6 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td class=\"dashRow\">[RESX:NoMembers]</td></tr>");
             }
+
             sb.Append("</table>");
             litTopMembers.Text = sb.ToString();
         }
@@ -177,6 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sb.Append("<tr><td class=\"dashRow\">[RESX:NoData]</td></tr>");
             }
+
             sb.Append("</table>");
             litQuickStats.Text = sb.ToString();
         }

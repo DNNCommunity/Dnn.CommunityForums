@@ -261,6 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 authorId = ti.Content.AuthorId;
             }
+
             string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(_moduleId, _tabId, true).ModuleTitle;
             DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: ActiveModule.PortalID, ModuleId: _moduleId, ModuleTitle: moduleTitle, TabId: _tabId, ForumId: _forumId, TopicId: _topicId, ReplyId: _replyId, BannedBy: UserInfo, AuthorId: authorId);
 

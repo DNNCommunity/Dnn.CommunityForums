@@ -58,23 +58,28 @@ namespace DotNetNuke.Modules.ActiveForums
                         drpForumInstance.SelectedIndex = drpForumInstance.Items.IndexOf(drpForumInstance.Items.FindByValue(Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumModuleId])));
                         LoadForumGroups(Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                     }
+
                     if (! (Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]) == null))
                     {
                         BindTemplates(Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumModuleId]));
                         drpTopicsTemplate.SelectedIndex = drpTopicsTemplate.Items.IndexOf(drpTopicsTemplate.Items.FindByValue(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicsTemplate])));
                     }
+
                     if (! (Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
                     {
                         drpForumViewTemplate.SelectedIndex = drpForumViewTemplate.Items.IndexOf(drpForumViewTemplate.Items.FindByValue(Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumViewTemplate])));
                     }
+
                     if (! (Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
                     {
                         drpTopicTemplate.SelectedIndex = drpTopicTemplate.Items.IndexOf(drpTopicTemplate.Items.FindByValue(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicTemplate])));
                     }
+
                     if (! (Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumGroup]) == null))
                     {
                         drpForum.SelectedIndex = drpForum.Items.IndexOf(drpForum.Items.FindByValue(Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumGroup])));
                     }
+
                     //If Not CType(Settings["AFEnableToolbar"], String) Is Nothing Then
                     //    chkEnableToolbar.Checked = CType(Settings["AFEnableToolbar"], Boolean)
                     //End If
@@ -108,6 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     objModules.UpdateModuleSetting(ModuleId, ForumViewerSettingsKeys.AFViewType, ForumViewerViewType.TOPICS);
                 }
+
                 int @int = ForumGroup.IndexOf(":") + 1;
                 string sID = ForumGroup.Substring(@int);
                 //ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
@@ -173,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
             }
+
             dr.Close();
 
         }

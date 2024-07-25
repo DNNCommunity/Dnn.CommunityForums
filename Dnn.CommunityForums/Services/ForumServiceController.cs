@@ -111,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 folderManager.AddFolder(ActiveModule.PortalID, uploadPath);
             }
+
             var folder = folderManager.GetFolder(ActiveModule.PortalID, uploadPath);
 
             var provider = new MultipartFormDataStreamProvider(folder.PhysicalPath);
@@ -225,8 +226,10 @@ namespace DotNetNuke.Modules.ActiveForums
                                     sExtOut = ".png";
                                     imfout = ImageFormat.Png;
                                 }
+
                                 break;
                             }
+
                         case ".bmp": imf = ImageFormat.Bmp; break;
                         default: imf = ImageFormat.Jpeg; break;
                     }
@@ -347,6 +350,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 portalid = userInfo.PortalID.ToString();
             }
+
             return Request.CreateResponse(HttpStatusCode.OK, string.Format(fullpath, portalid, file.Folder, file.FileName));
         }
 
@@ -374,6 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
             }
+
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -389,6 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 rows.Add(fi.ForumID.ToString(), fi.ForumName.ToString());
             }
+
             return Request.CreateResponse(HttpStatusCode.OK, rows.ToJson());
         }
 
@@ -452,10 +458,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         topicId = dto.NewTopicId;
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Replies_Split(dto.OldTopicId, topicId, dto.Replies, false);
                     }
+
                     return Request.CreateResponse(HttpStatusCode.OK, topicId);
                 }
+
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 

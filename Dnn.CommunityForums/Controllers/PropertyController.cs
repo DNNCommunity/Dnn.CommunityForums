@@ -81,10 +81,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append("},");
 
             }
+
             if (sb.Length > 2)
             {
                 sb.Remove(sb.Length - 1, 1);
             }
+
             return sb.ToString();
         }
     }

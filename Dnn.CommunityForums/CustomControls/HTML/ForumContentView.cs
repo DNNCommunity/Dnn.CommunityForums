@@ -240,6 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sHost = sHost.Substring(0, sHost.Length - 1);
             }
+
             ControlUtils ctlUtils = new ControlUtils();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
@@ -248,6 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ParentForumId = ForumId;
             }
+
             using (IDataReader dr = db.ForumContent_List(PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId))
             {
                 //ParentForum Section
@@ -267,6 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     groupPrefix = dr["GroupPrefixURL"].ToString();
                     //  _forumGroupId = Integer.Parse(dr("ForumGroupId").ToString)
                 }
+
                 //SubForums
                 dr.NextResult();
                 int subForumCount = 0;
@@ -298,6 +301,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                 }
+
                 if (! string.IsNullOrEmpty(sSubforums))
                 {
                     if (IncludeClasses)
@@ -312,6 +316,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(sSubforums);
                     sb.Append("</ul>");
                 }
+
                 //Topics in ParentForum
                 dr.NextResult();
                 string catKey = string.Empty;
@@ -328,6 +333,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             count = 0;
                             catCount = 0;
                         }
+
                         if (IncludeClasses)
                         {
                             sb.Append("<div class=\"fcv-categorysection\"><div class=\"fcv-categoryname\"><span class=\"fcv-catcount\">[CATCOUNT]</span>" + dr["CategoryName"].ToString() + " </div>");
@@ -341,6 +347,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         catKey = dr["CategoryName"].ToString() + dr["CategoryId"].ToString();
                     }
+
                     if (TopicId == Convert.ToInt32(dr["TopicId"].ToString()))
                     {
                         sb.Append("<li class=\"fcv-selected\">");
@@ -349,6 +356,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append("<li>");
                     }
+
                     catCount += 1;
                     //Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
                     string[] Params = {ParamKeys.TopicId + "=" + dr["TopicId"].ToString()};
@@ -364,15 +372,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     count += 1;
                 }
+
                 sb.Replace("[CATCOUNT]", catCount.ToString());
                 if (count > 0)
                 {
                     sb.Append("</ul></div>");
                 }
+
                 dr.Close();
             }
+
             return sb.ToString();
         }
+
         //Private Sub RenderTopic(ByVal dr As IDataRecord)
         //    Dim topicsTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[TOPIC]", "[/TOPIC]")
         //    Dim replyTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[REPLIES]", "[/REPLIES]")

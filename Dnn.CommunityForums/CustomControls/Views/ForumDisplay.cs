@@ -55,11 +55,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sTemp = Convert.ToString(obj);
             }
+
             sTemp = Utilities.LocalizeControl(sTemp);
             if (!sTemp.Contains(Globals.ForumsControlsRegisterAFTag))
             {
                 sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
             }
+
             Control ctl = Page.ParseControl(sTemp);
             LinkControls(ctl.Controls);
             Controls.Add(ctl);
@@ -88,11 +90,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     ((ForumRow)ctrl).UserRoles = ForumUser.UserRoles;
                 }
+
                 if (ctrl is ControlsBase)
                 {
                     ((ControlsBase)ctrl).ControlConfig = ControlConfig;
                     ((ControlsBase)ctrl).ModuleConfiguration = ModuleConfiguration;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);
@@ -108,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 groupTemplate = TemplateUtils.GetTemplateSection(DisplayTemplate, "[GROUPSECTION]", "[/GROUPSECTION]");
             }
+
             ForumData = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(ControlConfig.PortalId, ControlConfig.ModuleId);
             if (ForumData != null)
             {
@@ -137,6 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sCSSClass = "afforumrowbottom";
                         }
+
                         int fid = int.Parse(fNode.Attributes["forumid"].Value);
                         string sForum = TemplateUtils.GetTemplateSection(sGroup, "[FORUMS]", "[/FORUMS]");
                         sForum = sForum.Replace("[CSS:ROWCLASS]", sCSSClass);
@@ -151,6 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(sGroup);
                 }
             }
+
             string sOut = sb.ToString();
             if (sOut.Contains("[GROUPSECTION]"))
             {
@@ -201,12 +208,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sLength = sForum.Substring(inStart - 1, inEnd - inStart);
                 intLength = Convert.ToInt32(sLength);
             }
+
             string ReplaceTag = "[LASTPOSTSUBJECT:" + intLength.ToString() + "]";
             string sSubject = fNode.Attributes["lastpostsubject"].Value;
             if (lastreplyid == 0)
             {
                 lastreplyid = lasttopicid;
             }
+
             sSubject = GetLastPostSubject(lastreplyid, lasttopicid, fid, sSubject, intLength);
 
             sForum = sForum.Replace(ReplaceTag, sSubject);
@@ -219,6 +228,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sForum = sForum.Replace("[LASTPOSTDATE]", lastpostdate);
             }
+
             //TODO: Properly check "canview"
             string sIcon = TemplateUtils.ShowIcon(true, fid, UserId, DateTime.Parse(lastpostdate), lastReadDate, lastreplyid);
             string sIconImage = "<img alt=\"" + forumname + "\" src=\"" + ThemePath + "images/" + sIcon + "\" />";
@@ -238,6 +248,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sSubs += ParseForumRow(n, sTemplate, GroupName);
                 }
             }
+
             sForum = TemplateUtils.ReplaceSubSection(sForum, sSubs, "[SUBFORUMS]", "[/SUBFORUMS]");
             string fc = "<af:forumrow id=\"ctlFR" + fid + "\" Hidden=\"" + hidden + "\" ForumId=\"" + fid + "\" ReadRoles=\"" + readRoles + "\" ViewRoles=\"" + viewRoles + "\" runat=\"server\">";
             fc += "<content>" + sForum + "</content>";
@@ -266,6 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sOut = Name;
             }
+
             return sOut;
         }
 
@@ -284,6 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     Subject = Subject.Substring(0, Length) + "...";
                 }
+
                 string sURL;
                 if (ParentPostID == 0 || LastPostID == ParentPostID)
                 {
@@ -294,8 +307,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sURL = Utilities.NavigateURL(PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
 
                 }
+
                 sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(Subject) + "\" runat=\"server\" />";
             }
+
             return sOut;
         }
         #endregion

@@ -70,6 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 memCount = Convert.ToInt32(dr["Members"]);
                 memTotal = Convert.ToInt32(dr["MembersTotal"]);
             }
+
             dr.Close();
             string sGuestsOnline = null;
             string sUsersOnline = null;

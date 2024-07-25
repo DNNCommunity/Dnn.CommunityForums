@@ -54,6 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     Summary = Summary.Substring(0, 150) + "...";
                 }
             }
+
             ji.Summary = Summary;
             ji.Body = Utilities.StripHTMLTag(Body);
             ji.JournalTypeId = 5;
@@ -62,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 JournalController.Instance.DeleteJournalItemByKey(PortalId, ji.ObjectKey);
             }
+
             string roles = string.Empty;
             if (!string.IsNullOrEmpty(ReadRoles))
             {
@@ -87,12 +89,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
             }
+
             if (SocialGroupId > 0)
             {
 
                 ji.SocialGroupId = SocialGroupId;
 
             }
+
             JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId,TabId, true));
         }
 
@@ -123,6 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Summary = Summary.Substring(0, 150) + "...";
                     }
                 }
+
                 ji.Summary = Summary;
                 ji.Body = Utilities.StripHTMLTag(Body);
                 ji.JournalTypeId = 6;
@@ -131,6 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     JournalController.Instance.DeleteJournalItemByKey(PortalId, ji.ObjectKey);
                 }
+
                 string roles = string.Empty;
                 if (!string.IsNullOrEmpty(ReadRoles))
                 {
@@ -155,10 +161,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         ji.SecuritySet += "R" + s + ",";
                     }
                 }
+
                 if (SocialGroupId > 0)
                 {
                     ji.SocialGroupId = SocialGroupId;
                 }
+
                 JournalController.Instance.SaveJournalItem(journalItem: ji, module: DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false));
             }
         }

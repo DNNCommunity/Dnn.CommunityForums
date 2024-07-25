@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append("<tr><td colspan=\"8\" width=\"100%\">" + RenderSpacer(5, 100) + "</td></tr>");
                         }
+
                         sb.Append("<tr class=\"afgroupback\"><td class=\"afgroupback_left\">" + RenderSpacer(1, 4) + "</td><td colspan=\"3\" width=\"100%\" onmouseover=\"this.className='agrowedit'\" onmouseout=\"this.className=''\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">");
                         sb.Append(sGroupName);
                         sb.Append("</td><td><div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"LoadView('manageforums_forumeditor','" + row["ForumGroupId"].ToString() + "|G');\">" + edit + "</div></td><td>");
@@ -82,12 +83,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",-1);\">" + arrowUp + "</div>");
                         }
+
                         groupCount += 1;
                         sb.Append("</td><td>");
                         if (groupCount < totalGroups)
                         {
                             sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"groupMove(" + row["ForumGroupId"].ToString() + ",1);\">" + arrowDown + "</div>");
                         }
+
                         sb.Append("</td><td class=\"afgroupback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
                         forumCount = 0;
                         totalGroupForum = GetGroupForumCount(dt, Convert.ToInt32(row["ForumGroupId"]));
@@ -95,6 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
+
                 i += 1;
                 if (Convert.ToInt32(row["ParentForumId"]) == 0)
                 {
@@ -108,12 +112,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + arrowUp + "</div>");
                         }
+
                         forumCount += 1;
                         sb.Append("</td><td>");
                         if (forumCount < totalGroupForum)
                         {
                             sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + arrowDown + "</div>");
                         }
+
                         sb.Append("</td><td class=\"afforumback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
 
                         if (HasSubForums(Convert.ToInt32(row["ForumId"]), dt) > 0)
@@ -131,6 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 dr.Close();
             }
+
             sb.Append("<tr><td></td><td></td><td></td><td width=\"100%\"></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td width=\"100%\" colspan=\"2\"></td><td></td><td></td><td></td><td></td></tr></table>");
             litForums.Text = sb.ToString();
 
@@ -153,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     tmpGroup = row["ForumGroupId"].ToString();
                 }
             }
+
             return i;
         }
 
@@ -167,6 +175,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     i += 1;
                 }
             }
+
             return i;
 
         }
@@ -188,15 +197,18 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",-1);\">" + arrowUp + "</div>");
                     }
+
                     subCount += 1;
                     sb.Append("</td><td>");
                     if (subCount < totalSubCount)
                     {
                         sb.Append("<div class=\"af16icon\" onmouseover=\"this.className='af16icon_over';\" onmouseout=\"this.className='af16icon';\" onclick=\"forumMove(" + row["ForumId"].ToString() + ",1);\">" + arrowDown + "</div>");
                     }
+
                     sb.Append("</td><td class=\"afforumback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
                 }
             }
+
             return sb.ToString();
         }
 
@@ -210,6 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     subCount += 1;
                 }
             }
+
             return subCount;
         }
 
@@ -226,6 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataProvider.Instance().Forums_Move(ModuleId, objectId, dir);
                     break;
             }
+
             DataCache.ClearAllCache(ModuleId);
             DataCache.ClearAllCacheForTabId(TabId);
             BindForums();

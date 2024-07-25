@@ -50,8 +50,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     tData.Append("<value></value>");
                 }
+
                 tData.Append("</property>");
             }
+
             tData.Append("</properties>");
             tData.Append("</topicdata>");
             return tData.ToString();
@@ -82,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
+
             return tp;
         }
     }

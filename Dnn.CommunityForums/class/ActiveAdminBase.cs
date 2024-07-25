@@ -60,9 +60,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         sURL = string.Concat("http://", Common.Globals.GetDomainName(Request), "/");
                     }
+
                     DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.HostUrl, ModuleId), sURL, DateTime.UtcNow.AddMinutes(30));
                     return sURL;
                 }
+
                 return Convert.ToString(obj);
             }
         }
@@ -105,6 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return Convert.ToDateTime(obj);
                 }
+
                 return DateTime.UtcNow;
             }
 
@@ -178,10 +181,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return Session[ViewKey].ToString();
                 }
+
                 if (_currentView != string.Empty)
                 {
                     return _currentView;
                 }
+
                 return DefaultView;
             }
 

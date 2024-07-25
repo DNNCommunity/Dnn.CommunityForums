@@ -214,6 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 writer.Write("none");
             }
+
             writer.Write(";\">");
             try
             {
@@ -237,10 +238,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return;
             }
+
             if (Content != null)
             {
                 this.Controls.Add(Content);
             }
+
             //EnableViewState = False
         }
     }

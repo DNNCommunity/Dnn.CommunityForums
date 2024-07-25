@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // changed but case-insensitive identical: empty the setting first
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, "");
             }
+
             DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(ModuleId, key, newValue);
         }
 

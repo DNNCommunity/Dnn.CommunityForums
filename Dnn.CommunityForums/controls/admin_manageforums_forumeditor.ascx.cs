@@ -349,6 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         break;
                     }
             }
+
             DataCache.ClearAllCache(ModuleId);
             DataCache.ClearAllCacheForTabId(TabId);
 
@@ -512,6 +513,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
                 Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
             }
+
             if (rdHTMLOn.Checked && !fi.AllowHTML)
             {
                 Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.TEXTBOX);
@@ -664,11 +666,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.HTMLEDITORPROVIDER);
                 Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.HTMLEDITORPROVIDER);
             }
+
             if (rdHTMLOn.Checked && !gi.AllowHTML)
             {
                 Utilities.SelectListItemByValue(drpEditorTypes, (int)EditorTypes.TEXTBOX);
                 Utilities.SelectListItemByValue(drpEditorMobile, (int)EditorTypes.TEXTBOX);
             }
+
             rdHTMLOn.Checked = gi.AllowHTML;
             rdHTMLOff.Checked = !gi.AllowHTML;
 
@@ -730,6 +734,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sb.Append("<tr><td class=\"amcpnormal\">" + ri.RoleName + "</td><td><img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" onclick=\"removeRole(this," + ri.RoleID + ");\" /></td></tr>");
                 }
             }
+
             sb.Append("</table>");
             tbRoles.Text = sb.ToString();
         }

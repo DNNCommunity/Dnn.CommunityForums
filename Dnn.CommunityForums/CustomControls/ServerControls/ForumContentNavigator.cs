@@ -202,18 +202,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 fd.TopicId = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.TopicId]);
             }
+
             if (ItemTemplate != null)
             {
                 fd.ItemTemplate = ItemTemplate.Text;
             }
+
             if (HeaderTemplate != null)
             {
                 fd.HeaderTemplate = HeaderTemplate.Text;
             }
+
             if (FooterTemplate != null)
             {
                 fd.FooterTemplate = FooterTemplate.Text;
             }
+
             writer.Write(fd.Render());
         }
 

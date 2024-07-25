@@ -67,6 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     sSubject = topic.Content.Subject;
                     authorName = topic.Author.DisplayName;
                 }
+
                 string notificationSubject = Utilities.GetSharedResource("[RESX:BanAlertSubject]");
                 notificationSubject = notificationSubject.Replace("[Username]", bannedUser.Username);
                 notificationSubject = notificationSubject.Replace("[DisplayName]", bannedUser.DisplayName);
@@ -85,6 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
                     }
+
                     postsRemoved.AppendLine($"{Utilities.GetUserFriendlyDateTimeString(c.DateUpdated, ModuleId, BannedBy)}\t{c.Subject}");
                     DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(TabId, ModuleId, c.ForumId, c.TopicId, c.ReplyId);
                 });

@@ -179,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 tb.SelectedCategory = int.Parse(HttpContext.Current.Request.QueryString[ParamKeys.Category]);
             }
+
             if (RenderMode == 0)
             {
                 writer.Write(tb.RenderView());

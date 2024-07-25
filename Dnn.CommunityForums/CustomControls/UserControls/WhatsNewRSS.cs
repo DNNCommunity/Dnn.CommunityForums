@@ -123,6 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
                 }
+
                 return _settings;
             }
         }
@@ -313,6 +314,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sHost = sHost.Substring(0, sHost.Length - 1);
                         }
+
                         url = sHost + sTopicUrl;
                     }
 
@@ -325,6 +327,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             bodyHtml = TemplateUtils.GetTemplateSection(bodyHtml, "<body>", "</body>");
                         }
+
                         // Legacy Attachment functionality uses "attachid"
                         if (bodyHtml.Contains("&#91;IMAGE:"))
                         {
@@ -338,6 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 bodyHtml = bodyHtml.Replace(match.Value, sImage);
                             }
                         }
+
                         // Legacy Attachment functionality uses "attachid"
                         if (bodyHtml.Contains("&#91;THUMBNAIL:"))
                         {
@@ -353,6 +357,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 bodyHtml = bodyHtml.Replace(match.Value, sImage);
                             }
                         }
+
                         bodyHtml = bodyHtml.Replace("src=\"/Portals", "src=\"" + Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + "/Portals");
                         bodyHtml = Utilities.ManageImagePath(bodyHtml, new Uri(Common.Globals.AddHTTP(HttpContext.Current.Request.Url.Host)));
 
@@ -362,6 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append(WriteElement("description", string.Empty, indent + 1));
                     }
+
                     sb.Append(WriteElement("link", url, indent + 1));
                     sb.Append(WriteElement("comments", url, indent + 1));
                     sb.Append(WriteElement("pubDate", Convert.ToDateTime(postDate).AddMinutes(offSet).ToString("r"), indent + 1));
@@ -371,6 +377,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(WriteElement("/item", indent));
 
                 }
+
                 dr.Close();
                 sb.Append("<atom:link href=\"http://" + HttpContext.Current.Request.Url.Host + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
                 sb.Append(WriteElement("/channel", 1));

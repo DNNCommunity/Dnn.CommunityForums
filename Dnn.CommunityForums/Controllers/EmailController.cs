@@ -145,6 +145,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             Body = TemplateUtils.ParseEmailTemplate(ti.Template, templateName: string.Empty, portalID: portalId, moduleID: moduleID, tabID: tabID, forumID: fi.ForumID, topicId: topicId, replyId: replyId, comments: comments, user: usr, userId: userId, userCulture: userCulture, timeZoneOffset: timeZoneOffset, topicSubscriber: true, navigationManager: navigationManager, requestUrl: requestUrl),
                         });
                     }
+
                     Recipients = subs.Where(s => s.TimeZoneOffSet == timeZoneOffset && s.UserCulture == userCulture && !s.TopicSubscriber && !string.IsNullOrEmpty(s.Email)).Select(s => s.Email).ToList();
                     if (Recipients.Count > 0)
                     {
@@ -264,6 +265,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         decryptedText = string.Empty;
                     }
                 }
+
                 return decryptedText;
             }
         }

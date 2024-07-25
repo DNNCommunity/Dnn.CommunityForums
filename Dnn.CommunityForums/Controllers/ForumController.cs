@@ -48,8 +48,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSettings();
                     forum.LoadSecurity();
                 }
+
                 DataCache.SettingsCacheStore(moduleId, cachekey, forum);
             }
+
             return forum;
         }
 
@@ -68,8 +70,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSecurity();
                     forums.Add(forum);
                 }
+
                 DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumList, moduleId), forums);
             }
+
             return forums;
         }
 
@@ -87,8 +91,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forum.LoadSecurity();
                     forums.Add(forum);
                 }
+
                 DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId), forums);
             }
+
             return forums;
         }
 
@@ -150,6 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumIds += string.Concat(f.ForumID, ";");
                 }
             }
+
             return forumIds;
         }
 
@@ -207,6 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         groupId = f.ForumGroupId;
                     }
                 }
+
                 sb.Append("<groups>");
                 sb.AppendLine();
                 sb.Append(groups.ToString());
@@ -261,6 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append("</forum>");
                     sb.AppendLine();
                 }
+
                 sb.Append("<forums>");
                 sb.AppendLine();
                 sb.Append(forums.ToString());
@@ -281,6 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 xDoc = (XmlDocument)obj;
             }
+
             return xDoc;
         }
 
@@ -302,6 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateDefaultSets(portalId, fi.PermissionsId);
                 }
             }
+
             fi.ForumSettingsKey = useGroupFeatures ? (fg != null ? fg.GroupSettingsKey : string.Empty) : (fi.ForumID > 0 ? $"F:{fi.ForumID}" : string.Empty);
 
             if (fi.ForumID <= 0)
@@ -315,10 +326,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 fi.ForumSettingsKey = $"F:{forumId}";
             }
+
             if (fi.ForumSettingsKey.StartsWith("G:"))
             {
                 DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
             }
+
             if (isNew && useGroupFeatures == false)
             {
                 var sKey = $"F:{fi.ForumID}";
@@ -354,6 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     groupAction(fi);
                     tmpGroupKey = GroupKey;
                 }
+
                 if (fi.ParentForumId == 0)
                 {
                     forumAction(fi);

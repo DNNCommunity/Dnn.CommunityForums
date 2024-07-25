@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
+
             return security;
         }
 
@@ -289,6 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get { return Utilities.SafeConvertInt(GroupSettings[ForumSettingKeys.ReplyFormId]); }
         }
+
         /// <summary>
         /// TODO:
         /// </summary>

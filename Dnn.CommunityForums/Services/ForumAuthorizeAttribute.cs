@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
         {
             PermissionNeeded = permissionNeeded;
         }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
@@ -75,6 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                                                                                         .ToString());
                     }
                 }
+
                 if (forumId <= 0)
                 {
                     try
@@ -87,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     {
                     }
                 }
+
                 if (forumId <= 0)
                 {
                     try
@@ -98,6 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     {
                     }
                 }
+
                 if (forumId <= 0)
                 {
                     throw new System.InvalidOperationException();
@@ -110,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
                     return ServicesHelper.IsAuthorized(moduleInfo.PortalID, moduleId, forumId, PermissionNeeded, userInfo);
                 }
             }
+
             return false;
         }
     }

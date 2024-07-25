@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sb.Append("checked=\"checked\" ");
                 }
+
                 if (ToggleMode == 0)
                 {
                     sb.Append(" onclick=\"amaf_forumSubscribe(" + ModuleId + "," + ForumId + ");\" />");

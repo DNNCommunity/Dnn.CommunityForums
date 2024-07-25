@@ -90,9 +90,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
             }
+
             if (ti == null) {
                 ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
-            };
+            }
+;
             return ti;
         }
 
@@ -182,6 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 navigationManager = (INavigationManager)new Services.URLNavigator();
             }
+
             PortalSettings portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(portalID);
             var ms = SettingsBase.GetModuleSettings(moduleID);
             var sOut = template;
@@ -193,6 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     templateName = templateName.Replace(string.Concat("_Subject_", moduleID), string.Empty);
                 }
+
                 sOut = TemplateCache.GetCachedTemplate(moduleID, templateName, -1);
             }
 
@@ -347,6 +351,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 catch
                 { }
             }
+
             // Introduced for Active Forum Email Connector plug-in Ends
 
             if (user != null)
@@ -472,6 +477,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataCache.SettingsCacheStore(moduleId, cacheKey, myTemplate);
                 }
             }
+
             myTemplate = ParseProfileTemplate(myTemplate, up, portalId, moduleId, imagePath, currentUserType, true, userPrefHideAvatar, false, ipAddress, currentUserId, timeZoneOffset);
             return myTemplate;
         }
@@ -733,6 +739,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sDateLastActivity = Utilities.GetUserFormattedDateTime(up.Profile.DateLastActivity, portalId, currentUserId);
                     }
                 }
+
                 result.Replace(sDateLastActivityReplacement, sDateLastActivity);
 
                 // Post Count
@@ -882,6 +889,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var intSubTempLength = intSubTempEnd - intSubTempStart;
                 template = template.Substring(0, intStartTag) + subTemplate + template.Substring(intEndTag + endTag.Length);
             }
+
             return template;
         }
 
@@ -924,6 +932,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sResource = DotNetNuke.Services.Localization.Localization.GetString(sResource, "~/admin/users/app_localresources/profile.ascx.resx");
                     }
                 }
+
                 s = s.Replace(match.Value, sReplace);
                 s = s.Replace(string.Concat("[RESX:DNNProfile:", match.Groups[2].Value, "]"), sResource);
             }
@@ -1009,9 +1018,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         message = message.Replace(m.Value, m.Value.Replace("<br>", System.Environment.NewLine));
                     }
                 }
+
                 var objCode = new CodeParser();
                 template = CodeParser.ParseCode(HttpUtility.HtmlDecode(template));
             }
+
             return template;
         }
     }

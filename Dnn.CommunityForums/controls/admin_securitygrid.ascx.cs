@@ -60,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 gridActions.Visible = false;
             }
+
             BuildNewGrid(Perms, PermissionsId);
 
         }
@@ -75,6 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }
+
             sb.Append("</select>");
             litRoles.Text = sb.ToString();
         }
@@ -92,12 +94,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     roleIds[i] = Convert.ToInt32(roles[i]);
                 }
             }
+
             Array.Sort(roleIds);
             string tmp = string.Empty;
             foreach (int n in roleIds)
             {
                 tmp += n.ToString() + ";";
             }
+
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
             NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(PortalId, tmp);
@@ -110,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     pi.ObjectName = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: PortalId, roleId: Convert.ToInt32(key)).RoleName;
                 }
+
                 pi.Type = ObjectType.RoleId;
                 pl.Add(pi);
             }
@@ -136,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
             }
+
             //Groups
             string groups = GetSecureObjectList(security, 2);
             if (! string.IsNullOrEmpty(groups))
@@ -163,6 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             {
                                 pi.ObjectName += " - Member";
                             }
+
                             pl.Add(pi);
                         }
                     }
@@ -205,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 i += 1;
             }
+
             System.Type enumType = typeof(SecureActions);
             Array values = Enum.GetValues(enumType);
             StringBuilder sb = new StringBuilder();
@@ -221,9 +229,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sb.Append("<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/mini_del.gif") + "\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + permissionsId + ");\" />");
                     }
                 }
+
                 sb.Append("</span>" + grid[x, 1]);
                 sb.Append("</div></td></tr>");
             }
+
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
             //litNewObjects.Text = sb.ToString
             //sb = New StringBuilder
@@ -246,6 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append(keyText);
                 sb.Append("</td>");
             }
+
             sb.Append("</tr>");
             for (int x = 0; x < pl.Count; x++)
             {
@@ -259,6 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sState = "<img src=\"" + imgOn + "\" alt=\"Enabled\" />";
                     }
+
                     if (keyText.ToLowerInvariant() == "block")
                     {
                         sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;display:none;\">");
@@ -273,11 +285,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
+
                     sb.Append(">" + sState + "</div></td>");
 
                 }
+
                 sb.Append("</tr>");
             }
+
             sb.Append("</table></div></td></tr></table>");
             litSecGrid.Text = sb.ToString();
             //litNewSecurity.Text = sb.ToString
@@ -339,6 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         secType = 2;
                     }
                 }
+
                 if (! string.IsNullOrEmpty(secId))
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, "View", secId, secType);
@@ -355,8 +371,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, key, secId, secType);
                 }
+
                 sOut = action + "|" + returnId;
             }
+
             LiteralControl lit = new LiteralControl(sOut);
             lit.RenderControl(e.Output);
         }

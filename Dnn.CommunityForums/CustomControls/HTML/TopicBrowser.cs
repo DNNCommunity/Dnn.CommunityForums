@@ -355,6 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 _canEdit = true;
             }
+
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
@@ -393,6 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         recordCount = int.Parse(dr["RecordCount"].ToString());
                     }
+
                     tmp = ParseDataRow(dr, Template);
                     if (i % 2 == 0)
                     {
@@ -402,11 +404,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         tmp = tmp.Replace("[ROWCSS]", AltItemCSS);
                     }
+
                     i += 1;
                     sb.Append(tmp);
                 }
+
                 dr.Close();
             }
+
             sb.Append(FooterTemplate);
             int pageCount = Convert.ToInt32(System.Math.Ceiling((double)recordCount / PageSize));
             ControlUtils cUtils = new ControlUtils();
@@ -434,6 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId,UserId);
                             break;
                     }
+
                     tmp = tmp.Replace(k, value);
                 }
 
@@ -449,6 +455,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     auth.DisplayName = row["TopicAuthorName"].ToString();
                 }
+
                 auth.AuthorId = int.Parse(row[columnPrefix + "AuthorId"].ToString());
 
                 auth.LastName = row[columnPrefix + "AuthorLastName"].ToString();
@@ -484,6 +491,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     tmp = tmp.Replace("[AF:QUICKEDITLINK]", string.Empty);
                 }
+
                 //
 
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));

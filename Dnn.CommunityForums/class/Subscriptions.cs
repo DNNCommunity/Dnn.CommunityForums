@@ -99,6 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+
             dr.Close();
             return sl;
         }
@@ -246,6 +247,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     GroupCount += 1;
                 }
+
                 string sTemp = TemplateItems;
                 sTemp = sTemp.Replace("[SUBJECT]", dr["Subject"].ToString());
                 int intLength = 0;
@@ -267,6 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         body = body.Substring(0, intLength);
                         body = string.Concat(body, "...");
                     }
+
                     sTemp = sTemp.Replace(string.Concat("[BODY:", intLength, "]"), body);
                 }
                 else
@@ -314,6 +317,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
+
                 new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
             }
         }

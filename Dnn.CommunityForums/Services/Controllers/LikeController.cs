@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 
             public int ContentId { get; set; }
         }
+
         /// <summary>
         /// Increments/Decrements Likes for a ContentId for a User
         /// </summary>
@@ -66,6 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
         }
+
         /// <summary>
         /// Gets number of Likes for a ContentId
         /// </summary>

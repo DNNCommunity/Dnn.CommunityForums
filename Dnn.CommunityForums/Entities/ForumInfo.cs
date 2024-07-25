@@ -117,6 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 throw ex;
             }
+
             return group;
         }
 
@@ -140,10 +141,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     var user = new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID);
                     name = user?.FirstName;
                 }
+
                 if (string.IsNullOrEmpty(name))
                 {
                     name = LastPostUserID > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
                 }
+
                 return name;
             }
         }
@@ -159,10 +162,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     var user = new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID);
                     name = user?.LastName;
                 }
+
                 if (string.IsNullOrEmpty(name))
                 {
                     name = LastPostUserID > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
                 }
+
                 return name;
             }
         }
@@ -178,10 +183,12 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     var user = new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, LastPostUserID);
                     name = user?.DisplayName;
                 }
+
                 if (string.IsNullOrEmpty(name))
                 {
                     name = LastPostUserID > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
                 }
+
                 return name;
             }
         }
@@ -254,6 +261,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 log.AddProperty("Message", message);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
             }
+
             return security;
         }
 

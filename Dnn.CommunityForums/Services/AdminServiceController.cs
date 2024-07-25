@@ -182,6 +182,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemoveObjectFromAll(dto.ModuleId, dto.SecurityId, dto.SecurityType, dto.PermissionsId);
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
+
                 case "addobject":
                     {
                         if (dto.SecurityType == 1)
@@ -197,6 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 dto.SecurityType = 2;
                             }
                         }
+
                         if (!string.IsNullOrEmpty(dto.SecurityId))
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, "View", dto.SecurityId, dto.SecurityType);
@@ -204,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         return Request.CreateResponse(HttpStatusCode.OK);
                     }
+
                 default:
                     {
                         if (dto.Action == "remove")
@@ -213,7 +216,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         else
                         {
                             DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(dto.ModuleId, dto.PermissionsId, dto.SecurityAccessRequested, dto.SecurityId, dto.SecurityType);
-                        };
+                        }
+;
                         return Request.CreateResponse(HttpStatusCode.OK, dto.Action + "|" + dto.ReturnId);
                     }
             }

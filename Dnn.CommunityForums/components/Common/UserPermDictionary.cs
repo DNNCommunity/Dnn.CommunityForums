@@ -58,6 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     dict.Add(UserId.ToString(), Roles);
                 }
+
                 DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
                 return true;
             }

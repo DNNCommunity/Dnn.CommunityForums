@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     _settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
                 }
+
                 return _settings;
             }
         }
@@ -193,6 +194,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 sTopicUrl += "/";
                             }
+
                             sTopicUrl += "?afc=" + replyId;
                             sbTemplate = sbTemplate.Replace("[POSTURL]", sTopicUrl);
                             sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicUrl + "\">" + subject + "</a>");
@@ -212,6 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sbTemplate = sbTemplate.Replace("[POSTURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }));
                             sbTemplate = sbTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + replyId }) + "\">" + subject + "</a>");
                         }
+
                         sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
                     }
 
@@ -230,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     sb.Append(template);
                 }
+
                 dr.Close();
             }
             catch (Exception ex)
@@ -238,6 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     dr.Close();
                 }
+
                 sb.Append(ex.StackTrace);
             }
 

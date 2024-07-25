@@ -149,8 +149,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                     return Request.CreateResponse(HttpStatusCode.OK, value: ti.IsPinned);
                 }
+
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
@@ -176,10 +178,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                     return Request.CreateResponse(HttpStatusCode.OK, ti.IsLocked);
                 }
+
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
+
         /// <summary>
         /// Moves a Topic
         /// </summary>
@@ -202,8 +207,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, ForumModuleId));
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
+
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
+
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 #pragma warning disable CS1570
@@ -238,6 +245,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     Request.CreateResponse(HttpStatusCode.Unauthorized);
                 }
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 #pragma warning disable CS1570
@@ -264,8 +272,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     tc.DeleteById(topicId);
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
+
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
@@ -286,8 +296,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(UserInfo.UserID, dto.TopicId, rating, HttpContext.Current.Request.UserHostAddress ?? string.Empty));
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
         /// <summary>
         /// Updates an existing topic
         /// </summary>
@@ -319,7 +331,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         )
                     {
                         originalTopic.IsLocked = dto.Topic.IsLocked;
-                    };
+                    }
+;
 
                     if (dto.Topic.IsPinned != originalTopic.IsPinned &&
                         (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))) ||
@@ -328,7 +341,8 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         )
                     {
                         originalTopic.IsLocked = dto.Topic.IsLocked;
-                    };
+                    }
+;
 
                     originalTopic.Priority = dto.Topic.Priority;
                     originalTopic.StatusId = dto.Topic.StatusId;
@@ -354,12 +368,15 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             {
                                 tData.Append("<value></value>");
                             }
+
                             tData.Append("</property>");
                         }
+
                         tData.Append("</properties>");
                         tData.Append("</topicdata>");
                         originalTopic.TopicData = tData.ToString();
                     }
+
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(originalTopic);
                     Utilities.UpdateModuleLastContentModifiedOnDate(ForumModuleId);
 
@@ -377,6 +394,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             }
                         }
                     }
+
                     if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Categorize, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(ActiveModule.PortalID, UserInfo.Roles))))
                     {
                         if (!string.IsNullOrEmpty(dto.Topic.SelectedCategoriesAsString))
@@ -397,6 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                             }
                         }
                     }
+
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo updatedTopic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     return Request.CreateResponse(HttpStatusCode.OK, updatedTopic);
                 }
@@ -405,6 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     return Request.CreateResponse(HttpStatusCode.NotFound, dto.Topic);
                 }
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }

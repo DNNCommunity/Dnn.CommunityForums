@@ -88,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicRating.DateUpdated = DateTime.UtcNow;
                 repo.Insert(topicRating);
             }
+
             return Average(topicId);
         }
     }

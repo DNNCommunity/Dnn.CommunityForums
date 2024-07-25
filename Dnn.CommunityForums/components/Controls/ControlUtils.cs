@@ -191,6 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 sURL += "/" + pageId.ToString();
             }
+
             if (string.IsNullOrEmpty(sURL))
             {
                 return Utilities.NavigateURL(tabId);
@@ -234,6 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sURL = Utilities.NavigateURL(tabId, "", new[] { ParamKeys.TopicId + "=" + topicId, ParamKeys.PageId + "=" + pageId });
                 }
             }
+
             return sURL;
         }
 
@@ -282,6 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sURL = Utilities.NavigateURL(tabId, string.Empty, new[] { ParamKeys.ForumId + "=" + forumId, ParamKeys.PageId + "=" + pageId });
                 }
             }
+
             return sURL;
         }
 

@@ -74,6 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             try
             {
                 LinkControls(Controls);
@@ -82,6 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             try
             {
                 BuildPager();
@@ -126,14 +128,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             sRow = sAltRow;
                         }
+
                         sRow = TemplateUtils.ParseProfileTemplate(sRow, up, PortalId, ModuleId, ImagePath, CurrentUserType,false,false,false,string.Empty,-1, TimeZoneOffset);
                         sb.Append(sRow);
                         i += 1;
                     }
+
                     sGrid = TemplateUtils.ReplaceSubSection(sGrid, sb.ToString(), "[AF:CONTROL:LIST:ITEM]", "[/AF:CONTROL:LIST:ALTITEM]");
                 }
+
                 sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, sGrid, "[AF:CONTROL:LIST]", "[/AF:CONTROL:LIST]");
             }
+
             sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             sTemplate = sTemplate.Replace("[AF:CONTROL:PAGER]", "<am:pagernav id=\"Pager1\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AF:CONTROL:ALPHABAR]", BuildAlphaList());
@@ -152,6 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         Pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)ctrl;
                         break;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);
@@ -178,6 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Pager1.PageMode = PagerNav.Mode.Links;
             }
+
             if (Request.Params["affilter"] != null)
             {
                 string[] Params = { "affilter=" + Request.Params["affilter"] };
@@ -202,6 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append(strChar);
                 sb.Append("</a></td>");
             }
+
             sb.Append("<td align=center>");
             sb.Append("<a href=\"" + NavigateUrl(TabId, "", ParamKeys.ViewType + "=members") + "\" class=\"CommandButton\">");
             sb.Append(Utilities.GetSharedResource("[RESX:All]"));
@@ -222,6 +231,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 RowIndex = (PageId * PageSize) - PageSize;
             }
+
             IDataReader dr = DataProvider.Instance().Profiles_MemberList(PortalId, ModuleId, PageSize, RowIndex, Filter);
             try
             {
@@ -244,40 +254,49 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         upi.Profile.DateCreated = Convert.ToDateTime(dr["DateCreated"].ToString());
                     }
+
                     if (!(dr["DateUpdated"].ToString() == string.Empty))
                     {
                         upi.Profile.DateUpdated = Convert.ToDateTime(dr["DateUpdated"].ToString());
                     }
+
                     if (!(dr["DateLastActivity"].ToString() == string.Empty))
                     {
                         upi.Profile.DateLastActivity = Convert.ToDateTime(dr["DateLastActivity"].ToString());
                     }
+
                     upi.Profile.Signature = Convert.ToString(dr["Signature"].ToString());
                     if (!(dr["SignatureDisabled"].ToString() == string.Empty))
                     {
                         upi.Profile.SignatureDisabled = Convert.ToBoolean(dr["SignatureDisabled"]);
                     }
+
                     if (!(dr["TrustLevel"].ToString() == string.Empty))
                     {
                         upi.Profile.TrustLevel = Convert.ToInt32(dr["TrustLevel"].ToString());
                     }
+
                     if (!(dr["AdminWatch"].ToString() == string.Empty))
                     {
                         upi.Profile.AdminWatch = Convert.ToBoolean(dr["AdminWatch"]);
                     }
+
                     if (!(dr["AttachDisabled"].ToString() == string.Empty))
                     {
                         upi.Profile.AttachDisabled = Convert.ToBoolean(dr["AttachDisabled"]);
                     }
+
                     upi.Profile.Avatar = Convert.ToString(dr["Avatar"].ToString());
                     if (!(dr["AvatarType"].ToString() == string.Empty))
                     {
                         upi.Profile.AvatarType = (AvatarTypes)Convert.ToInt32(dr["AvatarType"].ToString());
                     }
+
                     if (!(dr["AvatarDisabled"].ToString() == string.Empty))
                     {
                         upi.Profile.AvatarDisabled = Convert.ToBoolean(dr["AvatarDisabled"]);
                     }
+
                     upi.Profile.Yahoo = Convert.ToString(dr["Yahoo"].ToString());
                     upi.Profile.MSN = Convert.ToString(dr["MSN"].ToString());
                     upi.Profile.ICQ = Convert.ToString(dr["ICQ"].ToString());
@@ -324,6 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     dr = null;
                 }
             }
+
             return upl;
         }
 

@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 filterController.Insert(filter);
             }
+
             return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(filter.FilterId);
         }
 

@@ -240,6 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sHost = sHost.Substring(0, sHost.Length - 1);
             }
+
             ControlUtils ctlUtils = new ControlUtils();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
@@ -248,6 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 ParentForumId = ForumId;
             }
+
             using (IDataReader dr = db.ForumContent_List(PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId))
             {
                 //ParentForum Section
@@ -281,6 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         catKey = dr["CategoryName"].ToString() + dr["CategoryId"].ToString();
                     }
+
                     if (TopicId == Convert.ToInt32(dr["TopicId"].ToString()))
                     {
                         sb.Append("<li class=\"fcv-selected\">");
@@ -290,6 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append("<li>");
                     }
+
                     catCount += 1;
                     //Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
                     string[] Params = {ParamKeys.TopicId + "=" + dr["TopicId"].ToString()};
@@ -306,16 +310,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     count += 1;
                 }
+
                 sb.Replace("[CATCOUNT]", catCount.ToString());
                 if (count > 0)
                 {
                     sb.Append("</ul></li>");
                 }
+
                 sb.Append("</ul>");
                 dr.Close();
             }
+
             return sb.ToString();
         }
+
         //Private Sub RenderTopic(ByVal dr As IDataRecord)
         //    Dim topicsTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[TOPIC]", "[/TOPIC]")
         //    Dim replyTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[REPLIES]", "[/REPLIES]")

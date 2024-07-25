@@ -68,10 +68,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     _pageSize = UserDefaultPageSize;
                 }
+
                 if (_pageSize < 5)
                 {
                     _pageSize = 10;
                 }
+
                 dgrdForumSubs.PageSize = _pageSize;
                 dgrdTopicSubs.PageSize = _pageSize;
 

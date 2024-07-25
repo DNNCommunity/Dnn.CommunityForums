@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         _tagInfo = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo();
                     }
                 }
+
                 return _tagInfo;
             }
         }
@@ -65,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
                     }
                 }
+
                 return _topicInfo;
             }
         }

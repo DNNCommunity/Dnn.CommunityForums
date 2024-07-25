@@ -35,8 +35,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forumGroup.LoadSecurity();
                     forumGroup.LoadSettings();
                 }
+
                 DataCache.SettingsCacheStore(moduleId, cachekey, forumGroup);
             }
+
             return forumGroup;
         }
 
@@ -61,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.QuickReplyFormId, "0");
                 Settings.SaveSetting(forumGroupInfo.ModuleId, forumGroupInfo.GroupSettingsKey, ForumSettingKeys.AllowRSS, "false");
             }
+
             DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }

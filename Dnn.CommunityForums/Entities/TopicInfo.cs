@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     _forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
+
                 return _forumId;
             }
             set => _forumId = value;
@@ -184,6 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
+
             return _Author;
         }
 
@@ -200,6 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                         _tags = string.Empty;
                     }
                 }
+
                 return _tags;
             }
         }
@@ -216,6 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                     var topicCategoryIds = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(TopicId).Select(t => t.TagId);
                     topicCategoryIds.ForEach(tc => _categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
                 }
+
                 return _categories;
             }
         }
@@ -232,6 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 {
                     _selectedcategories = string.Join(";", SelectedCategories.Select(c => c.id.ToString()));
                 }
+
                 return _selectedcategories;
             }
 

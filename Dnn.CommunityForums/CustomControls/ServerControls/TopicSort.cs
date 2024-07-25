@@ -117,6 +117,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     Sort = HttpContext.Current.Request.Params[ParamKeys.Sort];
                 }
+
                 drpSort.SelectedIndex = drpSort.Items.IndexOf(drpSort.Items.FindByValue(Sort));
             }
         }

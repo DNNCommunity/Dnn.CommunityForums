@@ -142,6 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
                 DataCache.SettingsCacheStore(ModuleId: moduleId, cacheKey: cacheKey, sToolbar);
             }
+
             return sToolbar;
         }
 
@@ -313,12 +314,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         portalSettings = null;
                     }
                 }
+
                 if (portalSettings == null)
                 {
                     portalSettings = new PortalSettings(portalId);
                     PortalSettingsController psc = new DotNetNuke.Entities.Portals.PortalSettingsController();
                     psc.LoadPortalSettings(portalSettings);
                 }
+
                 portalSettings.PortalAlias = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).FirstOrDefault();
                 return portalSettings;
             }
@@ -340,6 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");
             }
+
             return strHost.ToLowerInvariant();
         }
 
@@ -520,6 +524,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return original;
                 }
             }
+
             return text;
         }
 
@@ -614,9 +619,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     strMessage = Regex.Replace(strMessage, System.Environment.NewLine, " <br /> ");
                 }
+
                 strMessage = strMessage.Replace("[", "&#91;");
                 strMessage = strMessage.Replace("]", "&#93;");
             }
+
             return strMessage;
         }
 
@@ -651,6 +658,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("<form"), "&lt;form&gt;");
                 strMessage = Regex.Replace(strMessage, GetCaseInsensitiveSearch("</form>"), "&lt;/form&gt;");
             }
+
             return strMessage;
         }
 
@@ -804,6 +812,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var scode = m.Value.Replace("&#", string.Empty).Replace(";", string.Empty);
                 text = text.Replace(m.Value, scode);
             }
+
             return text;
         }
 
@@ -860,6 +869,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     name = name.Replace(strChar, string.Empty);
                 }
             }
+
             name = name.Replace("--", "-");
             name = name.Replace("---", "-");
             name = name.Replace("----", "-");
@@ -906,6 +916,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sContents = exc.Message;
                 }
             }
+
             return sContents;
         }
 
@@ -966,6 +977,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sContents = exc.Message;
                 }
             }
+
             return sContents;
         }
 
@@ -1046,24 +1058,29 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         cultureInfo = CultureInfo.GetCultureInfo(userInfo?.Profile?.PreferredLocale);
                     }
+
                     if (cultureInfo == null && userInfo?.PortalID >= 0)
                     {
                         cultureInfo = CultureInfo.GetCultureInfo(Utilities.GetPortalSettings(userInfo.PortalID)?.CultureCode);
                     }
+
                     if (cultureInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
                     {
                         cultureInfo = CultureInfo.GetCultureInfo(ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.CultureCode);
                     }
+
                     if (cultureInfo == null)
                     {
                         cultureInfo = CultureInfo.CurrentCulture;
                     }
+
                     DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: cultureInfo);
                 }
                 else
                 {
                     cultureInfo = (CultureInfo)obj;
                 }
+
                 return cultureInfo;
 
             }
@@ -1093,24 +1110,29 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         timeZoneInfo = userInfo?.Profile?.PreferredTimeZone;
                     }
+
                     if (timeZoneInfo == null && userInfo?.PortalID >= 0)
                     {
                         timeZoneInfo = Utilities.GetPortalSettings(userInfo.PortalID)?.TimeZone;
                     }
+
                     if (timeZoneInfo == null && ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings() != null)
                     {
                         timeZoneInfo = ServiceLocator<IPortalController, PortalController>.Instance.GetCurrentPortalSettings()?.TimeZone;
                     }
+
                     if (timeZoneInfo == null)
                     {
                         timeZoneInfo = TimeZoneInfo.Utc;
                     }
+
                     DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: timeZoneInfo);
                 }
                 else
                 {
                     timeZoneInfo = (TimeZoneInfo)obj;
                 }
+
                 return timeZoneInfo;
 
             }
@@ -1377,6 +1399,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         break;
                 }
+
                 if (obj != null)
                 {
                     infoObject.GetType().GetProperty(pItem.Name).SetValue(infoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
@@ -1398,9 +1421,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         contents = sr.ReadToEnd();
                         sr.Close();
                     }
+
                     s.Close();
                 }
             }
+
             return contents;
         }
 
@@ -1624,6 +1649,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+
             return moduleId;
         }
 
@@ -1635,10 +1661,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     target.Create();
                 }
+
                 foreach (var file in source.GetFiles())
                 {
                     file.CopyTo(destFileName: System.IO.Path.Combine(target.FullName, file.Name),overwrite: true);
                 }
+
                 foreach (var subDir in source.GetDirectories())
                 {
                     CopyFolder(subDir, new DirectoryInfo( System.IO.Path.Combine(target.FullName, subDir.Name)));
@@ -1660,10 +1688,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                             file.Delete();
                     }
+
                     foreach (var subDir in dir.GetDirectories())
                     {
                         DeleteFolder(subDir);
                     }
+
                     dir.Delete();
                 }
 

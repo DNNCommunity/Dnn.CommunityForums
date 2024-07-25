@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 li.Text = Utilities.GetSharedResource(li.Text);
             }
+
             if (!Page.IsPostBack)
             {
                 drpStatus.SelectedIndex = drpStatus.Items.IndexOf(drpStatus.Items.FindByValue(Status.ToString()));
@@ -88,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     DataProvider.Instance().Topics_UpdateStatus(PortalId, ModuleId, TopicId, -1, intStatus, -1, this.UserId);
                 }
+
                 Response.Redirect(Request.RawUrl);
             }
 

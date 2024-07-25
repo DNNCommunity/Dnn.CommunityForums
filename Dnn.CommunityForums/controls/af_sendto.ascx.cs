@@ -68,12 +68,14 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 sURL = NavigateUrl(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId });
                             }
+
                             MessageDefault = MessageDefault.Replace("[TOPICLINK]", sURL);
                             MessageDefault = MessageDefault.Replace("[DISPLAYNAME]", UserProfiles.GetDisplayName(PortalSettings, ModuleId, false, false, false, UserId, UserInfo.Username, UserInfo.FirstName, UserInfo.LastName, UserInfo.DisplayName));
                             txtMessage.Text = MessageDefault;
                         }
 
                     }
+
                     if (MainSettings.UseSkinBreadCrumb)
                     {
                         string sCrumb = "<a href=\"" + NavigateUrl(TabId, "", ParamKeys.GroupId + "=" + ForumGroupId) + "\">" + ForumInfo.GroupName + "</a>|";
@@ -87,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sCrumb += "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>";
                             sCrumb += "|<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }) + "\">" + TopicSubject + "</a>";
                         }
+
                         if (Environment.UpdateBreadCrumb(Page.Controls, sCrumb))
                         {
                             bcUpdated = true;
@@ -152,6 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     //Response.Redirect(NavigateUrl(CInt(Request.QueryString["TabId"]), "", New String() {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=confirmaction", ParamKeys.ConfirmActionId & "=" & ConfirmActions.SendToFailed}))
                 }
+
                 Response.Redirect(sUrl);
 
             }

@@ -74,10 +74,12 @@ public static class SimulateDateDiff
                 {
                     dateTwoModified = dateTwoModified.AddDays(-1);
                 }
+
                 while (dateOneModified.DayOfWeek != System.Globalization.DateTimeFormatInfo.CurrentInfo.FirstDayOfWeek)
                 {
                     dateOneModified = dateOneModified.AddDays(-1);
                 }
+
                 System.TimeSpan spanForWeekOfYear = dateTwoModified - dateOneModified;
                 return (long)(spanForWeekOfYear.TotalDays / 7.0);
             case DateInterval.Year:

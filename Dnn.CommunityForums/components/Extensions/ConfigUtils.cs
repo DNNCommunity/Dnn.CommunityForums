@@ -51,6 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     xDoc.Load(reader);
                     reader.Close();
                 }
+
                 if (xDoc != null)
                 {
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
@@ -72,6 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             return isInstalled;
 
         }
@@ -82,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return true;
             }
+
             try
             {
                 XmlDocument xDoc = new XmlDocument();
@@ -106,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         xDoc.Save(configPath);
                     }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -121,6 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return true;
             }
+
             try
             {
                 XmlDocument xDoc = new XmlDocument();
@@ -139,9 +144,11 @@ namespace DotNetNuke.Modules.ActiveForums
                                 break;
                             }
                         }
+
                         xDoc.Save(configPath);
                     }
                 }
+
                 return true;
             }
             catch (Exception ex)

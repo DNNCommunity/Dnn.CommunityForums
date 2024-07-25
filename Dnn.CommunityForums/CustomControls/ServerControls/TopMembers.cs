@@ -114,10 +114,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sHeaderTemplate = HeaderTemplate.Text;
             }
+
             if (FooterTemplate != null)
             {
                 sFooterTemplate = FooterTemplate.Text;
             }
+
             string sTemplate = "[DISPLAYNAME]";
             Data.Common db = new Data.Common();
             IDataReader dr = db.TopMembers_Get(PortalId, Rows);
@@ -125,17 +127,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sTemplate = ItemTemplate.Text;
             }
+
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             if (string.IsNullOrEmpty(CssClass))
             {
                 CssClass = "aflist2";
             }
+
             while (dr.Read())
             {
                 string sOut = sTemplate;
                 sOut = sOut.Replace("[DISPLAYNAME]", dr["DisplayName"].ToString());
                 sb.Append(sOut);
             }
+
             dr.Close();
             dr.Dispose();
             if (! string.IsNullOrEmpty(sb.ToString()))

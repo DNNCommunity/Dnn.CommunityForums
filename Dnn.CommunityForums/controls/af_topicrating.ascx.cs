@@ -126,6 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: rate, IpAddress: Request.UserHostAddress.ToString());
                 }
             }
+
             Rating = -1;
             RenderRating();
             plhRating.RenderControl(e.Output);
@@ -139,6 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
             }
+
             RatingClass = "rating" + Rating.ToString();
             plhRating.Controls.Clear();
             Rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");

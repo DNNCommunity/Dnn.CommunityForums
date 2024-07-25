@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     return string.Empty;
                 }
+
                 return Convert.ToString(o);
             }
 
@@ -222,6 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 CssClass = "amtoolbaritem";
             }
+
             var outerWriter = new HtmlTextWriter(writer);
             string sVoid = "javascript:void(0);";
             string sStatusOver = "";
@@ -230,19 +232,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sConfirm = "if (confirm('" + ConfirmMessage + "')){ [FUNCTIONS] };";
             }
+
             sOnClick = ClientSideScript;
             if (Attributes["onclick"] != null)
             {
                 sOnClick += Attributes["onclick"];
             }
+
             if (sConfirm != "")
             {
                 sOnClick = sConfirm.Replace("[FUNCTIONS]", sOnClick);
             }
+
             if (EnableClientValidation)
             {
                 sOnClick = "if (typeof(Page_ClientValidate) == 'function'){ if (Page_ClientValidate('" + ValidationGroup + "')){" + sOnClick + "};};";
             }
+
             string sPostBack = Page.ClientScript.GetPostBackEventReference(this, string.Empty);
             _PostBackScript = sPostBack;
             if (Enabled)
@@ -253,14 +259,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sPostBack = sConfirm.Replace("[FUNCTIONS]", sPostBack);
                     }
+
                     if (EnableClientValidation)
                     {
                         sPostBack = "if (typeof(Page_ClientValidate) == 'function'){ if (Page_ClientValidate('" + ValidationGroup + "')){" + sPostBack + "};};";
                     }
+
                     if (!string.IsNullOrEmpty(ClientSideScript))
                     {
                         sPostBack = ClientSideScript + sPostBack;
                     }
+
                     outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, "javascript:" + sPostBack);
                 }
                 else if (!string.IsNullOrEmpty(NavigateUrl))
@@ -274,21 +283,25 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         outerWriter.AddAttribute(HtmlTextWriterAttribute.Id, ObjectId);
                     }
+
                     outerWriter.AddAttribute(HtmlTextWriterAttribute.Href, sVoid);
                     outerWriter.AddAttribute(HtmlTextWriterAttribute.Onclick, sOnClick);
                 }
+
                 if (!string.IsNullOrEmpty(NavigateUrl))
                 {
                     outerWriter.RenderBeginTag(HtmlTextWriterTag.A);
                 }
 
             }
+
             if ((!string.IsNullOrEmpty(sOnClick) || !string.IsNullOrEmpty(sPostBack)) && string.IsNullOrEmpty(NavigateUrl))
             {
                 if (!string.IsNullOrEmpty(ObjectId))
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Id, ObjectId);
                 }
+
                 if (PostBack && Enabled)
                 {
                     writer.AddAttribute("onclick", sPostBack);
@@ -298,6 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.AddAttribute(HtmlTextWriterAttribute.Onclick, sOnClick);
                 }
             }
+
             if (!Width.IsEmpty)
             {
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Width, Width.ToString());
@@ -311,10 +325,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 writer.AddStyleAttribute(HtmlTextWriterStyle.Height, "22px");
             }
+
             if (!string.IsNullOrEmpty(CssClass))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, CssClass);
             }
+
             if (Enabled)
             {
                 writer.AddAttribute("onmouseover", "this.className='" + CssClass + "_over';");
@@ -380,6 +396,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
                     imageWriter.RenderEndTag();
                 }
+
                 innerWriter.Write("<br />");
                 innerWriter.Write("<span>" + Text + "</span>");
 

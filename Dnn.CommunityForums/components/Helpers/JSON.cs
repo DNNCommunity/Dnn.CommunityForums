@@ -51,6 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     value = value.Trim().ToLower();
                 }
+
                 return ((char)34).ToString() + name + ((char)34).ToString() + ":" + value;
             }
 
@@ -64,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         elements.Add(string.Format("\"{0}\":{2}{1}{2}", EscapeJsonString(Pair.Key), EscapeJsonString(Pair.Value), (IsJSONArray(Pair.Value) || IsBoolean(Pair.Value)) ? string.Empty : "\""));
                     }
                 }
+
                 return "{" + string.Join(",", elements.ToArray()) + "}";
             }
 
@@ -85,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     builder.Append(string.Format("{0}{1}{0},", (IsJSONArray(item) || IsBoolean(item)) ? string.Empty : "\"", EscapeJsonString(item)));
                 }
+
                 builder.Replace(",", "]", builder.Length - 1, 1);
                 return builder.ToString();
             }
@@ -106,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sValue = dict[sKey];
                         }
+
                         if (! string.IsNullOrEmpty(sValue))
                         {
                             object obj = null;
@@ -144,6 +148,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                                     break;
                             }
+
                             if (obj != null)
                             {
                                 InfoObject.GetType().GetProperty(pItem.Name).SetValue(InfoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
@@ -152,6 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
+
                 return InfoObject;
             }
 
@@ -177,10 +183,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         array = array.Substring(1);
                     }
+
                     if (array.EndsWith("}"))
                     {
                         array = array.Substring(0, array.Length - 1);
                     }
+
                     array = array.Replace("\":", "|").Replace("\"", "").Replace("\\/", "/").Replace(", ", "#^");
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
@@ -193,10 +201,12 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 val = pairArray[1];
                             }
+
                             val = val.Replace("#^", ", ");
                             dict.Add(pairArray[0], HttpUtility.UrlDecode(val));
                         }
                     }
+
                     return dict;
                 }
                 else
@@ -214,10 +224,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         array = array.Substring(1);
                     }
+
                     if (array.EndsWith("}"))
                     {
                         array = array.Substring(0, array.Length - 1);
                     }
+
                     array = array.Replace("\":", "|").Replace("\"", "").Replace("\\/", "/").Replace(", ", "#^");
                     List<string> pairs = new List<string>(array.Split(','));
                     foreach (string pair in pairs)
@@ -230,10 +242,12 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 val = pairArray[1];
                             }
+
                             val = val.Replace("#^", ", ");
                             ht.Add(pairArray[0], val);
                         }
                     }
+
                     return ht;
                 }
                 else
@@ -241,6 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return ht;
                 }
             }
+
             /// <summary>
             /// Escape backslashes and double quotes
             /// </summary>

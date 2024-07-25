@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 URL = URL.Substring(0, URL.Length - 1);
             }
+
             return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "TopicIdByURL", PortalId, ModuleId, URL));
         }
 
@@ -70,6 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "TopicWithReplies", PortalId, TopicId, PageIndex, PageSize);
         }
+
         //Public Function TopicsForDisplayXML(ByVal PortalId As Integer, ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal IsSuper As Boolean, ByVal SortColumn As String, ByVal ForumIds As String) As XmlDocument
         //    Dim dr As IDataReader = SqlHelper.ExecuteReader(_connectionString, dbPrefix & "UI_TopicsDisplay", PortalId, ModuleId, ForumId, UserId, PageIndex, PageSize, IsSuper, SortColumn, ForumIds)
         //    Dim sb As New Text.StringBuilder

@@ -30,6 +30,7 @@
                 {
                     forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
                 }
+
                 return forumId;
             }
             set => forumId = value;
@@ -117,6 +118,7 @@
             {
                 _Author.DisplayName = Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]"); ;
             }
+
             return _Author;
         }
     }

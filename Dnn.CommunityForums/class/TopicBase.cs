@@ -44,10 +44,13 @@ namespace DotNetNuke.Modules.ActiveForums
                             _TopicId = Convert.ToInt32(Request.Params[ParamKeys.TopicId]);
                             return _TopicId;
                         }
+
                         return _TopicId;
                     }
+
                     return _TopicId;
                 }
+
                 return _TopicId;
             }
 

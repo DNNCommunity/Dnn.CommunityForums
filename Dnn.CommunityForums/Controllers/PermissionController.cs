@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 permissions = base.GetById(permissionId, moduleId);
                 DataCache.SettingsCacheStore(moduleId, cachekey, permissions);
             }
+
             return permissions;
         }
 
@@ -108,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, DotNetNuke.Common.Globals.glbRoleAllUsers, 0);
                 DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(PermissionsId, PermissionsId, access, DotNetNuke.Common.Globals.glbRoleUnauthUser, 0);
             }
+
             requestedAccessList = new[] { "Create", "Reply" };
             foreach (string access in requestedAccessList)
             {
@@ -204,14 +206,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 }
                             }
                         }
+
                         if (bolAuth)
                         {
                             break;
                         }
                     }
                 }
+
                 return bolAuth;
             }
+
             return false;
         }
 
@@ -231,6 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 roles = (System.Collections.Generic.IList<DotNetNuke.Security.Roles.RoleInfo>)obj;
             }
+
             return roles;
         }
 
@@ -258,10 +264,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 {
                                     RoleNames = string.Concat(RoleNames + roleName, ";");
                                 }
+
                                 break;
                         }
                     }
                 }
+
                 return RoleNames;
             }
             catch (Exception ex)
@@ -299,10 +307,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         }
                     }
                 }
+
                 // add pseudo-roles for anon/unauth and all users
                 RoleIds = string.Concat(RoleIds, DotNetNuke.Common.Globals.glbRoleAllUsers, ";", DotNetNuke.Common.Globals.glbRoleUnauthUser, ";");
                 DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.RoleIDs, PortalId), RoleIds);
             }
+
             return RoleIds;
         }
 
@@ -330,10 +340,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 {
                                     nvc.Add(role, roleName);
                                 }
+
                                 break;
                         }
                     }
                 }
+
                 return nvc;
             }
             catch (Exception ex)
@@ -354,10 +366,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 userRoles = roleIds + "|" + UserId + "|" + string.Empty + "|";
                 UserRolesDictionary.AddRoles(PortalId, UserId, userRoles);
             }
+
             if (string.IsNullOrEmpty(userRoles))
             {
                 return false;
             }
+
             return HasPerm(AuthorizedRoles, userRoles);
         }
 
@@ -374,6 +388,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 SetRolesForRequestedAccess(permission, requestedAccess, PermSet);
             }
+
             return GetPermSet(ModuleId, PermissionsId, requestedAccess);
         }
 
@@ -399,6 +414,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return false;
             }
+
             string[] permSet = AuthorizedRoles.Split('|');
             string[] userSet = UserPermSet.Split('|');
             //Authorized
@@ -408,6 +424,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return true;
             }
+
             if (!string.IsNullOrEmpty(permSet[1]))
             {
                 string[] authUsers = permSet[1].Split(';');
@@ -420,6 +437,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
+
             if (!string.IsNullOrEmpty(permSet[2]))
             {
                 string[] authGroups = permSet[2].Split(';');
@@ -432,6 +450,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
+
             return false;
         }
 
@@ -441,6 +460,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return string.Empty;
             }
+
             string newSet = PermissionSet;
             string[] permSet = newSet.Split('|');
             string permSection = permSet[objectType];
@@ -455,6 +475,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
             }
+
             permSet[objectType] = newSection;
             if (permSet[0] != null)
             {
@@ -464,6 +485,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 newSet = "|";
             }
+
             if (permSet[1] != null)
             {
                 newSet += string.Concat(permSet[1], "|");
@@ -472,6 +494,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 newSet += "|";
             }
+
             if (permSet[2] != null)
             {
                 newSet += string.Concat(permSet[2], "|");
@@ -480,6 +503,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 newSet += "|";
             }
+
             return newSet;
         }
 
@@ -504,6 +528,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 permSet = RemovePermFromSet(objectId, objectType, permSet);
                 pc.SavePermSet(ModuleId, PermissionsId, text, permSet);
             }
+
             return true;
         }
 
@@ -545,6 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 permSet = portalSettings.AdministratorRoleId + ";||||";
             }
+
             string[] perms = permSet.Split('|');
             if (perms[index] != null)
             {
@@ -571,7 +597,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             if (permission == null)
             {
                 return emptyPermissions;
-            };
+            }
+;
 
             string access = string.Empty;
             switch (requestedAccess.ToUpperInvariant())
@@ -652,10 +679,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     access = emptyPermissions;
                     break;
             }
+
             if (string.IsNullOrEmpty(access))
             {
                 access = emptyPermissions;
             }
+
             return access;
         }
 
@@ -740,8 +769,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     default:
                         break;
                 }
+
                 Update(permission);
-            };
+            }
+;
         }
 
         public static string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
@@ -765,8 +796,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         sRoles += role + ":";
                     }
                 }
+
                 DataCache.SettingsCacheStore(ModuleId, cacheKey, sRoles);
             }
+
             return sRoles;
         }
 
@@ -788,8 +821,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         }
                     }
                 }
+
                 DataCache.SettingsCacheStore(ModuleId, cacheKey, sForums);
             }
+
             return sForums;
         }
     }

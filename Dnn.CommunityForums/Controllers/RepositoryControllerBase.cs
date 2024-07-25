@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 Update(item);
             }
+
             return item;
         }
 

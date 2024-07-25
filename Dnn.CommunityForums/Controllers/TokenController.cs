@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         {
                             sQuery = string.Concat(sQuery, "[@group='", group, "' or @group='*']");
                         }
+
                         System.Xml.XmlNodeList xNodeList = xRoot.SelectNodes(sQuery);
                         if (xNodeList.Count > 0)
                         {
@@ -79,8 +80,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                             }
                         }
                     }
+
                     DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.Tokens, ModuleId, group), li);
                 }
+
                 return li;
             }
             catch (Exception ex)
@@ -102,6 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     break;
                 }
             }
+
             return sOut;
         }
     }

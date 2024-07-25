@@ -269,6 +269,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     _isValid = false;
                     return;
                 }
+
                 if (AdminRequired && context.Request.IsAuthenticated)
                 {
                     //_isValid = DotNetNuke.Security.PortalSecurity.IsInRole(_ps.AdministratorRoleName)
@@ -282,6 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     _isValid = false;
                     return;
                 }
+
                 string p = HttpContext.Current.Request.Params["p"];
                 if (! string.IsNullOrEmpty(p))
                 {
@@ -315,6 +317,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                 c = (char)sr.Read();
                                 bObj = true;
                             }
+
                             if (idx > 0 && c == '{')
                             {
                                 if (pairs == null)
@@ -337,6 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                             break;
                                         }
                                     }
+
                                     subPairs = Utilities.JSON.ConvertFromJSONAssoicativeArrayToHashTable(subString);
                                     pairs.Add(prop, subPairs);
                                     prop = string.Empty;
@@ -355,6 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     {
                                         slist = new List<string>();
                                     }
+
                                     if (skip.IndexOf(c) == -1)
                                     {
                                         subItem += c;
@@ -366,6 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                         slist.Add(subItem);
                                         subItem = string.Empty;
                                     }
+
                                     if (c == ']')
                                     {
                                         c = (char)sr.Read();
@@ -375,21 +381,25 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     }
                                 }
                             }
+
                             if (c == ':')
                             {
                                 prop = tmp;
                                 tmp = string.Empty;
                             }
+
                             if (skip.IndexOf(c) == -1)
                             {
                                 tmp += c;
                             }
+
                             if (c == ',' || c == '}')
                             {
                                 if (! string.IsNullOrEmpty(tmp))
                                 {
                                     tmp = HttpUtility.UrlDecode(tmp);
                                 }
+
                                 if (slist != null)
                                 {
                                     ht.Add(prop, slist);
@@ -405,6 +415,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     {
                                         pairs.Add(prop, tmp);
                                     }
+
                                     ht.Add(parentProp, pairs);
                                     parentProp = string.Empty;
                                     pairs = null;
@@ -421,6 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                             idx += 1;
 
                         }
+
                         if (pairs != null & ! string.IsNullOrEmpty(parentProp))
                         {
                             ht.Add(parentProp, pairs);
@@ -437,6 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         //jsonPost = sr.ReadToEnd()
                         sr.Close();
                     }
+
                     _params = ht;
                     //End If
                 }
@@ -451,6 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         }
 
                     }
+
                     _params = ht;
                 }
 
@@ -492,6 +506,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 sb.Append("false,");
             }
+
             if (! success)
             {
                 switch (code)
@@ -513,13 +528,16 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                         break;
                 }
+
                 sb.Append(",");
             }
+
             if (string.IsNullOrEmpty(text))
             {
                 resultisobject = true;
                 text = "null";
             }
+
             sb.Append("\"result\":");
             if (resultisobject)
             {
@@ -539,11 +557,13 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     sb.Append(Utilities.JSON.Pair(s, Params[s].ToString()));
                     sb.Append(",");
                 }
+
                 sb.Append(Utilities.JSON.Pair("userid", UserId.ToString()));
                 sb.Append(",");
                 sb.Append(Utilities.JSON.Pair("url", HttpContext.Current.Request.RawUrl.ToString()));
                 sb.Append("}");
             }
+
             sb.Append("]");
             return sb.ToString();
         }

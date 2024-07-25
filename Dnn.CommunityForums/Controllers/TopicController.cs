@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ti.GetContent();
                 ti.GetAuthor();
             }
+
             return ti;
         }
 
@@ -90,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, topicId, -1);
             }
+
             return topicId;
         }
 
@@ -123,6 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return null;
             }
+
             ti.IsApproved = true;
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ti.ModuleId, ti.ForumId, TopicId);
@@ -136,6 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(ti.Forum.ModApproveTemplateId, ti.PortalId, ti.ModuleId, ti.Forum.TabId, ti.ForumId, TopicId, 0, string.Empty, ti.Author);
             }
+
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, TopicId, -1, ti.Content.AuthorId);
             return ti;
         }
@@ -164,6 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                 }
             }
+
             var oldForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(oldForumId);
             var newForum = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(NewForumId);
 
@@ -202,6 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ti.Content.DateCreated = DateTime.UtcNow;
             }
+
             UserProfileController.Profiles_ClearCache(ti.ModuleId, ti.Content.AuthorId);
 
             Utilities.UpdateModuleLastContentModifiedOnDate(ti.ModuleId);
@@ -216,6 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 var uc = new Data.Profiles();
                 uc.Profile_UpdateTopicCount(ti.Forum.PortalId, ti.Author.AuthorId);
             }
+
             return topicId;
         }
 

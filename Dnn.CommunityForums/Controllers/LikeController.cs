@@ -74,6 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 like.Checked = true;
                 Insert(like);
             }
+
             return Count(contentId);
         }
     }
@@ -94,6 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 likes.Add((DotNetNuke.Modules.ActiveForums.Likes)like);
             }
+
             return likes;
         }
 

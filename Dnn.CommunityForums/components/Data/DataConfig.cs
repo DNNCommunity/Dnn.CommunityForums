@@ -55,6 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 _databaseOwner += ".";
             }
+
             dbPrefix = _databaseOwner + _objectQualifier + "activeforums_";
         }
 
@@ -74,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     _objectQualifier += "_";
                 }
+
                 return _objectQualifier;
             }
 
@@ -93,6 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     _databaseOwner += ".";
                 }
+
                 return _databaseOwner;
             }
 

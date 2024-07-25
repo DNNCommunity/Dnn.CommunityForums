@@ -266,14 +266,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     Template = ParseTopic(dr, Template);
                 }
+
                 dr.NextResult();
                 string rtemplate = TemplateUtils.GetTemplateSection(Template, "[REPLIES]", "[/REPLIES]");
                 while (dr.Read())
                 {
                     sb.Append(ParseReply(dr, rtemplate));
                 }
+
                 dr.Close();
             }
+
             Template = TemplateUtils.ReplaceSubSection(Template, sb.ToString(), "[REPLIES]", "[/REPLIES]");
             return Template;
         }
@@ -308,6 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             value = Utilities.GetUserFormattedDateTime(Convert.ToDateTime(row[i].ToString()), PortalId, UserId);
                             break;
                     }
+
                     tmp = tmp.Replace(k, value);
                 }
 

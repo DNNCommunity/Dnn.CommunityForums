@@ -51,11 +51,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sTemp = Convert.ToString(obj);
                 }
+
                 sTemp = Utilities.LocalizeControl(sTemp);
                 if (!sTemp.Contains(Globals.ForumsControlsRegisterAFTag))
                 {
                     sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
                 }
+
                 Control ctl = Page.ParseControl(sTemp);
                 LinkControls(ctl.Controls);
                 this.Controls.Add(ctl);
@@ -70,10 +72,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                 }
+
                 if (ctrl is Controls.Link)
                 {
                     ((Controls.Link)ctrl).UserRoles = ForumUser.UserRoles;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);

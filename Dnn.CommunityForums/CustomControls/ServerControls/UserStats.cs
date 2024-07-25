@@ -93,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return;
             }
+
             try
             {
                 string output = string.Empty;
@@ -110,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     tmp = Template.Text;
                 }
+
                 if (ModuleId == -1)
                 {
                     foreach (DotNetNuke.Entities.Modules.ModuleInfo mi in DotNetNuke.Entities.Modules.ModuleController.Instance.GetModules(portalId))
@@ -121,6 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
                 }
+
                 output = TemplateUtils.ParseProfileTemplate(tmp, UserId, portalId, ModuleId, cu.UserID, Utilities.GetTimeZoneOffsetForUser(portalId,UserId));
                 output = Utilities.LocalizeControl(output);
                 writer.Write(output);

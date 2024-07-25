@@ -177,6 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
             }
+
             if (canView)
             {
                 Content.RenderControl(writer);
@@ -196,6 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return;
             }
+
             if (Content != null)
             {
                 this.Controls.Add(Content);

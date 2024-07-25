@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return true;
             }
+
             string[] bcText = ForumBread.Split('|');
             try
             {
@@ -54,6 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     css = cssObject.ToString();
                                 }
                             }
+
                             string sText = string.Empty;
                             if (o != null)
                             {
@@ -69,15 +71,18 @@ namespace DotNetNuke.Modules.ActiveForums
                                     sBread += sText + newValue;
                                 }
                             }
+
                             ((System.Web.UI.WebControls.Label)ctrl.FindControl("lblBreadCrumb")).Text += sBread;
                             break;
                         }
                     }
+
                     if (ctrl.Controls.Count > 0)
                     {
                         UpdateBreadCrumb(ctrl.Controls, ForumBread);
                     }
                 }
+
                 return true;
             }
             catch (Exception ex)
@@ -92,6 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return false;
             }
+
             try
             {
                 if (!string.IsNullOrEmpty(Title))
@@ -105,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         bp.Title = Title.Replace("[VALUE]", string.Empty);
                     }
                 }
+
                 if (!string.IsNullOrEmpty(Description))
                 {
                     Description = Description.Replace(System.Environment.NewLine, " ");
@@ -117,6 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         bp.Description = Description.Replace("[VALUE]", string.Empty);
                     }
                 }
+
                 if (!string.IsNullOrEmpty(Keywords))
                 {
                     if (!string.IsNullOrEmpty(bp.KeyWords))
@@ -130,6 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             cKey = cKey.Substring(0, cKey.Length - 1);
                         }
+
                         if (Keywords.StartsWith("[VALUE]"))
                         {
                             cKey += ",";
@@ -138,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             cKey = "," + cKey;
                         }
+
                         bp.KeyWords = Keywords.Replace("[VALUE]", cKey);
                     }
                     else
@@ -156,6 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         Logger.Error(ex.InnerException.Message, ex.InnerException);
                     }
                 }
+
                 return false;
             }
 

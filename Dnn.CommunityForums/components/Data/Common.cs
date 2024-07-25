@@ -140,10 +140,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                     {
                         prefix = groupPrefix + "/" + prefix;
                     }
+
                     dict.Add(prefix, tabid + "|" + forumid + "|" + moduleId + "|" + archived + "|" + forumgroupId + "|" + groupPrefix);
                 }
+
                 dr.Close();
             }
+
             return dict;
         }
 
@@ -184,10 +187,12 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     VanityName = fg.PrefixURL + "/" + VanityName;
                 }
+
                 if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
                 {
                     VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
                 }
+
                 int tmpForumId = -1;
                 tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckForumVanity", PortalId, VanityName));
                 if (tmpForumId > 0 && ForumId == -1)
@@ -221,6 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
                 }
+
                 int tmpForumGroupId = -1;
                 tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "URL_CheckGroupVanity", PortalId, VanityName));
                 if (tmpForumGroupId > 0 && ForumGroupId == -1)

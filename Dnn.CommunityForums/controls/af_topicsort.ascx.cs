@@ -64,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         Sort = Request.Params[ParamKeys.Sort];
                     }
+
                     drpSort.SelectedIndex = drpSort.Items.IndexOf(drpSort.Items.FindByValue(Sort));
                     drpSort.Items[0].Text = GetSharedResource(drpSort.Items[0].Text);
                     drpSort.Items[1].Text = GetSharedResource(drpSort.Items[1].Text);

@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     drpForums = new DropDownList();
                 }
+
                 drpForums.AutoPostBack = true;
                 drpForums.CssClass = "afdropdown";
                 BindForums();
@@ -77,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Forums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ForumModuleId);
             }
+
             drpForums.Items.Clear();
             drpForums.Items.Insert(0, new ListItem(string.Empty, string.Empty));
             int index = 1;

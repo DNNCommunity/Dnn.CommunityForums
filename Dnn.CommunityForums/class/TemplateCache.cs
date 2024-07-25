@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 obj = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
             }
+
             if (obj != null)
             {
                 sTemplate = Convert.ToString(obj);
@@ -60,12 +61,14 @@ namespace DotNetNuke.Modules.ActiveForums
                                 templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + fileName);
                             }
                         }
+
                         if (System.IO.File.Exists(templateFilePathFileName))
                         {
                             using (System.IO.StreamReader objStreamReader = System.IO.File.OpenText(templateFilePathFileName))
                             {
                                 sTemplate = objStreamReader.ReadToEnd();
                             }
+
                             sTemplate = Utilities.ParseSpacer(sTemplate);
                         }
                     }
@@ -85,23 +88,28 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+
             sTemplate = sTemplate.Replace("[TRESX:", "[RESX:");
             if (sTemplate.ToLowerInvariant().Contains("<dnn:"))
             {
                 sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
             }
+
             if (sTemplate.ToLowerInvariant().Contains("<am:"))
             {
                 sTemplate = Globals.ForumsControlsRegisterAMTag + sTemplate;
             }
+
             if (sTemplate.ToLowerInvariant().Contains("<af:"))
             {
                 sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
             }
+
             if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
             {
                 DataCache.SettingsCacheStore(ModuleId, cacheKey, sTemplate);
             }
+
             return sTemplate;
         }
     }

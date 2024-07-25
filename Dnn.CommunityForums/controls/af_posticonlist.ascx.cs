@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     rblMessageIcons1.SelectedIndex = rblMessageIcons1.Items.IndexOf(rblMessageIcons1.Items.FindByValue(PostIcon));
                 }
+
                 //End If
 
             }

@@ -160,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         fd.ToggleBehavior = 1;
                     }
+
                     this.Controls.Add(fd);
                     fd.RenderControl(writer);
                     i += 1;
@@ -169,6 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 writer.Write(NoResultsTemplate);
             }
+
             writer.Write(FooterTemplate);
         }
 

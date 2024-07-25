@@ -136,6 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sTemplate = Globals.DnnControlsRegisterTag + sTemplate;
             }
+
             Literal lit = new Literal();
             UserController upc = new UserController();
             User up = upc.GetUser(PortalId, ForumModuleId, UID);
@@ -156,12 +157,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 this.Controls.Add(ctl.Controls[0]);
             }
+
             //Begin Load Tab Control
             plhTabs = (PlaceHolder)this.FindControl("plhTabs");
             if (plhTabs != null & amTabs != null)
             {
                 plhTabs.Controls.Add(amTabs);
             }
+
             LinkControls(Controls);
             if (plhProfileEditButton != null)
             {
@@ -177,6 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 btnProfileEdit.Visible = false;
                 plhProfileEditButton.Controls.Add(btnProfileEdit);
             }
+
             if (plhProfileCancelButton != null)
             {
                 btnProfileCancel = new ImageButton();
@@ -191,6 +195,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 btnProfileCancel.Visible = false;
                 plhProfileCancelButton.Controls.Add(btnProfileCancel);
             }
+
             if (plhProfileSaveButton != null)
             {
                 btnProfileSave = new ImageButton();
@@ -213,6 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 tmpCtl.UserProfile = up.Profile;
                 plhProfileAdminSettings.Controls.Add(tmpCtl);
             }
+
             if (plhProfilePrefs != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_mypreferences.ascx");
@@ -220,6 +226,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 tmpCtl.UserProfile = up.Profile;
                 plhProfilePrefs.Controls.Add(tmpCtl);
             }
+
             if (plhProfileUserAccount != null)
             {
                 ProfileBase tmpCtl = (ProfileBase)this.LoadControl("<% (DotNetNuke.Modules.ActiveForums.Globals.ModulePath) %>controls/profile_useraccount.ascx");
@@ -227,6 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 tmpCtl.UserProfile = up.Profile;
                 plhProfileUserAccount.Controls.Add(tmpCtl);
             }
+
             if (plhTracker != null)
             {
                 ForumView ctlForums = new ForumView();
@@ -236,6 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ctlForums.ForumIds = up.UserForums;
                 plhTracker.Controls.Add(ctlForums);
             }
+
             if (btnProfileEdit != null)
             {
                 if (!(CurrentUserType == CurrentUserTypes.Anon) && (UID == this.UserId || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser))
@@ -371,6 +380,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         lblAvatarError = (Label)ctrl;
                         break;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);
@@ -437,6 +447,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
             }
+
             return true;
         }
 
@@ -446,6 +457,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return ctl;
             }
+
             foreach (Control tmpctl in ctl.Controls)
             {
                 Control t = RecursiveFind(tmpctl, controlId);
@@ -454,6 +466,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return t;
                 }
             }
+
             return null;
         }
 
@@ -485,41 +498,48 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                     bAddModal = true;
                                 }
                             }
+
                             break;
                         case "auth":
                             if (!(CurrentUserType == CurrentUserTypes.Anon))
                             {
                                 bAddModal = true;
                             }
+
                             break;
                         case "forummod":
                             if (!(CurrentUserType == CurrentUserTypes.Anon) && !(CurrentUserType == CurrentUserTypes.Auth))
                             {
                                 bAddModal = true;
                             }
+
                             break;
                         case "admin":
                             if (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddModal = true;
                             }
+
                             break;
                         case "superuser":
                             if (CurrentUserType == CurrentUserTypes.SuperUser)
                             {
                                 bAddModal = true;
                             }
+
                             break;
                         default:
                             bAddModal = UserInfo.IsInRole(sec);
                             break;
                     }
+
                     matchValue = matchValue.Split(':')[0];
                 }
                 else
                 {
                     bAddModal = true;
                 }
+
                 if (bAddModal == true)
                 {
                     string sModalDivId = "afmodal" + matchValue;
@@ -531,11 +551,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         string tmp = TemplateUtils.GetTemplateSection(sOut, match.Value, match.Value.Replace("[AM", "[/AM"));
                         sModalContent = "<div id=\"" + sModalDivId + "\" style=\"display:none;\">" + tmp + "</div>";
                     }
+
                     Template = TemplateUtils.ReplaceSubSection(Template, string.Empty, match.Value, match.Value.Replace("[AM", "[/AM"));
                     Template = Template + sModalContent;
                 }
 
             }
+
             return Template;
         }
 
@@ -584,6 +606,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 access = CurrentUserTypes.SuperUser;
                                 break;
                         }
+
                         switch (access)
                         {
                             case CurrentUserTypes.Anon:
@@ -594,27 +617,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 {
                                     bAddTab = true;
                                 }
+
                                 break;
                             case CurrentUserTypes.ForumMod:
                                 if (!(CurrentUserType == CurrentUserTypes.Anon) && !(CurrentUserType == CurrentUserTypes.Auth))
                                 {
                                     bAddTab = true;
                                 }
+
                                 break;
                             case CurrentUserTypes.Admin:
                                 if (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddTab = true;
                                 }
+
                                 break;
                             case CurrentUserTypes.SuperUser:
                                 if (CurrentUserType == CurrentUserTypes.SuperUser)
                                 {
                                     bAddTab = true;
                                 }
+
                                 break;
                         }
                     }
+
                     matchValue = matchValue.Split(':')[0];
                 }
                 else
@@ -635,18 +663,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             tmp =  Globals.DnnControlsRegisterTag + tmp;
                         }
+
                         if (tmp.Contains("<social:"))
                         {
                             tmp = Globals.SocialRegisterTag + tmp;
                         }
+
                         Control ctl = this.ParseControl(tmp);
                         tbc.Controls.Add(ctl);
                         tb.Content = tbc;
                     }
+
                     amTabs.Tabs.Add(tb);
                 }
 
             }
+
             Template = TemplateUtils.ReplaceSubSection(Template, "<asp:placeholder id=\"plhTabs\" runat=\"server\" />", "[AM:CONTROLS:TABS]", "[/AM:CONTROLS:TABS]");
             return Template;
         }

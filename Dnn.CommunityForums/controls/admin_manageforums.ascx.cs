@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sOptions = e.Parameters[1];
                 }
+
                 GetControl(e.Parameters[0], sOptions);
                 System.IO.StringWriter stringWriter = new System.IO.StringWriter();
                 HtmlTextWriter htmlWriter = new HtmlTextWriter(stringWriter);
@@ -105,6 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl.Params = options;
                 }
+
                 if (!plhForumEditor.Controls.Contains(ctl))
                 {
                     plhForumEditor.Controls.Add(ctl);

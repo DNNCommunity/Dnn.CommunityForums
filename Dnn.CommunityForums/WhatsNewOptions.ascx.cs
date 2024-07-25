@@ -81,6 +81,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
+
                 var moduleController = new ModuleController();
 
                 // Load the current settings
@@ -314,6 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         AddChildNodes(trNode, dt, row);
                     }
+
                     //If trNode.ChildNodes.Count > 0 Then
                     trGroupNode.ChildNodes.Add(trNode);
                     //End If
@@ -321,6 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
             }
+
             foreach (TreeNode tr in trNodes)
             {
                 if (tr.ChildNodes.Count > 0)
@@ -363,6 +366,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return true;
                 }
             }
+
             return false;
         }
 

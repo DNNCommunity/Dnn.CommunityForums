@@ -85,12 +85,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sTemp = Convert.ToString(obj);
                 }
+
                 sTemp = Utilities.LocalizeControl(sTemp);
                 string SubscribedChecked = string.Empty;
                 if (ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId))
                 {
                     SubscribedChecked = " checked=true";
                 }
+
                 sTemp = sTemp.Replace("[AF:CONTROL:SUBSCRIBECHECK]", "<input type=\"checkbox\" id=\"chkSubscribe\" name=\"chkSubscribe\" value=\"1\" " + SubscribedChecked + "\" />");
                 //Security
                 sTemp = sTemp.Replace("[CREATEROLES]", "1;");
@@ -102,10 +104,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sTemp = "<%@ Register TagPrefix=\"dnn\" Assembly=\"DotNetNuke\" Namespace=\"DotNetNuke.UI.WebControls\"%>" + sTemp;
                 }
+
                 if (!sTemp.Contains(Globals.ForumsControlsRegisterAFTag))
                 {
                     sTemp = Globals.ForumsControlsRegisterAFTag + sTemp;
                 }
+
                 Control ctl = Page.ParseControl(sTemp);
                 LinkControls(ctl.Controls);
                 this.Controls.Add(ctl);
@@ -123,6 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     bolShow = Convert.ToBoolean(HttpContext.Current.Request.Cookies["QRShow"].Value);
                 }
+
                 tgdQR.Visible = bolShow;
                 tgQR.Visible = bolShow;
                 if (!HttpContext.Current.Request.Browser.IsMobileDevice)
@@ -157,6 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     btnSubmit.Visible = true;
                     ambtnSubmit.Visible = false;
                 }
+
                 if (!string.IsNullOrEmpty(HttpContext.Current.Request.Form["txtBody"]) && HttpContext.Current.Request.IsAuthenticated & ((!string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply1"]) && string.IsNullOrEmpty(HttpContext.Current.Request.Form["hidReply2"])) | HttpContext.Current.Request.Browser.IsMobileDevice))
                 {
                     SaveQuickReply();
@@ -184,12 +190,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
             }
+
             bool UserIsTrusted = Utilities.IsTrusted((int)forumInfo.DefaultTrustValue, ControlConfig.User.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.Trust, ForumUser.UserRoles), forumInfo.AutoTrustLevel, ControlConfig.User.PostCount);
             bool isApproved = Convert.ToBoolean((forumInfo.IsModerated == true) ? false : true);
             if (UserIsTrusted || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(forumInfo.Security.ModApprove, ForumUser.UserRoles))
             {
                 isApproved = true;
             }
+
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             Data.Topics db = new Data.Topics();
             //im rc As New ReplyController
@@ -291,10 +299,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         trSubscribe = (System.Web.UI.HtmlControls.HtmlTableRow)ctrl;
                         break;
                 }
+
                 if (ctrl is Controls.ControlsBase)
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);

@@ -70,10 +70,13 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                         DataCache.CacheClearPrefix(ForumModuleId, string.Format(CacheKeys.TopicViewPrefix, ForumModuleId));
                         return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                     }
+
                     return Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
+
                 return Request.CreateResponse(HttpStatusCode.NotFound);
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 #pragma warning disable CS1570
@@ -101,6 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
             }
+
             return Request.CreateResponse(HttpStatusCode.NotFound);
         }
     }

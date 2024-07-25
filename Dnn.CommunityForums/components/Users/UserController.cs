@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     u = DNNGetCurrentUser(PortalId, ModuleId);
                 }
+
                 if (u != null)
                 {
                     if (HttpContext.Current.Items["AFUserInfo"] == null)
@@ -71,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
+
                 return u;
             }
             else
@@ -125,6 +127,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     u.Profile.IsMod = false;
                 }
             }
+
             return u;
         }
 
@@ -144,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     u.Profile.IsMod = false;
                 }
             }
+
             return u;
         }
 
@@ -153,6 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 u.Profile = new UserProfileController().Profiles_Get(PortalId, ModuleId, u.UserId);
             }
+
             return u;
         }
 
@@ -184,6 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 u.UserRoles += Globals.DefaultAnonRoles + _portalSettings.AdministratorRoleId + ";";
             }
+
             u.UserRoles += "|" + dnnUser.UserID + "|" + string.Empty + "|";
 
             if (!dnnUser.IsSuperUser)
@@ -228,6 +234,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ht.Add(up.PropertyName, up.PropertyValue);
             }
+
             return ht;
         }
     }

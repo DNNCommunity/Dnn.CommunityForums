@@ -105,6 +105,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _parameter = value;
             }
         }
+
         /// <summary>
         /// Javascript function to fire on Callback Complete
         /// Example without params: OnCallbackComplete="foo"
@@ -185,6 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sId = ForceId;
                     }
+
                     if (!(Context.Request.Params[string.Format("amCB_{0}", sId)] == null))
                     {
                         _isCallback = true;
@@ -194,6 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         _isCallback = false;
                     }
                 }
+
                 return _isCallback;
             }
         }
@@ -251,6 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return;
             }
+
             if (Content != null)
             {
                 //Try
@@ -286,6 +290,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sID = ForceId;
                 }
+
                 string[] args = GetArgs();
                 if (args != null)
                 {
@@ -295,6 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         return;
                     }
                 }
+
                 output = new HtmlTextWriter(output, string.Empty);
                 if (string.IsNullOrEmpty(ForceId))
                 {
@@ -312,11 +318,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     Content.RenderControl(output);
                 }
+
                 output.RenderEndTag();
                 if (Page != null & Context != null & Context.Request != null & !(Context.Request.Form["amCB_" + sID] == null) & !(Context.Request.Form["amCB_" + sID] == ""))
                 {
                     this.OnCallback(new CallBackEventArgs(output, Context.Request.Form["amCB_" + sID]));
                 }
+
                 if (HttpContext.Current.Request.Params["amcbdebug"] == "true" || HttpContext.Current.Request.Params["amdebug"] == "true")
                 {
                     this.Debug = true;
@@ -328,10 +336,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     str.Append("window.objCB.prototype.CBC_" + sID + "=" + OnCallbackComplete + ";");
                 }
+
                 if (LoadingTemplate != null)
                 {
                     str.Append("window.objCB.prototype.LT_" + sID + "='" + LoadingTemplate.Text.Replace("\\r", "").Replace("'", "\\\\'").Replace("\\n", "").Replace("\n", "").Replace("\r", "") + "';");
                 }
+
                 str.AppendFormat("window.{0}=new objCB('{0}');", sID);
                 str.Append(sID + ".Debug=" + Debug.ToString().ToLower() + ";");
                 string URL = PostURL;
@@ -339,6 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     //  URL = GetResponseUrl(Context)
                 }
+
                 //If URL.Contains("/404.aspx?404;") Then
                 //    URL = URL.Replace("/404.aspx?404;", String.Empty)
                 //End If
@@ -347,11 +358,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     URL = XSSFilter(URL);
                     str.Append(sID + ".Location='" + URL.Replace("'", "\\\\'").Replace(";", string.Empty) + "';");
                 }
+
                 str.Append(sID + ".Parameter='" + Parameter + "';");
                 if (RefreshInterval > 0)
                 {
                     str.AppendFormat("setInterval('{0}.Callback({0}.Parameter)',{1});", sID, RefreshInterval);
                 }
+
                 str.Append("</script>");
                 output.Write(str.ToString());
             }
@@ -380,6 +393,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //End Try
 
             }
+
             //ChildControlsCreated = True
         }
 
@@ -397,6 +411,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             this.OnCallback(oArgs);
                             oWriter.Close();
                         }
+
                         Context.Response.Clear();
                         Context.Response.ContentType = "text/xml";
                         Context.Response.Write("<CallbackData><![CDATA[");
@@ -405,6 +420,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sTemp = sTemp.Replace("//]]>", string.Empty);
                         Context.Response.Write(sTemp);
                     }
+
                     Context.Response.Write("]]></CallbackData>");
                     //Context.Response.Flush()
 
@@ -416,6 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     throw new Exception("Incomplete Request");
                 }
+
                 //Dim strWriter As New StringWriter()
                 //Dim oWriter As New HtmlTextWriter(strWriter, String.Empty)
                 //Dim oArgs As New CallBackEventArgs(oWriter)
@@ -473,6 +490,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sId = ForceId;
             }
+
             string idname = string.Format("amCB_{0}", sId);
             string[] args = null;
             if (Context != null)
@@ -489,6 +507,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         tokenvalue = Context.Request.Params[tokenname];
                     }
+
                     args = Context.Request.Params.GetValues(idname);
                     if (args != null)
                     {
@@ -501,6 +520,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         {
                             tokenvalue = tokenvalue.Replace("!AM#", "&").Replace("#AM!", "=").Replace("#MA!", "+");
                         }
+
                         if (!(token == tokenvalue))
                         {
                             _validState = -1;
@@ -540,6 +560,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     cbloaded = bool.Parse(HttpContext.Current.Items["cbld"].ToString());
                 }
+
                 if (!this.IsCallback && !Page.IsPostBack)
                 {
                     if (cbloaded == false && HttpContext.Current.Request.Params["hidreq"] == null)
@@ -555,6 +576,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             HttpContext.Current.Response.Cookies["amcit"].Domain = "";
                             HttpContext.Current.Response.Cookies["amcit"].HttpOnly = true;
                         }
+
                         myCookie.HttpOnly = true;
                         //myCookie.Path = "/"
                         //myCookie.Domain = HttpContext.Current.Request.Url.Host
@@ -565,6 +587,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         HttpContext.Current.Items.Add("cbld", "True");
                     }
                 }
+
                 Page.ClientScript.RegisterClientScriptInclude("AMCallback", Page.ClientScript.GetWebResourceUrl(this.GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
             }
         }
@@ -609,6 +632,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     return ((LiteralControl)this.Controls[0]).Text;
                 }
+
                 return "";
             }
 

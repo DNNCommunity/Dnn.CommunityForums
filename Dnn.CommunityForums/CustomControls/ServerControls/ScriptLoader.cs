@@ -63,18 +63,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMActiveGrid", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.ActiveGrid.js"));
             }
+
             if (Callback && !Page.ClientScript.IsClientScriptIncludeRegistered("AMCallback"))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMCallback", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js"));
             }
+
             if (DatePicker && !Page.ClientScript.IsClientScriptIncludeRegistered("AMDatePicker"))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMDatePicker", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.DatePicker.js"));
             }
+
             if (RequiredFieldValidator && !Page.ClientScript.IsClientScriptIncludeRegistered("AMValidation"))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMValidation", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.Validation.js"));
             }
+
             if (!Page.ClientScript.IsClientScriptIncludeRegistered("AMMenu"))
             {
                 Page.ClientScript.RegisterClientScriptInclude("AMMenu", Page.ClientScript.GetWebResourceUrl(GetType(), "DotNetNuke.Modules.ActiveForums.CustomControls.Resources.MenuButton.js"));

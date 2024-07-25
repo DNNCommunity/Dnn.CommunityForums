@@ -114,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 roles.Add(r.RoleName);
             }
+
             string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(moduleInfo.PortalID, roles.ToArray());
             string queryString = string.Empty;
             System.Text.StringBuilder qsb = new System.Text.StringBuilder();
@@ -145,7 +146,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (!string.IsNullOrEmpty(body))
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
-                    };
+                    }
+;
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumid, moduleInfo.ModuleID);
 
                     // NOTE: indexer is called from scheduler and has no httpcontext
@@ -156,6 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         link = (isHttps ? "https://" : "http://") + primaryPortalAlias + link;
                     }
+
                     queryString = qsb.Clear().Append(ParamKeys.ForumId).Append("=").Append(forumid).Append("&").Append(ParamKeys.TopicId).Append("=").Append(topicid).Append("&").Append(ParamKeys.ViewType).Append("=").Append(Views.Topic).Append("&").Append(ParamKeys.ContentJumpId).Append("=").Append(jumpid).ToString();
                     string permittedRolesCanView = string.Empty;
                     if (!AuthorizedRolesForForum.TryGetValue(forumid, out permittedRolesCanView))
@@ -164,6 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         permittedRolesCanView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetNamesForRoles(moduleInfo.PortalID, string.Join(";", canView.Split(":".ToCharArray())));
                         AuthorizedRolesForForum.Add(forumid, permittedRolesCanView);
                     }
+
                     var searchDoc = new SearchDocument
                     {
                         UniqueKey = moduleInfo.ModuleID.ToString() + "-" + contentid.ToString(),
@@ -180,7 +184,8 @@ namespace DotNetNuke.Modules.ActiveForums
                         IsActive = isApproved && !isDeleted
                     };
                     searchDocuments.Add(searchDoc);
-                };
+                }
+;
                 dr.Close();
                 return searchDocuments;
             }
@@ -283,6 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 default:
                     break;
             }
+
             return Version;
         }
 

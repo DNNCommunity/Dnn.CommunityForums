@@ -222,6 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
             }
+
             ControlUtils cUtils = new ControlUtils();
             using (IDataReader dr = DataProvider.Instance().Tags_List(PortalId, ModuleId, true, 0, 200, "ASC", "TagName", ForumId, ForumGroupId))
             {
@@ -240,15 +241,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         tmp = tmp.Replace("[CSSCLASS]", CSSClass);
                     }
+
                     sb.Append(tmp);
                 }
+
                 dr.Close();
             }
+
             if (sb.Length > 0)
             {
                 sb.Insert(0, HeaderTemplate);
                 sb.Append(FooterTemplate);
             }
+
             return sb.ToString();
         }
 
@@ -268,18 +273,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sb.Append(" checked=\"checked\" ");
                         sSelected += dr["TagId"].ToString() + ";";
                     }
+
                     sb.Append(" onclick=\"amaf_catSelect(this);\" value=\"" + dr["TagId"].ToString() + "\" id=\"amaf_cat_" + dr["TagId"].ToString() + "\" />");
                     sb.Append(dr["TagName"].ToString());
                     sb.Append("</li>");
                 }
+
                 dr.Close();
             }
+
             if (sb.Length > 0)
             {
                 sb.Insert(0, "<ul class=\"af-catlist\">");
                 sb.Append("</ul>");
                 sb.Append("<input type=\"hidden\" name=\"amaf-catselect\" id=\"amaf-catselect\" value=\"" + sSelected + "\" />");
             }
+
             return sb.ToString();
         }
 

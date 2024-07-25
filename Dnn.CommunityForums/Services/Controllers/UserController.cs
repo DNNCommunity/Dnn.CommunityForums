@@ -59,8 +59,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+
         /// <summary>
         /// Fired by UI to get users online
         /// </summary>
@@ -91,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     memCount = Convert.ToInt32(dr["Members"]);
                     memTotal = Convert.ToInt32(dr["MembersTotal"]);
                 }
+
                 dr.Close();
                 string sUsersOnline = null;
                 sUsersOnline = Utilities.GetSharedResource("[RESX:UsersOnline]");

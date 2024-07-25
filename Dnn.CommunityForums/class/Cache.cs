@@ -228,8 +228,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             ht.Add(dr["SettingName"].ToString(), string.Empty);
                         }
+
                         ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
                     }
+
                     dr.Close();
                     SettingsCacheStore(ModuleId, CacheKey, ht);
                 }
@@ -247,8 +249,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ht.Add(dr["SettingName"].ToString(), string.Empty);
                     }
+
                     ht[dr["SettingName"].ToString()] = dr["SettingValue"].ToString();
                 }
+
                 dr.Close();
             }
 

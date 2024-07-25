@@ -296,6 +296,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ht.Add(dr.GetString("SettingName"), dr.GetString("SettingValue"));
             }
+
             dr.Close();
             return ht;
         }

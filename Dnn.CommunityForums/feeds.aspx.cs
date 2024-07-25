@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     intPortalId = Convert.ToInt32(Request.QueryString["portalid"]);
                 }
             }
+
             //PortalSettings.PortalId
             int intTabId = -1;
 
@@ -76,6 +77,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
             }
+
             if (Request.QueryString["moduleid"] != null)
             {
                 if (SimulateIsNumeric.IsNumeric(Request.QueryString["moduleid"]))
@@ -83,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ModuleID = Convert.ToInt32(Request.QueryString["moduleid"]);
                 }
             }
+
             int intPosts = 10;
             bool bolSecurity = false;
             bool bolBody = true;
@@ -94,6 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ForumID = Int32.Parse(Request.QueryString["ForumID"]);
                 }
             }
+
             if (intPortalId >= 0 && intTabId > 0 & ModuleID > 0 & ForumID > 0)
             {
                 Response.Write(BuildRSS(intPortalId, intTabId, ModuleID, intPosts, ForumID, bolSecurity, bolBody));
@@ -117,6 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
+
                 drForum = ds.Tables[0].Rows[0];
 
                 drSecurity = ds.Tables[1].Rows[0];
@@ -125,6 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
+
                 bView = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanView"].ToString(), u.UserRoles);
                 bRead = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanRead"].ToString(), u.UserRoles);
                 StringBuilder sb = new StringBuilder(1024);
@@ -146,6 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             URL = DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host) + URL;
                         }
+
                         // build channel
                         sb.Append(WriteElement("channel", 1));
                         sb.Append(WriteElement("title", HttpUtility.HtmlEncode(ps.PortalName) + " " + ForumName, 2));
@@ -162,6 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sLogo += "<link>" + URL + "</link></image>";
                             sb.Append(sLogo);
                         }
+
                         foreach (DataRow dr in dtTopics.Rows)
                         {
                             if (DotNetNuke.Security.PortalSecurity.IsInRoles(PortalSettings.ActiveTab.TabPermissions.ToString("VIEW")))
@@ -173,6 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 sb.Append(BuildItem(dr, TabId, 2, IncludeBody, PortalId));
                             }
                         }
+
                         sb.Append("<atom:link href=\"http://" + Request.Url.Host + HttpUtility.HtmlEncode(Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
                         sb.Append(WriteElement("/channel", 1));
                         sb.Replace("[LASTBUILDDATE]", LastBuildDate.ToString("r"));
@@ -200,14 +209,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sTopicURL = "/" + MainSettings.PrefixURLBase;
                 }
+
                 sTopicURL += dr["FullUrl"].ToString();
 
                 URL = sTopicURL;
             }
+
             if (URL.IndexOf(Request.Url.Host) == -1)
             {
                 URL = DotNetNuke.Common.Globals.AddHTTP(Request.Url.Host) + URL;
             }
+
             if (LastBuildDate == new DateTime())
             {
                 LastBuildDate = Convert.ToDateTime(dr["DateCreated"]).AddMinutes(offSet);
@@ -219,12 +231,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     LastBuildDate = Convert.ToDateTime(dr["DateCreated"]).AddMinutes(offSet);
                 }
             }
+
             sb.Append(WriteElement("item", Indent));
             string body = dr["Body"].ToString();
             if (body.IndexOf("<body>") > 0)
             {
                 body = TemplateUtils.GetTemplateSection(body, "<body>", "</body>");
             }
+
             /*
             if (body.Contains("&#91;IMAGE:"))
             {
@@ -314,11 +328,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 tempStripHTMLTag = tempStripHTMLTag + " " + sText.Substring(0, sText.IndexOf("<", 0) + 1 - 1);
                 sText = sText.Substring(sText.IndexOf(">", 0) + 1);
             }
+
             tempStripHTMLTag = tempStripHTMLTag + sText;
             if (!fFound)
             {
                 tempStripHTMLTag = sText;
             }
+
             return tempStripHTMLTag;
         }
 

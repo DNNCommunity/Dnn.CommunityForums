@@ -163,6 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ForumIds = forumUser.UserForums;
                 }
             }
+
             SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
             Data.Common db = new Data.Common();
             IDataReader dr = db.TagCloud_Get(PortalId, ModuleId, ForumIds, TagCount);
@@ -187,12 +188,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         css = CSSThree;
                         break;
                 }
+
                 writer.Write("<span class=\"" + css + "\">");
                 writer.Write("<a href=\"");
                 sURL = ctlUtils.BuildUrl(TabId, ModuleId, string.Empty, string.Empty, -1, -1, int.Parse(dr["TagID"].ToString()), -1, Utilities.CleanName(tagName), 1, -1, -1);
                 writer.Write(sURL);
                 writer.Write("\" title=\"" + HttpUtility.HtmlAttributeEncode(tagName) + "\">" + tagName + "</a></span> ");
             }
+
             dr.Close();
             dr.Dispose();
         }

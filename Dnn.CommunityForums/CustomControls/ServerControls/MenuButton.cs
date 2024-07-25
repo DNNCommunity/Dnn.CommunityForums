@@ -112,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Menu.RenderControl(output);
             }
+
             output.RenderEndTag();
 
             var script = "<script type=\"text/javascript\">window." + ClientID + "=new ActiveMenuButton('" + ClientID + "'," + MenuWidth + "," + MenuHeight + "," + AnimationSteps + "," + AnimationDelay + "," + OffsetTop + "," + OffsetLeft + "," + (int)ExpandDirection + ");</script>";

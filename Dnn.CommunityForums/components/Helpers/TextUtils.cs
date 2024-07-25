@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
+
                 PortalSecurity objPortalSecurity = new PortalSecurity();
                 try
                 {
@@ -84,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         text = text.Replace(s, string.Empty);
                     }
                 }
+
                 return text;
             }
 
@@ -93,6 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
+
                 sText = HttpUtility.HtmlDecode(sText);
                 sText = HttpUtility.UrlDecode(sText);
                 sText = sText.Trim();
@@ -100,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return string.Empty;
                 }
+
                 PortalSecurity objPortalSecurity = new PortalSecurity();
                 sText = objPortalSecurity.InputFilter(sText, PortalSecurity.FilterFlag.NoScripting);
                 sText = FilterScripts(sText);
@@ -112,6 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sText = sText.Replace(s, string.Empty);
                     }
                 }
+
                 string pattern = "<(.|\\n)*?>";
                 sText = Regex.Replace(sText, pattern, string.Empty, RegexOptions.IgnoreCase);
                 sText = HttpUtility.HtmlEncode(sText);

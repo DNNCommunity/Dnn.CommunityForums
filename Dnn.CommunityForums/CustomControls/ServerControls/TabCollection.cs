@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     break;
                 }
             }
+
             return inList;
         }
 
@@ -180,6 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     _contents[i] = _contents[i + 1];
                 }
+
                 _count = _count - 1;
 
             }

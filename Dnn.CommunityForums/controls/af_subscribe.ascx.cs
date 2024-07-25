@@ -93,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 IsSubscribed = false;
             }
+
             chkSubscribe.Checked = IsSubscribed;
             chkSubscribe.Text = GetSharedResource("[RESX:Subscribe]");
 

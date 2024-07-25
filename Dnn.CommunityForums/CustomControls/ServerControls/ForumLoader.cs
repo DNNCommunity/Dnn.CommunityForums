@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId, ForumModuleId);
                     ForumModuleId = fi.ModuleId;
                 }
+
                 if (ForumModuleId > 0)
                 {
                     DotNetNuke.Entities.Modules.ModuleInfo modInfo = new DotNetNuke.Entities.Modules.ModuleInfo();

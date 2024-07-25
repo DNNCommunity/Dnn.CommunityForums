@@ -80,6 +80,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     plh = new PlaceHolder();
                 }
+
                 return plh;
             }
 
@@ -101,10 +102,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 cb.Debug = false;
             }
+
             if (!(CallBackOnComplete == string.Empty))
             {
                 cb.OnCallbackComplete = CallBackOnComplete;
             }
+
             Controls.CallBackContent cnt = new Controls.CallBackContent();
             cnt.Controls.Add(ModalContent);
             cb.Content = cnt;

@@ -49,9 +49,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         _template = TemplateFile;
                     }
+
                     _template = Utilities.GetTemplate(Page.ResolveUrl(_template));
                     _template = Utilities.ParseTokenConfig(ForumModuleId,_template, "default", ControlConfig);
                 }
+
                 return _template;
             }
 
@@ -137,12 +139,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         ((Controls.ForumRow)ctrl).UserRoles = ForumUser.UserRoles;
                     }
+
                     if (ctrl is Controls.ControlsBase)
                     {
                         ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                         ((Controls.ControlsBase)ctrl).ForumData = ForumData;
                         ((Controls.ControlsBase)ctrl).ForumInfo = ForumInfo;
                     }
+
                     if (ctrl.Controls.Count > 0)
                     {
                         LinkControls(ctrl.Controls);

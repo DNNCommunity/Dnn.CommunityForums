@@ -197,6 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId), upi);
                 }
             }
+
             return upi;
         }
 

@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 ri.GetContent();
                 ri.GetAuthor();
             }
+
             return ri;
         }
 
@@ -129,6 +130,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 ri.Content.DateCreated = DateTime.UtcNow;
             }
+
             Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
             // Clear profile Cache to make sure the LastPostDate is updated for Flood Control
             UserProfileController.Profiles_ClearCache(ModuleId, ri.Content.AuthorId);
@@ -151,6 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return null;
             }
+
             reply.IsApproved = true;
             rc.Reply_Save(PortalId, ModuleId, reply);
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(ModuleId, ForumId, TopicId, ReplyId);
@@ -159,6 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(forum.ModApproveTemplateId, PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, string.Empty, reply.Author);
             }
+
             DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, forum.ForumGroupId, ForumId, TopicId, ReplyId, reply.Content.AuthorId);
 
             return reply;
@@ -188,10 +192,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 {
                     fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 }
+
                 if (fullURL.EndsWith("/"))
                 {
                     fullURL += Utilities.UseFriendlyURLs(ModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
                 }
+
                 Social amas = new Social();
                 amas.AddReplyToJournal(PortalId, ModuleId, TabId, ForumId, TopicId, ReplyId, reply.Author.AuthorId, fullURL, reply.Content.Subject, string.Empty, reply.Content.Body, reply.Forum.Security.Read, reply.Forum.SocialGroupId);
 

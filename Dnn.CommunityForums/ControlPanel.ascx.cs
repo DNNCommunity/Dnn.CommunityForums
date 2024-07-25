@@ -107,14 +107,17 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 lang = Request.QueryString["language"];
             }
+
             if (string.IsNullOrEmpty(lang))
             {
                 lang = PortalSettings.DefaultLanguage;
             }
+
             if (string.IsNullOrEmpty(lang))
             {
                 lang = "en-US";
             }
+
             string adminHandler = VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/handlers/adminhelper.ashx") + "?TabId=" + TabId.ToString() + "&PortalId=" + PortalId.ToString() + "&moduleid=" + ModuleId + "&language=" + lang;
             var sb = new StringBuilder();
             sb.AppendLine("var asScriptPath = '" + VirtualPathUtility.ToAbsolute("~/desktopmodules/activeforums/scripts/") + "';");
@@ -139,6 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     sOptions = e.Parameters[1];
                 }
+
                 GetControl(e.Parameters[0], sOptions, true);
                 if (e.Parameters.Length != 3)
                 {
@@ -179,6 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     plhModal.Controls.Clear();
                     break;
             }
+
             plhModal.RenderControl(e.Output);
         }
 
@@ -194,6 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     view = "home";
                 }
+
                 CurrentView = view;
 
                 Params = options;
@@ -206,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl.Params = options;
                 }
+
                 if (!plhControlPanel.Controls.Contains(ctl))
                 {
                     plhControlPanel.Controls.Add(ctl);
@@ -243,6 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ctl.Params = @params;
             }
+
             if (!plhModal.Controls.Contains(ctl))
             {
                 plhModal.Controls.Add(ctl);

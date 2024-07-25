@@ -260,6 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     params2 = new[] { ParamKeys.ForumId + "=" + forumID };
                 }
+
                 if (Params != null)
                 {
                     var intLength = params2.Length;
@@ -287,6 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     params2 = new[] { ParamKeys.TopicId + "=" + postID };
                 }
+
                 if (Params != null)
                 {
                     var intLength = params2.Length;
@@ -308,6 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     params2 = new[] { ParamKeys.ViewType + "=" + view, ParamKeys.PageId + "=" + page };
                 }
             }
+
             return params2;
         }
 

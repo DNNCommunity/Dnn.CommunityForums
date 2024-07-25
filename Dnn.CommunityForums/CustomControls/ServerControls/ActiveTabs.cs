@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     _tabs = new List<Tab>();
                 }
+
                 return _tabs;
             }
 
@@ -269,6 +270,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabtext");
                     }
+
                     writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabtext");
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
                     writer.Write(tab.Text);
@@ -276,6 +278,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.RenderEndTag();
                     i += 1;
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "amtabcontent");
                 writer.AddAttribute(HtmlTextWriterAttribute.Id, "amtabcontent");
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -304,9 +307,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         tab.Content.RenderControl(writer);
 
                     }
+
                     writer.RenderEndTag();
                     i += 1;
                 }
+
                 writer.RenderEndTag();
             }
 
@@ -320,6 +325,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return;
             }
+
             if (Tabs != null)
             {
                 foreach (var _Tab in Tabs)
@@ -330,6 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                 }
+
                 //Try
 
                 //Catch ex As Exception

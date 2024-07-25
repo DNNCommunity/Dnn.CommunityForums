@@ -56,6 +56,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 RowIndex = ((PageIndex + 1) * PageSize) - PageSize;
             }
+
             agTemplates.Datasource = DataProvider.Instance().Templates_List(PortalId, ModuleId, 0, RowIndex, PageSize);
             agTemplates.Refresh(e.Output);
         }
@@ -71,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sValue = e.Item[1].ToString();
             }
+
             e.Item[1] = sValue;
         }
     }

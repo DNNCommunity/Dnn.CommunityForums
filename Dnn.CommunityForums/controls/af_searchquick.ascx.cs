@@ -43,10 +43,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ForumId = FID;
                 }
+
                 if (ForumTabId < 1)
                 {
                     ForumTabId = TID;
                 }
+
                 if (Request.QueryString["GroupId"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["GroupId"]))
                 {
                     SocialGroupId = Convert.ToInt32(Request.QueryString["GroupId"]);

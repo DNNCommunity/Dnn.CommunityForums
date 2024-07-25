@@ -106,6 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
+
                 objModules.UpdateModuleSetting(ModuleId, SettingKeys.IsInstalled, "True");
                 objModules.UpdateModuleSetting(ModuleId, "NeedsConvert", "False");
                 try
@@ -238,6 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             sAllowHTML = xNodeList[i].Attributes["allowhtml"].Value;
                         }
+
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, Convert.ToString(TopicsViewTemplateId));
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicTemplateId, Convert.ToString(TopicViewTemplateId));
                         Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
@@ -372,6 +374,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
             }
+
             if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.DefaultTemplatePath)))
             {
                 System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.DefaultTemplatePath));
@@ -386,6 +389,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     System.IO.Directory.CreateDirectory(themeFolder.FullName + "/templates");
                 }
             }
+
             TemplateController tc = new TemplateController();
             foreach (TemplateInfo templateInfo in tc.Template_List(-1, -1))
             {
@@ -408,6 +412,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             sHTML = xNode.InnerText;
                             template = sHTML;
                         }
+
                         templateInfo.Template = System.Web.HttpUtility.HtmlDecode(template);
                         tc.Template_Save(templateInfo);
                     }
@@ -449,6 +454,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         databaseFileNames.Add(Utilities.SafeConvertString(dr["FileName"]));
                     }
+
                     dr.Close();
                 }
 
@@ -483,6 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
                     tc.Update(topicInfo);
                 }
+
                 dr.Close();
             }
         }

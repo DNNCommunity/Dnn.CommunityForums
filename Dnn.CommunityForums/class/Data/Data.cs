@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 databaseOwner += ".";
             }
+
             dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
         }
 #endregion

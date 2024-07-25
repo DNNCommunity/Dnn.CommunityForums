@@ -101,6 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     AllowSubscribe = false;
                 }
+
                 btnToolBar.Visible = UseFilter;
                 divSubscribe.Visible = AllowSubscribe;
                 divSubscribe.Visible = !UserPrefTopicSubscribe; /* if user has preference set for auto subscribe, no need to show them the subscribe option */
@@ -111,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     subControl.Text = "[RESX:Subscribe]";
                     divSubscribe.InnerHtml = subControl.Render();
                 }
+
                 if (Utilities.InputIsValid(Request.Form["txtBody"]) && Request.IsAuthenticated & ((!string.IsNullOrEmpty(Request.Form["hidReply1"]) && string.IsNullOrEmpty(Request.Form["hidReply2"])) | Request.Browser.IsMobileDevice))
                 {
                     SaveQuickReply();
@@ -136,10 +138,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     template = template.Replace("[SUBJECT]", Subject);
                 }
+
                 if (template.Contains("[AF:CONTROLS:GROUPTOGGLE]"))
                 {
                     template = template.Replace(oldValue: "[AF:CONTROLS:GROUPTOGGLE]", newValue: DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: TargetCollapsible, title:string.Empty));
                 }
+
                 if (!Request.IsAuthenticated)
                 {
                     if (template.Contains("[AF:UI:ANON]"))
@@ -152,6 +156,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             template = template.Replace("[RESX:SecurityCode]:[AF:REQ:SECURITYCODE]", string.Empty);
                         }
+
                         template = template.Replace("[AF:UI:ANON]", string.Empty);
                         template = template.Replace("[/AF:UI:ANON]", string.Empty);
 
@@ -161,6 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:UI:ANON]", "[/AF:UI:ANON]");
                 }
+
                 template = template.Replace("[AF:BUTTON:SUBMIT]", "<asp:linkbutton ID=\"btnSubmitLink\" runat=\"server\" CssClass=\"dnnPrimaryAction\">[RESX:Submit]</asp:linkbutton>");
                 template = Utilities.LocalizeControl(template);
                 Control ctl = this.ParseControl(template);
@@ -209,10 +215,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         btnSubmitLink = (System.Web.UI.WebControls.LinkButton)ctrl;
                         break;
                 }
+
                 if (ctrl is Controls.ControlsBase)
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);
@@ -244,6 +252,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
             }
+
             if (!Request.IsAuthenticated)
             {
                 if ((!ctlCaptcha.IsValid) || txtUsername.Text == "")
@@ -251,6 +260,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return;
                 }
             }
+
             UserProfileInfo ui = new UserProfileInfo();
             if (UserId > 0)
             {
@@ -265,6 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ui.TrustLevel = -1;
 
             }
+
             bool UserIsTrusted = false;
             UserIsTrusted = Utilities.IsTrusted((int)ForumInfo.DefaultTrustValue, ui.TrustLevel, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Trust, ForumUser.UserRoles), ForumInfo.AutoTrustLevel, ui.PostCount);
             bool isApproved = false;
@@ -273,6 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 isApproved = true;
             }
+
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             ri.ReplyToId = TopicId;
             ri.TopicId = TopicId;
@@ -314,6 +326,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 AllowHTML = IsHtmlPermitted(ForumInfo.EditorPermittedUsers, IsTrusted, DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.ModEdit, ForumUser.UserRoles));
             }
+
             sBody = Utilities.CleanString(PortalId, Request.Form["txtBody"], AllowHTML, EditorTypes.TEXTBOX, UseFilter, AllowScripts, ForumModuleId, ThemePath, ForumInfo.AllowEmoticons);
             ri.Content.AuthorId = UserId;
             ri.Content.AuthorName = sUsername;
@@ -328,6 +341,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
+
             int ReplyId = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, ModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
             DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, ri.Forum.ForumGroupId, ForumId, TopicId, ReplyId, ri.Content.AuthorId);
@@ -342,10 +356,12 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 fullURL = Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
             }
+
             if (fullURL.EndsWith("/"))
             {
                 fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", ReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", ReplyId);
             }
+
             if (isApproved)
             {
                 //Redirect to show post
@@ -360,8 +376,10 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     @params.Add("GroupId=" + SocialGroupId);
                 }
+
                 Response.Redirect(Utilities.NavigateURL(TabId, "", @params.ToArray()), false);
-            };
+            }
+;
         }
 
         private void ambtnSubmit_Click(object sender, System.EventArgs e)
@@ -374,15 +392,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 reqBody.Visible = true;
                 tmpVal = false;
             }
+
             if (!Request.IsAuthenticated && Utilities.InputIsValid(txtUsername.Text.Trim()) == false)
             {
                 reqUsername.Visible = true;
                 tmpVal = false;
             }
+
             if (!ctlCaptcha.IsValid)
             {
                 reqSecurityCode.Visible = true;
             }
+
             if (Page.IsValid && tmpVal)
             {
                 SaveQuickReply();

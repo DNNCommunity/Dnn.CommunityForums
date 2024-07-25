@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         parent.RemoveChild(node);
                     }
                 }
+
                 // remove duplicate keys
                 foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
                 {
@@ -88,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         File.Delete(filename);
                     }
                 }
+
                 return true;
             }
             catch (Exception exc) //Module failed to load
@@ -131,6 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
                 node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
             }
+
             node.InnerXml = HttpUtility.HtmlEncode(text);
 
         }

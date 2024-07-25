@@ -60,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
                             }
+
                             break;
                         case "DEFAULTS":
                             new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteByModuleId(ModuleId);
@@ -68,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
+
                 int PageIndex = Convert.ToInt32(e.Parameters[0]);
                 int PageSize = Convert.ToInt32(e.Parameters[1]);
                 string SortColumn = e.Parameters[2].ToString();

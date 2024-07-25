@@ -109,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             ti.PortalId = PortalId;
                             ti.ModuleId = ModuleId;
                         }
+
                         ti.Title = e.Parameters[2].ToString();
                         ti.Subject = e.Parameters[3].ToString();
                         ti.Template = e.Parameters[4];
@@ -125,6 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     break;
                 }
+
                 case "delete":
                 {
                     try
@@ -147,6 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 sMsg = "Enable to delete system templates";
                             }
                             }
+
                         DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TemplatePrefix, ModuleId));
                         }
                     catch (Exception ex)
@@ -157,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     break;
                 }
             }
+
             cbActionMessage.InnerText = sMsg;
             cbActionMessage.RenderControl(e.Output);
         }

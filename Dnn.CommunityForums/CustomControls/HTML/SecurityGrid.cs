@@ -78,12 +78,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     roleIds[i] = Convert.ToInt32(roles[i]);
                 }
             }
+
             Array.Sort(roleIds);
             string tmp = string.Empty;
             foreach (int n in roleIds)
             {
                 tmp += n.ToString() + ";";
             }
+
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
             //litNewGrid.Text = "Roles:" & tmp
@@ -158,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 i += 1;
             }
+
             System.Type enumType = typeof(SecureActions);
             Array values = Enum.GetValues(enumType);
             StringBuilder sb = new StringBuilder();
@@ -174,9 +177,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sb.Append("<img src=\"" + ImagePath + "mini_del.gif\" alt=\"Remove Object\" style=\"cursor:pointer;z-index:10;\" class=\"afminidel\" onclick=\"securityDelObject(this,'" + grid[x, 0] + "'," + grid[x, 2] + "," + PermissionsId + ");\" />");
                     }
                 }
+
                 sb.Append("</span>" + grid[x, 1]);
                 sb.Append("</div></td></tr>");
             }
+
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
             //litNewObjects.Text = sb.ToString
             //sb = New StringBuilder
@@ -199,6 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append(keyText);
                 sb.Append("</td>");
             }
+
             sb.Append("</tr>");
             for (int x = 0; x < pl.Count; x++)
             {
@@ -212,6 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sState = "<img src=\"" + ImagePath + "admin_check.png\" alt=\"Enabled\" />";
                     }
+
                     if (keyText.ToLowerInvariant() == "block")
                     {
                         sb.Append("<td class=\"afsecactionelem\" style=\"text-align:center;display:none;\">");
@@ -226,11 +233,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append("onclick=\"securityToggle(this," + PermissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
+
                     sb.Append(">" + sState + "</div></td>");
 
                 }
+
                 sb.Append("</tr>");
             }
+
             sb.Append("</table></div></td></tr></table>");
             return sb.ToString();
 

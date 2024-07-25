@@ -82,9 +82,11 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 dtLastAccess = ForumUser.Profile.DateLastActivity;
                             }
+
                             UserLastAccess = dtLastAccess;
                         }
                     }
+
                     if (ForumModuleId < 1)
                     {
                         ForumModuleId = ModuleId;
@@ -121,10 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctl = Settings["amafDefaultView"].ToString();
                     }
+
                     if (Request.QueryString[ParamKeys.PageJumpId] != null)
                     {
                         opts = $"{Literals.PageId}={Request.QueryString[ParamKeys.PageJumpId]}";
                     }
+
                     currView = ctl;
                     GetControl(ctl, opts);
 
@@ -166,6 +170,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     plhLoader.Controls.Clear();
                 }
+
                 ForumBase ctl = null;
                 if (view.ToUpperInvariant() == Views.MyPreferences.ToUpperInvariant() && Request.IsAuthenticated)
                 {
@@ -219,10 +224,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
+
                 if (ForumId > 0 & ForumInfo != null)
                 {
                     ctl.ForumInfo = ForumInfo;
                 }
+
                 ctl.ID = view;
                 ctl.ForumId = ForumId;
                 ctl.ForumModuleId = ForumModuleId;
@@ -232,6 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ForumTabId = TabId;
                 }
+
                 ctl.ForumTabId = ForumTabId;
                 ctl.ForumGroupId = ForumGroupId;
                 ctl.DefaultForumViewTemplateId = DefaultForumViewTemplateId;
@@ -256,12 +264,14 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             isPrivate = true;
                         }
+
                         Hashtable htSettings = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).TabModuleSettings;
 
                         DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum(PortalId, ModuleId, SocialGroupId, Convert.ToInt32(htSettings["ForumGroupTemplate"].ToString()), role.RoleName + " Discussions", role.Description, isPrivate, htSettings["ForumConfig"].ToString());
                         ForumIds = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumIdsBySocialGroup(PortalId, ForumModuleId, SocialGroupId);
                     }
                 }
+
                 ctl.ForumIds = ForumIds;
                 ctl.SocialGroupId = SocialGroupId;
 
@@ -271,6 +281,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ctl.Params = options;
                 }
+
                 ControlsConfig cc = new ControlsConfig();
                 cc.AppPath = Page.ResolveUrl(Globals.ModulePath);
                 cc.ThemePath = Page.ResolveUrl(MainSettings.ThemeLocation);
@@ -291,6 +302,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     plhLoader.Controls.Add(ctl);
                 }
+
                 string sOut = null;
                 //TODO: this should be resources instead of harcoded text?
                 sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
@@ -314,12 +326,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     ((Controls.ForumRow)ctrl).UserRoles = ForumUser.UserRoles;
                 }
+
                 if (ctrl is Controls.ControlsBase)
                 {
                     ((Controls.ControlsBase)ctrl).ControlConfig = this.ControlConfig;
                     ((Controls.ControlsBase)ctrl).ForumData = this.ForumData;
                     ((Controls.ControlsBase)ctrl).ModuleConfiguration = this.ModuleConfiguration;
                 }
+
                 if (ctrl.Controls.Count > 0)
                 {
                     LinkControls(ctrl.Controls);
@@ -341,6 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.css", priority: 11);
                 }
             }
+
             if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "theme.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.min.css", priority: 12);
@@ -352,6 +367,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "theme.css", priority: 12);
                 }
             }
+
             if (System.IO.File.Exists(Utilities.MapPath(MainSettings.ThemeLocation + "custom/theme.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, MainSettings.ThemeLocation + "custom/theme.min.css", priority: 13);
@@ -371,10 +387,12 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 lang = Request.QueryString["language"];
             }
+
             if (string.IsNullOrEmpty(lang))
             {
                 lang = PortalSettings.DefaultLanguage;
             }
+
             if (string.IsNullOrEmpty(lang))
             {
                 lang = "en-US";
@@ -451,6 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ForumTabId = DotNetNuke.Entities.Modules.ModuleController.Instance.GetTabModulesByModule(ForumModuleId).FirstOrDefault().TabID;
                     }
+
                     lit.Text = Utilities.BuildToolbar(ForumModuleId, ForumTabId, ModuleId, TabId, CurrentUserType, HttpContext.Current?.Response?.Cookies["language"]?.Value);
                     plhToolbar.Controls.Clear();
                     plhToolbar.Controls.Add(lit);

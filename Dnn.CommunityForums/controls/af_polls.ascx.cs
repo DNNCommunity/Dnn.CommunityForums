@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ShowResults = true;
                     }
+
                     if (ShowResults)
                     {
                         Literal lit = new Literal();

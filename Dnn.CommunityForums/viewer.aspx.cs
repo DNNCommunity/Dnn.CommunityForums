@@ -128,6 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     filePath = file.PhysicalPath;
                 }
             }
+
                 // Otherwise check the attachments directory (current and legacy)
             else
             {

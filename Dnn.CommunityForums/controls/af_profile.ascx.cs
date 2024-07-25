@@ -52,11 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 tUid = UserId;
                 sDisplayName = UserProfiles.GetDisplayName(PortalSettings, ModuleId, false, false, false, UserId, UserInfo.Username, UserInfo.FirstName, UserInfo.LastName, UserInfo.DisplayName);
             }
+
             lblHeader.Text = string.Format(Utilities.GetSharedResource("[RESX:ProfileForUser]"), sDisplayName);
             if (MainSettings.UseSkinBreadCrumb)
             {
                 Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + Utilities.NavigateURL(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}=" + tUid.ToString() }) + "\">" + lblHeader.Text + "</a>");
             }
+
             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
             Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
             SettingsBase ctl = null;
@@ -66,6 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ctl.Params = this.Params;
             }
+
             plhProfile.Controls.Add(ctl);
         }
     }

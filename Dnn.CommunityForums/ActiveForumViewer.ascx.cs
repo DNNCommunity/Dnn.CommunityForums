@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         viewType = Views.ForumView;
                         ctlForumLoader.ForumGroupId = tmpForumId;
                     }
+
                     ctlForumLoader.DefaultView = viewType;
                     ctlForumLoader.ForumModuleId = tmpModuleId;
                     ctlForumLoader.ForumTabId = ForumTabId;
@@ -58,14 +59,17 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         ctlForumLoader.DefaultTopicsViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFTopicsTemplate]);
                     }
+
                     if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]) == null))
                     {
                         ctlForumLoader.DefaultForumViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFForumViewTemplate]);
                     }
+
                     if (!(Convert.ToString(Settings[ForumViewerSettingsKeys.AFTopicTemplate]) == null))
                     {
                         ctlForumLoader.DefaultTopicViewTemplateId = Convert.ToInt32(Settings[ForumViewerSettingsKeys.AFTopicTemplate]);
                     }
+
                     System.Web.UI.HtmlControls.HtmlGenericControl oLink = new System.Web.UI.HtmlControls.HtmlGenericControl("link");
                     oLink.Attributes["rel"] = "stylesheet";
                     oLink.Attributes["type"] = "text/css";

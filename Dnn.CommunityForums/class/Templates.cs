@@ -125,6 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         System.IO.Directory.CreateDirectory(Utilities.MapPath(Globals.TemplatesPath));
                     }
                 }
+
                 System.IO.File.WriteAllText(Utilities.MapPath(templatePathFileName), TemplateInfo.Template);
             }
             catch (Exception exc)
@@ -161,6 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums
             catch (Exception ex)
             {
             }
+
             DataProvider.Instance().Templates_Delete(TemplateId, PortalId, ModuleId);
         }
 
@@ -179,6 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 templateFileName = TemplateName;
                 ti = new TemplateInfo { PortalId = PortalId, ModuleId = ModuleId, FileName = TemplateName, Template = string.Empty };
             }
+
             templateFilePathFileName = Utilities.MapPath(SettingsBase.GetModuleSettings(ModuleId).TemplatePath + templateFileName);
             if (!System.IO.File.Exists(templateFilePathFileName))
             {
@@ -188,6 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + templateFileName);
                 }
             }
+
             ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
             return ti;
         }
@@ -209,6 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             return ti;
         }
         #endregion
@@ -228,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         TemplateInfo ti = FillTemplateInfo(dr);
                         tl.Add(ti);
                     }
+
                     dr.Close();
                 }
             }
@@ -235,6 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
+
             return tl;
         }
 
@@ -265,11 +272,13 @@ namespace DotNetNuke.Modules.ActiveForums
                         templateFilePathFileName = Utilities.MapPath(Globals.DefaultTemplatePath + ti.FileName);
                     }
                 }
+
                 ti.Template = Utilities.GetFileContent(templateFilePathFileName);
                 if (string.IsNullOrEmpty(ti.Template))
                 {
                     ti.Template = Convert.ToString(dr["Template"]);
                 }
+
                 ti.Template = ti.Template.Replace("[TRESX:", "[RESX:");
                 return ti;
             }

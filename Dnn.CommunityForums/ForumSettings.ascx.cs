@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 rdEnableURLRewriter.Enabled = true;
             }
+
             var u = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
             if (u.IsSuperUser && (HttpRuntime.IISVersion.Major >= 7))
             {
@@ -442,6 +443,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     rows[i, 1] = x.Attributes["value"].Value;
                     i += 1;
                 }
+
                 i = 0;
                 xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='groupmember']").ChildNodes;
                 foreach (XmlNode x in xNodeList)
@@ -449,6 +451,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     rows[i, 2] = x.Attributes["value"].Value;
                     i += 1;
                 }
+
                 i = 0;
                 xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='registereduser']").ChildNodes;
                 foreach (XmlNode x in xNodeList)
@@ -456,6 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     rows[i, 3] = x.Attributes["value"].Value;
                     i += 1;
                 }
+
                 i = 0;
                 xNodeList = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='anon']").ChildNodes;
                 foreach (XmlNode x in xNodeList)
@@ -463,6 +467,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     rows[i, 4] = x.Attributes["value"].Value;
                     i += 1;
                 }
+
                 i = 0;
                 sb.Append("<tr id=\"hd1\"><td></td><td colspan=\"10\" class=\"afgridhd sec1\">" + LocalizeString("UserPermissions") + "</td><td colspan=\"7\" class=\"afgridhd sec2\">" + LocalizeString("ModeratorPermissions") + "</td></tr>");
                 sb.Append("<tr id=\"hd2\"><td></td>");
@@ -483,10 +488,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sClass += " gridsep";
 
                     }
+
                     sb.Append("<td class=\"" + sClass + "\">");
                     sb.Append(LocalizeString("SecGrid:" + rows[i, 0]));
                     sb.Append("</td>");
                 }
+
                 sb.Append("</tr><tr id=\"row1\"><td class=\"rowhd\">" + LocalizeString("GroupAdmin") + "</td>");
                 i = 0;
 
@@ -501,14 +508,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sClass += " sec2";
                     }
+
                     if (i == 16)
                     {
                         sClass += " colend";
                     }
+
                     if (i == 9)
                     {
                         //sClass &= " gridsep"
                     }
+
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
 
                     if (rows[i, 1] == "true")
@@ -519,8 +529,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sb.Append("<input type=\"checkbox\" id=\"ga" + rows[i, 0] + "\" />");
                     }
+
                     sb.Append("</td>");
                 }
+
                 sb.Append("</tr>");
                 i = 0;
                 sb.Append("<tr id=\"row2\"><td class=\"rowhd\">" + LocalizeString("GroupMember") + "</td>");
@@ -535,14 +547,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sClass += " sec2";
                     }
+
                     if (i == 16)
                     {
                         sClass += " colend";
                     }
+
                     if (i == 9)
                     {
                         //sClass &= " gridsep"
                     }
+
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
                     if (rows[i, 2] == "true")
                     {
@@ -555,6 +570,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     sb.Append("</td>");
                 }
+
                 sb.Append("</tr>");
 
                 i = 0;
@@ -570,14 +586,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sClass += " sec2";
                     }
+
                     if (i == 16)
                     {
                         sClass += " colend";
                     }
+
                     if (i == 9)
                     {
                         //sClass &= " gridsep"
                     }
+
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
                     if (rows[i, 3] == "true")
                     {
@@ -590,6 +609,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     sb.Append("</td>");
                 }
+
                 sb.Append("</tr>");
                 i = 0;
                 sb.Append("<tr id=\"row4\"><td class=\"rowhd\">" + LocalizeString("Anon") + "</td>");
@@ -604,14 +624,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         sClass += " sec2";
                     }
+
                     if (i == 16)
                     {
                         sClass += " colend";
                     }
+
                     if (i == 9)
                     {
                         //sClass &= " gridsep"
                     }
+
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
                     if (rows[i, 4] == "true")
                     {
@@ -624,6 +647,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     sb.Append("</td>");
                 }
+
                 sb.Append("</tr>");
 
                 sb.Append("</table>");
@@ -642,6 +666,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 xDoc.LoadXml(ForumConfig);
             }
+
             XmlNode xRoot = xDoc.DocumentElement;
             var xNode = xRoot.SelectSingleNode("//defaultforums/forum/security[@type='" + sectype + "']");
             foreach (string s in security)
@@ -653,6 +678,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     xNode[nodeName].Attributes["value"].Value = nodeValue;
                 }
             }
+
             ForumConfig = xDoc.OuterXml;
 
         }

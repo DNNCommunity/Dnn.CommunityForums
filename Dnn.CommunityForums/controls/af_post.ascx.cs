@@ -155,6 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 _allowHTML = IsHtmlPermitted(_fi.EditorPermittedUsers, _userIsTrusted, _canModEdit);
             }
+
             ctlForm.AllowHTML = _allowHTML;
             if (_allowHTML)
             {
@@ -171,6 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 _editorType = EditorTypes.TEXTBOX;
             }
+
             ctlForm.EditorType = _editorType;
             ctlForm.ForumInfo = _fi;
             ctlForm.RequireCaptcha = true;
@@ -199,8 +201,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             Page.ClientScript.RegisterClientScriptInclude("afeditor", Page.ResolveUrl(Globals.ModulePath + "scripts/other_editor.js"));
                         }
                     }
+
                     break;
             }
+
             if (Request.Params[ParamKeys.action] != null)
             {
                 switch (Request.Params[ParamKeys.action].ToLowerInvariant())
@@ -212,6 +216,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             PrepareTopic();
                             LoadTopic();
                         }
+
                         break;
                     case PostActions.ReplyEdit:
                         if (_canModEdit || (_canEdit && Request.IsAuthenticated))
@@ -220,18 +225,21 @@ namespace DotNetNuke.Modules.ActiveForums
                             PrepareReply();
                             LoadReply();
                         }
+
                         break;
                     case PostActions.Reply:
                         if (CanReply)
                         {
                             PrepareReply();
                         }
+
                         break;
                     default:
                         if (CanCreate)
                         {
                             PrepareTopic();
                         }
+
                         break;
                 }
             }
@@ -246,6 +254,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     PrepareReply();
                 }
             }
+
             if (_isEdit && !Request.IsAuthenticated)
             {
                 Response.Redirect(NavigateUrl(TabId));
@@ -278,11 +287,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 // if someone activates this checkbox send him home :-)
                 Response.Redirect("about:blank");
             }
+
             if (!Utilities.HasFloodIntervalPassed(floodInterval: MainSettings.FloodInterval, user: ForumUser, forumInfo: ForumInfo))
             {
                 plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(GetSharedResource("[RESX:Error:FloodControl]"), MainSettings.FloodInterval) + "</div>" });
                 return;
             }
+
             if (!Page.IsValid || !Utilities.InputIsValid(ctlForm.Body.Trim()) || !Utilities.InputIsValid(ctlForm.Subject))
             {
                 return;
@@ -329,8 +340,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
                 }
+
                 return true;
             }
+
             return true;
         }
 
@@ -356,6 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     hidPreviewText.Value = message;
                     break;
             }
+
             hidPreviewText.RenderControl(e.Output);
         }
 
@@ -438,6 +452,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlForm.ShowModOptions = true;
                 }
             }
+
             if (_authorId != UserId)
             {
                 ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
@@ -481,6 +496,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     ctlForm.ShowModOptions = true;
                 }
             }
+
             if (_authorId != UserId)
             {
                 ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
@@ -530,6 +546,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
             }
+
             if (MainSettings.UseSkinBreadCrumb)
             {
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
@@ -652,10 +669,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         ctlForm.EditorMode = SubmitForm.EditorModes.ReplyWithBody;
                         body = sPostedBy + "<br />" + body;
                     }
+
                     ctlForm.Body = body;
 
                 }
             }
+
             if (ctlForm.EditorMode != SubmitForm.EditorModes.EditReply && _canModApprove)
             {
                 ctlForm.ShowModOptions = false;
@@ -785,8 +804,10 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         tData.Append("<value></value>");
                     }
+
                     tData.Append("</property>");
                 }
+
                 tData.Append("</properties>");
                 tData.Append("</topicdata>");
                 ti.TopicData = tData.ToString();
@@ -856,10 +877,12 @@ namespace DotNetNuke.Modules.ActiveForums
                             DataProvider.Instance().Poll_Option_Save(-1, pollId, value.Trim(), TopicId);
                         }
                     }
+
                     ti.TopicType = TopicTypes.Poll;
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                 }
             }
+
             if ((UserPrefTopicSubscribe && authorId == UserId) || ctlForm.Subscribe)
             {
                 new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribe(PortalId, ForumModuleId, UserId, ForumId, ti.TopicId);
@@ -884,12 +907,14 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(PortalId, TabId, ModuleId, ForumInfo.ForumGroupId, ForumId, TopicId, 0, ti.Content.AuthorId);
                     }
+
                     ControlUtils ctlUtils = new ControlUtils();
                     string sUrl = ctlUtils.BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, 1, -1, SocialGroupId);
                     if (sUrl.Contains("~/"))
                     {
                         sUrl = Utilities.NavigateURL(ForumTabId, "", ParamKeys.TopicId + "=" + TopicId);
                     }
+
                     Response.Redirect(sUrl, false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
@@ -911,6 +936,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 body = System.Web.HttpUtility.HtmlDecode(body);
             }
+
             int authorId;
             string authorName;
             if (Request.IsAuthenticated)
@@ -998,6 +1024,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sc.Subscribe(PortalId, ForumModuleId, UserId, ForumId, ri.TopicId);
             }
+
             var tmpReplyId = rc.Reply_Save(PortalId, ForumModuleId, ri);
             ri = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(tmpReplyId);
             SaveAttachments(ri.ContentId);
@@ -1020,6 +1047,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         new SubscriptionController().Subscription_Update(PortalId, ForumModuleId, ForumId, TopicId, 1, authorId, ForumUser.UserRoles);
                     }
                 }
+
                 if (!ri.IsApproved)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(PortalId, TabId, ForumModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
@@ -1034,15 +1062,18 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(PortalId, TabId, ModuleId, _fi.ForumGroupId, ForumId, TopicId, tmpReplyId, ri.Content.AuthorId);
                     }
+
                     var fullURL = new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, SocialGroupId);
                     if (fullURL.Contains("~/"))
                     {
                         fullURL = Utilities.NavigateURL(TabId, "", new[] { ParamKeys.TopicId + "=" + TopicId, ParamKeys.ContentJumpId + "=" + tmpReplyId });
                     }
+
                     if (fullURL.EndsWith("/"))
                     {
                         fullURL += Utilities.UseFriendlyURLs(ForumModuleId) ? String.Concat("#", tmpReplyId) : String.Concat("?", ParamKeys.ContentJumpId, "=", tmpReplyId);
                     }
+
                     Response.Redirect(fullURL, false);
                     Context.ApplicationInstance.CompleteRequest();
 }

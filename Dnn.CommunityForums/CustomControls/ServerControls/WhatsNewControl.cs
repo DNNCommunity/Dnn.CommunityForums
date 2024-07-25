@@ -300,6 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + sTopicURL + "\" rel=\"nofollow\">" + subject + "</a>");
                             }
                         }
+
                         sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", sForumUrl);
 
                     }
@@ -342,6 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                             sTempTemplate = sTempTemplate.Replace("[SUBJECTLINK]", "<a href=\"" + Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()) + "\">" + subject + "</a>");
                         }
+
                         @params = new List<string> { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId };
                         if (AdditionalParams != string.Empty)
                         {
@@ -350,6 +352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         sTempTemplate = sTempTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(TabId, string.Empty, @params.ToArray()));
                     }
+
                     sTempTemplate = sTempTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(TabId));
                     sb.Append(sTempTemplate);
                 }
@@ -374,6 +377,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     dr.Close();
                 }
+
                 sb.Append(ex.StackTrace);
                 var lit = new Literal {Text = ex.Message};
                 Controls.Add(lit);

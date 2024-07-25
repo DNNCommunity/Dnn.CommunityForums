@@ -53,6 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 Rating = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Average(topicId: TopicId);
             }
+
             if (Enabled)
             {
                 sb.Append("<ul id=\"af-rater\" class=\"fa-rater ");
@@ -66,6 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sb.Append(" fa-rate" + Rating.ToString());
             }
+
             sb.Append("\">");
             if (Enabled)
             {

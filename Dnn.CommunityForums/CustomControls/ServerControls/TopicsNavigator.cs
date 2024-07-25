@@ -103,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 tb.TabId = int.Parse(Request.QueryString["TabID"]);
             }
+
             tb.ForumGroupId = ForumGroupId;
             tb.ForumId = ForumId;
 
@@ -122,15 +123,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 tb.ForumIds = UserForumsList;
             }
+
             if (Request.QueryString["atg"] != null && SimulateIsNumeric.IsNumeric(Request.QueryString["atg"]))
             {
                 tb.TagId = int.Parse(Request.QueryString["atg"]);
 
             }
+
             if (Request.QueryString[ParamKeys.Category] != null && SimulateIsNumeric.IsNumeric(Request.QueryString[ParamKeys.Category]))
             {
                 tb.CategoryId = int.Parse(Request.QueryString[ParamKeys.Category]);
             }
+
             tb.ForumUser = ForumUser;
             tb.PageIndex = PageId;
             tb.PageSize = MainSettings.PageSize;

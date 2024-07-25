@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sb.Append("<option value=\"" + l.TemplateId + "\">" + l.Subject + "</option>");
             }
+
             return sb.ToString();
         }
 
@@ -64,6 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sb.Append("<option value=\"GROUP" + dr["ForumGroupId"].ToString() + "\">" + dr["GroupName"].ToString() + "</option>");
                         tmpGroupId = Convert.ToInt32(dr["ForumGroupId"]);
                     }
+
                     if (! (Convert.ToInt32(dr["ForumId"]) == 0))
                     {
                         if (Convert.ToInt32(dr["ParentForumID"]) == 0)
@@ -72,6 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
                 }
+
                 dr.Close();
             }
 
@@ -85,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 sb.Append("<option value=\"" + ri.RoleID + "\">" + ri.RoleName + "</option>");
             }
+
             return sb.ToString();
         }
     }

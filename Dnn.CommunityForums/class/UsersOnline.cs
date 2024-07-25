@@ -57,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     dr.Close();
                 }
+
                 return string.Empty;
             }
         }

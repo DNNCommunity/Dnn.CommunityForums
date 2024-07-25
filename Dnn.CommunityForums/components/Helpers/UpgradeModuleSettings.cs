@@ -91,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLBase, currSettings.PrefixURLBase);
             }
+
             if (string.IsNullOrEmpty(currSettings.PrefixURLOther))
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLOther, "views");
@@ -99,6 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLOther, currSettings.PrefixURLOther);
             }
+
             if (string.IsNullOrEmpty(currSettings.PrefixURLTag))
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLTags, "tag");
@@ -107,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLTags, currSettings.PrefixURLTag);
             }
+
             if (string.IsNullOrEmpty(currSettings.PrefixURLCategory))
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLCategories, "category");
@@ -115,6 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             {
                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(tabModuleId, SettingKeys.PrefixURLCategories, currSettings.PrefixURLCategory);
             }
+
             Logger.InfoFormat("Settings converted for module Id {0} tab module Id {1}", forumModuleId, tabModuleId);
 
             DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(tabModuleId, "NeedsConvert");
@@ -175,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                                         xDoc.DocumentElement.SelectSingleNode(xpath).SelectSingleNode("moduser").AddAttribute("value", "false");
                                     }
                                 }
+
                                 ForumConfig = xDoc.OuterXml;
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.DeleteModuleSetting(module.ModuleID, "ForumConfig");
                                 DotNetNuke.Entities.Modules.ModuleController.Instance.UpdateModuleSetting(module.ModuleID, "ForumConfig", ForumConfig);

@@ -107,6 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         optionId = Convert.ToInt32(rdbtnOptions.SelectedItem.Value);
                     }
+
                     if (PollId > 0 & optionId > 0)
                     {
                         DataProvider.Instance().Poll_Vote(PollId, optionId, string.Empty, Request.UserHostAddress, this.UserId);

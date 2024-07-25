@@ -64,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicUrl = u + 1 + "-" + cleanSubject;
                 urlToCheck = urlPrefix + topicUrl;
             }
+
             if (topicUrl.Length > 150)
             {
                 topicUrl = topicUrl.Substring(0, 149);
@@ -86,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 url += forumInfo.PrefixURL + "/";
             }
+
             return url;
         }
     }

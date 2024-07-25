@@ -90,6 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
                     }
+
                     new UserProfileController().Profiles_Save(upi);
 
                     Response.Redirect(NavigateUrl(TabId));

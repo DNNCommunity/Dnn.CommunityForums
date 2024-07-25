@@ -45,8 +45,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     newSubject = strMessage.Replace("<", string.Empty);
                     newSubject = newSubject.Replace(">", string.Empty);
                 }
+
                 strMessage = newSubject;
             }
+
             new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Get(moduleId).OrderBy(f => f.FilterId).Take(100000).ForEach(filter =>
             {
                 var sReplace = filter.Replace;
@@ -67,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                             strMessage = strMessage.Replace(sFind, sReplace);
                         }
+
                         break;
 
                     case FilterTypes.REGEX:
@@ -96,6 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         @out = exc.Message;
                         return @out;
                     }
+
                     var strFilter = objStreamReader.ReadLine();
                     while (strFilter != null)
                     {
@@ -107,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         DataProvider.Instance().Filters_Save(portalID, moduleID, -1, sFind, sReplace, sType);
                         strFilter = objStreamReader.ReadLine();
                     }
+
                     objStreamReader.Close();
                     @out = "Success";
                 }

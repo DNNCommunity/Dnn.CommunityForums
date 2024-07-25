@@ -60,8 +60,10 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 new DotNetNuke.Modules.ActiveForums.Controllers.TagController().DeleteById(TagId);
                             }
+
                             break;
                         }
+
                         case "SAVE":
                         {
                             string[] sParams = e.Parameters[4].Split(':');
@@ -73,10 +75,12 @@ namespace DotNetNuke.Modules.ActiveForums
                             {
                                 TagId = Convert.ToInt32(sParams[2]);
                             }
+
                             if (sParams[3].Contains("FORUM"))
                             {
                                 ForumId = Convert.ToInt32(sParams[3].Replace("FORUM", string.Empty));
                             }
+
                             if (sParams[3].Contains("GROUP"))
                             {
                                 ForumGroupId = Convert.ToInt32(sParams[3].Replace("GROUP", string.Empty));
@@ -92,6 +96,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                 }
+
                 agCategories.DefaultParams = string.Empty;
                 int PageIndex = Convert.ToInt32(e.Parameters[0]);
                 int PageSize = Convert.ToInt32(e.Parameters[1]);
@@ -119,6 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     drpForums.Items.Add(new ListItem(f.GroupName, "GROUP" + f.ForumGroupId.ToString()));
                     tmpGroupId = f.ForumGroupId;
                 }
+
                 drpForums.Items.Add(new ListItem(" - " + f.ForumName, "FORUM" + f.ForumID.ToString()));
                 if (f.SubForums != null && f.SubForums.Count > 0)
                 {
@@ -148,9 +154,11 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         subforums = new DotNetNuke.Modules.ActiveForums.Entities.ForumCollection();
                     }
+
                     subforums.Add(s);
                 }
             }
+
             return subforums;
         }
     }

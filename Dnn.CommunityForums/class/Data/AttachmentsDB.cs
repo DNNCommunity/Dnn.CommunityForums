@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     result = FillAttachment(dr);
                 }
+
                 dr.Close();
             }
 
@@ -63,8 +64,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     al.Add(FillAttachment(dr));
                 }
+
                 dr.Close();
             }
+
             return al;
         }
 
@@ -77,8 +80,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 {
                     al.Add(FillAttachment(dr));
                 }
+
                 dr.Close();
             }
+
             return al;
         }
 

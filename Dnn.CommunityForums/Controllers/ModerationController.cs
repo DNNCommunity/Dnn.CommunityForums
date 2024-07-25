@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     body = body.Replace("[TopicSubject]", topic.Content?.Subject);
                     authorId = topic.Content.AuthorId;
                 }
+
                 string modLink = Utilities.NavigateURL(TabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={ForumId}" });
                 body = body.Replace("[MODLINK]", modLink);
 
@@ -115,6 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     }
                 }
     }
+
             return mods;
         }
 
@@ -135,6 +137,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     modRoles.Add(DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId, rid));
                 }
             }
+
             return modRoles;
         }
 

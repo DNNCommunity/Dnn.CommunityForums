@@ -72,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.RankId = Convert.ToInt32(dr["RankId"]);
                 ri.RankName = Convert.ToString(dr["RankName"]);
             }
+
             dr.Close();
 
             return ri;
@@ -121,6 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums
                              };
                 rl.Add(ri);
             }
+
             dr.Close();
 
             return rl;

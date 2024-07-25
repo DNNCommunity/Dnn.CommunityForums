@@ -151,10 +151,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         RatingCSS += " fivepos";
                 }
             }
+
             if (RatingValue == 0 && Enabled == false)
             {
                 return string.Empty;
             }
+
             StringBuilder sb = new StringBuilder();
             sb.Append("<div class=\"" + CssClass + "\">");
             sb.Append("<ul class=\"" + RatingCSS + "\">");

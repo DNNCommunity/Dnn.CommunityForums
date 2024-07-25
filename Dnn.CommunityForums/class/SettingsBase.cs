@@ -66,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     forums = ForumUser.UserForums;
                 }
+
                 return forums;
             }
         }
@@ -78,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return _forumModuleId;
                 }
+
                 return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ModuleId, TabId);
             }
 
@@ -150,6 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     tempPageId = 1;
                 }
+
                 return tempPageId;
             }
         }
@@ -168,6 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     userController = new UserController();
                     HttpContext.Current.Items[userControllerContextKey] = userController;
                 }
+
                 return userController;
             }
         }
@@ -192,16 +196,20 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         return CurrentUserTypes.SuperUser;
                     }
+
                     if (ModulePermissionController.HasModulePermission(ModuleConfiguration.ModulePermissions, "EDIT"))
                     {
                         return CurrentUserTypes.Admin;
                     }
+
                     if (ForumUser.Profile.IsMod)
                     {
                         return CurrentUserTypes.ForumMod;
                     }
+
                     return CurrentUserTypes.Auth;
                 }
+
                 return CurrentUserTypes.Anon;
             }
         }
@@ -214,10 +222,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return false;
                 }
+
                 if (ForumUser != null)
                 {
                     return ForumUser.Profile.IsMod;
                 }
+
                 return false;
             }
         }
@@ -230,6 +240,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefDefaultSort;
                 }
+
                 return "ASC";
             }
         }
@@ -242,6 +253,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefPageSize;
                 }
+
                 return MainSettings.PageSize;
             }
         }
@@ -261,6 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         return false;
                     }
                 }
+
                 return false;
             }
         }
@@ -273,6 +286,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefBlockAvatars;
                 }
+
                 return false;
             }
         }
@@ -285,6 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefJumpLastPost;
                 }
+
                 return false;
             }
         }
@@ -297,6 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefUseAjax;
                 }
+
                 return false;
             }
         }
@@ -309,6 +325,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefDefaultShowReplies;
                 }
+
                 return false;
             }
         }
@@ -321,6 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return ForumUser.Profile.PrefTopicSubscribe;
                 }
+
                 return false;
             }
         }
@@ -343,6 +361,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
                 DataCache.SettingsCacheStore(ModuleId,string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
             }
+
             return objSettings;
 
         }
@@ -372,10 +391,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     return Request.Params[ParamKeys.ViewType].ToUpperInvariant();
                 }
+
                 if (Request.Params["view"] != null)
                 {
                     return Request.Params["view"].ToUpperInvariant();
                 }
+
                 return null;
             }
         }
@@ -437,6 +458,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 im.Message = im.Message + ex.Message;
             }
+
             if (ex != null)
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);

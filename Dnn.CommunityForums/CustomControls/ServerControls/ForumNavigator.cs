@@ -107,6 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 fd.Template = ItemTemplate.Text;
             }
+
             writer.Write(fd.Render());
         }
 

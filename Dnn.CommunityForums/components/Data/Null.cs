@@ -163,6 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 tempSetNull = objValue;
             }
+
             return tempSetNull;
         }
 
@@ -217,8 +218,10 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                     {
                         tempSetNull = null;
                     }
+
                     break;
             }
+
             return tempSetNull;
         }
 
@@ -309,6 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                     tempGetNull = objDBNull;
                 }
             }
+
             return tempGetNull;
         }
 
@@ -368,6 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             {
                 tempIsNull = true;
             }
+
             return tempIsNull;
         }
 

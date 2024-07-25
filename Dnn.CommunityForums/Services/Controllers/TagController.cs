@@ -87,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     return Request.CreateResponse(HttpStatusCode.NoContent);
                 }
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
@@ -106,6 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     }
                 }
             }
+
             return matchString;
         }
     }

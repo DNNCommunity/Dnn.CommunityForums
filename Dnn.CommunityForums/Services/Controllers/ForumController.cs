@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         {
             public int ForumId { get; set; }
         }
+
         /// <summary>
         /// Subscribes to a Forum
         /// </summary>
@@ -62,8 +63,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 int subscribed = new SubscriptionController().Subscription_Update(ActiveModule.PortalID, ForumModuleId, dto.ForumId, -1, 1, UserInfo.UserID, userRoles);
                 return Request.CreateResponse(HttpStatusCode.OK, subscribed == 1);
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
         /// <summary>
         /// Gets Subscriber count for a Forum
         /// </summary>
@@ -78,8 +81,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK, new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId));
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
         /// <summary>
          /// Gets Subscriber count string for a Forum
          /// </summary>
@@ -93,8 +98,10 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.OK, $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(ActiveModule.PortalID, ForumModuleId, ForumId)} {Utilities.GetSharedResource("[RESX:FORUMSUBSCRIBERCOUNT]", false)}");
             }
+
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
+
         /// <summary>
         /// Populates list of forums for an HTML control
         /// </summary>
