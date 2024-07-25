@@ -7,10 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnnCommunityForumsTests", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configuration", "Configuration", "{EB06303A-600A-440A-90AE-CB5595B24B68}"
 	ProjectSection(SolutionItems) = preProject
+		Dnn.CommunityForumsTests\.editorconfig = Dnn.CommunityForumsTests\.editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		LICENSE = LICENSE
 		README.md = README.md
+		Dnn.CommunityForumsTests\StyleCop.json = Dnn.CommunityForumsTests\StyleCop.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnnCommunityForums", "Dnn.CommunityForums\DnnCommunityForums.csproj", "{2D42BCCC-D1B2-4831-B80C-41199DE25798}"
