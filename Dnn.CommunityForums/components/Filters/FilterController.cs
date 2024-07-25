@@ -47,15 +47,15 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
-        public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
+        public void Filter_Delete(int portalId, int moduleId, int filterId)
         {
-            this.filterController.DeleteById(FilterId);
+            this.filterController.DeleteById(filterId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
-        public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
+        public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int portalId, int moduleID, int filterId)
         {
-            return (DotNetNuke.Modules.ActiveForums.FilterInfo)this.filterController.GetById(FilterId, ModuleID);
+            return (DotNetNuke.Modules.ActiveForums.FilterInfo)this.filterController.GetById(filterId, moduleID);
         }
     }
 }

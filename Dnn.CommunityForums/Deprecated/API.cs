@@ -27,12 +27,12 @@ namespace DotNetNuke.Modules.ActiveForums.API
     public class Content
     {
         [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
-        public int Topic_QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+        public int Topic_QuickCreate(int portalId, int moduleId, int forumId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)
         {
             try
             {
                 var tc = new TopicsController();
-                return tc.Topic_QuickCreate(PortalId, ModuleId, ForumId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
+                return tc.Topic_QuickCreate(portalId, moduleId, forumId, subject, body, userId, displayName, isApproved, iPAddress);
             }
             catch (Exception ex)
             {
@@ -41,12 +41,12 @@ namespace DotNetNuke.Modules.ActiveForums.API
         }
 
         [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
-        public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
+        public int Reply_QuickCreate(int portalId, int moduleId, int forumId, int topicId, int replyToId, string subject, string body, int userId, string displayName, bool isApproved, string iPAddress)
         {
             try
             {
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
-                return rc.Reply_QuickCreate(PortalId, ModuleId, ForumId, TopicId, ReplyToId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
+                return rc.Reply_QuickCreate(portalId, moduleId, forumId, topicId, replyToId, subject, body, userId, displayName, isApproved, iPAddress);
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.ActiveForums.API
     public class Forums
     {
         [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
-        public int Forums_Save(int PortalId, DotNetNuke.Modules.ActiveForums.Forum fi, bool isNew, bool UseGroup) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, isNew, UseGroup, UseGroup);
+        public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Forum fi, bool isNew, bool useGroup) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, isNew, useGroup, useGroup);
     }
 
     [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]

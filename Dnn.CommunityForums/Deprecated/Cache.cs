@@ -35,81 +35,81 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)")]
-        public static bool CacheStore(string cacheKey, object cacheObj, DateTime Expiration)
+        public static bool CacheStore(string cacheKey, object cacheObj, DateTime expiration)
         {
-            SettingsCacheStore(-1, cacheKey, cacheObj, Expiration);
+            SettingsCacheStore(-1, cacheKey, cacheObj, expiration);
             return true;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SettingsCacheRetrieve(int ModuleId, string cacheKey) or ContentCacheRetrieve(int ModuleId, string cacheKey)")]
         public static object CacheRetrieve(string cacheKey)
         {
-            return SettingsCacheRetrieve(ModuleId: -1, cacheKey: cacheKey);
+            return SettingsCacheRetrieve(moduleId: -1, cacheKey: cacheKey);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use CacheClear(int ModuleId, string cacheKey)")]
         public static bool CacheClear(string cacheKey)
         {
-            SettingsCacheClear(ModuleId: -1, cacheKey: cacheKey);
+            SettingsCacheClear(moduleId: -1, cacheKey: cacheKey);
             return true;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use CacheClearPrefix(int ModuleId, string cacheKeyPrefix)")]
         public static bool CacheClearPrefix(string cacheKeyPrefix)
         {
-            CacheClearPrefix(ModuleId: -1, cacheKeyPrefix);
+            CacheClearPrefix(moduleId: -1, cacheKeyPrefix);
             return true;
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ClearAllCache(int ModuleId).")]
-        public static void ClearAllCache(int ModuleId, int TabId)
+        public static void ClearAllCache(int moduleId, int tabId)
         {
-            ClearAllCache(ModuleId);
+            ClearAllCache(moduleId);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
-        public static void ClearForumsByGroupCache(int ModuleID, int GroupID)
+        public static void ClearForumsByGroupCache(int moduleID, int groupID)
         {
-            object obj = SettingsCacheRetrieve(ModuleID, ModuleID + GroupID + "ForumsByGroup");
+            object obj = SettingsCacheRetrieve(moduleID, moduleID + groupID + "ForumsByGroup");
             if (obj != null)
             {
-                SettingsCacheClear(ModuleID, ModuleID + GroupID + "ForumsByGroup");
+                SettingsCacheClear(moduleID, moduleID + groupID + "ForumsByGroup");
             }
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Only Cleared but never Set so not needed.")]
-        public static void ClearForumGroupsCache(int ModuleID)
+        public static void ClearForumGroupsCache(int moduleID)
         {
-            SettingsCacheClear(ModuleID, ModuleID + "ForumGroups");
+            SettingsCacheClear(moduleID, moduleID + "ForumGroups");
             IDataReader rd;
-            rd = DataProvider.Instance().Groups_List(ModuleID);
+            rd = DataProvider.Instance().Groups_List(moduleID);
             while (rd.Read())
             {
-                ClearForumsByGroupCache(ModuleID, Convert.ToInt32(rd["ForumGroupID"]));
+                ClearForumsByGroupCache(moduleID, Convert.ToInt32(rd["ForumGroupID"]));
             }
 
             rd.Close();
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public static void ClearForumSettingsCache(int ForumID)
+        public static void ClearForumSettingsCache(int forumID)
         {
-            SettingsCacheClear(-1, string.Format(CacheKeys.ForumSettings, -1, ForumID));
-            SettingsCacheClear(-1, string.Format(CacheKeys.ForumInfo, -1, ForumID));
+            SettingsCacheClear(-1, string.Format(CacheKeys.ForumSettings, -1, forumID));
+            SettingsCacheClear(-1, string.Format(CacheKeys.ForumInfo, -1, forumID));
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Not Used.")]
-        public static void ClearAllForumSettingsCache(int ModuleID)
+        public static void ClearAllForumSettingsCache(int moduleID)
         {
             try
             {
                 IDataReader rd;
-                rd = DataProvider.Instance().Forums_List(-1, ModuleID, -1, -1, false);
+                rd = DataProvider.Instance().Forums_List(-1, moduleID, -1, -1, false);
                 while (rd.Read())
                 {
                     int ForumId = Convert.ToInt32(rd["ForumID"]);
-                    SettingsCacheClear(ModuleID, string.Format(CacheKeys.ForumSettings, ModuleID, ForumId));
-                    SettingsCacheClear(ModuleID, string.Format(CacheKeys.ForumInfo, ModuleID, ForumId));
+                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumSettings, moduleID, ForumId));
+                    SettingsCacheClear(moduleID, string.Format(CacheKeys.ForumInfo, moduleID, ForumId));
                 }
 
                 rd.Close();
@@ -120,20 +120,20 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
-        public static void ClearFilterCache(int ModuleID)
+        public static void ClearFilterCache(int moduleID)
         {
-            object obj = SettingsCacheRetrieve(ModuleID, ModuleID + "FilterList");
+            object obj = SettingsCacheRetrieve(moduleID, moduleID + "FilterList");
             if (obj != null)
             {
                 // Current.Cache.Remove(ModuleID & "FilterList")
-                SettingsCacheClear(ModuleID, ModuleID + "FilterList");
+                SettingsCacheClear(moduleID, moduleID + "FilterList");
             }
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.SettingsBase.GetModuleSettings")]
-        public static SettingsInfo MainSettings(int ModuleId)
+        public static SettingsInfo MainSettings(int moduleId)
         {
-            return SettingsBase.GetModuleSettings(ModuleId);
+            return SettingsBase.GetModuleSettings(moduleId);
         }
     }
 }

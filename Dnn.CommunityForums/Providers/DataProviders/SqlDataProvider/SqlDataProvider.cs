@@ -116,9 +116,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         // general
-        private object GetNull(object Field)
+        private object GetNull(object field)
         {
-            return DotNetNuke.Common.Utilities.Null.GetNull(Field, DBNull.Value);
+            return DotNetNuke.Common.Utilities.Null.GetNull(field, DBNull.Value);
         }
 
         #region Dashboard
@@ -148,9 +148,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetEmoticons()")]
-        public override IDataReader Filters_GetEmoticons(int ModuleID)
+        public override IDataReader Filters_GetEmoticons(int moduleID)
         {
-            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Filters_GetEmoticons", ModuleID);
+            return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Filters_GetEmoticons", moduleID);
         }
 
         public override IDataReader Filters_List(int PortalId, int ModuleId, int PageIndex, int PageSize, string Sort, string SortColumn)
@@ -528,7 +528,7 @@ namespace DotNetNuke.Modules.ActiveForums
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
         public override int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, IpAddress: IPAddress);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, ipAddress: IPAddress);
         }
 
         public override void Topics_Delete(int ForumId, int TopicId, int DelBehavior)
@@ -564,9 +564,9 @@ namespace DotNetNuke.Modules.ActiveForums
             SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Move", PortalId, ModuleId, ForumId, TopicId);
         }
 
-        public override int Topics_Save(int PortalId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int Priority, string URL, string TopicData)
+        public override int Topics_Save(int PortalId, int TopicId, int ViewCount, int ReplyCount, bool IsLocked, bool IsPinned, string TopicIcon, int StatusId, bool IsApproved, bool IsDeleted, bool IsAnnounce, bool IsArchived, DateTime AnnounceStart, DateTime AnnounceEnd, string Subject, string Body, string Summary, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress, int TopicType, int priority, string URL, string TopicData)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Save", PortalId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, this.GetNull(AnnounceStart), this.GetNull(AnnounceEnd), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, Priority, URL, TopicData));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_Save", PortalId, TopicId, ViewCount, ReplyCount, IsLocked, IsPinned, TopicIcon, StatusId, IsApproved, IsDeleted, IsAnnounce, IsArchived, this.GetNull(AnnounceStart), this.GetNull(AnnounceEnd), Subject, Body, Summary, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress, TopicType, priority, URL, TopicData));
         }
 
         public override int Topics_SaveToForum(int ForumId, int TopicId, int LastReplyId)
@@ -574,9 +574,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return Convert.ToInt32(SqlHelper.ExecuteScalar(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Topics_SaveToForum", ForumId, TopicId, this.GetNull(LastReplyId)));
         }
 
-        public override void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, DateTime DateUpdate, int FirstReplyId)
+        public override void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, DateTime dateUpdate, int FirstReplyId)
         {
-            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Replies_Split", OldTopicId, NewTopicId, listreplies, DateUpdate, FirstReplyId);
+            SqlHelper.ExecuteNonQuery(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_Replies_Split", OldTopicId, NewTopicId, listreplies, dateUpdate, FirstReplyId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
@@ -708,10 +708,10 @@ namespace DotNetNuke.Modules.ActiveForums
         public override void Queue_Add(string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        public override void Queue_Add(int PortalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC) => throw new NotImplementedException();
+        public override void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailBodyPlainText, string EmailCC, string EmailBCC) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public override void Queue_Add(int PortalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC) => throw new NotImplementedException();
+        public override void Queue_Add(int portalId, string EmailFrom, string EmailTo, string EmailSubject, string EmailBody, string EmailCC, string EmailBCC) => throw new NotImplementedException();
 
         #endregion
         #region Maintenance

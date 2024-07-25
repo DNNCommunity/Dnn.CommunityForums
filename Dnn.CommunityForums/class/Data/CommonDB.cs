@@ -26,9 +26,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
     public class CommonDB : Connection
     {
-        public IDataReader ForumContent_List(int PortalId, int ModuleId, int ForumGroupId, int ForumId, int ParentForumId)
+        public IDataReader ForumContent_List(int portalId, int moduleId, int forumGroupId, int forumId, int parentForumId)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "ForumContent_List", PortalId, ModuleId, ForumGroupId, ForumId, ParentForumId);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "ForumContent_List", portalId, moduleId, forumGroupId, forumId, parentForumId);
         }
     }
 }

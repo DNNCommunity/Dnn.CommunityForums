@@ -22,16 +22,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal class EmoticonController
     {
-        public static string LoadEmoticons(int ModuleId, string ImagePath, EditorTypes InsertType)
+        public static string LoadEmoticons(int moduleId, string imagePath, EditorTypes insertType)
         {
             var sb = new System.Text.StringBuilder();
             sb.Append("<div id=\"emotions\" class=\"afemoticons\"><div id=\"emotions\" style=\"width:100%; height:100%;align:center;\">");
 
             int i = 0;
-            foreach (var emoticon in new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetEmoticons(ModuleId))
+            foreach (var emoticon in new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().GetEmoticons(moduleId))
             {
-                string sEmotPath = ImagePath + emoticon.Replace;
-                string sInsert = InsertType == EditorTypes.TEXTBOX ? emoticon.Find : $"<img src=\\'{sEmotPath}\\' />";
+                string sEmotPath = imagePath + emoticon.Replace;
+                string sInsert = insertType == EditorTypes.TEXTBOX ? emoticon.Find : $"<img src=\\'{sEmotPath}\\' />";
                 sb.AppendFormat("<span class=\"afEmot\" style=\"width:20px;height:20px;cursor:hand;\" unselectable=\"on\" onclick=\"amaf_insertHTML('{0}')\"><img onmousedown=\"return false;\" src=\"{1}\" width=\"20\" height=\"20\" title=\"{2}\" /></span>", sInsert, sEmotPath, emoticon.Find);
 
                 i += 1;

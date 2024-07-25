@@ -353,13 +353,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static SettingsInfo GetModuleSettings(int ModuleId)
+        public static SettingsInfo GetModuleSettings(int moduleId)
         {
-            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.MainSettings, ModuleId));
-            if (objSettings == null && ModuleId > 0)
+            SettingsInfo objSettings = (SettingsInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.MainSettings, moduleId));
+            if (objSettings == null && moduleId > 0)
             {
-                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(ModuleId).ModuleSettings };
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.MainSettings, ModuleId), objSettings);
+                objSettings = new SettingsInfo { MainSettings = new DotNetNuke.Entities.Modules.ModuleController().GetModule(moduleId).ModuleSettings };
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.MainSettings, moduleId), objSettings);
             }
 
             return objSettings;
@@ -422,14 +422,14 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Public Methods
-        public string NavigateUrl(int TabId)
+        public string NavigateUrl(int tabId)
         {
-            return Utilities.NavigateURL(TabId);
+            return Utilities.NavigateURL(tabId);
         }
 
-        public string NavigateUrl(int TabId, string ControlKey, params string[] AdditionalParameters)
+        public string NavigateUrl(int tabId, string controlKey, params string[] additionalParameters)
         {
-            return Utilities.NavigateURL(TabId, ControlKey, AdditionalParameters);
+            return Utilities.NavigateURL(tabId, controlKey, additionalParameters);
         }
 
         private string[] AddParams(string param, string[] currParams)
@@ -441,19 +441,19 @@ namespace DotNetNuke.Modules.ActiveForums
             return tmpParams;
         }
 
-        public void RenderMessage(string Title, string Message)
+        public void RenderMessage(string title, string message)
         {
-            this.RenderMessage(Utilities.GetSharedResource(Title), Message, string.Empty, null);
+            this.RenderMessage(Utilities.GetSharedResource(title), message, string.Empty, null);
         }
 
-        public void RenderMessage(string Message, string ErrorMsg, Exception ex)
+        public void RenderMessage(string message, string errorMsg, Exception ex)
         {
-            this.RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), Message, ErrorMsg, ex);
+            this.RenderMessage(Utilities.GetSharedResource("[RESX:Error]"), message, errorMsg, ex);
         }
 
-        public void RenderMessage(string Title, string Message, string ErrorMsg, Exception ex)
+        public void RenderMessage(string title, string message, string errorMsg, Exception ex)
         {
-            var im = new Controls.InfoMessage { Message = string.Concat(Utilities.GetSharedResource(Message), "<br />") };
+            var im = new Controls.InfoMessage { Message = string.Concat(Utilities.GetSharedResource(message), "<br />") };
             if (ex != null)
             {
                 im.Message = im.Message + ex.Message;

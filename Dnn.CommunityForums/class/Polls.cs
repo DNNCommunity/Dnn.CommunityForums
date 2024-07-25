@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class Polls
     {
-        public string PollResults(int TopicId, string ImagePath)
+        public string PollResults(int topicId, string imagePath)
         {
             int BarWidth = 275;
             var sb = new StringBuilder();
@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("<table width=\"80%\" align=\"center\" cellpadding=\"4\" cellspacing=\"0\" class=\"afpollresults\">");
 
             IDataReader dr;
-            dr = DataProvider.Instance().Poll_GetResults(TopicId);
+            dr = DataProvider.Instance().Poll_GetResults(topicId);
 
             dr.Read();
             sb.Append("<tr><td colspan=\"2\" class=\"afnormal\"><b>");
@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 sb.AppendFormat("{0}</b> ({1})", Convert.ToString(dr["OptionName"]), Convert.ToString(dr["ResultCount"]));
                 sb.Append("</td></tr><tr><td class=\"afnormal\">");
                 sb.Append("<span class=\"afpollbar\">");
-                sb.Append($"<img src=\"{ImagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32(BarWidth * dblPercent)}px !important;\" />");
+                sb.Append($"<img src=\"{imagePath}/spacer.gif\" style=\"height: 10px; width: {Convert.ToInt32(BarWidth * dblPercent)}px !important;\" />");
                 sb.AppendFormat("</span>&nbsp;{0}%", Convert.ToInt32(dblPercent * 100).ToString());
                 sb.Append("</td></tr>");
             }
@@ -68,11 +68,11 @@ namespace DotNetNuke.Modules.ActiveForums
             return sb.ToString();
         }
 
-        protected internal bool HasVoted(int TopicId, int UserId)
+        protected internal bool HasVoted(int topicId, int userId)
         {
             try
             {
-                int iVote = DataProvider.Instance().Poll_HasVoted(TopicId, UserId);
+                int iVote = DataProvider.Instance().Poll_HasVoted(topicId, userId);
 
                 if (iVote > 0)
                 {

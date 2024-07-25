@@ -28,31 +28,31 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal class ModerationController
     {
-        internal static void RemoveModerationNotifications(int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+        internal static void RemoveModerationNotifications(int tabId, int moduleId, int forumId, int topicId, int replyId)
         {
             NotificationType notificationType = NotificationsController.Instance.GetNotificationType(Globals.ModerationNotificationType);
-            string notificationKey = BuildNotificationContextKey(TabId, ModuleId, ForumId, TopicId, ReplyId);
+            string notificationKey = BuildNotificationContextKey(tabId, moduleId, forumId, topicId, replyId);
             foreach (Notification notification in NotificationsController.Instance.GetNotificationByContext(notificationType.NotificationTypeId, notificationKey))
             {
                 NotificationsController.Instance.DeleteNotification(notification.NotificationID);
             }
         }
 
-        internal static string BuildNotificationContextKey(int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
+        internal static string BuildNotificationContextKey(int tabId, int moduleId, int forumId, int topicId, int replyId)
         {
-            return $"{TabId}:{ModuleId}:{ForumId}:{TopicId}:{ReplyId}";
+            return $"{tabId}:{moduleId}:{forumId}:{topicId}:{replyId}";
         }
 
-        internal static bool SendModerationNotification(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
+        internal static bool SendModerationNotification(int portalId, int tabId, int moduleId, int forumGroupId, int forumId, int topicId, int replyId, int AuthorId, string requestUrl)
         {
             try
             {
                 int authorId;
                 string subject;
                 string body;
-                if (ReplyId > 0)
+                if (replyId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                     subject = Utilities.GetSharedResource("NotificationSubjectReply");
                     subject = subject.Replace("[DisplayName]", reply.Content?.AuthorName);
                     subject = subject.Replace("[TopicSubject]", reply.Topic?.Content.Subject);
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     subject = Utilities.GetSharedResource("NotificationSubjectTopic");
                     subject = subject.Replace("[DisplayName]", topic.Content?.AuthorName);
                     subject = subject.Replace("[TopicSubject]", topic.Content?.Subject);
@@ -73,10 +73,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     authorId = topic.Content.AuthorId;
                 }
 
-                string modLink = Utilities.NavigateURL(TabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={ForumId}" });
+                string modLink = Utilities.NavigateURL(tabId, string.Empty, new[] { $"{ParamKeys.ViewType}={Views.ModerateTopics}", $"{ParamKeys.ForumId}={forumId}" });
                 body = body.Replace("[MODLINK]", modLink);
 
-                string notificationKey = BuildNotificationContextKey(TabId, ModuleId, ForumId, TopicId, ReplyId);
+                string notificationKey = BuildNotificationContextKey(tabId, moduleId, forumId, topicId, replyId);
 
                 NotificationType notificationType = NotificationsController.Instance.GetNotificationType(Globals.ModerationNotificationType);
                 Notification notification = new Notification
@@ -89,8 +89,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     Context = notificationKey
                 };
 
-                var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(PortalId, ModuleId, ForumId);
-                NotificationsController.Instance.SendNotification(notification, PortalId, modRoles, null);
+                var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(portalId, moduleId, forumId);
+                NotificationsController.Instance.SendNotification(notification, portalId, modRoles, null);
                 return true;
             }
             catch (Exception ex)

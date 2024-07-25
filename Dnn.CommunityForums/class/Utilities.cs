@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 sToolbar = TemplateCache.GetCachedTemplate(forumModuleId, "ToolBar", 0);
                 sToolbar = Utilities.ParseToolBar(template: sToolbar, forumTabId: forumTabId, forumModuleId: forumModuleId, tabId: tabId, moduleId: moduleId, currentUserType: currentUserType);
-                DataCache.SettingsCacheStore(ModuleId: moduleId, cacheKey: cacheKey, sToolbar);
+                DataCache.SettingsCacheStore(moduleId: moduleId, cacheKey: cacheKey, sToolbar);
             }
 
             return sToolbar;
@@ -887,9 +887,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return ConfigUtils.IsRewriterInstalled(System.Web.Hosting.HostingEnvironment.MapPath("~/web.config"));
         }
 
-        internal static bool UseFriendlyURLs(int ModuleId)
+        internal static bool UseFriendlyURLs(int moduleId)
         {
-            return IsRewriteLoaded() && SettingsBase.GetModuleSettings(ModuleId).URLRewriteEnabled;
+            return IsRewriteLoaded() && SettingsBase.GetModuleSettings(moduleId).URLRewriteEnabled;
         }
 
         /// <summary>
@@ -981,9 +981,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return sContents;
         }
 
-        internal static string GetUserFriendlyDateTimeString(DateTime datetime, int ModuleId, UserInfo userInfo)
+        internal static string GetUserFriendlyDateTimeString(DateTime datetime, int moduleId, UserInfo userInfo)
         {
-            var mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+            var mainSettings = SettingsBase.GetModuleSettings(moduleId);
             var displayDate = datetime.Add(GetTimeZoneOffsetForUser(userInfo));
             if (displayDate.Date == DateTime.UtcNow.Date)
             {
@@ -1051,7 +1051,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 string cacheKey = string.Format(CacheKeys.CultureInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey);
+                object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey);
                 if (obj == null)
                 {
                     if (userInfo?.Profile?.PreferredLocale != null)
@@ -1074,7 +1074,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         cultureInfo = CultureInfo.CurrentCulture;
                     }
 
-                    DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: cultureInfo);
+                    DataCache.SettingsCacheStore(moduleId: -1, cacheKey, cacheObj: cultureInfo);
                 }
                 else
                 {
@@ -1103,7 +1103,7 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
                 string cacheKey = string.Format(CacheKeys.TimeZoneInfoForUser, userInfo?.UserID == null ? -1 : userInfo?.UserID);
-                object obj = DataCache.SettingsCacheRetrieve(ModuleId: -1, cacheKey);
+                object obj = DataCache.SettingsCacheRetrieve(moduleId: -1, cacheKey);
                 if (obj == null)
                 {
                     if (userInfo?.Profile?.PreferredTimeZone != null)
@@ -1126,7 +1126,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         timeZoneInfo = TimeZoneInfo.Utc;
                     }
 
-                    DataCache.SettingsCacheStore(ModuleId: -1, cacheKey, cacheObj: timeZoneInfo);
+                    DataCache.SettingsCacheStore(moduleId: -1, cacheKey, cacheObj: timeZoneInfo);
                 }
                 else
                 {
@@ -1147,9 +1147,9 @@ namespace DotNetNuke.Modules.ActiveForums
             return GetTimeZoneInfoForUser(userInfo).GetUtcOffset(DateTime.UtcNow);
         }
 
-        public static TimeSpan GetTimeZoneOffsetForUser(int PortalId, int UserId)
+        public static TimeSpan GetTimeZoneOffsetForUser(int portalId, int userId)
         {
-            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(PortalId, UserId));
+            return GetTimeZoneOffsetForUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
         }
 
         public static DateTime GetUserFormattedDate(DateTime displayDate, int mid, TimeSpan offset)
@@ -1636,16 +1636,16 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static int GetForumModuleId(int ModuleId, int TabId)
+        internal static int GetForumModuleId(int ModuleId, int tabId)
         {
             int moduleId = ModuleId;
             if (ModuleId > 0)
             {
-                if (TabId > 0)
+                if (tabId > 0)
                 {
-                    if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: TabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
+                    if (DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(moduleId: ModuleId, tabId: tabId, ignoreCache: false).DesktopModule.ModuleName == string.Concat(Globals.ModuleName, " Viewer"))
                     {
-                        moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, TabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
+                        moduleId = Utilities.SafeConvertInt(DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(ModuleId, tabId, false).ModuleSettings[ForumViewerSettingsKeys.AFForumModuleId]);
                     }
                 }
             }
@@ -1704,10 +1704,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static void UpdateModuleLastContentModifiedOnDate(int ModuleId)
+        internal static void UpdateModuleLastContentModifiedOnDate(int moduleId)
         {
             // signal to platform that module has updated content in order to be included in incremental search crawls
-            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(ModuleId);
+            DotNetNuke.Data.DataProvider.Instance().UpdateModuleLastContentModifiedOnDate(moduleId);
         }
     }
 }

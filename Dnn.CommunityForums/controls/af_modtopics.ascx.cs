@@ -327,15 +327,15 @@ namespace DotNetNuke.Modules.ActiveForums
             this.litTopics.Text = Utilities.LocalizeControl(sb.ToString());
         }
 
-        private string TopicEditUrl(int ForumId, int TopicId, int ReplyId)
+        private string TopicEditUrl(int forumId, int topicId, int replyId)
         {
-            if (ReplyId == 0)
+            if (replyId == 0)
             {
-                return this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId });
+                return this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=te", ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId });
             }
             else
             {
-                return this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=re", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, "postid=" + ReplyId });
+                return this.NavigateUrl(this.TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=re", ParamKeys.ForumId + "=" + forumId, ParamKeys.TopicId + "=" + topicId, "postid=" + replyId });
             }
         }
 
@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        private string GetAttachments(int ContentId, int PortalID, int ModuleID, DataTable dtAttach)
+        private string GetAttachments(int contentId, int portalID, int moduleID, DataTable dtAttach)
         {
             string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(this.Request)) + "/";
             if (this.Request.IsSecureConnection)
@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums
             vpath = this.PortalSettings.HomeDirectory + "activeforums_Attach/";
             string fpath = null;
             fpath = Utilities.MapPath(this.PortalSettings.HomeDirectory + "activeforums_Attach/");
-            dtAttach.DefaultView.RowFilter = "ContentId = " + ContentId;
+            dtAttach.DefaultView.RowFilter = "ContentId = " + contentId;
             foreach (DataRow dr in dtAttach.DefaultView.ToTable().Rows)
             {
                 sb.Append("<br />");
@@ -397,10 +397,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         case "image/pjpeg":
                         case "image/gif":
                         case "image/png":
-                            sb.Append("<br /><span class=\"afimage\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalID + "&moduleid=" + ModuleID + "&attachmentid=" + attachId + "\" border=0 align=center></span><br><br>");
+                            sb.Append("<br /><span class=\"afimage\"><img src=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" border=0 align=center></span><br><br>");
                             break;
                         default:
-                            sb.Append("<span class=\"afattachlink\"><a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + PortalID + "&moduleid=" + ModuleID + "&attachmentid=" + attachId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + Filename + "</a></span><br />");
+                            sb.Append("<span class=\"afattachlink\"><a href=\"" + strHost + "DesktopModules/ActiveForums/viewer.aspx?portalid=" + portalID + "&moduleid=" + moduleID + "&attachmentid=" + attachId + "\" target=\"_blank\"><img src=\"" + strHost + "DesktopModules/ActiveForums/images/attach.gif\" border=\"0\" align=\"absmiddle\">Attachment: " + Filename + "</a></span><br />");
                             break;
                     }
                 }

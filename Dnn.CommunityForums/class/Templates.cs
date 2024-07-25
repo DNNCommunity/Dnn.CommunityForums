@@ -136,20 +136,20 @@ namespace DotNetNuke.Modules.ActiveForums
             return TemplateId;
         }
 
-        public List<TemplateInfo> Template_List(int PortalId, int ModuleId)
+        public List<TemplateInfo> Template_List(int portalId, int moduleId)
         {
-            return this.GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
+            return this.GetTemplateList(portalId, moduleId, Templates.TemplateTypes.All);
         }
 
-        public List<TemplateInfo> Template_List(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
+        public List<TemplateInfo> Template_List(int portalId, int moduleId, Templates.TemplateTypes templateType)
         {
-            return this.GetTemplateList(PortalId, ModuleId, TemplateType);
+            return this.GetTemplateList(portalId, moduleId, templateType);
         }
 
-        public void Template_Delete(int TemplateId, int PortalId, int ModuleId)
+        public void Template_Delete(int templateId, int portalId, int moduleId)
         {
 
-            TemplateInfo templateInfo = this.Template_Get(TemplateId);
+            TemplateInfo templateInfo = this.Template_Get(templateId);
             SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(templateInfo.ModuleId);
             string templateFile = Utilities.MapPath(moduleSettings.TemplatePath + templateInfo.FileName);
             try
@@ -163,14 +163,14 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
 
-            DataProvider.Instance().Templates_Delete(TemplateId, PortalId, ModuleId);
+            DataProvider.Instance().Templates_Delete(templateId, portalId, moduleId);
         }
 
-        public TemplateInfo Template_Get(string TemplateName, int PortalId, int ModuleId)
+        public TemplateInfo Template_Get(string templateName, int portalId, int moduleId)
         {
             string templateFileName = string.Empty;
             string templateFilePathFileName = string.Empty;
-            TemplateInfo ti = this.Template_List(PortalId, ModuleId).Where(t => t.Title.ToUpperInvariant() == TemplateName.ToUpperInvariant() && t.ModuleId == ModuleId).FirstOrDefault();
+            TemplateInfo ti = this.Template_List(portalId, moduleId).Where(t => t.Title.ToUpperInvariant() == templateName.ToUpperInvariant() && t.ModuleId == moduleId).FirstOrDefault();
 
             if (ti != null && !string.IsNullOrEmpty(ti.FileName))
             {
@@ -178,11 +178,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                templateFileName = TemplateName;
-                ti = new TemplateInfo { PortalId = PortalId, ModuleId = ModuleId, FileName = TemplateName, Template = string.Empty };
+                templateFileName = templateName;
+                ti = new TemplateInfo { PortalId = portalId, ModuleId = moduleId, FileName = templateName, Template = string.Empty };
             }
 
-            templateFilePathFileName = Utilities.MapPath(SettingsBase.GetModuleSettings(ModuleId).TemplatePath + templateFileName);
+            templateFilePathFileName = Utilities.MapPath(SettingsBase.GetModuleSettings(moduleId).TemplatePath + templateFileName);
             if (!System.IO.File.Exists(templateFilePathFileName))
             {
                 templateFilePathFileName = Utilities.MapPath(Globals.TemplatesPath + templateFileName);
@@ -196,12 +196,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return ti;
         }
 
-        public TemplateInfo Template_Get(int TemplateId)
+        public TemplateInfo Template_Get(int templateId)
         {
             var ti = new TemplateInfo();
             try
             {
-                using (IDataReader dr = DataProvider.Instance().Templates_Get(TemplateId, -1, -1))
+                using (IDataReader dr = DataProvider.Instance().Templates_Get(templateId, -1, -1))
                 {
                     while (dr.Read())
                     {
@@ -219,12 +219,12 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         #region Private Methods
-        private List<TemplateInfo> GetTemplateList(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
+        private List<TemplateInfo> GetTemplateList(int portalId, int moduleId, Templates.TemplateTypes templateType)
         {
             var tl = new List<TemplateInfo>();
             try
             {
-                using (IDataReader dr = TemplateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(PortalId, ModuleId, -1) : DataProvider.Instance().Templates_List(PortalId, ModuleId, (int)TemplateType))
+                using (IDataReader dr = templateType == Templates.TemplateTypes.All ? DataProvider.Instance().Templates_List(portalId, moduleId, -1) : DataProvider.Instance().Templates_List(portalId, moduleId, (int)templateType))
                 {
                     dr.Read();
                     dr.NextResult();

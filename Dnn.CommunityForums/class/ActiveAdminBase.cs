@@ -70,9 +70,9 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
-        public string GetWarningImage(string ImageId, string WarningMessage)
+        public string GetWarningImage(string imageId, string warningMessage)
         {
-            return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", this.Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
+            return string.Concat("<img id=\"", imageId, "\" onmouseover=\"showTip(this,'", warningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", warningMessage, "\" height=\"16\" width=\"16\" src=\"", this.Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
         }
 
         protected string GetSharedResource(string key)
@@ -163,14 +163,14 @@ namespace DotNetNuke.Modules.ActiveForums
             return template;
         }
 
-        public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
+        public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes templateType, string defaultText, string defaultValue)
         {
             var tc = new TemplateController();
             drp.DataTextField = "Title";
             drp.DataValueField = "TemplateID";
-            drp.DataSource = tc.Template_List(this.PortalId, this.ModuleId, TemplateType);
+            drp.DataSource = tc.Template_List(this.PortalId, this.ModuleId, templateType);
             drp.DataBind();
-            drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
+            drp.Items.Insert(0, new ListItem(defaultText, defaultValue));
         }
 
         public string CurrentView

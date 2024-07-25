@@ -60,9 +60,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         }
 
         #endregion
-        public static object GetNull(object Field)
+        public static object GetNull(object field)
         {
-            return Null.GetNull(Field, DBNull.Value);
+            return Null.GetNull(field, DBNull.Value);
         }
 
         public string ObjectQualifier

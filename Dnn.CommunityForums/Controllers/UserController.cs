@@ -45,24 +45,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             internal DateTime DateUpdated { get; set; }
         }
 
-        internal static void BanUser(int PortalId, int TabId, int ModuleId, string ModuleTitle, int ForumId, int TopicId, int ReplyId, DotNetNuke.Entities.Users.UserInfo BannedBy, int AuthorId)
+        internal static void BanUser(int portalId, int tabId, int moduleId, string moduleTitle, int forumId, int topicId, int replyId, DotNetNuke.Entities.Users.UserInfo bannedBy, int authorId)
         {
-            if (AuthorId > -1)
+            if (authorId > -1)
             {
-                DotNetNuke.Entities.Users.UserInfo bannedUser = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: PortalId, userId: AuthorId);
+                DotNetNuke.Entities.Users.UserInfo bannedUser = DotNetNuke.Entities.Users.UserController.GetUserById(portalId: portalId, userId: authorId);
                 string sBody = string.Empty;
                 string authorName = string.Empty;
                 string sSubject = string.Empty;
-                if (ReplyId > 0)
+                if (replyId > 0)
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+                    DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(replyId);
                     sBody = reply.Content.Body;
                     sSubject = reply.Content.Subject;
                     authorName = reply.Author.DisplayName;
                 }
                 else
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     sBody = topic.Content.Body;
                     sSubject = topic.Content.Subject;
                     authorName = topic.Author.DisplayName;
@@ -71,24 +71,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 string notificationSubject = Utilities.GetSharedResource("[RESX:BanAlertSubject]");
                 notificationSubject = notificationSubject.Replace("[Username]", bannedUser.Username);
                 notificationSubject = notificationSubject.Replace("[DisplayName]", bannedUser.DisplayName);
-                notificationSubject = notificationSubject.Replace("[BannedBy]", BannedBy.DisplayName);
+                notificationSubject = notificationSubject.Replace("[BannedBy]", bannedBy.DisplayName);
                 string body = Utilities.GetSharedResource("[RESX:BanAlertBody]");
                 body = body.Replace("[Subject]", sSubject);
 
                 StringBuilder postsRemoved = new StringBuilder();
 
-                var contentForBannedUser = DataContext.Instance().ExecuteQuery<ContentForUser>(System.Data.CommandType.StoredProcedure, "activeforums_Content_GetJournalKeysForUser", bannedUser.UserID, ModuleId).ToList();
+                var contentForBannedUser = DataContext.Instance().ExecuteQuery<ContentForUser>(System.Data.CommandType.StoredProcedure, "activeforums_Content_GetJournalKeysForUser", bannedUser.UserID, moduleId).ToList();
                 string objectKey;
                 contentForBannedUser.ForEach(c =>
                 {
                     objectKey = c.ReplyId < 1 ? $"{c.ForumId}:{c.TopicId}" : $"{c.ForumId}:{c.TopicId}:{c.ReplyId}";
-                    if (JournalController.Instance.GetJournalItemByKey(PortalId, objectKey) != null)
+                    if (JournalController.Instance.GetJournalItemByKey(portalId, objectKey) != null)
                     {
-                        JournalController.Instance.DeleteJournalItemByKey(PortalId, objectKey);
+                        JournalController.Instance.DeleteJournalItemByKey(portalId, objectKey);
                     }
 
-                    postsRemoved.AppendLine($"{Utilities.GetUserFriendlyDateTimeString(c.DateUpdated, ModuleId, BannedBy)}\t{c.Subject}");
-                    DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(TabId, ModuleId, c.ForumId, c.TopicId, c.ReplyId);
+                    postsRemoved.AppendLine($"{Utilities.GetUserFriendlyDateTimeString(c.DateUpdated, moduleId, bannedBy)}\t{c.Subject}");
+                    DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.RemoveModerationNotifications(tabId, moduleId, c.ForumId, c.TopicId, c.ReplyId);
                 });
                 body = body.Replace("[PostsRemoved]", postsRemoved.ToString());
 
@@ -97,22 +97,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 notification.Subject = notificationSubject;
                 notification.Body = body;
                 notification.IncludeDismissAction = true;
-                notification.SenderUserID = BannedBy.UserID;
-                notification.Context = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.BuildNotificationContextKey(TabId, ModuleId, ForumId, TopicId, ReplyId);
+                notification.SenderUserID = bannedBy.UserID;
+                notification.Context = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.BuildNotificationContextKey(tabId, moduleId, forumId, topicId, replyId);
 
-                var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(PortalId, ModuleId, ForumId);
-                NotificationsController.Instance.SendNotification(notification, PortalId, modRoles, null);
+                var modRoles = DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetModeratorRoles(portalId, moduleId, forumId);
+                NotificationsController.Instance.SendNotification(notification, portalId, modRoles, null);
 
                 var log = new DotNetNuke.Services.Log.EventLog.LogInfo { LogTypeKey = DotNetNuke.Abstractions.Logging.EventLogType.ADMIN_ALERT.ToString() };
-                log.LogProperties.Add(new LogDetailInfo("Module", ModuleTitle));
+                log.LogProperties.Add(new LogDetailInfo("Module", moduleTitle));
                 string userBannedMsg = String.Format(Utilities.GetSharedResource("[RESX:UserBanned]"), bannedUser.Username);
                 log.AddProperty("Message", userBannedMsg);
                 DotNetNuke.Services.Log.EventLog.LogController.Instance.AddLog(log);
 
-                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(ModuleId: ModuleId, UserId: bannedUser.UserID, DelBehavior: SettingsBase.GetModuleSettings(ModuleId).DeleteBehavior);
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Topics_Delete_For_User(moduleId: moduleId, userId: bannedUser.UserID, delBehavior: SettingsBase.GetModuleSettings(moduleId).DeleteBehavior);
                 bannedUser.Membership.Approved = false;
-                DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: PortalId, user: bannedUser, loggedAction: true);
-                DataCache.CacheClearPrefix(ModuleId, string.Format("AF-FV-{0}-{1}", PortalId, ModuleId));
+                DotNetNuke.Entities.Users.UserController.UpdateUser(portalId: portalId, user: bannedUser, loggedAction: true);
+                DataCache.CacheClearPrefix(moduleId, string.Format("AF-FV-{0}-{1}", portalId, moduleId));
             }
         }
     }

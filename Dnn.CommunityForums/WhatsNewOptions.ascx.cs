@@ -357,11 +357,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private bool HasSubForums(int ForumId, DataTable dt)
+        private bool HasSubForums(int forumId, DataTable dt)
         {
             foreach (DataRow row in dt.Rows)
             {
-                if (Convert.ToInt32(row["ParentForumId"]) == ForumId)
+                if (Convert.ToInt32(row["ParentForumId"]) == forumId)
                 {
                     return true;
                 }

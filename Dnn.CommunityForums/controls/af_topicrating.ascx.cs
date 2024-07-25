@@ -93,27 +93,27 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void Rate1_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 1, IpAddress: this.Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 1, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate2_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 2, IpAddress: this.Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 2, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate3_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 3, IpAddress: this.Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 3, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate4_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 4, IpAddress: this.Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 4, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void Rate5_Click(object sender, System.Web.UI.ImageClickEventArgs e)
         {
-            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 5, IpAddress: this.Request.UserHostAddress.ToString());
+            new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: 5, ipAddress: this.Request.UserHostAddress.ToString());
         }
 
         private void cbRating_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, IpAddress: this.Request.UserHostAddress.ToString());
+                    new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, ipAddress: this.Request.UserHostAddress.ToString());
                 }
             }
 

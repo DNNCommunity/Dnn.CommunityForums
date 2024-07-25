@@ -29,14 +29,14 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));
 
-        public static bool UpdateBreadCrumb(ControlCollection ctrls, string ForumBread)
+        public static bool UpdateBreadCrumb(ControlCollection ctrls, string forumBread)
         {
-            if (string.IsNullOrEmpty(ForumBread))
+            if (string.IsNullOrEmpty(forumBread))
             {
                 return true;
             }
 
-            string[] bcText = ForumBread.Split('|');
+            string[] bcText = forumBread.Split('|');
             try
             {
                 foreach (Control ctrl in ctrls)
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (ctrl.Controls.Count > 0)
                     {
-                        UpdateBreadCrumb(ctrl.Controls, ForumBread);
+                        UpdateBreadCrumb(ctrl.Controls, forumBread);
                     }
                 }
 
@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static bool UpdateMeta(ref DotNetNuke.Framework.CDefault bp, string Title, string Description, string Keywords)
+        public static bool UpdateMeta(ref DotNetNuke.Framework.CDefault bp, string title, string description, string keywords)
         {
             if (bp == null)
             {
@@ -100,32 +100,32 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                if (!string.IsNullOrEmpty(Title))
+                if (!string.IsNullOrEmpty(title))
                 {
                     if (!string.IsNullOrEmpty(bp.Title))
                     {
-                        bp.Title = Title.Replace("[VALUE]", bp.Title);
+                        bp.Title = title.Replace("[VALUE]", bp.Title);
                     }
                     else
                     {
-                        bp.Title = Title.Replace("[VALUE]", string.Empty);
+                        bp.Title = title.Replace("[VALUE]", string.Empty);
                     }
                 }
 
-                if (!string.IsNullOrEmpty(Description))
+                if (!string.IsNullOrEmpty(description))
                 {
-                    Description = Description.Replace(System.Environment.NewLine, " ");
+                    description = description.Replace(System.Environment.NewLine, " ");
                     if (!string.IsNullOrEmpty(bp.Description))
                     {
-                        bp.Description = Description.Replace("[VALUE]", bp.Description);
+                        bp.Description = description.Replace("[VALUE]", bp.Description);
                     }
                     else
                     {
-                        bp.Description = Description.Replace("[VALUE]", string.Empty);
+                        bp.Description = description.Replace("[VALUE]", string.Empty);
                     }
                 }
 
-                if (!string.IsNullOrEmpty(Keywords))
+                if (!string.IsNullOrEmpty(keywords))
                 {
                     if (!string.IsNullOrEmpty(bp.KeyWords))
                     {
@@ -139,20 +139,20 @@ namespace DotNetNuke.Modules.ActiveForums
                             cKey = cKey.Substring(0, cKey.Length - 1);
                         }
 
-                        if (Keywords.StartsWith("[VALUE]"))
+                        if (keywords.StartsWith("[VALUE]"))
                         {
                             cKey += ",";
                         }
-                        else if (Keywords.EndsWith("[VALUE]"))
+                        else if (keywords.EndsWith("[VALUE]"))
                         {
                             cKey = "," + cKey;
                         }
 
-                        bp.KeyWords = Keywords.Replace("[VALUE]", cKey);
+                        bp.KeyWords = keywords.Replace("[VALUE]", cKey);
                     }
                     else
                     {
-                        bp.KeyWords = Keywords.Replace("[VALUE]", string.Empty);
+                        bp.KeyWords = keywords.Replace("[VALUE]", string.Empty);
                     }
                 }
             }

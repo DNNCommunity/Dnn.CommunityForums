@@ -29,43 +29,43 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
     public class Profiles : DataConfig
     {
-        public void Profiles_Create(int PortalId, int ModuleId, int UserId)
+        public void Profiles_Create(int portalId, int moduleId, int userId)
         {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_Create", PortalId, -1, UserId);
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_Create", portalId, -1, userId);
         }
 
-        public void Profiles_UpdateActivity(int PortalId, int ModuleId, int UserId)
+        public void Profiles_UpdateActivity(int portalId, int moduleId, int userId)
         {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_UpdateActivity", PortalId, ModuleId, UserId);
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_UpdateActivity", portalId, moduleId, userId);
         }
 
-        public IDataReader Profiles_GetUsersOnline(int PortalId, int ModuleId, int Interval)
+        public IDataReader Profiles_GetUsersOnline(int portalId, int moduleId, int interval)
         {
-            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_GetUsersOnline", PortalId, ModuleId, Interval);
+            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_GetUsersOnline", portalId, moduleId, interval);
         }
 
-        public IDataReader Profiles_Get(int PortalId, int ModuleId, int UserId)
+        public IDataReader Profiles_Get(int portalId, int moduleId, int userId)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_Get", PortalId, -1, UserId);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_Get", portalId, -1, userId);
         }
 
-        public void Profiles_Save(int PortalId, int ModuleId, int UserId, int TopicCount, int ReplyCount, int ViewCount, int AnswerCount, int RewardPoints, string UserCaption, string Signature, bool SignatureDisabled, int TrustLevel, bool AdminWatch, bool AttachDisabled, string Avatar, int AvatarType, bool AvatarDisabled, string PrefDefaultSort, bool PrefDefaultShowReplies, bool PrefJumpLastPost, bool PrefTopicSubscribe, int PrefSubscriptionType, bool PrefUseAjax, bool PrefBlockAvatars, bool PrefBlockSignatures, int PrefPageSize, string Yahoo, string MSN, string ICQ, string AOL, string Occupation, string Location, string Interests, string WebSite, string Badges)
+        public void Profiles_Save(int portalId, int moduleId, int userId, int topicCount, int replyCount, int viewCount, int answerCount, int rewardPoints, string userCaption, string signature, bool signatureDisabled, int trustLevel, bool adminWatch, bool attachDisabled, string avatar, int avatarType, bool avatarDisabled, string prefDefaultSort, bool prefDefaultShowReplies, bool prefJumpLastPost, bool prefTopicSubscribe, int prefSubscriptionType, bool prefUseAjax, bool prefBlockAvatars, bool prefBlockSignatures, int prefPageSize, string yahoo, string mSN, string iCQ, string aOL, string occupation, string location, string interests, string webSite, string badges)
         {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_Save", PortalId, -1, UserId, TopicCount, ReplyCount, ViewCount, AnswerCount, RewardPoints, UserCaption, Signature, SignatureDisabled, TrustLevel, AdminWatch, AttachDisabled, Avatar, AvatarType, AvatarDisabled, PrefDefaultSort, PrefDefaultShowReplies, PrefJumpLastPost, PrefTopicSubscribe, PrefSubscriptionType, PrefUseAjax, PrefBlockAvatars, PrefBlockSignatures, PrefPageSize, Yahoo, MSN, ICQ, AOL, Occupation, Location, Interests, WebSite, Badges);
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "UserProfiles_Save", portalId, -1, userId, topicCount, replyCount, viewCount, answerCount, rewardPoints, userCaption, signature, signatureDisabled, trustLevel, adminWatch, attachDisabled, avatar, avatarType, avatarDisabled, prefDefaultSort, prefDefaultShowReplies, prefJumpLastPost, prefTopicSubscribe, prefSubscriptionType, prefUseAjax, prefBlockAvatars, prefBlockSignatures, prefPageSize, yahoo, mSN, iCQ, aOL, occupation, location, interests, webSite, badges);
         }
 
-        public IDataReader Profiles_GetStats(int PortalId, int ModuleId, int Interval)
+        public IDataReader Profiles_GetStats(int portalId, int moduleId, int interval)
         {
-            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_Stats", PortalId, ModuleId, Interval);
+            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_Stats", portalId, moduleId, interval);
         }
 
-        public IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter)
+        public IDataReader Profiles_MemberList(int portalId, int moduleId, int maxRows, int rowIndex, string filter)
         {
             // Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
-            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_List", PortalId, ModuleId, MaxRows, RowIndex, Filter);
+            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UserProfiles_List", portalId, moduleId, maxRows, rowIndex, filter);
         }
 
-        public void Profile_UpdateTopicCount(int PortalId, int UserId)
+        public void Profile_UpdateTopicCount(int portalId, int userId)
         {
             string sSql = "UPDATE " + this.dbPrefix + "UserProfiles SET TopicCount = ISNULL((Select Count(t.TopicId) from ";
             sSql += this.dbPrefix + "Topics as t INNER JOIN ";
@@ -74,8 +74,8 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             sSql += this.dbPrefix + "Forums as f ON ft.ForumId = f.ForumId ";
             sSql += "WHERE c.AuthorId = @AuthorId AND t.IsApproved = 1 AND t.IsDeleted=0 AND f.PortalId=@PortalId),0) ";
             sSql += "WHERE UserId = @AuthorId AND PortalId = @PortalId";
-            sSql = sSql.Replace("@AuthorId", UserId.ToString());
-            sSql = sSql.Replace("@PortalId", PortalId.ToString());
+            sSql = sSql.Replace("@AuthorId", userId.ToString());
+            sSql = sSql.Replace("@PortalId", portalId.ToString());
             SqlHelper.ExecuteNonQuery(this.connectionString, CommandType.Text, sSql);
 
         }

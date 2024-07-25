@@ -118,27 +118,27 @@ namespace DotNetNuke.Modules.ActiveForums
     public class Permissions
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static bool HasPerm(string AuthorizedRoles, int UserId, int PortalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(AuthorizedRoles, UserId, PortalId);
+        public static bool HasPerm(string authorizedRoles, int userId, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, userId, portalId);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static bool HasPerm(string AuthorizedRoles, string UserPermSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(AuthorizedRoles, UserPermSet);
+        public static bool HasPerm(string authorizedRoles, string userPermSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(authorizedRoles, userPermSet);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static string RemovePermFromSet(string objectId, int objectType, string PermissionSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objectId, objectType, PermissionSet);
+        public static string RemovePermFromSet(string objectId, int objectType, string permissionSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.RemovePermFromSet(objectId, objectType, permissionSet);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static string AddPermToSet(string objectId, int objectType, string PermissionSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, PermissionSet);
+        public static string AddPermToSet(string objectId, int objectType, string permissionSet) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddPermToSet(objectId, objectType, permissionSet);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static string GetRoleIds(string[] Roles, int PortalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(PortalId, Roles);
+        public static string GetRoleIds(string[] roles, int portalId) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(portalId, roles);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static bool HasRequiredPerm(string[] AuthorizedRoles, string[] UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(AuthorizedRoles, UserRoles);
+        public static bool HasRequiredPerm(string[] authorizedRoles, string[] userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasRequiredPerm(authorizedRoles, userRoles);
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.")]
-        public static bool HasAccess(string AuthorizedRoles, string UserRoles)
+        public static bool HasAccess(string authorizedRoles, string userRoles)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(AuthorizedRoles, UserRoles);
+            return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(authorizedRoles, userRoles);
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo.")]

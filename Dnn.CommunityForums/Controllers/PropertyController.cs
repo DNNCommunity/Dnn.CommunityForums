@@ -40,9 +40,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.Properties = properties;
         }
 
-        internal string ListPropertiesJSON(int PortalId, int ObjectType, int ObjectOwnerId)
+        internal string ListPropertiesJSON(int portalId, int objectType, int objectOwnerId)
         {
-            var list = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", PortalId, ObjectType, ObjectOwnerId);
+            var list = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", portalId, objectType, objectOwnerId);
             StringBuilder sb = new StringBuilder();
             foreach (var p in list)
             {

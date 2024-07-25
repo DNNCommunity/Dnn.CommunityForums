@@ -24,11 +24,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public abstract class Logger
     {
-        public static void Log(string Msg)
+        public static void Log(string msg)
         {
             string sPath = Utilities.MapPath(string.Concat(Globals.ModulePath, "am.html"));
-            Msg = Msg + System.Environment.NewLine;
-            System.IO.File.AppendAllText(sPath, Msg);
+            msg = msg + System.Environment.NewLine;
+            System.IO.File.AppendAllText(sPath, msg);
         }
     }
 }

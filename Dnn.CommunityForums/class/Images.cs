@@ -172,7 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return newStream;
         }
 
-        public static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string MYmimeType)
+        public static System.Drawing.Imaging.ImageCodecInfo GetEncoderInfo(string mYmimeType)
         {
             try
             {
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 for (i = 0; i <= (encoders.Length - 1); i++)
                 {
-                    if (encoders[i].MimeType == MYmimeType)
+                    if (encoders[i].MimeType == mYmimeType)
                     {
                         return encoders[i];
                     }

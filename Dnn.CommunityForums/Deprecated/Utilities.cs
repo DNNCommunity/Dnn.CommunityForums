@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
         /// Calculates a friendly display string based on an input timespan
         /// </summary>
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public static string HumanFriendlyDate(DateTime displayDate, int ModuleId, int timeZoneOffset)
+        public static string HumanFriendlyDate(DateTime displayDate, int moduleId, int timeZoneOffset)
         {
             var newDate = displayDate.AddMinutes(timeZoneOffset);
             var ts = new TimeSpan(DateTime.Now.Ticks - newDate.Ticks);

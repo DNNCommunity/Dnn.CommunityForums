@@ -25,19 +25,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
     internal static class TemplateCache
     {
-        internal static string GetCachedTemplate(int ModuleId, string TemplateType)
+        internal static string GetCachedTemplate(int moduleId, string templateType)
         {
-            return GetCachedTemplate(ModuleId, TemplateType, -1);
+            return GetCachedTemplate(moduleId, templateType, -1);
         }
 
-        public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
+        public static string GetCachedTemplate(int moduleId, string TemplateType, int TemplateId)
         {
             string sTemplate = string.Empty;
-            string cacheKey = string.Format(CacheKeys.Template, ModuleId, TemplateId, TemplateType);
+            string cacheKey = string.Format(CacheKeys.Template, moduleId, TemplateId, TemplateType);
             object obj = null;
-            if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
+            if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
             {
-                obj = DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+                obj = DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
             }
 
             if (obj != null)
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     try
                     {
                         string fileName = $"{TemplateType}.ascx";
-                        SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(ModuleId);
+                        SettingsInfo moduleSettings = SettingsBase.GetModuleSettings(moduleId);
                         string templateFilePathFileName = Utilities.MapPath(moduleSettings.TemplatePath + fileName);
                         if (!System.IO.File.Exists(templateFilePathFileName))
                         {
@@ -105,9 +105,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 sTemplate = Globals.ForumsControlsRegisterAFTag + sTemplate;
             }
 
-            if (SettingsBase.GetModuleSettings(ModuleId).CacheTemplates)
+            if (SettingsBase.GetModuleSettings(moduleId).CacheTemplates)
             {
-                DataCache.SettingsCacheStore(ModuleId, cacheKey, sTemplate);
+                DataCache.SettingsCacheStore(moduleId, cacheKey, sTemplate);
             }
 
             return sTemplate;

@@ -22,9 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     public class ModController
     {
-        internal void Mod_Reject(int PortalId, int ModuleId, int UserId, int ForumId, int TopicId, int ReplyId)
+        internal void Mod_Reject(int portalId, int moduleId, int userId, int forumId, int topicId, int replyId)
         {
-            DataProvider.Instance().Mod_Reject(PortalId, ModuleId, UserId, ForumId, TopicId, ReplyId, 0, string.Empty);
+            DataProvider.Instance().Mod_Reject(portalId, moduleId, userId, forumId, topicId, replyId, 0, string.Empty);
         }
     }
 }

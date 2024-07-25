@@ -32,9 +32,9 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         //    Return SqlHelper.ExecuteReader(_connectionString, dbPrefix & "Forums_GetPermissions", PortalId, ModuleId)
         // End Function
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
-        public IDataReader Groups_Get(int ModuleId, int ForumGroupId)
+        public IDataReader Groups_Get(int moduleId, int forumGroupId)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Groups_Get", ModuleId, ForumGroupId);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Groups_Get", moduleId, forumGroupId);
         }
     }
 }

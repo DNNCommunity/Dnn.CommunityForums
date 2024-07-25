@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.moduleId, this.tabId, true).ModuleTitle;
-            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: this.ActiveModule.PortalID, ModuleId: this.moduleId, ModuleTitle: moduleTitle, TabId: this.tabId, ForumId: this.forumId, TopicId: this.topicId, ReplyId: this.replyId, BannedBy: this.UserInfo, AuthorId: authorId);
+            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(portalId: this.ActiveModule.PortalID, moduleId: this.moduleId, moduleTitle: moduleTitle, tabId: this.tabId, forumId: this.forumId, topicId: this.topicId, replyId: this.replyId, bannedBy: this.UserInfo, authorId: authorId);
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });

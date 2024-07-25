@@ -31,11 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class UserController
     {
-        internal static int GetUserIdByUserName(int PortalId, string UserName)
+        internal static int GetUserIdByUserName(int portalId, string userName)
         {
             try
             {
-                DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserByName(PortalId, UserName);
+                DotNetNuke.Entities.Users.UserInfo user = DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName);
                 return user != null ? user.UserID : -1;
             }
             catch (Exception ex)
@@ -45,23 +45,23 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public User GetUser(int PortalId, int ModuleId)
+        public User GetUser(int portalId, int moduleId)
         {
             User u = null;
             if (Thread.CurrentPrincipal.Identity.IsAuthenticated)
             {
                 if (HttpContext.Current == null)
                 {
-                    u = this.DNNGetCurrentUser(PortalId, ModuleId);
+                    u = this.DNNGetCurrentUser(portalId, moduleId);
                 }
                 else if (HttpContext.Current.Items["AFUserInfo"] != null)
                 {
                     u = (User)HttpContext.Current.Items["AFUserInfo"];
-                    u = this.FillProfile(PortalId, ModuleId, u);
+                    u = this.FillProfile(portalId, moduleId, u);
                 }
                 else
                 {
-                    u = this.DNNGetCurrentUser(PortalId, ModuleId);
+                    u = this.DNNGetCurrentUser(portalId, moduleId);
                 }
 
                 if (u != null)
@@ -81,13 +81,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public User DNNGetCurrentUser(int PortalId, int ModuleId)
+        public User DNNGetCurrentUser(int portalId, int moduleId)
         {
             DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
             User u = this.LoadUser(cu);
 
-            u = this.FillProfile(PortalId, ModuleId, u);
-            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
+            u = this.FillProfile(portalId, moduleId, u);
+            string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, portalId, moduleId, "CanApprove");
             if (!string.IsNullOrEmpty(fs))
             {
                 u.Profile.IsMod = true;
@@ -111,13 +111,13 @@ namespace DotNetNuke.Modules.ActiveForums
             return this.LoadUser(dnnUser);
         }
 
-        public User GetUser(int PortalId, int ModuleId, int userId)
+        public User GetUser(int portalId, int moduleId, int userId)
         {
-            User u = this.GetDNNUser(PortalId, userId);
+            User u = this.GetDNNUser(portalId, userId);
             if (u != null)
             {
-                u = this.FillProfile(PortalId, ModuleId, u);
-                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
+                u = this.FillProfile(portalId, moduleId, u);
+                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, portalId, moduleId, "CanApprove");
                 if (!string.IsNullOrEmpty(fs))
                 {
                     u.Profile.IsMod = true;
@@ -131,13 +131,13 @@ namespace DotNetNuke.Modules.ActiveForums
             return u;
         }
 
-        public User GetUser(int PortalId, int ModuleId, string userName)
+        public User GetUser(int portalId, int moduleId, string userName)
         {
-            User u = this.GetDNNUser(PortalId, userName);
+            User u = this.GetDNNUser(portalId, userName);
             if (u != null)
             {
-                u = this.FillProfile(PortalId, ModuleId, u);
-                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, PortalId, ModuleId, "CanApprove");
+                u = this.FillProfile(portalId, moduleId, u);
+                string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(u.UserRoles, portalId, moduleId, "CanApprove");
                 if (!string.IsNullOrEmpty(fs) || u.IsSuperUser || u.IsAdmin)
                 {
                     u.Profile.IsMod = true;
@@ -151,20 +151,20 @@ namespace DotNetNuke.Modules.ActiveForums
             return u;
         }
 
-        public User FillProfile(int PortalId, int ModuleId, User u)
+        public User FillProfile(int portalId, int moduleId, User u)
         {
             if (u != null && u.UserId > 0)
             {
-                u.Profile = new UserProfileController().Profiles_Get(PortalId, ModuleId, u.UserId);
+                u.Profile = new UserProfileController().Profiles_Get(portalId, moduleId, u.UserId);
             }
 
             return u;
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use UserProfileController.Profiles_Get().")]
-        public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
+        public UserProfileInfo Profiles_Get(int portalId, int moduleId, int userId)
         {
-            return new UserProfileController().Profiles_Get(PortalId, ModuleId, UserId);
+            return new UserProfileController().Profiles_Get(portalId, moduleId, userId);
         }
 
         internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
@@ -200,10 +200,10 @@ namespace DotNetNuke.Modules.ActiveForums
             return u;
         }
 
-        private string GetRoleIds(UserInfo u, int PortalId)
+        private string GetRoleIds(UserInfo u, int portalId)
         {
             string RoleIds = string.Empty;
-            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: PortalId))
+            foreach (DotNetNuke.Security.Roles.RoleInfo r in DotNetNuke.Security.Roles.RoleController.Instance.GetRoles(portalId: portalId))
             {
                 string roleName = r.RoleName;
                 foreach (string role in u.Roles)

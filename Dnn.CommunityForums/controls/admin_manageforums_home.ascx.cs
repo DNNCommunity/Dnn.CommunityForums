@@ -143,9 +143,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        private string RenderSpacer(int Height, int Width)
+        private string RenderSpacer(int height, int width)
         {
-            return "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + Height + "\" width=\"" + Width + "\" alt=\"-\" />";
+            return "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + height + "\" width=\"" + width + "\" alt=\"-\" />";
         }
 
         private int GetGroupCount(DataTable dt)
@@ -164,13 +164,13 @@ namespace DotNetNuke.Modules.ActiveForums
             return i;
         }
 
-        private int GetGroupForumCount(DataTable dt, int GroupId)
+        private int GetGroupForumCount(DataTable dt, int groupId)
         {
             int i = 0;
             string tmpGroup = string.Empty;
             foreach (DataRow row in dt.Rows)
             {
-                if (Convert.ToInt32(row["ForumGroupId"]) == GroupId && Convert.ToInt32(row["ParentForumId"]) == 0)
+                if (Convert.ToInt32(row["ForumGroupId"]) == groupId && Convert.ToInt32(row["ParentForumId"]) == 0)
                 {
                     i += 1;
                 }
@@ -212,12 +212,12 @@ namespace DotNetNuke.Modules.ActiveForums
             return sb.ToString();
         }
 
-        private int HasSubForums(int ForumId, DataTable dt)
+        private int HasSubForums(int forumId, DataTable dt)
         {
             int subCount = 0;
             foreach (DataRow row in dt.Rows)
             {
-                if (Convert.ToInt32(row["ParentForumId"]) == ForumId)
+                if (Convert.ToInt32(row["ParentForumId"]) == forumId)
                 {
                     subCount += 1;
                 }

@@ -67,13 +67,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return this.repo.Find("WHERE TopicId = @0", topicId).Count();
         }
 
-        public int Rate(int userId, int topicId, int rating, string IpAddress)
+        public int Rate(int userId, int topicId, int rating, string ipAddress)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicRatingInfo topicRating = this.GetForTopicAndUser(userId: userId, topicId: topicId).FirstOrDefault();
             if (topicRating != null)
             {
                 topicRating.Rating = rating;
-                topicRating.IPAddress = IpAddress;
+                topicRating.IPAddress = ipAddress;
                 topicRating.DateUpdated = DateTime.UtcNow;
                 this.repo.Update(topicRating);
             }
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 topicRating.TopicId = topicId;
                 topicRating.UserId = userId;
                 topicRating.Rating = rating;
-                topicRating.IPAddress = IpAddress;
+                topicRating.IPAddress = ipAddress;
                 topicRating.DateAdded = DateTime.UtcNow;
                 topicRating.DateUpdated = DateTime.UtcNow;
                 this.repo.Insert(topicRating);

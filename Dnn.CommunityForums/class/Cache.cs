@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private static int settingsCacheMinutes = 10;
         private static int contentCacheMinutes = 2;
 
-        public static bool IsContentCachingEnabledForModule(int ModuleId)
+        public static bool IsContentCachingEnabledForModule(int moduleId)
         {
             return true;
 
@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums
             #endregion
         }
 
-        public static int ContentCachingTime(int ModuleId)
+        public static int ContentCachingTime(int moduleId)
         {
             return contentCacheMinutes;
 
@@ -101,38 +101,38 @@ namespace DotNetNuke.Modules.ActiveForums
             #endregion
         }
 
-        public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj)
+        public static void SettingsCacheStore(int moduleId, string cacheKey, object cacheObj)
         {
-            SettingsCacheStore(ModuleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheMinutes));
+            SettingsCacheStore(moduleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheMinutes));
         }
 
-        public static void ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)
+        public static void ContentCacheStore(int moduleId, string cacheKey, object cacheObj)
         {
-            if (IsContentCachingEnabledForModule(ModuleId))
+            if (IsContentCachingEnabledForModule(moduleId))
             {
-                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(ContentCachingTime(ModuleId)));
+                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(ContentCachingTime(moduleId)));
             }
         }
 
-        public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)
+        public static void SettingsCacheStore(int moduleId, string cacheKey, object cacheObj, DateTime expiration)
         {
             try
             {
-                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, Expiration);
+                Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, expiration);
             }
             catch
             {
             }
         }
 
-        public static object SettingsCacheRetrieve(int ModuleId, string cacheKey)
+        public static object SettingsCacheRetrieve(int moduleId, string cacheKey)
         {
             return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
         }
 
-        public static object ContentCacheRetrieve(int ModuleId, string cacheKey)
+        public static object ContentCacheRetrieve(int moduleId, string cacheKey)
         {
-            if (IsContentCachingEnabledForModule(ModuleId))
+            if (IsContentCachingEnabledForModule(moduleId))
             {
                 return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
             }
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static void SettingsCacheClear(int ModuleId, string cacheKey)
+        public static void SettingsCacheClear(int moduleId, string cacheKey)
         {
             try
             {
@@ -153,9 +153,9 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static void ContentCacheClear(int ModuleId, string cacheKey)
+        public static void ContentCacheClear(int moduleId, string cacheKey)
         {
-            if (IsContentCachingEnabledForModule(ModuleId))
+            if (IsContentCachingEnabledForModule(moduleId))
             {
                 try
                 {
@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static void CacheClearPrefix(int ModuleId, string cacheKeyPrefix)
+        public static void CacheClearPrefix(int moduleId, string cacheKeyPrefix)
         {
             try
             {
@@ -178,11 +178,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static void ClearAllCache(int ModuleId)
+        public static void ClearAllCache(int moduleId)
         {
             try
             {
-                CacheClearPrefix(ModuleId, string.Format(CacheKeys.CacheModulePrefix, ModuleId));
+                CacheClearPrefix(moduleId, string.Format(CacheKeys.CacheModulePrefix, moduleId));
             }
             catch (Exception ex)
             {
@@ -191,20 +191,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        public static void ClearAllCacheForTabId(int TabId)
+        public static void ClearAllCacheForTabId(int tabId)
         {
-            Common.Utilities.DataCache.ClearModuleCache(TabId);
+            Common.Utilities.DataCache.ClearModuleCache(tabId);
 
         }
 
-        public static void ClearSettingsCache(int ModuleId)
+        public static void ClearSettingsCache(int moduleId)
         {
             try
             {
-                object obj = SettingsCacheRetrieve(ModuleId, cacheKey: string.Format(CacheKeys.MainSettings, ModuleId));
+                object obj = SettingsCacheRetrieve(moduleId, cacheKey: string.Format(CacheKeys.MainSettings, moduleId));
                 if (obj != null)
                 {
-                    SettingsCacheClear(ModuleId, cacheKey: string.Format(CacheKeys.MainSettings, ModuleId));
+                    SettingsCacheClear(moduleId, cacheKey: string.Format(CacheKeys.MainSettings, moduleId));
                 }
             }
             catch
@@ -213,15 +213,15 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public static Hashtable GetSettings(int ModuleId, string SettingsKey, string CacheKey, bool UseCache)
+        public static Hashtable GetSettings(int moduleId, string settingsKey, string cacheKey, bool useCache)
         {
             var ht = new Hashtable();
-            if (UseCache)
+            if (useCache)
             {
-                object obj = SettingsCacheRetrieve(ModuleId, CacheKey);
+                object obj = SettingsCacheRetrieve(moduleId, cacheKey);
                 if (obj == null)
                 {
-                    IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
+                    IDataReader dr = DataProvider.Instance().Settings_List(moduleId, settingsKey);
                     while (dr.Read())
                     {
                         if (!ht.ContainsKey(dr["SettingName"].ToString()))
@@ -233,7 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
 
                     dr.Close();
-                    SettingsCacheStore(ModuleId, CacheKey, ht);
+                    SettingsCacheStore(moduleId, cacheKey, ht);
                 }
                 else
                 {
@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                IDataReader dr = DataProvider.Instance().Settings_List(ModuleId, SettingsKey);
+                IDataReader dr = DataProvider.Instance().Settings_List(moduleId, settingsKey);
                 while (dr.Read())
                 {
                     if (!ht.ContainsKey(dr["SettingName"].ToString()))

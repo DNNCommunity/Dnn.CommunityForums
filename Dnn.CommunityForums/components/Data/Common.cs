@@ -30,25 +30,25 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     {
         #region Security
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
+        public void SavePermissionSet(int permissionSetId, string permissionSet) => SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Permissions_Save", permissionSetId, permissionSet);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
-        public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Permissions_GetRoles", PortalId);
+        public IDataReader GetRoles(int portalId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Permissions_GetRoles", portalId);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
-        public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, PermissionsId, requestedAccess);
+        public string GetPermSet(int permissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, permissionsId, requestedAccess);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
-        public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, PermissionsId, requestedAccess, PermSet);
+        public string SavePermSet(int permissionsId, string requestedAccess, string permSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, permissionsId, requestedAccess, permSet);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
-        public int CreatePermSet(string AdminRoleId) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId, -1).PermissionsId;
+        public int CreatePermSet(string adminRoleId) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(adminRoleId, -1).PermissionsId;
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
-        public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(ModuleId, ForumIds, UserRoles);
+        public string CheckForumIdsForView(int moduleId, string forumIds, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(moduleId, forumIds, userRoles);
 
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum().")]
-        public string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(ModuleId, ForumId, UserRoles);
+        public string WhichRolesCanViewForum(int moduleId, int forumId, string userRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(moduleId, forumId, userRoles);
 
         #endregion
 
@@ -101,31 +101,31 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         #endregion
 
         #region TagCloud
-        public IDataReader TagCloud_Get(int PortalId, int ModuleId, string ForumIds, int Rows)
+        public IDataReader TagCloud_Get(int portalId, int moduleId, string forumIds, int rows)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UI_TagCloud", portalId, moduleId, forumIds, rows);
         }
 
         #endregion
         #region Tags
-        public int Tag_GetIdByName(int PortalId, int ModuleId, string TagName, bool IsCategory)
+        public int Tag_GetIdByName(int portalId, int moduleId, string tagName, bool isCategory)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Tags_GetByName", portalId, moduleId, tagName.Replace("-", " ").ToLowerInvariant(), isCategory));
         }
 
         #endregion
         #region TopMembers
-        public IDataReader TopMembers_Get(int PortalId, int Rows)
+        public IDataReader TopMembers_Get(int portalId, int rows)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UI_TopMembers", PortalId, Rows);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UI_TopMembers", portalId, rows);
         }
 
         #endregion
         #region CustomURLS
-        public Dictionary<string, string> GetPrefixes(int PortalId)
+        public Dictionary<string, string> GetPrefixes(int portalId)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
-            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Forums_GetPrefixes", PortalId))
+            using (IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Forums_GetPrefixes", portalId))
             {
                 while (dr.Read())
                 {
@@ -150,11 +150,11 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             return dict;
         }
 
-        public string GetUrl(int ModuleId, int ForumGroupId, int ForumId, int TopicId, int UserId, int ContentId)
+        public string GetUrl(int moduleId, int forumGroupId, int forumId, int topicId, int userId, int contentId)
         {
             try
             {
-                return Convert.ToString(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Util_GetUrl", ModuleId, ForumGroupId, ForumId, TopicId, UserId, ContentId));
+                return Convert.ToString(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Util_GetUrl", moduleId, forumGroupId, forumId, topicId, userId, contentId));
             }
             catch (Exception ex)
             {
@@ -162,44 +162,44 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             }
         }
 
-        public IDataReader FindByURL(int PortalId, string URL)
+        public IDataReader FindByURL(int portalId, string uRL)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "FindByURL", PortalId, URL);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "FindByURL", portalId, uRL);
         }
 
-        public IDataReader URLSearch(int PortalId, string URL)
+        public IDataReader URLSearch(int portalId, string uRL)
         {
-            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "URL_Search", PortalId, URL);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "URL_Search", portalId, uRL);
         }
 
-        public void ArchiveURL(int PortalId, int ForumGroupId, int ForumId, int TopicId, string URL)
+        public void ArchiveURL(int portalId, int forumGroupId, int forumId, int topicId, string uRL)
         {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "URL_Archive", PortalId, ForumGroupId, ForumId, TopicId, URL);
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "URL_Archive", portalId, forumGroupId, forumId, topicId, uRL);
         }
 
-        public bool CheckForumURL(int PortalId, int ModuleId, string VanityName, int ForumId, int ForumGroupId)
+        public bool CheckForumURL(int portalId, int moduleId, string vanityName, int forumId, int forumGroupId)
         {
             try
             {
-                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
-                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(ForumGroupId, ModuleId);
+                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(moduleId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(forumGroupId, moduleId);
                 if (!string.IsNullOrEmpty(fg.PrefixURL))
                 {
-                    VanityName = fg.PrefixURL + "/" + VanityName;
+                    vanityName = fg.PrefixURL + "/" + vanityName;
                 }
 
                 if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
                 {
-                    VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
+                    vanityName = _mainSettings.PrefixURLBase + "/" + vanityName;
                 }
 
                 int tmpForumId = -1;
-                tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "URL_CheckForumVanity", PortalId, VanityName));
-                if (tmpForumId > 0 && ForumId == -1)
+                tmpForumId = Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "URL_CheckForumVanity", portalId, vanityName));
+                if (tmpForumId > 0 && forumId == -1)
                 {
                     return false;
                 }
-                else if (tmpForumId == ForumId && ForumId > 0)
+                else if (tmpForumId == forumId && forumId > 0)
                 {
                     return true;
                 }
@@ -217,23 +217,23 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             return false;
         }
 
-        public bool CheckGroupURL(int PortalId, int ModuleId, string VanityName, int ForumGroupId)
+        public bool CheckGroupURL(int portalId, int moduleId, string vanityName, int forumGroupId)
         {
             try
             {
-                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(ModuleId);
+                SettingsInfo _mainSettings = SettingsBase.GetModuleSettings(moduleId);
                 if (!string.IsNullOrEmpty(_mainSettings.PrefixURLBase))
                 {
-                    VanityName = _mainSettings.PrefixURLBase + "/" + VanityName;
+                    vanityName = _mainSettings.PrefixURLBase + "/" + vanityName;
                 }
 
                 int tmpForumGroupId = -1;
-                tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "URL_CheckGroupVanity", PortalId, VanityName));
-                if (tmpForumGroupId > 0 && ForumGroupId == -1)
+                tmpForumGroupId = Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "URL_CheckGroupVanity", portalId, vanityName));
+                if (tmpForumGroupId > 0 && forumGroupId == -1)
                 {
                     return false;
                 }
-                else if (tmpForumGroupId == ForumGroupId && ForumGroupId > 0)
+                else if (tmpForumGroupId == forumGroupId && forumGroupId > 0)
                 {
                     return true;
                 }

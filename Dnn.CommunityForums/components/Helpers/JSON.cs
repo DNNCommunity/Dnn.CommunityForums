@@ -92,12 +92,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 return builder.ToString();
             }
 
-            public static object ConvertFromJSONToObject(string array, object InfoObject)
+            public static object ConvertFromJSONToObject(string array, object infoObject)
             {
                 Dictionary<string, string> dict = ConvertFromJSONAssoicativeArray(array);
                 if (dict.Count > 0)
                 {
-                    Type myType = InfoObject.GetType();
+                    Type myType = infoObject.GetType();
                     System.Reflection.PropertyInfo[] myProperties = myType.GetProperties(System.Reflection.BindingFlags.Public | BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                     string sKey = string.Empty;
                     string sValue = string.Empty;
@@ -151,14 +151,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                             if (obj != null)
                             {
-                                InfoObject.GetType().GetProperty(pItem.Name).SetValue(InfoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
+                                infoObject.GetType().GetProperty(pItem.Name).SetValue(infoObject, obj, BindingFlags.Public | BindingFlags.NonPublic, null, null, null);
                             }
 
                         }
                     }
                 }
 
-                return InfoObject;
+                return infoObject;
             }
 
             public static List<string> ConvertFromJSONArray(string array)

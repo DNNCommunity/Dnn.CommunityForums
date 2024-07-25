@@ -113,9 +113,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             this.repo.Delete(item);
         }
 
-        internal void DeleteByModuleId(int ModuleId)
+        internal void DeleteByModuleId(int moduleId)
         {
-            this.repo.Delete("WHERE (ModuleId = @0)", ModuleId);
+            this.repo.Delete("WHERE (ModuleId = @0)", moduleId);
         }
 
         internal int Count(string sqlCondition, params object[] args)

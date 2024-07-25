@@ -55,12 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         }
 
-        public ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)
+        public ToggleSubscribe(int moduleId, int forumId, int topicId, int toggleMode)
         {
-            this.ToggleMode = ToggleMode;
-            this.ModuleId = ModuleId;
-            this.ForumId = ForumId;
-            this.TopicId = TopicId;
+            this.ToggleMode = toggleMode;
+            this.ModuleId = moduleId;
+            this.ForumId = forumId;
+            this.TopicId = topicId;
         }
 
         // amaf_topicSubscribe

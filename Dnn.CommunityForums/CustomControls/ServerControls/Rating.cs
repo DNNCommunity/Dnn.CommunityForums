@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 int rate = Convert.ToInt32(e.Parameter);
                 if (rate >= 1 && rate <= 5)
                 {
-                    this.RatingValue = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, IpAddress: HttpContext.Current.Request.UserHostAddress.ToString());
+                    this.RatingValue = new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: this.UserId, topicId: this.TopicId, rating: rate, ipAddress: HttpContext.Current.Request.UserHostAddress.ToString());
                 }
             }
 

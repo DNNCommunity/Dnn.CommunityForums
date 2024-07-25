@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class LocalizationUtils
     {
-        public bool SaveResource(string name, string resourceText, int PortalId)
+        public bool SaveResource(string name, string resourceText, int portalId)
         {
             XmlDocument portalResources = new XmlDocument();
             XmlDocument defaultResources = new XmlDocument();
@@ -40,15 +40,15 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                defaultResources.Load(this.GetResourceFile("", Localization.SystemLocale, PortalId));
-                filename = this.GetResourceFile("Portal", Localization.SystemLocale, PortalId);
+                defaultResources.Load(this.GetResourceFile("", Localization.SystemLocale, portalId));
+                filename = this.GetResourceFile("Portal", Localization.SystemLocale, portalId);
                 if (File.Exists(filename))
                 {
                     portalResources.Load(filename);
                 }
                 else
                 {
-                    portalResources.Load(this.GetResourceFile("", Localization.SystemLocale, PortalId));
+                    portalResources.Load(this.GetResourceFile("", Localization.SystemLocale, portalId));
                 }
 
                 this.UpdateResourceFileNode(portalResources, name, resourceText);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        public string GetResourceFile(string type, string language, int PortalId)
+        public string GetResourceFile(string type, string language, int portalId)
         {
             string resourcefilename = Globals.SharedResourceFile;
             if (language != Localization.SystemLocale)
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (type == "Portal")
             {
-                resourcefilename = resourcefilename.Substring(0, resourcefilename.Length - 5) + "." + "Portal-" + PortalId.ToString() + ".resx";
+                resourcefilename = resourcefilename.Substring(0, resourcefilename.Length - 5) + "." + "Portal-" + portalId.ToString() + ".resx";
             }
 
             return DotNetNuke.Modules.ActiveForums.Utilities.MapPath(resourcefilename);

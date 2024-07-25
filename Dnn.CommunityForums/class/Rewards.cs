@@ -52,23 +52,23 @@ namespace DotNetNuke.Modules.ActiveForums
             return this.Reward_Get(reward.PortalId, reward.ModuleId, rankId);
         }
 
-        public void Reward_Delete(int PortalId, int ModuleId, int RankId)
+        public void Reward_Delete(int portalId, int moduleId, int rankId)
         {
-            DataProvider.Instance().Ranks_Delete(PortalId, ModuleId, RankId);
+            DataProvider.Instance().Ranks_Delete(portalId, moduleId, rankId);
         }
 
-        public RewardInfo Reward_Get(int PortalId, int ModuleID, int RankId)
+        public RewardInfo Reward_Get(int portalId, int moduleID, int rankId)
         {
             var ri = new RewardInfo();
-            IDataReader dr = DataProvider.Instance().Ranks_Get(PortalId, ModuleID, RankId);
+            IDataReader dr = DataProvider.Instance().Ranks_Get(portalId, moduleID, rankId);
 
             while (dr.Read())
             {
                 ri.Display = dr["Display"].ToString();
                 ri.MaxPosts = Convert.ToInt32(dr["MaxPosts"]);
                 ri.MinPosts = Convert.ToInt32(dr["MinPosts"]);
-                ri.ModuleId = ModuleID;
-                ri.PortalId = PortalId;
+                ri.ModuleId = moduleID;
+                ri.PortalId = portalId;
                 ri.RankId = Convert.ToInt32(dr["RankId"]);
                 ri.RankName = Convert.ToString(dr["RankName"]);
             }
@@ -78,32 +78,32 @@ namespace DotNetNuke.Modules.ActiveForums
             return ri;
         }
 
-        public List<RewardInfo> Reward_List(int PortalId, int ModuleId, bool UseCache)
+        public List<RewardInfo> Reward_List(int portalId, int moduleId, bool useCache)
         {
-            string cacheKey = string.Format(CacheKeys.Rewards, ModuleId.ToString());
+            string cacheKey = string.Format(CacheKeys.Rewards, moduleId.ToString());
             List<RewardInfo> rl;
 
-            if (UseCache)
+            if (useCache)
             {
-                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(ModuleId, cacheKey);
+                rl = (List<RewardInfo>)DataCache.SettingsCacheRetrieve(moduleId, cacheKey);
                 if (rl == null)
                 {
-                    rl = this.Reward_List(PortalId, ModuleId);
-                    DataCache.SettingsCacheStore(ModuleId, cacheKey, rl);
+                    rl = this.Reward_List(portalId, moduleId);
+                    DataCache.SettingsCacheStore(moduleId, cacheKey, rl);
                 }
             }
             else
             {
-                rl = this.Reward_List(PortalId, ModuleId);
+                rl = this.Reward_List(portalId, moduleId);
             }
 
             return rl;
         }
 
-        public List<RewardInfo> Reward_List(int PortalId, int ModuleId)
+        public List<RewardInfo> Reward_List(int portalId, int moduleId)
         {
             var rl = new List<RewardInfo>();
-            IDataReader dr = DataProvider.Instance().Ranks_List(PortalId, ModuleId);
+            IDataReader dr = DataProvider.Instance().Ranks_List(portalId, moduleId);
 
             dr.Read();
             dr.NextResult();
@@ -115,8 +115,8 @@ namespace DotNetNuke.Modules.ActiveForums
                     Display = Convert.ToString(dr["Display"]),
                     MaxPosts = Convert.ToInt32(dr["MaxPosts"]),
                     MinPosts = Convert.ToInt32(dr["MinPosts"]),
-                    ModuleId = ModuleId,
-                    PortalId = PortalId,
+                    ModuleId = moduleId,
+                    PortalId = portalId,
                     RankId = Convert.ToInt32(dr["RankId"]),
                     RankName = Convert.ToString(dr["RankName"])
                 };

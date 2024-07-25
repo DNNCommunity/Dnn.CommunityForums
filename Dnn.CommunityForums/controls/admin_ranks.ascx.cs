@@ -56,9 +56,9 @@ namespace DotNetNuke.Modules.ActiveForums
             e.Item[4] = this.GetDisplay(e.Item[4].ToString(), e.Item[1].ToString());
         }
 
-        public string GetDisplay(string Display, string RankName)
+        public string GetDisplay(string display, string rankName)
         {
-            return "<img src=\"" + this.HostURL + Display.Replace("activeforums/Ranks", "ActiveForums/images/ranks") + "\" border=\"0\" alt=\"" + RankName + "\" />";
+            return "<img src=\"" + this.HostURL + display.Replace("activeforums/Ranks", "ActiveForums/images/ranks") + "\" border=\"0\" alt=\"" + rankName + "\" />";
         }
 
         private void BindRankImages()

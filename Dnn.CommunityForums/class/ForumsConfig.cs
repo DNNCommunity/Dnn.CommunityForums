@@ -52,25 +52,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
 
-        public bool ForumsInit(int PortalId, int ModuleId)
+        public bool ForumsInit(int portalId, int moduleId)
         {
             try
             {
                 // Initial Settings
-                this.LoadSettings(PortalId, ModuleId);
+                this.LoadSettings(portalId, moduleId);
                 // Add Default Templates
-                this.LoadTemplates(PortalId, ModuleId);
+                this.LoadTemplates(portalId, moduleId);
                 // Add Default Status
-                this.LoadFilters(PortalId, ModuleId);
+                this.LoadFilters(portalId, moduleId);
                 // Add Default Steps
-                this.LoadRanks(PortalId, ModuleId);
+                this.LoadRanks(portalId, moduleId);
                 // Add Default Forums
-                this.LoadDefaultForums(PortalId, ModuleId);
+                this.LoadDefaultForums(portalId, moduleId);
 
                 this.Install_Or_Upgrade_MoveTemplates();
 
                 // templates are loaded; map new forumview template id
-                this.UpdateForumViewTemplateId(PortalId, ModuleId);
+                this.UpdateForumViewTemplateId(portalId, moduleId);
 
                 // Create "User Banned" core messaging notification type new in 08.01.00
                 ForumsConfig.Install_BanUser_NotificationType_080100();
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void LoadSettings(int PortalId, int ModuleId)
+        private void LoadSettings(int portalId, int moduleId)
         {
             try
             {
@@ -101,19 +101,19 @@ namespace DotNetNuke.Modules.ActiveForums
                         int i;
                         for (i = 0; i < xNodeList.Count; i++)
                         {
-                            objModules.UpdateModuleSetting(ModuleId, xNodeList[i].Attributes["name"].Value, xNodeList[i].Attributes["value"].Value);
+                            objModules.UpdateModuleSetting(moduleId, xNodeList[i].Attributes["name"].Value, xNodeList[i].Attributes["value"].Value);
 
                         }
                     }
                 }
 
-                objModules.UpdateModuleSetting(ModuleId, SettingKeys.IsInstalled, "True");
-                objModules.UpdateModuleSetting(ModuleId, "NeedsConvert", "False");
+                objModules.UpdateModuleSetting(moduleId, SettingKeys.IsInstalled, "True");
+                objModules.UpdateModuleSetting(moduleId, "NeedsConvert", "False");
                 try
                 {
                     System.Globalization.DateTimeFormatInfo nfi = new System.Globalization.CultureInfo("en-US", true).DateTimeFormat;
 
-                    objModules.UpdateModuleSetting(ModuleId, SettingKeys.InstallDate, DateTime.UtcNow.ToString(new System.Globalization.CultureInfo("en-US")));
+                    objModules.UpdateModuleSetting(moduleId, SettingKeys.InstallDate, DateTime.UtcNow.ToString(new System.Globalization.CultureInfo("en-US")));
                 }
                 catch (Exception ex)
                 {
@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void LoadTemplates(int PortalId, int ModuleId)
+        private void LoadTemplates(int portalId, int moduleId)
         {
             try
             {
@@ -149,8 +149,8 @@ namespace DotNetNuke.Modules.ActiveForums
                                                  (Templates.TemplateTypes)
                                                  Enum.Parse(typeof(Templates.TemplateTypes), xNodeList[i].Attributes["templatetype"].Value),
                                 IsSystem = true,
-                                PortalId = PortalId,
-                                ModuleId = ModuleId,
+                                PortalId = portalId,
+                                ModuleId = moduleId,
                                 Title = xNodeList[i].Attributes["templatetitle"].Value,
                                 Subject = xNodeList[i].Attributes["templatesubject"].Value,
                                 Template = Utilities.GetFileContent(xNodeList[i].Attributes["templatefile"].Value)
@@ -165,12 +165,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void LoadFilters(int PortalId, int ModuleId)
+        private void LoadFilters(int portalId, int moduleId)
         {
-            DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(PortalId, ModuleId);
+            DotNetNuke.Modules.ActiveForums.Controllers.FilterController.ImportFilter(portalId, moduleId);
         }
 
-        private void LoadRanks(int PortalId, int ModuleId)
+        private void LoadRanks(int portalId, int moduleId)
         {
             try
             {
@@ -185,7 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         int i;
                         for (i = 0; i < xNodeList.Count; i++)
                         {
-                            DataProvider.Instance().Ranks_Save(PortalId, ModuleId, -1, xNodeList[i].Attributes["rankname"].Value, Convert.ToInt32(xNodeList[i].Attributes["rankmin"].Value), Convert.ToInt32(xNodeList[i].Attributes["rankmax"].Value), xNodeList[i].Attributes["rankimage"].Value);
+                            DataProvider.Instance().Ranks_Save(portalId, moduleId, -1, xNodeList[i].Attributes["rankname"].Value, Convert.ToInt32(xNodeList[i].Attributes["rankmin"].Value), Convert.ToInt32(xNodeList[i].Attributes["rankmax"].Value), xNodeList[i].Attributes["rankimage"].Value);
                         }
                     }
                 }
@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void LoadDefaultForums(int PortalId, int ModuleId)
+        private void LoadDefaultForums(int portalId, int moduleId)
         {
             var xDoc = new System.Xml.XmlDocument();
             xDoc.Load(this.sPath);
@@ -209,18 +209,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     // since templates are loaded, get template ids and attach to forum settings
                     var tc = new TemplateController();
-                    int ProfileInfoTemplateId = tc.Template_Get(TemplateName: "ProfileInfo", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                    int ReplyEditorTemplateId = tc.Template_Get(TemplateName: "ReplyEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                    int QuickReplyTemplateId = tc.Template_Get(TemplateName: "QuickReply", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                    int TopicEditorTemplateId = tc.Template_Get(TemplateName: "TopicEditor", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                    int TopicsViewTemplateId = tc.Template_Get(TemplateName: "TopicsView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
-                    int TopicViewTemplateId = tc.Template_Get(TemplateName: "TopicView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+                    int ProfileInfoTemplateId = tc.Template_Get(templateName: "ProfileInfo", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int ReplyEditorTemplateId = tc.Template_Get(templateName: "ReplyEditor", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int QuickReplyTemplateId = tc.Template_Get(templateName: "QuickReply", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int TopicEditorTemplateId = tc.Template_Get(templateName: "TopicEditor", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int TopicsViewTemplateId = tc.Template_Get(templateName: "TopicsView", portalId: portalId, moduleId: moduleId).TemplateId;
+                    int TopicViewTemplateId = tc.Template_Get(templateName: "TopicView", portalId: portalId, moduleId: moduleId).TemplateId;
 
                     for (int i = 0; i < xNodeList.Count; i++)
                     {
                         var gi = new DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo
                         {
-                            ModuleId = ModuleId,
+                            ModuleId = moduleId,
                             ForumGroupId = -1,
                             GroupName = xNodeList[i].Attributes["groupname"].Value,
                             PrefixURL = xNodeList[i].Attributes["prefixurl"].Value,
@@ -231,8 +231,8 @@ namespace DotNetNuke.Modules.ActiveForums
                             PermissionsId = -1
                         };
                         var gc = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController();
-                        int groupId = gc.Groups_Save(PortalId, gi, true);
-                        gi = gc.GetById(groupId, ModuleId);
+                        int groupId = gc.Groups_Save(portalId, gi, true);
+                        gi = gc.GetById(groupId, moduleId);
                         string sKey = string.Concat("G:", groupId.ToString());
                         string sAllowHTML = "false";
                         if (xNodeList[i].Attributes["allowhtml"] != null)
@@ -240,56 +240,56 @@ namespace DotNetNuke.Modules.ActiveForums
                             sAllowHTML = xNodeList[i].Attributes["allowhtml"].Value;
                         }
 
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicsTemplateId, Convert.ToString(TopicsViewTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicTemplateId, Convert.ToString(TopicViewTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.UseFilter, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowLikes, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowEmoticons, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowScript, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IndexContent, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowRSS, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowAttach, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachCount, "3");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxSize, "1000");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicsTemplateId, Convert.ToString(TopicsViewTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicTemplateId, Convert.ToString(TopicViewTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EmailAddress, string.Empty);
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.UseFilter, "true");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowPostIcon, "false");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowLikes, "true");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowEmoticons, "false");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowScript, "false");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.IndexContent, "true");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowRSS, "true");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowAttach, "true");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachCount, "3");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxSize, "1000");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachTypeAllowed, "txt,tiff,pdf,xls,xlsx,doc,docx,ppt,pptx");
                         // Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachStore, "FILESYSTEM");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AllowHTML, sAllowHTML);
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxHeight, "450");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachMaxWidth, "450");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachAllowBrowseSite, "true");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachHeight, "800");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.MaxAttachWidth, "800");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AttachInsertAllowed, "false");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ConvertingToJpegAllowed, "false");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AllowHTML, sAllowHTML);
                         if (sAllowHTML.ToLowerInvariant() == "true")
                         {
-                            Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
-                            Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+                            Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
+                            Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.HTMLEDITORPROVIDER).ToString());
                         }
                         else
                         {
-                            Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.TEXTBOX).ToString());
-                            Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.TEXTBOX).ToString());
+                            Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorType, ((int)EditorTypes.TEXTBOX).ToString());
+                            Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorMobile, ((int)EditorTypes.TEXTBOX).ToString());
                         }
 
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorHeight, "350");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorWidth, "99%");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.EditorStyle, "2");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(TopicEditorTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(ReplyEditorTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(QuickReplyTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.IsModerated, "false");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModApproveTemplateId, "0");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModRejectTemplateId, "0");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModMoveTemplateId, "0");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModDeleteTemplateId, "0");
-                        Settings.SaveSetting(ModuleId, sKey, ForumSettingKeys.ModNotifyTemplateId, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorHeight, "350");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorWidth, "99%");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorToolbar, "bold,italic,underline,quote");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.EditorStyle, "2");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.TopicFormId, Convert.ToString(TopicEditorTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ReplyFormId, Convert.ToString(ReplyEditorTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.QuickReplyFormId, Convert.ToString(QuickReplyTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ProfileTemplateId, Convert.ToString(ProfileInfoTemplateId));
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.IsModerated, "false");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.DefaultTrustLevel, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.AutoTrustLevel, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModApproveTemplateId, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModRejectTemplateId, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModMoveTemplateId, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModDeleteTemplateId, "0");
+                        Settings.SaveSetting(moduleId, sKey, ForumSettingKeys.ModNotifyTemplateId, "0");
                         if (groupId != -1)
                         {
                             if (xNodeList[i].HasChildNodes)
@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 {
                                     var fi = new DotNetNuke.Modules.ActiveForums.Entities.ForumInfo();
                                     fi.ForumID = -1;
-                                    fi.ModuleId = ModuleId;
+                                    fi.ModuleId = moduleId;
                                     fi.ForumGroupId = groupId;
                                     fi.ParentForumId = 0;
                                     fi.ForumName = cNodes[c].Attributes["forumname"].Value;
@@ -310,7 +310,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     fi.Hidden = cNodes[c].Attributes["hidden"].Value == "1";
                                     fi.SortOrder = c;
                                     fi.PermissionsId = gi.PermissionsId;
-                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(PortalId, fi, true, true, true);
+                                    new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Forums_Save(portalId, fi, true, true, true);
                                 }
                             }
                         }
@@ -319,14 +319,14 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
+        private void UpdateForumViewTemplateId(int portalId, int moduleId)
         {
             try
             {
                 var tc = new TemplateController();
-                int ForumViewTemplateId = tc.Template_Get(TemplateName: "ForumView", PortalId: PortalId, ModuleId: ModuleId).TemplateId;
+                int ForumViewTemplateId = tc.Template_Get(templateName: "ForumView", portalId: portalId, moduleId: moduleId).TemplateId;
                 var objModules = new DotNetNuke.Entities.Modules.ModuleController();
-                objModules.UpdateModuleSetting(ModuleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId));
+                objModules.UpdateModuleSetting(moduleId, SettingKeys.ForumTemplateId, Convert.ToString(ForumViewTemplateId));
             }
             catch (Exception ex)
             {
@@ -486,7 +486,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string subject = Utilities.SafeConvertString(dr["Subject"]);
                     DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
                     DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo = tc.GetById(topicId);
-                    topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: portalId, ModuleId: moduleId, TopicId: topicId, subject: subject, forumInfo: forumInfo);
+                    topicInfo.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(portalId: portalId, moduleId: moduleId, topicId: topicId, subject: subject, forumInfo: forumInfo);
                     tc.Update(topicInfo);
                 }
 

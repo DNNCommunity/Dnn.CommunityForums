@@ -328,10 +328,10 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [HttpGet]
-        public HttpResponseMessage GetUserFileUrl(int FileId)
+        public HttpResponseMessage GetUserFileUrl(int fileId)
         {
             var fileManager = FileManager.Instance;
-            var file = fileManager.GetFile(FileId);
+            var file = fileManager.GetFile(fileId);
 
             if (file == null)
             {
@@ -360,12 +360,12 @@ namespace DotNetNuke.Modules.ActiveForums
         }*/
 
         [HttpGet]
-        public HttpResponseMessage GetTopicList(int ForumId)
+        public HttpResponseMessage GetTopicList(int forumId)
         {
             var portalSettings = this.PortalSettings;
             var userInfo = portalSettings.UserInfo;
 
-            DataSet ds = DataProvider.Instance().UI_TopicsView(portalSettings.PortalId, this.ActiveModule.ModuleID, ForumId, userInfo.UserID, 0, 20, userInfo.IsSuperUser, SortColumns.ReplyCreated);
+            DataSet ds = DataProvider.Instance().UI_TopicsView(portalSettings.PortalId, this.ActiveModule.ModuleID, forumId, userInfo.UserID, 0, 20, userInfo.IsSuperUser, SortColumns.ReplyCreated);
             if (ds.Tables.Count > 0)
             {
                 DataTable dtTopics = ds.Tables[3];

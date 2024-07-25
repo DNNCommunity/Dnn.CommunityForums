@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private void LoadForm(int TemplateId)
+        private void LoadForm(int templateId)
         {
 
             TemplateInfo ti = null;
             TemplateController tc = new TemplateController();
-            ti = tc.Template_Get(TemplateId);
+            ti = tc.Template_Get(templateId);
             if (ti != null)
             {
                 this.txtTitle.Text = ti.Title;

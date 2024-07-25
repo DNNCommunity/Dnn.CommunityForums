@@ -33,21 +33,21 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class ForumsDB : DataConfig
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId()")]
-        public int Forum_GetByTopicId(int TopicId) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(TopicId);
+        public int Forum_GetByTopicId(int topicId) => DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(topicId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForSocialGroup()")]
-        public IDataReader Forums_GetForSocialGroup(int PortalId, int SocialGroupId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "GetForumsForSocialGroup", SocialGroupId);
+        public IDataReader Forums_GetForSocialGroup(int portalId, int socialGroupId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "GetForumsForSocialGroup", socialGroupId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetById()")]
-        public IDataReader Forums_Get(int PortalId, int ModuleId, int ForumId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "ForumGet", PortalId, ModuleId, ForumId);
+        public IDataReader Forums_Get(int portalId, int moduleId, int forumId) => SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "ForumGet", portalId, moduleId, forumId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Get()")]
-        public IDataReader Forums_List(int PortalId, int ModuleId, int ForumGroupId, int ParentForumId, bool FillLastPost) => (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Forums_List", ModuleId, ForumGroupId, ParentForumId, FillLastPost);
+        public IDataReader Forums_List(int portalId, int moduleId, int forumGroupId, int parentForumId, bool fillLastPost) => (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Forums_List", moduleId, forumGroupId, parentForumId, fillLastPost);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForums()")]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums_List(int PortalId, int ModuleId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(ModuleId);
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection Forums_List(int portalId, int moduleId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForums(moduleId);
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumListXML()")]
-        public XmlDocument ForumListXML(int PortalId, int ModuleId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(PortalId, ModuleId);
+        public XmlDocument ForumListXML(int portalId, int moduleId) => new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(portalId, moduleId);
     }
 }

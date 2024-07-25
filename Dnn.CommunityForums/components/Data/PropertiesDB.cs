@@ -31,31 +31,31 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class PropertiesDB : Connection
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        internal IDataReader ListProperties(int PortalId, int ObjectType, int ObjectOwnerId)
+        internal IDataReader ListProperties(int portalId, int objectType, int objectOwnerId)
         {
-            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Properties_List", PortalId, ObjectType, ObjectOwnerId);
+            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Properties_List", portalId, objectType, objectOwnerId);
         }
 
-        internal IDataReader GetProperties(int PropertyId, int PortalId)
+        internal IDataReader GetProperties(int propertyId, int portalId)
         {
-            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Properties_Get", PropertyId, PortalId);
-        }
-
-        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        internal int SaveProperty(int PropertyId, int PortalId, int ObjectType, int ObjectOwnerId, string Name, string DataType, int DefaultAccessControl, bool IsHidden, bool IsRequired, bool IsReadOnly, string ValidationExpression, string EditTemplate, string ViewTemplate, int SortOrder, string DefaultValue)
-        {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Properties_Save", PropertyId, PortalId, ObjectType, ObjectOwnerId, Name, DataType, DefaultAccessControl, IsHidden, IsRequired, ValidationExpression, EditTemplate, ViewTemplate, IsReadOnly, SortOrder, DefaultValue));
-        }
-
-        internal void SortRebuild(int PortalId, int ObjectType, int ObjectOwnerId)
-        {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Properties_RebuildSort", PortalId, ObjectType, ObjectOwnerId);
+            return (IDataReader)SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "Properties_Get", propertyId, portalId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
-        internal void DeleteProperty(int PortalId, int PropertyId)
+        internal int SaveProperty(int propertyId, int portalId, int objectType, int objectOwnerId, string name, string dataType, int defaultAccessControl, bool isHidden, bool isRequired, bool isReadOnly, string validationExpression, string editTemplate, string viewTemplate, int sortOrder, string defaultValue)
         {
-            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Properties_DeleteDefTopicProp", PortalId, PropertyId);
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Properties_Save", propertyId, portalId, objectType, objectOwnerId, name, dataType, defaultAccessControl, isHidden, isRequired, validationExpression, editTemplate, viewTemplate, isReadOnly, sortOrder, defaultValue));
+        }
+
+        internal void SortRebuild(int portalId, int objectType, int objectOwnerId)
+        {
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Properties_RebuildSort", portalId, objectType, objectOwnerId);
+        }
+
+        [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
+        internal void DeleteProperty(int portalId, int propertyId)
+        {
+            SqlHelper.ExecuteNonQuery(this.connectionString, this.dbPrefix + "Properties_DeleteDefTopicProp", portalId, propertyId);
         }
     }
 }

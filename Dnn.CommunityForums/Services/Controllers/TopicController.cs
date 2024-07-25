@@ -86,20 +86,20 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <summary>
         /// Gets Subscriber count for a Topic
         /// </summary>
-        /// <param name="ForumId" type="int"></param>
-        /// <param name="TopicId" type="int"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="topicId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/SubscriberCount?ForumId=xxx&TopicId=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
-        public HttpResponseMessage SubscriberCount(int ForumId, int TopicId)
+        public HttpResponseMessage SubscriberCount(int forumId, int topicId)
         {
-            if (ForumId > 0 && TopicId > 0)
+            if (forumId > 0 && topicId > 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK,
                     new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(
-                        this.ActiveModule.PortalID, this.ForumModuleId, ForumId, TopicId));
+                        this.ActiveModule.PortalID, this.ForumModuleId, forumId, topicId));
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -109,19 +109,19 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <summary>
         /// Gets Subscriber count string for a Topic
         /// </summary>
-        /// <param name="ForumId" type="int"></param>
-        /// <param name="TopicId" type="int"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="topicId" type="int"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Forum/SubscriberCountString?ForumId=xxx&TopicId=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
-        public HttpResponseMessage SubscriberCountString(int ForumId, int TopicId)
+        public HttpResponseMessage SubscriberCountString(int forumId, int topicId)
         {
-            if (ForumId > 0)
+            if (forumId > 0)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK,
-                    $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(this.ActiveModule.PortalID, this.ForumModuleId, ForumId, TopicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
+                    $"{new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Count(this.ActiveModule.PortalID, this.ForumModuleId, forumId, topicId)} {Utilities.GetSharedResource("[RESX:TOPICSUBSCRIBERCOUNT]", false)}");
             }
 
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -216,21 +216,21 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 #pragma warning disable CS1570
         /// <summary>
         /// Loads a Topic
-        /// <param name="ForumId" type="int"></param>
-        /// <param name="TopicId" type="int"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="topicId" type="int"></param>
         /// <returns name="Topic" type="DotNetNuke.Modules.ActiveForums.Entities.TopicInfo"></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Load?ForumId=xxx&TopicId=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Read)]
-        public HttpResponseMessage Load(int ForumId, int TopicId)
+        public HttpResponseMessage Load(int forumId, int topicId)
         {
-            if (TopicId > 0 && ForumId > 0)
+            if (topicId > 0 && forumId > 0)
             {
-                if (ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, ForumId, SecureActions.Read, this.UserInfo))
+                if (ServicesHelper.IsAuthorized(this.PortalSettings.PortalId, this.ForumModuleId, forumId, SecureActions.Read, this.UserInfo))
                 {
-                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
+                    DotNetNuke.Modules.ActiveForums.Entities.TopicInfo t = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(topicId);
                     if (t != null)
                     {
                         return this.Request.CreateResponse(HttpStatusCode.OK, new object[] { t });
@@ -322,7 +322,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 {
                     string subject = Utilities.XSSFilter(dto.Topic.Content.Subject, true);
                     originalTopic.Content.Subject = subject;
-                    originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(PortalId: this.ActiveModule.PortalID, ModuleId: this.ForumModuleId, TopicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
+                    originalTopic.TopicUrl = DotNetNuke.Modules.ActiveForums.Controllers.UrlController.BuildTopicUrl(portalId: this.ActiveModule.PortalID, moduleId: this.ForumModuleId, topicId: topicId, subject: subject, forumInfo: originalTopic.Forum);
 
                     if (dto.Topic.IsLocked != originalTopic.IsLocked &&
                         (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Lock, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) ||

@@ -192,18 +192,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        public CategoriesList(int PortalId, int ModuleId)
+        public CategoriesList(int portalId, int moduleId)
         {
-            this.PortalId = PortalId;
-            this.ModuleId = ModuleId;
+            this.PortalId = portalId;
+            this.ModuleId = moduleId;
         }
 
-        public CategoriesList(int PortalId, int ModuleId, int ForumId, int ForumGroupId)
+        public CategoriesList(int portalId, int moduleId, int forumId, int forumGroupId)
         {
-            this.PortalId = PortalId;
-            this.ModuleId = ModuleId;
-            this.ForumId = ForumId;
-            this.ForumGroupId = ForumGroupId;
+            this.PortalId = portalId;
+            this.ModuleId = moduleId;
+            this.ForumId = forumId;
+            this.ForumGroupId = forumGroupId;
         }
 
         public string RenderView()
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sb.ToString();
         }
 
-        private bool IsSelected(int CategoryId) /* Category is stored in Tag table with 'isCategory' = true */
+        private bool IsSelected(int categoryId) /* Category is stored in Tag table with 'isCategory' = true */
         {
             if (string.IsNullOrEmpty(this.SelectedValues))
             {
@@ -304,7 +304,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     if (!string.IsNullOrEmpty(s))
                     {
-                        if (Utilities.SafeConvertInt(s.Trim()) == CategoryId)
+                        if (Utilities.SafeConvertInt(s.Trim()) == categoryId)
                         {
                             return true;
                         }

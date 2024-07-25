@@ -185,13 +185,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return sb.ToString();
         }
 
-        public XmlDocument GetForumListXML(int PortalId, int ModuleId)
+        public XmlDocument GetForumListXML(int portalId, int moduleId)
         {
             XmlDocument xDoc = new XmlDocument();
-            object obj = DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId));
+            object obj = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumListXml, moduleId));
             if (obj == null)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = this.GetForums(ModuleId);
+                DotNetNuke.Modules.ActiveForums.Entities.ForumCollection fc = this.GetForums(moduleId);
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append("<?xml version=\"1.0\" encoding=\"utf-8\" ?>");
                 sb.AppendLine();
@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 // Dim sXML As String = ds.GetXml()
                 xDoc.LoadXml(sb.ToString());
-                DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);
+                DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.ForumListXml, moduleId), xDoc);
             }
             else
             {
@@ -439,7 +439,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                                 continue;
                             }
 
-                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, PermissionsId: permissionsId, requestedAccess: requestedAccess, objectId: groupAdmin, objectType: 2);
+                            DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(moduleId, permissionsId: permissionsId, requestedAccess: requestedAccess, objectId: groupAdmin, objectType: 2);
                         }
                     }
 
@@ -505,16 +505,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return forumId;
         }
 
-        public static int Forum_GetByTopicId(int TopicId)
+        public static int Forum_GetByTopicId(int topicId)
         {
-            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>("activeforums_ForumGetByTopicId", TopicId);
+            return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>("activeforums_ForumGetByTopicId", topicId);
         }
 
-        public static DateTime Forum_GetLastReadTopicByUser(int ForumId, int UserId)
+        public static DateTime Forum_GetLastReadTopicByUser(int forumId, int userId)
         {
             try
             {
-                return DataContext.Instance().ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", ForumId, UserId).FirstOrDefault();
+                return DataContext.Instance().ExecuteQuery<DateTime>(System.Data.CommandType.Text, "SELECT LastAccessDate FROM {databaseOwner}{objectQualifier}activeforums_Forums_Tracking WHERE ForumId = @0 AND UserId = @1", forumId, userId).FirstOrDefault();
             }
             catch (Exception ex)
             {

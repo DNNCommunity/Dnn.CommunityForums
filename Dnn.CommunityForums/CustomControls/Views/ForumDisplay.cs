@@ -172,9 +172,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sOut;
         }
 
-        private string ParseForumRow(XmlNode fNode, string Template, string GroupName)
+        private string ParseForumRow(XmlNode fNode, string template, string groupName)
         {
-            string sForum = Template;
+            string sForum = template;
 
             int lasttopicid;
             int lastreplyid;
@@ -242,10 +242,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string sSubs = string.Empty;
             if (xNodeList.Count > 0)
             {
-                string sTemplate = TemplateUtils.GetTemplateSection(Template, "[SUBFORUMS]", "[/SUBFORUMS]");
+                string sTemplate = TemplateUtils.GetTemplateSection(template, "[SUBFORUMS]", "[/SUBFORUMS]");
                 foreach (XmlNode n in xNodeList)
                 {
-                    sSubs += this.ParseForumRow(n, sTemplate, GroupName);
+                    sSubs += this.ParseForumRow(n, sTemplate, groupName);
                 }
             }
 
@@ -256,26 +256,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return fc;
         }
 
-        private string GetForumLink(int ForumId, bool CanView)
+        private string GetForumLink(int forumId, bool canView)
         {
-            return this.GetForumLink(string.Empty, ForumId, CanView);
+            return this.GetForumLink(string.Empty, forumId, canView);
         }
 
-        private string GetForumLink(string Name, int ForumId, bool CanView)
+        private string GetForumLink(string name, int forumId, bool canView)
         {
             string sOut;
-            string[] Params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId };
-            if (CanView && Name != string.Empty)
+            string[] Params = { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId };
+            if (canView && name != string.Empty)
             {
-                sOut = "<a href=\"" + Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + ForumId }) + "\">" + Name + "</a>";
+                sOut = "<a href=\"" + Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }) + "\">" + name + "</a>";
             }
-            else if (CanView && Name == string.Empty)
+            else if (canView && name == string.Empty)
             {
                 return Utilities.NavigateURL(this.PageId, "", Params);
             }
             else
             {
-                sOut = Name;
+                sOut = name;
             }
 
             return sOut;
@@ -283,32 +283,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Public Methods
-        private string GetLastPostSubject(int LastPostID, int ParentPostID, int fid, string Subject, int Length)
+        private string GetLastPostSubject(int lastPostID, int parentPostID, int fid, string subject, int length)
         {
             string sOut = string.Empty;
-            int PostId = LastPostID;
-            Subject = Utilities.StripHTMLTag(Subject);
-            Subject = Subject.Replace("[", "&#91");
-            Subject = Subject.Replace("]", "&#93");
-            if (LastPostID != 0)
+            int PostId = lastPostID;
+            subject = Utilities.StripHTMLTag(subject);
+            subject = subject.Replace("[", "&#91");
+            subject = subject.Replace("]", "&#93");
+            if (lastPostID != 0)
             {
-                if (Subject.Length > Length)
+                if (subject.Length > length)
                 {
-                    Subject = Subject.Substring(0, Length) + "...";
+                    subject = subject.Substring(0, length) + "...";
                 }
 
                 string sURL;
-                if (ParentPostID == 0 || LastPostID == ParentPostID)
+                if (parentPostID == 0 || lastPostID == parentPostID)
                 {
                     sURL = Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + PostId });
                 }
                 else
                 {
-                    sURL = Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + ParentPostID, ParamKeys.ContentJumpId + "=" + PostId });
+                    sURL = Utilities.NavigateURL(this.PageId, "", new[] { ParamKeys.ForumId + "=" + fid, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + parentPostID, ParamKeys.ContentJumpId + "=" + PostId });
 
                 }
 
-                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(Subject) + "\" runat=\"server\" />";
+                sOut = "<af:link id=\"hypLastPostSubject" + fid + "\" NavigateUrl=\"" + sURL + "\" Text=\"" + System.Web.HttpUtility.HtmlEncode(subject) + "\" runat=\"server\" />";
             }
 
             return sOut;

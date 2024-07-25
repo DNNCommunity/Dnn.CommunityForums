@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
         #region Private Methods
-        private void GetControl(string view, string options, bool IsCallback)
+        private void GetControl(string view, string options, bool isCallback)
         {
             try
             {

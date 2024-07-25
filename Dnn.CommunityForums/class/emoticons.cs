@@ -28,15 +28,15 @@ namespace DotNetNuke.Modules.ActiveForums
     public class emoticons
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-        public string LoadEmoticons(EditorTypes Type, int ModuleId, string ImagePath)
+        public string LoadEmoticons(EditorTypes type, int moduleId, string imagePath)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, Type);
+            return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(moduleId, imagePath, type);
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
-        public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
+        public string RegisterEmotIcons(int moduleId, string imagePath, EditorTypes insertType)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, InsertType);
+            return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(moduleId, imagePath, insertType);
         }
     }
 }

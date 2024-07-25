@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.PrefTopicSubscribe = false;
         }
 
-        public UserProfileInfo(int UserId, int PortalId)
+        public UserProfileInfo(int userId, int portalId)
         {
             this.IsUserOnline = false;
             this.IsMod = false;
@@ -182,19 +182,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class UserProfileController
     {
-        public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
+        public UserProfileInfo Profiles_Get(int portalId, int moduleId, int userId)
         {
 
-            UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+            UserProfileInfo upi = (UserProfileInfo)DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId));
             if (upi == null)
             {
-                DataSet ds = DataProvider.Instance().Profiles_Get(PortalId, ModuleId, UserId);
+                DataSet ds = DataProvider.Instance().Profiles_Get(portalId, moduleId, userId);
                 if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
                 {
                     IDataReader dr;
                     dr = ds.CreateDataReader();
                     upi = CBO.FillObject<UserProfileInfo>(dr);
-                    DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId), upi);
+                    DataCache.SettingsCacheStore(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId), upi);
                 }
             }
 
@@ -208,15 +208,15 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use UserProfileController.Profiles_ClearCache(int ModuleId, int UserId)")]
-        public static void Profiles_ClearCache(int UserID)
+        public static void Profiles_ClearCache(int userID)
         {
             DataCache.CacheClearPrefix(-1, CacheKeys.CachePrefix);
 
         }
 
-        public static void Profiles_ClearCache(int ModuleId, int UserId)
+        public static void Profiles_ClearCache(int moduleId, int userId)
         {
-            DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId));
+            DataCache.SettingsCacheClear(moduleId, string.Format(CacheKeys.UserProfile, moduleId, userId));
         }
     }
     #endregion

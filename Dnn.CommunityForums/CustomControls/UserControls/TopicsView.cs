@@ -447,9 +447,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private void BindTopics(string TopicsTemplate)
+        private void BindTopics(string topicsTemplate)
         {
-            string sOutput = TopicsTemplate;
+            string sOutput = topicsTemplate;
             string subTemplate = string.Empty;
 
             // Subforum Template
@@ -549,10 +549,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private string ParseControls(string Template)
+        private string ParseControls(string template)
         {
             string MyTheme = this.MainSettings.Theme;
-            string sOutput = Template;
+            string sOutput = template;
             sOutput = "<%@ Register TagPrefix=\"ac\" Namespace=\"DotNetNuke.Modules.ActiveForums.Controls\" Assembly=\"DotNetNuke.Modules.ActiveForums\" %>" + sOutput;
 
             // Forum Drop Downlist
@@ -731,10 +731,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sOutput;
         }
 
-        private string ParseTopics(string Template, DataTable Topics, string Section)
+        private string ParseTopics(string template, DataTable topics, string Section)
         {
-            string sOutput = Template;
-            sOutput = TemplateUtils.GetTemplateSection(Template, "[" + Section + "]", "[/" + Section + "]");
+            string sOutput = template;
+            sOutput = TemplateUtils.GetTemplateSection(template, "[" + Section + "]", "[/" + Section + "]");
             string sTopics = string.Empty;
             string MemberListMode = this.MainSettings.MemberListMode;
             var ProfileVisibility = this.MainSettings.ProfileVisibility;
@@ -751,15 +751,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             int rowcount = 0;
             this.lastReplySubjectReplaceTag = "[LASTPOSTSUBJECT:" + iLength.ToString() + "]";
-            if (Topics == null)
+            if (topics == null)
             {
-                sOutput = TemplateUtils.ReplaceSubSection(Template, string.Empty, "[" + Section + "]", "[/" + Section + "]");
+                sOutput = TemplateUtils.ReplaceSubSection(template, string.Empty, "[" + Section + "]", "[/" + Section + "]");
                 return sOutput;
             }
 
-            if (Topics.Rows.Count > 0)
+            if (topics.Rows.Count > 0)
             {
-                foreach (DataRow drTopic in Topics.Rows)
+                foreach (DataRow drTopic in topics.Rows)
                 {
                     string sTopicsTemplate = sOutput;
                     int TopicId = Convert.ToInt32(drTopic["TopicId"]);
@@ -901,11 +901,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     int BodyLength = -1;
                     string BodyTrim = string.Empty;
 
-                    if (Template.Contains("[BODY:"))
+                    if (template.Contains("[BODY:"))
                     {
-                        int inStart = Template.IndexOf("[BODY:", 0) + 1 + 5;
-                        int inEnd = Template.IndexOf("]", inStart - 1) + 1 - 1;
-                        string sLength = Template.Substring(inStart, inEnd - inStart);
+                        int inStart = template.IndexOf("[BODY:", 0) + 1 + 5;
+                        int inEnd = template.IndexOf("]", inStart - 1) + 1 - 1;
+                        string sLength = template.Substring(inStart, inEnd - inStart);
                         BodyLength = Convert.ToInt32(sLength);
                         BodyTrim = "[BODY:" + BodyLength.ToString() + "]";
                     }
@@ -1126,11 +1126,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     rowcount += 1;
                 }
 
-                sOutput = TemplateUtils.ReplaceSubSection(Template, sTopics, "[" + Section + "]", "[/" + Section + "]");
+                sOutput = TemplateUtils.ReplaceSubSection(template, sTopics, "[" + Section + "]", "[/" + Section + "]");
             }
             else
             {
-                sOutput = TemplateUtils.ReplaceSubSection(Template, string.Empty, "[" + Section + "]", "[/" + Section + "]");
+                sOutput = TemplateUtils.ReplaceSubSection(template, string.Empty, "[" + Section + "]", "[/" + Section + "]");
             }
 
             return sOutput;
@@ -1193,24 +1193,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         }
 
-        private string GetIcon(int LastTopicRead, int LastReplyRead, int TopicId, int ReplyId, string Icon, bool Pinned = false, bool Locked = false)
+        private string GetIcon(int lastTopicRead, int lastReplyRead, int topicId, int replyId, string icon, bool pinned = false, bool locked = false)
         {
-            if (Icon != string.Empty)
+            if (icon != string.Empty)
             {
-                return "<img src=\"" + this.myThemePath + "/emoticons/" + Icon + "\" alt=\"" + Icon + "\" />";
+                return "<img src=\"" + this.myThemePath + "/emoticons/" + icon + "\" alt=\"" + icon + "\" />";
             }
 
-            if (Pinned && Locked)
+            if (pinned && locked)
             {
                 return "<img src=\"" + this.myThemePath + "/images/topic_pinlocked.png\" alt=\"[RESX:PinnedLocked]\" />";
             }
 
-            if (Pinned)
+            if (pinned)
             {
                 return "<img src=\"" + this.myThemePath + "/images/topic_pin.png\" alt=\"[RESX:Pinned]\" />";
             }
 
-            if (Locked)
+            if (locked)
             {
                 return "<img src=\"" + this.myThemePath + "/images/topic_lock.png\" alt=\"[RESX:Locked]\" />";
             }
@@ -1220,12 +1220,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return "<img src=\"" + this.myThemePath + "/images/topic.png\" alt=\"[RESX:TopicRead]\" />";
             }
 
-            if (LastTopicRead == 0)
+            if (lastTopicRead == 0)
             {
                 return "<img src=\"" + this.myThemePath + "/images/topic_new.png\" alt=\"[RESX:TopicNew]\" />";
             }
 
-            if (LastTopicRead > 0 & LastReplyRead < ReplyId)
+            if (lastTopicRead > 0 & lastReplyRead < replyId)
             {
                 return "<img src=\"" + this.myThemePath + "/images/topic_new.png\" alt=\"[RESX:TopicNew]\" />";
             }
@@ -1233,21 +1233,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return "<img src=\"" + this.myThemePath + "/images/topic.png\" alt=\"[RESX:TopicRead]\" />";
         }
 
-        private string GetTitle(string Body, int AuthorId)
+        private string GetTitle(string body, int authorId)
         {
-            if (this.bRead || AuthorId == this.UserId)
+            if (this.bRead || authorId == this.UserId)
             {
-                Body = HttpUtility.HtmlDecode(Body);
-                Body = Body.Replace("<br>", System.Environment.NewLine);
-                Body = Utilities.StripHTMLTag(Body);
-                Body = Body.Length > 500 ? Body.Substring(0, 500) + "..." : Body;
-                Body = Body.Replace("\"", "'");
-                Body = Body.Replace("?", string.Empty);
-                Body = Body.Replace("+", string.Empty);
-                Body = Body.Replace("%", string.Empty);
-                Body = Body.Replace("#", string.Empty);
-                Body = Body.Replace("@", string.Empty);
-                return Body.Trim();
+                body = HttpUtility.HtmlDecode(body);
+                body = body.Replace("<br>", System.Environment.NewLine);
+                body = Utilities.StripHTMLTag(body);
+                body = body.Length > 500 ? body.Substring(0, 500) + "..." : body;
+                body = body.Replace("\"", "'");
+                body = body.Replace("?", string.Empty);
+                body = body.Replace("+", string.Empty);
+                body = body.Replace("%", string.Empty);
+                body = body.Replace("#", string.Empty);
+                body = body.Replace("@", string.Empty);
+                return body.Trim();
             }
             else
             {
@@ -1256,11 +1256,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         }
 
-        private string GetBody(string Body, int AuthorId)
+        private string GetBody(string body, int authorId)
         {
-            if (this.bRead || AuthorId == this.UserId)
+            if (this.bRead || authorId == this.UserId)
             {
-                return HttpUtility.HtmlDecode(Body);
+                return HttpUtility.HtmlDecode(body);
             }
             else
             {
@@ -1269,65 +1269,65 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         }
 
-        private string GetTopic(int TabID, int ForumID, int PostID, string Subject, string BodyTitle, int UserID, int PostUserID, int Replies, int ForumOwnerID, string sLink)
+        private string GetTopic(int tabID, int forumID, int postID, string subject, string bodyTitle, int userID, int postUserID, int replies, int forumOwnerID, string sLink)
         {
             string sOut = null;
-            Subject = HttpUtility.HtmlDecode(Subject);
-            Subject = Utilities.StripHTMLTag(Subject);
-            Subject = Subject.Replace("\"", string.Empty);
+            subject = HttpUtility.HtmlDecode(subject);
+            subject = Utilities.StripHTMLTag(subject);
+            subject = subject.Replace("\"", string.Empty);
             // Subject = Subject.Replace("'", string.Empty);
-            Subject = Subject.Replace("#", string.Empty);
-            Subject = Subject.Replace("%", string.Empty);
+            subject = subject.Replace("#", string.Empty);
+            subject = subject.Replace("%", string.Empty);
             // Subject = Subject.Replace("?", String.Empty)
-            Subject = Subject.Replace("+", string.Empty);
+            subject = subject.Replace("+", string.Empty);
 
             if (this.bRead)
             {
                 if (sLink == string.Empty)
                 {
-                    string[] Params = { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                    string[] Params = { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                     if (this.MainSettings.UseShortUrls)
                     {
-                        Params = new string[] { ParamKeys.TopicId + "=" + PostID };
+                        Params = new string[] { ParamKeys.TopicId + "=" + postID };
                     }
 
-                    sOut = "<a title=\"" + BodyTitle + "\" href=\"" + this.NavigateUrl(TabID, "", Params) + "\">" + Subject + "</a>";
+                    sOut = "<a title=\"" + bodyTitle + "\" href=\"" + this.NavigateUrl(tabID, "", Params) + "\">" + subject + "</a>";
                 }
                 else
                 {
-                    sOut = "<a title=\"" + BodyTitle + "\" href=\"" + sLink + "\">" + Subject + "</a>";
+                    sOut = "<a title=\"" + bodyTitle + "\" href=\"" + sLink + "\">" + subject + "</a>";
                 }
             }
             else
             {
-                sOut = Subject;
+                sOut = subject;
             }
 
             return sOut;
         }
 
-        private string GetSubPages(int TabID, int Replies, int ForumID, int PostID)
+        private string GetSubPages(int tabID, int replies, int forumID, int postID)
         {
             int i = 0;
             string sOut = "";
 
-            if (Replies + 1 > this.pageSize)
+            if (replies + 1 > this.pageSize)
             {
                 // sOut = "<div class=""afpagermini"">" & GetSharedResource("SubPages.Text") & "&nbsp;"
                 sOut = "<div class=\"afpagermini\">(<img src=\"" + this.myThemePath + "/images/icon_multipage.png\" alt=\"[RESX:MultiPageTopic]\" style=\"vertical-align:middle;\" />";
                 // Jump to pages
                 int intPostPages = 0;
-                intPostPages = Convert.ToInt32(System.Math.Ceiling((double)(Replies + 1) / this.pageSize));
+                intPostPages = Convert.ToInt32(System.Math.Ceiling((double)(replies + 1) / this.pageSize));
                 if (intPostPages > 3)
                 {
                     for (i = 1; i <= 3; i++)
                     {
                         if (this.UseAjax)
                         {
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                            var @params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                             if (this.MainSettings.UseShortUrls)
                             {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
+                                @params = new List<string> { ParamKeys.TopicId + "=" + postID };
                             }
 
                             if (i > 1)
@@ -1335,14 +1335,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 @params.Add(ParamKeys.PageJumpId + "=" + i);
                             }
 
-                            sOut += "<a href=\"" + this.NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            sOut += "<a href=\"" + this.NavigateUrl(tabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
                         }
                         else
                         {
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                            var @params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                             if (this.MainSettings.UseShortUrls)
                             {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
+                                @params = new List<string> { ParamKeys.TopicId + "=" + postID };
                             }
 
                             if (i > 1)
@@ -1350,7 +1350,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 @params.Add(ParamKeys.PageId + "=" + i);
                             }
 
-                            sOut += "<a href=\"" + this.NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            sOut += "<a href=\"" + this.NavigateUrl(tabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
                         }
 
                     }
@@ -1362,10 +1362,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (this.UseAjax)
                     {
-                        var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                        var @params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                         if (this.MainSettings.UseShortUrls)
                         {
-                            @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
+                            @params = new List<string> { ParamKeys.TopicId + "=" + postID };
                         }
 
                         if (i > 1)
@@ -1373,15 +1373,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             @params.Add(ParamKeys.PageJumpId + "=" + i);
                         }
 
-                        sOut += "<a href=\"" + this.NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                        sOut += "<a href=\"" + this.NavigateUrl(tabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
 
                     }
                     else
                     {
-                        var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                        var @params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                         if (this.MainSettings.UseShortUrls)
                         {
-                            @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
+                            @params = new List<string> { ParamKeys.TopicId + "=" + postID };
                         }
 
                         if (i > 1)
@@ -1389,7 +1389,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             @params.Add(ParamKeys.PageId + "=" + i);
                         }
 
-                        sOut += "<a href=\"" + this.NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                        sOut += "<a href=\"" + this.NavigateUrl(tabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
                     }
 
                 }
@@ -1400,10 +1400,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (this.UseAjax)
                         {
                             // sOut &= "<span class=""afpagerminiitem"" onclick=""javascript:afPageJump(" & i & ");"">" & i & "</span>&nbsp;"
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                            var @params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                             if (this.MainSettings.UseShortUrls)
                             {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
+                                @params = new List<string> { ParamKeys.TopicId + "=" + postID };
                             }
 
                             if (i > 1)
@@ -1411,14 +1411,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 @params.Add(ParamKeys.PageJumpId + "=" + i);
                             }
 
-                            sOut += "<a href=\"" + this.NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            sOut += "<a href=\"" + this.NavigateUrl(tabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
                         }
                         else
                         {
-                            var @params = new List<string> { ParamKeys.ForumId + "=" + ForumID, ParamKeys.TopicId + "=" + PostID, ParamKeys.ViewType + "=" + Views.Topic };
+                            var @params = new List<string> { ParamKeys.ForumId + "=" + forumID, ParamKeys.TopicId + "=" + postID, ParamKeys.ViewType + "=" + Views.Topic };
                             if (this.MainSettings.UseShortUrls)
                             {
-                                @params = new List<string> { ParamKeys.TopicId + "=" + PostID };
+                                @params = new List<string> { ParamKeys.TopicId + "=" + postID };
                             }
 
                             if (i > 1)
@@ -1426,7 +1426,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                 @params.Add(ParamKeys.PageId + "=" + i);
                             }
 
-                            sOut += "<a href=\"" + this.NavigateUrl(TabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
+                            sOut += "<a href=\"" + this.NavigateUrl(tabID, "", @params.ToArray()) + "\">" + i + "</a>&nbsp;";
                         }
 
                     }
@@ -1438,10 +1438,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sOut;
         }
 
-        private string GetRowCSS(int LastTopicRead, int LastReplyRead, int TopicId, int ReplyId, int RowCount)
+        private string GetRowCSS(int lastTopicRead, int lastReplyRead, int topicId, int replyId, int rowCount)
         {
             bool isRead = false;
-            if (LastTopicRead >= TopicId && LastReplyRead >= ReplyId)
+            if (lastTopicRead >= topicId && lastReplyRead >= replyId)
             {
                 isRead = true;
             }
@@ -1453,7 +1453,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (isRead == true)
             {
-                if (RowCount % 2 == 0)
+                if (rowCount % 2 == 0)
                 {
                     return "aftopicrow";
                 }
@@ -1464,7 +1464,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                if (RowCount % 2 == 0)
+                if (rowCount % 2 == 0)
                 {
                     return "aftopicrownew";
                 }

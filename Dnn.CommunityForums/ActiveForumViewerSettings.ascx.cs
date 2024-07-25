@@ -154,10 +154,10 @@ namespace DotNetNuke.Modules.ActiveForums
             this.drpForumInstance.Items.Insert(0, new ListItem("-- Select a Forum Instance --", "-1"));
         }
 
-        public void LoadForumGroups(int ForumModuleID)
+        public void LoadForumGroups(int forumModuleID)
         {
             this.drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
-            IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, ForumModuleID, -1, -1, false);
+            IDataReader dr = DataProvider.Instance().Forums_List(this.PortalId, forumModuleID, -1, -1, false);
             int i = 1;
             string GroupName = string.Empty;
             string ForumName = string.Empty;
@@ -184,12 +184,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
         }
 
-        private void BindTemplates(int ForumModuleID)
+        private void BindTemplates(int forumModuleID)
         {
             string sDefault = Utilities.GetSharedResource("[RESX:Default]", true);
-            this.BindTemplateDropDown(ForumModuleID, this.drpTopicsTemplate, Templates.TemplateTypes.TopicsView, sDefault, "0");
-            this.BindTemplateDropDown(ForumModuleID, this.drpTopicTemplate, Templates.TemplateTypes.TopicView, sDefault, "0");
-            this.BindTemplateDropDown(ForumModuleID, this.drpForumViewTemplate, Templates.TemplateTypes.ForumView, sDefault, "0");
+            this.BindTemplateDropDown(forumModuleID, this.drpTopicsTemplate, Templates.TemplateTypes.TopicsView, sDefault, "0");
+            this.BindTemplateDropDown(forumModuleID, this.drpTopicTemplate, Templates.TemplateTypes.TopicView, sDefault, "0");
+            this.BindTemplateDropDown(forumModuleID, this.drpForumViewTemplate, Templates.TemplateTypes.ForumView, sDefault, "0");
         }
 
         private void drpForumInstance_SelectedIndexChanged(object sender, EventArgs e)
@@ -198,14 +198,14 @@ namespace DotNetNuke.Modules.ActiveForums
             this.LoadForumGroups(Convert.ToInt32(this.drpForumInstance.SelectedItem.Value));
         }
 
-        public void BindTemplateDropDown(int ForumModuleId, DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
+        public void BindTemplateDropDown(int forumModuleId, DropDownList drp, Templates.TemplateTypes templateType, string defaultText, string defaultValue)
         {
             var tc = new TemplateController();
             drp.DataTextField = "Title";
             drp.DataValueField = "TemplateID";
-            drp.DataSource = tc.Template_List(this.PortalId, ForumModuleId, TemplateType);
+            drp.DataSource = tc.Template_List(this.PortalId, forumModuleId, templateType);
             drp.DataBind();
-            drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
+            drp.Items.Insert(0, new ListItem(defaultText, defaultValue));
         }
 
     }

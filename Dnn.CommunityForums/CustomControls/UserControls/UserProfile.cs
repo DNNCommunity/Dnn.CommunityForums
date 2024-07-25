@@ -470,9 +470,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return null;
         }
 
-        private string RenderModals(string Template)
+        private string RenderModals(string template)
         {
-            string sOut = Template;
+            string sOut = template;
             // [AM:CONTROLS:MODAL:MyPreferences:Private]
             string pattern = "(\\[AM:CONTROLS:MODAL:(.+?)\\])";
             Regex regExp = new Regex(pattern);
@@ -545,26 +545,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     string sModalDivId = "afmodal" + matchValue;
                     string sModalText = "[RESX:Label:" + matchValue + "]";
                     string sModalContent = string.Empty;
-                    Template = Template.Replace(match.Value, "<a href=\"javascript:void(0);\" onclick=\"amOpenModal('" + sModalDivId + "','" + sModalText + "',350, 300);\">" + sModalText + "</a>" + match.Value);
+                    template = template.Replace(match.Value, "<a href=\"javascript:void(0);\" onclick=\"amOpenModal('" + sModalDivId + "','" + sModalText + "',350, 300);\">" + sModalText + "</a>" + match.Value);
                     if (sOut.Contains(match.Value.Replace("[AM", "[/AM")))
                     {
                         string tmp = TemplateUtils.GetTemplateSection(sOut, match.Value, match.Value.Replace("[AM", "[/AM"));
                         sModalContent = "<div id=\"" + sModalDivId + "\" style=\"display:none;\">" + tmp + "</div>";
                     }
 
-                    Template = TemplateUtils.ReplaceSubSection(Template, string.Empty, match.Value, match.Value.Replace("[AM", "[/AM"));
-                    Template = Template + sModalContent;
+                    template = TemplateUtils.ReplaceSubSection(template, string.Empty, match.Value, match.Value.Replace("[AM", "[/AM"));
+                    template = template + sModalContent;
                 }
 
             }
 
-            return Template;
+            return template;
         }
 
-        private string GetTabsSection(string Template)
+        private string GetTabsSection(string template)
         {
             string sOut = string.Empty;
-            sOut = TemplateUtils.GetTemplateSection(Template, "[AM:CONTROLS:TABS]", "[/AM:CONTROLS:TABS]");
+            sOut = TemplateUtils.GetTemplateSection(template, "[AM:CONTROLS:TABS]", "[/AM:CONTROLS:TABS]");
             string pattern = "(\\[AM:CONTROLS:TAB:(.+?)\\])";
             Regex regExp = new Regex(pattern);
             MatchCollection matches = null;
@@ -679,8 +679,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
 
-            Template = TemplateUtils.ReplaceSubSection(Template, "<asp:placeholder id=\"plhTabs\" runat=\"server\" />", "[AM:CONTROLS:TABS]", "[/AM:CONTROLS:TABS]");
-            return Template;
+            template = TemplateUtils.ReplaceSubSection(template, "<asp:placeholder id=\"plhTabs\" runat=\"server\" />", "[AM:CONTROLS:TABS]", "[/AM:CONTROLS:TABS]");
+            return template;
         }
         #endregion
     }

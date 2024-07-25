@@ -51,39 +51,39 @@ namespace DotNetNuke.Modules.ActiveForums
     public class SubscriptionController
     {
         // TODO: move to new DAL2 subscription controller
-        public int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId, string UserRoles = "")
+        public int Subscription_Update(int portalId, int moduleId, int forumId, int topicId, int mode, int userId, string userRoles = "")
         {
-            if (UserId == -1)
+            if (userId == -1)
             {
                 return -1;
             }
 
-            if (string.IsNullOrEmpty(UserRoles))
+            if (string.IsNullOrEmpty(userRoles))
             {
                 UserController uc = new UserController();
-                User uu = uc.GetUser(PortalId, ModuleId, UserId);
-                UserRoles = uu.UserRoles;
+                User uu = uc.GetUser(portalId, moduleId, userId);
+                userRoles = uu.UserRoles;
             }
 
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ModuleId, ForumId, false, -1);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(portalId, moduleId, forumId, false, -1);
 
-            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, UserRoles))
+            if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(fi.Security.Subscribe, userRoles))
             {
-                return Convert.ToInt32(DataProvider.Instance().Subscription_Update(PortalId, ModuleId, ForumId, TopicId, Mode, UserId));
+                return Convert.ToInt32(DataProvider.Instance().Subscription_Update(portalId, moduleId, forumId, topicId, mode, userId));
             }
 
             return -1;
         }
 
         // TODO: move to new DAL2 subscription controller
-        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int PortalId, int ForumId, int TopicId, SubscriptionTypes Mode, int AuthorId, string CanSubscribe)
+        public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int portalId, int forumId, int topicId, SubscriptionTypes mode, int authorId, string canSubscribe)
         {
             DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo si;
             var sl = new List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo>();
-            IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(PortalId, ForumId, TopicId, (int)Mode);
+            IDataReader dr = DataProvider.Instance().Subscriptions_GetSubscribers(portalId, forumId, topicId, (int)mode);
             while (dr.Read())
             {
-                if (AuthorId != Convert.ToInt32(dr["UserId"]))
+                if (authorId != Convert.ToInt32(dr["UserId"]))
                 {
                     si = new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
                     {
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     if (!sl.Contains(si))
                     {
-                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(CanSubscribe, si.UserId, PortalId))
+                        if (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(canSubscribe, si.UserId, portalId))
                         {
                             sl.Add(si);
                         }
@@ -108,53 +108,53 @@ namespace DotNetNuke.Modules.ActiveForums
     public abstract class Subscriptions
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId).")]
-        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, int TopicId, SubscriptionTypes SubscriptionType, int UserId)
+        public static bool IsSubscribed(int portalId, int moduleId, int forumId, int topicId, SubscriptionTypes subscriptionType, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId, TopicId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId, moduleId, userId, forumId, topicId);
         }
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId).")]
-        public static bool IsSubscribed(int PortalId, int ModuleId, int ForumId, SubscriptionTypes SubscriptionType, int UserId)
+        public static bool IsSubscribed(int portalId, int moduleId, int forumId, SubscriptionTypes subscriptionType, int userId)
         {
-            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId);
+            return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(portalId, moduleId, userId, forumId);
         }
 
         // TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
+        public static void SendSubscriptions(int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, int authorId)
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
-            SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);
+            SendSubscriptions(portalId, moduleId, tabId, fi, topicId, replyId, authorId);
         }
 
         // TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
+        public static void SendSubscriptions(int portalId, int moduleId, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, int authorId)
         {
-            SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId, null);
+            SendSubscriptions(-1, portalId, moduleId, tabId, fi, topicId, replyId, authorId, null);
         }
 
         // TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId, Uri requestUrl)
+        public static void SendSubscriptions(int templateId, int portalId, int moduleId, int tabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int topicId, int replyId, int authorId, Uri requestUrl)
         {
             var sc = new SubscriptionController();
-            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(PortalId, fi.ForumID, TopicId, SubscriptionTypes.Instant, AuthorId, fi.Security.Subscribe);
+            List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> subs = sc.Subscription_GetSubscribers(portalId, fi.ForumID, topicId, SubscriptionTypes.Instant, authorId, fi.Security.Subscribe);
 
             if (subs.Count > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(TemplateId, PortalId, TopicId, ReplyId, ModuleId, TabId, string.Empty, AuthorId, fi, subs, requestUrl);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleId, tabId, string.Empty, authorId, fi, subs, requestUrl);
             }
         }
 
         // TODO: move to new DAL2 subscription controller
-        public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
+        public static void SendSubscriptions(SubscriptionTypes subscriptionType, DateTime startDate)
         {
             string sysTemplateName = "DailyDigest";
-            if (SubscriptionType == SubscriptionTypes.WeeklyDigest)
+            if (subscriptionType == SubscriptionTypes.WeeklyDigest)
             {
                 sysTemplateName = "WeeklyDigest";
             }
 
             var objRecipients = new ArrayList();
-            IDataReader dr = DataProvider.Instance().Subscriptions_GetDigest(Convert.ToString(SubscriptionType), StartDate);
+            IDataReader dr = DataProvider.Instance().Subscriptions_GetDigest(Convert.ToString(subscriptionType), startDate);
 
             string tmpEmail = string.Empty;
             string tmpFG = string.Empty;
@@ -349,24 +349,24 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        private static DateTime GetStartOfWeek(DateTime StartDate)
+        private static DateTime GetStartOfWeek(DateTime startDate)
         {
-            switch (StartDate.DayOfWeek)
+            switch (startDate.DayOfWeek)
             {
                 case DayOfWeek.Monday:
-                    return StartDate.AddDays(0);
+                    return startDate.AddDays(0);
                 case DayOfWeek.Tuesday:
-                    return StartDate.AddDays(-1);
+                    return startDate.AddDays(-1);
                 case DayOfWeek.Wednesday:
-                    return StartDate.AddDays(-2);
+                    return startDate.AddDays(-2);
                 case DayOfWeek.Thursday:
-                    return StartDate.AddDays(-3);
+                    return startDate.AddDays(-3);
                 case DayOfWeek.Friday:
-                    return StartDate.AddDays(-4);
+                    return startDate.AddDays(-4);
                 case DayOfWeek.Saturday:
-                    return StartDate.AddDays(-5);
+                    return startDate.AddDays(-5);
                 case DayOfWeek.Sunday:
-                    return StartDate.AddDays(-6);
+                    return startDate.AddDays(-6);
             }
 
             return DateTime.MinValue;

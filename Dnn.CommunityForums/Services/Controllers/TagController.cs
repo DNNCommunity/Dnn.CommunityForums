@@ -43,34 +43,34 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         /// <summary>
         /// Gets Tags matching a string anywhere in string
         /// </summary>
-        /// <param name="ForumId" type="int"></param>
-        /// <param name="MatchString" type="string"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="matchString" type="string"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Tag/Matches?ForumId=xxx&MatchString=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Tag)]
-        public HttpResponseMessage Matches(int ForumId, string MatchString)
+        public HttpResponseMessage Matches(int forumId, string matchString)
         {
-            return this.Match($"%{CleanAndChopString(MatchString, 20)}%");
+            return this.Match($"%{CleanAndChopString(matchString, 20)}%");
         }
 
 #pragma warning disable CS1570
         /// <summary>
         /// Gets Tags with names matching string from beginning
         /// </summary>
-        /// <param name="ForumId" type="int"></param>
-        /// <param name="MatchString" type="string"></param>
+        /// <param name="forumId" type="int"></param>
+        /// <param name="matchString" type="string"></param>
         /// <returns></returns>
         /// <remarks>https://dnndev.me/API/ActiveForums/Tag/BeginsWith?ForumId=xxx&MatchString=xxx</remarks>
 #pragma warning restore CS1570
         [HttpGet]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.Tag)]
-        public HttpResponseMessage BeginsWith(int ForumId, string MatchString)
+        public HttpResponseMessage BeginsWith(int forumId, string matchString)
         {
-            return this.Match($"{CleanAndChopString(MatchString, 20)}%");
+            return this.Match($"{CleanAndChopString(matchString, 20)}%");
         }
 
         private HttpResponseMessage Match(string matchString)

@@ -26,12 +26,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class UserRolesDictionary
     {
-        internal static string GetRoles(int PortalId, int UserId)
+        internal static string GetRoles(int portalId, int userId)
         {
             try
             {
-                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
-                return (dict != null && dict.ContainsKey(UserId.ToString())) ? dict[UserId.ToString()] : string.Empty;
+                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, portalId));
+                return (dict != null && dict.ContainsKey(userId.ToString())) ? dict[userId.ToString()] : string.Empty;
 
             }
             catch
@@ -40,26 +40,26 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        internal static bool AddRoles(int PortalId, int UserId, string Roles)
+        internal static bool AddRoles(int portalId, int userId, string roles)
         {
             try
             {
-                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, PortalId));
+                Dictionary<string, string> dict = (Dictionary<string, string>)DataCache.SettingsCacheRetrieve(-1, string.Format(CacheKeys.UserRoles, portalId));
                 if (dict == null)
                 {
                     dict = new Dictionary<string, string>();
                 }
 
-                if (dict.ContainsKey(UserId.ToString()))
+                if (dict.ContainsKey(userId.ToString()))
                 {
-                    dict[UserId.ToString()] = Roles;
+                    dict[userId.ToString()] = roles;
                 }
                 else
                 {
-                    dict.Add(UserId.ToString(), Roles);
+                    dict.Add(userId.ToString(), roles);
                 }
 
-                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, PortalId), dict, DateTime.UtcNow.AddMinutes(3));
+                DataCache.SettingsCacheStore(-1, string.Format(CacheKeys.UserRoles, portalId), dict, DateTime.UtcNow.AddMinutes(3));
                 return true;
             }
             catch
