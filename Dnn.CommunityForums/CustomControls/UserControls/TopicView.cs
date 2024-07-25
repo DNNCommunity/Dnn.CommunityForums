@@ -274,7 +274,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (ds == null)
             {
                 ds = DotNetNuke.Modules.ActiveForums.DataProvider.Instance().UI_TopicView(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, this.UserId, this._rowIndex, this._pageSize, this.UserInfo.IsSuperUser, this._defaultSort);
-                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds); ;
+                DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(this.ModuleId, cacheKey, ds);
             }
 
             // Test for a proper dataset

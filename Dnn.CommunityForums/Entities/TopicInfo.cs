@@ -20,14 +20,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
-using System.Web.Caching;
-using System.Xml;
-
 using DotNetNuke.Collections;
 using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.UI.UserControls;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -215,7 +209,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 if (this._categories == null)
                 {
-                    this._categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", this.ForumId, this.Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList(); ;
+                    this._categories = new DotNetNuke.Modules.ActiveForums.Controllers.CategoryController().Find("WHERE ForumId = @0 OR ForumGroupid = @1", this.ForumId, this.Forum.ForumGroupId).Select(c => { return new Category(c.TagId, c.TagName, false); }).ToList();
                     var topicCategoryIds = new DotNetNuke.Modules.ActiveForums.Controllers.TopicCategoryController().GetForTopic(this.TopicId).Select(t => t.TagId);
                     topicCategoryIds.ForEach(tc => this._categories.Where(c => c.id == tc).ForEach(c => c.selected = true));
                 }

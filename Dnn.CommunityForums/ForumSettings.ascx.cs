@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 Utilities.SelectListItemByValue(this.drpPageSize, this.PageSize);
 
-                this.txtFloodInterval.Text = this.FloodInterval.ToString(); ;
+                this.txtFloodInterval.Text = this.FloodInterval.ToString();
                 this.txtEditInterval.Text = this.EditInterval.ToString();
 
                 Utilities.SelectListItemByValue(this.drpMode, this.Mode);

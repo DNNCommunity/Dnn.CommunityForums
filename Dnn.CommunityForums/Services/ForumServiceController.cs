@@ -370,7 +370,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 DataTable dtTopics = ds.Tables[3];
 
-                Dictionary<string, string> rows = new Dictionary<string, string>(); ;
+                Dictionary<string, string> rows = new Dictionary<string, string>();
                 foreach (DataRow dr in dtTopics.Rows)
                 {
                     rows.Add(dr["TopicId"].ToString(), dr["Subject"].ToString());

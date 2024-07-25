@@ -332,7 +332,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         originalTopic.IsLocked = dto.Topic.IsLocked;
                     }
-;
 
                     if (dto.Topic.IsPinned != originalTopic.IsPinned &&
                         (DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(originalTopic.Forum.Security.Pin, string.Join(";", DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.ActiveModule.PortalID, this.UserInfo.Roles))) ||
@@ -342,7 +341,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                     {
                         originalTopic.IsLocked = dto.Topic.IsLocked;
                     }
-;
 
                     originalTopic.Priority = dto.Topic.Priority;
                     originalTopic.StatusId = dto.Topic.StatusId;

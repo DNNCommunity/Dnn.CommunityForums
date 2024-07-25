@@ -379,7 +379,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", @params.ToArray()), false);
             }
-;
         }
 
         private void ambtnSubmit_Click(object sender, System.EventArgs e)

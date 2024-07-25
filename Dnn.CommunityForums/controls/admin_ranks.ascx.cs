@@ -26,7 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums
     using System.Web.UI.WebControls;
 
     public partial class admin_ranks_new : ActiveAdminBase
-    {
+    {  
+        public string ImagePath => this.Page.ResolveUrl(string.Concat(this.MainSettings.ThemeLocation, "/images"));
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

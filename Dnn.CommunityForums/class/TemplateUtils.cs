@@ -95,7 +95,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 ti = new TemplateInfo { Template = string.Concat("Error loading ", templateName, " template.") };
             }
-;
             return ti;
         }
 

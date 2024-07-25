@@ -28,6 +28,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class admin_categories : ActiveAdminBase
     {
+        public string ImagePath => this.Page.ResolveUrl(string.Concat(this.MainSettings.ThemeLocation, "/images"));
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

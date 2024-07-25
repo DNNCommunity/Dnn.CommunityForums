@@ -598,7 +598,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             {
                 return emptyPermissions;
             }
-;
 
             string access = string.Empty;
             switch (requestedAccess.ToUpperInvariant())
@@ -772,7 +771,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
                 this.Update(permission);
             }
-;
         }
 
         public static string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles)
