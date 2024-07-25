@@ -139,7 +139,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             ctlForm.AttachmentsClientId = hidAttachments.ClientID;
 
-
             // TODO: Make sure this check happens on submit
             //if (_canAttach && _fi.AllowAttach) {}
 
@@ -655,7 +654,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     ctlForm.Body = body;
 
-
                 }
             }
             if (ctlForm.EditorMode != SubmitForm.EditorModes.EditReply && _canModApprove)
@@ -902,8 +900,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
-
         private void SaveReply()
         {
             var subject = ctlForm.Subject;
@@ -953,7 +949,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri;
-
 
             var sc = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController();
             var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();

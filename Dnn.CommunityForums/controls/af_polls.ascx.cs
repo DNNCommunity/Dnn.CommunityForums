@@ -84,8 +84,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
 
-
-
             }
 
         }

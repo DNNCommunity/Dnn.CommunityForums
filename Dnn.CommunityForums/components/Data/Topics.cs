@@ -124,7 +124,6 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         //        sb.Append(dr("lastpostdata").ToString)
         //        sb.Append("</topic>")
 
-
         //    End While
         //    sb.Append("</topics></root>")
         //    dr.Close()

@@ -223,7 +223,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         break;
 
-
                     case GridTypes.MostLiked:
 
                         lblHeader.Text = GetSharedResource("[RESX:MostLiked]");
@@ -276,7 +275,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 var tempVar = BasePage;
                 Environment.UpdateMeta(ref tempVar, "[VALUE] - " + lblHeader.Text, "[VALUE]", "[VALUE]");
             }
-
 
             if (_dtResults != null && _dtResults.Rows.Count > 0)
             {
@@ -332,7 +330,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 @params = new[] {
                     $"{ParamKeys.GridType}={Request.Params[ParamKeys.GridType]}" 
                 };
-
 
             pager.PageCount = intPages;
             pager.CurrentPage = PageId;

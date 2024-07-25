@@ -438,7 +438,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             var groupValue = (fi.ParentForumId > 0) ? "FORUM" + fi.ParentForumId : "GROUP" + fi.ForumGroupId;
 
-
             Utilities.SelectListItemByValue(drpGroups, groupValue);
 
             if (fi.ForumSettingsKey == "G:" + fi.ForumGroupId)
@@ -830,7 +829,6 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-
 
     }
 }

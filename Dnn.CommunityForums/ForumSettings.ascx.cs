@@ -193,7 +193,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public override void UpdateSettings()
         {
 
-                     
             try
             {
                 Theme = drpThemes.SelectedValue;
@@ -657,7 +656,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ForumConfig = xDoc.OuterXml;
 
         }
-    
 
         #endregion
 

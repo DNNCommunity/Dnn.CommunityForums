@@ -52,9 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             litButtons.Text = "<div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|G');\">[RESX:NewForumGroup]</div><div class=\"amcplnkbtn\" onclick=\"LoadView('manageforums_forumeditor','0|F');\">[RESX:NewForum]</div>";
 
-
             GetControl("admin_manageforums_home", string.Empty);
-
 
         }
 
@@ -118,7 +116,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 lit.Text = ex.Message;
                 plhForumEditor.Controls.Add(lit);
             }
-
 
         }
 

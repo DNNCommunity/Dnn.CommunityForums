@@ -356,7 +356,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 output.Write(str.ToString());
             }
 
-
         }
 
         public string XSSFilter(string sText)
@@ -410,7 +409,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     //Context.Response.Flush()
 
                     Context.Response.End();
-
 
                     //HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
@@ -516,15 +514,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                         }
 
-
-
-
                     }
                 }
             }
-
-
-
 
             return args;
         }
@@ -577,7 +569,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
         #endregion
-
 
     }
 
@@ -642,7 +633,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public interface ICallback
     {
         void Callback(object sender, Controls.CallBackEventArgs e);
-
 
     }
 }

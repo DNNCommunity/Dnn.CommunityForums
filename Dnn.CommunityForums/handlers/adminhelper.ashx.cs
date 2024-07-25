@@ -45,8 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             FilterSave = 12,
             FilterDelete = 13
 
-
-
         }
 
         public override void ProcessRequest(HttpContext context)
@@ -105,9 +103,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                             break;
                         case Actions.FilterDelete:
                             FilterDelete();
-
-
-
 
                             break;
                     }
@@ -312,7 +307,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 ? new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().ListPropertiesJSON(PortalId, Convert.ToInt32(Params["ObjectType"]), Convert.ToInt32(Params["ObjectOwnerId"]))
                 : string.Empty;
 
-
         }
 
         private void UpdateSort()
@@ -355,7 +349,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     fc.Forums_Save(PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
                 }
             }
-
 
         }
 
@@ -414,9 +407,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sFile = Utilities.LocalizeControl(sFile, true);
             return sFile;
         }
-
-
-
 
     }
 }

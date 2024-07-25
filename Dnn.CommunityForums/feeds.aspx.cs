@@ -54,7 +54,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-
             //Put user code to initialize the page here
             Response.ContentType = "text/xml";
             Response.ContentEncoding = Encoding.UTF8;
@@ -99,11 +98,6 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 Response.Write(BuildRSS(intPortalId, intTabId, ModuleID, intPosts, ForumID, bolSecurity, bolBody));
             }
-
-
-
-
-
 
         }
         #region Private Methods
@@ -189,7 +183,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
             }
-
 
             return string.Empty;
         }

@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_confirmaction_new : ForumBase
     {
 
-
         #region Event Handlers
         protected override void OnLoad(EventArgs e)
         {

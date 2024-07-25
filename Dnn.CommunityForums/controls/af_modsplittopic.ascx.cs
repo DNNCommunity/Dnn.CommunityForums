@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-
         }
         #endregion
 

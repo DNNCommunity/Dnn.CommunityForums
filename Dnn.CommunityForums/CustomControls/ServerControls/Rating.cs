@@ -124,7 +124,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 lit.RenderControl(writer);
             }
 
-
         }
 
         private string RenderRating()
@@ -180,9 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("</div>");
             return sb.ToString();
 
-
         }
-
 
         private void cb_Callback(object sender, CallBackEventArgs e)
         {

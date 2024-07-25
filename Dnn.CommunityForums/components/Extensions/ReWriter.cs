@@ -653,7 +653,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-
             }
             return sUrl;
         }

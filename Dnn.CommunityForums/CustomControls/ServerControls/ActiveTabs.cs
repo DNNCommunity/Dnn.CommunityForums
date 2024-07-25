@@ -310,7 +310,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 writer.RenderEndTag();
             }
 
-
         }
 
         protected override void OnInit(EventArgs e)
@@ -339,8 +338,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
         }
-
-
 
         protected override void OnPreRender(EventArgs e)
         {
@@ -378,8 +375,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("tabContent.style.display = 'block';");
                 sb.Append("};");
                 sb.Append("};");
-
-
 
                 Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "TabScripts", sb.ToString(), true);
             }

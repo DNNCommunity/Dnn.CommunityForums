@@ -78,7 +78,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             return strMessage;
         }
 
-
         public static string ImportFilter(int portalID, int moduleID)
         {
             string @out;

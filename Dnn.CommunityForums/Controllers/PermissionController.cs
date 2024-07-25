@@ -536,10 +536,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             roleObjects = GetObjFromSecObj(portalSettings, s.Trust, objectType, roleObjects);
             roleObjects = GetObjFromSecObj(portalSettings, s.View, objectType, roleObjects);
 
-
-
-
-
             return roleObjects;
         }
 

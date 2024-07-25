@@ -82,8 +82,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -312,7 +310,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return params2;
         }
-
 
     }
 }

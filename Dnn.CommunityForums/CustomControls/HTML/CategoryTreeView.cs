@@ -275,7 +275,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         sb.Append("<li class=\"category\" id=\"afcat-" + dr["CategoryId"].ToString() + "\">");
 
-
                         sb.Append("<em>[CATCOUNT]</em>");
                         sb.Append("<span>" + dr["CategoryName"].ToString() + "</span>");
                         sb.Append("<ul>");
@@ -328,7 +327,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         //    topicsTemplate = topicsTemplate.Replace("[ATTACHMENTS]", String.Empty)
         //    topicsTemplate = topicsTemplate.Replace("[SIGNATURE]", String.Empty)
         //    TopicTemplate = TemplateUtils.ReplaceSubSection(TopicTemplate, topicsTemplate, "[TOPIC]", "[/TOPIC]")
-
 
         //    TopicTemplate = TopicTemplate.Replace("[ADDREPLY]", String.Empty)
         //    TopicTemplate = TopicTemplate.Replace("[POSTRATINGBUTTON]", String.Empty)

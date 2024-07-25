@@ -219,7 +219,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
                     }
                     Forums = (Forums.OrderBy(f => f.ForumGroup?.SortOrder).ThenBy(f => f.SortOrder).ToList());
-                    
 
                     string sGroupName = (ForumGroupId != -1 && Forums?.Count > 0) ? Forums?.FirstOrDefault().GroupName : string.Empty;
                     string sCrumb = (ForumGroupId != -1 && Forums?.Count > 0) ? "<div class=\"afcrumb\"><i class=\"fa fa-comments-o fa-grey\"></i>  <a href=\"" + Utilities.NavigateURL(TabId) + "\">[RESX:ForumMain]</a>  <i class=\"fa fa-long-arrow-right fa-grey\"></i>  " + sGroupName + "</div>" : string.Empty;
@@ -266,7 +265,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
                                         sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{GroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
 
-
                                         //any replacements on the group
                                         string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
                                         sNewGroup = sNewGroup.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
@@ -309,7 +307,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sTemplate = TemplateUtils.ReplaceSubSection(sTemplate, string.Empty, "[FORUMS]", "[/FORUMS]");
 
                 }
-
 
                 return sTemplate;
             }
@@ -357,7 +354,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseForumRow(string Template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int currForumIndex, int totalForums)
         {
-
 
             if (Template.Contains("[SUBFORUMS]") && Template.Contains("[/SUBFORUMS]"))
             {
@@ -548,7 +544,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return Template;
 
-
         }
 
         #endregion
@@ -645,7 +640,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     if (canView || (!fi.Hidden) | UserInfo.IsSuperUser)
                     {
                         string sIcon = TemplateUtils.ShowIcon(canView, fi.ForumID, CurrentUserId, fi.LastPostDateTime, fi.LastRead, fi.LastPostID);
-
 
                         string sFolderCSS = "fa-folder fa-blue";
                         switch (sIcon.ToLower())

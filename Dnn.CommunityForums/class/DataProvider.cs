@@ -283,7 +283,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region MailQueue
 
-
         [Obsolete(message: "Deprecated in Community Forums. Scheduled removal in v9.0.0.0. No longer used.")]
         public abstract IDataReader Queue_List();
 

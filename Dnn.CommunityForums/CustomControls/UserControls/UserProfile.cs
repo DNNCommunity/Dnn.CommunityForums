@@ -149,8 +149,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sTemplate = sTemplate.Replace("[AM:CONTROLS:ProfileForumTracker]", "<asp:placeholder id=\"plhTracker\" runat=\"server\" />");
             sTemplate = sTemplate.Replace("[AF:PROFILE:VIEWUSERPOSTS]", "<a href=\"" + NavigateUrl(TabId, "", $"{ParamKeys.ViewType}={Views.Search}&{ParamKeys.UserId}={UID}") + "\">[RESX:ViewPostsByUser]</a>");
 
-
-
             sTemplate = GetTabsSection(sTemplate);
             Control ctl = this.ParseControl(sTemplate);
             this.Controls.Add(ctl);
@@ -409,8 +407,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         upi.Signature = Utilities.XSSFilter(txtSignature.Text, false);
                     }
 
-
-
                     upc.Profiles_Save(upi);
                     bool blnSaveProfile = false;
 
@@ -460,7 +456,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return null;
         }
-
 
         private string RenderModals(string Template)
         {
@@ -626,7 +621,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     bAddTab = true;
                 }
-
 
                 if (bAddTab)
                 {

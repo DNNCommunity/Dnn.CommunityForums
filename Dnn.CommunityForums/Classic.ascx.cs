@@ -19,7 +19,6 @@
 //
 //using DotNetNuke.Framework.JavaScriptLibraries;
 
-
 namespace DotNetNuke.Modules.ActiveForums
 {
     using System;
@@ -48,7 +47,6 @@ namespace DotNetNuke.Modules.ActiveForums
         private string currView = string.Empty;
 
         #region Private Members
-
 
         #endregion
         #region Event Handlers
@@ -94,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                     string ctl = DefaultView;
                     string opts = string.Empty;
-
 
                     if (Request.Params[ParamKeys.ViewType] != null && Request.Params[ParamKeys.ViewType] == Views.Grid && Request.Params[ParamKeys.GridType] != null && Request.Params[ParamKeys.GridType] == Views.MyPreferences)
                     {
@@ -151,7 +148,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 }
 
-              
             }
             catch (Exception ex)
             {
@@ -412,14 +408,11 @@ namespace DotNetNuke.Modules.ActiveForums
                         
             Page.ClientScript.RegisterStartupScript(Page.GetType(), "afscripts", sb.ToString(), true);
 
-
             if (ForumUser.Profile.IsMod)
             {
                 ClientResourceManager.RegisterScript(this.Page, Globals.ModulePath + "scripts/afmod.js");
                 ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ModulePath + "active/am-ui.css");
             }
-
-
 
         }
 
@@ -435,11 +428,9 @@ namespace DotNetNuke.Modules.ActiveForums
             writer.Write(html);
         }
 
-
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-
 
             if (SocialGroupId > 0)
             {

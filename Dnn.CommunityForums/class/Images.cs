@@ -119,7 +119,6 @@ namespace DotNetNuke.Modules.ActiveForums
             File.Delete(tmp);
         }
 
-
         public static MemoryStream CreateImageForDB(Stream sFile, int intHeight, int intWidth)
         {
             var newStream = new MemoryStream();

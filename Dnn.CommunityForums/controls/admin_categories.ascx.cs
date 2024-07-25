@@ -87,8 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums
                                 DataProvider.Instance().Tags_Save(PortalId, ModuleId, TagId, TagName, 0, 0, 0, -1, true, ForumId, ForumGroupId);
                             }
 
-
-
                             break;
                         }
                     }

@@ -45,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private const int DefaultPortalID = 0;
         private const int DefaultTabID = -1;
 
-
         private const string XmlHeader = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
         private const string RSSHeader = "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:cf=\"http://www.microsoft.com/schemas/rss/core/2005\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:slash=\"http://purl.org/rss/1.0/modules/slash/\">";
 
@@ -222,7 +221,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             const int indent = 2;
 
-
             var sb = new StringBuilder(1024);
 
             // build header
@@ -372,8 +370,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append(WriteElement("slash:comments", replyCount, indent + 1));
                     sb.Append(WriteElement("/item", indent));
 
-
-
                 }
                 dr.Close();
                 sb.Append("<atom:link href=\"http://" + HttpContext.Current.Request.Url.Host + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
@@ -386,7 +382,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return ex.ToString();
             }
-
 
         }
     }

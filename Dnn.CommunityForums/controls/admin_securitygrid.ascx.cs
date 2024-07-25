@@ -203,7 +203,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 grid[i, 26] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModLock));
                 grid[i, 27] = Convert.ToString(PermValue((int)pi.Type, pi.ObjectId, security.ModPin));
 
-
                 i += 1;
             }
             System.Type enumType = typeof(SecureActions);
@@ -244,7 +243,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sb.Append("<td class=\"afsecactionhd\">");
                 }
 
-
                 sb.Append(keyText);
                 sb.Append("</td>");
             }
@@ -276,7 +274,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         sb.Append("onclick=\"securityToggle(this," + permissionsId + ",'" + grid[x, 0] + "','" + grid[x, 1] + "'," + grid[x, 2] + ",'" + keyText + "');\"");
                     }
                     sb.Append(">" + sState + "</div></td>");
-
 
                 }
                 sb.Append("</tr>");
@@ -346,7 +343,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.AddObjectToPermissions(ModuleId, pId, "View", secId, secType);
                 }
-
 
             }
             else

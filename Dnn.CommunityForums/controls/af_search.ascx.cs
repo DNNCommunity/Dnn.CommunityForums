@@ -519,7 +519,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var forumId = _currentRow["ForumID"].ToString();
 
             var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topics };
-            
 
             if (SocialGroupId > 0)
             {
@@ -540,7 +539,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var topicId = _currentRow["TopicId"].ToString();
 
             var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId };
-            
 
             if (SocialGroupId > 0)
             {
@@ -565,7 +563,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var contentId = _currentRow["ContentId"].ToString();
 
             var @params = new List<string> { ParamKeys.ForumId + "=" + forumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + topicId, ParamKeys.ContentJumpId + "=" + contentId };
-           
 
             if (SocialGroupId > 0)
             {

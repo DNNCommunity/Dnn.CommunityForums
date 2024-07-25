@@ -232,7 +232,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-
         public virtual bool IsReusable
         {
             get
@@ -240,7 +239,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 return false;
             }
         }
-
 
         public virtual void ProcessRequest(System.Web.HttpContext context)
         {
@@ -258,7 +256,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
                     _pid = objPortalAliasInfo.PortalID;
                     _ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
-
 
                 }
 
@@ -473,8 +470,6 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 Exceptions.LogException(ex);
 
             }
-
-
 
         }
 

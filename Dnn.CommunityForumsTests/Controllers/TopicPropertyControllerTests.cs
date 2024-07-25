@@ -38,7 +38,6 @@
             //Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(mockForum.Object, mockPropertyList.Object);
 
-
             //Assert
             var expectedResult = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
             Assert.That(actualResult, Is.EqualTo(expectedResult));
@@ -60,7 +59,6 @@
 
             //Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(serialized);
-
 
             //Assert
             Assert.That(actualResult, Has.Count.EqualTo((mockPropertyList.Object).Count));

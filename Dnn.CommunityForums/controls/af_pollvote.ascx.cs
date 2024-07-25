@@ -87,9 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             cblstOptions.Visible = true;
                         }
 
-
                     }
-
 
                 }
             }

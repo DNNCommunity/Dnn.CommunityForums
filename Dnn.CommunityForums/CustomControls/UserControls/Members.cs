@@ -302,15 +302,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         upi.Profile.DateLastPost = Convert.ToDateTime(dr["DateLastPost"].ToString());
                     }
 
-
                     upi.UserName = Convert.ToString(dr["Username"].ToString());
                     upi.FirstName = Convert.ToString(dr["FirstName"].ToString());
                     upi.LastName = Convert.ToString(dr["LastName"].ToString());
                     upi.Email = Convert.ToString(dr["Email"].ToString());
                     upi.DisplayName = Convert.ToString(dr["DisplayName"].ToString());
-
-
-
 
                     upl.Add(upi);
                 }

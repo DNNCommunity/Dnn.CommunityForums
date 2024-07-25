@@ -172,11 +172,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.Write(FooterTemplate);
         }
 
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
 
         }
     }

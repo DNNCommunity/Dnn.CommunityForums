@@ -33,8 +33,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class Toolbar : ControlsBase
     {
 
-
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

@@ -338,7 +338,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
         public bool EnablePoints
         {
             get

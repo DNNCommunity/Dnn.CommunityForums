@@ -29,7 +29,6 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_modreport : ForumBase
     {
 
-
         #region Controls
         #endregion
 
@@ -60,7 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     Response.Redirect(NavigateUrl(TabId));
                 }
-
 
             }
             catch (Exception exc)
@@ -114,7 +112,6 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         #endregion
-
 
         private void btnCancel_Click(object sender, System.EventArgs e)
         {

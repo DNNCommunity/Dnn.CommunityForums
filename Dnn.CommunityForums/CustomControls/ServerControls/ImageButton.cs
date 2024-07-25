@@ -55,7 +55,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _objectId = "";
         private string _PostBackScript;
 
-
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string ImageUrl { get; set; }
 
@@ -396,9 +395,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-
         }
-
 
     }
 }

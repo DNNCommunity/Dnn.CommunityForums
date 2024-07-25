@@ -169,8 +169,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //END Main Div
             writer.RenderEndTag(); // Close Main Div
 
-
-
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("<script type=\"text/javascript\">function afam_showDialog(title,key,height,width,optional){");
             sb.Append("function getTop(obj,height){");
@@ -225,7 +223,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("};</script>");
             writer.Write(sb.ToString());
 
-
         }
 
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
@@ -244,7 +241,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Callback(cb, e);
             }
         }
-
 
         protected override void OnInit(EventArgs e)
         {

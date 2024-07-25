@@ -60,7 +60,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return strMessage;
         }
 
-
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         internal static string ParseSecurityTokens(string template, string userRoles)
         {

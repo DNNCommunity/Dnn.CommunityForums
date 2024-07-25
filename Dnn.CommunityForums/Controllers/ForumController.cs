@@ -273,7 +273,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append("</root>");
                 sb.AppendLine();
 
-
                 //Dim sXML As String = ds.GetXml()
                 xDoc.LoadXml(sb.ToString());
                 DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);

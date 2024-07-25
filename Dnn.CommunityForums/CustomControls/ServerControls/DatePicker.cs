@@ -458,7 +458,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     tmpDate = DateTime.UtcNow;
                 }
 
-
                 string temp = CssClass;
                 CssClass = "";
                 if (temp == "")
@@ -709,8 +708,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 str.Append("window." + ClientID + ".selectedDate=window." + ClientID + ".textbox.value;");
                 str.Append("window." + ClientID + ".timeLabel='[RESX:Time]';");
 
-
-
                 str.Append("</script>");
                 writer.Write(str);
             }
@@ -723,7 +720,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-
 
         }
 

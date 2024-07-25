@@ -30,7 +30,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public int FID;
         public int TID;
 
-
         #region Event Handlers
 
         protected override void OnLoad(EventArgs e)
@@ -64,7 +63,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #endregion
 
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -73,7 +71,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             lnkSearch.Click += lnkSearch_Click;
         }
-
 
         private void lnkSearch_Click(object sender, EventArgs e)
         {

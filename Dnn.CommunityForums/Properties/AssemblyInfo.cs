@@ -39,7 +39,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright © DNN Community")]
 [assembly: AssemblyTrademark("")]
 
-
 //The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("582CE2BF-FEA8-4CAF-802B-C7F04FBC3482")]
 
@@ -56,7 +55,6 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyVersion("08.01.02")]
 
 [assembly: AssemblyFileVersion("08.01.02")]
-
 
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.CustomControls.Resources.cb.js", "text/javascript")]
 [assembly: WebResource("DotNetNuke.Modules.ActiveForums.scripts.afadmin.properties.js", "text/javascript")]
@@ -79,6 +77,5 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
 [assembly: ComVisibleAttribute(false)]
- 
 
 [assembly: InternalsVisibleTo("DotNetNuke.Modules.ActiveForumsTests")] 

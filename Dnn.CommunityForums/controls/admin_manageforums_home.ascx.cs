@@ -116,14 +116,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                         sb.Append("</td><td class=\"afforumback_right\">" + RenderSpacer(1, 4) + "</td></tr>");
 
-
                         if (HasSubForums(Convert.ToInt32(row["ForumId"]), dt) > 0)
                         {
                             sb.Append(AddSubForums(dt, row));
                         }
 
                     }
-
 
                 }
 

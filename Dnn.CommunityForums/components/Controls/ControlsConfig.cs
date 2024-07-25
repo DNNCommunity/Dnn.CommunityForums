@@ -228,6 +228,5 @@ namespace DotNetNuke.Modules.ActiveForums
 
 #endregion
 
-
     }
 }

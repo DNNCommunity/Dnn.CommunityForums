@@ -165,14 +165,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     GroupName = Convert.ToString(dr["GroupName"]);
                 }
 
-
                 if (ForumID != Convert.ToInt32(dr["ForumID"]))
                 {
                     drpForum.Items.Insert(i, new ListItem("|---" + Convert.ToString(dr["ForumName"]), "FORUMID:" + Convert.ToString(dr["ForumID"])));
                     i += 1;
                     ForumID = Convert.ToInt32(dr["ForumID"]);
                 }
-
 
             }
             dr.Close();
@@ -203,6 +201,5 @@ namespace DotNetNuke.Modules.ActiveForums
             drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
         }
 
-        
     }
 }

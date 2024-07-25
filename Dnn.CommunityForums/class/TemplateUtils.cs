@@ -290,7 +290,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-
             // Build the forum Url
             var forumURL = ms.UseShortUrls ? navigationManager.NavigateURL(tabID, portalSettings, string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}" })
                 : navigationManager.NavigateURL(tabID, portalSettings,string.Empty, new[] { $"{ParamKeys.ForumId}={forumID}", $"{ParamKeys.ViewType}={Views.Topics}" });

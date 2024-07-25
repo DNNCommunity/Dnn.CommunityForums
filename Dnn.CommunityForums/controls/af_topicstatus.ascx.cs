@@ -67,7 +67,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-
             drpStatus.AutoPostBack = AutoPostBack;
             foreach (ListItem li in drpStatus.Items)
             {

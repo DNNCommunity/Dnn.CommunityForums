@@ -130,7 +130,6 @@ namespace DotNetNuke.Modules.ActiveForums
             get { return MainSettings.GetBoolean(SettingKeys.IsInstalled); }
         }
 
-
         public PMTypes PMType
         {
             get

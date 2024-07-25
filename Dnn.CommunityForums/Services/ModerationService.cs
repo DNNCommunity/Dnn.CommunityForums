@@ -196,7 +196,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = ti.Content.AuthorId;
                 new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(_topicId);
 
-                
             }
 
             if (fi.ModDeleteTemplateId > 0 && authorId > 0)

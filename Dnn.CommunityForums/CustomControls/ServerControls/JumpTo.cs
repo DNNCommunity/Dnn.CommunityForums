@@ -33,7 +33,5 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class JumpTo : ControlsBase
     {
 
-
-
     }
 }

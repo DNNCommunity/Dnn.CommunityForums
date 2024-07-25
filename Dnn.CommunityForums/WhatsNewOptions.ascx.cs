@@ -279,7 +279,6 @@ namespace DotNetNuke.Modules.ActiveForums
             var dt = new DataTable();
             dt.Load(DataProvider.Instance().PortalForums(PortalId));
 
-
             var tmpGroup = string.Empty;
             var i = 0;
             foreach (DataRow row in dt.Rows)
@@ -329,7 +328,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     trForums.Nodes.Add(tr);
                 }
             }
-
 
         }
 

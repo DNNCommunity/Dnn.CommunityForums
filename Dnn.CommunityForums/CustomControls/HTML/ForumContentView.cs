@@ -385,7 +385,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         //    topicsTemplate = topicsTemplate.Replace("[SIGNATURE]", String.Empty)
         //    TopicTemplate = TemplateUtils.ReplaceSubSection(TopicTemplate, topicsTemplate, "[TOPIC]", "[/TOPIC]")
 
-
         //    TopicTemplate = TopicTemplate.Replace("[ADDREPLY]", String.Empty)
         //    TopicTemplate = TopicTemplate.Replace("[POSTRATINGBUTTON]", String.Empty)
         //    TopicTemplate = TopicTemplate.Replace("[TOPICSUBSCRIBE]", String.Empty)

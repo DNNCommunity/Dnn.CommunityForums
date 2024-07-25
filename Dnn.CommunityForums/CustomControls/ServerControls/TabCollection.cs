@@ -184,7 +184,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
 
-
         }
 
         IEnumerator IEnumerable.GetEnumerator()

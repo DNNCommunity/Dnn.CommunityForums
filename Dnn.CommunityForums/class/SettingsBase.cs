@@ -87,8 +87,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        
-
         public int ForumTabId
         {
             get

@@ -45,7 +45,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 //End If
 
-
             }
             catch (Exception ex)
             {

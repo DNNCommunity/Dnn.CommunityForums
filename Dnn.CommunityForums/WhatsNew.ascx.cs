@@ -215,7 +215,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         sbTemplate = sbTemplate.Replace("[TOPICSURL]", Utilities.NavigateURL(topicTabId, "", new[] { ParamKeys.ViewType + "=" + Views.Topics, ParamKeys.ForumId + "=" + forumId }));
                     }
 
-
                     sbTemplate = sbTemplate.Replace("[FORUMURL]", Utilities.NavigateURL(topicTabId));
 
                     // Do the body replacements last as they are the most likely to contain conflicts.

@@ -241,7 +241,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 lblTags.Text = GetSharedResource("[RESX:SearchByTag]");
                 txtTags.Text = Tags;
 
-
                 // Additional Options
 
                 litAdditionalOptions.Text = GetSharedResource("[RESX:SearchOptionsAdditional]");
@@ -403,9 +402,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             Response.Redirect(NavigateUrl(TabId, string.Empty, @params.ToArray()));
         }
-
-
-
 
         #endregion
 

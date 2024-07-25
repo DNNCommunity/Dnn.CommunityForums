@@ -175,7 +175,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     break;
             }
 
-
             outputName = Utilities.SafeTrim(outputName);
 
             if (string.IsNullOrWhiteSpace(outputName))

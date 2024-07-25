@@ -35,7 +35,6 @@ namespace DotNetNuke.Modules.ActiveForums
 
             btnSave.Click += new System.EventHandler(btnSave_Click);
 
-
             if (Request.QueryString[Literals.UserId] == null)
             {
                 UID = UserInfo.UserID;

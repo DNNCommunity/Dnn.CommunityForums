@@ -112,7 +112,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (!Page.IsPostBack)
             {
 
-
                 string Sort = DefaultSort;
                 if (HttpContext.Current.Request.Params[ParamKeys.Sort] != null)
                 {

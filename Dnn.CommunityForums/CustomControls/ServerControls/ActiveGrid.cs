@@ -689,7 +689,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
         #endregion
 
-
     }
 
     public class ItemBoundEventArgs : EventArgs

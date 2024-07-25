@@ -923,9 +923,6 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
-
-
         public static string ManageImagePath(string sHTML, Uri hostUri)
         {
             string hostWithScheme = hostUri.AbsoluteUri.Replace(hostUri.PathAndQuery, string.Empty).ToLowerInvariant();

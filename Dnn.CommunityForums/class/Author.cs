@@ -18,7 +18,6 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
 namespace DotNetNuke.Modules.ActiveForums
 {
 #region AuthorInfo

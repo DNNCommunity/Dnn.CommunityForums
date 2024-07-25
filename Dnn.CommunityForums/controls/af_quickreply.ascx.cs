@@ -85,7 +85,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     Response.Redirect("about:blank");
                 }
 
-
                 if (Request.IsAuthenticated)
                 {
                     btnSubmitLink.OnClientClick = "afQuickSubmit(); return false;";
@@ -173,11 +172,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 throw;
             }
-            
-
 
         }
-
 
         private void LinkControls(ControlCollection ctrls)
         {
@@ -339,7 +335,6 @@ namespace DotNetNuke.Modules.ActiveForums
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ModuleId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.ForumViewPrefix, ModuleId));
 
-
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
             string fullURL = new ControlUtils().BuildUrl(TabId, ForumModuleId, ForumInfo.ForumGroup.PrefixURL, ForumInfo.PrefixURL, ForumInfo.ForumGroupId, ForumInfo.ForumID, TopicId, ti.TopicUrl, -1, -1, string.Empty, -1, ReplyId, SocialGroupId);
 
@@ -368,7 +363,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 Response.Redirect(Utilities.NavigateURL(TabId, "", @params.ToArray()), false);
             };
         }
-
 
         private void ambtnSubmit_Click(object sender, System.EventArgs e)
         {

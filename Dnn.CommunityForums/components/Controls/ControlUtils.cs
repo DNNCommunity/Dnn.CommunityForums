@@ -143,7 +143,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Utilities.NavigateURL(tabId, portalSettings, string.Empty, @params.ToArray());
             }
 
-
             var sURL = string.Empty;
             if (!(string.IsNullOrEmpty(mainSettings.PrefixURLBase)))
             {

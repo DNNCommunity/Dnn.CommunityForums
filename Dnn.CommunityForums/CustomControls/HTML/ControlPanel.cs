@@ -75,7 +75,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 dr.Close();
             }
 
-
             return sb.ToString();
         }
 

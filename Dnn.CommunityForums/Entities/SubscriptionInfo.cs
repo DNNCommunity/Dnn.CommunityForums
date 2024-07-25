@@ -48,7 +48,6 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             Subscribed = subscribed;
         }
 
-
         private DateTime? _lastPostDate;
         private string _subject;
         private string _forumName;

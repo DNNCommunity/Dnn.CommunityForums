@@ -150,7 +150,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         txtUserName.Visible = false;
                         trCaptcha.Visible = false;
 
-
                     }
                 }
                 else

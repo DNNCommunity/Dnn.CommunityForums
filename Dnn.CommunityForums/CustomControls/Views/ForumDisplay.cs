@@ -64,8 +64,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             LinkControls(ctl.Controls);
             Controls.Add(ctl);
 
-
-
         }
 
         protected override void OnLoad(EventArgs e)
@@ -183,8 +181,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             lasttopicid = int.Parse(fNode.Attributes["lasttopicid"].Value);
             lastreplyid = int.Parse(fNode.Attributes["lastreplyid"].Value);
 
-
-
             fid = int.Parse(fNode.Attributes["forumid"].Value);
             //TODO: Validate can view
             //sForum = sForum.Replace("[FORUMNAME]", "<af:link id=""hypForumName" & fid & """ navigateurl=""" & Utilities.NavigateUrl(PageId, "", New String() {ParamKeys.ViewType & "=" & Views.Topics, ParamKeys.ForumId & "=" & fid}) & """ text=""" & forumname & """ runat=""server"" />") 'GetForumLink(forumname, PageId, True))
@@ -196,7 +192,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sForum = sForum.Replace("[DISPLAYNAME]", "<i class=\"fa fa-user fa-fw fa-blue\"></i>&nbsp;" + fNode.Attributes["lastpostauthorname"].Value);
             sForum = sForum.Replace("[LASTPOST]", "<asp:placeholder id=\"plhLastPost" + fid + "\" runat=\"server\">");
             sForum = sForum.Replace("[/LASTPOST]", "</asp:placeholder>");
-
 
             int intLength = 0;
             if ((sForum.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)

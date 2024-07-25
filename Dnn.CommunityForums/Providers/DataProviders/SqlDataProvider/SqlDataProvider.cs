@@ -32,7 +32,6 @@ namespace DotNetNuke.Modules.ActiveForums
     public class SqlDataProvider : DataProvider
     {
 
-
         #region Private Members
 
         private const string ProviderType = "data";
@@ -169,7 +168,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_Filters_Save", PortalId, ModuleId, FilterId, Find, Replace, FilterType));
         }
-
 
         #endregion
         #region Forums
@@ -688,8 +686,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_UserProfiles_List", PortalId, -1, MaxRows, RowIndex, Filter));
         }
 
-
-
         #endregion
 
         #region Content
@@ -737,7 +733,6 @@ namespace DotNetNuke.Modules.ActiveForums
         }
         #endregion
 
-
         #region Top Posts
         public override IDataReader PortalForums(int PortalId)
         {
@@ -756,13 +751,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return (IDataReader)(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner + ObjectQualifier + "activeforums_TP_GetByUser", PortalId, Rows, IsSuperUser, currentUserId, FilteredUserid, TopicsOnly, ForumIds));
         }
         #endregion
-
-
-
-
-
-
-
 
     }
 

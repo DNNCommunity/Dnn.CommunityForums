@@ -68,7 +68,6 @@ namespace DotNetNuke.Modules.ActiveForums
             ClientResourceManager.RegisterStyleSheet(Page, string.Concat("~/DesktopModules/ActiveForums/themes/", MainSettings.Theme, "/jquery-ui.min.css"));
             ClientResourceManager.RegisterStyleSheet(Page, filePath: $"{Globals.ModulePath}Resources/font-awesome-4.7.0/css/font-awesome.min.css", priority: 10);
 
-
             lblProd.Visible = true;
             lblCopy.Visible = true;
             //TODO: this should be resources instead of harcoded text?
@@ -227,7 +226,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
                 }
             }
-
 
         }
 

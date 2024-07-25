@@ -424,7 +424,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     template = template.Replace("[AF:UI:ANON]", string.Empty);
                     template = template.Replace("[/AF:UI:ANON]", string.Empty);
 
-
                 }
             }
             else
@@ -906,8 +905,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 plhTopicReview.Controls.Add(ctlTopicView);
             }
 
-            
-
         }
 
         public void btnPost_Click(object sender, EventArgs e)
@@ -921,7 +918,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return;
                 }
             }
-
 
             var rd = (RadioButtonList)(afposticons.FindControl("rblMessageIcons1"));
             var stat = (DropDownList)(aftopicstatus.FindControl("drpStatus"));
@@ -1101,7 +1097,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     ((TextBox)txtEditor).Text = _Body;
                     break;
             }
-
 
             EmotScript();
             insertHTMLScript();

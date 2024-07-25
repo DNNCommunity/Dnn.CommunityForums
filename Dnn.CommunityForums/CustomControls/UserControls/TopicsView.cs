@@ -557,7 +557,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = sOutput.Replace("[MARKFORUMREAD]", string.Empty);
             }
 
-
             if (CanCreate)
             {
                 string[] Params = { };
@@ -688,7 +687,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput = sOutput.Replace("[ACTIONS:PIN]", string.Empty);
             }
             sOutput = sOutput.Replace("[FORUMLINK]", "<a href=\"" + sForumURL + "\">" + ForumName + "</a>");
-
 
             return sOutput;
         }
@@ -1116,7 +1114,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
                 }
 
-
                 if (Pager2 != null)
                 {
                     Pager2.PageMode = Modules.ActiveForums.Controls.PagerNav.Mode.Links;
@@ -1131,7 +1128,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     Pager2.View = Views.Topics;
                 }
             }
-
 
         }
 

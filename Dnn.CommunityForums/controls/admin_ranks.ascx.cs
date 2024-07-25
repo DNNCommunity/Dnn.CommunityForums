@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-
             agRanks.Callback += agRanks_Callback;
             agRanks.ItemBound += agRanks_ItemBound;
 

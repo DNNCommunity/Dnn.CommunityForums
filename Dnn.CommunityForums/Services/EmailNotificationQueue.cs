@@ -31,7 +31,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue
             ScheduleHistoryItem = scheduleHistoryItem;
         }
 
-
         public override void DoWork()
         {
             try

@@ -330,7 +330,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-
             //bCreate = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(drSecurity["CanCreate"].ToString(), ForumUser.UserRoles);
             _bEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanEdit"].ToString(), ForumUser.UserRoles);
             _bDelete = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(_drSecurity["CanDelete"].ToString(), ForumUser.UserRoles);
@@ -624,7 +623,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 MetaKeywords = TemplateUtils.GetTemplateSection(MetaTemplate, "[KEYWORDS]", "[/KEYWORDS]").Replace("[KEYWORDS]", string.Empty).Replace("[/KEYWORDS]", string.Empty);
             }
 
-
             #endregion
 
             #region Setup Breadcrumbs
@@ -847,7 +845,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOutput.Remove(inStart, ((inEnd - inStart) + 1));
             }
 
-
             // Banners
             if (sOutput.Contains("[BANNER"))
             {
@@ -903,7 +900,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Append("<img src=\""+Page.ResolveUrl(DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath+"spacer.gif")+"\" width=\"800\" height=\"1\" runat=\"server\" alt=\"---\" />");
             }
 
-
             sbOutput.Replace("[NOPAGING]", "<script type=\"text/javascript\">afpagesize=" + int.MaxValue + ";</script>");
             sbOutput.Replace("[NOTOOLBAR]", string.Empty);
 
@@ -929,7 +925,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[AF:CONTROL:TOPICACTIONS]", topicActions);
                 sbOutput.Replace("[AF:CONTROL:POSTACTIONS]", postActions);
             }
-
 
             // Quick Reply
             if (CanReply)
@@ -975,7 +970,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sbOutput.Replace("[QUICKREPLY]", string.Empty);
             }
 
-           
             if ((sOutput.Contains("[SPLITBUTTONS]") && _bModSplit && (_replyCount > 0)))
             {
                 sbOutput.Replace("[SPLITBUTTONS]", TemplateCache.GetCachedTemplate(ForumModuleId, "TopicSplitButtons"));
@@ -1071,7 +1065,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // View Count
             sbOutput.Replace("[VIEWCOUNT]", _viewCount.ToString());
 
-
             DotNetNuke.Entities.Portals.PortalSettings portalSettings = Utilities.GetPortalSettings(PortalId);
             // Last Post
             sbOutput.Replace("[AF:LABEL:LastPostDate]", _lastPostDate);
@@ -1080,7 +1073,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // Topic Info
             sbOutput.Replace("[AF:LABEL:TopicAuthor]", UserProfiles.GetDisplayName(portalSettings, ForumModuleId, false, false, false, _topicAuthorId, _topicAuthorDisplayName, string.Empty, string.Empty, _topicAuthorDisplayName));
             sbOutput.Replace("[AF:LABEL:TopicDateCreated]", _topicDateCreated);
-
 
             // Pagers
             if (_pageSize == int.MaxValue)
@@ -1231,7 +1223,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     sOutput = TemplateUtils.ReplaceSubSection(sOutput, string.Empty, startTag, endTag);
                 }
             }
-
 
             // Prorcess topic and reply templates.
 
@@ -1430,8 +1421,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sbOutput.Replace("[TOPICID]", topicId.ToString());
             sbOutput.Replace("[POSTDATE]", Utilities.GetUserFormattedDateTime(dateCreated, PortalId, UserId));
             sbOutput.Replace("[DATECREATED]", Utilities.GetUserFormattedDateTime(dateCreated, PortalId, UserId));
-
-
 
             // Parse Roles -- This should actually be taken care of in ParseProfileTemplate
             //if (sOutput.Contains("[ROLES:"))
@@ -1771,7 +1760,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sOutput;
         }
-
 
         // Renders the [ATTACHMENTS] block
         private string GetAttachments(int contentId, bool allowAttach, int portalId, int moduleId)

@@ -92,7 +92,6 @@ namespace DotNetNuke.Modules.ActiveForums
             // This method uploads an attachment to a temporary directory and returns a JSON object containing information about the original file
             // including the temporary file name.  When the post is saved/updated, the temporary file is moved to the appropriate attachment directory
 
-
             // Have to a reference to these variables as the internal reference isn't available.
             // in the async result.
             var request = Request;
@@ -159,7 +158,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     return request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized");
                 }
 
-
                 // Make sure that the file size does not exceed the limit (in KB) for the forum
                 // Have to do this since content length is not available when using MultipartFormDataStreamProvider
                 var di = new DirectoryInfo(folder.PhysicalPath);
@@ -173,7 +171,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     return request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "Exceeds Max File Size");
                 }
 
-
                 // Get the original file name from the content disposition header
                 var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
 
@@ -182,7 +179,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     File.Delete(file.LocalFileName);
                     return request.CreateErrorResponse(HttpStatusCode.NotAcceptable, "Invalid File");
                 }
-
 
                 // Make sure we have an acceptable extension type.
                 // Check against both the forum configuration and the host configuration
@@ -296,7 +292,6 @@ namespace DotNetNuke.Modules.ActiveForums
                         ufile = fileManager.AddFile(attachmentFolder, fileName, fileStream);
                     }
                 }
-
 
                 // IE<=9 Hack - can't return application/json
                 var mediaType = "application/json";
@@ -464,7 +459,6 @@ namespace DotNetNuke.Modules.ActiveForums
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-
         public class CreateThumbnailDTO
         {
             public int FileId { get; set; }
@@ -478,7 +472,6 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             public string Url { get; set; }
         }
-
 
     }
 }

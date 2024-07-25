@@ -34,7 +34,6 @@ namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
             ScheduleHistoryItem = scheduleHistoryItem;
         }
 
-
         public override void DoWork()
         {
             try

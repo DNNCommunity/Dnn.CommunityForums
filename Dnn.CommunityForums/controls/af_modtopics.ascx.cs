@@ -58,7 +58,6 @@ namespace DotNetNuke.Modules.ActiveForums
                     SetPermissions(ForumId);
                 }
 
-
                 if (!cbMod.IsCallback)
                 {
                     BuildModList();
@@ -292,7 +291,6 @@ namespace DotNetNuke.Modules.ActiveForums
                             var banParams = new List<string> { $"{ParamKeys.ViewType}={Views.ModerateBan}", ParamKeys.ForumId + "=" + dr["ForumId"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ReplyId + "=" + Convert.ToInt32(dr["ReplyId"]), ParamKeys.AuthorId + "=" + Convert.ToInt32(dr["AuthorId"]) };
                             sb.Append("<a class=\"dnnSecondaryAction\" href=\"" + Utilities.NavigateURL(TabId, "", banParams.ToArray()) + "\" tooltip=\"[RESX:Tips:BanUser]\">[RESX:Ban]</a>");
                         }
-
 
                         sb.Append("</td></tr>");
                         sb.Append("<tr><td style=\"width:90px\" valign=\"top\">" + dr["AuthorName"].ToString() + "</td>");

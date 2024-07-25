@@ -208,7 +208,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
-        
 
         #region "code modeled on DotNetNuke.Services.Mail/DotNetNuke.Entities.Host APIs to support portal-specific SMTP configuration"
         internal static string SMTPServer(int portalId)
@@ -306,8 +305,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyHTML);
         }
-
-
 
 #endregion
     }

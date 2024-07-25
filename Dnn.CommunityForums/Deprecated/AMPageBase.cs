@@ -66,6 +66,5 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-
     }
 }

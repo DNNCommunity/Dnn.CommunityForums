@@ -37,7 +37,6 @@ namespace DotNetNuke.Modules.ActiveForums
             try
             {
 
-
                 Subscriptions.SendSubscriptions(SubscriptionTypes.DailyDigest, DateTime.UtcNow);
                 ScheduleHistoryItem.Succeeded = true;
                 ScheduleHistoryItem.TimeLapse = GetElapsedTimeTillNextStart();
@@ -60,7 +59,6 @@ namespace DotNetNuke.Modules.ActiveForums
             int elapseMinutes = Convert.ToInt32((nextStart.Ticks - DateTime.UtcNow.Ticks) / TimeSpan.TicksPerDay);
             return elapseMinutes;
         }
-         
 
     }
 }

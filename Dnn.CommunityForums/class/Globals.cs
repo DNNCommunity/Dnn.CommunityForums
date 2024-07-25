@@ -100,7 +100,6 @@ namespace DotNetNuke.Modules.ActiveForums
         Ventrian = 2
     }
 
-
     public enum TrustTypes
     {
         NotTrusted,
@@ -446,7 +445,6 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ViewRolesForForumList = "AF-{0}-Perm-{1}";
         public const string Subscriber = "AF-{0}-Subs-{1}-{2}-{3}-{4}";
         public const string ForumSettings = "AF-{0}-fs-{1}";
-
 
         public const string ForumGroupInfo = "AF-{0}-fgi-{1}";
         public const string ForumGroupSettings = "AF-{0}-fgs-{1}";

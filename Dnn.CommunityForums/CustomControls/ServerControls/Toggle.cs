@@ -203,7 +203,6 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-
         protected override void Render(HtmlTextWriter writer)
         {
             writer.Write("<div id=\"group" + Key + "\" class=\"" + CssClass + "\" style=\"display:");

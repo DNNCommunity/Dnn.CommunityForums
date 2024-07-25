@@ -118,7 +118,6 @@ namespace DotNetNuke.Modules.ActiveForums
                 html = html.Replace("[AF:LINK:FORUMNAME]", "<a href=\"" + NavigateUrl(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topics }) + "\">" + ForumInfo.ForumName + "</a>");
             }
 
-
             html = Utilities.LocalizeControl(html);
 
             writer.Write(html);
@@ -148,14 +147,12 @@ namespace DotNetNuke.Modules.ActiveForums
                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(PortalId, moduleId: ModuleId, fromEmail: UserInfo.Email, toEmail: sEmail, subject: sSubject, body: sMessage);
                     }
 
-
                 }
                 catch (Exception ex)
                 {
                     //Response.Redirect(NavigateUrl(CInt(Request.QueryString["TabId"]), "", New String() {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=confirmaction", ParamKeys.ConfirmActionId & "=" & ConfirmActions.SendToFailed}))
                 }
                 Response.Redirect(sUrl);
-
 
             }
         }
