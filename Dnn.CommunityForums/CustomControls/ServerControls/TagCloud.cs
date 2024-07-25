@@ -32,23 +32,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TagCloud runat=server></{0}:TagCloud>")]
     public class TagCloud : WebControl
     {
-        private int _PortalId = -1;
-        private int _ModuleId = -1;
+        private int _portalId = -1;
+        private int _moduleId = -1;
         private string _cssOne = "tagcssone";
         private string _cssTwo = "tagcsstwo";
         private string _cssThree = "tagcssthree";
-        private int _TabId = -1;
+        private int _tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._TabId;
+                return this._tabId;
             }
 
             set
             {
-                this._TabId = value;
+                this._tabId = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PortalId;
+                return this._portalId;
             }
 
             set
             {
-                this._PortalId = value;
+                this._portalId = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ModuleId;
+                return this._moduleId;
             }
 
             set
             {
-                this._ModuleId = value;
+                this._moduleId = value;
             }
         }
 
@@ -117,33 +117,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private string _ForumIds = string.Empty;
+        private string _forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._ForumIds;
+                return this._forumIds;
             }
 
             set
             {
-                this._ForumIds = value;
+                this._forumIds = value;
             }
         }
 
-        private int _TagCount = 15;
+        private int _tagCount = 15;
 
         public int TagCount
         {
             get
             {
-                return this._TagCount;
+                return this._tagCount;
             }
 
             set
             {
-                this._TagCount = value;
+                this._tagCount = value;
             }
         }
 

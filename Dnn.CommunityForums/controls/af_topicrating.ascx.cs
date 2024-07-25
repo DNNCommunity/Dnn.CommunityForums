@@ -29,8 +29,8 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public string RatingClass = "rating0";
         #region Private Members
-        private int _Rating = -1;
-        private bool _Enabled = false;
+        private int _rating = -1;
+        private bool _enabled = false;
         #endregion
         #region Controls
         protected ImageButton rate1 = new ImageButton();
@@ -45,12 +45,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._Rating;
+                return this._rating;
             }
 
             set
             {
-                this._Rating = value;
+                this._rating = value;
             }
         }
 
@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._Enabled;
+                return this._enabled;
             }
 
             set
             {
-                this._Enabled = value;
+                this._enabled = value;
             }
         }
         #endregion

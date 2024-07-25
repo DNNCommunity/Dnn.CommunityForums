@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class ProfileBase : SettingsBase
     {
-        private int _UID = -1;
+        private int _uID = -1;
 
         public UserProfileInfo UserProfile { get; set; }
 
@@ -36,15 +36,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.UserId]))
                     {
-                        this._UID = Convert.ToInt32(this.Request.Params[ParamKeys.UserId]);
+                        this._uID = Convert.ToInt32(this.Request.Params[ParamKeys.UserId]);
                     }
                 }
                 else
                 {
-                    this._UID = this.UserId;
+                    this._uID = this.UserId;
                 }
 
-                return this._UID;
+                return this._uID;
             }
         }
     }

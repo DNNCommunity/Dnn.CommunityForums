@@ -34,11 +34,11 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Members
         private int _forumModuleId = -1;
-        private string _LoadView = string.Empty;
-        private int _LoadGroupForumID = 0;
-        private int _LoadPostID = 0;
+        private string _loadView = string.Empty;
+        private int _loadGroupForumID = 0;
+        private int _loadPostID = 0;
         private string _imagePath = string.Empty;
-        private string _Params = string.Empty;
+        private string _params = string.Empty;
         private int _forumTabId = -1;
         #endregion
 
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._Params;
+                return this._params;
             }
 
             set
             {
-                this._Params = value;
+                this._params = value;
             }
         }
 

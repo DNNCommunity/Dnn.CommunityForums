@@ -46,35 +46,35 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private int _upid = -1;
         private DotNetNuke.Entities.Portals.PortalSettings _ps;
         private SettingsInfo _mainSettings;
-        private bool _AdminRequired = false;
+        private bool _adminRequired = false;
 
         public bool AdminRequired
         {
             get
             {
-                return this._AdminRequired;
+                return this._adminRequired;
             }
 
             set
             {
-                this._AdminRequired = value;
+                this._adminRequired = value;
             }
         }
 
         private int _pid = -1;
         private int _mid = -1;
-        private int _UserId = -1;
+        private int _userId = -1;
 
         public int UserId
         {
             get
             {
-                return this._UserId;
+                return this._userId;
             }
 
             set
             {
-                this._UserId = value;
+                this._userId = value;
             }
         }
 
@@ -193,33 +193,33 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
         }
 
-        private bool _IsAuthenticated = false;
+        private bool _isAuthenticated = false;
 
         public bool IsAuthenticated
         {
             get
             {
-                return this._IsAuthenticated;
+                return this._isAuthenticated;
             }
 
             set
             {
-                this._IsAuthenticated = value;
+                this._isAuthenticated = value;
             }
         }
 
-        private string _Username = string.Empty;
+        private string _username = string.Empty;
 
         public string Username
         {
             get
             {
-                return this._Username;
+                return this._username;
             }
 
             set
             {
-                this._Username = value;
+                this._username = value;
             }
         }
 

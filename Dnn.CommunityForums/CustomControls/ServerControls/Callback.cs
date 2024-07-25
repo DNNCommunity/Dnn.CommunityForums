@@ -55,7 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
 
-        private string _PostURL = "";
+        private string _postURL = "";
         private string _token = string.Empty;
         private int _validState = 0; // -1 = don't process, 0 = initial load, 1 = process
 
@@ -218,12 +218,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PostURL;
+                return this._postURL;
             }
 
             set
             {
-                this._PostURL = value;
+                this._postURL = value;
             }
         }
 

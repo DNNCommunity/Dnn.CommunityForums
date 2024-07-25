@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class Tab
     {
         private string _text;
-        private string _CSSClass;
+        private string _cSSClass;
         private string _onClick = string.Empty;
         private string _controlKey = string.Empty;
         private TabContent _tabContent;
@@ -49,12 +49,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CSSClass;
+                return this._cSSClass;
             }
 
             set
             {
-                this._CSSClass = value;
+                this._cSSClass = value;
             }
         }
 

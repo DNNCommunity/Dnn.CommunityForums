@@ -140,18 +140,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private string _ForumUrl = string.Empty;
+        private string _forumUrl = string.Empty;
 
         public string ForumUrl
         {
             get
             {
-                return this._ForumUrl;
+                return this._forumUrl;
             }
 
             set
             {
-                this._ForumUrl = value;
+                this._forumUrl = value;
             }
         }
         #endregion

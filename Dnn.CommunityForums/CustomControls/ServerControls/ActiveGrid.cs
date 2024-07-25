@@ -38,34 +38,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private Literal lit;
         private System.Web.UI.HtmlControls.HtmlGenericControl div;
         protected Callback cb;
-        private ItemTemplateContents _ItemTemplate;
-        private ItemTemplateContents _HeaderTemplate;
-        private ItemTemplateContents _FooterTemplate;
+        private ItemTemplateContents _itemTemplate;
+        private ItemTemplateContents _headerTemplate;
+        private ItemTemplateContents _footerTemplate;
         private IDataReader _datasource;
         private DataView _dataView;
         private string _rowDelimiter = "^";
         private string _colDelimiter = "|";
-        private int _PageSize = 10;
-        private string _ItemStyle = "amdatarow";
-        private string _AltItemStyle = "amrowalternating";
-        private string _SelectedStyle = "amrowselected";
-        private bool _ShowPager = true;
-        private string _PagerText = "Page {0} of {1}";
-        private string _ImagePath = "";
-        private int _PagerPages = 10;
-        private string _DefaultColumn;
-        private string _DefaultParams = "";
-        private Sort _DefaultSort = Sort.Descending;
-        private string _CssPagerInfo = "ampagerinfo";
-        private string _CssPagerItem = "amPageritem";
-        private string _CssPagerItem2 = "ampagertem2";
-        private string _CssPagerCurrentNumber = "ampagernumber_current";
-        private string _CssPagerNumber = "ampagernumber";
-        private string _SpacerImage = "";
-        private string _AscImage = "";
-        private string _DescImage = "";
-        private bool _LoadOnRender = true;
-        private string _OnComplete;
+        private int _pageSize = 10;
+        private string _itemStyle = "amdatarow";
+        private string _altItemStyle = "amrowalternating";
+        private string _selectedStyle = "amrowselected";
+        private bool _showPager = true;
+        private string _pagerText = "Page {0} of {1}";
+        private string _imagePath = "";
+        private int _pagerPages = 10;
+        private string _defaultColumn;
+        private string _defaultParams = "";
+        private Sort _defaultSort = Sort.Descending;
+        private string _cssPagerInfo = "ampagerinfo";
+        private string _cssPagerItem = "amPageritem";
+        private string _cssPagerItem2 = "ampagertem2";
+        private string _cssPagerCurrentNumber = "ampagernumber_current";
+        private string _cssPagerNumber = "ampagernumber";
+        private string _spacerImage = "";
+        private string _ascImage = "";
+        private string _descImage = "";
+        private bool _loadOnRender = true;
+        private string _onComplete;
 
         public enum Sort : int
         {
@@ -87,12 +87,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ItemTemplate;
+                return this._itemTemplate;
             }
 
             set
             {
-                this._ItemTemplate = value;
+                this._itemTemplate = value;
             }
         }
 
@@ -105,12 +105,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._HeaderTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                this._HeaderTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._FooterTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                this._FooterTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
@@ -191,12 +191,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PageSize;
+                return this._pageSize;
             }
 
             set
             {
-                this._PageSize = value;
+                this._pageSize = value;
             }
         }
 
@@ -208,12 +208,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ItemStyle;
+                return this._itemStyle;
             }
 
             set
             {
-                this._ItemStyle = value;
+                this._itemStyle = value;
             }
         }
 
@@ -225,12 +225,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._AltItemStyle;
+                return this._altItemStyle;
             }
 
             set
             {
-                this._AltItemStyle = value;
+                this._altItemStyle = value;
             }
         }
 
@@ -242,12 +242,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._SelectedStyle;
+                return this._selectedStyle;
             }
 
             set
             {
-                this._SelectedStyle = value;
+                this._selectedStyle = value;
             }
         }
 
@@ -256,12 +256,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ShowPager;
+                return this._showPager;
             }
 
             set
             {
-                this._ShowPager = value;
+                this._showPager = value;
             }
         }
 
@@ -273,12 +273,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._LoadOnRender;
+                return this._loadOnRender;
             }
 
             set
             {
-                this._LoadOnRender = value;
+                this._loadOnRender = value;
             }
         }
 
@@ -290,12 +290,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PagerText;
+                return this._pagerText;
             }
 
             set
             {
-                this._PagerText = value;
+                this._pagerText = value;
             }
         }
 
@@ -307,12 +307,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ImagePath;
+                return this._imagePath;
             }
 
             set
             {
-                this._ImagePath = value;
+                this._imagePath = value;
             }
         }
 
@@ -324,12 +324,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PagerPages;
+                return this._pagerPages;
             }
 
             set
             {
-                this._PagerPages = value;
+                this._pagerPages = value;
             }
         }
 
@@ -340,12 +340,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._DefaultSort;
+                return this._defaultSort;
             }
 
             set
             {
-                this._DefaultSort = value;
+                this._defaultSort = value;
             }
         }
 
@@ -356,12 +356,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._DefaultColumn;
+                return this._defaultColumn;
             }
 
             set
             {
-                this._DefaultColumn = value;
+                this._defaultColumn = value;
             }
         }
 
@@ -372,12 +372,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._DefaultParams;
+                return this._defaultParams;
             }
 
             set
             {
-                this._DefaultParams = value;
+                this._defaultParams = value;
             }
         }
 
@@ -388,12 +388,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CssPagerInfo;
+                return this._cssPagerInfo;
             }
 
             set
             {
-                this._CssPagerInfo = value;
+                this._cssPagerInfo = value;
             }
         }
 
@@ -404,12 +404,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CssPagerItem;
+                return this._cssPagerItem;
             }
 
             set
             {
-                this._CssPagerItem = value;
+                this._cssPagerItem = value;
             }
         }
 
@@ -420,12 +420,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CssPagerItem2;
+                return this._cssPagerItem2;
             }
 
             set
             {
-                this._CssPagerItem2 = value;
+                this._cssPagerItem2 = value;
             }
         }
 
@@ -436,12 +436,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CssPagerCurrentNumber;
+                return this._cssPagerCurrentNumber;
             }
 
             set
             {
-                this._CssPagerCurrentNumber = value;
+                this._cssPagerCurrentNumber = value;
             }
         }
 
@@ -452,12 +452,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CssPagerNumber;
+                return this._cssPagerNumber;
             }
 
             set
             {
-                this._CssPagerNumber = value;
+                this._cssPagerNumber = value;
             }
         }
 
@@ -468,12 +468,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._SpacerImage;
+                return this._spacerImage;
             }
 
             set
             {
-                this._SpacerImage = value;
+                this._spacerImage = value;
             }
         }
 
@@ -484,12 +484,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._AscImage;
+                return this._ascImage;
             }
 
             set
             {
-                this._AscImage = value;
+                this._ascImage = value;
             }
         }
 
@@ -500,12 +500,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._DescImage;
+                return this._descImage;
             }
 
             set
             {
-                this._DescImage = value;
+                this._descImage = value;
             }
         }
 

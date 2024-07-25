@@ -49,12 +49,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _hSpace;
         private int _vSpace;
         private string _imageAlign = "absmiddle";
-        private bool _PostBack = true;
-        private string _ConfirmMessage = "";
-        private string _ValidationGroup = "";
+        private bool _postBack = true;
+        private string _confirmMessage = "";
+        private string _validationGroup = "";
         private string _imageLocation = "LEFT";
         private string _objectId = "";
-        private string _PostBackScript;
+        private string _postBackScript;
 
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string ImageUrl { get; set; }
@@ -109,12 +109,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PostBack;
+                return this._postBack;
             }
 
             set
             {
-                this._PostBack = value;
+                this._postBack = value;
             }
         }
 
@@ -132,12 +132,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ConfirmMessage;
+                return this._confirmMessage;
             }
 
             set
             {
-                this._ConfirmMessage = value;
+                this._confirmMessage = value;
             }
         }
 
@@ -149,12 +149,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ValidationGroup;
+                return this._validationGroup;
             }
 
             set
             {
-                this._ValidationGroup = value;
+                this._validationGroup = value;
             }
         }
 
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PostBackScript;
+                return this._postBackScript;
             }
 
         }
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             string sPostBack = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
-            this._PostBackScript = sPostBack;
+            this._postBackScript = sPostBack;
             if (this.Enabled)
             {
                 if (this.PostBack)

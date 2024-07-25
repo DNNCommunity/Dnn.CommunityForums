@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Members
         private int moduleId = -1;
         private int portalId = -1;
-        private string _Subject = string.Empty;
+        private string _subject = string.Empty;
 
         #endregion
         #region Public Properties

@@ -77,18 +77,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private bool _MaintainPage = false;
+        private bool _maintainPage = false;
 
         public bool MaintainPage
         {
             get
             {
-                return this._MaintainPage;
+                return this._maintainPage;
             }
 
             set
             {
-                this._MaintainPage = value;
+                this._maintainPage = value;
             }
         }
 

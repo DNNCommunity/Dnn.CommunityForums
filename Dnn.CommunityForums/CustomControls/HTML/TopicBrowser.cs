@@ -26,320 +26,320 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class TopicBrowser
     {
-        private int _PortalId = -1;
+        private int _portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._PortalId;
+                return this._portalId;
             }
 
             set
             {
-                this._PortalId = value;
+                this._portalId = value;
             }
         }
 
-        private int _ModuleId = -1;
+        private int _moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._ModuleId;
+                return this._moduleId;
             }
 
             set
             {
-                this._ModuleId = value;
+                this._moduleId = value;
             }
         }
 
-        private int _TabId = -1;
+        private int _tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._TabId;
+                return this._tabId;
             }
 
             set
             {
-                this._TabId = value;
+                this._tabId = value;
             }
         }
 
-        private string _ForumIds = string.Empty;
+        private string _forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._ForumIds;
+                return this._forumIds;
             }
 
             set
             {
-                this._ForumIds = value;
+                this._forumIds = value;
             }
         }
 
-        private int _ForumId = -1;
+        private int _forumId = -1;
 
         public int ForumId
         {
             get
             {
-                return this._ForumId;
+                return this._forumId;
             }
 
             set
             {
-                this._ForumId = value;
+                this._forumId = value;
             }
         }
 
-        private int _ForumGroupId = -1;
+        private int _forumGroupId = -1;
 
         public int ForumGroupId
         {
             get
             {
-                return this._ForumGroupId;
+                return this._forumGroupId;
             }
 
             set
             {
-                this._ForumGroupId = value;
+                this._forumGroupId = value;
             }
         }
 
-        private int _ParentForumId = -1;
+        private int _parentForumId = -1;
 
         public int ParentForumId
         {
             get
             {
-                return this._ParentForumId;
+                return this._parentForumId;
             }
 
             set
             {
-                this._ParentForumId = value;
+                this._parentForumId = value;
             }
         }
 
-        private int _TopicId = -1;
+        private int _topicId = -1;
 
         public int TopicId
         {
             get
             {
-                return this._TopicId;
+                return this._topicId;
             }
 
             set
             {
-                this._TopicId = value;
+                this._topicId = value;
             }
         }
 
-        private string _Topic = string.Empty;
+        private string _topic = string.Empty;
 
         public string Topic
         {
             get
             {
-                return this._Topic;
+                return this._topic;
             }
 
             set
             {
-                this._Topic = value;
+                this._topic = value;
             }
         }
 
-        private string _Template = string.Empty;
+        private string _template = string.Empty;
 
         public string Template
         {
             get
             {
-                return this._Template;
+                return this._template;
             }
 
             set
             {
-                this._Template = value;
+                this._template = value;
             }
         }
 
-        private string _HeaderTemplate = string.Empty;
+        private string _headerTemplate = string.Empty;
 
         public string HeaderTemplate
         {
             get
             {
-                return this._HeaderTemplate;
+                return this._headerTemplate;
             }
 
             set
             {
-                this._HeaderTemplate = value;
+                this._headerTemplate = value;
             }
         }
 
-        private string _FooterTemplate = string.Empty;
+        private string _footerTemplate = string.Empty;
 
         public string FooterTemplate
         {
             get
             {
-                return this._FooterTemplate;
+                return this._footerTemplate;
             }
 
             set
             {
-                this._FooterTemplate = value;
+                this._footerTemplate = value;
             }
         }
 
         public User ForumUser { get; set; }
 
-        private int _CategoryId = -1;
+        private int _categoryId = -1;
 
         public int CategoryId
         {
             get
             {
-                return this._CategoryId;
+                return this._categoryId;
             }
 
             set
             {
-                this._CategoryId = value;
+                this._categoryId = value;
             }
         }
 
-        private int _TagId = -1;
+        private int _tagId = -1;
 
         public int TagId
         {
             get
             {
-                return this._TagId;
+                return this._tagId;
             }
 
             set
             {
-                this._TagId = value;
+                this._tagId = value;
             }
         }
 
-        private int _PageIndex = 1;
+        private int _pageIndex = 1;
 
         public int PageIndex
         {
             get
             {
-                return this._PageIndex;
+                return this._pageIndex;
             }
 
             set
             {
-                this._PageIndex = value;
+                this._pageIndex = value;
             }
         }
 
-        private int _PageSize = 20;
+        private int _pageSize = 20;
 
         public int PageSize
         {
             get
             {
-                return this._PageSize;
+                return this._pageSize;
             }
 
             set
             {
-                this._PageSize = value;
+                this._pageSize = value;
             }
         }
 
-        private string _ItemCss = "aftb-topic";
+        private string _itemCss = "aftb-topic";
 
         public string ItemCss
         {
             get
             {
-                return this._ItemCss;
+                return this._itemCss;
             }
 
             set
             {
-                this._ItemCss = value;
+                this._itemCss = value;
             }
         }
 
-        private string _AltItemCSS = "aftb-topic-alt";
+        private string _altItemCSS = "aftb-topic-alt";
 
         public string AltItemCSS
         {
             get
             {
-                return this._AltItemCSS;
+                return this._altItemCSS;
             }
 
             set
             {
-                this._AltItemCSS = value;
+                this._altItemCSS = value;
             }
         }
 
-        private bool _UseAjax = false;
+        private bool _useAjax = false;
 
         public bool UseAjax
         {
             get
             {
-                return this._UseAjax;
+                return this._useAjax;
             }
 
             set
             {
-                this._UseAjax = value;
+                this._useAjax = value;
             }
         }
 
-        private string _ImagePath = string.Empty;
+        private string _imagePath = string.Empty;
 
         public string ImagePath
         {
             get
             {
-                return this._ImagePath;
+                return this._imagePath;
             }
 
             set
             {
-                this._ImagePath = value;
+                this._imagePath = value;
             }
         }
 
-        private bool _MaintainPage = false;
+        private bool _maintainPage = false;
 
         public bool MaintainPage
         {
             get
             {
-                return this._MaintainPage;
+                return this._maintainPage;
             }
 
             set
             {
-                this._MaintainPage = value;
+                this._maintainPage = value;
             }
         }
 

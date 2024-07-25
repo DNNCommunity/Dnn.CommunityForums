@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TopicBase : SettingsBase
     {
         #region Private Members
-        private int _TopicId = -1;
+        private int _topicId = -1;
         #endregion
 
         #region Public Properties
@@ -35,28 +35,28 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._TopicId == -1)
+                if (this._topicId == -1)
                 {
                     if (this.Request.Params[ParamKeys.TopicId] != null)
                     {
                         if (SimulateIsNumeric.IsNumeric(this.Request.Params[ParamKeys.TopicId]))
                         {
-                            this._TopicId = Convert.ToInt32(this.Request.Params[ParamKeys.TopicId]);
-                            return this._TopicId;
+                            this._topicId = Convert.ToInt32(this.Request.Params[ParamKeys.TopicId]);
+                            return this._topicId;
                         }
 
-                        return this._TopicId;
+                        return this._topicId;
                     }
 
-                    return this._TopicId;
+                    return this._topicId;
                 }
 
-                return this._TopicId;
+                return this._topicId;
             }
 
             set
             {
-                this._TopicId = value;
+                this._topicId = value;
             }
         }
         #endregion

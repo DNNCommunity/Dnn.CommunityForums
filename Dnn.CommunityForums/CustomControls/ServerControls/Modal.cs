@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         protected Controls.Callback cb = new Controls.Callback();
         protected PlaceHolder plh = new PlaceHolder();
-        private string _CallBackOnComplete = string.Empty;
+        private string _callBackOnComplete = string.Empty;
 
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string Text
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._CallBackOnComplete;
+                return this._callBackOnComplete;
             }
 
             set
             {
-                this._CallBackOnComplete = value;
+                this._callBackOnComplete = value;
             }
         }
 

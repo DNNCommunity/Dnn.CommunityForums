@@ -27,9 +27,9 @@ namespace DotNetNuke.Modules.ActiveForums
     public class ControlsConfig
     {
         #region Private Members
-        private int _PortalId;
+        private int _portalId;
         private int _pageId = -1;
-        private int _ModuleId;
+        private int _moduleId;
         private int _forumId;
         private int _topicId;
         private int _contentId;
@@ -113,12 +113,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._ModuleId;
+                return this._moduleId;
             }
 
             set
             {
-                this._ModuleId = value;
+                this._moduleId = value;
             }
         }
 
@@ -165,12 +165,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._PortalId;
+                return this._portalId;
             }
 
             set
             {
-                this._PortalId = value;
+                this._portalId = value;
             }
         }
 

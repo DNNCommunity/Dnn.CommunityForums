@@ -52,9 +52,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Variables
 
-        private int? _TabId;
-        private int? _ModuleId;
-        private int? _PortalId;
+        private int? _tabId;
+        private int? _moduleId;
+        private int? _portalId;
         private WhatsNewModuleSettings _settings;
         private string _authorizedForums;
         private User _currentUser;
@@ -68,13 +68,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!this._TabId.HasValue)
+                if (!this._tabId.HasValue)
                 {
                     int parsedTabId;
-                    this._TabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
+                    this._tabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
                 }
 
-                return this._TabId.Value;
+                return this._tabId.Value;
             }
         }
 
@@ -82,13 +82,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!this._ModuleId.HasValue)
+                if (!this._moduleId.HasValue)
                 {
                     int parsedModuleID;
-                    this._ModuleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
+                    this._moduleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
                 }
 
-                return this._ModuleId.Value;
+                return this._moduleId.Value;
             }
         }
 
@@ -96,13 +96,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!this._PortalId.HasValue)
+                if (!this._portalId.HasValue)
                 {
                     int parsedPortalID;
-                    this._PortalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
+                    this._portalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
                 }
 
-                return this._PortalId.Value;
+                return this._portalId.Value;
             }
         }
 

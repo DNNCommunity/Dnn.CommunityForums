@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TopMembers runat=server></{0}:TopMembers>")]
     public class TopMembers : WebControl
     {
-        private int _PortalId = -1;
+        private int _portalId = -1;
         private int _rows = 10;
         private DisplayTemplate _itemTemplate;
         private DisplayTemplate _headerTemplate;
@@ -42,12 +42,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._PortalId;
+                return this._portalId;
             }
 
             set
             {
-                this._PortalId = value;
+                this._portalId = value;
             }
         }
 

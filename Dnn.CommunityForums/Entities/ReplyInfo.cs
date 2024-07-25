@@ -17,7 +17,7 @@
         private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topicInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Author _Author;
+        private DotNetNuke.Modules.ActiveForums.Author _author;
         private int forumId;
 
         [IgnoreColumn()]
@@ -97,29 +97,29 @@
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get => this._Author ?? (this.GetAuthor());
-            set => this._Author = value;
+            get => this._author ?? (this.GetAuthor());
+            set => this._author = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
         {
-            this._Author = new DotNetNuke.Modules.ActiveForums.Author();
-            this._Author.AuthorId = this.Content.AuthorId;
+            this._author = new DotNetNuke.Modules.ActiveForums.Author();
+            this._author.AuthorId = this.Content.AuthorId;
             var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.Content.AuthorId);
             if (userInfo != null)
             {
-                this._Author.Email = userInfo?.Email;
-                this._Author.FirstName = userInfo?.FirstName;
-                this._Author.LastName = userInfo?.LastName;
-                this._Author.DisplayName = userInfo?.DisplayName;
-                this._Author.Username = userInfo?.Username;
+                this._author.Email = userInfo?.Email;
+                this._author.FirstName = userInfo?.FirstName;
+                this._author.LastName = userInfo?.LastName;
+                this._author.DisplayName = userInfo?.DisplayName;
+                this._author.Username = userInfo?.Username;
             }
             else
             {
-                this._Author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                this._author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
 
-            return this._Author;
+            return this._author;
         }
     }
 }

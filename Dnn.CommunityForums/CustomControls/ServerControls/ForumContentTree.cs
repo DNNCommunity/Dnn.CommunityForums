@@ -78,108 +78,108 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private int _PortalId = -1;
+        private int _portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._PortalId;
+                return this._portalId;
             }
 
             set
             {
-                this._PortalId = value;
+                this._portalId = value;
             }
         }
 
-        private int _ModuleId = -1;
+        private int _moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._ModuleId;
+                return this._moduleId;
             }
 
             set
             {
-                this._ModuleId = value;
+                this._moduleId = value;
             }
         }
 
-        private int _TabId = -1;
+        private int _tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._TabId;
+                return this._tabId;
             }
 
             set
             {
-                this._TabId = value;
+                this._tabId = value;
             }
         }
 
-        private int _ForumId = -1;
+        private int _forumId = -1;
 
         public int ForumId
         {
             get
             {
-                return this._ForumId;
+                return this._forumId;
             }
 
             set
             {
-                this._ForumId = value;
+                this._forumId = value;
             }
         }
 
-        private int _ForumGroupId = -1;
+        private int _forumGroupId = -1;
 
         public int ForumGroupId
         {
             get
             {
-                return this._ForumGroupId;
+                return this._forumGroupId;
             }
 
             set
             {
-                this._ForumGroupId = value;
+                this._forumGroupId = value;
             }
         }
 
-        private int _ParentForumId = -1;
+        private int _parentForumId = -1;
 
         public int ParentForumId
         {
             get
             {
-                return this._ParentForumId;
+                return this._parentForumId;
             }
 
             set
             {
-                this._ParentForumId = value;
+                this._parentForumId = value;
             }
         }
 
-        private bool _IncludeClasses = true;
+        private bool _includeClasses = true;
 
         public bool IncludeClasses
         {
             get
             {
-                return this._IncludeClasses;
+                return this._includeClasses;
             }
 
             set
             {
-                this._IncludeClasses = value;
+                this._includeClasses = value;
             }
         }
 

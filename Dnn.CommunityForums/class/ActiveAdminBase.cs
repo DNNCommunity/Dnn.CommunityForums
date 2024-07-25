@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
         private string _currentView = string.Empty;
-        private DateTime _CacheUpdatedTime;
+        private DateTime _cacheUpdatedTime;
         public const string RequiredImage = Globals.ModulePath + "images/error.gif";
 
         #region Constants
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.CacheUpdate, this.ModuleId), value);
-                this._CacheUpdatedTime = value;
+                this._cacheUpdatedTime = value;
             }
         }
 

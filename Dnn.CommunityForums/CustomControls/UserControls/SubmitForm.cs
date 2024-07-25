@@ -46,9 +46,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Private Members
-        private string _Subject = string.Empty;
-        private string _Summary = string.Empty;
-        private string _Body = string.Empty;
+        private string _subject = string.Empty;
+        private string _summary = string.Empty;
+        private string _body = string.Empty;
         private string _clientId;
         private string _topicIcon;
         private bool _locked;
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _pollType;
         private string _pollOptions;
         private int _statusId = -1;
-        private string _AuthorName = string.Empty;
+        private string _authorName = string.Empty;
         private string _topicReviewTemplate = string.Empty;
         private int _topicPriority;
         private bool canModEdit;
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             => this.txtUsername.Text;
             set
             {
-                this._AuthorName = value;
+                this._authorName = value;
                 this.txtUsername.Text = value;
             }
         }
@@ -95,7 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get => this.txtSubject.Text;
             set
             {
-                this._Subject = value;
+                this._subject = value;
                 this.txtSubject.Text = value;
             }
         }
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get => this.txtSummary.Text;
             set
             {
-                this._Summary = value;
+                this._summary = value;
                 this.txtSummary.Text = value;
             }
         }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 else
                 {
-                    return this._Body;
+                    return this._body;
                 }
 
                 return tempBody;
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             set
             {
-                this._Body = value;
+                this._body = value;
             }
         }
 
@@ -1054,10 +1054,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string MyThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
             this.txtSubject.MaxLength = 255;
             this.txtSummary.MaxLength = 2000;
-            this.txtSubject.Text = this._Subject;
-            this.txtSummary.Text = this._Summary;
-            this.txtUsername.Text = this._AuthorName;
-            this.lblSubject.Text = this._Subject;
+            this.txtSubject.Text = this._subject;
+            this.txtSummary.Text = this._summary;
+            this.txtUsername.Text = this._authorName;
+            this.lblSubject.Text = this._subject;
             this.lblSubject.CssClass = "aftextbox";
             // not sure why this gets set twice.
             this.txtSummary.CssClass = "aftextbox dcf-topic-edit-summary";
@@ -1127,7 +1127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.EditorMode == EditorModes.NewTopic || this.EditorMode == EditorModes.Reply || this.EditorMode == EditorModes.ReplyWithBody)
             {
-                this._Body = this.bodyTemplate;
+                this._body = this.bodyTemplate;
             }
 
             switch (this.EditorType)
@@ -1137,10 +1137,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
                 //    txtEditor.Text = _Body
                 case EditorTypes.HTMLEDITORPROVIDER:
-                    ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text = this._Body;
+                    ((UI.UserControls.TextEditor)this.plhEditor.FindControl("txtBody")).Text = this._body;
                     break;
                 case EditorTypes.TEXTBOX:
-                    ((TextBox)this.txtEditor).Text = this._Body;
+                    ((TextBox)this.txtEditor).Text = this._body;
                     break;
             }
 

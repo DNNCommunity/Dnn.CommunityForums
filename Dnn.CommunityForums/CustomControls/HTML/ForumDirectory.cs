@@ -29,80 +29,80 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ForumDirectory
     {
-        private int _PortalId = -1;
+        private int _portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._PortalId;
+                return this._portalId;
             }
 
             set
             {
-                this._PortalId = value;
+                this._portalId = value;
             }
         }
 
-        private int _ModuleId = -1;
+        private int _moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._ModuleId;
+                return this._moduleId;
             }
 
             set
             {
-                this._ModuleId = value;
+                this._moduleId = value;
             }
         }
 
-        private int _TabId = -1;
+        private int _tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._TabId;
+                return this._tabId;
             }
 
             set
             {
-                this._TabId = value;
+                this._tabId = value;
             }
         }
 
         public User ForumUser { get; set; }
 
-        private string _ForumIds = string.Empty;
+        private string _forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._ForumIds;
+                return this._forumIds;
             }
 
             set
             {
-                this._ForumIds = value;
+                this._forumIds = value;
             }
         }
 
-        private string _Template = string.Empty;
+        private string _template = string.Empty;
 
         public string Template
         {
             get
             {
-                return this._Template;
+                return this._template;
             }
 
             set
             {
-                this._Template = value;
+                this._template = value;
             }
         }
 

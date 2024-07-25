@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
     public class PermissionCollection : CollectionBase, ICollection, IList
     {
-        private PermissionInfo _Item;
+        private PermissionInfo _item;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public void CopyTo(Array array, int index) => this.List.CopyTo(array, index);
@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public bool IsReadOnly => this.List.IsReadOnly;
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
-        public PermissionInfo this[int index] { get => this._Item; set => this._Item = value; }
+        public PermissionInfo this[int index] { get => this._item; set => this._item = value; }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Not Used.")]
         public void Remove(PermissionInfo value) => this.List.Remove(value);

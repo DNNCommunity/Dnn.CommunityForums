@@ -26,20 +26,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_polledit : ForumBase
     {
-        private string _PollQuestion = "";
-        private string _PollType = "";
-        private string _PollOptions = "";
+        private string _pollQuestion = "";
+        private string _pollType = "";
+        private string _pollOptions = "";
 
         public string PollQuestion
         {
             get
             {
-                return this._PollQuestion;
+                return this._pollQuestion;
             }
 
             set
             {
-                this._PollQuestion = value;
+                this._pollQuestion = value;
             }
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._PollType;
+                return this._pollType;
             }
 
             set
             {
-                this._PollType = value;
+                this._pollType = value;
             }
         }
 
@@ -60,12 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._PollOptions;
+                return this._pollOptions;
             }
 
             set
             {
-                this._PollOptions = value;
+                this._pollOptions = value;
             }
         }
 
