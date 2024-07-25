@@ -60,8 +60,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior)
         {
-            var ri = this.GetById(ReplyId);
-            DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
+            var ri = GetById(ReplyId);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Delete(ForumId, TopicId, ReplyId, DelBehavior);
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ForumId);
 
             DataCache.ContentCacheClear(ri.ModuleId, string.Format(CacheKeys.ForumInfo, ri.ModuleId, ForumId));
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.ForumViewPrefix, ri.ModuleId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ri.ModuleId));
             DataCache.CacheClearPrefix(ri.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ri.ModuleId));
-            int replyId = Convert.ToInt32(DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
+            int replyId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Reply_Save(PortalId, ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
             DotNetNuke.Modules.ActiveForums.Controllers.ForumController.UpdateForumLastUpdates(ri.ForumId);
             return replyId;
         }

@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
                 if (ti != null)
                 {
                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Move(topicId, forumId);
-                    DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
+                    DotNetNuke.Modules.ActiveForums.DataCache.CacheClearPrefix(this.ForumModuleId, string.Format(CacheKeys.CacheModulePrefix, this.ForumModuleId));
                     return this.Request.CreateResponse(HttpStatusCode.OK, string.Empty);
                 }
 

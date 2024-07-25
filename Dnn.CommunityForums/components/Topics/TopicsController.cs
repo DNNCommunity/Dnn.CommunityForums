@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     string forumGroupUrlPrefix = dr["ForumGroupUrlPrefix"].ToString();
                     string forumUrlPrefix = dr["ForumUrlPrefix"].ToString();
                     int jumpid = (replyId > 0) ? replyId : topicid;
-                    body = Common.Utilities.HtmlUtils.Clean(body, false);
+                    body = DotNetNuke.Common.Utilities.HtmlUtils.Clean(body, false);
                     if (!string.IsNullOrEmpty(body))
                     {
                         description = body.Length > 100 ? body.Substring(0, 100) + "..." : body;
