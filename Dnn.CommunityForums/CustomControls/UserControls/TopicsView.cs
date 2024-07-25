@@ -249,11 +249,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (TopicsTemplate.Contains("[TOPICS]"))
                 {
                     string cacheKey = string.Format(CacheKeys.TopicsViewForUser, ModuleId, ForumId, UserId, HttpContext.Current?.Response?.Cookies["language"]?.Value, RowIndex, PageSize);
-                    DataSet ds = (DataSet)DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
+                    DataSet ds = (DataSet)DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheRetrieve(ForumModuleId, cacheKey);
                     if (ds == null)
                     {
                         ds = DataProvider.Instance().UI_TopicsView(PortalId, ForumModuleId, ForumId, UserId, RowIndex, PageSize, UserInfo.IsSuperUser, sort);
-                        DataCache.ContentCacheStore(ModuleId, cacheKey, ds);
+                        DotNetNuke.Modules.ActiveForums.DataCache.ContentCacheStore(ModuleId, cacheKey, ds); 
                     }
                     if (ds.Tables.Count > 0)
                     {
@@ -314,7 +314,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                             }
                             if (MainSettings.UseSkinBreadCrumb)
                             {
-                                Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + sGroupURL + "\">" + GroupName + "</a>");
+                                DotNetNuke.Modules.ActiveForums.Environment.UpdateBreadCrumb(Page.Controls, "<a href=\"" + sGroupURL + "\">" + GroupName + "</a>");
                                 TopicsTemplate = TopicsTemplate.Replace("<div class=\"afcrumb\">[FORUMMAINLINK] > [FORUMGROUPLINK]</div>", string.Empty);
                             }
                             if (TopicsTemplate.Contains("[META]"))
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         try
                         {
                             DotNetNuke.Framework.CDefault tempVar = this.BasePage;
-                            Environment.UpdateMeta(ref tempVar, MetaTitle, MetaDescription, MetaKeywords);
+                           DotNetNuke.Modules.ActiveForums.Environment.UpdateMeta(ref tempVar, MetaTitle, MetaDescription, MetaKeywords);
                         }
                         catch (Exception ex)
                         {

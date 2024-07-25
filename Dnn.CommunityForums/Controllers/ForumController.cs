@@ -310,14 +310,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
 
             //TODO: When this method is updated to use DAL2 for update, uncomment Cacheable attribute on ForumInfo
-            var forumId = Convert.ToInt32(DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
+            var forumId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
             if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
             {
                 fi.ForumSettingsKey = $"F:{forumId}";
             }
             if (fi.ForumSettingsKey.StartsWith("G:"))
             {
-                DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
+                DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_ConfigCleanUp(fi.ModuleId, $"F:{fi.ForumID}");
             }
             if (isNew && useGroupFeatures == false)
             {
@@ -337,7 +337,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         public void Forums_Delete(int portalId, int forumId, int moduleId)
         {
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
-            DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
+            DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
         }
 
         internal static void IterateForumsList(System.Collections.Generic.List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> forums, User currentUser,
