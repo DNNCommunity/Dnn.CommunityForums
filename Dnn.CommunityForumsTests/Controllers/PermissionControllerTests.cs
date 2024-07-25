@@ -1,17 +1,16 @@
-﻿using NUnit.Framework;
-using DotNetNuke.Modules.ActiveForums.Controllers;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Moq;
-using Castle.Components.DictionaryAdapter;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
+﻿namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using Castle.Components.DictionaryAdapter;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture()]
     public class PermissionControllerTests
     {

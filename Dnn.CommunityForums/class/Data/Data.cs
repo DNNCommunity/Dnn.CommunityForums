@@ -18,10 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Configuration;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System.Configuration;
+
     public class Connection
     {
 #region Private Members

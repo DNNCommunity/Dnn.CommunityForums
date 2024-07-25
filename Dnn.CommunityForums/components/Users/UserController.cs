@@ -17,19 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Data;
-
-using System.Threading;
-using System.Web;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.UI.UserControls;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Threading;
+    using System.Web;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.UI.UserControls;
+
     public class UserController
     {
         internal static int GetUserIdByUserName(int PortalId, string UserName)

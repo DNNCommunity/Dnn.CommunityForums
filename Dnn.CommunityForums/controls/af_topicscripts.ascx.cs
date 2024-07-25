@@ -17,12 +17,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+
+    using DotNetNuke.Framework;
+
     public partial class af_topicscripts : SettingsBase
     {
         protected override void OnLoad(EventArgs e)

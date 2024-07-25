@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+
     public static class HashtableExtensions
     {
         public static string GetString(this Hashtable ht, string key, string defaultValue = null)

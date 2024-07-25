@@ -17,20 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Xml;
-
-using DotNetNuke.Services.Localization;
-
-using System.IO;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.IO;
+    using System.Web;
+    using System.Xml;
+
+    using DotNetNuke.Services.Localization;
+
     public class LocalizationUtils
     {
         public bool SaveResource(string name, string resourceText, int PortalId)

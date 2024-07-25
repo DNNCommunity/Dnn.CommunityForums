@@ -18,25 +18,23 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
-using System.Web.Services;
-using System.Text;
-using System.Xml;
-
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Entities;
-
-using System.Linq;
-
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Web;
+    using System.Web.Services;
+    using System.Xml;
+
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Journal;
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used. ")]
     public class forumhelper : HandlerBase
     {

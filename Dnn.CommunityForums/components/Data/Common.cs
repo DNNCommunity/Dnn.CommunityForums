@@ -18,15 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     public class Common : DataConfig
     {
         #region Security

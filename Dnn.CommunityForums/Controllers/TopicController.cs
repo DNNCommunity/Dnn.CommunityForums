@@ -17,28 +17,28 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Data;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Modules.ActiveForums.API;
-using DotNetNuke.Modules.ActiveForums.Data;
-using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
-using DotNetNuke.Services.FileSystem;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Social.Notifications;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Http.Controllers;
-using System.Xml.Linq;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Http.Controllers;
+    using System.Xml.Linq;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Modules.ActiveForums.API;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+    using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Social.Notifications;
+
     internal class TopicController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicInfo>
     {
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetById(int TopicId)

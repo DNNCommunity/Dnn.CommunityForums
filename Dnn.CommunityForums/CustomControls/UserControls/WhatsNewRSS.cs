@@ -17,21 +17,20 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Text.RegularExpressions;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-
-using System.Reflection;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.ComponentModel;
+    using System.Reflection;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:WhatsNewRSS runat=server></{0}:WhatsNewRSS>")]
     public class WhatsNewRSS : Control
     {

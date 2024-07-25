@@ -18,12 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 //
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System.Web.Caching;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System.Web.Caching;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     [TableName("activeforums_Properties")]
     [PrimaryKey("PropertyId", AutoIncrement = true)]
     [Cacheable("activeforums_Properties", CacheItemPriority.Low)]

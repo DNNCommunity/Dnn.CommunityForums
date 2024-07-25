@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Data;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+
     public static class DataRecordExtensions
     {
         public static bool HasColumn(this IDataRecord dr, string columnName)

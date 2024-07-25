@@ -17,19 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web.UI;
-
-using DotNetNuke.Modules.ActiveForums.Entities;
-
-using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web.UI;
+
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
+    using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
+
     public partial class af_sendto : ForumBase
     {
         private bool bcUpdated = false;

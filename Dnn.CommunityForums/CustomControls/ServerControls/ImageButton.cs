@@ -17,12 +17,12 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.ComponentModel;
-using System.Web.UI;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Web.UI;
+
     [CLSCompliant(false), DefaultProperty("Text"), ToolboxData("<{0}:ImageButton runat=server></{0}:ImageButton>")]
     public class ImageButton : System.Web.UI.WebControls.WebControl, IPostBackEventHandler
     {

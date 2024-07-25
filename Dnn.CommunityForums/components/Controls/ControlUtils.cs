@@ -17,14 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Text;
-
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+
     public class ControlUtils
     {
         public string BuildPager(int tabId, int moduleId, string groupPrefix, string forumPrefix, int forumGroupId, int forumID, int tagId, int categoryId, string otherPrefix, int pageId, int pageCount)

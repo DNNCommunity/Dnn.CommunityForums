@@ -17,39 +17,30 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web.UI;
-
-using DotNetNuke;
-
-using System.Web;
-using System.Web.UI.WebControls;
-
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-using System.Text;
-
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.UI.Utilities;
-
-using System.Linq;
-
-using DotNetNuke.Entities.Modules;
-
-using System.Reflection;
-
-using DotNetNuke.Services.Localization;
-
 //using DotNetNuke.Framework.JavaScriptLibraries;
 
 
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class Classic : ForumBase
     {
 

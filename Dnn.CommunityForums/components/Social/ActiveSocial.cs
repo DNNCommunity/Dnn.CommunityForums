@@ -17,18 +17,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Data;
-
-using System.Web;
-
-using DotNetNuke.Modules.ActiveForums.Data;
-using Microsoft.ApplicationBlocks.Data;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Web.Models;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+    using System.Web;
+
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Web.Models;
+    using Microsoft.ApplicationBlocks.Data;
+
     public class Social
     {
         [Obsolete("Deprecated in Community Forums 9.0.0. No interface with Active Social.")]

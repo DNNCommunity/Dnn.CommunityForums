@@ -17,18 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.UI;
-
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.ComponentModel.DataAnnotations;
-using DotNetNuke.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web.UI;
+
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Data;
+
     internal partial class RepositoryControllerBase<T> where T : class
     { 
         private readonly IRepository<T> Repo;

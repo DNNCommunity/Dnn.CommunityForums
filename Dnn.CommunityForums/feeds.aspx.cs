@@ -18,23 +18,20 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Text;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-
-using System.Text.RegularExpressions;
-using System.Web;
-
-using DotNetNuke.Entities.Portals;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+
     public class af_rss : DotNetNuke.Framework.PageBase
     {
         protected System.Web.UI.WebControls.Label XML;

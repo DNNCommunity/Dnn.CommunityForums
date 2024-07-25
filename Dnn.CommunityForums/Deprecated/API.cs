@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-
 namespace DotNetNuke.Modules.ActiveForums.API
 {
+    using System;
+    using System.Collections.Generic;
+
     [Obsolete("Deprecated in Community Forums. Not Used. Scheduled removal in 09.00.00.")]
     public class Content
     {

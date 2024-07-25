@@ -18,19 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
-using System.Xml;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web;
+    using System.Xml;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId()")]
     public class ForumsDB : DataConfig
     {

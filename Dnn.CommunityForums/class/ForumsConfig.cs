@@ -18,40 +18,34 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Collections;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Modules.ActiveForums.Data;
-using Microsoft.ApplicationBlocks.Data;
-
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.Http.Results;
-using System.Web.Profile;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Modules.Definitions;
-using DotNetNuke.Data;
-
-using System.Reflection;
-
-using DotNetNuke.Instrumentation;
-
-using System.Web.UI;
-
-using DotNetNuke.Services.Social.Notifications;
-using DotNetNuke.Abstractions.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Security.Roles;
-using DotNetNuke.Services.Localization;
-
-using System.Globalization;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+    using System.Web.Http.Results;
+    using System.Web.Profile;
+    using System.Web.UI;
+
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Collections;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Modules.Definitions;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Localization;
+    using DotNetNuke.Services.Social.Notifications;
+    using Microsoft.ApplicationBlocks.Data;
+
     public class ForumsConfig
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsConfig));

@@ -18,16 +18,16 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Xml;
-
-using DotNetNuke.Security.Permissions;
-using DotNetNuke.Services.Localization;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Xml;
+
+    using DotNetNuke.Security.Permissions;
+    using DotNetNuke.Services.Localization;
+
     public class ForumBase : SettingsBase
     {
         #region Private Member Variables

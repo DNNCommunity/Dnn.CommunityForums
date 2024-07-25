@@ -17,20 +17,20 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Data;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-
-using DotNetNuke.Data;
-using DotNetNuke.Modules.ActiveForums.API;
-using DotNetNuke.Modules.ActiveForums.Data;
-using Microsoft.ApplicationBlocks.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Data;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Xml;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Modules.ActiveForums.API;
+    using DotNetNuke.Modules.ActiveForums.Data;
+    using Microsoft.ApplicationBlocks.Data;
+
     internal class ForumController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>
     {
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetById(int forumId, int moduleId)

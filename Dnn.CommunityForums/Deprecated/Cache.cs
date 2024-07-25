@@ -18,13 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Data;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+    using System.Web;
+
     public partial class DataCache
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj) or ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)")]

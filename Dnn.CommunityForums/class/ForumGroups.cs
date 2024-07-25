@@ -18,14 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Data;
-
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Data;
+
+    using DotNetNuke.Common.Utilities;
 
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo.")]
     public partial class ForumGroupInfo : DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo { }

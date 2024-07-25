@@ -18,18 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Reflection;
-using System.Web.UI;
-using System.Xml;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Web.Models;
-
 namespace DotNetNuke.Modules.ActiveForums.Helpers
 {
+    using System.Reflection;
+    using System.Web.UI;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web.Models;
+
     internal static class UpgradeModuleSettings
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeModuleSettings));

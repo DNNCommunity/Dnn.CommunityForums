@@ -17,17 +17,16 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web;
-using System.Web.Services;
-using System.Text;
-
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.Services;
+
     public class adminhelper : HandlerBase
     {
         public enum Actions: int

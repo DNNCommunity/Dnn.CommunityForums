@@ -18,28 +18,26 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.ComponentModel;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Text.RegularExpressions;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-using DotNetNuke.Modules.ActiveForums.Constants;
-using DotNetNuke.Entities.Portals;
-
-using System.Linq;
-using System.Net;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Authentication;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Linq;
+    using System.Net;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Constants;
+    using DotNetNuke.Services.Authentication;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicsView runat=server></{0}:TopicsView>")]
     public class TopicsView : ForumBase
     {

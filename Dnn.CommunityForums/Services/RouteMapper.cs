@@ -17,10 +17,10 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using DotNetNuke.Web.Api;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

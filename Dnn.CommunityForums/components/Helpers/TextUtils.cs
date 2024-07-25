@@ -17,18 +17,17 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using DotNetNuke.Security;
-
-using System.Text.RegularExpressions;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
+    using DotNetNuke.Security;
+
     public partial class Utilities
     {
         public class Text

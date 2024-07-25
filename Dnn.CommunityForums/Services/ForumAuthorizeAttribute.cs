@@ -17,23 +17,23 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Principal;
-using System.Threading;
-using System.Web.Helpers;
-
-using DotNetNuke.Common;
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-using DotNetNuke.Web.Api;
-
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
+    using System;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Security.Principal;
+    using System.Threading;
+    using System.Web.Helpers;
+
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Web.Api;
+
     /// <summary>
     /// Use this attribute to set which forum permission is required to perform an API action.
     /// The forumId included in the API URL will be used to verify that the action can be performed based on the permissions for the forum.

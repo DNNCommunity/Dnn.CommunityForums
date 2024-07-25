@@ -18,17 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Reflection;
-
-using DotNetNuke.Services.Scheduling;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Globalization;
+    using System.Reflection;
+
+    using DotNetNuke.Services.Scheduling;
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo.")]
     public class SubscriptionInfo : DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
     {

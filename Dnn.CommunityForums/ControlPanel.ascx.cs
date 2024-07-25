@@ -17,21 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Web.UI;
-using System.Web;
-
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
-using System.Text;
-
-using DotNetNuke.Framework;
-
-using System.Runtime.InteropServices;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class ControlPanel : ActiveAdminBase
     {
         #region Event Handlers

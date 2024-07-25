@@ -17,23 +17,22 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-using DotNetNuke.Web.Api;
-
-using System.Web.Http;
-using System.Data;
-using System.Reflection;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Reflection;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Web.Api;
+
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

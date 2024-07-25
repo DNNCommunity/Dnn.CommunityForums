@@ -18,18 +18,18 @@
 // DEALINGS IN THE SOFTWARE.
 //
 // 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using DotNetNuke.Data;
-using DotNetNuke.Services.Journal;
-using DotNetNuke.Services.Log.EventLog;
-using DotNetNuke.Services.Social.Notifications;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using DotNetNuke.Data;
+    using DotNetNuke.Services.Journal;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Services.Social.Notifications;
+
     internal static class UserController
     {
         private class ContentForUser

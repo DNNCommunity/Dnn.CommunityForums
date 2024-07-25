@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DotNetNuke.Modules.ActiveForums
+﻿namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
     internal static class MiniPager
     {
         public static string GetMiniPager(DataRow currentRow, int TabId, int SocialGroupId, int pageSize)

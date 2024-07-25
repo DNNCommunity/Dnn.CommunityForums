@@ -18,18 +18,16 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Data.SqlClient;
-
-using Microsoft.ApplicationBlocks.Data;
-using DotNetNuke.Common.Utilities;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    using DotNetNuke.Common.Utilities;
+    using Microsoft.ApplicationBlocks.Data;
 
     public class SqlDataProvider : DataProvider
     {

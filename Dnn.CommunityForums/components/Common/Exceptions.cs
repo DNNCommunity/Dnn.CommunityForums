@@ -18,15 +18,14 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Web.UI;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web.UI;
+
     public class Exceptions
     {
         public static void LogException(Exception ex)

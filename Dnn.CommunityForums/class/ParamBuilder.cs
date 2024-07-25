@@ -18,12 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+
     public class ParamBuilder
     {
         public Dictionary<string, object> Params { get; set; } 

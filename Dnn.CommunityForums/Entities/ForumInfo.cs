@@ -18,19 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System.Linq;
-
-using DotNetNuke.UI.UserControls;
-using DotNetNuke.Services.Log.EventLog;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+    using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.UI.UserControls;
+
     [TableName("activeforums_Forums")]
     [PrimaryKey("ForumID", AutoIncrement = true)] /* ForumID because needs to match property name NOT database column name */
     [Scope("ModuleId")]

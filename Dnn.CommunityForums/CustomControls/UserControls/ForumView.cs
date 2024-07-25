@@ -17,23 +17,22 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Linq;
-using System.IO;
-using System.Web.Http.Results;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Http.Results;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
     {

@@ -18,15 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
-using System;
-
-using DotNetNuke.Modules.ActiveForums.Entities;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using System.Web;
+
+    using DotNetNuke.Modules.ActiveForums.Entities;
+
     internal class PropertyController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>
     {
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties { get; set; }

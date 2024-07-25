@@ -18,13 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-
-using DotNetNuke.Entities.Modules;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+
+    using DotNetNuke.Entities.Modules;
+
     public class WhatsNewModuleSettings
     {
         public const string RowsSettingsKey = "AFTopPostsNumber";

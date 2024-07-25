@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     internal partial class TopicTagController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo>
     {
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTopic(int topicId)

@@ -18,12 +18,12 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.IO;
-using System.Drawing;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Drawing;
+    using System.IO;
+
     public abstract class Images
     {
         public static int imgHeight;

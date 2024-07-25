@@ -18,19 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.Data.SqlClient;
-
-using Microsoft.ApplicationBlocks.Data;
-
-using System.Configuration;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     public class DataConfig
     {
 #region Private Members

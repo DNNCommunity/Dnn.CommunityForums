@@ -18,17 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security.Roles;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Collections.Specialized;
+    using System.Linq;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security.Roles;
+
     public enum SecureActions : int
     {
         View,

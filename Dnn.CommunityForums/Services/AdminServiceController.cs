@@ -17,19 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Web;
-using System.Web.Http;
-
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Security;
-using DotNetNuke.Web.Api;
-
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Text;
+    using System.Web;
+    using System.Web.Http;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Security;
+    using DotNetNuke.Web.Api;
+
     [ValidateAntiForgeryToken]
     [SupportedModules(Globals.ModuleName)]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.Edit)]

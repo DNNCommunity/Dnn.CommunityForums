@@ -17,18 +17,18 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Common.Utilities.Internal;
-using DotNetNuke.Entities.Host;
-using DotNetNuke.Entities.Portals;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Web;
+
+    using DotNetNuke.Common.Utilities.Internal;
+    using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
+
     public class ForumsReWriter : IHttpModule
     {
         private int _forumgroupId = -1;

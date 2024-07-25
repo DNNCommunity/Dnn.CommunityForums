@@ -17,15 +17,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using DotNetNuke.Entities.Modules;
-using DotNetNuke.Framework;
-
-using System;
-using System.Data;
-using System.Web.UI.WebControls;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Data;
+    using System.Web.UI.WebControls;
+
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
+
     public partial class ActiveForumViewerSettings : ModuleSettingsBase
     {
         protected override void OnLoad(EventArgs e)

@@ -18,13 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.ComponentModel.DataAnnotations;
-
-using System;
-using System.Web.Caching;
-
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
+    using System;
+    using System.Web.Caching;
+
+    using DotNetNuke.ComponentModel.DataAnnotations;
+
     /* category is currently stored as a type of tag with 'isCategory' = true */
     public class TopicCategoryInfo : DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo { }
 }

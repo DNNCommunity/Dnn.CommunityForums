@@ -18,17 +18,17 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Web;
-
-using DotNetNuke.Entities.Portals;
-using DotNetNuke.Entities.Users;
-using DotNetNuke.Framework;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Web;
+
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
+
     public class UserProfiles
     {
         public static string GetAvatar(int userID, int avatarWidth, int avatarHeight)

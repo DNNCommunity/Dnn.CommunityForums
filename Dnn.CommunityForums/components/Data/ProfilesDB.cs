@@ -18,15 +18,15 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using Microsoft.ApplicationBlocks.Data;
-
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+
+    using Microsoft.ApplicationBlocks.Data;
+
     public class Profiles : DataConfig
     {
         public void Profiles_Create(int PortalId, int ModuleId, int UserId)

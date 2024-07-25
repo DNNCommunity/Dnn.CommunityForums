@@ -1,17 +1,16 @@
-﻿using NUnit.Framework;
-using DotNetNuke.Modules.ActiveForums.Controllers;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Moq;
-using DotNetNuke.Modules.ActiveForums.Entities;
-
-namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
+﻿namespace DotNetNuke.Modules.ActiveForums.Controllers.Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture()]
     public class TopicPropertyControllerTests
     {

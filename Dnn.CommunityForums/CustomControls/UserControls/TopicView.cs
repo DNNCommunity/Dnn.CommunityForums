@@ -18,38 +18,34 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using DotNetNuke.Modules.ActiveForums.Constants;
-using DotNetNuke.Modules.ActiveForums.Extensions;
-using DotNetNuke.Modules.ActiveForums.Controllers;
-using DotNetNuke.Modules.ActiveForums.Entities;
-using DotNetNuke.UI.Skins;
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Xml;
-
-using DotNetNuke.Instrumentation;
-
-using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
-
-using System.Drawing.Printing;
-using System.Runtime.InteropServices;
-
-using DotNetNuke.Common.Utilities;
-using DotNetNuke.Services.Authentication;
-
-using System.Diagnostics.Eventing.Reader;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Diagnostics.Eventing.Reader;
+    using System.Drawing.Printing;
+    using System.Linq;
+    using System.Runtime.InteropServices;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+    using System.Xml;
+
+    using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Instrumentation;
+    using DotNetNuke.Modules.ActiveForums.Constants;
+    using DotNetNuke.Modules.ActiveForums.Controllers;
+    using DotNetNuke.Modules.ActiveForums.Entities;
+    using DotNetNuke.Modules.ActiveForums.Extensions;
+    using DotNetNuke.Services.Authentication;
+    using DotNetNuke.UI.Skins;
+
+    using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
+
     [DefaultProperty("Text"), ToolboxData("<{0}:TopicView runat=server></{0}:TopicView>")]
     public class TopicView : ForumBase
     {

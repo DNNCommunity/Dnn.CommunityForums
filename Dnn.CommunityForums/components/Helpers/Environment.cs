@@ -17,14 +17,14 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Web.UI;
-using System.Reflection;
-
-using DotNetNuke.Instrumentation;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Reflection;
+    using System.Web.UI;
+
+    using DotNetNuke.Instrumentation;
+
     public class Environment
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));

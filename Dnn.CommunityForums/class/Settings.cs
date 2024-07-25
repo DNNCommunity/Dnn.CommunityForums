@@ -18,13 +18,13 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Collections;
-
-using DotNetNuke.Entities.Profile;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
+    using System.Collections;
+
+    using DotNetNuke.Entities.Profile;
+
     #region SettingsInfo
     
     public class SettingsInfo

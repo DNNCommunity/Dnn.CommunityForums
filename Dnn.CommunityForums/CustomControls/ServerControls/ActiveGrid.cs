@@ -17,20 +17,19 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-
-using System.ComponentModel;
-using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.UI.Design;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Data;
+    using System.Text;
+    using System.Web;
+    using System.Web.UI;
+    using System.Web.UI.Design;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text"), Designer("DotNetNuke.Modules.ActiveForums.Controls.ActiveGridDesigner"), ToolboxData("<{0}:activegrid runat=server><headertemplate></headertemplate><itemtemplate></itemtemplate><footertemplate></footertemplate></{0}:activegrid>")]
     public class ActiveGrid : CompositeControl
     {

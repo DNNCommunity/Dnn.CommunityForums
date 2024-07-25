@@ -18,10 +18,9 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System;
 
     public partial class af_markread : ForumBase
     {

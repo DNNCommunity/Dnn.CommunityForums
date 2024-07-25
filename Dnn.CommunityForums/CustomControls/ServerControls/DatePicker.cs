@@ -17,15 +17,15 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.ComponentModel;
-using System.Text;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Threading;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+    using System.ComponentModel;
+    using System.Text;
+    using System.Threading;
+    using System.Web.UI;
+    using System.Web.UI.WebControls;
+
     [DefaultProperty("Text"), ValidationProperty("SelectedDate"), ToolboxData("<{0}:datepicker runat=server></{0}:datepicker>")]
     public class DatePicker : CompositeControl
     {

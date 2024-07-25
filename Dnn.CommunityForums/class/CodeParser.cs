@@ -18,11 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-using System.Text.RegularExpressions;
-using System.Web;
-
 namespace DotNetNuke.Modules.ActiveForums
 {
+    using System.Text.RegularExpressions;
+    using System.Web;
+
     public class CodeParser
     {
         public static string ParseCode(string sCode)

@@ -1,19 +1,17 @@
-﻿using NUnit.Framework;
-using DotNetNuke.Modules.ActiveForums;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Globalization;
-
-using Moq;
-
-using System.Runtime.InteropServices.WindowsRuntime;
-
-namespace DotNetNuke.Modules.ActiveForumsTests
+﻿namespace DotNetNuke.Modules.ActiveForumsTests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Runtime.InteropServices.WindowsRuntime;
+    using System.Text;
+    using System.Threading.Tasks;
+
+    using DotNetNuke.Modules.ActiveForums;
+    using Moq;
+    using NUnit.Framework;
+
     [TestFixture()]
     public partial class UtilitiesTests
     {

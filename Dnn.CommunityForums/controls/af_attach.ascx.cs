@@ -17,13 +17,13 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 // DEALINGS IN THE SOFTWARE.
 //
-using System;
-
-using DotNetNuke.Framework;
-using DotNetNuke.Web.Client.ClientResourceManagement;
-
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
+    using System;
+
+    using DotNetNuke.Framework;
+    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     public partial class af_attach : ForumBase
     {
         public EditorTypes EditorType { get; set; }
