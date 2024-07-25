@@ -20,6 +20,7 @@
 using DotNetNuke.Data;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 InsertForUser(portalId, moduleId, userId, forumId);
             }
         }
+
         public void Subscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             if (!Subscribed(portalId, moduleId, userId, forumId, topicId))
@@ -42,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 InsertForUser(portalId, moduleId, userId, forumId, topicId);
             }
         }
+
         public void Unsubscribe(int portalId, int moduleId, int userId, int forumId)
         {
             if (Subscribed(portalId, moduleId, userId, forumId))
@@ -49,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DeleteForUser(portalId, moduleId, userId, forumId);
             }
         }
+
         public void Unsubscribe(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             if (Subscribed(portalId, moduleId, userId, forumId, topicId))
@@ -56,22 +60,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DeleteForUser(portalId, moduleId, userId, forumId, topicId);
             }
         }
+
         public void DeleteForUser(int portalId, int moduleId, int userId, int forumId)
         {
             Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId);
         }
+
         public void DeleteForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             Delete("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId);
         }
+
         public bool Subscribed(int portalId, int moduleId, int userId, int forumId)
         {
             return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = 0", portalId, moduleId, userId, forumId).Count() == 1;
         }
+
         public bool Subscribed(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId = @3 AND TopicId = @4", portalId, moduleId, userId, forumId, topicId).Count() == 1;
         }
+
         public void InsertForUser(int portalId, int moduleId, int userId, int forumId)
         {
             Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
@@ -84,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Mode = 1
             });
         }
+
         public void InsertForUser(int portalId, int moduleId, int userId, int forumId, int topicId)
         {
             Insert(new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo
@@ -96,18 +106,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Mode = 1
             });
         }
+
         public int Count(int portalId, int moduleId, int forumId)
         {
             return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = 0", portalId, moduleId, forumId);
         }
+
         public int Count(int portalId, int moduleId, int forumId, int topicId)
         {
             return Count("WHERE PortalId = @0 AND ModuleId = @1 AND ForumId = @2 AND TopicId = @3", portalId, moduleId, forumId, topicId);
         }
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedForums(int portalId, int moduleId, int userId)
         {
             return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId = 0", portalId, moduleId, userId).ToList();
         }
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> SubscribedTopics(int portalId, int moduleId, int userId)
         {
             return Find("WHERE PortalId = @0 AND ModuleId = @1 AND UserId = @2 AND ForumId <> 0 AND TopicId <> 0", portalId, moduleId, userId).ToList();

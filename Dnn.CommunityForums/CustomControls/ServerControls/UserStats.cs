@@ -27,6 +27,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
 
@@ -39,23 +40,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private DisplayTemplate _template;
         private int _userId = -1;
         private int _moduleId = -1;
+
         public DisplayTemplate Template
         {
             get
             {
                 return _template;
             }
+
             set
             {
                 _template = value;
             }
         }
+
         public int UserId
         {
             get
             {
                 return _userId;
             }
+
             set
             {
                 try
@@ -69,17 +74,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
         }
+
         public int ModuleId
         {
             get
             {
                 return _moduleId;
             }
+
             set
             {
                 _moduleId = value;
             }
         }
+
         protected override void RenderContents(HtmlTextWriter writer)
         {
             if (UserId == -1)

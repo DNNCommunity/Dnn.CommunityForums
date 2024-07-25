@@ -22,6 +22,7 @@ using System;
 using System.Data;
 
 using System.Text;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     public class Polls

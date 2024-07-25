@@ -34,163 +34,204 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Categories,
             Forums
         }
+
         private int _PortalId = -1;
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         private int _ModuleId = -1;
+
         public int ModuleId
         {
             get
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
             }
         }
+
         private int _TabId = -1;
+
         public int TabId
         {
             get
             {
                 return _TabId;
             }
+
             set
             {
                 _TabId = value;
             }
         }
+
         private int _ForumId = -1;
+
         public int ForumId
         {
             get
             {
                 return _ForumId;
             }
+
             set
             {
                 _ForumId = value;
             }
         }
+
         private int _ForumGroupId = -1;
+
         public int ForumGroupId
         {
             get
             {
                 return _ForumGroupId;
             }
+
             set
             {
                 _ForumGroupId = value;
             }
         }
+
         private int _ParentForumId = -1;
+
         public int ParentForumId
         {
             get
             {
                 return _ParentForumId;
             }
+
             set
             {
                 _ParentForumId = value;
             }
         }
+
         private GroupingOptions _GroupBy = GroupingOptions.None;
+
         public GroupingOptions GroupBy
         {
             get
             {
                 return _GroupBy;
             }
+
             set
             {
                 _GroupBy = value;
             }
         }
+
         private int _TopicId = -1;
+
         public int TopicId
         {
             get
             {
                 return _TopicId;
             }
+
             set
             {
                 _TopicId = value;
             }
         }
+
         private string _Topic = string.Empty;
+
         public string Topic
         {
             get
             {
                 return _Topic;
             }
+
             set
             {
                 _Topic = value;
             }
         }
+
         private string _ItemTemplate = string.Empty;
+
         public string ItemTemplate
         {
             get
             {
                 return _ItemTemplate;
             }
+
             set
             {
                 _ItemTemplate = value;
             }
         }
+
         private string _HeaderTemplate = string.Empty;
+
         public string HeaderTemplate
         {
             get
             {
                 return _HeaderTemplate;
             }
+
             set
             {
                 _HeaderTemplate = value;
             }
         }
+
         private string _FooterTemplate = string.Empty;
+
         public string FooterTemplate
         {
             get
             {
                 return _FooterTemplate;
             }
+
             set
             {
                 _FooterTemplate = value;
             }
         }
+
         public User ForumUser {get; set;}
+
         private bool _IncludeClasses = true;
+
         public bool IncludeClasses
         {
             get
             {
                 return _IncludeClasses;
             }
+
             set
             {
                 _IncludeClasses = value;
             }
         }
+
         public string Render()
         {
             StringBuilder sb = new StringBuilder();

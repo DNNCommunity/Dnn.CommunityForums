@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 // 
 using DotNetNuke.Entities.Users;
+
 namespace DotNetNuke.Modules.ActiveForums.Services
 {
     internal static class ServicesHelper

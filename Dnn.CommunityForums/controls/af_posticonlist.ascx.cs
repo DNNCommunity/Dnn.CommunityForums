@@ -29,7 +29,9 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_posticonlist : System.Web.UI.UserControl
     {
         public string Theme { get; set; }
+
         public string PostIcon { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -51,6 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
         private void LoadPostIcons()
         {
             rblMessageIcons1.Items.Clear();

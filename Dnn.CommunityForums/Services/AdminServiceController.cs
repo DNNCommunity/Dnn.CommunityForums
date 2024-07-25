@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Web.Api;
@@ -56,11 +57,17 @@ namespace DotNetNuke.Modules.ActiveForums
         public class RunMaintenanceDTO
         {
             public int ModuleId { get; set; }
+
             public int ForumId { get; set; }
+
             public int OlderThan { get; set; }
+
             public int ByUserId { get; set; }
+
             public int LastActive { get; set; }
+
             public bool WithNoReplies { get; set; }
+
             public bool DryRun { get; set; }
         }
 
@@ -84,9 +91,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public class UserProfileDTO
         {
             public int UserId { get; set; }
+
             public int? TrustLevel { get; set; }
+
             public string UserCaption { get; set; }
+
             public string Signature { get; set; }
+
             public int? RewardPoints { get; set; }
         }
 
@@ -138,11 +149,17 @@ namespace DotNetNuke.Modules.ActiveForums
         public class ToggleSecurityDTO
         {
             public int ModuleId { get; set; }
+
             public string Action { get; set; }
+
             public int PermissionsId { get; set; }
+
             public string SecurityId { get; set; }
+
             public int SecurityType { get; set; }
+
             public string SecurityAccessRequested { get; set; }
+
             public string ReturnId { get; set; }
         }
 

@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _additionalParams;
             }
+
             set
             {
                 _additionalParams = value;
@@ -61,6 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabId;
             }
+
             set
             {
                 _tabId = value;
@@ -73,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _forumIds;
             }
+
             set
             {
                 _forumIds = value;
@@ -85,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _topicsOnly;
             }
+
             set
             {
                 _topicsOnly = value;
@@ -99,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _rows;
             }
+
             set
             {
                 _rows = value;
@@ -111,6 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tags;
             }
+
             set
             {
                 _tags = value;
@@ -123,6 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _filterByUserId;
             }
+
             set
             {
                 _filterByUserId = value;

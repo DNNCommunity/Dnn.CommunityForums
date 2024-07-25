@@ -22,12 +22,14 @@ using System;
 using System.Collections;
 using System.Data;
 using System.Web;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class DataCache
     {
         private static int settingsCacheMinutes = 10;
         private static int contentCacheMinutes = 2;
+
         public static bool IsContentCachingEnabledForModule(int ModuleId)
         {
             return true;
@@ -59,6 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums
             */
             #endregion
         }
+
         public static int ContentCachingTime(int ModuleId)
         {
             return contentCacheMinutes;
@@ -97,10 +100,12 @@ namespace DotNetNuke.Modules.ActiveForums
             */
             #endregion
         }
+
         public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {
             SettingsCacheStore(ModuleId, cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(settingsCacheMinutes));
         }
+
         public static void ContentCacheStore(int ModuleId, string cacheKey, object cacheObj)
         {
             if (IsContentCachingEnabledForModule(ModuleId))
@@ -108,6 +113,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Common.Utilities.DataCache.SetCache(cacheKey, cacheObj, DateTime.UtcNow.AddMinutes(ContentCachingTime(ModuleId)));
             }
         }
+
         public static void SettingsCacheStore(int ModuleId, string cacheKey, object cacheObj, DateTime Expiration)
         {
             try
@@ -118,10 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
         }
+
         public static object SettingsCacheRetrieve(int ModuleId, string cacheKey)
         {
             return Common.Utilities.DataCache.GetCache(CacheKey: cacheKey);
         }
+
         public static object ContentCacheRetrieve(int ModuleId, string cacheKey)
         {
             if (IsContentCachingEnabledForModule(ModuleId))
@@ -133,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
+
         public static void SettingsCacheClear(int ModuleId, string cacheKey)
         {
             try
@@ -143,6 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
         }
+
         public static void ContentCacheClear(int ModuleId, string cacheKey)
         {
             if (IsContentCachingEnabledForModule(ModuleId))
@@ -156,6 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         public static void CacheClearPrefix(int ModuleId, string cacheKeyPrefix)
         {
             try
@@ -166,6 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
             }
         }
+
         public static void ClearAllCache(int ModuleId)
         {
             try
@@ -178,11 +190,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         public static void ClearAllCacheForTabId(int TabId)
         {
             Common.Utilities.DataCache.ClearModuleCache(TabId);
 
         }
+
         public static void ClearSettingsCache(int ModuleId)
         {
             try
@@ -198,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
         }
+
         public static Hashtable GetSettings(int ModuleId, string SettingsKey, string CacheKey, bool UseCache)
         {
             var ht = new Hashtable();

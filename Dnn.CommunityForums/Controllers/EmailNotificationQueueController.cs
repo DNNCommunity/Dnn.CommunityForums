@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Data;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.UI.UserControls;
@@ -48,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.EmailNotificationQueueInfo> GetBatch()
         {
             try

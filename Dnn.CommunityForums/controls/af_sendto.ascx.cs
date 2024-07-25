@@ -23,7 +23,9 @@ using System.Collections.Generic;
 using System.Data;
 
 using System.Web.UI;
+
 using DotNetNuke.Modules.ActiveForums.Entities;
+
 using TopicInfo = DotNetNuke.Modules.ActiveForums.Entities.TopicInfo;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -31,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_sendto : ForumBase
     {
         private bool bcUpdated = false;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -98,6 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
             System.IO.StringWriter stringWriter = new System.IO.StringWriter();

@@ -27,262 +27,327 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class TopicBrowser
     {
         private int _PortalId = -1;
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         private int _ModuleId = -1;
+
         public int ModuleId
         {
             get
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
             }
         }
+
         private int _TabId = -1;
+
         public int TabId
         {
             get
             {
                 return _TabId;
             }
+
             set
             {
                 _TabId = value;
             }
         }
+
         private string _ForumIds = string.Empty;
+
         public string ForumIds
         {
             get
             {
                 return _ForumIds;
             }
+
             set
             {
                 _ForumIds = value;
             }
         }
+
         private int _ForumId = -1;
+
         public int ForumId
         {
             get
             {
                 return _ForumId;
             }
+
             set
             {
                 _ForumId = value;
             }
         }
+
         private int _ForumGroupId = -1;
+
         public int ForumGroupId
         {
             get
             {
                 return _ForumGroupId;
             }
+
             set
             {
                 _ForumGroupId = value;
             }
         }
+
         private int _ParentForumId = -1;
+
         public int ParentForumId
         {
             get
             {
                 return _ParentForumId;
             }
+
             set
             {
                 _ParentForumId = value;
             }
         }
+
         private int _TopicId = -1;
+
         public int TopicId
         {
             get
             {
                 return _TopicId;
             }
+
             set
             {
                 _TopicId = value;
             }
         }
+
         private string _Topic = string.Empty;
+
         public string Topic
         {
             get
             {
                 return _Topic;
             }
+
             set
             {
                 _Topic = value;
             }
         }
+
         private string _Template = string.Empty;
+
         public string Template
         {
             get
             {
                 return _Template;
             }
+
             set
             {
                 _Template = value;
             }
         }
+
         private string _HeaderTemplate = string.Empty;
+
         public string HeaderTemplate
         {
             get
             {
                 return _HeaderTemplate;
             }
+
             set
             {
                 _HeaderTemplate = value;
             }
         }
+
         private string _FooterTemplate = string.Empty;
+
         public string FooterTemplate
         {
             get
             {
                 return _FooterTemplate;
             }
+
             set
             {
                 _FooterTemplate = value;
             }
         }
+
         public User ForumUser {get; set;}
+
         private int _CategoryId = -1;
+
         public int CategoryId
         {
             get
             {
                 return _CategoryId;
             }
+
             set
             {
                 _CategoryId = value;
             }
         }
+
         private int _TagId = -1;
+
         public int TagId
         {
             get
             {
                 return _TagId;
             }
+
             set
             {
                 _TagId = value;
             }
         }
+
         private int _PageIndex = 1;
+
         public int PageIndex
         {
             get
             {
                 return _PageIndex;
             }
+
             set
             {
                 _PageIndex = value;
             }
         }
+
         private int _PageSize = 20;
+
         public int PageSize
         {
             get
             {
                 return _PageSize;
             }
+
             set
             {
                 _PageSize = value;
             }
         }
+
         private string _ItemCss = "aftb-topic";
+
         public string ItemCss
         {
             get
             {
                 return _ItemCss;
             }
+
             set
             {
                 _ItemCss = value;
             }
         }
+
         private string _AltItemCSS = "aftb-topic-alt";
+
         public string AltItemCSS
         {
             get
             {
                 return _AltItemCSS;
             }
+
             set
             {
                 _AltItemCSS = value;
             }
         }
+
         private bool _UseAjax = false;
+
         public bool UseAjax
         {
             get
             {
                 return _UseAjax;
             }
+
             set
             {
                 _UseAjax = value;
             }
         }
+
         private string _ImagePath = string.Empty;
+
         public string ImagePath
         {
             get
             {
                 return _ImagePath;
             }
+
             set
             {
                 _ImagePath = value;
             }
         }
+
         private bool _MaintainPage = false;
+
         public bool MaintainPage
         {
             get
             {
                 return _MaintainPage;
             }
+
             set
             {
                 _MaintainPage = value;
             }
         }
+
         private SettingsInfo _mainSettings = null;
         private bool _canEdit = false;
 
         public int UserId { get; set; } = -1;
+
         public string Render()
         {
             string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(ForumUser.UserRoles, PortalId, ModuleId, "CanEdit");
@@ -352,6 +417,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append(cUtils.BuildPager(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, TagId, CategoryId, otherPrefix, PageIndex, pageCount));
             return sb.ToString();
         }
+
         private string ParseDataRow(IDataRecord row, string tmp)
         {
             try

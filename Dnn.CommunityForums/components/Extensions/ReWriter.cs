@@ -20,6 +20,7 @@
 using DotNetNuke.Common.Utilities.Internal;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int _otherId = -1;
         private int _categoryId = -1;
         private int _tagId = -1;
+
         public void Dispose()
         {
 
@@ -53,6 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             context.BeginRequest += OnBeginRequest;
         }
+
         public void OnBeginRequest(object s, EventArgs e)
         {
             _forumId = -1;
@@ -467,6 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 RewriteUrl(app.Context, sendTo);
             }
         }
+
         internal static string ResolveUrl(string appPath, string url)
         {
 
@@ -514,6 +518,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         internal static void RewriteUrl(HttpContext context, string sendToUrl)
         {
             string x = "";
@@ -552,6 +557,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // context.RewritePath(sendToUrl);
 
         }
+
         private string HandleOldUrls(string rawUrl, string httpAlias)
         {
             string sUrl = string.Empty;

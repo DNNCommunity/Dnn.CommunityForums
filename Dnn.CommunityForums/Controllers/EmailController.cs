@@ -26,8 +26,11 @@ using System.Net.Mail;
 using System.Reflection;
 using System.Threading;
 using System.Web;
+
 using DotNetNuke.Common.Controls;
+
 using System.Xml.Linq;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
@@ -67,6 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 Subject = subject
             });
         }
+
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments)
         {
             SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
@@ -99,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 SendTemplatedEmail(templateId, portalId, topicId, replyId, moduleID, tabID, comments, user.UserID, fi, subs, null);
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs, Uri requestUrl)")]
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<DotNetNuke.Modules.ActiveForums.SubscriptionInfo> subs)
         {
@@ -156,8 +161,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 9.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => SendNotification(portalId, moduleId, fromEmail, toEmail, subject, bodyHTML);
+
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body)
         {
                 //USE DNN API for this to ensure proper delivery & adherence to portal settings
@@ -208,10 +215,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return GetSmtpSetting(portalId, "SMTPServer");
         }
+
         internal static string SMTPAuthentication(int portalId)
         {
             return GetSmtpSetting(portalId, "SMTPAuthentication");
         }
+
         internal static bool EnableSMTPSSL(int portalId)
         {
             if (SMTPPortalEnabled(portalId))
@@ -223,10 +232,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
             }
         }
+
         internal static string SMTPUsername(int portalId)
         {
             return GetSmtpSetting(portalId, "SMTPUsername");
         }
+
         internal static string SMTPPassword(int portalId)
         {
             if (SMTPPortalEnabled(portalId))
@@ -281,6 +292,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return HostController.Instance.GetString(settingName);
             }
         }
+
         #endregion 
         #region Deprecated
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
@@ -288,6 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             SendNotification(-1, -1, fromEmail, toEmail, subject, bodyHTML);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML).")]
         public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML)
         {

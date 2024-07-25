@@ -24,10 +24,13 @@ using System.Collections.Generic;
 using System.Data;
 
 using System.Text;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
+
 using System.Text.RegularExpressions;
 using System.Web;
+
 using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -49,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool bAllowRSS = false;
         private DateTime LastBuildDate = DateTime.MinValue;
         private int offSet = 0;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -308,6 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums
             //XmlString = Replace(XmlString, ">", "&gt;")
             return XmlString;
         }
+
         private string StripHTMLTag(string sText)
         {
             string tempStripHTMLTag = null;

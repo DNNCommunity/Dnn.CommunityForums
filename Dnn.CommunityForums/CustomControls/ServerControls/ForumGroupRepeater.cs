@@ -38,34 +38,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Vertical,
             Horizontal
         }
+
         private RepeatDirections _repeatDirection;
         private int _repeatColumns = 1;
         private string _headerTemplate;
         private string _footerTemplate;
         private string _noResults;
         private int _toggleBehavior = 0;
+
         public RepeatDirections RepeatDirection
         {
             get
             {
                 return _repeatDirection;
             }
+
             set
             {
                 _repeatDirection = value;
             }
         }
+
         public int RepeatColumns
         {
             get
             {
                 return _repeatColumns;
             }
+
             set
             {
                 _repeatColumns = value;
             }
         }
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public string HeaderTemplate
         {
@@ -73,11 +79,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _headerTemplate;
             }
+
             set
             {
                 _headerTemplate = value;
             }
         }
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public string FooterTemplate
         {
@@ -85,11 +93,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _footerTemplate;
             }
+
             set
             {
                 _footerTemplate = value;
             }
         }
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public string NoResultsTemplate
         {
@@ -97,28 +107,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _noResults;
             }
+
             set
             {
                 _noResults = value;
             }
         }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             this.EnableViewState = false;
         }
+
         public int ToggleBehavior
         {
             get
             {
                 return _toggleBehavior;
             }
+
             set
             {
                 _toggleBehavior = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             //writer.Write(Text)

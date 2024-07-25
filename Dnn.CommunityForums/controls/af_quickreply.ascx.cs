@@ -21,12 +21,16 @@
 using System;
 using System.Collections.Generic;
 using System.Web.UI;
+
 using DotNetNuke.Modules.ActiveForums.Controls; 
 using DotNetNuke.Services.Social.Notifications;  
+
 using System.Web.UI.WebControls; 
 using System.Web.UI.HtmlControls;
+
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.UI.UserControls;
+
 using System.Reflection;
 using System.Web;
 
@@ -51,15 +55,25 @@ namespace DotNetNuke.Modules.ActiveForums
         protected System.Web.UI.WebControls.RequiredFieldValidator reqCaptcha = new System.Web.UI.WebControls.RequiredFieldValidator(); 
 
         public string SubmitText = Utilities.GetSharedResource("Submit.Text");
+
         public bool RequireCaptcha { get; set; } = true;
+
         public bool UseFilter { get; set; } = true;
+
         public string Subject { get; set; } = string.Empty;
+
         public bool ModApprove { get; set; } = false;
+
         public bool CanTrust { get; set; } = false;
+
         public bool IsTrusted { get; set; } = false;
+
         public bool TrustDefault { get; set; } = false;
+
         public bool AllowHTML { get; set; } = false;
+
         public bool AllowScripts { get; set; } = false;
+
         public bool AllowSubscribe { get; set; } = false; 
 
         #region Event Handlers
@@ -213,11 +227,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // if someone activates this checkbox send him home :-)
             Response.Redirect("http://localhost/", true);
         }
+
         private void SaveQuickReply()
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, false, TopicId);

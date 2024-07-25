@@ -21,6 +21,7 @@ using System;
 using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -29,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ForumLoader : ForumBase
     {
         private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return Pair(name, value, false);
             }
+
             public static string Pair(string name, string value, bool isObject)
             {
                 if (string.IsNullOrEmpty(value))
@@ -53,6 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return ((char)(34)).ToString() + name + ((char)(34)).ToString() + ":" + value;
             }
+
             public static string ConvertToJSONAssociativeArray(Dictionary<string, string> dict)
             {
                 List<string> elements = new List<string>();
@@ -65,14 +67,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return "{" + string.Join(",", elements.ToArray()) + "}";
             }
+
             public static bool IsJSONArray(string test)
             {
                 return test.StartsWith("{") && ! (test.StartsWith("{*")) || test.StartsWith("[");
             }
+
             public static bool IsBoolean(string test)
             {
                 return test.Equals("false") || test.Equals("true");
             }
+
             public static string ConvertToJSONArray(List<string> list)
             {
                 StringBuilder builder = new StringBuilder();
@@ -84,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 builder.Replace(",", "]", builder.Length - 1, 1);
                 return builder.ToString();
             }
+
             public static object ConvertFromJSONToObject(string array, object InfoObject)
             {
                 Dictionary<string, string> dict = ConvertFromJSONAssoicativeArray(array);
@@ -149,6 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return InfoObject;
             }
+
             public static List<string> ConvertFromJSONArray(string array)
             {
                 if (! (string.IsNullOrEmpty(array)))
@@ -161,6 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return new List<string>();
                 }
             }
+
             public static Dictionary<string, string> ConvertFromJSONAssoicativeArray(string array)
             {
                 Dictionary<string, string> dict = new Dictionary<string, string>();
@@ -197,6 +205,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     return new Dictionary<string, string>();
                 }
             }
+
             public static Hashtable ConvertFromJSONAssoicativeArrayToHashTable(string array)
             {
                 Hashtable ht = new Hashtable();

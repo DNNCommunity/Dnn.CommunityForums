@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+
 using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -70,6 +71,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         private void cbMod_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
             SettingsInfo ms = SettingsBase.GetModuleSettings(ForumModuleId);
@@ -218,6 +220,7 @@ namespace DotNetNuke.Modules.ActiveForums
             BuildModList();
             litTopics.RenderControl(e.Output);
         }
+
         #endregion
         #region Private Members
         private void BuildModList()
@@ -302,6 +305,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             litTopics.Text = Utilities.LocalizeControl(sb.ToString());
         }
+
         private string TopicEditUrl(int ForumId, int TopicId, int ReplyId)
         {
             if (ReplyId == 0)
@@ -313,6 +317,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return NavigateUrl(TabId, "", new string[] { ParamKeys.ViewType + "=post", "action=re", ParamKeys.ForumId + "=" + ForumId, ParamKeys.TopicId + "=" + TopicId, "postid=" + ReplyId });
             }
         }
+
         private void SetPermissions(int fId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(fId,ForumModuleId );
@@ -337,6 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         private string GetAttachments(int ContentId, int PortalID, int ModuleID, DataTable dtAttach)
         {
             string strHost = DotNetNuke.Common.Globals.AddHTTP(DotNetNuke.Common.Globals.GetDomainName(Request)) + "/";

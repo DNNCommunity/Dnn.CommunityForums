@@ -27,6 +27,7 @@ using System.Reflection;
 using System.Threading;
 using System.Web;
 using System.Xml.Linq;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
@@ -41,22 +42,31 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
         public string BodyText { get => Body; set => Body = value; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Body property.")]
         public string BodyHTML { get => Body; set => Body = value; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEMail().")]
         public static void SendEmail(int templateId, int portalId, int moduleId, int tabId, int forumId, int topicId, int replyId, string comments, Author author) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(templateId, portalId, moduleId, tabId, forumId, topicId, replyId, comments, author);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators().")]
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId: templateId, portalId: portalId, moduleID: moduleID, forumId: forumId, topicId: topicId, replyId: replyId, tabID: tabID, comments: comments, user: null);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators().")]
         public static void SendEmailToModerators(int templateId, int portalId, int forumId, int topicId, int replyId, int moduleID, int tabID, string comments, UserInfo user) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(templateId, portalId, forumId, topicId, replyId, moduleID, tabID, comments, user);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendTemplatedEmail()")]
         public static void SendTemplatedEmail(int templateId, int portalId, int topicId, int replyId, int moduleID, int tabID, string comments, int userId, Forum fi, List<SubscriptionInfo> subs) => throw new NotImplementedException();
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
         public static void SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(portalId, moduleId, fromEmail, toEmail, subject, bodyHTML);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
         public static void SendNotification(string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(-1, -1, fromEmail, toEmail, subject, bodyHTML);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.SendNotification(int portalId, int moduleId, string fromEmail, string toEmail, string subject, string body).")]
         public static void SendNotification(int portalId, string fromEmail, string toEmail, string subject, string bodyText, string bodyHTML) => DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendNotification(portalId, -1, fromEmail, toEmail, subject, bodyHTML);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use  DotNetNuke.Modules.ActiveForums.Controller.EmailController.Send().")]
         public void Send()
         {

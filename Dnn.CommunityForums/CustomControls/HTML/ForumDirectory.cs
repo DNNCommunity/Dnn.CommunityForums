@@ -30,61 +30,76 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ForumDirectory
     {
         private int _PortalId = -1;
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         private int _ModuleId = -1;
+
         public int ModuleId
         {
             get
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
             }
         }
+
         private int _TabId = -1;
+
         public int TabId
         {
             get
             {
                 return _TabId;
             }
+
             set
             {
                 _TabId = value;
             }
         }
+
         public User ForumUser {get; set;}
+
         private string _ForumIds = string.Empty;
+
         public string ForumIds
         {
             get
             {
                 return _ForumIds;
             }
+
             set
             {
                 _ForumIds = value;
             }
         }
+
         private string _Template = string.Empty;
+
         public string Template
         {
             get
             {
                 return _Template;
             }
+
             set
             {
                 _Template = value;
@@ -141,12 +156,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Template = TemplateUtils.ReplaceSubSection(Template, list.ToString(), "[AF:DIR:FORUMGROUP]", "[/AF:DIR:FORUMGROUP]");
             return Template;
         }
+
         private string ParseForumGroup(DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo f, string template)
         {
             template = template.Replace("[AF:DIR:FORUMGROUPID]", f.ForumGroupId.ToString());
             template = template.Replace("[AF:DIR:FORUMGROUPNAME]", f.GroupName);
             return template;
         }
+
         private string ParseForum(DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f, string template)
         {
             template = template.Replace("[AF:DIR:FORUMID]", f.ForumID.ToString());

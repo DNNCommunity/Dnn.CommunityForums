@@ -18,8 +18,11 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System; 
+
 using DotNetNuke.ComponentModel.DataAnnotations;
+
 using System.Web.Caching;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_Topics_Ratings")]
@@ -29,13 +32,21 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class TopicRatingInfo
     {
         public int RatingId { get; set; }
+
         public int TopicId { get; set; }
+
         public int UserId { get; set; }
+
         public int Rating { get; set; }
+
         public bool Helpful { get; set; }
+
         public string Comments { get; set; }
+
         public string IPAddress { get; set; }
+
         public DateTime DateAdded { get; set; }
+
         public DateTime DateUpdated { get; set; }
     }
 }

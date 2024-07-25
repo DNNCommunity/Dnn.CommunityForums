@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Services.Social.Notifications;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -68,6 +69,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 //DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(Me, exc, False)
             }
         }
+
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
             System.IO.StringWriter stringWriter = new System.IO.StringWriter();
@@ -91,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void InitializeComponent()
         {
         }
+
         protected Panel pnlMessage;
 
         //NOTE: The following placeholder declaration is required by the Web Form Designer.

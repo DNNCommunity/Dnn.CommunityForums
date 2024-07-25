@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         public static void ModuleException(ref Control ctl, Exception ex)
         {
             if (! ((ex) is System.Threading.ThreadAbortException))

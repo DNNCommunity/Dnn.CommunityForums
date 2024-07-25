@@ -19,6 +19,7 @@
 //
 using System;
 using System.Web.UI;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Actions;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class ActiveForums : ForumBase, IActionable
     {
         private string currentURL = string.Empty;
+
         protected string CurrentUrl
         {
             get

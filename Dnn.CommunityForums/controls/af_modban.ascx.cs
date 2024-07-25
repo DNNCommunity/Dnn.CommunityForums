@@ -19,6 +19,7 @@
 //
 using System;
 using System.Web.UI;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     public partial class af_modban : ForumBase
@@ -30,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
             btnBan.Click += new System.EventHandler(btnBan_Click);
             btnCancel.Click += new System.EventHandler(btnCancel_Click);
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -45,6 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
             System.IO.StringWriter stringWriter = new System.IO.StringWriter();
@@ -57,10 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         } 
+
         private void btnCancel_Click(object sender, System.EventArgs e)
         {
             Response.Redirect(Utilities.NavigateURL(TabId, "", new string[] { ParamKeys.ForumId + "=" + ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + TopicId }));
         }
+
         private void btnBan_Click(object sender, System.EventArgs e)
         {
             if (!Request.IsAuthenticated)

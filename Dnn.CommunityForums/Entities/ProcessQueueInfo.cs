@@ -20,8 +20,10 @@
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Modules.ActiveForums;
 using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
+
 using System;
 using System.Web.Caching;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_ProcessQueue")]
@@ -29,16 +31,27 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class ProcessQueueInfo
     {
         public long Id { get; set; }
+
         public int PortalId { get; set; }
+
         public int ModuleId { get; set; }
+
         public ProcessType ProcessType { get; set; }
+
         public int ForumGroupId { get; set; }
+
         public int ForumId { get; set; }
+
         public int TopicId { get; set; }
+
         public int TabId { get; set; }
+
         public int ReplyId { get; set; }
+
         public int AuthorId { get; set; }
+
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+
         public string RequestUrl { get; set; }
     }
 }

@@ -59,6 +59,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 txtSignature.Text = ui.Signature;
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public string GetString(string key)
         {

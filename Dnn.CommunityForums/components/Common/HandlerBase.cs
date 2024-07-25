@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             NoResults,
             AccessDenied
         }
+
         private User _userProfile;
         private Hashtable _params;
         private bool _isValid = false;
@@ -47,31 +48,37 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         private DotNetNuke.Entities.Portals.PortalSettings _ps;
         private SettingsInfo _mainSettings;
         private bool _AdminRequired = false;
+
         public bool AdminRequired
         {
             get
             {
                 return _AdminRequired;
             }
+
             set
             {
                 _AdminRequired = value;
             }
         }
+
         private int _pid = -1;
         private int _mid = -1;
         private int _UserId = -1;
+
         public int UserId
         {
             get
             {
                 return _UserId;
             }
+
             set
             {
                 _UserId = value;
             }
         }
+
         public int PortalId
         {
             get
@@ -86,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
         }
+
         public int ModuleId
         {
             get
@@ -100,6 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
         }
+
         public int TabId
         {
             get
@@ -114,6 +123,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
         }
+
         public bool IsDebug
         {
             get
@@ -128,6 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
         }
+
         public SettingsInfo MainSettings
         {
             get
@@ -135,6 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 return _mainSettings;
             }
         }
+
         public bool IsValid
         {
             get
@@ -142,6 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 return _isValid;
             }
         }
+
         public DotNetNuke.Entities.Portals.PortalSettings PS
         {
             get
@@ -149,6 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 return _ps;
             }
         }
+
         public int RequestOption
         {
             get
@@ -163,6 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
         }
+
         public Hashtable Params
         {
             get
@@ -180,29 +195,35 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         }
 
         private bool _IsAuthenticated = false;
+
         public bool IsAuthenticated
         {
             get
             {
                 return _IsAuthenticated;
             }
+
             set
             {
                 _IsAuthenticated = value;
             }
         }
+
         private string _Username = string.Empty;
+
         public string Username
         {
             get
             {
                 return _Username;
             }
+
             set
             {
                 _Username = value;
             }
         }
+
         internal User ForumUser
         {
             get
@@ -457,10 +478,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 
         }
+
         internal string BuildOutput(string text, OutputCodes code, bool success)
         {
             return BuildOutput(text, code, success, false);
         }
+
         internal string BuildOutput(string text, OutputCodes code, bool success, bool resultisobject)
         {
             StringBuilder sb = new StringBuilder();

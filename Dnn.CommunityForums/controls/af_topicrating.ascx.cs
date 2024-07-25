@@ -48,17 +48,20 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _Rating;
             }
+
             set
             {
                 _Rating = value;
             }
         }
+
         public bool Enabled
         {
             get
             {
                 return _Enabled;
             }
+
             set
             {
                 _Enabled = value;
@@ -113,6 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserId, topicId: TopicId, rating: 5, IpAddress: Request.UserHostAddress.ToString());
         }
+
         private void cbRating_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
             if (e.Parameters.Length > 0)
@@ -127,6 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
             RenderRating();
             plhRating.RenderControl(e.Output);
         }
+
         #endregion
         #region Private Methods
         private void RenderRating()
@@ -195,6 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 AddRatingScript();
             }
         }
+
         private void AddRatingScript()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();

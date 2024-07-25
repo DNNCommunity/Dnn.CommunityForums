@@ -28,6 +28,7 @@ using System.Text;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -46,11 +47,14 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         public struct TopicDto1
         {
             public int ForumId { get; set; }
+
             public int TopicId { get; set; }
         }
+
         public struct TopicDto2
         {
             public int ForumId { get; set; }
+
             public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic { get; set; }
         }
 

@@ -76,6 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
         Topic,
         Poll
     }
+
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
     public enum EmailFormats
     {
@@ -318,6 +319,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Columns = "c";
         public const string Forums = "f";
     }
+
     public class ParamKeys
     {
         public const string ForumId = "aff";
@@ -342,10 +344,12 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string TimeSpan = "ts";
         public const string mode = "mode";
     }
+
     public class Modes
     {
         public const string edit = "edit";
     }
+
     public class Literals
     {
         public const string page = "page";
@@ -358,6 +362,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string PostId = "PostId";
         public const string PageId = "PageId";
     }
+
     public class SortOptions
     {
         public const string Descending = "DESC";
@@ -381,6 +386,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string ModerateTopics = "modtopics";
         public const string ModerateBan = "modban";
     }
+
     internal static class GridTypes
     {
         public const string NotRead = "notread";
@@ -395,6 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string Announcements = "announcements";
         public const string Tags = "tags";
     }
+
     public class PostActions
     {
         public const string TopicEdit = "te";
@@ -474,6 +481,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string AFForumViewTemplate = "AFForumViewTemplate";
         public const string AFTopicTemplate = "AFTopicTemplate";
     }
+
     public class ForumViewerViewType
     {
         public const string GROUP = "AFGROUP";

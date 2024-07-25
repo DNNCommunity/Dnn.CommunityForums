@@ -23,6 +23,7 @@ using DotNetNuke.Modules.ActiveForums.Extensions;
 using DotNetNuke.Modules.ActiveForums.Controllers;
 using DotNetNuke.Modules.ActiveForums.Entities;
 using DotNetNuke.UI.Skins;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,12 +35,17 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+
 using DotNetNuke.Instrumentation;
+
 using static DotNetNuke.Modules.ActiveForums.Controls.ActiveGrid;
+
 using System.Drawing.Printing;
 using System.Runtime.InteropServices;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication;
+
 using System.Diagnostics.Eventing.Reader;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -120,10 +126,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string TopicTemplate { get; set; } = string.Empty;
 
         public int OptPageSize { get; set; }
+
         public string OptDefaultSort { get; set; }
+
         public string MetaTemplate { get; set; } = "[META][TITLE][TOPICSUBJECT] - [PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY:255][/DESCRIPTION][KEYWORDS][TAGS][VALUE][/KEYWORDS][/META]";
+
         public string MetaTitle { get; set; } = string.Empty;
+
         public string MetaDescription { get; set; } = string.Empty;
+
         public string MetaKeywords { get; set; } = string.Empty;
         #endregion
 

@@ -58,17 +58,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ViewState["Text"] = value;
             }
         }
+
         public string CallBackOnComplete
         {
             get
             {
                 return _CallBackOnComplete;
             }
+
             set
             {
                 _CallBackOnComplete = value;
             }
         }
+
         public PlaceHolder ModalContent
         {
             get
@@ -80,11 +83,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return plh;
             }
+
             set
             {
                 plh = value;
             }
         }
+
         protected override void CreateChildControls()
         {
             cb = new Callback();
@@ -107,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.Controls.Add(cb);
             ChildControlsCreated = true;
         }
+
         protected override void RenderChildren(System.Web.UI.HtmlTextWriter writer)
         {
             foreach (Control childControl in Controls)
@@ -114,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 childControl.RenderControl(writer);
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             //BEGIN MASK
@@ -221,12 +228,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         }
+
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
+
         public event CallbackEventHandler Callback;
+
         public void RaiseCallback(object sender, CallBackEventArgs e) // Implements ICallbackEventHandler.RaiseCallback
         {
             OnCallback(e);
         }
+
         protected virtual void OnCallback(CallBackEventArgs e)
         {
             if (Callback != null)

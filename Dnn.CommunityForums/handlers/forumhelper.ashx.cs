@@ -27,11 +27,14 @@ using System.Web;
 using System.Web.Services;
 using System.Text;
 using System.Xml;
+
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Modules.ActiveForums.Entities;
+
 using System.Linq;
+
 namespace DotNetNuke.Modules.ActiveForums.Handlers
 {
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used. ")]
@@ -59,6 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             LikePost /*no longer used*/
 
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used. ")]
         public override void ProcessRequest(HttpContext context)
         {

@@ -39,14 +39,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         private string ForumURL = string.Empty;
         private string ForumPageTitle = string.Empty;
+
         public bool SubsOnly { get; set; }
         
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")] 
         public DataTable ForumTable { get; set; }
         
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
+
         public string DisplayTemplate { get; set; } = "";
+
         public int CurrentUserId { get; set; } = -1;
+
         protected af_quickjump ctlForumJump = new af_quickjump();
         #region Event Handlers
 
@@ -145,6 +149,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             return BuildForumView();
         }
+
         public string BuildForumView()
         {
             try
@@ -315,6 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 throw;
             }
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -330,6 +336,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private string ParseControls(string Template)
         {
             string sOutput = Template;
@@ -348,6 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sOutput = sOutput.Replace("[USERID]", CurrentUserId.ToString());
             return sOutput;
         }
+
         private string ParseForumRow(string Template, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int currForumIndex, int totalForums)
         {
 
@@ -566,6 +574,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
+
         private string GetLastPostSubject(int LastPostID, int ParentPostID, int ForumID, int TabID, string Subject, int Length, int PageSize, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi)
         {
             var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(ParentPostID);
@@ -590,6 +599,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("<a href=\"" + sURL + "\">" + HttpUtility.HtmlEncode(Subject) + "</a>");
             return sb.ToString();
         }
+
         private string GetSubForums(string Template, int ForumId, int TabId, string ThemePath)
         {
             int i = 0;
@@ -670,6 +680,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         private string GetForumName(bool CanView, bool Hidden, int TabID, int ForumID, string Name, bool UseShortUrls)
         {
             string sOut;

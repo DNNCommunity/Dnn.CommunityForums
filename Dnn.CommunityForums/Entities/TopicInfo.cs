@@ -20,12 +20,18 @@
 using System; 
 using System.Collections.Generic;
 using System.Xml;
+
 using DotNetNuke.ComponentModel.DataAnnotations;
+
 using System.Web.Caching;
+
 using DotNetNuke.UI.UserControls;
+
 using System.Runtime.Remoting.Messaging;
 using System.Linq;
+
 using DotNetNuke.Collections;
+
 using System.Text;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -55,6 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 this.selected = selected;
             }
         }
+
         private List<Category> _categories;
 
         private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
@@ -80,34 +87,58 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
             set => _forumId = value;
         }
+
         [IgnoreColumn()]
         public int PortalId { get => Forum.PortalId; }
+
         [IgnoreColumn()]
         public int ModuleId { get => Forum.ModuleId; }
+
         public int ContentId { get; set; }
+
         public int ViewCount { get; set; }
+
         public int ReplyCount { get; set; }
+
         public bool IsLocked { get; set; }
+
         public bool IsPinned { get; set; }
+
         public string TopicIcon { get; set; }
+
         public int StatusId { get; set; }
+
         public bool IsApproved { get; set; }
+
         public bool IsRejected { get; set; }
+
         public bool IsDeleted { get; set; }
+
         public bool IsAnnounce { get; set; }
+
         public bool IsArchived { get; set; }
+
         public DateTime AnnounceStart { get; set; }
+
         public DateTime AnnounceEnd { get; set; }
+
         public TopicTypes TopicType { get; set; }
+
         public int Priority { get; set; } = 0;
+
         [ColumnName("URL")]
         public string TopicUrl { get; set; } = string.Empty;
+
         [IgnoreColumn()]
         public string URL => !(string.IsNullOrEmpty(TopicUrl)) && !(string.IsNullOrEmpty(ForumURL)) ? ForumURL + TopicUrl : string.Empty;
+
         [IgnoreColumn()]
         public string ForumURL => !(string.IsNullOrEmpty(Forum.PrefixURL)) && !(string.IsNullOrEmpty(TopicUrl)) ? "/" + Forum.PrefixURL + "/" : string.Empty;
+
         public int NextTopic { get; set; }
+
         public int PrevTopic { get; set; }
+
         public string TopicData { get; set; } = string.Empty;
 
         [IgnoreColumn()]
@@ -121,6 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ContentController().GetById(ContentId);
         }
+
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
@@ -159,6 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
             return _Author;
         }
+
         [IgnoreColumn()]
         public string Tags
         {
@@ -175,6 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return _tags;
             }
         }
+
        [IgnoreColumn()]
         public IEnumerable<Category> Categories
         {
@@ -190,8 +224,10 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 return _categories;
             }
         }
+
         [IgnoreColumn()]
         public IEnumerable<Category> SelectedCategories => Categories.Where(c => c.selected).ToList();
+
         [IgnoreColumn()]
         public string SelectedCategoriesAsString
         {
@@ -203,6 +239,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
                 }
                 return _selectedcategories;
             }
+
             set
             {
                 _selectedcategories = value;
@@ -216,6 +253,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             {
                 TopicData = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(Forum, value);
             }
+
             get
             {
                     if (TopicData == string.Empty)

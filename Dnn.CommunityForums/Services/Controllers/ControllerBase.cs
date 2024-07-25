@@ -20,6 +20,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Web.Api;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Instrumentation;
@@ -45,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services
             Logger.Info("Hello World!");
             return Request.CreateResponse(HttpStatusCode.OK, "Hello World!");
         }
+
         internal int ForumModuleId => DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(ActiveModule.ModuleID, ActiveModule.TabID);
     }
 }

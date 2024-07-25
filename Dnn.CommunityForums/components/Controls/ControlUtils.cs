@@ -193,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sURL;
         }
+
         public string TopicURL(IDataRecord row, int tabId, int moduleId, int pageId = 1)
         {
             return TopicURL(tabId, moduleId, Convert.ToInt32(row["TopicId"].ToString()), row["GroupPrefixURL"].ToString(), row["PrefixURL"].ToString(), row["URL"].ToString(), pageId);

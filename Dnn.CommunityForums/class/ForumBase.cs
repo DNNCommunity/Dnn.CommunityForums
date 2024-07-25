@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Xml;
+
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
 
@@ -65,8 +66,11 @@ namespace DotNetNuke.Modules.ActiveForums
         public string ForumIds { get; set; } = string.Empty;
 
         public int DefaultForumViewTemplateId { get; set; } = -1;
+
         public int DefaultTopicsViewTemplateId { get; set; } = -1;
+
         public int DefaultTopicViewTemplateId { get; set; } = -1;
+
         public string DefaultView { get; set; } = Views.ForumView;
 
         public bool JumpToLastPost
@@ -97,6 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 var lastAccess = Session[string.Concat(UserId.ToString(), ModuleId, "LastAccess")];
                 return  lastAccess == null ? Utilities.NullDate() : Convert.ToDateTime(lastAccess);
             }
+
             set
             {
                 Session[string.Concat(UserId.ToString(), ModuleId, "LastAccess")] = value;
@@ -159,6 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return _topicId.Value;
             }
+
             set
             {
                 _topicId = value;
@@ -192,6 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return _replyId.Value;
             }
+
             set
             {
                 _replyId = value;
@@ -225,6 +232,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return _quoteId.Value;
             }
+
             set
             {
                 _quoteId = value;
@@ -271,11 +279,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return _forumId.Value;
             }
+
             set
             {
                 _forumId = value;
             }
         }
+
         public int AuthorId
         {
             get
@@ -310,6 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                return _authorid.Value;
             }
+
             set
             {
                 _authorid = value;
@@ -343,6 +354,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return _forumGroupId.Value;
             }
+
             set
             {
                 _forumGroupId = value;
@@ -359,6 +371,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _foruminfo ?? (_foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(PortalId, ForumModuleId, ForumId, true, TopicId));
             }
+
             set
             {
                 _foruminfo = value;
@@ -366,8 +379,11 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
         public int SocialGroupId { get; set; }
+
         public bool CanRead => _canRead ?? SecurityCheck("read");
+
         public bool CanView => _canView ?? SecurityCheck("view");
+
         public bool CanCreate
         {
             get

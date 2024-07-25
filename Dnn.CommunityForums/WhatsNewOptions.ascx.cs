@@ -23,6 +23,7 @@ using System.Data;
 
 using System.Web.UI.WebControls;
 using System.Web.UI;
+
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -310,6 +311,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
         }
+
         private void AddChildNodes(TreeNode parentNode, DataTable dt, DataRow dr)
         {
             foreach (DataRow row in dt.Rows)
@@ -328,6 +330,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 AddChildNodes(tNode, dt, row);
             }
         }
+
         private bool HasSubForums(int ForumId, DataTable dt)
         {
             foreach (DataRow row in dt.Rows)
@@ -339,6 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return false;
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             var stringWriter = new System.IO.StringWriter();

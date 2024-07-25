@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums
         }
 
     }
+
 #endregion
 #region TemplateInfo
     public class TemplateInfo
@@ -71,19 +72,23 @@ namespace DotNetNuke.Modules.ActiveForums
         public string Title { get; set; }
 
         public string Template { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
         public string TemplateHTML { get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Template property.")]
         public string TemplateText { get; set; }
 
         public DateTime DateCreated { get; set; }
 
         public DateTime DateUpdated { get; set; }
+
         public string FileName { get; set; }
 
         #endregion
 
     }
+
 #endregion
 #region Template Controller
     public class TemplateController
@@ -129,10 +134,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return TemplateId;
         }
+
         public List<TemplateInfo> Template_List(int PortalId, int ModuleId)
         {
             return GetTemplateList(PortalId, ModuleId, Templates.TemplateTypes.All);
         }
+
         public List<TemplateInfo> Template_List(int PortalId, int ModuleId, Templates.TemplateTypes TemplateType)
         {
             return GetTemplateList(PortalId, ModuleId, TemplateType);
@@ -156,6 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             DataProvider.Instance().Templates_Delete(TemplateId, PortalId, ModuleId);
         }
+
         public TemplateInfo Template_Get(string TemplateName, int PortalId, int ModuleId)
         {
             string templateFileName = string.Empty;
@@ -183,6 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.Template = Utilities.GetFileContent(templateFilePathFileName).Replace("[TRESX:", "[RESX:");
             return ti;
         }
+
         public TemplateInfo Template_Get(int TemplateId)
         {
             var ti = new TemplateInfo();

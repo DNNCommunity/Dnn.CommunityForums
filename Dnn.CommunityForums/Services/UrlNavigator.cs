@@ -28,66 +28,82 @@ namespace DotNetNuke.Modules.ActiveForums.Services
     internal class URLNavigator : PortalModuleBase /*, INavigationManager*/
     {
         private readonly INavigationManager navigationManager;
+
         internal URLNavigator()
         {
             this.navigationManager = DependencyProvider.GetService<INavigationManager>();
         }
+
         internal INavigationManager NavigationManager()
         {
            return this.navigationManager;
         }
+
         internal URLNavigator(INavigationManager navigationManager)
         {
             this.navigationManager = navigationManager;
         }
+
         internal static string NavigateURL(INavigationManager navigation, int tabId, string[] @params)
         {
             return navigation?.NavigateURL(tabId, string.Empty, @params);
         }
+
         internal string NavigateURL()
         {
             return navigationManager?.NavigateURL();
         }
+
         internal string NavigateURL(int tabID)
         {
             return navigationManager?.NavigateURL(tabID);
         }
+
         internal string NavigateURL(int tabID, bool isSuperTab)
         {
             return navigationManager?.NavigateURL(tabID, isSuperTab);
         }
+
         internal string NavigateURL(int tabId, string[] @params)
         {
             return navigationManager?.NavigateURL(tabId, string.Empty, @params);
         }
+
         internal string NavigateURL(string controlKey)
         {
             return navigationManager?.NavigateURL(controlKey);
         }
+
         internal string NavigateURL(string controlKey, params string[] additionalParameters)
         {
             return navigationManager?.NavigateURL(controlKey, additionalParameters);
         }
+
         internal string NavigateURL(int tabID, string controlKey)
         {
             return navigationManager?.NavigateURL(tabID, controlKey);
         }
+
         internal string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
             return navigationManager?.NavigateURL(tabID, controlKey, additionalParameters);
         }
+
         internal string NavigateURL(int tabID, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return navigationManager?.NavigateURL(tabID, settings, controlKey, additionalParameters);
         }
+
         internal  string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             return navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
         }
+
         internal string  NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, additionalParameters);
         }
+
         internal string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             return navigationManager?.NavigateURL(tabID, isSuperTab, settings, controlKey, language, pageName, additionalParameters);

@@ -22,6 +22,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Web.Api;
 
@@ -35,7 +36,9 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
         public struct ReplyDto
         {
             public int ForumId { get; set; }
+
             public int TopicId { get; set; }
+
             public int ReplyId { get; set; }
         }
 #pragma warning disable CS1570

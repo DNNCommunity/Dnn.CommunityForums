@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private int PollId = -1;
         private string PollType = "S";
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -42,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 BindPoll();
             }
         }
+
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
             System.IO.StringWriter stringWriter = new System.IO.StringWriter();
@@ -51,6 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
             html = Utilities.LocalizeControl(html);
             writer.Write(html);
         }
+
         private void BindPoll()
         {
 

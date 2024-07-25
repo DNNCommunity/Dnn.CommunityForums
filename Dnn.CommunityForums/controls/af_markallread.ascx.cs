@@ -19,6 +19,7 @@
 //
 
 using System;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
 
@@ -50,6 +51,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void InitializeComponent()
         {
         }
+
         //NOTE: The following placeholder declaration is required by the Web Form Designer.
         //Do not delete or move it.
         private object designerPlaceholderDeclaration;

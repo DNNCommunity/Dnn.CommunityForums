@@ -18,8 +18,10 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
+
 using System;
 using System.Web.Caching;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
     public enum ProcessType

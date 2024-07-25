@@ -30,23 +30,27 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         private int _status = -1;
         private bool _autoPostBack = true;
+
         public int Status
         {
             get
             {
                 return _status;
             }
+
             set
             {
                 _status = value;
             }
         }
+
         public bool AutoPostBack
         {
             get
             {
                 return _autoPostBack;
             }
+
             set
             {
                 _autoPostBack = value;

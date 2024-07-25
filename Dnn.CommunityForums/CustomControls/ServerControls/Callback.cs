@@ -51,8 +51,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _refreshInterval = 0;
         private string _parameter = "";
         private string _resourceFile = "";
+
         public event CallbackEventHandler CallbackEvent;
+
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
+
         private string _PostURL = "";
         private string _token = string.Empty;
         private int _validState = 0; //-1 = don't process, 0 = initial load, 1 = process
@@ -75,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _debug = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public int RefreshInterval
         {
@@ -88,6 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _refreshInterval = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string Parameter
         {
@@ -130,6 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 ViewState["OnCallbackComplete"] = value;
             }
         }
+
         [Description("Initial content to render."), DefaultValue(null, ""), Browsable(false), NotifyParentProperty(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
         public CallBackContent Content
         {
@@ -138,11 +144,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 EnsureChildControls();
                 return _content;
             }
+
             set
             {
                 _content = value;
             }
         }
+
         [Description("Loading Template during Callback"), PersistenceMode(PersistenceMode.InnerProperty)]
         public ClientTemplate LoadingTemplate
         {
@@ -150,11 +158,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _loadingtemplate;
             }
+
             set
             {
                 _loadingtemplate = value;
             }
         }
+
         public override System.Web.UI.ControlCollection Controls
         {
             get
@@ -163,6 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return base.Controls;
             }
         }
+
         [Description("Whether we are currently in a callback request."), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Browsable(false)]
         public bool IsCallback
         {
@@ -187,35 +198,42 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return _isCallback;
             }
         }
+
         public string ResourceFile
         {
             get
             {
                 return _resourceFile;
             }
+
             set
             {
                 _resourceFile = value;
             }
         }
+
         public string PostURL
         {
             get
             {
                 return _PostURL;
             }
+
             set
             {
                 _PostURL = value;
             }
         }
+
         private string _forceId = string.Empty;
+
         public string ForceId
         {
             get
             {
                 return _forceId;
             }
+
             set
             {
                 _forceId = value;
@@ -244,6 +262,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
         }
+
         protected override void Render(HtmlTextWriter output)
         {
             if (Enabled)
@@ -340,6 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         }
+
         public string XSSFilter(string sText)
         {
             sText = HttpUtility.UrlDecode(sText);
@@ -349,6 +369,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sText = sText.Replace("<!--", string.Empty);
             return sText;
         }
+
         protected override void CreateChildControls()
         {
             if (Content != null)
@@ -363,6 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             //ChildControlsCreated = True
         }
+
         private void handleCB(string[] args)
         {
             try
@@ -428,10 +450,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         public static string GetResponseUrl(HttpContext oContext)
         {
             return oContext.Request.Url.Scheme + Uri.SchemeDelimiter + oContext.Request.Url.Host + (Convert.ToString((oContext.Request.Url.IsDefaultPort ? "" : (":" + oContext.Request.Url.Port)))) + oContext.Response.ApplyAppPathModifier(oContext.Request.RawUrl);
         }
+
         //Private Function GetArgs() As String()
         //    Dim idname As String = "amCB_" & Me.ClientID
         //    Dim args() As String = Nothing
@@ -505,11 +529,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return args;
         }
+
         private void OnCallback(CallBackEventArgs e)
         {
             if (CallbackEvent != null)
                 CallbackEvent(this, e);
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -553,6 +579,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
     }
+
     public class CallBackEventArgs : EventArgs
     {
 
@@ -560,20 +587,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public string[] Parameters;
 
         public HtmlTextWriter Output;
+
         internal CallBackEventArgs(HtmlTextWriter _writer)
         {
             Output = _writer;
         }
+
         internal CallBackEventArgs(HtmlTextWriter _writer, string sParam)
         {
             Output = _writer;
             Parameter = sParam;
         }
     }
+
     [ToolboxItem(false)]
     public class CallBackContent : System.Web.UI.Control
     {
     }
+
     [ToolboxItem(false)]
     public class ClientTemplate : System.Web.UI.Control
     {
@@ -588,6 +619,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return "";
             }
+
             set
             {
                 this.Controls.Clear();
@@ -595,6 +627,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
     }
+
     public class ActiveCallbackDesigner : ControlDesigner
     {
 
@@ -604,6 +637,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
     }
+
     public interface ICallback
     {
         void Callback(object sender, Controls.CallBackEventArgs e);

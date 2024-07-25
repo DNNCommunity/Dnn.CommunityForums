@@ -111,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _nullDate = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string CalendarWidth
         {
@@ -124,6 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _calwidth = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string CalendarHeight
         {
@@ -372,6 +374,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _defaultTime = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string SelectedTime
         {
@@ -723,6 +726,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

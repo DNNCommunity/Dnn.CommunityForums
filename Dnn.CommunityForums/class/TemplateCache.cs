@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return GetCachedTemplate(ModuleId, TemplateType, -1);
         }
+
         public static string GetCachedTemplate(int ModuleId, string TemplateType, int TemplateId)
         {
             string sTemplate = string.Empty;

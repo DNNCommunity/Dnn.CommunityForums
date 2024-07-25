@@ -25,6 +25,7 @@ using DotNetNuke.Modules.ActiveForums.Services.ProcessQueue;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Social.Notifications;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -51,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return ti;
         }
+
         public static int QuickCreate(int PortalId, int ModuleId, int ForumId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(ForumId);
@@ -90,6 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return topicId;
         }
+
         public static void Replies_Split(int OldTopicId, int NewTopicId, string listreplies, bool isNew)
         {
             Regex rgx = new Regex(@"^\d+(\|\d+)*$");
@@ -108,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
         }
+
         public static DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Approve(int TopicId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
@@ -131,6 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(ti.PortalId, ti.Forum.TabId, ti.Forum.ModuleId, ti.Forum.ForumGroupId, ti.ForumId, TopicId, -1, ti.Content.AuthorId);
             return ti;
         }
+
         public static void Move(int TopicId, int NewForumId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(TopicId);
@@ -174,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicViewPrefix, ti.ModuleId));
             DataCache.CacheClearPrefix(ti.ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ti.ModuleId));
         }
+
         public static void SaveToForum(int ModuleId, int ForumId, int TopicId, int LastReplyId = -1)
         {
             DataProvider.Instance().Topics_SaveToForum(ForumId, TopicId, LastReplyId);
@@ -184,6 +190,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicViewPrefix, ModuleId));
             DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TopicsViewPrefix, ModuleId));
         }
+
         public static int Save(DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti)
         {
             ti.Content.DateUpdated = DateTime.UtcNow;
@@ -207,6 +214,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return topicId;
         }
+
         public void DeleteById(int TopicId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.TopicInfo ti = base.GetById(TopicId);
@@ -288,10 +296,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         { 
             return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.ApprovedTopicCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
+
         internal static bool QueueUnapprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.ProcessQueueController().Add(ProcessType.UnapprovedTopicCreated, PortalId, tabId: TabId, moduleId: ModuleId, forumGroupId: ForumGroupId, forumId: ForumId, topicId: TopicId, replyId: ReplyId, authorId: AuthorId, requestUrl: HttpContext.Current.Request.Url.ToString());
         }
+
         internal static bool ProcessApprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
             try
@@ -318,6 +328,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return false;
             }
         }
+
         internal static bool ProcessUnapprovedTopicAfterAction(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.SendModerationNotification(PortalId, TabId, ModuleId, ForumGroupId, ForumId, TopicId, ReplyId, AuthorId, RequestUrl);

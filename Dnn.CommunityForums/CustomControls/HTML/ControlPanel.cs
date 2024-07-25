@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ControlPanel
     {
         public int PortalId {get; set;}
+
         public int ModuleId {get; set;}
 
         public ControlPanel(int _portalId, int _moduleId)
@@ -49,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sb.ToString();
         }
+
         public string ForumGroupOptions()
         {
             StringBuilder sb = new StringBuilder();
@@ -77,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sb.ToString();
         }
+
         public string BindRolesForSecurityGrid(string rootPath)
         {
             StringBuilder sb = new StringBuilder();

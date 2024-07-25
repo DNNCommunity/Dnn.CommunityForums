@@ -1,12 +1,15 @@
 ﻿using NUnit.Framework;
 using DotNetNuke.Modules.ActiveForums;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
+
 using Moq;
+
 using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace DotNetNuke.Modules.ActiveForumsTests
@@ -48,6 +51,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
+
         [Test()]
         [TestCase(0, 0, false, ExpectedResult = true)] // flood interval disables
         [TestCase(20, 25, false, ExpectedResult = true)]
@@ -81,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Assert
             Assert.That(actualResult, Is.Empty);
         }
+
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTest()
@@ -93,6 +98,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
+
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTestEmptyTag()
@@ -103,6 +109,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Assert
             Assert.That(actualResult, Is.Empty);
         }
+
         [Test()]
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTest()
@@ -115,6 +122,7 @@ namespace DotNetNuke.Modules.ActiveForumsTests
             //Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
+
         [Test()]
         [TestCase("", ExpectedResult = false)]
         [TestCase("<p>test<p>", ExpectedResult = true)]

@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using DotNetNuke.Security.Permissions;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;

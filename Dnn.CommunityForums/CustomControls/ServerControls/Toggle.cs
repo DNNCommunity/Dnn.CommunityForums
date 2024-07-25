@@ -39,72 +39,85 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _cssClassOff;
         private int _toggleBehavior;
         private bool _isVisible = true;
+
         public int ToggleBehavior
         {
             get
             {
                 return _toggleBehavior;
             }
+
             set
             {
                 _toggleBehavior = value;
             }
         }
+
         public string Key
         {
             get
             {
                 return _key;
             }
+
             set
             {
                 _key = value;
             }
         }
+
         public string ImagePath
         {
             get
             {
                 return _imagePath;
             }
+
             set
             {
                 _imagePath = value;
             }
         }
+
         public string CssClassOn
         {
             get
             {
                 return _cssClassOn;
             }
+
             set
             {
                 _cssClassOn = value;
             }
         }
+
         public string CssClassOff
         {
             get
             {
                 return _cssClassOff;
             }
+
             set
             {
                 _cssClassOff = value;
             }
         }
+
         public bool IsVisible
         {
             get
             {
                 return _isVisible;
             }
+
             set
             {
                 _isVisible = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             if (IsVisible)
@@ -124,34 +137,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             EnableViewState = false;
         }
     }
+
     [ParseChildren(true, ""), ToolboxData("<{0}:toggledisplay runat=server></{0}:toggledisplay>")]
     public class ToggleDisplay : CompositeControl
     {
         private ToggleContent _content;
         private string _key;
         private bool _isVisible = true;
+
         public bool IsVisible
         {
             get
             {
                 return _isVisible;
             }
+
             set
             {
                 _isVisible = value;
             }
         }
+
         public string Key
         {
             get
             {
                 return _key;
             }
+
             set
             {
                 _key = value;
             }
         }
+
         public override System.Web.UI.ControlCollection Controls
         {
             get
@@ -160,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return base.Controls;
             }
         }
+
         protected override void CreateChildControls()
         {
             if (Content != null)
@@ -168,6 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Controls.Add(Content);
             }
         }
+
         [Description("Initial content to render."), DefaultValue(null, ""), Browsable(false), NotifyParentProperty(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
         public ToggleContent Content
         {
@@ -176,6 +197,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 EnsureChildControls();
                 return _content;
             }
+
             set
             {
                 _content = value;
@@ -224,6 +246,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //EnableViewState = False
         }
     }
+
     [ToolboxItem(false)]
     public class ToggleContent : Control
     {

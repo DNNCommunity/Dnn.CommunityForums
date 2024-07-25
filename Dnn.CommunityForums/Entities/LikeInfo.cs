@@ -19,6 +19,7 @@
 //
  
 using DotNetNuke.ComponentModel.DataAnnotations; 
+
 using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
@@ -29,8 +30,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     internal partial class LikeInfo
     {
         public int Id { get; set; }
+
         public int PostId { get; set; }
+
         public int UserId { get; set; }
+
         public bool Checked { get; set; }
     }
 }

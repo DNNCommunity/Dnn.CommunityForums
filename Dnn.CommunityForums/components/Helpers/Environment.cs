@@ -20,6 +20,7 @@
 using System;
 using System.Web.UI;
 using System.Reflection;
+
 using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Modules.ActiveForums

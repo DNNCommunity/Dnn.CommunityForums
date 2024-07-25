@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.LoadEmoticons(ModuleId, ImagePath, Type);
         }
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.EmoticonController.")]
         public string RegisterEmotIcons(int ModuleId, string ImagePath, EditorTypes InsertType)
         {

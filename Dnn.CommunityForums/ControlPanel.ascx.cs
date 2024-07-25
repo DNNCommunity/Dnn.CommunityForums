@@ -21,9 +21,13 @@ using System;
 using System.Collections;
 using System.Web.UI;
 using System.Web;
+
 using DotNetNuke.Web.Client.ClientResourceManagement;
+
 using System.Text;
+
 using DotNetNuke.Framework;
+
 using System.Runtime.InteropServices;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -129,6 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
         }
+
         public void cbShell_Callback(object sender, Controls.CallBackEventArgs e)
         {
             try
@@ -162,6 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         private void cbModal_Callback(object sender, Controls.CallBackEventArgs e)
         {
             switch (e.Parameters[0].ToLowerInvariant())
@@ -179,6 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             plhModal.RenderControl(e.Output);
         }
+
         #endregion
         #region Private Methods
         private void GetControl(string view, string options, bool IsCallback)
@@ -226,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
 
         }
+
         private void LoadModal(string ctrl, string @params = "")
         {
             plhModal.Controls.Clear();

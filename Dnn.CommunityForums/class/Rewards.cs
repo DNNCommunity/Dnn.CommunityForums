@@ -29,11 +29,17 @@ namespace DotNetNuke.Modules.ActiveForums
     public class RewardInfo
     {
         public int RankId { get; set; }
+
         public int PortalId { get; set; }
+
         public int ModuleId { get; set; }
+
         public string RankName { get; set; }
+
         public int MinPosts { get; set; }
+
         public int MaxPosts { get; set; }
+
         public string Display { get; set; }
     }
 #endregion

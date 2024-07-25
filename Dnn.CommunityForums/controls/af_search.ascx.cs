@@ -23,6 +23,7 @@ using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Modules.ActiveForums.Controls;
 
@@ -592,6 +593,7 @@ namespace DotNetNuke.Modules.ActiveForums
         public class Keyword
         {
             public string Value { get; set; }
+
             public string HtmlEncodedValue
             {
                 get { return string.IsNullOrWhiteSpace(Value) ? Value : HttpUtility.HtmlEncode(Value); }

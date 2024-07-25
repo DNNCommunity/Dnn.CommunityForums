@@ -29,32 +29,46 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public int PropertyId {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public int PortalId {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public int ObjectType {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public int ObjectOwnerId {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string Name {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string DataType {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public int DefaultAccessControl {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool IsHidden {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool IsRequired {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public bool IsReadOnly {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string ValidationExpression { get; set; } = string.Empty;
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string EditTemplate { get; set; } = string.Empty;
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string ViewTemplate { get; set; } = string.Empty;
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public int SortOrder {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         public string DefaultValue {get; set; }
     }

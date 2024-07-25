@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class ProfileBase : SettingsBase
     {
         private int _UID = -1;
+
         public UserProfileInfo UserProfile { get; set; }
 
         public int UID

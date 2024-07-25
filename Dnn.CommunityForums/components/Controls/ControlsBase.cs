@@ -34,6 +34,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _templateFile;
         private string _currentView = "forumview";
         private bool _parseTemplate = false;
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public string DisplayTemplate
         {
@@ -54,33 +55,39 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return _template;
             }
+
             set
             {
                 _template = value;
             }
         }
+
         public string CurrentView
         {
             get
             {
                 return _currentView;
             }
+
             set
             {
                 _currentView = value;
             }
         }
+
         public bool ParseTemplateFile
         {
             get
             {
                 return _parseTemplate;
             }
+
             set
             {
                 _parseTemplate = value;
             }
         }
+
         public int DataPageId
         {
             get
@@ -95,6 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         protected override void OnInit(EventArgs e)
         {
             try
@@ -118,6 +126,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 throw;
             }
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             try

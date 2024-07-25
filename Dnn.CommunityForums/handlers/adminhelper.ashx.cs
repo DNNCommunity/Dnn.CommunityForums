@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 
         }
+
         public override void ProcessRequest(HttpContext context)
         {
             AdminRequired = true;
@@ -134,6 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             context.Response.ContentType = "text/plain";
             context.Response.Write(sOut);
         }
+
         private string FilterGet()
         {
             int FilterId = -1;
@@ -153,6 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += "}";
             return sOut;
         }
+
         private void FilterSave()
         {
             DotNetNuke.Modules.ActiveForums.Entities.FilterInfo filter = new DotNetNuke.Modules.ActiveForums.Entities.FilterInfo();
@@ -184,6 +187,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().Update(filter); 
             }
         }
+
         private void FilterDelete()
         {
             int FilterId = -1;
@@ -198,6 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             new DotNetNuke.Modules.ActiveForums.Controllers.FilterController().DeleteById(FilterId);
 
         }
+
         private string GetRank()
         {
             int RankId = -1;
@@ -220,6 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             sOut += "}";
             return sOut;
         }
+
         private void RankSave()
         {
             RewardInfo rank = new RewardInfo();
@@ -249,6 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             RewardController rc = new RewardController();
             rank = rc.Reward_Save(rank);
         }
+
         private void RankDelete()
         {
             int RankId = -1;
@@ -264,6 +271,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             rc.Reward_Delete(PortalId, ModuleId, RankId);
 
         }
+
         private void PropertySave()
         {
 
@@ -298,6 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             fc.Forums_Save(PortalId, fi, false, fi.InheritSettings, fi.InheritSecurity);
 
         }
+
         private string PropertyList()
         {
             return ! (string.IsNullOrEmpty(Params["ObjectOwnerId"].ToString()))
@@ -306,6 +315,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 
         }
+
         private void UpdateSort()
         {
 
@@ -330,6 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
             }
         }
+
         internal void PropertyDelete()
         {
             DotNetNuke.Modules.ActiveForums.Controllers.PropertyController pc = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController();
@@ -348,6 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
 
         }
+
         private string GetLists()
         {
             StringBuilder sb = new StringBuilder();
@@ -372,6 +384,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
             return sOut;
         }
+
         private string LoadView()
         {
             StringBuilder sb = new StringBuilder();

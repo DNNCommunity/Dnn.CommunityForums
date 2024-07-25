@@ -24,6 +24,7 @@ using System.Data;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
+
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -31,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     [Obsolete("Deprecated in Community Forums. Not Used. Use DotNetNuke.Modules.ActiveForums.Controllers.TokenController()")]
     public class TokensController { TokensController() { throw new NotImplementedException(); } }    
 }
+
     namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     public class TokenController
@@ -87,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return null;
             }
         }
+
         internal static string TokenGet(int ModuleId, string group, string TokenName)
         {
             string sOut = string.Empty;

@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+
 using static DotNetNuke.Modules.ActiveForums.Templates;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -56,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 btnDelete.Visible = false;
             }
         }
+
         private void LoadForm(int TemplateId)
         {
 

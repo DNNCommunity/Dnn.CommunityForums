@@ -29,6 +29,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.Providers;
@@ -63,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool _canAnnounce;
 
         public string Spinner { get; set; }
+
         public string EditorClientId { get; set; }
 
         #region Event Handlers
@@ -250,6 +252,7 @@ namespace DotNetNuke.Modules.ActiveForums
             cbPreview.CallbackEvent += cbPreview_Callback;
 
         }
+
         protected void ContactByFaxOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // if someone activates this checkbox send him home :-)
@@ -456,6 +459,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + ctlForm.Template + "</div>";
             }
         }
+
         private void PrepareTopic()
         {
 

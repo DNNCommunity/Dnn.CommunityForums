@@ -21,6 +21,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Modules.ActiveForums.Data;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
@@ -201,6 +202,7 @@ namespace DotNetNuke.Modules.ActiveForums
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
+
         [HttpPost]
         [DnnAuthorize]
         public HttpResponseMessage BanUser(ModerationDTO dto)

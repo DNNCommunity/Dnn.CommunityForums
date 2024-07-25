@@ -32,12 +32,15 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal PropertiesInfo SaveProperty(PropertiesInfo pi) => throw new NotImplementedException();
+
         internal List<PropertiesInfo> ListProperties(int PortalId, int ObjectType, int ObjectOwnerId) => throw new NotImplementedException();
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal void DeleteProperty(int PortalId, int PropertyId) => throw new NotImplementedException();
 
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal PropertiesInfo GetProperty(int PropertyId, int PortalId) => throw new NotImplementedException();
+
         private PropertiesInfo FillObject(IDataRecord dr) => throw new NotImplementedException();
     }
 }

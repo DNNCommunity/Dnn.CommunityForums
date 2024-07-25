@@ -67,12 +67,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _DescImage = "";
         private bool _LoadOnRender = true;
         private string _OnComplete;
+
         public enum Sort : int
         {
             Ascending,
             Descending
         }
+
         public event ItemBoundEventHandler ItemBound;
+
         public delegate void ItemBoundEventHandler(object sender, ItemBoundEventArgs e);
         #endregion
 
@@ -87,6 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _ItemTemplate;
             }
+
             set
             {
                 _ItemTemplate = value;
@@ -103,6 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _HeaderTemplate;
             }
+
             set
             {
                 _HeaderTemplate = value;
@@ -119,6 +124,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _FooterTemplate;
             }
+
             set
             {
                 _FooterTemplate = value;
@@ -182,6 +188,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _PageSize;
             }
+
             set
             {
                 _PageSize = value;
@@ -235,6 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _SelectedStyle = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public bool ShowPager
         {
@@ -321,6 +329,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _DefaultSort;
             }
+
             set
             {
                 _DefaultSort = value;
@@ -335,6 +344,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _DefaultColumn;
             }
+
             set
             {
                 _DefaultColumn = value;
@@ -349,6 +359,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _DefaultParams;
             }
+
             set
             {
                 _DefaultParams = value;
@@ -363,6 +374,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _CssPagerInfo;
             }
+
             set
             {
                 _CssPagerInfo = value;
@@ -377,6 +389,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _CssPagerItem;
             }
+
             set
             {
                 _CssPagerItem = value;
@@ -391,6 +404,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _CssPagerItem2;
             }
+
             set
             {
                 _CssPagerItem2 = value;
@@ -405,6 +419,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _CssPagerCurrentNumber;
             }
+
             set
             {
                 _CssPagerCurrentNumber = value;
@@ -419,6 +434,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _CssPagerNumber;
             }
+
             set
             {
                 _CssPagerNumber = value;
@@ -433,6 +449,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _SpacerImage;
             }
+
             set
             {
                 _SpacerImage = value;
@@ -447,6 +464,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _AscImage;
             }
+
             set
             {
                 _AscImage = value;
@@ -461,17 +479,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _DescImage;
             }
+
             set
             {
                 _DescImage = value;
             }
         }
+
         public string OnComplete
         {
             get
             {
                 return cb.OnCallbackComplete;
             }
+
             set
             {
                 EnsureChildControls();
@@ -502,6 +523,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             cb.CallbackEvent += new Callback.CallbackEventHandler(RaiseCallback);
             ChildControlsCreated = true;
         }
+
         protected override void Render(HtmlTextWriter output)
         {
             try
@@ -583,6 +605,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             lit.Text = HandleText();
             lit.RenderControl(data);
         }
+
         private string HandleText()
         {
             ArrayList order = new ArrayList();
@@ -635,17 +658,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return string.Empty;
             }
         }
+
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
+
         public event CallbackEventHandler Callback;
+
         public void RaiseCallback(object sender, CallBackEventArgs e) // Implements ICallbackEventHandler.RaiseCallback
         {
             OnCallback(e);
         }
+
         protected virtual void OnCallback(CallBackEventArgs e)
         {
             if (Callback != null)
                 Callback(cb, e);
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -663,6 +691,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ItemBoundEventArgs : EventArgs
     {
         public ArrayList Item;
+
         internal ItemBoundEventArgs(ArrayList sParam)
         {
             Item = sParam;
@@ -683,6 +712,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return "";
             }
+
             set
             {
                 this.Controls.Clear();
@@ -690,6 +720,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
     }
+
     public class ActiveGridDesigner : ControlDesigner
     {
 

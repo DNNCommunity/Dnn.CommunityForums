@@ -59,15 +59,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 chkSubscribe.AutoPostBack = true;
             }
         }
+
         private void cbSubscribe_Callback(object sender, Modules.ActiveForums.Controls.CallBackEventArgs e)
         {
             ToggleSubscribe();
             chkSubscribe.RenderControl(e.Output);
         }
+
         private void chkSubscribe_CheckedChanged(object sender, System.EventArgs e)
         {
             ToggleSubscribe();
         }
+
         #endregion
         #region Private Methods
         private void AddToggleScript()
@@ -76,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("function af_toggleSub(){" + cbSubscribe.ClientID + ".Callback();};");
             Page.ClientScript.RegisterClientScriptBlock(Page.GetType(), "afsubscribe", sb.ToString(), true);
         }
+
         private void ToggleSubscribe()
         {
             int iStatus = 0;

@@ -29,39 +29,46 @@ namespace DotNetNuke.Modules.ActiveForums
         private string _PollQuestion = "";
         private string _PollType = "";
         private string _PollOptions = "";
+
         public string PollQuestion
         {
             get
             {
                 return _PollQuestion;
             }
+
             set
             {
                 _PollQuestion = value;
             }
         }
+
         public string PollType
         {
             get
             {
                 return _PollType;
             }
+
             set
             {
                 _PollType = value;
             }
         }
+
         public string PollOptions
         {
             get
             {
                 return _PollOptions;
             }
+
             set
             {
                 _PollOptions = value;
             }
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

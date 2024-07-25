@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System.Collections;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal partial class ForumGroupController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo>
@@ -38,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forumGroup;
         }
+
         public int Groups_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroupInfo, bool isNew)
         {
             if (forumGroupInfo.PermissionsId == -1)
@@ -62,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.ClearSettingsCache(forumGroupInfo.ModuleId);
             return forumGroupInfo.ForumGroupId;
         }
+
         public void Groups_Delete(int forumGroupId, int moduleId)
         {
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumGroupInfo

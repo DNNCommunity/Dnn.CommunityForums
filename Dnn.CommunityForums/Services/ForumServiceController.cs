@@ -28,18 +28,22 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Modules.ActiveForums.Extensions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
+
 using System.Data;
 using System.Web.Script.Serialization;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+
 using DotNetNuke.Modules.ActiveForums.DAL2;
+
 using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -393,9 +397,13 @@ namespace DotNetNuke.Modules.ActiveForums
         public class CreateSplitDTO
         {
             public int OldTopicId { get; set; }
+
             public int NewTopicId { get; set; }
+
             public int NewForumId { get; set; }
+
             public string Subject { get; set; }
+
             public string Replies { get; set; }
         }
 
@@ -454,7 +462,9 @@ namespace DotNetNuke.Modules.ActiveForums
         public class CreateThumbnailDTO
         {
             public int FileId { get; set; }
+
             public int Height { get; set; }
+
             public int Width { get; set; }
         }
 

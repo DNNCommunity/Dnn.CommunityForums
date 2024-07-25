@@ -38,28 +38,33 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private DisplayTemplate _itemTemplate;
         private DisplayTemplate _headerTemplate;
         private DisplayTemplate _footerTemplate;
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         public int Rows
         {
             get
             {
                 return _rows;
             }
+
             set
             {
                 _rows = value;
             }
         }
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public DisplayTemplate ItemTemplate
         {
@@ -67,11 +72,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _itemTemplate;
             }
+
             set
             {
                 _itemTemplate = value;
             }
         }
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public DisplayTemplate HeaderTemplate
         {
@@ -79,11 +86,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _headerTemplate;
             }
+
             set
             {
                 _headerTemplate = value;
             }
         }
+
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public DisplayTemplate FooterTemplate
         {
@@ -91,11 +100,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _footerTemplate;
             }
+
             set
             {
                 _footerTemplate = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             string sHeaderTemplate = string.Empty;

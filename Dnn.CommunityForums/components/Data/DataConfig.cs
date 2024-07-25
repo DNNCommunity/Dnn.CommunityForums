@@ -24,7 +24,9 @@ using System.Collections.Generic;
 using System.Data;
 
 using System.Data.SqlClient;
+
 using Microsoft.ApplicationBlocks.Data;
+
 using System.Configuration;
 
 namespace DotNetNuke.Modules.ActiveForums.Data
@@ -37,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         internal string _databaseOwner;
         internal string dbPrefix;
         private DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
+
 #endregion
 #region Constructors
         public DataConfig()
@@ -56,11 +59,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             }
             dbPrefix = _databaseOwner + _objectQualifier + "activeforums_";
         }
+
 #endregion
         public static object GetNull(object Field)
         {
             return Null.GetNull(Field, DBNull.Value);
         }
+
         public string ObjectQualifier
         {
             get
@@ -73,11 +78,13 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 }
                 return _objectQualifier;
             }
+
             set
             {
 
             }
         }
+
         public string DataBaseOwner
         {
             get
@@ -90,6 +97,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 }
                 return _databaseOwner;
             }
+
             set
             {
 

@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #region Private Members
         private int intGuestCount = 0;
         private int intMemberCount = 0;
+
         #endregion
         #region Event Handlers
         protected override void OnLoad(EventArgs e)

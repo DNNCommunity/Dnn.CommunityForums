@@ -21,6 +21,7 @@
 using System.Reflection;
 using System.Web.UI;
 using System.Xml;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -32,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
     internal static class UpgradeModuleSettings
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeModuleSettings));
+
         internal static void MoveSettings_070011() {
 
             /* at some point around v6, general module settings were moved from the activeforums_settings table to the DNN platform Settings table;
@@ -53,6 +55,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
+
         internal static void MoveSettingsForModuleInstanceToTabModuleInstance(int forumModuleId, int tabModuleId)
         {
             var currSettings = new SettingsInfo {MainSettings = Settings.GeneralSettings(forumModuleId, "GEN")};
@@ -119,6 +122,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
             DataCache.SettingsCacheClear(forumModuleId,string.Format(CacheKeys.MainSettings, forumModuleId));
 
         }
+
         internal static void DeleteObsoleteModuleSettings_080100()
         {
 
@@ -137,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums.Helpers
                 }
             }
         }
+
         internal static void UpgradeSocialGroupForumConfigModuleSettings_080100()
         {
             foreach (DotNetNuke.Abstractions.Portals.IPortalInfo portal in DotNetNuke.Entities.Portals.PortalController.Instance.GetPortals())

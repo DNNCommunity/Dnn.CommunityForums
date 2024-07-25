@@ -42,9 +42,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             View,
             Edit
         }
+
         #endregion
         #region Private Members
         private ProfileModes _profileMode = ProfileModes.View;
+
         #endregion
         #region Public Properties
         public ProfileModes ProfileMode
@@ -53,11 +55,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _profileMode;
             }
+
             set
             {
                 _profileMode = value;
             }
         }
+
         #endregion
         #region Protected Members
         protected PlaceHolder plh = new PlaceHolder();
@@ -124,6 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -263,10 +268,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Response.Redirect(NavigateUrl(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={UID}", $"{ParamKeys.mode}={Modes.edit}" }));
             }
         }
+
         private void btnProfileCancel_Click(object sender, System.EventArgs e)
         {
             GoViewURL();
         }
+
         private void btnProfileSave_Click(object sender, System.EventArgs e)
         {
             if (SaveProfile())
@@ -274,12 +281,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 GoViewURL();
             }
         }
+
         #endregion
         #region Private Methods
         private void GoViewURL()
         {
             Response.Redirect(NavigateUrl(TabId, "", new string[] { $"{ParamKeys.ViewType}={Views.Profile}", $"{ParamKeys.UserId}={UID}" }));
         }
+
         private bool CanEditMode()
         {
             if (!(CurrentUserType == CurrentUserTypes.Anon) && (UID == this.UserId || (CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.Admin || CurrentUserType == CurrentUserTypes.SuperUser)))
@@ -291,6 +300,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return false;
             }
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -371,6 +381,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private bool SaveProfile()
         {
             if (CanEditMode())
@@ -434,6 +445,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return true;
         }
+
         private Control RecursiveFind(Control ctl, string controlId)
         {
             if (ctl.ID == controlId)

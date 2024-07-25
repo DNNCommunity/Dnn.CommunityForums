@@ -27,7 +27,9 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.UI.UserControls;
+
 using System.Net;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -47,44 +49,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _rating;
             }
+
             set
             {
                 _rating = value;
             }
         }
+
         public string RatingCSS
         {
             get
             {
                 return _ratingCSS;
             }
+
             set
             {
                 _ratingCSS = value;
             }
         }
+
         public int TopicId
         {
             get
             {
                 return _topicId;
             }
+
             set
             {
                 _topicId = value;
             }
         }
+
         public int UserId
         {
             get
             {
                 return _userId;
             }
+
             set
             {
                 _userId = value;
             }
         }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -98,6 +108,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             Literal lit = new Literal();

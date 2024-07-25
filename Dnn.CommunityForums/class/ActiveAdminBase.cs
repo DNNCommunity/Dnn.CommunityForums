@@ -23,6 +23,7 @@ using System.Collections;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI;
+
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -40,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
 
         public string Params { get; set; } = string.Empty;
+
         public bool IsCallBack { get; set; }
 
         public string HostURL
@@ -64,15 +66,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Convert.ToString(obj);
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public string GetWarningImage(string ImageId, string WarningMessage)
         {
             return string.Concat("<img id=\"", ImageId, "\" onmouseover=\"showTip(this,'", WarningMessage, "');\" onmouseout=\"hideTip();\" alt=\"", WarningMessage, "\" height=\"16\" width=\"16\" src=\"", Page.ResolveUrl(string.Concat(Globals.ModulePath, "images/warning.gif")), "\" />");
         }
+
         protected string GetSharedResource(string key)
         {
             return Utilities.GetSharedResource(key, true);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Hashtable ActiveSettings
         {
@@ -81,6 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return MainSettings.MainSettings;
             }
         }
+
         public SettingsInfo MainSettings
         {
             get
@@ -88,6 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new SettingsInfo { MainSettings = new ModuleController().GetModule(moduleID: ModuleId).ModuleSettings };
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public DateTime CacheUpdatedTime
         {
@@ -100,12 +107,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return DateTime.UtcNow;
             }
+
             set
             { 
                 DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.CacheUpdate, ModuleId), value);
                 _CacheUpdatedTime = value;
             }
         }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -119,10 +128,12 @@ namespace DotNetNuke.Modules.ActiveForums
             escape = escape.Replace("\"", "\\\"");
             return escape;
         }
+
         public string LocalizeControl(string controlText)
         {
             return Utilities.LocalizeControl(controlText, true);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         protected override void Render(HtmlTextWriter writer)
         {
@@ -133,6 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
             html = LocalizeControl(html);
             writer.Write(html);
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public Controls.ClientTemplate GetLoadingTemplate()
         {
@@ -140,12 +152,14 @@ namespace DotNetNuke.Modules.ActiveForums
             template.Controls.Add(new LiteralControl(string.Concat("<div class=\"amloading\"><div class=\"amload\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div></div>")));
             return template;
         }
+
         public Controls.ClientTemplate GetLoadingTemplateSmall()
         {
             var template = new Controls.ClientTemplate {ID = "LoadingTemplate"};
             template.Controls.Add(new LiteralControl(string.Concat("<div style=\"text-align:center;font-family:Tahoma;font-size:10px;\"><img src=\"", Page.ResolveUrl("~/DesktopModules/ActiveForums/images/spinner.gif"), "\" align=\"absmiddle\" alt=\"Loading\" />Loading...</div>")));
             return template;
         }
+
         public void BindTemplateDropDown(DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
         {
             var tc = new TemplateController();
@@ -155,6 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums
             drp.DataBind();
             drp.Items.Insert(0, new ListItem(DefaultText, DefaultValue));
         }
+
         public string CurrentView
         {
             get
@@ -169,12 +184,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return DefaultView;
             }
+
             set
             {
                 Session[ViewKey] = value;
                 _currentView = value;
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public string ProductEditon
         {

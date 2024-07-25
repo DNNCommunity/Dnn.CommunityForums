@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using Microsoft.ApplicationBlocks.Data;
+
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     public class Common : DataConfig
@@ -31,16 +32,22 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         #region Security
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
         public void SavePermissionSet(int PermissionSetId, string PermissionSet) => SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "Permissions_Save", PermissionSetId, PermissionSet);
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 9.00.00. Not used from at least v4 forward.")]
         public IDataReader GetRoles(int PortalId) => SqlHelper.ExecuteReader(_connectionString, dbPrefix + "Permissions_GetRoles", PortalId);
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetPermSet.")]
         public string GetPermSet(int PermissionsId, string requestedAccess) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().GetPermSet(-1, PermissionsId, requestedAccess);
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.SavePermSet.")]
         public string SavePermSet(int PermissionsId, string requestedAccess, string PermSet) => new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().SavePermSet(-1, PermissionsId, requestedAccess, PermSet);
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CreateAdminPermissions().")]
         public int CreatePermSet(string AdminRoleId) => (new DotNetNuke.Modules.ActiveForums.Controllers.PermissionController().CreateAdminPermissions(AdminRoleId, -1)).PermissionsId;
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForView().")]
         public string CheckForumIdsForView(int ModuleId, string ForumIds, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(ModuleId, ForumIds, UserRoles);
+
         [Obsolete("Deprecated in Community Forums. Scheduled for removal in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum().")]
         public string WhichRolesCanViewForum(int ModuleId, int ForumId, string UserRoles) => DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.WhichRolesCanViewForum(ModuleId, ForumId, UserRoles);
 
@@ -72,18 +79,22 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MyTopicsView", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
+
         public DataSet UI_MostLiked(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostLiked", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
+
         public DataSet UI_MostReplies(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, int timeFrame, string forumIds)
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_MostReplies", portalId, moduleId, userId, rowIndex, maxRows, sort, timeFrame, forumIds);
         }
+
         public DataSet UI_Announcements(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_Announcements", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
         }
+
         public DataSet UI_Unresolved(int portalId, int moduleId, int userId, int rowIndex, int maxRows, string sort, string forumIds)
         {
             return SqlHelper.ExecuteDataset(_connectionString, dbPrefix + "UI_Unresolved", portalId, moduleId, userId, rowIndex, maxRows, sort, forumIds);
@@ -95,18 +106,21 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TagCloud", PortalId, ModuleId, ForumIds, Rows);
         }
+
         #endregion
         #region Tags
         public int Tag_GetIdByName(int PortalId, int ModuleId, string TagName, bool IsCategory)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Tags_GetByName", PortalId, ModuleId, TagName.Replace("-", " ").ToLowerInvariant(), IsCategory));
         }
+
         #endregion
         #region TopMembers
         public IDataReader TopMembers_Get(int PortalId, int Rows)
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopMembers", PortalId, Rows);
         }
+
         #endregion
         #region CustomURLS
         public Dictionary<string, string> GetPrefixes(int PortalId)
@@ -133,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             }
             return dict;
         }
+
         public string GetUrl(int ModuleId, int ForumGroupId, int ForumId, int TopicId, int UserId, int ContentId)
         {
             try
@@ -144,18 +159,22 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return string.Empty;
             }
         }
+
         public IDataReader FindByURL(int PortalId, string URL)
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "FindByURL", PortalId, URL);
         }
+
         public IDataReader URLSearch(int PortalId, string URL)
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "URL_Search", PortalId, URL);
         }
+
         public void ArchiveURL(int PortalId, int ForumGroupId, int ForumId, int TopicId, string URL)
         {
             SqlHelper.ExecuteNonQuery(_connectionString, dbPrefix + "URL_Archive", PortalId, ForumGroupId, ForumId, TopicId, URL);
         }
+
         public bool CheckForumURL(int PortalId, int ModuleId, string VanityName, int ForumId, int ForumGroupId)
         {
             try
@@ -193,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
             return false;
         }
+
         public bool CheckGroupURL(int PortalId, int ModuleId, string VanityName, int ForumGroupId)
         {
             try

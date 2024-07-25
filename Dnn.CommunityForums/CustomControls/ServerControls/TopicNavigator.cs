@@ -35,41 +35,50 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
 
         private DisplayTemplate _itemTemplate;
+
         public DisplayTemplate ItemTemplate
         {
             get
             {
                 return _itemTemplate;
             }
+
             set
             {
                 _itemTemplate = value;
             }
         }
+
         private DisplayTemplate _headerTemplate;
+
         public DisplayTemplate HeaderTemplate
         {
             get
             {
                 return _headerTemplate;
             }
+
             set
             {
                 _headerTemplate = value;
             }
         }
+
         private DisplayTemplate _footerTemplate;
+
         public DisplayTemplate FooterTemplate
         {
             get
             {
                 return _footerTemplate;
             }
+
             set
             {
                 _footerTemplate = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             Controls.TopicViewer tb = new Controls.TopicViewer();

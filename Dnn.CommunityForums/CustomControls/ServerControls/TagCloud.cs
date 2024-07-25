@@ -39,96 +39,115 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _cssTwo = "tagcsstwo";
         private string _cssThree = "tagcssthree";
         private int _TabId = -1;
+
         public int TabId
         {
             get
             {
                 return _TabId;
             }
+
             set
             {
                 _TabId = value;
             }
         }
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         public int ModuleId
         {
             get
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
             }
         }
+
         public string CSSOne
         {
             get
             {
                 return _cssOne;
             }
+
             set
             {
                 _cssOne = value;
             }
         }
+
         public string CSSTwo
         {
             get
             {
                 return _cssTwo;
             }
+
             set
             {
                 _cssTwo = value;
             }
         }
+
         public string CSSThree
         {
             get
             {
                 return _cssThree;
             }
+
             set
             {
                 _cssThree = value;
             }
         }
+
         private string _ForumIds = string.Empty;
+
         public string ForumIds
         {
             get
             {
                 return _ForumIds;
             }
+
             set
             {
                 _ForumIds = value;
             }
         }
+
         private int _TagCount = 15;
+
         public int TagCount
         {
             get
             {
                 return _TagCount;
             }
+
             set
             {
                 _TagCount = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             User forumUser = null;

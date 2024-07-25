@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return "";
             }
+
             set
             {
                 this.Controls.Clear();

@@ -25,7 +25,9 @@ using System.Collections.Generic;
 using System.Data;
 
 using Microsoft.ApplicationBlocks.Data;
+
 using System.Xml;
+
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     public class Topics : DataConfig
@@ -34,10 +36,12 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return Convert.ToInt32(Reply_Save(ri.TopicId, ri.ReplyId, ri.ReplyToId, ri.StatusId, ri.IsApproved, ri.IsDeleted, ri.Content.Subject.Trim(), ri.Content.Body.Trim(), ri.Content.DateCreated, ri.Content.DateUpdated, ri.Content.AuthorId, ri.Content.AuthorName, ri.Content.IPAddress));
         }
+
         public int Reply_Save(int TopicId, int ReplyId, int ReplyToId, int StatusId, bool IsApproved, bool IsDeleted, string Subject, string Body, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "Reply_Save", TopicId, ReplyId, ReplyToId, StatusId, IsApproved, IsDeleted, Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress));
         }
+
         public int TopicIdByUrl(int PortalId, int ModuleId, string URL)
         {
             if (URL.EndsWith("/"))
@@ -46,20 +50,24 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             }
             return Convert.ToInt32(SqlHelper.ExecuteScalar(_connectionString, dbPrefix + "TopicIdByURL", PortalId, ModuleId, URL));
         }
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
         public int Topics_AddRating(int TopicId, int UserID, int Rating, string Comments, string IPAddress)
         {
             return new DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController().Rate(userId: UserID, topicId: TopicId, rating: Rating, IpAddress: IPAddress);
         }
+
         public IDataReader TopicForDisplay(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, int RowIndex, int MaxRows, string Sort)
         {
             IDataReader dr = SqlHelper.ExecuteReader(_connectionString, dbPrefix + "UI_TopicDisplay", PortalId, ModuleId, ForumId, TopicId, UserId, RowIndex, MaxRows, false, Sort);
             return dr;
         }
+
         public IDataReader TopicsList(int PortalId, int PageIndex, int PageSize, string ForumIds, int CategoryId, int TagId)
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "TopicsList", PortalId, PageIndex, PageSize, ForumIds, CategoryId, TagId);
         }
+
         public IDataReader TopicWithReplies(int PortalId, int TopicId, int PageIndex, int PageSize)
         {
             return SqlHelper.ExecuteReader(_connectionString, dbPrefix + "TopicWithReplies", PortalId, TopicId, PageIndex, PageSize);

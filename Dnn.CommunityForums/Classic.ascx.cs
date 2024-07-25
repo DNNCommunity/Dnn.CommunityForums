@@ -23,17 +23,26 @@ using System.Collections.Generic;
 using System.Data;
 
 using System.Web.UI;
+
 using DotNetNuke;
+
 using System.Web;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Web.Client.ClientResourceManagement;
+
 using System.Text;
+
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.UI.Utilities;
+
 using System.Linq;
+
 using DotNetNuke.Entities.Modules;
+
 using System.Reflection;
+
 using DotNetNuke.Services.Localization;
 
 //using DotNetNuke.Framework.JavaScriptLibraries;
@@ -57,6 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -308,6 +318,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -328,6 +339,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         private void SetupPage()
         {
             //register style sheets

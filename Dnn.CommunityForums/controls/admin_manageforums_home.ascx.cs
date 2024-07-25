@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
         }
+
         private void BindForums()
         {
             IDataReader dr = DataProvider.Instance().Forums_List(PortalId, ModuleId, -1, -1, false);
@@ -136,10 +137,12 @@ namespace DotNetNuke.Modules.ActiveForums
             litForums.Text = sb.ToString();
 
         }
+
         private string RenderSpacer(int Height, int Width)
         {
             return "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/spacer.gif") + "\" height=\"" + Height + "\" width=\"" + Width + "\" alt=\"-\" />";
         }
+
         private int GetGroupCount(DataTable dt)
         {
             int i = 0;
@@ -154,6 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return i;
         }
+
         private int GetGroupForumCount(DataTable dt, int GroupId)
         {
             int i = 0;
@@ -168,6 +172,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return i;
 
         }
+
         private string AddSubForums(DataTable dt, DataRow dr)
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -196,6 +201,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return sb.ToString();
         }
+
         private int HasSubForums(int ForumId, DataTable dt)
         {
             int subCount = 0;

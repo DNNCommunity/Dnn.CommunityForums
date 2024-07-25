@@ -29,142 +29,176 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class CategoriesList
     {
         private int _PortalId = -1;
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         private int _ModuleId = -1;
+
         public int ModuleId
         {
             get
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
             }
         }
+
         private int _TabId = -1;
+
         public int TabId
         {
             get
             {
                 return _TabId;
             }
+
             set
             {
                 _TabId = value;
             }
         }
+
         private int _ForumId = -1;
+
         public int ForumId
         {
             get
             {
                 return _ForumId;
             }
+
             set
             {
                 _ForumId = value;
             }
         }
+
         private int _ForumGroupId = -1;
+
         public int ForumGroupId
         {
             get
             {
                 return _ForumGroupId;
             }
+
             set
             {
                 _ForumGroupId = value;
             }
         }
+
         private string _SelectedValues = string.Empty;
+
         public string SelectedValues
         {
             get
             {
                 return _SelectedValues;
             }
+
             set
             {
                 _SelectedValues = value;
             }
         }
+
         private string _Template = string.Empty;
+
         public string Template
         {
             get
             {
                 return _Template;
             }
+
             set
             {
                 _Template = value;
             }
         }
+
         private string _HeaderTemplate = string.Empty;
+
         public string HeaderTemplate
         {
             get
             {
                 return _HeaderTemplate;
             }
+
             set
             {
                 _HeaderTemplate = value;
             }
         }
+
         private string _FooterTemplate = string.Empty;
+
         public string FooterTemplate
         {
             get
             {
                 return _FooterTemplate;
             }
+
             set
             {
                 _FooterTemplate = value;
             }
         }
+
         private int _SelectedCategory = -1;
+
         public int SelectedCategory
         {
             get
             {
                 return _SelectedCategory;
             }
+
             set
             {
                 _SelectedCategory = value;
             }
         }
+
         private string _CSSClass = "afn-category";
+
         public string CSSClass
         {
             get
             {
                 return _CSSClass;
             }
+
             set
             {
                 _CSSClass = value;
             }
         }
+
         public CategoriesList(int PortalId, int ModuleId)
         {
             this.PortalId = PortalId;
             this.ModuleId = ModuleId;
         }
+
         public CategoriesList(int PortalId, int ModuleId, int ForumId, int ForumGroupId)
         {
             this.PortalId = PortalId;
@@ -172,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.ForumId = ForumId;
             this.ForumGroupId = ForumGroupId;
         }
+
         public string RenderView()
         {
             StringBuilder sb = new StringBuilder();
@@ -217,6 +252,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sb.ToString();
         }
+
         public string RenderEdit()
         {
             StringBuilder sb = new StringBuilder();
@@ -247,6 +283,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sb.ToString();
         }
+
         private bool IsSelected(int CategoryId) /* Category is stored in Tag table with 'isCategory' = true */
         {
             if (string.IsNullOrEmpty(SelectedValues))

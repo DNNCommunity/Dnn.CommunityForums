@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using DotNetNuke.Security;
+
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -56,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 //input = input.Replace("""", """""")
                 return input;
             }
+
             public static string FilterScripts(string text)
             {
                 if (string.IsNullOrEmpty(text))
@@ -85,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return text;
             }
+
             public static string RemoveHTML(string sText)
             {
                 if (string.IsNullOrEmpty(sText))

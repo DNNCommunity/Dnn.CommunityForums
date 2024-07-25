@@ -74,6 +74,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return HandleBrackets(sCode);
         }
+
         private static string HandleBrackets(string sCode)
         {
             sCode = sCode.Replace("&#91;", "[");

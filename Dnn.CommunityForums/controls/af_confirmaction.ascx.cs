@@ -132,6 +132,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private void InitializeComponent()
         {
         }
+
         protected System.Web.UI.WebControls.Panel pnlMessage;
 
         //NOTE: The following placeholder declaration is required by the Web Form Designer.

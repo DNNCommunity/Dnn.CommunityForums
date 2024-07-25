@@ -20,6 +20,7 @@
 
 using System;
 using System.Text;
+
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Portals;
 
@@ -56,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Empty;
             }
         }
+
         [Obsolete("Deprecated in Community Forums 09.0.00. Use GetUsersOnline(int portalId, int moduleId, DotNetNuke.Entities.Users.UserInfo user)")]
         public string GetUsersOnline(int portalId, int moduleId, DotNetNuke.Modules.ActiveForums.User user)
         {

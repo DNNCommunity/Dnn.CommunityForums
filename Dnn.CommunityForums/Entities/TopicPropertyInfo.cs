@@ -22,7 +22,9 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class TopicPropertyInfo
     {
         public int PropertyId { get; set; }
+
         public string Name { get; set; }
+
         public string Value { get; set; }
     }
 }

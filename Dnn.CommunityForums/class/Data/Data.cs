@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         internal string databaseOwner;
         internal string databaseObjectPrefix = "activeforums_";
         internal string dbPrefix;
+
 #endregion
 #region Constructors
         public Connection()

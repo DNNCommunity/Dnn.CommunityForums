@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _ControlToValidate;
         private string _ValidationGroup;
         private string _DefaultValue;
+
         #endregion
         #region Properties
         public string Text
@@ -46,44 +47,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _Text;
             }
+
             set
             {
                 _Text = value;
             }
         }
+
         public string ControlToValidate
         {
             get
             {
                 return _ControlToValidate;
             }
+
             set
             {
                 _ControlToValidate = value;
             }
         }
+
         public string ValidationGroup
         {
             get
             {
                 return _ValidationGroup;
             }
+
             set
             {
                 _ValidationGroup = value;
             }
         }
+
         public string DefaultValue
         {
             get
             {
                 return _DefaultValue;
             }
+
             set
             {
                 _DefaultValue = value;
             }
         }
+
         #endregion
         protected override void Render(System.Web.UI.HtmlTextWriter output)
         {
@@ -105,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

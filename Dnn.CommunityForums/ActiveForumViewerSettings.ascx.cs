@@ -19,6 +19,7 @@
 //
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Framework;
+
 using System;
 using System.Data;
 using System.Web.UI.WebControls;
@@ -84,6 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
         public override void UpdateSettings()
         {
             try
@@ -118,6 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
         public void LoadForums()
         {
             
@@ -144,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             drpForumInstance.Items.Insert(0, new ListItem("-- Select a Forum Instance --", "-1"));
         }
+
         public void LoadForumGroups(int ForumModuleID)
         {
             drpForum.Items.Insert(0, new ListItem("-- Select a Group or Forum --", "-1"));
@@ -174,6 +178,7 @@ namespace DotNetNuke.Modules.ActiveForums
             dr.Close();
 
         }
+
         private void BindTemplates(int ForumModuleID)
         {
             string sDefault = Utilities.GetSharedResource("[RESX:Default]", true);
@@ -181,11 +186,13 @@ namespace DotNetNuke.Modules.ActiveForums
             BindTemplateDropDown(ForumModuleID, drpTopicTemplate, Templates.TemplateTypes.TopicView, sDefault, "0");
             BindTemplateDropDown(ForumModuleID, drpForumViewTemplate, Templates.TemplateTypes.ForumView, sDefault, "0");
         }
+
         private void drpForumInstance_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindTemplates(Convert.ToInt32(drpForumInstance.SelectedItem.Value));
             LoadForumGroups(Convert.ToInt32(drpForumInstance.SelectedItem.Value));
         }
+
         public void BindTemplateDropDown(int ForumModuleId, DropDownList drp, Templates.TemplateTypes TemplateType, string DefaultText, string DefaultValue)
         {
             var tc = new TemplateController();

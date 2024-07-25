@@ -27,11 +27,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Xml;
+
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Modules.ActiveForums.Constants;
 using DotNetNuke.Entities.Portals;
+
 using System.Linq;
 using System.Net;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication;
 
@@ -84,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private bool IsSubscribedForum = false;
         private string sGroupURL = string.Empty;
         private string sForumURL = string.Empty;
+
         #endregion
         #region Public Properties
         public string MetaTemplate
@@ -92,51 +96,61 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _metaTemplate;
             }
+
             set
             {
                 _metaTemplate = value;
             }
         }
+
         public string MetaTitle
         {
             get
             {
                 return _metaTitle;
             }
+
             set
             {
                 _metaTitle = value;
             }
         }
+
         public string MetaDescription
         {
             get
             {
                 return _metaDescription;
             }
+
             set
             {
                 _metaDescription = value;
             }
         }
+
         public string MetaKeywords
         {
             get
             {
                 return _metaKeywords;
             }
+
             set
             {
                 _metaKeywords = value;
             }
         }
+
         private string _ForumUrl = string.Empty;
+
         public string ForumUrl
         {
             get
             {
                 return _ForumUrl;
             }
+
             set
             {
                 _ForumUrl = value;
@@ -494,6 +508,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //this.Controls.Add(ctlModal);
             // LoadCallBackScripts()
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -509,6 +524,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private string ParseControls(string Template)
         {
             string MyTheme = MainSettings.Theme;
@@ -678,6 +694,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sOutput;
         }
+
         private string ParseTopics(string Template, DataTable Topics, string Section)
         {
             string sOutput = Template;
@@ -1054,6 +1071,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sOutput;
         }
+
         private void BuildPager()
         {
             if (TopicRowCount > 0)
@@ -1112,6 +1130,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         }
+
         private string GetIcon(int LastTopicRead, int LastReplyRead, int TopicId, int ReplyId, string Icon, bool Pinned = false, bool Locked = false)
         {
             if (Icon != string.Empty)
@@ -1168,6 +1187,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         private string GetBody(string Body, int AuthorId)
         {
             if (bRead || AuthorId == this.UserId)
@@ -1180,6 +1200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         private string GetTopic(int TabID, int ForumID, int PostID, string Subject, string BodyTitle, int UserID, int PostUserID, int Replies, int ForumOwnerID, string sLink)
         {
             string sOut = null;
@@ -1214,6 +1235,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
+
         private string GetSubPages(int TabID, int Replies, int ForumID, int PostID)
         {
             int i = 0;
@@ -1330,6 +1352,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
+
         private string GetRowCSS(int LastTopicRead, int LastReplyRead, int TopicId, int ReplyId, int RowCount)
         {
             bool isRead = false;

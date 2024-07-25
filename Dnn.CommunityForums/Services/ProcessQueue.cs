@@ -19,10 +19,14 @@
 //
 using System;
 using System.Collections.Generic;
+
 using DotNetNuke.Modules.ActiveForums.DAL2;
 using DotNetNuke.Modules.ActiveForums.Data;
+
 using System.Reflection;
+
 using DotNetNuke.Services.Scheduling;
+
 namespace DotNetNuke.Modules.ActiveForums.Services.ProcessQueue
 {
     public class Scheduler : DotNetNuke.Services.Scheduling.SchedulerClient

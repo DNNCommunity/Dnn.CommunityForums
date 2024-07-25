@@ -59,66 +59,111 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region Public Properties
         public int ProfileId { get; set; } = -1;
+
         public int UserID { get; set; } = -1;
+
         public int PortalId { get; set; }
+
         public int ModuleId { get; set; }
+
         public int TopicCount { get; set; }
+
         public int ReplyCount { get; set; }
+
         public int ViewCount { get; set; }
+
         public int AnswerCount { get; set; }
+
         public int RewardPoints { get; set; }
+
         public string UserCaption { get; set; }
+
         public DateTime DateCreated { get; set; }
+
         public DateTime DateUpdated { get; set; }
+
         public DateTime DateLastActivity { get; set; }
+
         public DateTime DateLastPost { get; set; }
+
         public DateTime DateLastReply { get; set; }
+
         public string Signature { get; set; }
+
         public bool SignatureDisabled { get; set; }
+
         public int TrustLevel { get; set; }
+
         public bool AdminWatch { get; set; }
+
         public bool AttachDisabled { get; set; }
+
         public string Avatar { get; set; }
+
         public AvatarTypes AvatarType { get; set; }
+
         public bool AvatarDisabled { get; set; }
 
         public string PrefDefaultSort { get; set; } = "ASC";
 
         public bool PrefDefaultShowReplies { get; set; }
+
         public bool PrefJumpLastPost { get; set; }
+
         public bool PrefTopicSubscribe { get; set; }
+
         public SubscriptionTypes PrefSubscriptionType { get; set; }
 
         public bool PrefUseAjax { get; set; } = true;
 
         public bool PrefBlockAvatars { get; set; }
+
         public bool PrefBlockSignatures { get; set; }
 
         public int PrefPageSize { get; set; } = 20;
 
         public string Yahoo { get; set; }
+
         public string MSN { get; set; }
+
         public string ICQ { get; set; }
+
         public string AOL { get; set; }
+
         public string Occupation { get; set; }
+
         public string Location { get; set; }
+
         public string Interests { get; set; }
+
         public string WebSite { get; set; }
+
         public string Badges { get; set; }
+
         public string Roles { get; set; }
+
         public string FirstName { get; set; }
+
         public string LastName { get; set; }
+
         public string DisplayName { get; set; }
+
         public string Username { get; set; }
+
         public string Email { get; set; }
+
         public bool IsMod { get; set; }
 
         public string Bio { get; set; } = string.Empty;
 
         public bool IsUserOnline { get; set; }
+
         public Hashtable ProfileProperties { get; set; }
+
         public CurrentUserTypes CurrentUserType { get; set; }
+
         public string ForumsAllowed { get; set; }
+
         public string UserForums { get; set; }
         #endregion
 
@@ -134,6 +179,7 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         #region UserProfileController
     }
+
     public class UserProfileController
     {
         public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
@@ -153,6 +199,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return upi;
         }
+
         public void Profiles_Save(UserProfileInfo upi)
         {
             DataProvider.Instance().Profiles_Save(upi.PortalId, upi.ModuleId, upi.UserID, upi.TopicCount, upi.ReplyCount, upi.ViewCount, upi.AnswerCount, upi.RewardPoints, upi.UserCaption, upi.Signature, upi.SignatureDisabled, upi.TrustLevel, upi.AdminWatch, upi.AttachDisabled, upi.Avatar, (int)upi.AvatarType, upi.AvatarDisabled, upi.PrefDefaultSort, upi.PrefDefaultShowReplies, upi.PrefJumpLastPost, upi.PrefTopicSubscribe, (int)upi.PrefSubscriptionType, upi.PrefUseAjax, upi.PrefBlockAvatars, upi.PrefBlockSignatures, upi.PrefPageSize, upi.Yahoo, upi.MSN, upi.ICQ, upi.AOL, upi.Occupation, upi.Location, upi.Interests, upi.WebSite, upi.Badges);
@@ -165,6 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums
             DataCache.CacheClearPrefix(-1, CacheKeys.CachePrefix);
 
         }
+
         public static void Profiles_ClearCache(int ModuleId, int UserId)
         {
             DataCache.SettingsCacheClear(ModuleId, string.Format(CacheKeys.UserProfile, ModuleId, UserId));

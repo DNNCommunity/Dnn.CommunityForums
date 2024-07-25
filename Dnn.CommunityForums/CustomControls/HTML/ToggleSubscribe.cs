@@ -29,14 +29,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ToggleSubscribe
     {
         public int ToggleMode { get; set; } = 0;
+
         public int DisplayMode { get; set; } = 0;
+
         public int ModuleId { get; set; } = -1;
+
         public int ForumId { get; set; } = -1;
+
         public int TopicId { get; set; } = -1;
+
         public bool Checked { get; set; } = false;
+
         public string Text { get; set; } = string.Empty;
+
         public int UserId { get; set; } = -1;
+
         public string ImageURL { get; set; } = string.Empty;
+
         [Obsolete("Deprecated in Community Forums. Removing in 09.00.00. Use ToggleSubscribe(int ModuleId, int ForumId, int TopicId, int ToggleMode)")]
         public ToggleSubscribe(int m, int f, int t)
         {
@@ -54,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.ForumId = ForumId;
             this.TopicId = TopicId; 
         }
+
         //amaf_topicSubscribe
         public string Render()
         {

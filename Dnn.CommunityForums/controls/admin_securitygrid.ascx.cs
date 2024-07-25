@@ -26,6 +26,7 @@ using System.Web.UI.WebControls;
 using System.Text;
 using System.Collections.Specialized;
 using System.Web.UI;
+
 using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -34,9 +35,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         public string imgOn;
         public string imgOff;
+
         public bool ReadOnly { get; set; } = false;
 
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Perms { get; set; }
+
         public int PermissionsId { get; set; } = -1;
 
         protected override void OnInit(EventArgs e)
@@ -61,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             BuildNewGrid(Perms, PermissionsId);
 
         }
+
         private void BindRoles()
         {
             StringBuilder sb = new StringBuilder();
@@ -75,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("</select>");
             litRoles.Text = sb.ToString();
         }
+
         private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security, int permissionsId)
         {
             //Roles
@@ -283,6 +288,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             //litNewGrid.Text = sb.ToString
 
         }
+
         private bool PermValue(int objectType, string objectId, string permSet)
         {
             if (string.IsNullOrEmpty(permSet))
@@ -300,6 +306,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(PortalSettings, s, objectType);
         }
+
         private void cbSecurityToggle_Callback(object sender, CallBackEventArgs e)
         {
             string action = e.Parameters[0].ToString();

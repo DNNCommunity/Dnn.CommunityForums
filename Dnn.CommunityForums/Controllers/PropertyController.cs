@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System;
+
 using DotNetNuke.Modules.ActiveForums.Entities;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -29,13 +30,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal class PropertyController : DotNetNuke.Modules.ActiveForums.Controllers.RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo>
     {
         private IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties { get; set; }
+
         public PropertyController() : base()
         {
         }
+
         public PropertyController(IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties)
         {
             Properties = properties;
         }
+
         internal string ListPropertiesJSON(int PortalId, int ObjectType, int ObjectOwnerId)
         {
             var list = new DotNetNuke.Modules.ActiveForums.Controllers.PropertyController().Find("WHERE PortalId = @0 AND ObjectType = @1 AND ObjectOwnerId = @2", PortalId, ObjectType, ObjectOwnerId);

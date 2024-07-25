@@ -42,50 +42,59 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _pageId;
         private string _params;
         private string _title;
+
         public string NavigateURL
         {
             get
             {
                 return _navigateUrl;
             }
+
             set
             {
                 _navigateUrl = value;
             }
         }
+
         public string EnabledRoles
         {
             get
             {
                 return _enabledRoles;
             }
+
             set
             {
                 _enabledRoles = value;
             }
         }
+
         public string UserRoles
         {
             get
             {
                 return _userRoles;
             }
+
             set
             {
                 _userRoles = value;
             }
         }
+
         public bool AuthRequired
         {
             get
             {
                 return _authRequired;
             }
+
             set
             {
                 _authRequired = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue(""), Localizable(true)]
         public string Text
         {
@@ -93,39 +102,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _text;
             }
+
             set
             {
                 _text = value;
             }
         }
+
         public int PageId
         {
             get
             {
                 return _pageId;
             }
+
             set
             {
                 _pageId = value;
             }
         }
+
         public string Params
         {
             get
             {
                 return _params;
             }
+
             set
             {
                 _params = value;
             }
         }
+
         public string Title
         {
             get
             {
                 return _title;
             }
+
             set
             {
                 _title = value;

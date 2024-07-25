@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Web.Http;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
@@ -29,6 +30,7 @@ using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.UI.UserControls;
 using DotNetNuke.Web.Api;
+
 using static DotNetNuke.Modules.ActiveForums.Handlers.HandlerBase;
 
 namespace DotNetNuke.Modules.ActiveForums.Services.Controllers

@@ -19,6 +19,7 @@
 //
 
 using DotNetNuke.ComponentModel.DataAnnotations;
+
 using System;
 using System.Web.Caching;
 
@@ -31,14 +32,23 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class TagInfo
     {
         public int TagId { get; set; }
+
         public int PortalId { get; set; }
+
         public int ModuleId { get; set; }
+
         public string TagName { get; set; }
+
         public int Clicks { get; set; }
+
         public int Items { get; set; }
+
         public int Priority { get; set; }
+
         public bool IsCategory { get; set; } = false;  /* CategoryInfo is stored as TagInfo, but with IsCategory = true */
+
         public int ForumId { get; set; }
+
         public int ForumGroupId { get; set; }
     }
 }

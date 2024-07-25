@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -28,22 +29,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     internal partial class LikeController : RepositoryControllerBase<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo>
     {
         public LikeController() : base() { }
+
         public bool GetForUser(int userId, int postId)
         {
             return Find("WHERE PostId = @0 AND UserId = @1 AND Checked = 1", postId, userId).Any();
         }
+
         public (int count,bool liked) Get(int userId, int postId)
         {
             return (Count(postId), GetForUser(userId, postId));
         }
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.LikeInfo> GetForPost(int postId)
         {
             return Find("WHERE PostId = @0 AND Checked = 1", postId).ToList();
         }
+
         public int Count(int postId)
         {
             return Count("WHERE PostId = @0 AND Checked = 1", postId);
         }
+
         public int Like(int contentId, int userId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.LikeInfo like = Find("WHERE PostId = @0 AND UserId = @1", contentId, userId).FirstOrDefault();
@@ -67,6 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         }
     }
 }
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController")]
@@ -84,6 +91,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return likes;
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Replace with DotNetNuke.Modules.ActiveForums.Controllers.LikeController.Like()")]
         public new void Like(int contentId, int userId)
         {

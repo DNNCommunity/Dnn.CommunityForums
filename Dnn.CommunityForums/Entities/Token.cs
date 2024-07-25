@@ -27,8 +27,11 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     internal class Token
     {
         internal string Group { get; set; }
+
         internal string TokenTag { get; set; }
+
         internal string TokenReplace { get; set; }
+
         internal string Permissions { get; set; }
     }
 }

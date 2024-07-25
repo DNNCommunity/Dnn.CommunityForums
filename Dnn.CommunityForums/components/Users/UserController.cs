@@ -23,6 +23,7 @@ using System.Data;
 
 using System.Threading;
 using System.Web;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.UI.UserControls;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
         }
+
         public User GetUser(int PortalId, int ModuleId)
         {
             User u = null;
@@ -77,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return new User();
             }
         }
+
         public User DNNGetCurrentUser(int PortalId, int ModuleId)
         {
             DotNetNuke.Entities.Users.UserInfo cu = DotNetNuke.Entities.Users.UserController.Instance.GetCurrentUserInfo();
@@ -95,14 +98,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return u;
         }
+
         private User GetDNNUser(int portalId, int userId) => LoadUser(new DotNetNuke.Entities.Users.UserController().GetUser(portalId, userId));
+
         private User GetDNNUser(int portalId, string userName) => LoadUser(DotNetNuke.Entities.Users.UserController.GetUserByName(portalId, userName));
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use GetDNNUser(int portalId, string userName).")]
         public User GetDNNUser(string userName)
         {
             DotNetNuke.Entities.Users.UserInfo dnnUser = DotNetNuke.Entities.Users.UserController.GetUserByName(DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings().PortalId, userName);
             return LoadUser(dnnUser);
         }
+
         public User GetUser(int PortalId, int ModuleId, int userId)
         {
             User u = GetDNNUser(PortalId, userId);
@@ -121,6 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
+
         public User GetUser(int PortalId, int ModuleId, string userName)
         {
             User u = GetDNNUser(PortalId, userName);
@@ -139,6 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
+
         public User FillProfile(int PortalId, int ModuleId, User u)
         {
             if (u != null && u.UserId > 0)
@@ -147,11 +156,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return u;
         }
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use UserProfileController.Profiles_Get().")]
         public UserProfileInfo Profiles_Get(int PortalId, int ModuleId, int UserId)
         {
             return new UserProfileController().Profiles_Get(PortalId, ModuleId, UserId);
         }
+
         internal User LoadUser(DotNetNuke.Entities.Users.UserInfo dnnUser)
         {
             PortalSettings _portalSettings = DotNetNuke.Modules.ActiveForums.Utilities.GetPortalSettings(dnnUser.PortalID);
@@ -210,6 +221,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             return RoleIds;
         }
+
         public Hashtable GetUserProperties(DotNetNuke.Entities.Users.UserInfo dnnUser)
         {
             Hashtable ht = new Hashtable();

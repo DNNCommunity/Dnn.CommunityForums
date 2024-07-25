@@ -19,6 +19,7 @@
 //
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
+
 using System.Web.Caching;
 
 namespace DotNetNuke.Modules.ActiveForums.Entities
@@ -29,19 +30,33 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class PropertyInfo
     {
         public int PropertyId { get; set; }
+
         public int PortalId { get; set; }
+
         public int ObjectType { get; set; }
+
         public int ObjectOwnerId { get; set; }
+
         public string Name { get; set; }
+
         public string DataType { get; set; }
+
         public int DefaultAccessControl { get; set; }
+
         public bool IsHidden { get; set; }
+
         public bool IsRequired { get; set; }
+
         public bool IsReadOnly { get; set; }
+
         public string ValidationExpression { get; set; } = string.Empty;
+
         public string EditTemplate { get; set; } = string.Empty;
+
         public string ViewTemplate { get; set; } = string.Empty;
+
         public int SortOrder { get; set; }
+
         public string DefaultValue { get; set; }
     }
 }

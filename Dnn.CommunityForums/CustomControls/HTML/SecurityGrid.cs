@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Text;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
 
@@ -31,6 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public DotNetNuke.Entities.Portals.PortalSettings PortalSettings {get; set;}
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public int PortalId
         {
@@ -39,14 +41,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return PortalSettings.PortalId;
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public bool ReadOnly {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public string ImagePath {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public int PermissionsId {get; set; }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public SecurityGrid(DotNetNuke.Entities.Portals.PortalSettings ps, bool isReadOnly, string imgPath, DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo sec, int permId)
         {
@@ -56,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Security = sec;
             PermissionsId = permId;
         }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public string GetNewGrid()
         {
@@ -230,6 +238,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sb.ToString();
 
         }
+
         private string GetSecureObjectList(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo s, int objectType)
         {
             return DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetSecureObjectList(PortalSettings, s, objectType);

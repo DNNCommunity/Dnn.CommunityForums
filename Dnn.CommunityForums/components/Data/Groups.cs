@@ -22,6 +22,7 @@ using System;
 using System.Data;
 
 using Microsoft.ApplicationBlocks.Data;
+
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]

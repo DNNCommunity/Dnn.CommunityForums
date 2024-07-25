@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
+
         public override void DoWork()
         {
             try

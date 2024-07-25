@@ -19,8 +19,10 @@
 //
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Modules.ActiveForums;
+
 using System;
 using System.Web.Caching;
+
 namespace DotNetNuke.Modules.ActiveForums.Entities
 {
     [TableName("activeforums_EmailNotificationQueue")]
@@ -28,12 +30,19 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     public class EmailNotificationQueueInfo
     {
         public long Id { get; set; }
+
         public int PortalId { get; set; }
+
         public int ModuleId { get; set; }
+
         public string EmailFrom { get; set; }
+
         public string EmailTo { get; set; }
+
         public string EmailSubject { get; set; }
+
         public string EmailBody { get; set; }
+
         public DateTime DateCreated { get; set; }
     }
 }

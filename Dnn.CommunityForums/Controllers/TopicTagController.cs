@@ -29,14 +29,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return base.Find("WHERE TopicId = @0", topicId).Where(t => !t.Tag.IsCategory);
         }
+
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicTagInfo> GetForTag(int tagId)
         {
             return base.Find("WHERE TagId = @0", tagId).Where(t => !t.Tag.IsCategory);
         }
+
         public void DeleteForTagId(int tagId)
         {
             base.Delete("WHERE TagId = @0", tagId);
         }
+
         public void DeleteForTopicId(int topicId)
         {
             base.Delete("WHERE TopicId = @0", topicId);

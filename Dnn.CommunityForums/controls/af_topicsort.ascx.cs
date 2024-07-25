@@ -26,6 +26,7 @@ using System.Data;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -34,12 +35,14 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_topicsorter : ForumBase
     {
         private string _defaultSort = "ASC";
+
         public string DefaultSort
         {
             get
             {
                 return _defaultSort;
             }
+
             set
             {
                 _defaultSort = value;

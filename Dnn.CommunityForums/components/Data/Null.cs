@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using System.Reflection;
+
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     public class Null
@@ -35,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return -1;
             }
         }
+
         public static int NullInteger
         {
             get
@@ -42,6 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return -1;
             }
         }
+
         public static byte NullByte
         {
             get
@@ -49,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return 255;
             }
         }
+
         public static float NullSingle
         {
             get
@@ -56,6 +60,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return float.MinValue;
             }
         }
+
         public static double NullDouble
         {
             get
@@ -63,6 +68,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return double.MinValue;
             }
         }
+
         public static decimal NullDecimal
         {
             get
@@ -70,6 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return decimal.MinValue;
             }
         }
+
         public static DateTime NullDate
         {
             get
@@ -77,6 +84,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return DateTime.MinValue;
             }
         }
+
         public static string NullString
         {
             get
@@ -84,6 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return "";
             }
         }
+
         public static bool NullBoolean
         {
             get
@@ -91,6 +100,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 return false;
             }
         }
+
         public static Guid NullGuid
         {
             get

@@ -41,47 +41,58 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _itemTemplate;
             }
+
             set
             {
                 _itemTemplate = value;
             }
         }
+
         private DisplayTemplate _headerTemplate;
+
         public DisplayTemplate HeaderTemplate
         {
             get
             {
                 return _headerTemplate;
             }
+
             set
             {
                 _headerTemplate = value;
             }
         }
+
         private DisplayTemplate _footerTemplate;
+
         public DisplayTemplate FooterTemplate
         {
             get
             {
                 return _footerTemplate;
             }
+
             set
             {
                 _footerTemplate = value;
             }
         }
+
         private bool _MaintainPage = false;
+
         public bool MaintainPage
         {
             get
             {
                 return _MaintainPage;
             }
+
             set
             {
                 _MaintainPage = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             Controls.TopicBrowser tb = new Controls.TopicBrowser();

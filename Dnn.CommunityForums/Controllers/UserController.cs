@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using DotNetNuke.Data;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Log.EventLog;
@@ -34,11 +35,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         private class ContentForUser
         {
             internal int ForumId { get; set; }
+
             internal int TopicId { get; set; }
+
             internal int ReplyId { get; set; }
+
             internal string Subject { get; set; }
+
             internal DateTime DateUpdated { get; set; }
         }
+
         internal static void BanUser(int PortalId, int TabId, int ModuleId, string ModuleTitle, int ForumId, int TopicId, int ReplyId, DotNetNuke.Entities.Users.UserInfo BannedBy, int AuthorId)
         {
             if (AuthorId > -1)

@@ -23,6 +23,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+
 using DotNetNuke.Data;
 using DotNetNuke.Modules.ActiveForums.API;
 using DotNetNuke.Modules.ActiveForums.Data;
@@ -51,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forum;
         }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetForums(int moduleId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.ForumList, moduleId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
@@ -70,6 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forums;
         }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(int forumId, int moduleId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums = DataCache.SettingsCacheRetrieve(moduleId, string.Format(CacheKeys.SubForumList, moduleId, forumId)) as DotNetNuke.Modules.ActiveForums.Entities.ForumCollection;
@@ -88,10 +91,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forums;
         }
+
         public static string GetForumIdsBySocialGroup(int portalId, int moduleId, int socialGroupId)
         {
             return socialGroupId > 0 ? string.Join(";", new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().Find("WHERE SocialGroupId = @0", socialGroupId).Select(f => f.ForumID.ToString()).ToArray()) : string.Empty;
         }
+
         internal static DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forums_Get(int portalId, int moduleId, int forumId, bool useCache, int topicId)
         {
             if (forumId <= 0 && topicId <= 0)
@@ -107,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return forumId <= 0 ? null : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId, moduleId);
         }
+
         public static string GetForumsForUser(string userRoles, int portalId, int moduleId, string permissionType = "CanView", bool strict = false)
         {
             // Setting strict to true enforces the actual permission
@@ -146,6 +152,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return forumIds;
         }
+
         public static string GetForumsHtmlOption(int moduleId, User currentUser)
         {
             var sb = new StringBuilder();
@@ -170,6 +177,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 );
             return sb.ToString();
         }
+
         public XmlDocument GetForumListXML(int PortalId, int ModuleId)
         {
             XmlDocument xDoc = new XmlDocument();
@@ -276,6 +284,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             }
             return xDoc;
         }
+
         public int Forums_Save(int portalId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, bool isNew, bool useGroupFeatures, bool useGroupSecurity)
         {
             var fg = new DotNetNuke.Modules.ActiveForums.Controllers.ForumGroupController().GetById(fi.ForumGroupId, fi.ModuleId);
@@ -325,6 +334,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
             DataCache.ClearSettingsCache(fi.ModuleId);
             return forumId;
         }
+
         public void Forums_Delete(int portalId, int forumId, int moduleId)
         {
             //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
@@ -355,11 +365,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 }
             }
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ForumController.CreateSocialGroupForum (renamed method to be more descriptive).")]
         public static int CreateGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig)
         {
             return CreateSocialGroupForum(portalId, moduleId, socialGroupId, forumGroupId, forumName, forumDescription, isPrivate, forumConfig);
         }
+
         public static int CreateSocialGroupForum(int portalId, int moduleId, int socialGroupId, int forumGroupId, string forumName, string forumDescription, bool isPrivate, string forumConfig)
         {
             var forumId = -1;
@@ -471,10 +483,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return forumId;
         }
+
         public static int Forum_GetByTopicId(int TopicId)
         {
             return new DotNetNuke.Data.SqlDataProvider().ExecuteScalar<int>("activeforums_ForumGetByTopicId", TopicId);
         }
+
         public static DateTime Forum_GetLastReadTopicByUser(int ForumId, int UserId)
         {
             try
@@ -487,6 +501,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return DateTime.MinValue;
             }
         }
+
         internal static bool RecalculateTopicPointers(int forumId)
         {
             try
@@ -500,6 +515,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return false;
             }
         }
+
         internal static bool UpdateForumLastUpdates(int forumId)
         {
             try

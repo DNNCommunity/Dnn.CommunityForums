@@ -19,6 +19,7 @@
 //
 //
 using System;
+
 namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     internal static class UrlController
@@ -61,6 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             return topicUrl;
         }
+
         internal static string BuildForumUrl(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo)
         {
             string url = "/";

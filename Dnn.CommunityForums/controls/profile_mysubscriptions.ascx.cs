@@ -26,6 +26,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Collections;
 using DotNetNuke.Entities.Profile;
 using DotNetNuke.Security;
@@ -38,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class profile_mysubscriptions : ForumBase
     {
         private int UID { get; set; }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -55,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.dgrdForumSubs.RowDataBound += this.OnForumSubsGridRowDataBound;
             this.btnSubscribeAll.Click += btnSubscribeAll_Click;
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -85,6 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 Exceptions.LogException(ex);
             }
         }
+
         private void BindTopicSubs()
         {
             var subscribedTopics = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().SubscribedTopics(PortalId, ForumModuleId, this.UID).OrderBy(s => s.Forum.ForumGroup.SortOrder).ThenBy(s => s.Forum.SortOrder);
@@ -95,11 +99,13 @@ namespace DotNetNuke.Modules.ActiveForums
             dgrdTopicSubs.DataSource = subscribedTopics.ToList();
             dgrdTopicSubs.DataBind();
         }
+
         private void BindForumSubs()
         {
             dgrdForumSubs.DataSource = GetSubscriptions().ToList();
             dgrdForumSubs.DataBind();
         }
+
         private void btnSubscribeAll_Click(object sender, System.EventArgs e)
         {
             GetSubscriptions().Where(s => !s.Subscribed).ForEach(s =>
@@ -108,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             });
             BindForumSubs();
         }
+
         private IEnumerable<Entities.SubscriptionInfo> GetSubscriptions()
         {
             var roles = new UserController().GetUser(PortalId, ForumModuleId, UID).UserRoles;
@@ -131,6 +138,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                       select new DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo((ms?.Id ?? 0), PortalId, ForumModuleId, af.ForumId, 0, 1, this.UID, af.Forum.GroupName, af.Forum.ForumName, string.Empty, af.Forum.LastPostDateTime, (ms != null));
             return mergedSubscriptions;
         }
+
         protected void OnForumSubsGridRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -153,6 +161,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         protected void OnTopicSubsGridRowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -175,11 +184,13 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         protected void ForumSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             dgrdForumSubs.PageIndex = e.NewPageIndex;
             dgrdForumSubs.DataBind();
         }
+
         protected void TopicSubsGridRow_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             dgrdTopicSubs.PageIndex = e.NewPageIndex;

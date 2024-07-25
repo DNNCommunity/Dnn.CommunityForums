@@ -19,8 +19,10 @@
 //
 
 using DotNetNuke.Services.Social.Notifications;
+
 using System.Collections.Generic;
 using System;
+
 using DotNetNuke.Security.Roles;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -36,10 +38,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 NotificationsController.Instance.DeleteNotification(notification.NotificationID);
             }
         }
+
         internal static string BuildNotificationContextKey(int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId)
         {
             return $"{TabId}:{ModuleId}:{ForumId}:{TopicId}:{ReplyId}";
         }
+
         internal static bool SendModerationNotification(int PortalId, int TabId, int ModuleId, int ForumGroupId, int ForumId, int TopicId, int ReplyId, int AuthorId, string RequestUrl)
         {
             try
@@ -95,6 +99,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 return false;
             }
         }
+
         internal static List<DotNetNuke.Entities.Users.UserInfo> GetListOfModerators(int portalId, int moduleId, int forumId)
         {
             var rp = RoleProvider.Instance();
@@ -113,6 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
     }
             return mods;
         }
+
         internal static List<DotNetNuke.Security.Roles.RoleInfo> GetModeratorRoles(int portalId, int moduleId, int forumId)
         {
             var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: forumId, moduleId: moduleId);

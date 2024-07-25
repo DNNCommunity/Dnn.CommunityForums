@@ -24,8 +24,10 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Text.RegularExpressions;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
+
 using System.Reflection;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -77,6 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return _TabId.Value;
             }
         }
+
         private int ModuleId
         {
             get
@@ -90,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return _ModuleId.Value;
             }
         }
+
         private int PortalId
         {
             get

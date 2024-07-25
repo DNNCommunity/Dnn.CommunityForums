@@ -50,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 EnsureChildControls();
                 return _menu ?? (_menu = new MenuContent());
             }
+
             set
             {
                 _menu = value;

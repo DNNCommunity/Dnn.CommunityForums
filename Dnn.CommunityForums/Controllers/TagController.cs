@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             base.Delete("WHERE TagId = @0", tagId);
         }
+
         public void DeleteForTopicId(int topicId)
         {
             base.Delete("WHERE TopicId = @0", topicId);

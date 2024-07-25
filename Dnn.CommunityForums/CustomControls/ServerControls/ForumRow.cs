@@ -43,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _readRoles;
         private string _userRoles;
         private bool _hidden;
+
         public override System.Web.UI.ControlCollection Controls
         {
             get
@@ -51,6 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return base.Controls;
             }
         }
+
         [Description("Initial content to render."), DefaultValue(null, ""), Browsable(false), NotifyParentProperty(true), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
         public ForumRowControl Content
         {
@@ -59,77 +61,91 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 EnsureChildControls();
                 return _rowTemplate;
             }
+
             set
             {
                 _rowTemplate = value;
             }
         }
+
         public int ForumId
         {
             get
             {
                 return _forumId;
             }
+
             set
             {
                 _forumId = value;
             }
         }
+
         public string ForumIcon
         {
             get
             {
                 return _forumIcon;
             }
+
             set
             {
                 _forumIcon = value;
             }
         }
+
         public string ReadRoles
         {
             get
             {
                 return _readRoles;
             }
+
             set
             {
                 _readRoles = value;
             }
         }
+
         public string ViewRoles
         {
             get
             {
                 return _viewRoles;
             }
+
             set
             {
                 _viewRoles = value;
             }
         }
+
         public string UserRoles
         {
             get
             {
                 return _userRoles;
             }
+
             set
             {
                 _userRoles = value;
             }
         }
+
         public bool Hidden
         {
             get
             {
                 return _hidden;
             }
+
             set
             {
                 _hidden = value;
             }
         }
+
         protected override void CreateChildControls()
         {
             if (Content != null)

@@ -47,16 +47,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _tabTextSelCSS = "amTabTextSel";
         private string _contentBackGround = "FFFFFF";
         private LoadTypes _loadType = LoadTypes.Window;
+
         public enum LoadTypes : int
         {
             Window,
             Shell
         }
+
         #region  Constructor
         public ActiveTabs()
         {
             _tabs = new List<Tab>();
         }
+
         #endregion
         [Description("Tabs to render."), NotifyParentProperty(true), MergableProperty(false), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<Tab> Tabs // TabCollection
@@ -69,33 +72,39 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return _tabs;
             }
+
             set
             {
                 _tabs = value;
             }
         }
+
         public string ImagesPath
         {
             get
             {
                 return _imagesPath;
             }
+
             set
             {
                 _imagesPath = value;
             }
         }
+
         public string TargetDiv
         {
             get
             {
                 return _targetDiv;
             }
+
             set
             {
                 _targetDiv = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabDisplayCSS
         {
@@ -103,11 +112,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabDisplayCSS;
             }
+
             set
             {
                 _tabDisplayCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabStripCSS
         {
@@ -115,11 +126,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabStripCSS;
             }
+
             set
             {
                 _tabStripCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabTextCSS
         {
@@ -127,11 +140,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabTextCSS;
             }
+
             set
             {
                 _tabTextCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabTextOverCSS
         {
@@ -139,11 +154,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabTextOverCSS;
             }
+
             set
             {
                 _tabTextOverCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string TabTextSelCSS
         {
@@ -151,11 +168,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabTextSelCSS;
             }
+
             set
             {
                 _tabTextSelCSS = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string ContentBackGround
         {
@@ -163,44 +182,52 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _contentBackGround;
             }
+
             set
             {
                 _contentBackGround = value;
             }
         }
+
         public int SelectedIndex
         {
             get
             {
                 return Convert.ToInt32(((this.ViewState["tabIndex"] == null) ? 0 : this.ViewState["tabIndex"]));
             }
+
             set
             {
                 this.ViewState["tabIndex"] = value;
             }
         }
+
         public string ContentHeight
         {
             get
             {
                 return _contentHeight;
             }
+
             set
             {
                 _contentHeight = value;
             }
         }
+
         public LoadTypes LoadType
         {
             get
             {
                 return _loadType;
             }
+
             set
             {
                 _loadType = value;
             }
         }
+
         public override System.Web.UI.ControlCollection Controls
         {
             get
@@ -209,6 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 return base.Controls;
             }
         }
+
         protected override void Render(System.Web.UI.HtmlTextWriter writer)
         {
             if (Tabs != null && Visible == true)

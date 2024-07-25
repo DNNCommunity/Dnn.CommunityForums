@@ -41,48 +41,60 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _itemTemplate;
             }
+
             set
             {
                 _itemTemplate = value;
             }
         }
+
         private int _PortalId = -1;
+
         public int PortalId
         {
             get
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
             }
         }
+
         private int _ModuleId = -1;
+
         public int ModuleId
         {
             get
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
             }
         }
+
         private int _TabId = -1;
+
         public int TabId
         {
             get
             {
                 return _TabId;
             }
+
             set
             {
                 _TabId = value;
             }
         }
+
         private User forumUser = null;
+
         protected override void Render(HtmlTextWriter writer)
         {
             UserController uc = new UserController();

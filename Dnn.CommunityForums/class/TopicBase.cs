@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 return _TopicId;
             }
+
             set
             {
                 _TopicId = value;

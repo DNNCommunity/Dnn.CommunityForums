@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             BindDashboard();
         }
+
         #endregion
         #region Private Methods
         private void BindDashboard()
@@ -63,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</tr></table></td></tr></table>");
             litQuickLinks.Text = sb.ToString();
         }
+
         private void BindRecentTopics(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -85,6 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</table>");
             litRecentTopics.Text = sb.ToString();
         }
+
         private void BindRecentMembers(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -109,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</table>");
             litRecentMembers.Text = sb.ToString();
         }
+
         private void BindTopForums(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -132,6 +136,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</table>");
             litTopForums.Text = sb.ToString();
         }
+
         private void BindTopMembers(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);
@@ -153,6 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append("</table>");
             litTopMembers.Text = sb.ToString();
         }
+
         private void BindQuickStats(DataTable dt)
         {
             StringBuilder sb = new StringBuilder(1024);

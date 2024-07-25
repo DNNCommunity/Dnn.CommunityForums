@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Empty;
             }
         }
+
         internal static bool AddRoles(int PortalId, int UserId, string Roles)
         {
             try

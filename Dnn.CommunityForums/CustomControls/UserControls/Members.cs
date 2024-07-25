@@ -62,6 +62,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Filter = string.Empty;
             }
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -92,6 +93,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         #endregion
         #region Private Methods
         private void BuildControl()
@@ -140,6 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.Controls.Add(ctl);
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -156,6 +159,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private void BuildPager()
         {
             int intPages = 0;
@@ -181,6 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 Pager1.Params = Params;
             }
         }
+
         private string BuildAlphaList()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -204,6 +209,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             sb.Append("</a></td></tr></table></div>");
             return sb.ToString();
         }
+
         private List<User> GetMemberList()
         {
             List<User> upl = new List<User>();

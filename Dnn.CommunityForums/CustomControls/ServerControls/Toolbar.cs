@@ -64,6 +64,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Controls.Add(ctl);
             }
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -82,6 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private string ParseTemplate()
         {
             string tb = DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, ModuleId, UserId, CurrentUserTypes.Admin)

@@ -67,16 +67,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
 
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
         }
+
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
             // pt.ProcEnd("ForumDisplay")
         }
+
         #endregion
         #region Private Methods
         private void LinkControls(ControlCollection ctrls)
@@ -98,6 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private string ParseTemplate()
         {
             var sb = new StringBuilder();
@@ -162,6 +166,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             return sOut;
         }
+
         private string ParseForumRow(XmlNode fNode, string Template, string GroupName)
         {
             string sForum = Template;
@@ -244,10 +249,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             fc += "</af:forumrow>";
             return fc;
         }
+
         private string GetForumLink(int ForumId, bool CanView)
         {
             return GetForumLink(string.Empty, ForumId, CanView);
         }
+
         private string GetForumLink(string Name, int ForumId, bool CanView)
         {
             string sOut;
@@ -266,6 +273,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return sOut;
         }
+
         #endregion
         #region Public Methods
         private string GetLastPostSubject(int LastPostID, int ParentPostID, int fid, string Subject, int Length)

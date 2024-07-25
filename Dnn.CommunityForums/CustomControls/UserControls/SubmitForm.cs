@@ -25,6 +25,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Modules.ActiveForums.Data;
 
 namespace DotNetNuke.Modules.ActiveForums.Controls
@@ -42,6 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             EditTopic,
             EditReply
         }
+
         #endregion
         #region Private Members
         private string _Subject = string.Empty;
@@ -76,6 +78,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #endregion
         #region Public Properties
         public string Template { get; set; } = string.Empty;
+
         public string AuthorName
         {
             get
@@ -86,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 txtUsername.Text = value;
             }
         }
+
         public string Subject
         {
             get => txtSubject.Text;
@@ -95,7 +99,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 txtSubject.Text = value;
             }
         }
+
         public string TopicSubject { get; set; } = string.Empty;
+
         public string Summary
         {
             get => txtSummary.Text;
@@ -105,6 +111,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 txtSummary.Text = value;
             }
         }
+
         public string Body
         {
             get
@@ -132,15 +139,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 } 
                 return tempBody;
             }
+
             set
             {
                 _Body = value;
             }
         }
+
         public ImageButton PostButton { get; set; } = new ImageButton();
+
         public ImageButton CancelButton { get; set; } = new ImageButton();
+
         public EditorTypes EditorType { get; set; }
+
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo ForumInfo { get; set; }
+
         public string TopicIcon
         {
             get => string.IsNullOrEmpty(afposticons.PostIcon) ? string.Empty : afposticons.PostIcon;
@@ -150,6 +163,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 afposticons.PostIcon = value;
             }
         }
+
         public bool Locked
         {
             get => chkLocked.Checked;
@@ -159,6 +173,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 chkLocked.Checked = value;
             }
         }
+
         public bool Pinned
         {
             get => chkPinned.Checked;
@@ -168,6 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 chkPinned.Checked = value;
             }
         }
+
         public bool IsApproved
         {
             get => chkApproved.Checked;
@@ -177,11 +193,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 chkApproved.Checked = value;
             }
         }
+
         public bool IsAnnounce
         {
             get => chkAnnounce.Checked;
             set => chkAnnounce.Checked = value;
         }
+
         public int TopicPriority
         {
             get => int.Parse(txtTopicPriority.Text);
@@ -192,6 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
         }
+
         public DateTime AnnounceStart
         {/* for announce, only set/get date without time */
             get
@@ -206,12 +225,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return _announceStart;
             }
+
             set
             {
                 _announceStart = value;
                 calStartDate.SelectedDate = value.Date.ToString();
             }
         }
+
         public DateTime AnnounceEnd
         {/* for announce, only want date without time */
             get
@@ -226,12 +247,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return _announceEnd;
             }
+
             set
             {
                 _announceEnd = value;
                 calEndDate.SelectedDate =  Convert.ToDateTime(value).Date.ToString();
             }
         }
+
         public string EditorClientId
         {
             get
@@ -255,11 +278,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 afpolledit.PollQuestion = value;
             }
         }
+
         public bool Subscribe
         {
             get => chkSubscribe.Checked;
             set => chkSubscribe.Checked = value;
         }
+
         public string PollType
         {
             get
@@ -270,6 +295,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 afpolledit.PollType = value;
             }
         }
+
         public string PollOptions
         {
             get
@@ -293,12 +319,19 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 aftopicstatus.Status = value;
             }
         }
+
         public string PostBackScript { get; } = string.Empty;
+
         public int ContentId { get; set; } = -1;
+
         public int AuthorId { get; set; } = -1;
+
         public bool AllowHTML { get; set; }
+
         public bool RequireCaptcha { get; set; } = true;
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo> TopicProperties { get; set; }
+
         #endregion
         #region Protected Controls
         protected TextBox txtSubject = new TextBox();
@@ -345,6 +378,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         // Defines the Click event.
         //
         public event EventHandler BubbleClick;
+
         protected void OnBubbleClick(EventArgs e)
         {
             if (BubbleClick != null)
@@ -717,6 +751,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             template = Utilities.StripTokens(template);
             return template;
         }
+
         private string GetOptions()
         {
             var sb = new StringBuilder();
@@ -781,6 +816,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             return string.Empty;
         }
+
         private void LoadForm()
         {
             AppRelativeVirtualPath = "~/submitform.ascx";
@@ -871,6 +907,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             
 
         }
+
         public void btnPost_Click(object sender, EventArgs e)
         {
 
@@ -928,6 +965,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             OnBubbleClick(e);
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             var stringWriter = new System.IO.StringWriter();
@@ -955,6 +993,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             canSubscribe = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Subscribe, ForumUser.UserRoles);
 
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -1079,6 +1118,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // This field is used to communicate attachment data between af_attach and af_post, etc.
             ctlAttach.AttachmentsClientId = AttachmentsClientId;
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)
@@ -1182,10 +1222,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
         }
+
         private void btnSubmit_Click(object sender, System.EventArgs e)
         {
 
         }
+
         private void insertHTMLScript()
         {
             System.Text.StringBuilder sb = new System.Text.StringBuilder();

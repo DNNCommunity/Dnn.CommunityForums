@@ -23,6 +23,7 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Modules.ActiveForums.Data;
 using Microsoft.ApplicationBlocks.Data;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -30,17 +31,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.Results;
 using System.Web.Profile;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
 using DotNetNuke.Data;
+
 using System.Reflection;
+
 using DotNetNuke.Instrumentation;
+
 using System.Web.UI;
+
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Abstractions.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
+
 using System.Globalization;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -50,6 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ForumsConfig));
 
         public string sPath = DotNetNuke.Modules.ActiveForums.Utilities.MapPath(string.Concat(Globals.ModulePath, "config/defaultsetup.config"));
+
         public bool ForumsInit(int PortalId, int ModuleId)
         {
             try
@@ -81,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         private void LoadSettings(int PortalId, int ModuleId)
         {
             try
@@ -122,6 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
         }
+
         private void LoadTemplates(int PortalId, int ModuleId)
         {
             try
@@ -313,6 +323,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         private void UpdateForumViewTemplateId(int PortalId, int ModuleId)
         {
             try
@@ -327,6 +338,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
         internal void Install_Or_Upgrade_RelocateDefaultThemeToLegacy()
         {
             try
@@ -360,6 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
             }
         }
+
         internal void Install_Or_Upgrade_MoveTemplates()
         {
             if (!System.IO.Directory.Exists(Utilities.MapPath(Globals.TemplatesPath)))
@@ -412,6 +425,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         internal void ArchiveOrphanedAttachments()
         {
             var di = new System.IO.DirectoryInfo(DotNetNuke.Modules.ActiveForums.Utilities.MapPath("~/portals"));
@@ -455,6 +469,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         internal static void FillMissingTopicUrls()
         {
             string connectionString = new Connection().connectionString;
@@ -478,6 +493,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 dr.Close();
             } 
         }
+
         internal static void Install_BanUser_NotificationType_080100()
         {
             string notificationTypeName = Globals.BanUserNotificationType;

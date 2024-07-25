@@ -53,9 +53,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int ModuleId = -1;
         private int PortalId = -1;
         private string _Subject = string.Empty;
+
         #endregion
         #region Public Properties
         public string Subject { get; set; } = string.Empty;
+
         #endregion
         #region Event Handlers
         protected override void OnInit(EventArgs e)
@@ -110,6 +112,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Controls.Add(ctl);
             }
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -167,10 +170,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
         }
+
         private void ambtnSubmit_Click(object sender, System.EventArgs e)
         {
 
         }
+
         #endregion
         #region Private Methods
         private void SaveQuickReply()
@@ -235,10 +240,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(PageId, "", Params), false);
             }
         }
+
         private string ParseTemplate()
         {
             return DisplayTemplate;
         }
+
         private void LinkControls(ControlCollection ctrls)
         {
             foreach (Control ctrl in ctrls)

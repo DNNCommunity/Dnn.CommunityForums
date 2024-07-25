@@ -20,6 +20,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Entities.Urls;
 
 namespace DotNetNuke.Modules.ActiveForums.Controllers
@@ -30,6 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
         {
             return base.Find("WHERE TopicId = @0", topicId).Where(t => t.Tag.IsCategory);
         }
+
         public IEnumerable<DotNetNuke.Modules.ActiveForums.Entities.TopicCategoryInfo> GetForTag(int tagId)
         {
             return base.Find("WHERE TagId = @0", tagId).Where(t => t.Tag.IsCategory);

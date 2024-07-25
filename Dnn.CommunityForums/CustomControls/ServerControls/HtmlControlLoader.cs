@@ -34,10 +34,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class HtmlControlLoader : Control
     {
         public string ControlId {get; set;}
+
         public string Height {get; set;}
+
         public string Width {get; set;}
+
         public string Name {get; set;}
+
         public string FilePath {get; set;}
+
         protected override void Render(HtmlTextWriter writer)
         {
             this.EnableViewState = false;

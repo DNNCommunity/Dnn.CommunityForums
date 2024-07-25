@@ -30,12 +30,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private List<Tab> _contents = new List<Tab>();
         private int _count;
         private Tab _tab;
+
         public Tab Tab
         {
             get
             {
                 return _tab;
             }
+
             set
             {
                 _tab = value;
@@ -160,6 +162,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return (Tab)(_contents[index]);
             }
+
             set
             {
                 _contents[index] = value;
@@ -189,6 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return _contents.GetEnumerator();
         }
     }
+
     public class TabEnum : IEnumerator<Tab>
     {
 

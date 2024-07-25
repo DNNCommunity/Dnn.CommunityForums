@@ -19,7 +19,9 @@
 //
 using System;
 using System.Collections.Generic;
+
 using DotNetNuke.Services.Scheduling;
+
 namespace DotNetNuke.Modules.ActiveForums.Queue
 {
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Use DotNetNuke.Modules.ActiveForums.Entities.Message.")]
@@ -28,19 +30,23 @@ namespace DotNetNuke.Modules.ActiveForums.Queue
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Not used.")]
         public bool SendMail() => throw new NotImplementedException();
     }
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
     public class Controller 
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
         public static void Add(string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc) => throw new NotImplementedException();
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Controllers.MailQueue().")]
         public static void Add(int portalId, string emailFrom, string emailTo, string emailSubject, string emailBody, string emailBodyPlainText, string emailCC, string emailBcc) => throw new NotImplementedException();
     }
+
     [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
     public class Scheduler : DotNetNuke.Modules.ActiveForums.Services.EmailNotificationQueue.Scheduler
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
         public Scheduler(ScheduleHistoryItem objScheduleHistoryItem) : base(objScheduleHistoryItem) { }
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in v9.0.0.0. Using DotNetNuke.Modules.ActiveForums.Services.MailQueue.Scheduler().")]
         public override void DoWork() => base.DoWork();
     }

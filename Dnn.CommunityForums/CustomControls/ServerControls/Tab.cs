@@ -38,39 +38,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _text;
             }
+
             set
             {
                 _text = value;
             }
         }
+
         public string CSSClass
         {
             get
             {
                 return _CSSClass;
             }
+
             set
             {
                 _CSSClass = value;
             }
         }
+
         public string OnClientClick
         {
             get
             {
                 return _onClick;
             }
+
             set
             {
                 _onClick = value;
             }
         }
+
         public string ControlKey
         {
             get
             {
                 return _controlKey;
             }
+
             set
             {
                 _controlKey = value;
@@ -83,6 +90,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _tabContent;
             }
+
             set
             {
                 _tabContent = value;
@@ -90,6 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         }
 
     }
+
     public class TabContent : System.Web.UI.Control
     {
     }

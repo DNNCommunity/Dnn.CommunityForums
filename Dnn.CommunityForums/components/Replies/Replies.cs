@@ -24,21 +24,28 @@ namespace DotNetNuke.Modules.ActiveForums
 {
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo.")]
     public class ReplyInfo : DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo { }
+
     [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
     public class ReplyController 
     {
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public void Reply_Delete(int PortalId, int ForumId, int TopicId, int ReplyId, int DelBehavior) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Delete(PortalId, ForumId, TopicId, ReplyId, DelBehavior);
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public int Reply_QuickCreate(int PortalId, int ModuleId, int ForumId, int TopicId, int ReplyToId, string Subject, string Body, int UserId, string DisplayName, bool IsApproved, string IPAddress) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_QuickCreate(PortalId, ModuleId, ForumId, TopicId, ReplyToId, Subject, Body, UserId, DisplayName, IsApproved, IPAddress);
+
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Use ReplyController.Reply_Save(int PortalId, int ModuleId, ReplyInfo ri)")]
         public int Reply_Save(int PortalId, ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId, -1, ri);
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public int Reply_Save(int PortalId, int ModuleId, DotNetNuke.Modules.ActiveForums.ReplyInfo ri) => new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(PortalId,ModuleId, ri);
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public DotNetNuke.Modules.ActiveForums.ReplyInfo Reply_Get(int PortalId, int ModuleId, int TopicId, int ReplyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().GetById(ReplyId);
+
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ReplyController()")]
         public DotNetNuke.Modules.ActiveForums.ReplyInfo ApproveReply(int PortalId, int TabId, int ModuleId, int ForumId, int TopicId, int ReplyId) => (DotNetNuke.Modules.ActiveForums.ReplyInfo)new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(PortalId,TabId,ModuleId,ForumId,TopicId, ReplyId);
+
         [Obsolete("Deprecated in Community Forums. Moved to Utilities and changed to internal in 10.00.00.")]
         public void UpdateModuleLastContentModifiedOnDate(int ModuleId) => Utilities.UpdateModuleLastContentModifiedOnDate(ModuleId);
     }

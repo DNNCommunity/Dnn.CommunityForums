@@ -20,6 +20,7 @@
 using System;
 using System.ComponentModel;
 using System.Web.UI;
+
 namespace DotNetNuke.Modules.ActiveForums.Controls
 {
     [CLSCompliant(false), DefaultProperty("Text"), ToolboxData("<{0}:ImageButton runat=server></{0}:ImageButton>")]
@@ -37,6 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
                 return Convert.ToString(o);
             }
+
             set
             {
                 ViewState["Text"] = value;
@@ -73,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _imageAlign = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string HSpace
         {
@@ -86,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _hSpace = Convert.ToInt32(value);
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string VSpace
         {
@@ -99,6 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _vSpace = Convert.ToInt32(value);
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public bool PostBack
         {
@@ -166,6 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _imageLocation = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string ObjectId
         {
@@ -179,6 +185,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 _objectId = value;
             }
         }
+
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string PostBackScript
         {
@@ -200,6 +207,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (Click != null)
                 Click(this, e);
         }
+
         public void RaisePostBackEvent(string eventArgument)
         {
             OnClick(new EventArgs());

@@ -37,39 +37,46 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private int _forumId = -1;
         private int _topicId = -1;
         protected DropDownList drpSort;
+
         public string DefaultSort
         {
             get
             {
                 return _defaultSort;
             }
+
             set
             {
                 _defaultSort = value;
             }
         }
+
         public int ForumId
         {
             get
             {
                 return _forumId;
             }
+
             set
             {
                 _forumId = value;
             }
         }
+
         public int TopicId
         {
             get
             {
                 return _topicId;
             }
+
             set
             {
                 _topicId = value;
             }
         }
+
         protected override void Render(HtmlTextWriter writer)
         {
             drpSort.RenderControl(writer);

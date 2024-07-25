@@ -18,6 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 using System;
+
 using DotNetNuke.Framework;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 

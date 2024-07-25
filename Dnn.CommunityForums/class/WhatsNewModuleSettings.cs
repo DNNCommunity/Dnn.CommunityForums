@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -53,16 +54,27 @@ namespace DotNetNuke.Modules.ActiveForums
         public const string DefaultFormat = "<div style=\"padding-bottom:5px;\" class=\"Normal\">[SUBJECTLINK]</div>";
 
         public int Rows { get; set; }
+
         public string Forums { get; set; }
+
         public bool RSSEnabled { get; set; }
+
         public bool RSSIgnoreSecurity { get; set; }
+
         public bool RSSIncludeBody { get; set; }
+
         public int RSSCacheTimeout { get; set; }
+
         public bool TopicsOnly { get; set; }
+
         public bool RandomOrder { get; set; }
+
         public string Tags { get; set; }
+
         public string Header { get; set; }
+
         public string Footer { get; set; }
+
         public string Format { get; set; }
 
         public bool Save(ModuleController moduleController, int moduleId)

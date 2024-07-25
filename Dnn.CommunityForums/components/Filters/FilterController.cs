@@ -45,11 +45,13 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             return (DotNetNuke.Modules.ActiveForums.FilterInfo)filterController.GetById(filter.FilterId);
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.Delete()")]
         public void Filter_Delete(int PortalId, int ModuleId, int FilterId)
         {
             filterController.DeleteById(FilterId);
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.FilterController.GetById()")]
         public DotNetNuke.Modules.ActiveForums.FilterInfo Filter_Get(int PortalId, int ModuleID, int FilterId)
         {

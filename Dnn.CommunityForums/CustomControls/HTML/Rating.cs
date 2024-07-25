@@ -29,10 +29,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class Ratings
     {
         public int ModuleId { get; set; } = -1;
+
         public int ForumId { get; set; } = -1;
+
         public int TopicId { get; set; } = -1; 
+
         public bool Enabled { get; set; } = false;
+
         public int Rating { get; set; } = -1;
+
         public Ratings(int m, int f, int t, bool enable, int r)
         {
             ModuleId = m;
@@ -41,6 +46,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Enabled = enable;
             Rating = r;
         }
+
         public string Render()
         {
             StringBuilder sb = new StringBuilder();

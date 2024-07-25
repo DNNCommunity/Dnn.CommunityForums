@@ -22,6 +22,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Xml;
+
 namespace DotNetNuke.Modules.ActiveForums
 {
     public static class ConfigUtils
@@ -32,6 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private const string _attribute_name = "name";
         private const string _attribute_type = "type";
         private const string _attribute_precondition = "preCondition";
+
         public static bool IsRewriterInstalled(string configPath)
         {
             bool isInstalled = false;
@@ -73,6 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return isInstalled;
 
         }
+
         public static bool InstallRewriter(string configPath)
         {
             if (IsRewriterInstalled(configPath))
@@ -111,6 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return false;
             }
         }
+
         public static bool UninstallRewriter(string configPath)
         {
             if (!IsRewriterInstalled(configPath))

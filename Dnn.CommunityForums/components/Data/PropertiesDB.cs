@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Data;
 
 using Microsoft.ApplicationBlocks.Data;
+
 namespace DotNetNuke.Modules.ActiveForums.Data
 {
     [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
@@ -34,19 +35,23 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             return (IDataReader)(SqlHelper.ExecuteReader(connectionString, dbPrefix + "Properties_List", PortalId, ObjectType, ObjectOwnerId));
         }
+
         internal IDataReader GetProperties(int PropertyId, int PortalId)
         {
             return (IDataReader)(SqlHelper.ExecuteReader(connectionString, dbPrefix + "Properties_Get", PropertyId, PortalId));
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal int SaveProperty(int PropertyId, int PortalId, int ObjectType, int ObjectOwnerId, string Name, string DataType, int DefaultAccessControl, bool IsHidden, bool IsRequired, bool IsReadOnly, string ValidationExpression, string EditTemplate, string ViewTemplate, int SortOrder, string DefaultValue)
         {
             return Convert.ToInt32(SqlHelper.ExecuteScalar(connectionString, dbPrefix + "Properties_Save", PropertyId, PortalId, ObjectType, ObjectOwnerId, Name, DataType, DefaultAccessControl, IsHidden, IsRequired, ValidationExpression, EditTemplate, ViewTemplate, IsReadOnly, SortOrder, DefaultValue));
         }
+
         internal void SortRebuild(int PortalId, int ObjectType, int ObjectOwnerId)
         {
             SqlHelper.ExecuteNonQuery(connectionString, dbPrefix + "Properties_RebuildSort", PortalId, ObjectType, ObjectOwnerId);
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. No longer used.")]
         internal void DeleteProperty(int PortalId, int PropertyId)
         {

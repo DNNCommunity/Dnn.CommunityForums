@@ -40,89 +40,105 @@ namespace DotNetNuke.Modules.ActiveForums
         private DateTime _dateUpdated;
         private DateTime _dateCreated;
         private string _userForums = string.Empty;
+
         public string FirstName
         {
             get
             {
                 return _firstName;
             }
+
             set
             {
                 _firstName = value;
             }
         }
+
         public string LastName
         {
             get
             {
                 return _lastName;
             }
+
             set
             {
                 _lastName = value;
             }
         }
+
         public string DisplayName
         {
             get
             {
                 return _displayName;
             }
+
             set
             {
                 _displayName = value;
             }
         }
+
         public string Email
         {
             get
             {
                 return _email;
             }
+
             set
             {
                 _email = value;
             }
         }
+
         public DateTime DateCreated
         {
             get
             {
                 return _dateCreated;
             }
+
             set
             {
                 _dateCreated = value;
             }
         }
+
         public DateTime DateUpdated
         {
             get
             {
                 return _dateUpdated;
             }
+
             set
             {
                 _dateUpdated = value;
             }
         }
+
         public bool IsAdmin
         {
             get
             {
                 return _isAdmin;
             }
+
             set
             {
                 _isAdmin = value;
             }
         }
+
         public bool IsSuperUser
         {
             get
             {
                 return _isSuperUser;
             }
+
             set
             {
                 _isSuperUser = value;
@@ -135,6 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _profile;
             }
+
             set
             {
                 _profile = value;
@@ -147,6 +164,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _properties;
             }
+
             set
             {
                 _properties = value;
@@ -159,17 +177,20 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _userId;
             }
+
             set
             {
                 _userId = value;
             }
         }
+
         public string UserName
         {
             get
             {
                 return _userName;
             }
+
             set
             {
                 _userName = value;
@@ -182,11 +203,13 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _userRoles;
             }
+
             set
             {
                 _userRoles = value;
             }
         }
+
         public bool PrefBlockSignatures
         {
             get
@@ -194,6 +217,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Profile.PrefBlockSignatures;
             }
         }
+
         public bool PrefBlockAvatars
         {
             get
@@ -201,6 +225,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Profile.PrefBlockAvatars;
             }
         }
+
         public int PostCount
         {
             get
@@ -208,6 +233,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Profile.PostCount;
             }
         }
+
         public int TrustLevel
         {
             get
@@ -215,6 +241,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Profile.TrustLevel;
             }
         }
+
         public bool PrefTopicSubscribe
         {
             get
@@ -222,6 +249,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Profile.PrefTopicSubscribe;
             }
         }
+
         public CurrentUserTypes CurrentUserType
         {
             get
@@ -229,17 +257,20 @@ namespace DotNetNuke.Modules.ActiveForums
                 return Profile.CurrentUserType;
             }
         }
+
         public string UserForums
         {
             get
             {
                 return _userForums;
             }
+
             set
             {
                 _userForums = value;
             }
         }
+
         public User()
         {
             _userId = -1;

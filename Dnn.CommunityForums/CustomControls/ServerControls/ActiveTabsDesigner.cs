@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             base.Initialize(component);
         }
+
         public override string GetDesignTimeHtml()
         {
             //Return MyBase.GetDesignTimeHtml()

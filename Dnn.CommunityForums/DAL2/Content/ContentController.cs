@@ -1,4 +1,5 @@
 ﻿using DotNetNuke.Data;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace DotNetNuke.Modules.ActiveForums.DAL2
         public ContentController()
         {
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.ContentController.")]
         public Content Get(int contentId)
         {

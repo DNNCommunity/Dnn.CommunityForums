@@ -107,6 +107,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             }
         }
+
         private void BindGroups()
         {
             drpForums.Items.Add(new ListItem(Utilities.GetSharedResource("DropDownSelect"), "-1"));
@@ -130,12 +131,14 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
         }
+
         private void agCategories_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
         {
             //e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
             //e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
             e.Item[6] = "<img src=\"" + Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
+
         private DotNetNuke.Modules.ActiveForums.Entities.ForumCollection GetSubForums(DotNetNuke.Modules.ActiveForums.Entities.ForumCollection forums, int forumId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumCollection subforums = null;

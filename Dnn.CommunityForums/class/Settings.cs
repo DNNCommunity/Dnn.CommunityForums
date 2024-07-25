@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections;
+
 using DotNetNuke.Entities.Profile;
 
 namespace DotNetNuke.Modules.ActiveForums
@@ -94,6 +95,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetString(SettingKeys.TimeFormatString, "h:mm tt"); }
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public int TimeZoneOffset
         {
@@ -158,6 +160,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.IsNullOrWhiteSpace(result) ? "_legacy" : result; 
             }
         }
+
         public string ThemeLocation
         {
             get
@@ -165,6 +168,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Concat(Globals.ThemesPath, "/", Theme, "/");
             }
         }
+
         public string TemplatePath
         {
             get
@@ -172,6 +176,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return ThemeLocation + "templates/";
             }
         }
+
         public bool FullText
         {
             get { return MainSettings.GetBoolean(SettingKeys.FullText); }
@@ -181,8 +186,10 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetString(SettingKeys.AllowSubTypes, string.Empty); }
         }
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Not Used.")]
         public bool MailQueue => true;
+
         public bool CacheTemplates
         {
             get { return MainSettings.GetBoolean(SettingKeys.CacheTemplates, defaultValue: true); }
@@ -215,6 +222,7 @@ namespace DotNetNuke.Modules.ActiveForums
                            : ProfileVisibilities.Disabled;
             }
         }
+
         public bool UseShortUrls
         {
             get { return MainSettings.GetBoolean(SettingKeys.UseShortUrls); }
@@ -229,6 +237,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableAutoLink, true); }
         }
+
         public bool URLRewriteEnabled
         {
             get { return MainSettings.GetBoolean(SettingKeys.EnableURLRewriter); }

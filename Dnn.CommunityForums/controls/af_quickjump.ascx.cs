@@ -30,9 +30,12 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_quickjump : ForumBase
     {
         protected DropDownList drpForums = new DropDownList();
+
         [Obsolete("Deprecated in Community Forums. Removed in 10.00.00. Use Forums property.")]
         public DataTable dtForums { get; set; } = null;
+
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> Forums { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -55,6 +58,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
         private void BindForums()
         {
             #region "backward compatibilty - remove when removing dtForums property" 

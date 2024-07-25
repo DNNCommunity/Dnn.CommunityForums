@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private string _profileLink;
         private string _membersLink;
         private string _adminRoles;
+
 #endregion
 #region Public Properties
         public string AdminRoles
@@ -49,6 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _adminRoles;
             }
+
             set
             {
                 _adminRoles = value;
@@ -61,6 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _appPath;
             }
+
             set
             {
                 _appPath = value;
@@ -73,6 +76,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _contentId;
             }
+
             set
             {
                 _contentId = value;
@@ -85,6 +89,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _defaultViewRoles;
             }
+
             set
             {
                 _defaultViewRoles = value;
@@ -97,6 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _forumId;
             }
+
             set
             {
                 _forumId = value;
@@ -109,6 +115,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _ModuleId;
             }
+
             set
             {
                 _ModuleId = value;
@@ -121,6 +128,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _membersLink;
             }
+
             set
             {
                 _membersLink = value;
@@ -133,6 +141,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _pageId;
             }
+
             set
             {
                 _pageId = value;
@@ -145,6 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _profileLink;
             }
+
             set
             {
                 _profileLink = value;
@@ -157,6 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _PortalId;
             }
+
             set
             {
                 _PortalId = value;
@@ -169,6 +180,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _templatePath;
             }
+
             set
             {
                 _templatePath = value;
@@ -181,6 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _themePath;
             }
+
             set
             {
                 _themePath = value;
@@ -193,6 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _topicId;
             }
+
             set
             {
                 _topicId = value;
@@ -205,6 +219,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 return _user;
             }
+
             set
             {
                 _user = value;

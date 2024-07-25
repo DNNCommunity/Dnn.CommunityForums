@@ -37,6 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string _message;
         private string _header;
         private string _returnUrl;
+
 #endregion
 #region Public Properties
         public string Message
@@ -45,33 +46,39 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 return _message;
             }
+
             set
             {
                 _message = value;
             }
         }
+
         public string Header
         {
             get
             {
                 return _header;
             }
+
             set
             {
                 _header = value;
             }
         }
+
         public string ReturnUrl
         {
             get
             {
                 return _returnUrl;
             }
+
             set
             {
                 _returnUrl = value;
             }
         }
+
 #endregion
 #region Protected Methods
         protected override void RenderContents(HtmlTextWriter writer)
