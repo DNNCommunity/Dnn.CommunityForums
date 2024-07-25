@@ -36,8 +36,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumView runat=server></{0}:ForumView>")]
     public class ForumView : ForumBase
     {
-        private string ForumURL = string.Empty;
-        private string ForumPageTitle = string.Empty;
+        private string forumURL = string.Empty;
+        private string forumPageTitle = string.Empty;
 
         public bool SubsOnly { get; set; }
 
@@ -443,9 +443,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             var ctlUtils = new ControlUtils();
-            this.ForumURL = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, -1, string.Empty, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
+            this.forumURL = ctlUtils.BuildUrl(this.TabId, this.ForumModuleId, fi.ForumGroup.PrefixURL, fi.PrefixURL, fi.ForumGroupId, fi.ForumID, -1, string.Empty, -1, -1, string.Empty, 1, -1, this.SocialGroupId);
 
-            Template = Template.Replace("[FORUMNAME]", this.GetForumLink(fi.ForumName, fi.ForumID, this.TabId, canView, this.ForumURL));
+            Template = Template.Replace("[FORUMNAME]", this.GetForumLink(fi.ForumName, fi.ForumID, this.TabId, canView, this.forumURL));
             Template = Template.Replace("[FORUMNAMENOLINK]", fi.ForumName);
             Template = Template.Replace("[FORUMID]", fi.ForumID.ToString());
             if (Template.Contains("[RSSLINK]"))
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            Template = canRead ? Template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + fi.ForumName + "','" + this.ForumURL + "');\"><img src=\"" + this.ThemePath + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>") : Template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
+            Template = canRead ? Template.Replace("[AF:CONTROL:ADDFAVORITE]", "<a href=\"javascript:afAddBookmark('" + fi.ForumName + "','" + this.forumURL + "');\"><img src=\"" + this.ThemePath + "images/favorites16_add.png\" border=\"0\" alt=\"[RESX:AddToFavorites]\" /></a>") : Template.Replace("[AF:CONTROL:ADDFAVORITE]", string.Empty);
             if (Template.Contains("[AF:CONTROL:ADDTHIS"))
             {
                 int inStart = Template.IndexOf("[AF:CONTROL:ADDTHIS", 0) + 1 + 19;

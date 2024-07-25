@@ -34,20 +34,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class af_rss : DotNetNuke.Framework.PageBase
     {
-        protected System.Web.UI.WebControls.Label XML;
+        protected System.Web.UI.WebControls.Label xML;
         private double dblCacheTimeOut = 15;
-        private int ModuleID = -1;
+        private int moduleID = -1;
 
         private DataRow drForum;
         private DataRow drSecurity;
         private DataTable dtTopics;
         private bool bView = false;
         private bool bRead = false;
-        private string ForumName;
-        private string ForumDescription;
-        private string GroupName;
+        private string forumName;
+        private string forumDescription;
+        private string groupName;
         private bool bAllowRSS = false;
-        private DateTime LastBuildDate = DateTime.MinValue;
+        private DateTime lastBuildDate = DateTime.MinValue;
         private int offSet = 0;
 
         protected override void OnLoad(EventArgs e)
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 if (SimulateIsNumeric.IsNumeric(this.Request.QueryString["moduleid"]))
                 {
-                    this.ModuleID = Convert.ToInt32(this.Request.QueryString["moduleid"]);
+                    this.moduleID = Convert.ToInt32(this.Request.QueryString["moduleid"]);
                 }
             }
 
@@ -98,9 +98,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (intPortalId >= 0 && intTabId > 0 & this.ModuleID > 0 & ForumID > 0)
+            if (intPortalId >= 0 && intTabId > 0 & this.moduleID > 0 & ForumID > 0)
             {
-                this.Response.Write(this.BuildRSS(intPortalId, intTabId, this.ModuleID, intPosts, ForumID, bolSecurity, bolBody));
+                this.Response.Write(this.BuildRSS(intPortalId, intTabId, this.moduleID, intPosts, ForumID, bolSecurity, bolBody));
             }
 
         }
@@ -136,9 +136,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 StringBuilder sb = new StringBuilder(1024);
                 if (this.bRead)
                 {
-                    this.ForumName = this.drForum["ForumName"].ToString();
-                    this.GroupName = this.drForum["GroupName"].ToString();
-                    this.ForumDescription = this.drForum["ForumDesc"].ToString();
+                    this.forumName = this.drForum["ForumName"].ToString();
+                    this.groupName = this.drForum["GroupName"].ToString();
+                    this.forumDescription = this.drForum["ForumDesc"].ToString();
                     // TopicsTemplateId = CInt(drForum("TopicsTemplateId"))
                     this.bAllowRSS = Convert.ToBoolean(this.drForum["AllowRSS"]);
                     if (this.bAllowRSS)
@@ -155,9 +155,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         // build channel
                         sb.Append(this.WriteElement("channel", 1));
-                        sb.Append(this.WriteElement("title", HttpUtility.HtmlEncode(ps.PortalName) + " " + this.ForumName, 2));
+                        sb.Append(this.WriteElement("title", HttpUtility.HtmlEncode(ps.PortalName) + " " + this.forumName, 2));
                         sb.Append(this.WriteElement("link", URL, 2));
-                        sb.Append(this.WriteElement("description", this.ForumDescription, 2));
+                        sb.Append(this.WriteElement("description", this.forumDescription, 2));
                         sb.Append(this.WriteElement("language", this.PortalSettings.DefaultLanguage, 2));
                         sb.Append(this.WriteElement("generator", "ActiveForums  5.0", 2));
                         sb.Append(this.WriteElement("copyright", this.PortalSettings.FooterText, 2));
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         if (!(ps.LogoFile == string.Empty))
                         {
                             string sLogo = "<image><url>http://" + this.Request.Url.Host + ps.HomeDirectory + ps.LogoFile + "</url>";
-                            sLogo += "<title>" + ps.PortalName + " " + this.ForumName + "</title>";
+                            sLogo += "<title>" + ps.PortalName + " " + this.forumName + "</title>";
                             sLogo += "<link>" + URL + "</link></image>";
                             sb.Append(sLogo);
                         }
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                         sb.Append("<atom:link href=\"http://" + this.Request.Url.Host + HttpUtility.HtmlEncode(this.Request.RawUrl) + "\" rel=\"self\" type=\"application/rss+xml\" />");
                         sb.Append(this.WriteElement("/channel", 1));
-                        sb.Replace("[LASTBUILDDATE]", this.LastBuildDate.ToString("r"));
+                        sb.Replace("[LASTBUILDDATE]", this.lastBuildDate.ToString("r"));
                         sb.Append("</rss>");
                         // Cache.Insert("RSS" & ModuleId & ForumID, sb.ToString, Nothing, DateTime.UtcNow.AddMinutes(dblCacheTimeOut), TimeSpan.Zero)
                         return sb.ToString();
@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private string BuildItem(DataRow dr, int PostTabID, int Indent, bool IncludeBody, int PortalId)
         {
-            SettingsInfo MainSettings = SettingsBase.GetModuleSettings(this.ModuleID);
+            SettingsInfo MainSettings = SettingsBase.GetModuleSettings(this.moduleID);
             StringBuilder sb = new StringBuilder(1024);
             string[] Params = { ParamKeys.ForumId + "=" + dr["ForumID"].ToString(), ParamKeys.TopicId + "=" + dr["TopicId"].ToString(), ParamKeys.ViewType + "=" + Views.Topic };
             string URL = DotNetNuke.Modules.ActiveForums.Utilities.NavigateURL(PostTabID, "", Params);
@@ -220,15 +220,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 URL = DotNetNuke.Common.Globals.AddHTTP(this.Request.Url.Host) + URL;
             }
 
-            if (this.LastBuildDate == new DateTime())
+            if (this.lastBuildDate == new DateTime())
             {
-                this.LastBuildDate = Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet);
+                this.lastBuildDate = Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet);
             }
             else
             {
-                if (Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet) > this.LastBuildDate)
+                if (Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet) > this.lastBuildDate)
                 {
-                    this.LastBuildDate = Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet);
+                    this.lastBuildDate = Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet);
                 }
             }
 
@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums
             sb.Append(this.WriteElement("title", dr["Subject"].ToString(), Indent + 1));
             sb.Append(this.WriteElement("description", body, Indent + 1));
             sb.Append(this.WriteElement("link", URL, Indent + 1));
-            sb.Append(this.WriteElement("dc:creator", UserProfiles.GetDisplayName(this.PortalSettings, this.ModuleID, false, false, false, -1, dr["AuthorUserName"].ToString(), dr["AuthorFirstName"].ToString(), dr["AuthorLastName"].ToString(), dr["AuthorDisplayName"].ToString(), null), Indent + 1));
+            sb.Append(this.WriteElement("dc:creator", UserProfiles.GetDisplayName(this.PortalSettings, this.moduleID, false, false, false, -1, dr["AuthorUserName"].ToString(), dr["AuthorFirstName"].ToString(), dr["AuthorLastName"].ToString(), dr["AuthorDisplayName"].ToString(), null), Indent + 1));
             sb.Append(this.WriteElement("pubDate", Convert.ToDateTime(dr["DateCreated"]).AddMinutes(this.offSet).ToString("r"), Indent + 1));
             sb.Append(this.WriteElement("guid", URL, Indent + 1));
             sb.Append(this.WriteElement("slash:comments", dr["ReplyCount"].ToString(), Indent + 1));

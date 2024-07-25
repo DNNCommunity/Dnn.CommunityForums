@@ -35,15 +35,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Members
         private int _memberCount = 0;
 
-        private int PageSize = 20;
-        private int RowIndex = 0;
-        private string Filter = "";
+        private int pageSize = 20;
+        private int rowIndex = 0;
+        private string filter = "";
         #endregion
         #region Public Properties
         #endregion
         #region Protected Controls
         protected PlaceHolder plhContent = new PlaceHolder();
-        protected global::DotNetNuke.Modules.ActiveForums.Controls.PagerNav Pager1;
+        protected global::DotNetNuke.Modules.ActiveForums.Controls.PagerNav pager1;
         #endregion
         #region Event Handlers
 
@@ -54,11 +54,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.AppRelativeVirtualPath = "~/";
             if (this.Request.Params["affilter"] != null)
             {
-                this.Filter = Convert.ToString(this.Request.Params["affilter"]).Substring(0, 1);
+                this.filter = Convert.ToString(this.Request.Params["affilter"]).Substring(0, 1);
             }
             else
             {
-                this.Filter = string.Empty;
+                this.filter = string.Empty;
             }
         }
 
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 switch (ctrl.ID)
                 {
                     case "Pager1":
-                        this.Pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)ctrl;
+                        this.pager1 = (DotNetNuke.Modules.ActiveForums.Controls.PagerNav)ctrl;
                         break;
                 }
 
@@ -169,27 +169,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BuildPager()
         {
             int intPages = 0;
-            intPages = Convert.ToInt32(System.Math.Ceiling(this._memberCount / (double)this.PageSize));
-            this.Pager1.PageCount = intPages;
-            this.Pager1.CurrentPage = this.PageId;
-            this.Pager1.TabID = this.TabId;
-            this.Pager1.ForumID = -1;
-            this.Pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
-            this.Pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
-            this.Pager1.View = "members";
+            intPages = Convert.ToInt32(System.Math.Ceiling(this._memberCount / (double)this.pageSize));
+            this.pager1.PageCount = intPages;
+            this.pager1.CurrentPage = this.PageId;
+            this.pager1.TabID = this.TabId;
+            this.pager1.ForumID = -1;
+            this.pager1.PageText = Utilities.GetSharedResource("[RESX:Page]");
+            this.pager1.OfText = Utilities.GetSharedResource("[RESX:PageOf]");
+            this.pager1.View = "members";
             if (this.UseAjax)
             {
-                this.Pager1.PageMode = PagerNav.Mode.CallBack;
+                this.pager1.PageMode = PagerNav.Mode.CallBack;
             }
             else
             {
-                this.Pager1.PageMode = PagerNav.Mode.Links;
+                this.pager1.PageMode = PagerNav.Mode.Links;
             }
 
             if (this.Request.Params["affilter"] != null)
             {
                 string[] Params = { "affilter=" + this.Request.Params["affilter"] };
-                this.Pager1.Params = Params;
+                this.pager1.Params = Params;
             }
         }
 
@@ -222,17 +222,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             List<User> upl = new List<User>();
             User upi = null;
-            this.PageSize = this.MainSettings.PageSize;
+            this.pageSize = this.MainSettings.PageSize;
             if (this.PageId == 1)
             {
-                this.RowIndex = 0;
+                this.rowIndex = 0;
             }
             else
             {
-                this.RowIndex = (this.PageId * this.PageSize) - this.PageSize;
+                this.rowIndex = (this.PageId * this.pageSize) - this.pageSize;
             }
 
-            IDataReader dr = DataProvider.Instance().Profiles_MemberList(this.PortalId, this.ModuleId, this.PageSize, this.RowIndex, this.Filter);
+            IDataReader dr = DataProvider.Instance().Profiles_MemberList(this.PortalId, this.ModuleId, this.pageSize, this.rowIndex, this.filter);
             try
             {
                 dr.Read();

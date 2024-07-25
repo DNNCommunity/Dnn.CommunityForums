@@ -36,9 +36,9 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_quickreplyform : ForumBase
     {
         private const string TargetCollapsible = "groupQR";
-        protected System.Web.UI.HtmlControls.HtmlGenericControl ContactByFaxOnly = new HtmlGenericControl();
-        protected System.Web.UI.WebControls.CheckBox ContactByFaxOnlyCheckBox = new CheckBox();
-        protected System.Web.UI.HtmlControls.HtmlGenericControl QR = new HtmlGenericControl();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl contactByFaxOnly = new HtmlGenericControl();
+        protected System.Web.UI.WebControls.CheckBox contactByFaxOnlyCheckBox = new CheckBox();
+        protected System.Web.UI.HtmlControls.HtmlGenericControl qR = new HtmlGenericControl();
         protected System.Web.UI.WebControls.PlaceHolder plhMessage = new PlaceHolder();
         protected System.Web.UI.WebControls.Label reqBody = new Label();
         protected System.Web.UI.HtmlControls.HtmlGenericControl btnToolBar = new HtmlGenericControl();
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                if (this.ContactByFaxOnlyCheckBox.Checked)
+                if (this.contactByFaxOnlyCheckBox.Checked)
                 {
                     // if someone activates this checkbox send him home :-)
                     this.Response.Redirect("about:blank");
@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = Utilities.LocalizeControl(template);
                 Control ctl = this.ParseControl(template);
                 this.LinkControls(ctl.Controls);
-                this.QR.Controls.Add(ctl);
+                this.qR.Controls.Add(ctl);
             }
             catch (Exception)
             {

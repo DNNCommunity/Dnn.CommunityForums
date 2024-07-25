@@ -49,8 +49,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Private Members
-        private int ModuleId = -1;
-        private int PortalId = -1;
+        private int moduleId = -1;
+        private int portalId = -1;
         private string _Subject = string.Empty;
 
         #endregion
@@ -65,21 +65,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.ambtnSubmit.Click += new System.EventHandler(this.ambtnSubmit_Click);
 
-            this.ModuleId = this.ControlConfig.ModuleId;
-            this.PortalId = this.ControlConfig.PortalId;
+            this.moduleId = this.ControlConfig.ModuleId;
+            this.portalId = this.ControlConfig.PortalId;
             if (this.ForumInfo == null)
             {
-                this.ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ModuleId, this.ForumId, false, this.TopicId);
+                this.ForumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.portalId, this.moduleId, this.ForumId, false, this.TopicId);
             }
 
             string sTemp = string.Empty;
             if (this.ControlConfig != null)
             {
-                object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.QuickReply, this.ModuleId));
+                object obj = DataCache.SettingsCacheRetrieve(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId));
                 if (obj == null)
                 {
                     sTemp = this.ParseTemplate();
-                    DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.QuickReply, this.ModuleId), sTemp);
+                    DataCache.SettingsCacheStore(this.moduleId, string.Format(CacheKeys.QuickReply, this.moduleId), sTemp);
                 }
                 else
                 {
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 sTemp = Utilities.LocalizeControl(sTemp);
                 string SubscribedChecked = string.Empty;
-                if (this.ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ModuleId, this.UserId, this.ForumId, this.TopicId))
+                if (this.ControlConfig.User.PrefTopicSubscribe || new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.portalId, this.moduleId, this.UserId, this.ForumId, this.TopicId))
                 {
                     SubscribedChecked = " checked=true";
                 }
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         #region Private Methods
         private void SaveQuickReply()
         {
-            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ModuleId, this.ForumId, false, this.TopicId);
+            DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.portalId, this.moduleId, this.ForumId, false, this.TopicId);
             if (!Utilities.HasFloodIntervalPassed(floodInterval: this.MainSettings.FloodInterval, user: this.ForumUser, forumInfo: forumInfo))
             {
                 this.plhMessage.Controls.Add(new InfoMessage { Message = "<div class=\"afmessage\">" + string.Format(this.GetSharedResource("[RESX:Error:FloodControl]"), this.MainSettings.FloodInterval) + "</div>" });
@@ -209,7 +209,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
             else
             {
-                sUsername = Utilities.CleanString(this.PortalId, this.txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, this.ModuleId, this.ThemePath, false);
+                sUsername = Utilities.CleanString(this.portalId, this.txtUserName.Value, false, EditorTypes.TEXTBOX, true, false, this.moduleId, this.ThemePath, false);
             }
 
             string sBody = string.Empty;
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             // If forumInfo.AllowHTML Then
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
             // End If
-            sBody = Utilities.CleanString(this.PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, this.ModuleId, this.ThemePath, forumInfo.AllowEmoticons);
+            sBody = Utilities.CleanString(this.portalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, this.moduleId, this.ThemePath, forumInfo.AllowEmoticons);
             ri.TopicId = this.TopicId;
             ri.ReplyToId = this.TopicId;
             ri.Content.AuthorId = this.UserId;
@@ -234,14 +234,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (isApproved)
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
+                DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.portalId, this.TabId, this.moduleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
                 // Redirect to show post
                 string fullURL = Utilities.NavigateURL(this.PageId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.PortalId, this.ForumId, ri.TopicId, ReplyId, this.ModuleId, this.PageId, string.Empty);
+                DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(forumInfo.ModNotifyTemplateId, this.portalId, this.ForumId, ri.TopicId, ReplyId, this.moduleId, this.PageId, string.Empty);
                 string[] Params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", "afmsg=pendingmod", ParamKeys.TopicId + "=" + this.TopicId };
                 HttpContext.Current.Response.Redirect(Utilities.NavigateURL(this.PageId, "", Params), false);
             }

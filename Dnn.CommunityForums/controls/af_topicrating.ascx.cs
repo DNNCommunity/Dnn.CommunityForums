@@ -33,11 +33,11 @@ namespace DotNetNuke.Modules.ActiveForums
         private bool _Enabled = false;
         #endregion
         #region Controls
-        protected ImageButton Rate1 = new ImageButton();
-        protected ImageButton Rate2 = new ImageButton();
-        protected ImageButton Rate3 = new ImageButton();
-        protected ImageButton Rate4 = new ImageButton();
-        protected ImageButton Rate5 = new ImageButton();
+        protected ImageButton rate1 = new ImageButton();
+        protected ImageButton rate2 = new ImageButton();
+        protected ImageButton rate3 = new ImageButton();
+        protected ImageButton rate4 = new ImageButton();
+        protected ImageButton rate5 = new ImageButton();
 
         #endregion
         #region Public Properties
@@ -73,11 +73,11 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnInit(e);
 
-            this.Rate1.Click += this.Rate1_Click;
-            this.Rate2.Click += this.Rate2_Click;
-            this.Rate3.Click += this.Rate3_Click;
-            this.Rate4.Click += this.Rate4_Click;
-            this.Rate5.Click += this.Rate5_Click;
+            this.rate1.Click += this.Rate1_Click;
+            this.rate2.Click += this.Rate2_Click;
+            this.rate3.Click += this.Rate3_Click;
+            this.rate4.Click += this.Rate4_Click;
+            this.rate5.Click += this.Rate5_Click;
             this.cbRating.CallbackEvent += this.cbRating_Callback;
 
         }
@@ -143,61 +143,61 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.RatingClass = "rating" + this.Rating.ToString();
             this.plhRating.Controls.Clear();
-            this.Rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");
-            this.Rate1.Enabled = this.Enabled;
-            this.Rate2.Attributes.Add("onmouseover", "afchangerate('rating2');");
-            this.Rate2.Enabled = this.Enabled;
-            this.Rate3.Attributes.Add("onmouseover", "afchangerate('rating3');");
-            this.Rate3.Enabled = this.Enabled;
-            this.Rate4.Attributes.Add("onmouseover", "afchangerate('rating4');");
-            this.Rate4.Enabled = this.Enabled;
-            this.Rate5.Attributes.Add("onmouseover", "afchangerate('rating5');");
-            this.Rate5.Enabled = this.Enabled;
+            this.rate1.Attributes.Add("onmouseover", "afchangerate('rating1');");
+            this.rate1.Enabled = this.Enabled;
+            this.rate2.Attributes.Add("onmouseover", "afchangerate('rating2');");
+            this.rate2.Enabled = this.Enabled;
+            this.rate3.Attributes.Add("onmouseover", "afchangerate('rating3');");
+            this.rate3.Enabled = this.Enabled;
+            this.rate4.Attributes.Add("onmouseover", "afchangerate('rating4');");
+            this.rate4.Enabled = this.Enabled;
+            this.rate5.Attributes.Add("onmouseover", "afchangerate('rating5');");
+            this.rate5.Enabled = this.Enabled;
 
             Literal lit = new Literal();
             lit.Text = "<div class=\"" + this.RatingClass + "\" id=\"ratingdiv\" onmouseout=\"this.className='" + this.RatingClass + "'\">";
             this.plhRating.Controls.Add(lit);
-            this.Rate1.ID = "Rate1";
-            this.Rate1.CausesValidation = false;
-            this.Rate1.Width = 13;
-            this.Rate1.Height = 14;
-            this.Rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            this.plhRating.Controls.Add(this.Rate1);
-            this.Rate2.ID = "Rate2";
-            this.Rate2.CausesValidation = false;
-            this.Rate2.Width = 14;
-            this.Rate2.Height = 14;
-            this.Rate2.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            this.plhRating.Controls.Add(this.Rate2);
-            this.Rate3.ID = "Rate3";
-            this.Rate3.CausesValidation = false;
-            this.Rate3.Width = 14;
-            this.Rate3.Height = 14;
-            this.Rate3.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            this.plhRating.Controls.Add(this.Rate3);
-            this.Rate4.ID = "Rate4";
-            this.Rate4.CausesValidation = false;
-            this.Rate4.Width = 14;
-            this.Rate4.Height = 14;
-            this.Rate4.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
-            this.plhRating.Controls.Add(this.Rate4);
-            this.Rate5.ID = "Rate5";
-            this.Rate5.CausesValidation = false;
-            this.Rate5.Width = 14;
-            this.Rate5.Height = 14;
-            this.Rate5.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.rate1.ID = "Rate1";
+            this.rate1.CausesValidation = false;
+            this.rate1.Width = 13;
+            this.rate1.Height = 14;
+            this.rate1.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate1);
+            this.rate2.ID = "Rate2";
+            this.rate2.CausesValidation = false;
+            this.rate2.Width = 14;
+            this.rate2.Height = 14;
+            this.rate2.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate2);
+            this.rate3.ID = "Rate3";
+            this.rate3.CausesValidation = false;
+            this.rate3.Width = 14;
+            this.rate3.Height = 14;
+            this.rate3.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate3);
+            this.rate4.ID = "Rate4";
+            this.rate4.CausesValidation = false;
+            this.rate4.Width = 14;
+            this.rate4.Height = 14;
+            this.rate4.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
+            this.plhRating.Controls.Add(this.rate4);
+            this.rate5.ID = "Rate5";
+            this.rate5.CausesValidation = false;
+            this.rate5.Width = 14;
+            this.rate5.Height = 14;
+            this.rate5.ImageUrl = "<% (DotNetNuke.Modules.ActiveForums.Globals.ModuleImagesPath) %>spacer.gif";
 
-            this.plhRating.Controls.Add(this.Rate5);
+            this.plhRating.Controls.Add(this.rate5);
             lit = new Literal();
             lit.Text = "</div>";
             this.plhRating.Controls.Add(lit);
             if (this.UseAjax)
             {
-                this.Rate1.OnClientClick = "af_rateTopic(1);return false;";
-                this.Rate2.OnClientClick = "af_rateTopic(2);return false;";
-                this.Rate3.OnClientClick = "af_rateTopic(3);return false;";
-                this.Rate4.OnClientClick = "af_rateTopic(4);return false;";
-                this.Rate5.OnClientClick = "af_rateTopic(5);return false;";
+                this.rate1.OnClientClick = "af_rateTopic(1);return false;";
+                this.rate2.OnClientClick = "af_rateTopic(2);return false;";
+                this.rate3.OnClientClick = "af_rateTopic(3);return false;";
+                this.rate4.OnClientClick = "af_rateTopic(4);return false;";
+                this.rate5.OnClientClick = "af_rateTopic(5);return false;";
                 this.AddRatingScript();
             }
         }

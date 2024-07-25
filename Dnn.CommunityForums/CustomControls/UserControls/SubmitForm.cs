@@ -376,7 +376,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected UI.WebControls.CaptchaControl ctlCaptcha = new UI.WebControls.CaptchaControl();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqCaptcha = new System.Web.UI.WebControls.RequiredFieldValidator();
 
-        private string BodyTemplate = string.Empty;
+        private string bodyTemplate = string.Empty;
 
         #endregion
 
@@ -401,9 +401,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             template = template.Replace("[AF:REQ:BODY]", "<asp:label id=\"reqCustomBody\" visible=\"false\" runat=\"server\" />");
             if (template.Contains("[AF:BODY:TEMPLATE]"))
             {
-                this.BodyTemplate = TemplateUtils.GetTemplateSection(template, "[AF:BODY:TEMPLATE]", "[/AF:BODY:TEMPLATE]");
-                this.BodyTemplate = this.BodyTemplate.Replace("[AF:BODY:TEMPLATE]", string.Empty);
-                this.BodyTemplate = this.BodyTemplate.Replace("[/AF:BODY:TEMPLATE]", string.Empty);
+                this.bodyTemplate = TemplateUtils.GetTemplateSection(template, "[AF:BODY:TEMPLATE]", "[/AF:BODY:TEMPLATE]");
+                this.bodyTemplate = this.bodyTemplate.Replace("[AF:BODY:TEMPLATE]", string.Empty);
+                this.bodyTemplate = this.bodyTemplate.Replace("[/AF:BODY:TEMPLATE]", string.Empty);
                 template = TemplateUtils.ReplaceSubSection(template, string.Empty, "[AF:BODY:TEMPLATE]", "[/AF:BODY:TEMPLATE]");
             }
 
@@ -1127,7 +1127,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.EditorMode == EditorModes.NewTopic || this.EditorMode == EditorModes.Reply || this.EditorMode == EditorModes.ReplyWithBody)
             {
-                this._Body = this.BodyTemplate;
+                this._Body = this.bodyTemplate;
             }
 
             switch (this.EditorType)

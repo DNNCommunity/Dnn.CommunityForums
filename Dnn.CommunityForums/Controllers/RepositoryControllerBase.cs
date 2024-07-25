@@ -31,32 +31,32 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
     internal partial class RepositoryControllerBase<T> where T : class
     {
-        private readonly IRepository<T> Repo;
+        private readonly IRepository<T> repo;
 
         internal RepositoryControllerBase()
         {
             var ctx = DataContext.Instance();
-            this.Repo = ctx.GetRepository<T>();
+            this.repo = ctx.GetRepository<T>();
         }
 
         internal IEnumerable<T> Get()
         {
-            return this.Repo.Get();
+            return this.repo.Get();
         }
 
         internal IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
-            return this.Repo.Get(scopeValue);
+            return this.repo.Get(scopeValue);
         }
 
         internal T GetById<TProperty>(TProperty id)
         {
-            return this.Repo.GetById(id);
+            return this.repo.GetById(id);
         }
 
         internal T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
-            return this.Repo.GetById(id, scopeValue);
+            return this.repo.GetById(id, scopeValue);
         }
 
         internal T Save<TProperty>(T item, TProperty id)
@@ -75,62 +75,62 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         internal IEnumerable<T> Find(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.Repo.Find(sqlCondition, args);
+            return string.IsNullOrEmpty(sqlCondition) ? this.Get() : this.repo.Find(sqlCondition, args);
         }
 
         internal IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args)
         {
-            return this.Repo.Find(pageIndex, pageSize, sqlCondition, args);
+            return this.repo.Find(pageIndex, pageSize, sqlCondition, args);
         }
 
         internal void Update(T item)
         {
-            this.Repo.Update(item);
+            this.repo.Update(item);
         }
 
         public void Update(string sqlCondition, params object[] args)
         {
-            this.Repo.Update(sqlCondition, args);
+            this.repo.Update(sqlCondition, args);
         }
 
         internal void Insert(T item)
         {
-            this.Repo.Insert(item);
+            this.repo.Insert(item);
         }
 
         internal void Delete(string sqlCondition, params object[] args)
         {
-            this.Repo.Delete(sqlCondition, args);
+            this.repo.Delete(sqlCondition, args);
         }
 
         internal void DeleteById<TProperty>(TProperty id)
         {
-            this.Repo.Delete(this.Repo.GetById(id));
+            this.repo.Delete(this.repo.GetById(id));
         }
 
         internal void Delete(T item)
         {
-            this.Repo.Delete(item);
+            this.repo.Delete(item);
         }
 
         internal void DeleteByModuleId(int ModuleId)
         {
-            this.Repo.Delete("WHERE (ModuleId = @0)", ModuleId);
+            this.repo.Delete("WHERE (ModuleId = @0)", ModuleId);
         }
 
         internal int Count(string sqlCondition, params object[] args)
         {
-            return string.IsNullOrEmpty(sqlCondition) ? this.Repo.Get().Count() : this.Repo.Find(sqlCondition, args).Count();
+            return string.IsNullOrEmpty(sqlCondition) ? this.repo.Get().Count() : this.repo.Find(sqlCondition, args).Count();
         }
 
         internal IPagedList<T> GetPage(int pageIndex, int pageSize)
         {
-            return this.Repo.GetPage(pageIndex, pageSize);
+            return this.repo.GetPage(pageIndex, pageSize);
         }
 
         internal IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
-            return this.Repo.GetPage(scopeValue, pageIndex, pageSize);
+            return this.repo.GetPage(scopeValue, pageIndex, pageSize);
         }
     }
 }
