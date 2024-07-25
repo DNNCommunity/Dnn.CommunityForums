@@ -147,7 +147,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                 sMsg = "Enable to delete system templates";
                             }
                             }
-                            DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TemplatePrefix, ModuleId));
+                        DataCache.CacheClearPrefix(ModuleId, string.Format(CacheKeys.TemplatePrefix, ModuleId));
                         }
                     catch (Exception ex)
                     {

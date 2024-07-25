@@ -1,4 +1,4 @@
-//
+﻿//
 // Community Forums
 // Copyright (c) 2013-2024
 // by DNN Community
@@ -314,7 +314,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     sFormat = sValue;
                     sMessageBody = sMessageBody.Replace(string.Concat("[DATE:", sFormat, "]"), DateTime.UtcNow.ToString(sFormat));
                 }
-              new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
+                new DotNetNuke.Modules.ActiveForums.Controllers.EmailNotificationQueueController().Add(portalId,-1, FromEmail, tmpEmail, TemplateSubject, sMessageBody);
             }
         }
     }

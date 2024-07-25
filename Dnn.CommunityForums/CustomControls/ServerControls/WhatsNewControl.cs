@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 dr = DataProvider.Instance().GetPosts(PortalId, ForumIds, TopicsOnly, RandomOrder, Rows, Tags, FilterByUserId);
             }
 
-           try
+            try
             {
                 var sTempTemplate = sTemplate;
                 while (dr.Read())

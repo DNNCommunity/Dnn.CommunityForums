@@ -323,11 +323,11 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 litSearchTitle.Text = GetSharedResource("[RESX:SearchTitle]");
-                 List<Keyword> keywords;
+                List<Keyword> keywords;
 
                  // Note: Filter out any keywords that are not at least 3 characters in length
 
-                 if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
+                if (SearchType == 2 && !string.IsNullOrWhiteSpace(SearchText) && SearchText.Trim().Length >= 3) //Exact Match
                 {
                     keywords = new List<Keyword> { new Keyword { Value = "\"" + SearchText.Trim() + "\"" } };
                 }

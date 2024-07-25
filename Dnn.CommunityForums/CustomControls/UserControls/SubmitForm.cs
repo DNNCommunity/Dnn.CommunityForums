@@ -790,7 +790,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     sb.Append("<tr><td colspan=\"2\"><asp:checkbox id=\"chkSubscribe\" Text=\"[RESX:Subscribe]\" TextAlign=\"right\" cssclass=\"afcheckbox\" runat=\"server\" /></td></tr>");
                 }
-                bHasOptions = true;
+                    bHasOptions = true;
             }
             if ((EditorMode == EditorModes.NewTopic || EditorMode == EditorModes.EditTopic) && DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(ForumInfo.Security.Prioritize, ForumUser.UserRoles))
             {
@@ -900,7 +900,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                            TopicTemplate = _topicReviewTemplate,
                                            OptPageSize = int.MaxValue,
                                            OptDefaultSort = "DESC",
-                    ForumInfo = ForumInfo
+                                           ForumInfo = ForumInfo
                                        };
                 plhTopicReview.Controls.Add(ctlTopicView);
             }

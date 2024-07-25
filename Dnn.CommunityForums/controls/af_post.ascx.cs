@@ -535,7 +535,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 template = template.Replace("<div class=\"afcrumb\">[AF:LINK:FORUMMAIN] > [AF:LINK:FORUMGROUP] > [AF:LINK:FORUMNAME]</div>", string.Empty);
             }
 
-           ctlForm.Template = template;
+            ctlForm.Template = template;
             if (!(TopicId > 0))
             {
                 //Can't Find Topic

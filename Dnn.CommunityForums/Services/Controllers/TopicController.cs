@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.ActiveForums.Services.Controllers
     /// <param name="dto"></param>
     /// <returns></returns>
     /// <remarks>https://dnndev.me/API/ActiveForums/Topic/Pin</remarks>
-    [HttpPost]
+        [HttpPost]
         [DnnAuthorize]
         [ForumsAuthorize(SecureActions.ModPin)]
         [ForumsAuthorize(SecureActions.Pin)]

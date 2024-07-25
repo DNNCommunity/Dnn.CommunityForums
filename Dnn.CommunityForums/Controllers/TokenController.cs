@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TokensController { TokensController() { throw new NotImplementedException(); } }    
 }
 
-    namespace DotNetNuke.Modules.ActiveForums.Controllers
+namespace DotNetNuke.Modules.ActiveForums.Controllers
 {
     public class TokenController
     {

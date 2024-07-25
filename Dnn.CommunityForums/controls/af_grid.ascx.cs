@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Members
         
-        private int _rowCount;
+        private int rowCount;
         private DataTable _dtResults;
         private int _pageSize = 20;
         private int _rowIndex;
@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             _dtResults = db.UI_NotReadView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                             if (_dtResults.Rows.Count > 0)
                             {
-                                _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                                rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                                 btnMarkRead.Visible = true;
                                 btnMarkRead.InnerText = GetSharedResource("[RESX:MarkAllRead]");
                             }
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_Announcements(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_Unresolved(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
@@ -167,7 +167,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_UnansweredView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_TagsView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds, tagId).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.ActiveForums
                             _dtResults = db.UI_MyTopicsView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, forumIds).Tables[0];
                             if (_dtResults.Rows.Count > 0)
                             {
-                                _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                                rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                             }
                         }
                         else
@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_ActiveView(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
+                            rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
                         }
 
                         break;
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_MostLiked(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = _dtResults.Rows[0].GetInt("RecordCount");
+                            rowCount = _dtResults.Rows[0].GetInt("RecordCount");
                         }
 
                         break;
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         _dtResults = db.UI_MostReplies(PortalId, ForumModuleId, UserId, _rowIndex, _pageSize, sort, timeFrame, forumIds).Tables[0];
                         if (_dtResults.Rows.Count > 0)
                         {
-                            _rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
+                            rowCount = Convert.ToInt32(_dtResults.Rows[0]["RecordCount"]);
                         }
 
                         break;
@@ -278,7 +278,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (_dtResults != null && _dtResults.Rows.Count > 0)
             {
-                litRecordCount.Text = string.Format(GetSharedResource("[RESX:SearchRecords]"), _rowIndex + 1, _rowIndex + _dtResults.Rows.Count, _rowCount);
+                litRecordCount.Text = string.Format(GetSharedResource("[RESX:SearchRecords]"), _rowIndex + 1, _rowIndex + _dtResults.Rows.Count, rowCount);
 
                 pnlMessage.Visible = false;
 
@@ -312,7 +312,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return;
             }
 
-            var intPages = Convert.ToInt32(Math.Ceiling(_rowCount/(double) _pageSize));
+            var intPages = Convert.ToInt32(Math.Ceiling(rowCount/(double) _pageSize));
 
             string[] @params;
             if (Request.Params[ParamKeys.Sort] != null)

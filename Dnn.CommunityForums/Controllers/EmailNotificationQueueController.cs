@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     EmailBody = emailBody,
                     EmailSubject = emailSubject,
                     DateCreated = DateTime.UtcNow
-                });
+                    });
             }
             catch (Exception ex)
             {

@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-               return _authorid.Value;
+                return _authorid.Value;
             }
 
             set

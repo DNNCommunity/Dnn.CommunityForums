@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                         DateCreated=DateTime.UtcNow,
                         RequestUrl=requestUrl,
                     });
-                return true;                
+               return true;                
             }
             catch (Exception ex)
             {

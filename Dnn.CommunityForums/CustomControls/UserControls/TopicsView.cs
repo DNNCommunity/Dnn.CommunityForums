@@ -699,7 +699,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string MemberListMode = MainSettings.MemberListMode;
             var ProfileVisibility = MainSettings.ProfileVisibility;
             string UserNameDisplay = MainSettings.UserNameDisplay;
-        string sLastReply = TemplateUtils.GetTemplateSection(sOutput, "[LASTPOST]", "[/LASTPOST]");
+            string sLastReply = TemplateUtils.GetTemplateSection(sOutput, "[LASTPOST]", "[/LASTPOST]");
             int iLength = 0;
             if (sLastReply.Contains("[LASTPOSTSUBJECT:"))
             {

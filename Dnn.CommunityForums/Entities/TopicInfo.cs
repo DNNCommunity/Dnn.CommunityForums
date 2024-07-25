@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             }
         }
 
-       [IgnoreColumn()]
+        [IgnoreColumn()]
         public IEnumerable<Category> Categories
         {
             //TODO: Clean this up
