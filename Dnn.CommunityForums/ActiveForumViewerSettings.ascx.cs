@@ -80,9 +80,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.drpForum.SelectedIndex = this.drpForum.Items.IndexOf(this.drpForum.Items.FindByValue(Convert.ToString(this.Settings[ForumViewerSettingsKeys.AFForumGroup])));
                     }
 
-                    //If Not CType(Settings["AFEnableToolbar"], String) Is Nothing Then
+                    // If Not CType(Settings["AFEnableToolbar"], String) Is Nothing Then
                     //    chkEnableToolbar.Checked = CType(Settings["AFEnableToolbar"], Boolean)
-                    //End If
+                    // End If
                 }
             }
             catch (Exception exc)
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumViewTemplate, this.drpForumViewTemplate.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumModuleId, this.drpForumInstance.SelectedItem.Value);
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroup, this.drpForum.SelectedItem.Value);
-                //objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
+                // objModules.UpdateModuleSetting(ModuleId, "AFEnableToolbar", CType(chkEnableToolbar.Checked, String))
                 string ForumGroup;
                 ForumGroup = this.drpForum.SelectedItem.Value;
                 if ((ForumGroup.IndexOf("GROUPID:", 0) + 1) > 0)
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 int @int = ForumGroup.IndexOf(":") + 1;
                 string sID = ForumGroup.Substring(@int);
-                //ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
+                // ForumGroupID = CType(ForumGroup.Substring(ForumGroup.IndexOf(":")), Integer)
                 objModules.UpdateModuleSetting(this.ModuleId, ForumViewerSettingsKeys.AFForumGroupId, sID);
                 // Redirect back to the portal home page
                 this.Response.Redirect(Utilities.NavigateURL(this.TabId), true);

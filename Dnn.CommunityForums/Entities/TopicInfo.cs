@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                //TODO : clean this up to use DAL2
+                // TODO : clean this up to use DAL2
                 if (this._forumId < 1 && this.TopicId > 0)
                 {
                     this._forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public IEnumerable<Category> Categories
         {
-            //TODO: Clean this up
+            // TODO: Clean this up
             get
             {
                 if (this._categories == null)

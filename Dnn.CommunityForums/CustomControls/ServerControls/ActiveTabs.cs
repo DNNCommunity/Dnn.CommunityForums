@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ActiveTabs : System.Web.UI.WebControls.CompositeControl
     {
 
-        //Private _tabs As TabCollection = Nothing
+        // Private _tabs As TabCollection = Nothing
         private List<Tab> _tabs;
         private string _imagesPath;
         private string _targetDiv = string.Empty;
@@ -300,10 +300,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     writer.RenderBeginTag(HtmlTextWriterTag.Div);
                     if (tab.Content != null)
                     {
-                        //For Each ctl As Control In tab.Content.Controls
+                        // For Each ctl As Control In tab.Content.Controls
                         //    ctl.RenderControl(writer)
                         //    'tab.Content.RenderControl(writer)
-                        //Next
+                        // Next
                         tab.Content.RenderControl(writer);
 
                     }
@@ -337,11 +337,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 }
 
-                //Try
+                // Try
 
-                //Catch ex As Exception
+                // Catch ex As Exception
 
-                //End Try
+                // End Try
 
             }
         }

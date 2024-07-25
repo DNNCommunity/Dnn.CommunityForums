@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
             object obj = SettingsCacheRetrieve(ModuleID, ModuleID + "FilterList");
             if (obj != null)
             {
-                //Current.Cache.Remove(ModuleID & "FilterList")
+                // Current.Cache.Remove(ModuleID & "FilterList")
                 SettingsCacheClear(ModuleID, ModuleID + "FilterList");
             }
         }

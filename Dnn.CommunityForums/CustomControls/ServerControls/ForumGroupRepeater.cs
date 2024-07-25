@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            //writer.Write(Text)
+            // writer.Write(Text)
             writer.Write(this.HeaderTemplate);
             int i = 0;
             if (this.ForumData != null)
@@ -151,7 +151,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     fd.ForumGroupId = groupId;
                     fd.ControlConfig = this.ControlConfig;
                     fd.ModuleConfiguration = this.ModuleConfiguration;
-                    //fd.ForumData = ForumData
+                    // fd.ForumData = ForumData
                     if (i == 0 && this.ToggleBehavior == 1)
                     {
                         fd.ToggleBehavior = 0;

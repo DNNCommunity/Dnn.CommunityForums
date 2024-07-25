@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 return string.Empty;
             }
 
-            //GIF files when reduced using DNN class losses its animation, so for gifs send them as is
+            // GIF files when reduced using DNN class losses its animation, so for gifs send them as is
             var user = new DotNetNuke.Entities.Users.UserController().GetUser(portalSettings.PortalId, userID);
             string imgUrl = string.Empty;
 
@@ -204,8 +204,8 @@ namespace DotNetNuke.Modules.ActiveForums
         /// <returns>ReturnType 0 Returns RankDisplay ReturnType 1 Returns RankName</returns>
         public static string GetUserRank(int portalId, int moduleID, int userID, int posts, int returnType)
         {
-            //ReturnType 0 for RankDisplay
-            //ReturnType 1 for RankName
+            // ReturnType 0 for RankDisplay
+            // ReturnType 1 for RankName
             try
             {
                 var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";

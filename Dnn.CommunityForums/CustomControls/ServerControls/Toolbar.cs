@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             string sTemp = string.Empty;
-            //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
+            // pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
             if (this.ControlConfig != null)
             {
                 object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.Toolbar, this.ForumModuleId, this.UserInfo?.Profile?.PreferredLocale));
@@ -87,8 +87,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string ParseTemplate()
         {
-            string tb = this.DisplayTemplate; //Utilities.ParseToolBar(DisplayTemplate, PageId, ModuleId, UserId, CurrentUserTypes.Admin)
-            //tb = tb.Replace
+            string tb = this.DisplayTemplate; // Utilities.ParseToolBar(DisplayTemplate, PageId, ModuleId, UserId, CurrentUserTypes.Admin)
+            // tb = tb.Replace
             tb = tb.Replace("[AF:TB:Announcements]", "<af:link id=\"lnkAnnouncements\" NavigateUrl=\"" + Utilities.NavigateURL(this.PageId, "", new string[] { $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.Announcements}" }) + "\" text=\"[RESX:Announcements]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:Unresolved]", "<af:link id=\"lnkUnresolved\" NavigateUrl=\"" + Utilities.NavigateURL(this.PageId, "", new string[] { $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.Unresolved}" }) + "\" text=\"[RESX:Unresolved]\" runat=\"server\" />");
             tb = tb.Replace("[AF:TB:Unanswered]", "<af:link id=\"lnkUnanswered\" NavigateUrl=\"" + Utilities.NavigateURL(this.PageId, "", new string[] { $"{ParamKeys.ViewType}={Views.Grid}", $"{ParamKeys.GridType}={GridTypes.Unanswered}" }) + "\" text=\"[RESX:Unanswered]\" runat=\"server\" />");
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb = tb.Replace("[AF:TB:MySettings]", string.Empty);
             tb = tb.Replace("[AF:TB:MySubscriptions]", string.Empty);
             tb = tb.Replace("[AF:TB:ControlPanel]", "<af:link id=\"lnkControlPanel\" NavigateUrl=\"" + Utilities.NavigateURL(this.PageId, "EDIT", "mid=" + this.ControlConfig.ModuleId) + "\" EnabledRoles=\"" + this.ControlConfig.AdminRoles + "\" Text=\"[RESX:ControlPanel]\" runat=\"server\" />");
-            //TODO: Check for moderator
+            // TODO: Check for moderator
             tb = tb.Replace("[AF:TB:ModList]", string.Empty);
             return tb;
         }

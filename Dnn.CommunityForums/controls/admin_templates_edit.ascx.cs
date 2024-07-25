@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         try
                         {
-                            //save template
+                            // save template
                             TemplateInfo ti = null;
                             TemplateController tc = new TemplateController();
                             int templateId = 0;
@@ -131,7 +131,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     {
                         try
                         {
-                            //delete template
+                            // delete template
                             TemplateInfo ti = null;
                             TemplateController tc = new TemplateController();
                             int templateid = 0;

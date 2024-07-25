@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00. Not Used.")]
         public string GetNewGrid()
         {
-            //Roles
+            // Roles
             string[] roles = this.GetSecureObjectList(this.Security, 0).Split(';');
             int[] roleIds = new int[roles.Length - 2 + 1];
             int i = 0;
@@ -88,9 +88,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo> pl = new List<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
 
-            //litNewGrid.Text = "Roles:" & tmp
+            // litNewGrid.Text = "Roles:" & tmp
 
-            //litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
+            // litNewGrid.Text &= "<br />RolesNames:" & Permissions.GetRolesNVC(tmp)
             NameValueCollection nvc = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRolesNVC(this.PortalId, tmp);
             foreach (string key in nvc.AllKeys)
             {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pl.Add(pi);
             }
 
-            //Users
+            // Users
             string users = this.GetSecureObjectList(this.Security, 1);
             string userNames = string.Empty;
             if (!string.IsNullOrEmpty(users))
@@ -183,8 +183,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
-            //litNewObjects.Text = sb.ToString
-            //sb = New StringBuilder
+            // litNewObjects.Text = sb.ToString
+            // sb = New StringBuilder
 
             sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
             sb.Append("<tr>");
@@ -212,7 +212,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (int r = 3; r <= 27; r++)
                 {
                     keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-                    bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
+                    bool bState = Convert.ToBoolean(grid[x, r]); // DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
                     string sState = "<img src=\"" + this.ImagePath + "admin_stop.png\" alt=\"Disabled\" />";
                     if (bState)
                     {

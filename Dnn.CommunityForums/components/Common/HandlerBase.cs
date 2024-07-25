@@ -259,10 +259,10 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                 }
 
-                //Dim sc As New Social.SocialSettings
-                //_mainSettings = sc.LoadSettings[_ps.PortalId]
+                // Dim sc As New Social.SocialSettings
+                // _mainSettings = sc.LoadSettings[_ps.PortalId]
                 this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
-                //  If context.Request.IsAuthenticated Then
+                // If context.Request.IsAuthenticated Then
                 this._isValid = true;
                 if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                 if (this.AdminRequired && context.Request.IsAuthenticated)
                 {
-                    //_isValid = DotNetNuke.Security.PortalSecurity.IsInRole(_ps.AdministratorRoleName)
+                    // _isValid = DotNetNuke.Security.PortalSecurity.IsInRole(_ps.AdministratorRoleName)
                     DotNetNuke.Entities.Modules.ModuleController objMC = new DotNetNuke.Entities.Modules.ModuleController();
                     DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
                     string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
@@ -297,9 +297,9 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     string val = string.Empty;
                     string tmp = string.Empty;
                     bool bObj = false;
-                    //Arrays
+                    // Arrays
                     List<string> slist = null;
-                    //Dim pairs As NameValueCollection = Nothing
+                    // Dim pairs As NameValueCollection = Nothing
                     Hashtable pairs = null;
                     Hashtable subPairs = null;
 
@@ -325,7 +325,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                                     parentProp = prop;
                                     prop = string.Empty;
                                     tmp = string.Empty;
-                                    //pairs = New NameValueCollection
+                                    // pairs = New NameValueCollection
                                     pairs = new Hashtable();
                                 }
                                 else if (subPairs == null)
@@ -446,12 +446,12 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                             ht.Add(prop, slist);
                         }
 
-                        //jsonPost = sr.ReadToEnd()
+                        // jsonPost = sr.ReadToEnd()
                         sr.Close();
                     }
 
                     this._params = ht;
-                    //End If
+                    // End If
                 }
                 else
                 {

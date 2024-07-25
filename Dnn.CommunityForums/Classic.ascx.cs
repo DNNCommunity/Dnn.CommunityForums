@@ -17,7 +17,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 // DEALINGS IN THE SOFTWARE.
 //
-//using DotNetNuke.Framework.JavaScriptLibraries;
+// using DotNetNuke.Framework.JavaScriptLibraries;
 
 namespace DotNetNuke.Modules.ActiveForums
 {
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             catch (Exception ex)
             {
-                //Response.Write(ex.Message)
+                // Response.Write(ex.Message)
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, ex);
             }
         }
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (string.IsNullOrEmpty(this.ForumIds))
                     {
                         RoleInfo role = DotNetNuke.Security.Roles.RoleController.Instance.GetRoleById(portalId: this.PortalId, roleId: this.SocialGroupId);
-                        //Create new foportalId: rum
+                        // Create new foportalId: rum
                         bool isPrivate = false;
                         if (!role.IsPublic)
                         {
@@ -275,7 +275,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ctl.ForumIds = this.ForumIds;
                 ctl.SocialGroupId = this.SocialGroupId;
 
-                //ctl.PostID = PostID
+                // ctl.PostID = PostID
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
                 if (!(options == string.Empty))
                 {
@@ -293,7 +293,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string authorizedViewRoles = this.ModuleConfiguration.InheritViewPermissions ? TabPermissionController.GetTabPermissions(this.TabId, this.PortalId).ToString("VIEW") : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
                 cc.DefaultViewRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, authorizedViewRoles.Split(';'));
                 cc.AdminRoles = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, this.ModuleConfiguration.ModulePermissions.ToString("EDIT").Split(';'));
-                cc.ProfileLink = ""; //GetProfileLink()
+                cc.ProfileLink = ""; // GetProfileLink()
                 cc.MembersLink = ""; // GetMembersLink()
                 this.ControlConfig = cc;
                 ctl.ControlConfig = cc;
@@ -304,7 +304,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 string sOut = null;
-                //TODO: this should be resources instead of harcoded text?
+                // TODO: this should be resources instead of harcoded text?
                 sOut = System.Environment.NewLine + "<!-- " + DateTime.UtcNow.Year.ToString() + " DNN Community -->" + System.Environment.NewLine;
                 sOut += string.Concat("<!-- DNN Community Forums ", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(), " -->", System.Environment.NewLine);
 
@@ -343,7 +343,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void SetupPage()
         {
-            //register style sheets
+            // register style sheets
             if (System.IO.File.Exists(Utilities.MapPath(Globals.ThemesPath + "themes.min.css")))
             {
                 ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ThemesPath + "themes.min.css", priority: 11);

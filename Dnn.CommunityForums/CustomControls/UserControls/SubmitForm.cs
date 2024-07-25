@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 {
                     switch (this.EditorType)
                     {
-                        //Case EditorTypes.ACTIVEEDITOR
+                        // Case EditorTypes.ACTIVEEDITOR
                         //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
                         //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
                         //    Body = txtEditor.Text
@@ -342,7 +342,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected TextBox txtSubject = new TextBox();
         protected TextBox txtSummary = new TextBox();
         protected Label lblSubject = new Label();
-        //Protected editorActiveEditor As ActiveEditorControls.ActiveEditor
+        // Protected editorActiveEditor As ActiveEditorControls.ActiveEditor
         protected TextBox editorTextBox;
         protected UI.UserControls.TextEditor editorDNN;
         protected PlaceHolder plhEditor = new PlaceHolder();
@@ -367,10 +367,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected af_attach ctlAttach = new af_attach();
 
         protected PlaceHolder plhUpload;
-        //Protected WithEvents tsTags As DotNetNuke.Modules.ActiveForums.Controls.TextSuggest
+        // Protected WithEvents tsTags As DotNetNuke.Modules.ActiveForums.Controls.TextSuggest
         protected PlaceHolder plhTopicReview = new PlaceHolder();
         protected TextBox txtTopicPriority = new TextBox();
-        //Support for Anonymous
+        // Support for Anonymous
         protected TextBox txtUsername = new TextBox();
         protected System.Web.UI.WebControls.RequiredFieldValidator reqUsername = new System.Web.UI.WebControls.RequiredFieldValidator();
         protected UI.WebControls.CaptchaControl ctlCaptcha = new UI.WebControls.CaptchaControl();
@@ -457,9 +457,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string sTagOut = DotNetNuke.Modules.ActiveForums.Controllers.TokenController.TokenGet(this.ForumModuleId, "editor", "[AF:CONTROL:TAGS]");
                 if (string.IsNullOrEmpty(sTagOut))
                 {
-                    //sTagOut = "<am:textsuggest id=""tsTags"" runat=""server"" DataTextField=""TagName"" DataValueField=""TagName"" CssResults=""aftsresults"" CssResultItems=""aftsresultsitems"" CssResultItemsSelected=""aftsresultsel""  CssClass=""aftagstxt"" Width=""99%"" />"
+                    // sTagOut = "<am:textsuggest id=""tsTags"" runat=""server"" DataTextField=""TagName"" DataValueField=""TagName"" CssResults=""aftsresults"" CssResultItems=""aftsresultsitems"" CssResultItemsSelected=""aftsresultsel""  CssClass=""aftagstxt"" Width=""99%"" />"
                     sTagOut = "<input type=\"text\" id=\"txtTags\" style=\"width:98%;\" class=\"NormalTextBox\"  />";
-                    //sTagOut &= "<script type=""text/javascript"">amaf_loadSuggest('txtTags', null, -1);</script>"
+                    // sTagOut &= "<script type=""text/javascript"">amaf_loadSuggest('txtTags', null, -1);</script>"
                 }
 
                 sTagOut = sTagOut.Replace("[TAGS]", this.Tags);
@@ -468,7 +468,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 template = template.Replace("[/AF:UI:SECTION:TAGS]", "</td></tr></table>");
             }
 
-            //Properties
+            // Properties
             if ((this.EditorMode == EditorModes.EditTopic || this.EditorMode == EditorModes.NewTopic) && this.ForumInfo.Properties != null && this.ForumInfo.Properties.Count > 0)
             {
                 string pTemplate = TemplateUtils.GetTemplateSection(template, "[AF:PROPERTIES]", "[/AF:PROPERTIES]");
@@ -770,10 +770,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
 
-            //If str.Contains("[AF:CONTROL:FORUMTREE]") Then
+            // If str.Contains("[AF:CONTROL:FORUMTREE]") Then
             //    str = str.Replace("[AF:CONTROL:FORUMTREE]", "<af:forumtree id=""ctlForumTree"" runat=""server"" showcheckboxes=""true"" ModuleId=""" & ModuleId & """ />")
             //    sHeader &= "<%@ register src=""~/DesktopModules/ActiveForums/controls/af_forumtree.ascx"" tagprefix=""af"" tagname=""forumtree"" %>"
-            //End If
+            // End If
             template = Utilities.LocalizeControl(template);
             template = Utilities.StripTokens(template);
             return template;
@@ -865,8 +865,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.calStartDate.NullDate = Utilities.NullDate().ToString();
             this.calEndDate.NullDate = Utilities.NullDate().ToString();
-            //calStartDate.DateFormat = MainSettings.DateFormatString
-            //calEndDate.DateFormat = MainSettings.DateFormatString
+            // calStartDate.DateFormat = MainSettings.DateFormatString
+            // calEndDate.DateFormat = MainSettings.DateFormatString
             if (!(this.AnnounceStart == Utilities.NullDate()))
             {
                 this.calStartDate.SelectedDate = Utilities.GetUserFormattedDateTime(this.AnnounceStart, this.PortalId, this.UserId);
@@ -879,7 +879,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.plhEditor = new PlaceHolder();
             this.plhEditor = (PlaceHolder)this.FindControl("plhEditor");
-            //'plhEditor.Controls.Clear()
+            // 'plhEditor.Controls.Clear()
             Unit editorWidth;
             Unit editorHeight;
             if (Convert.ToString(this.ForumInfo.EditorWidth) != null)
@@ -910,7 +910,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                 case EditorTypes.HTMLEDITORPROVIDER:
                     {
-                        //TODO: figure out why the editor no longer has any WYSIWYG functionality
+                        // TODO: figure out why the editor no longer has any WYSIWYG functionality
                         var editor = new UI.UserControls.TextEditor();
                         this.txtEditor = editor;
                         editor = (UI.UserControls.TextEditor)this.LoadControl("~/controls/TextEditor.ascx");
@@ -1041,14 +1041,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.LoadForm();
             this.LinkControls(this.Controls);
-            //If Not tsTags Is Nothing Then
+            // If Not tsTags Is Nothing Then
             //    tsTags.Delimiter = ","
             //    tsTags.CharsTillLoad = 2
             //    tsTags.SelectedText = _tags
             //    tsTags.SelectedValue = _tags
-            //End If
+            // End If
 
-            //not sure why this gets set twice.
+            // not sure why this gets set twice.
             this.txtSubject.CssClass = "aftextbox dcf-topic-edit-subject";
             string MyTheme = this.MainSettings.Theme;
             string MyThemePath = this.Page.ResolveUrl("~/DesktopModules/ActiveForums/themes/" + MyTheme);
@@ -1059,7 +1059,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.txtUsername.Text = this._AuthorName;
             this.lblSubject.Text = this._Subject;
             this.lblSubject.CssClass = "aftextbox";
-            //not sure why this gets set twice.
+            // not sure why this gets set twice.
             this.txtSummary.CssClass = "aftextbox dcf-topic-edit-summary";
             this.chkLocked.Checked = this._locked;
             this.chkPinned.Checked = this._pinned;
@@ -1132,7 +1132,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             switch (this.EditorType)
             {
-                //Case EditorTypes.ACTIVEEDITOR
+                // Case EditorTypes.ACTIVEEDITOR
                 //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
                 //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
                 //    txtEditor.Text = _Body
@@ -1189,7 +1189,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     case "plhEditor":
                         switch (this.EditorType)
                         {
-                            //Case EditorTypes.ACTIVEEDITOR
+                            // Case EditorTypes.ACTIVEEDITOR
                             //    Dim txtEditor As New ActiveEditorControls.ActiveEditor
                             //    txtEditor = CType(plhEditor.Controls.Item(0), ActiveEditorControls.ActiveEditor)
                             case EditorTypes.HTMLEDITORPROVIDER:
@@ -1233,7 +1233,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         break;
                     case "btnPreview":
                         this.btnPreview = (DotNetNuke.Modules.ActiveForums.Controls.ImageButton)ctrl;
-                        //Case "tsTags"
+                        // Case "tsTags"
                         //    tsTags = CType(ctrl, DotNetNuke.Modules.ActiveForums.Controls.TextSuggest)
                         break;
                     case "afpolledit":

@@ -349,10 +349,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.AddAttribute("hspace", this.HSpace);
                     imageWriter.AddAttribute("vspace", this.VSpace);
                     imageWriter.AddAttribute("border", "0");
-                    //If [PostBack] Then
+                    // If [PostBack] Then
 
-                    //    imageWriter.AddAttribute("onclick", sPostBack)
-                    //End If
+                    // imageWriter.AddAttribute("onclick", sPostBack)
+                    // End If
                     imageWriter.AddAttribute("align", this.ImageAlign);
                     imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
                     imageWriter.RenderEndTag();
@@ -371,9 +371,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.AddAttribute("hspace", this.HSpace);
                     imageWriter.AddAttribute("vspace", this.VSpace);
                     imageWriter.AddAttribute("border", "0");
-                    //If [PostBack] Then
+                    // If [PostBack] Then
                     //    imageWriter.AddAttribute("onclick", sPostBack)
-                    //End If
+                    // End If
                     imageWriter.AddAttribute("align", this.ImageAlign);
                     imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
                     imageWriter.RenderEndTag();
@@ -389,9 +389,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     imageWriter.AddAttribute("hspace", this.HSpace);
                     imageWriter.AddAttribute("vspace", this.VSpace);
                     imageWriter.AddAttribute("border", "0");
-                    //If [PostBack] Then
+                    // If [PostBack] Then
                     //    imageWriter.AddAttribute("onclick", sPostBack)
-                    //End If
+                    // End If
                     imageWriter.AddAttribute("align", this.ImageAlign);
                     imageWriter.RenderBeginTag(HtmlTextWriterTag.Img);
                     imageWriter.RenderEndTag();
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             }
 
-            //innerWriter.RenderEndTag()
+            // innerWriter.RenderEndTag()
             writer.RenderEndTag();
             if (!string.IsNullOrEmpty(this.NavigateUrl))
             {

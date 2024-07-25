@@ -48,10 +48,10 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        //Private Sub tsTags_Callback(ByVal sender As Object, ByVal e As Modules.ActiveForums.Controls.CallBackEventArgs) Handles tsTags.Callback
+        // Private Sub tsTags_Callback(ByVal sender As Object, ByVal e As Modules.ActiveForums.Controls.CallBackEventArgs) Handles tsTags.Callback
         //    tsTags.Datasource = DataProvider.Instance.Tags_Search(PortalId, ModuleId, e.Parameter.ToString + "%")
         //    tsTags.Refresh(e.Output)
-        //End Sub
+        // End Sub
 
         private void lnkUpdate_Click(object sender, EventArgs e)
         {
@@ -206,7 +206,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var forums = forumList.Split(':');
 
-            //Clear all Nodes
+            // Clear all Nodes
             this.ManageCheck(false);
 
             foreach (var f in forums)
@@ -316,9 +316,9 @@ namespace DotNetNuke.Modules.ActiveForums
                         this.AddChildNodes(trNode, dt, row);
                     }
 
-                    //If trNode.ChildNodes.Count > 0 Then
+                    // If trNode.ChildNodes.Count > 0 Then
                     trGroupNode.ChildNodes.Add(trNode);
-                    //End If
+                    // End If
 
                 }
 

@@ -18,7 +18,7 @@
 // DEALINGS IN THE SOFTWARE.
 //
 
-//ORIGINAL LINE: Imports System.Web.HttpContext
+// ORIGINAL LINE: Imports System.Web.HttpContext
 
 namespace DotNetNuke.Modules.ActiveForums
 {

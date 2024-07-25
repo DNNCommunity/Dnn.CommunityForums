@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ti.IsApproved = true;
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Save(ti);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    //TODO: Add Audit log for who approved topic
+                                    // TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ti.Author.AuthorId > 0)
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ti.Author);
@@ -210,7 +210,7 @@ namespace DotNetNuke.Modules.ActiveForums
                                     ri.IsApproved = true;
                                     new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().Reply_Save(this.PortalId, this.ForumModuleId, ri);
                                     DotNetNuke.Modules.ActiveForums.Controllers.TopicController.SaveToForum(this.ForumModuleId, tmpForumId, tmpTopicId, tmpReplyId);
-                                    //TODO: Add Audit log for who approved topic
+                                    // TODO: Add Audit log for who approved topic
                                     if (fi.ModApproveTemplateId > 0 & ri.Author.AuthorId > 0)
                                     {
                                         DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModApproveTemplateId, this.PortalId, this.ForumModuleId, this.TabId, tmpForumId, tmpTopicId, tmpReplyId, string.Empty, ri.Author);
@@ -372,7 +372,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 strHost = strHost.Replace("http://", "https://");
             }
 
-            //TODO: Add option for folder storage
+            // TODO: Add option for folder storage
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string vpath = null;
             vpath = this.PortalSettings.HomeDirectory + "activeforums_Attach/";

@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             this.drpSort.SelectedIndexChanged += new System.EventHandler(this.drpSort_SelectedIndexChanged);
 
-            //EnableViewState = False
+            // EnableViewState = False
             this.drpSort = new DropDownList();
             this.drpSort.ID = "drpSort";
             this.drpSort.AutoPostBack = true;

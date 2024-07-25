@@ -206,9 +206,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     {
                         groups.Append("<group groupid=\"" + f.ForumGroupId.ToString() + "\" active=\"" + f.ForumGroup?.Active.ToString().ToLowerInvariant() + "\" hidden=\"" + f.ForumGroup?.Hidden.ToString().ToLowerInvariant() + "\">");
                         groups.Append("<name><![CDATA[" + f.GroupName.ToString() + "]]></name>");
-                        //If Not String.IsNullOrEmpty(f.ForumGroup.SEO) Then
+                        // If Not String.IsNullOrEmpty(f.ForumGroup.SEO) Then
                         //    groups.Append(f.ForumGroup.SEO)
-                        //End If
+                        // End If
                         groups.Append("</group>");
                         sb.AppendLine();
                         groupId = f.ForumGroupId;
@@ -223,16 +223,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 foreach (DotNetNuke.Modules.ActiveForums.Entities.ForumInfo f in fc)
                 {
                     forums.Append("<forum groupid=\"" + f.ForumGroupId.ToString() + "\" forumid=\"" + f.ForumID.ToString() + "\"");
-                    //forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")
-                    //forums.Append(" desc=""" & HttpUtility.UrlEncode(Utilities.HTMLEncode(f.ForumDesc.ToString)) & """")
+                    // forums.Append(" name=""" & HttpUtility.UrlEncode(f.ForumName) & """")
+                    // forums.Append(" desc=""" & HttpUtility.UrlEncode(Utilities.HTMLEncode(f.ForumDesc.ToString)) & """")
                     forums.Append(" active=\"" + f.Active.ToString().ToLowerInvariant() + "\"");
                     forums.Append(" hidden=\"" + f.Hidden.ToString().ToLowerInvariant() + "\"");
                     forums.Append(" totaltopics=\"" + f.TotalTopics.ToString() + "\"");
                     forums.Append(" totalreplies=\"" + f.TotalReplies.ToString() + "\"");
                     forums.Append(" lasttopicid=\"" + f.LastTopicId.ToString() + "\"");
                     forums.Append(" lastreplyid=\"" + f.LastReplyId.ToString() + "\"");
-                    //forums.Append(" lastpostsubject=""" & f.LastPostSubject & """")
-                    //forums.Append(" lastpostauthorname=""" & f.LastPostDisplayName & """")
+                    // forums.Append(" lastpostsubject=""" & f.LastPostSubject & """")
+                    // forums.Append(" lastpostauthorname=""" & f.LastPostDisplayName & """")
                     forums.Append(" lastpostauthorid=\"" + f.LastPostUserID + "\"");
                     forums.Append(" lastpostdate=\"" + f.LastPostDateTime.ToString() + "\"");
                     forums.Append(" lastread=\"" + f.LastRead.ToString() + "\"");
@@ -262,9 +262,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                     forums.Append("<modpin>" + f.Security?.ModPin + "</modpin>");
                     forums.Append("<modmove>" + f.Security?.ModMove + "</modmove>");
                     forums.Append("</security>");
-                    //If Not String.IsNullOrEmpty(f.SEO) Then
+                    // If Not String.IsNullOrEmpty(f.SEO) Then
                     //    forums.Append(f.SEO)
-                    //End If
+                    // End If
 
                     forums.Append("</forum>");
                     sb.AppendLine();
@@ -282,7 +282,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 sb.Append("</root>");
                 sb.AppendLine();
 
-                //Dim sXML As String = ds.GetXml()
+                // Dim sXML As String = ds.GetXml()
                 xDoc.LoadXml(sb.ToString());
                 DataCache.SettingsCacheStore(ModuleId, string.Format(CacheKeys.ForumListXml, ModuleId), xDoc);
             }
@@ -320,7 +320,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
                 isNew = true;
             }
 
-            //TODO: When this method is updated to use DAL2 for update, uncomment Cacheable attribute on ForumInfo
+            // TODO: When this method is updated to use DAL2 for update, uncomment Cacheable attribute on ForumInfo
             var forumId = Convert.ToInt32(DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forum_Save(portalId, fi.ForumID, fi.ModuleId, fi.ForumGroupId, fi.ParentForumId, fi.ForumName, fi.ForumDesc, fi.SortOrder, fi.Active, fi.Hidden, fi.ForumSettingsKey, fi.PermissionsId, fi.PrefixURL, fi.SocialGroupId, fi.HasProperties));
             if (!useGroupFeatures && String.IsNullOrEmpty(fi.ForumSettingsKey))
             {
@@ -349,7 +349,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
         public void Forums_Delete(int portalId, int forumId, int moduleId)
         {
-            //TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
+            // TODO: When these methods are updated to use DAL2 for update, uncomment Cacheable attribute on forumInfo
             DotNetNuke.Modules.ActiveForums.DataProvider.Instance().Forums_Delete(portalId, moduleId, forumId);
         }
 

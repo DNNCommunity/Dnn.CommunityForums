@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.ActiveForums
         private int _userId = -1;
         private int _archived = 0;
         private SettingsInfo _mainSettings = null;
-        private int _urlType = 0; //0=default, 1= views, 2 = category, 3 = tag
+        private int _urlType = 0; // 0=default, 1= views, 2 = category, 3 = tag
         private int _otherId = -1;
         private int _categoryId = -1;
         private int _tagId = -1;

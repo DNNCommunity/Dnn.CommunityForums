@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             ControlUtils ctlUtils = new ControlUtils();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
-            //Dim _forumGroupId As Integer = -1
+            // Dim _forumGroupId As Integer = -1
             if (this.ParentForumId == -1)
             {
                 this.ParentForumId = this.ForumId;
@@ -252,12 +252,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             using (IDataReader dr = db.ForumContent_List(this.PortalId, this.ModuleId, this.ForumGroupId, this.ForumId, this.ParentForumId))
             {
-                //ParentForum Section
+                // ParentForum Section
                 dr.Read();
-                //SubForums
+                // SubForums
                 dr.NextResult();
                 dr.Read();
-                //Topics in ParentForum
+                // Topics in ParentForum
                 dr.NextResult();
                 string catKey = string.Empty;
                 int count = 0;
@@ -295,16 +295,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     catCount += 1;
-                    //Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
+                    // Dim Params As String() = {ParamKeys.ForumId & "=" & ForumId, ParamKeys.TopicId & "=" & TopicId, ParamKeys.ViewType & "=topic"}
                     string[] Params = { ParamKeys.TopicId + "=" + dr["TopicId"].ToString() };
-                    //Dim sTopicURL As String = ctlUtils.BuildUrl(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, Integer.Parse(dr("TopicId").ToString), dr("URL").ToString, -1, -1, String.Empty, 1)
+                    // Dim sTopicURL As String = ctlUtils.BuildUrl(TabId, ModuleId, groupPrefix, forumPrefix, ForumGroupId, ForumId, Integer.Parse(dr("TopicId").ToString), dr("URL").ToString, -1, -1, String.Empty, 1)
                     string sTopicURL = ctlUtils.TopicURL(dr, this.TabId, this.ModuleId);
                     sb.Append("<a href=\"" + sTopicURL + "\"><span>" + dr["Subject"].ToString() + "</span></a></li>");
                     if (this.TopicId > 0)
                     {
                         if (Convert.ToInt32(dr["TopicId"].ToString()) == this.TopicId)
                         {
-                            //  RenderTopic(dr)
+                            // RenderTopic(dr)
                         }
                     }
 
@@ -324,7 +324,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return sb.ToString();
         }
 
-        //Private Sub RenderTopic(ByVal dr As IDataRecord)
+        // Private Sub RenderTopic(ByVal dr As IDataRecord)
         //    Dim topicsTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[TOPIC]", "[/TOPIC]")
         //    Dim replyTemplate As String = TemplateUtils.GetTemplateSection(TopicTemplate, "[REPLIES]", "[/REPLIES]")
         //    TopicTemplate = TemplateUtils.ReplaceSubSection(TopicTemplate, String.Empty, "[REPLIES]", "[/REPLIES]")
@@ -336,11 +336,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         //    topicsTemplate = topicsTemplate.Replace("[SIGNATURE]", String.Empty)
         //    TopicTemplate = TemplateUtils.ReplaceSubSection(TopicTemplate, topicsTemplate, "[TOPIC]", "[/TOPIC]")
 
-        //    TopicTemplate = TopicTemplate.Replace("[ADDREPLY]", String.Empty)
+        // TopicTemplate = TopicTemplate.Replace("[ADDREPLY]", String.Empty)
         //    TopicTemplate = TopicTemplate.Replace("[POSTRATINGBUTTON]", String.Empty)
         //    TopicTemplate = TopicTemplate.Replace("[TOPICSUBSCRIBE]", String.Empty)
         //    Topic = TopicTemplate
 
-        //End Sub
+        // End Sub
     }
 }

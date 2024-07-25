@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         public TabCollection()
         {
             this._count = 0;
-            //_contents = New ArrayList
+            // _contents = New ArrayList
 
         }
 
@@ -242,7 +242,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public void Dispose()
         {
-            //this.Dispose();
+            // this.Dispose();
         }
     }
 

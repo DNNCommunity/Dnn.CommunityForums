@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private void BuildNewGrid(DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security, int permissionsId)
         {
-            //Roles
+            // Roles
             string[] roles = this.GetSecureObjectList(security, 0).Split(';');
             int[] roleIds = new int[roles.Length - 2 + 1];
             int i = 0;
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 pl.Add(pi);
             }
 
-            //Users
+            // Users
             string users = this.GetSecureObjectList(security, 1);
             string userNames = string.Empty;
             if (!string.IsNullOrEmpty(users))
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
             }
 
-            //Groups
+            // Groups
             string groups = this.GetSecureObjectList(security, 2);
             if (!string.IsNullOrEmpty(groups))
             {
@@ -235,8 +235,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             sb.Append("</table></div></td><td valign=\"top\" width=\"94%\"><div class=\"afsecactions\" style=\"overflow-x:auto;overflow-y:hidden;\">");
-            //litNewObjects.Text = sb.ToString
-            //sb = New StringBuilder
+            // litNewObjects.Text = sb.ToString
+            // sb = New StringBuilder
 
             sb.Append("<table cellpadding=0 cellspacing=0 border=0 width=\"100%\" id=\"tblSecGrid\">");
             sb.Append("<tr>");
@@ -264,7 +264,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (int r = 3; r <= 27; r++)
                 {
                     keyText = Convert.ToString(Enum.Parse(enumType, values.GetValue(r - 3).ToString()));
-                    bool bState = Convert.ToBoolean(grid[x, r]); //DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
+                    bool bState = Convert.ToBoolean(grid[x, r]); // DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPermission(ForumID, Integer.Parse(dr("ObjectId").ToString), key, Integer.Parse(dr("SecureType").ToString), dt)
                     string sState = "<img src=\"" + this.imgOff + "\" alt=\"Disabled\" />";
                     if (bState)
                     {
@@ -295,8 +295,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             sb.Append("</table></div></td></tr></table>");
             this.litSecGrid.Text = sb.ToString();
-            //litNewSecurity.Text = sb.ToString
-            //litNewGrid.Text = sb.ToString
+            // litNewSecurity.Text = sb.ToString
+            // litNewGrid.Text = sb.ToString
 
         }
 

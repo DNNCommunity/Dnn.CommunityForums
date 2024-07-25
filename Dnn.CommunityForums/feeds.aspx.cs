@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             base.OnLoad(e);
 
-            //Put user code to initialize the page here
+            // Put user code to initialize the page here
             this.Response.ContentType = "text/xml";
             this.Response.ContentEncoding = Encoding.UTF8;
             int intPortalId = -1;
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            //PortalSettings.PortalId
+            // PortalSettings.PortalId
             int intTabId = -1;
 
             if (this.Request.QueryString["tabid"] != null)
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.ForumName = this.drForum["ForumName"].ToString();
                     this.GroupName = this.drForum["GroupName"].ToString();
                     this.ForumDescription = this.drForum["ForumDesc"].ToString();
-                    //TopicsTemplateId = CInt(drForum("TopicsTemplateId"))
+                    // TopicsTemplateId = CInt(drForum("TopicsTemplateId"))
                     this.bAllowRSS = Convert.ToBoolean(this.drForum["AllowRSS"]);
                     if (this.bAllowRSS)
                     {
@@ -174,10 +174,10 @@ namespace DotNetNuke.Modules.ActiveForums
                         {
                             if (DotNetNuke.Security.PortalSecurity.IsInRoles(this.PortalSettings.ActiveTab.TabPermissions.ToString("VIEW")))
                             {
-                                //objModule = objModules.GetModule(ModuleId, TabId)
-                                //If DotNetNuke.Security.PortalSecurity.IsInRoles(objModule.AuthorizedViewRoles) = True Then
+                                // objModule = objModules.GetModule(ModuleId, TabId)
+                                // If DotNetNuke.Security.PortalSecurity.IsInRoles(objModule.AuthorizedViewRoles) = True Then
                                 //    sb.Append(BuildItem(dr, TabId, 2, IncludeBody, PortalId))
-                                //End If
+                                // End If
                                 sb.Append(this.BuildItem(dr, TabId, 2, IncludeBody, PortalId));
                             }
                         }
@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         sb.Append(this.WriteElement("/channel", 1));
                         sb.Replace("[LASTBUILDDATE]", this.LastBuildDate.ToString("r"));
                         sb.Append("</rss>");
-                        //Cache.Insert("RSS" & ModuleId & ForumID, sb.ToString, Nothing, DateTime.UtcNow.AddMinutes(dblCacheTimeOut), TimeSpan.Zero)
+                        // Cache.Insert("RSS" & ModuleId & ForumID, sb.ToString, Nothing, DateTime.UtcNow.AddMinutes(dblCacheTimeOut), TimeSpan.Zero)
                         return sb.ToString();
                     }
                 }
@@ -310,10 +310,10 @@ namespace DotNetNuke.Modules.ActiveForums
         private string CleanXmlString(string XmlString)
         {
             XmlString = this.Server.HtmlEncode(XmlString);
-            //XmlString = StripHTMLTag(XmlString)
-            //XmlString = Replace(XmlString, "&", "&amp;")
-            //XmlString = Replace(XmlString, "<", "&lt;")
-            //XmlString = Replace(XmlString, ">", "&gt;")
+            // XmlString = StripHTMLTag(XmlString)
+            // XmlString = Replace(XmlString, "&", "&amp;")
+            // XmlString = Replace(XmlString, "<", "&lt;")
+            // XmlString = Replace(XmlString, ">", "&gt;")
             return XmlString;
         }
 
@@ -341,23 +341,23 @@ namespace DotNetNuke.Modules.ActiveForums
         #endregion
         #region  Web Form Designer Generated Code
 
-        //This call is required by the Web Form Designer.
+        // This call is required by the Web Form Designer.
         [System.Diagnostics.DebuggerStepThrough()]
         private void InitializeComponent()
         {
 
         }
 
-        //NOTE: The following placeholder declaration is required by the Web Form Designer.
-        //Do not delete or move it.
+        // NOTE: The following placeholder declaration is required by the Web Form Designer.
+        // Do not delete or move it.
         private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            //CODEGEN: This method call is required by the Web Form Designer
-            //Do not modify it using the code editor.
+            // CODEGEN: This method call is required by the Web Form Designer
+            // Do not modify it using the code editor.
             this.InitializeComponent();
         }
 

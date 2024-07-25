@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ForumDisplay : ControlsBase
     {
         #region Private Members
-        //Dim pt As Forums.Utils.TimeCalcItem
+        // Dim pt As Forums.Utils.TimeCalcItem
         private int _forumGroupId = -1;
 
         #endregion
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             base.OnInit(e);
 
             string sTemp;
-            //pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
+            // pt = New Forums.Utils.TimeCalcItem("ForumDisplay")
 
             object obj = DataCache.SettingsCacheRetrieve(this.ModuleId, string.Format(CacheKeys.ForumViewTemplate, this.ModuleId, this.ForumGroupId));
             if (obj == null)
@@ -164,10 +164,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sOut = TemplateUtils.ReplaceSubSection(this.DisplayTemplate, sb.ToString(), "[GROUPSECTION]", "[/GROUPSECTION]");
             }
 
-            //sOut = sOut.Replace("[BREADCRUMB]", String.Empty)
-            //sOut = sOut.Replace("[WHOSONLINE]", "<af:usersonline id=""ctlUsersOnline"" templatefile=""usersonline.htm"" runat=""server"" />")
-            //sOut = sOut.Replace("[JUMPTO]", String.Empty)
-            //sOut = sOut.Replace("[TEMPLATE:TOOLBAR]", "<af:toolbar id=""ctlToolbar"" templatefile=""toolbar.htm"" runat=""server"" />")
+            // sOut = sOut.Replace("[BREADCRUMB]", String.Empty)
+            // sOut = sOut.Replace("[WHOSONLINE]", "<af:usersonline id=""ctlUsersOnline"" templatefile=""usersonline.htm"" runat=""server"" />")
+            // sOut = sOut.Replace("[JUMPTO]", String.Empty)
+            // sOut = sOut.Replace("[TEMPLATE:TOOLBAR]", "<af:toolbar id=""ctlToolbar"" templatefile=""toolbar.htm"" runat=""server"" />")
 
             return sOut;
         }
@@ -189,9 +189,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             lastreplyid = int.Parse(fNode.Attributes["lastreplyid"].Value);
 
             fid = int.Parse(fNode.Attributes["forumid"].Value);
-            //TODO: Validate can view
-            //sForum = sForum.Replace("[FORUMNAME]", "<af:link id=""hypForumName" & fid & """ navigateurl=""" & Utilities.NavigateUrl(PageId, "", New String() {ParamKeys.ViewType & "=" & Views.Topics, ParamKeys.ForumId & "=" & fid}) & """ text=""" & forumname & """ runat=""server"" />") 'GetForumLink(forumname, PageId, True))
-            sForum = sForum.Replace("[FORUMNAME]", "<af:link id=\"hypForumName" + fid + "\" navigateurl=\"" + URL.ForForum(this.PageId, fid, string.Empty, forumname) + "\" text=\"" + forumname + "\" runat=\"server\" />"); //GetForumLink(forumname, PageId, True))
+            // TODO: Validate can view
+            // sForum = sForum.Replace("[FORUMNAME]", "<af:link id=""hypForumName" & fid & """ navigateurl=""" & Utilities.NavigateUrl(PageId, "", New String() {ParamKeys.ViewType & "=" & Views.Topics, ParamKeys.ForumId & "=" & fid}) & """ text=""" & forumname & """ runat=""server"" />") 'GetForumLink(forumname, PageId, True))
+            sForum = sForum.Replace("[FORUMNAME]", "<af:link id=\"hypForumName" + fid + "\" navigateurl=\"" + URL.ForForum(this.PageId, fid, string.Empty, forumname) + "\" text=\"" + forumname + "\" runat=\"server\" />"); // GetForumLink(forumname, PageId, True))
             sForum = sForum.Replace("[FORUMNAMENOLINK]", forumname);
             sForum = sForum.Replace("[FORUMDESCRIPTION]", fNode.Attributes["desc"].Value);
             sForum = sForum.Replace("[TOTALTOPICS]", fNode.Attributes["totaltopics"].Value);
@@ -229,14 +229,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sForum = sForum.Replace("[LASTPOSTDATE]", lastpostdate);
             }
 
-            //TODO: Properly check "canview"
+            // TODO: Properly check "canview"
             string sIcon = TemplateUtils.ShowIcon(true, fid, this.UserId, DateTime.Parse(lastpostdate), lastReadDate, lastreplyid);
             string sIconImage = "<img alt=\"" + forumname + "\" src=\"" + this.ThemePath + "images/" + sIcon + "\" />";
-            //sForum = sForum.Replace("[FORUMICON]", sIconImage);
+            // sForum = sForum.Replace("[FORUMICON]", sIconImage);
             sForum = sForum.Replace("[FORUMICON]", "<div style=\"height:30px;margin=right:10px;\"><i class=\"fa fa-folder fa-2x fa-blue\"></i></div>");
             sForum = sForum.Replace("[CSS:FORUMICON]", "affoldernorm");
             sForum = sForum.Replace("[CSS:FORUMICONSM]", "affoldersmnorm");
-            //sForum = sForum.Replace("[FORUMICONSM]", sIconImage.Replace("folder", "folder16"));
+            // sForum = sForum.Replace("[FORUMICONSM]", sIconImage.Replace("folder", "folder16"));
             sForum = sForum.Replace("[FORUMICONSM]", "");
             var xNodeList = this.ForumData.SelectNodes("//forums/forum[@active='true' and @parentforumid='" + fid + "']");
             string sSubs = string.Empty;

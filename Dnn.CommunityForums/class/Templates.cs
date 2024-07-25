@@ -32,18 +32,18 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public enum TemplateTypes : int
         {
-            All, //0
-            System, //1
-            ForumView, //2
-            TopicView, //3
-            TopicsView, //4
-            TopicForm, //5
-            ReplyForm, //6
-            QuickReplyForm, //7
-            Email, //8
-            Profile, //9
-            ModEmail, //10
-            PostInfo //11
+            All, // 0
+            System, // 1
+            ForumView, // 2
+            TopicView, // 3
+            TopicsView, // 4
+            TopicForm, // 5
+            ReplyForm, // 6
+            QuickReplyForm, // 7
+            Email, // 8
+            Profile, // 9
+            ModEmail, // 10
+            PostInfo // 11
         }
 
     }
@@ -94,9 +94,9 @@ namespace DotNetNuke.Modules.ActiveForums
     public class TemplateController
     {
         #region Public Methods
-        //'<summary>
-        //'Function to save template.</summary>
-        //'<param name="info">TemplateInfo object</param>
+        // '<summary>
+        // 'Function to save template.</summary>
+        // '<param name="info">TemplateInfo object</param>
         public int Template_Save(TemplateInfo templateInfo)
         {
             // save updated template to database; will return TemplateId which is critical if new template

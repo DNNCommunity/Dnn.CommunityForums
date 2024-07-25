@@ -417,7 +417,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            //dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
+            // dbPrefix = databaseOwner + objectQualifier + databaseObjectPrefix;
             IDataReader dataReader = (IDataReader)SqlHelper.ExecuteReader(connectionString, databaseOwner + objectQualifier + "ActiveForumsEmailConnector_GetEmailInfo", PortalId, ModuleId, forumID, topicID, ipAddress, userIds.ToString());
             if (dataReader.Read())
             {
@@ -983,7 +983,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private static string ParsePreview(int portalId, string template, string message, int moduleId)
         {
-            //TODO: Legacy Attachments Functionality - Probably can remove.
+            // TODO: Legacy Attachments Functionality - Probably can remove.
             if (message.Contains("&#91;IMAGE:"))
             {
                 var strHost = Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)) + "/";
@@ -995,7 +995,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            //TODO: Legacy Attachments Functionality - Probably can remove.
+            // TODO: Legacy Attachments Functionality - Probably can remove.
             if (message.Contains("&#91;THUMBNAIL:"))
             {
                 var strHost = string.Concat(Common.Globals.AddHTTP(Common.Globals.GetDomainName(HttpContext.Current.Request)), "/");

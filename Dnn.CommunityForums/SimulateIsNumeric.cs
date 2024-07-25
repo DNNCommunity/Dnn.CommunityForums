@@ -39,7 +39,7 @@ public static class SimulateIsNumeric
             return true;
         }
 
-        //VB's 'IsNumeric' returns true for any boolean value:
+        // VB's 'IsNumeric' returns true for any boolean value:
         bool testBool;
         if (bool.TryParse(expression.ToString(), out testBool))
         {

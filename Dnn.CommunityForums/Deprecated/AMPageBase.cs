@@ -43,11 +43,11 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        //Public ReadOnly Property PortalId() As Integer
+        // Public ReadOnly Property PortalId() As Integer
         //    Get
         //        Return CInt(Request.QueryString["pid"])
         //    End Get
-        //End Property
+        // End Property
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static SettingsInfo MainSettings
         {

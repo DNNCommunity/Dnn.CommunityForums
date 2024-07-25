@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             try
             {
-                //Put user code to initialize the page here
+                // Put user code to initialize the page here
                 if (this.Request.Params["afmsg"] != null)
                 {
                     switch (this.Request.Params["afmsg"].ToUpper())
@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region  Web Form Designer Generated Code
 
-        //This call is required by the Web Form Designer.
+        // This call is required by the Web Form Designer.
         [System.Diagnostics.DebuggerStepThrough()]
         private void InitializeComponent()
         {
@@ -133,16 +133,16 @@ namespace DotNetNuke.Modules.ActiveForums
 
         protected System.Web.UI.WebControls.Panel pnlMessage;
 
-        //NOTE: The following placeholder declaration is required by the Web Form Designer.
-        //Do not delete or move it.
+        // NOTE: The following placeholder declaration is required by the Web Form Designer.
+        // Do not delete or move it.
         private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            //CODEGEN: This method call is required by the Web Form Designer
-            //Do not modify it using the code editor.
+            // CODEGEN: This method call is required by the Web Form Designer
+            // Do not modify it using the code editor.
             this.LocalResourceFile = Globals.SharedResourceFile;
             this.InitializeComponent();
         }

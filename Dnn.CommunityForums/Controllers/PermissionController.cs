@@ -417,7 +417,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controllers
 
             string[] permSet = AuthorizedRoles.Split('|');
             string[] userSet = UserPermSet.Split('|');
-            //Authorized
+            // Authorized
             string[] authRoles = permSet[0].Split(';');
             string[] userRoles = userSet[0].Split(';');
             if (HasRequiredPerm(authRoles, userRoles))

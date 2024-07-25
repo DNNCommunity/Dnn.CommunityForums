@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             // Read the attributes for this provider
 
-            //Get Connection string from web.config
+            // Get Connection string from web.config
             this._connectionString = Config.GetConnectionString();
 
             if (this._connectionString == "")
@@ -682,7 +682,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public override IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter)
         {
-            //Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
+            // Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
             return (IDataReader)SqlHelper.ExecuteReader(this.ConnectionString, this.DatabaseOwner + this.ObjectQualifier + "activeforums_UserProfiles_List", PortalId, -1, MaxRows, RowIndex, Filter);
         }
 

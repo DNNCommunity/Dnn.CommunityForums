@@ -39,7 +39,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("Copyright © DNN Community")]
 [assembly: AssemblyTrademark("")]
 
-//The following GUID is for the ID of the typelib if this project is exposed to COM
+// The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("582CE2BF-FEA8-4CAF-802B-C7F04FBC3482")]
 
 // Version information for an assembly consists of the following four values:

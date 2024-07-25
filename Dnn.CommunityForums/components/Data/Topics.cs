@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
             return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "TopicWithReplies", PortalId, TopicId, PageIndex, PageSize);
         }
 
-        //Public Function TopicsForDisplayXML(ByVal PortalId As Integer, ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal IsSuper As Boolean, ByVal SortColumn As String, ByVal ForumIds As String) As XmlDocument
+        // Public Function TopicsForDisplayXML(ByVal PortalId As Integer, ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal IsSuper As Boolean, ByVal SortColumn As String, ByVal ForumIds As String) As XmlDocument
         //    Dim dr As IDataReader = SqlHelper.ExecuteReader(_connectionString, dbPrefix & "UI_TopicsDisplay", PortalId, ModuleId, ForumId, UserId, PageIndex, PageSize, IsSuper, SortColumn, ForumIds)
         //    Dim sb As New Text.StringBuilder
         //    sb.Append("<?xml version=""1.0"" encoding=""utf-8"" ?>")
@@ -126,12 +126,12 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         //        sb.Append(dr("lastpostdata").ToString)
         //        sb.Append("</topic>")
 
-        //    End While
+        // End While
         //    sb.Append("</topics></root>")
         //    dr.Close()
         //    Dim xDoc As New XmlDocument
         //    xDoc.LoadXml(sb.ToString)
         //    Return xDoc
-        //End Function
+        // End Function
     }
 }

@@ -103,8 +103,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void agTags_ItemBound(object sender, Modules.ActiveForums.Controls.ItemBoundEventArgs e)
         {
-            //e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
-            //e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
+            // e.Item(1) = Server.HtmlEncode(e.Item(1).ToString)
+            // e.Item(2) = Server.HtmlEncode(e.Item(2).ToString)
             e.Item[4] = "<img src=\"" + this.Page.ResolveUrl(Globals.ModulePath + "images/delete16.png") + "\" alt=\"" + this.GetSharedResource("[RESX:Delete]") + "\" height=\"16\" width=\"16\" />";
         }
         #endregion

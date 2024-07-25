@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             writer.Write("</div>");
 
-            //  writer.Write(Text)
+            // writer.Write(Text)
         }
 
         protected override void OnInit(EventArgs e)
@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Controls.Add(this.Content);
             }
 
-            //EnableViewState = False
+            // EnableViewState = False
         }
     }
 
@@ -256,7 +256,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             base.OnInit(e);
 
-            //EnableViewState = False
+            // EnableViewState = False
         }
     }
 }

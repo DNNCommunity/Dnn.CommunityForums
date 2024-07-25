@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             this.TopicId = TopicId;
         }
 
-        //amaf_topicSubscribe
+        // amaf_topicSubscribe
         public string Render()
         {
             StringBuilder sb = new StringBuilder();

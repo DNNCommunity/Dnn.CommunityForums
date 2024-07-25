@@ -364,7 +364,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (isApproved)
             {
-                //Redirect to show post
+                // Redirect to show post
                 this.Response.Redirect(fullURL, false);
             }
             else

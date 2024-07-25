@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     this.SocialGroupId = Convert.ToInt32(this.Request.QueryString["GroupId"]);
                 }
 
-                //Put user code to initialize the page here
+                // Put user code to initialize the page here
                 this.txtSearch.Attributes.Add("onkeydown", "if(event.keyCode == 13){document.getElementById('" + this.lnkSearch.ClientID + "').click();}");
             }
             catch (Exception exc)

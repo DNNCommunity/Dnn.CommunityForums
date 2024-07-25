@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public IDataReader Profiles_MemberList(int PortalId, int ModuleId, int MaxRows, int RowIndex, string Filter)
         {
-            //Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
+            // Return CType(SqlHelper.ExecuteReader(ConnectionString, DatabaseOwner & ObjectQualifier & "activeforums_UserProfiles_Members", PortalId, MaxRows, RowIndex, Filter), IDataReader)
             return (IDataReader)SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "UserProfiles_List", PortalId, ModuleId, MaxRows, RowIndex, Filter);
         }
 

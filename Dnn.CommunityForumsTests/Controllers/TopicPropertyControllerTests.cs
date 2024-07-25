@@ -17,7 +17,7 @@
         [Test()]
         public void SerializeTest()
         {
-            //Arrange
+            // Arrange
             var mockForum = new Mock<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo>();
             mockForum.Object.ForumID = 1;
             mockForum.Object.ForumName = "Test Forum";
@@ -35,10 +35,10 @@
             prop2.Value = "Test Value";
             mockPropertyList.Object.Add(prop2);
 
-            //Act
+            // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Serialize(mockForum.Object, mockPropertyList.Object);
 
-            //Assert
+            // Assert
             var expectedResult = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
@@ -46,7 +46,7 @@
         [Test()]
         public void DeserializeTest()
         {
-            //Arrange
+            // Arrange
 
             var mockPropertyList = new Mock<List<DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo>>();
             var prop1 = new DotNetNuke.Modules.ActiveForums.Entities.TopicPropertyInfo();
@@ -57,10 +57,10 @@
 
             var serialized = "<topicdata><properties><property id=\"1\"><name><![CDATA[Test Property]]></name><value><![CDATA[Test Value]]></value></property></properties></topicdata>";
 
-            //Act
+            // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Controllers.TopicPropertyController.Deserialize(serialized);
 
-            //Assert
+            // Assert
             Assert.That(actualResult, Has.Count.EqualTo(mockPropertyList.Object.Count));
             Assert.That(actualResult.First().PropertyId, Is.EqualTo(mockPropertyList.Object[0].PropertyId));
             Assert.That(actualResult.First().Name, Is.EqualTo(mockPropertyList.Object[0].Name));

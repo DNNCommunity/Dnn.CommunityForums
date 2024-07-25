@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected PlaceHolder plhProfileSaveButton = new PlaceHolder();
         protected PlaceHolder plhProfileCancelButton = new PlaceHolder();
         protected DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs amTabs = new DotNetNuke.Modules.ActiveForums.Controls.ActiveTabs();
-        //Edit Mode
+        // Edit Mode
         protected global::System.Web.UI.WebControls.TextBox txtWebSite;
         protected global::System.Web.UI.WebControls.TextBox txtOccupation;
         protected global::System.Web.UI.WebControls.TextBox txtLocation;
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.Controls.Add(ctl.Controls[0]);
             }
 
-            //Begin Load Tab Control
+            // Begin Load Tab Control
             this.plhTabs = (PlaceHolder)this.FindControl("plhTabs");
             if (this.plhTabs != null & this.amTabs != null)
             {
@@ -473,7 +473,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private string RenderModals(string Template)
         {
             string sOut = Template;
-            //[AM:CONTROLS:MODAL:MyPreferences:Private]
+            // [AM:CONTROLS:MODAL:MyPreferences:Private]
             string pattern = "(\\[AM:CONTROLS:MODAL:(.+?)\\])";
             Regex regExp = new Regex(pattern);
             MatchCollection matches = null;

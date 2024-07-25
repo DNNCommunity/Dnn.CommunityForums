@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 sb.Append("if(!window.AMPage){window.AMPage=new AMValidator();};");
                 Control ctrl = new Control();
                 ctrl = this.Parent.FindControl(this.ControlToValidate);
-                //Text = Text.Replace("'", "\'")
+                // Text = Text.Replace("'", "\'")
                 sb.Append("AMPage.Add('" + this.ClientID + "','" + ctrl.ClientID + "','" + this.ValidationGroup + "',null,null,null,'" + this.Text + "','" + this.DefaultValue + "');");
                 sb.Append("</script>");
                 output.Write(sb.ToString());

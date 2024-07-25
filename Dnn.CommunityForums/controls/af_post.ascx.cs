@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.AttachmentsClientId = this.hidAttachments.ClientID;
 
             // TODO: Make sure this check happens on submit
-            //if (_canAttach && _fi.AllowAttach) {}
+            // if (_canAttach && _fi.AllowAttach) {}
 
             this.ctlForm.CancelButton.ImageUrl = this._themePath + "/images/cancel32.png";
             this.ctlForm.CancelButton.ImageLocation = "TOP";
@@ -400,7 +400,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                //User has acccess
+                // User has acccess
                 var sBody = HttpUtility.HtmlDecode(ti.Content.Body);
                 var sSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
                 sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this._allowHTML, this._editorType);
@@ -419,7 +419,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.ctlForm.StatusId = ti.StatusId;
                 this.ctlForm.TopicPriority = ti.Priority;
 
-                //if (ti.Author.AuthorId > 0)
+                // if (ti.Author.AuthorId > 0)
                 //    ctlForm.Subscribe = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, ti.Author.AuthorId);
 
                 this._contentId = ti.ContentId;
@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (ti.TopicType == TopicTypes.Poll)
                 {
-                    //Get Poll
+                    // Get Poll
                     var ds = DataProvider.Instance().Poll_Get(ti.TopicId);
                     if (ds.Tables.Count > 0)
                     {
@@ -461,7 +461,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private void LoadReply()
         {
-            //Edit a Reply
+            // Edit a Reply
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.EditReply;
 
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.PostId);
@@ -555,13 +555,13 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.Template = template;
             if (!(this.TopicId > 0))
             {
-                //Can't Find Topic
+                // Can't Find Topic
                 var im = new InfoMessage { Message = this.GetSharedResource("[RESX:Message:LoadTopicFailed]") };
                 this.plhContent.Controls.Add(im);
             }
             else if (!this.CanReply)
             {
-                //No permission to reply
+                // No permission to reply
                 var im = new InfoMessage { Message = this.GetSharedResource("[RESX:Message:AccessDenied]") };
                 this.plhContent.Controls.Add(im);
             }
@@ -585,7 +585,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (this.Request.Params[ParamKeys.QuoteId] != null | this.Request.Params[ParamKeys.ReplyId] != null | this.Request.Params[ParamKeys.PostId] != null)
                 {
-                    //Setup form for Quote or Reply with body display
+                    // Setup form for Quote or Reply with body display
                     var isQuote = false;
                     var postId = 0;
                     var sPostedBy = Utilities.GetSharedResource("[RESX:PostedBy]") + " {0} {1} {2}";
@@ -862,8 +862,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (!String.IsNullOrEmpty(this.ctlForm.PollQuestion) && !String.IsNullOrEmpty(this.ctlForm.PollOptions))
             {
-                //var sPollQ = ctlForm.PollQuestion.Trim();
-                //sPollQ = Utilities.CleanString(PortalId, sPollQ, false, EditorTypes.TEXTBOX, true, false, ForumModuleId, string.Empty, false);
+                // var sPollQ = ctlForm.PollQuestion.Trim();
+                // sPollQ = Utilities.CleanString(PortalId, sPollQ, false, EditorTypes.TEXTBOX, true, false, ForumModuleId, string.Empty, false);
                 var pollId = DataProvider.Instance().Poll_Save(-1, this.TopicId, this.UserId, this.ctlForm.PollQuestion.Trim(), this.ctlForm.PollType);
                 if (pollId > 0)
                 {
@@ -1034,7 +1034,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     if (!sc.Subscribed(this.PortalId, this.ForumModuleId, authorId, this.ForumId, this.TopicId))
                     {
-                        //TODO: move to new DAL2 subscription controller
+                        // TODO: move to new DAL2 subscription controller
                         new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
                     }
                 }
@@ -1043,7 +1043,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var isSub = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, authorId, this.ForumId, this.TopicId);
                     if (isSub && !this.ctlForm.Subscribe)
                     {
-                        //TODO: move to new DAL2 subscription controller
+                        // TODO: move to new DAL2 subscription controller
                         new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
                     }
                 }

@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class SubscriptionController
     {
-        //TODO: move to new DAL2 subscription controller
+        // TODO: move to new DAL2 subscription controller
         public int Subscription_Update(int PortalId, int ModuleId, int ForumId, int TopicId, int Mode, int UserId, string UserRoles = "")
         {
             if (UserId == -1)
@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return -1;
         }
 
-        //TODO: move to new DAL2 subscription controller
+        // TODO: move to new DAL2 subscription controller
         public List<DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo> Subscription_GetSubscribers(int PortalId, int ForumId, int TopicId, SubscriptionTypes Mode, int AuthorId, string CanSubscribe)
         {
             DotNetNuke.Modules.ActiveForums.Entities.SubscriptionInfo si;
@@ -119,20 +119,20 @@ namespace DotNetNuke.Modules.ActiveForums
             return new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(PortalId, ModuleId, UserId, ForumId);
         }
 
-        //TODO: move to new DAL2 subscription controller
+        // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, int ForumId, int TopicId, int ReplyId, int AuthorId)
         {
             DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(forumId: ForumId, moduleId: ModuleId);
             SendSubscriptions(PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId);
         }
 
-        //TODO: move to new DAL2 subscription controller
+        // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId)
         {
             SendSubscriptions(-1, PortalId, ModuleId, TabId, fi, TopicId, ReplyId, AuthorId, null);
         }
 
-        //TODO: move to new DAL2 subscription controller
+        // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(int TemplateId, int PortalId, int ModuleId, int TabId, DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi, int TopicId, int ReplyId, int AuthorId, Uri requestUrl)
         {
             var sc = new SubscriptionController();
@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
         }
 
-        //TODO: move to new DAL2 subscription controller
+        // TODO: move to new DAL2 subscription controller
         public static void SendSubscriptions(SubscriptionTypes SubscriptionType, DateTime StartDate)
         {
             string sysTemplateName = "DailyDigest";

@@ -125,29 +125,29 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            //BEGIN MASK
+            // BEGIN MASK
             writer.AddAttribute("id", "amModalMask");
             writer.AddAttribute("style", "display:none;width:100%;background-color:Gray;top:0;left:0;position:absolute;opacity: 0.6;-moz-opacity: 0.6;filter: alpha(opacity=60);");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.RenderEndTag();
-            //END MASK
-            //BEGIN MAIN DIV
-            //<div id="amModal" class="amModal" style="display:none;position:absolute;">
+            // END MASK
+            // BEGIN MAIN DIV
+            // <div id="amModal" class="amModal" style="display:none;position:absolute;">
             writer.AddAttribute("id", "amModal");
             writer.AddAttribute("class", "amModal");
             writer.AddAttribute("style", "display:none;position:absolute;");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            //   BEGIN HEADER
-            //<div class="amModalHeader">
+            // BEGIN HEADER
+            // <div class="amModalHeader">
             writer.AddAttribute("class", "amModalHeader");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
-            //       BEGIN HEADER TEXT
+            // BEGIN HEADER TEXT
             //    <div class="amModalHeaderText" id="amModalHeaderText"></div>
             writer.AddAttribute("class", "amModalHeaderText");
             writer.AddAttribute("id", "amModalHeaderText");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.RenderEndTag();
-            //       END HEADER TEXT
+            // END HEADER TEXT
             //       BEGIN CLOSE BUTTON
             //    <div class="amModalCloseImg" onclick="amaf_closeDialog();"><img src="<%=Page.ResolveUrl("~/DesktopModules/ActiveForums/images/close.gif") %>" alt="[RESX:Close]" /></div>
             writer.AddAttribute("class", "amModalCloseImg");
@@ -156,20 +156,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             writer.AddAttribute("src", this.Page.ResolveUrl("~/DesktopModules/ActiveForums/images/close.gif"));
             writer.AddAttribute("alt", "[RESX:Close]");
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
-            writer.RenderEndTag(); //Close image
-            writer.RenderEndTag(); //Close div
+            writer.RenderEndTag(); // Close image
+            writer.RenderEndTag(); // Close div
             //   END Close Button
-            writer.RenderEndTag(); //Close Header
-            //END HEADER
-            //BEGIN Content AREA
-            //<div class="amModalFrame" id="amModalFrameDiv">
+            writer.RenderEndTag(); // Close Header
+            // END HEADER
+            // BEGIN Content AREA
+            // <div class="amModalFrame" id="amModalFrameDiv">
             writer.AddAttribute("class", "amModalFrame");
             writer.AddAttribute("id", "amModalFrameDiv");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             this.cb.RenderControl(writer);
-            writer.RenderEndTag(); //Close Content Area
-            //END Content AREA
-            //END Main Div
+            writer.RenderEndTag(); // Close Content Area
+            // END Content AREA
+            // END Main Div
             writer.RenderEndTag(); // Close Main Div
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();

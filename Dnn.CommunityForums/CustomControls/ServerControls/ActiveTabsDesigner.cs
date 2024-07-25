@@ -38,17 +38,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public override string GetDesignTimeHtml()
         {
-            //Return MyBase.GetDesignTimeHtml()
+            // Return MyBase.GetDesignTimeHtml()
             string template = "...";
             string message = "test";
             string markup = string.Format(template, "name", base.Component.Site, base.GetDesignTimeHtml(), message);
             return markup;
-            //Return CreatePlaceHolderDesignTimeHtml()
+            // Return CreatePlaceHolderDesignTimeHtml()
         }
 
         protected override string GetErrorDesignTimeHtml(System.Exception e)
         {
-            //Return MyBase.GetErrorDesignTimeHtml(e)
+            // Return MyBase.GetErrorDesignTimeHtml(e)
             return this.CreatePlaceHolderDesignTimeHtml("Error!");
         }
 

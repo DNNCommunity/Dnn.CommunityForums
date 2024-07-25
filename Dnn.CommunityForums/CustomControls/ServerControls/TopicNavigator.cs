@@ -88,8 +88,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             tb.PageIndex = this.PageId;
             tb.PageSize = this.MainSettings.PageSize;
             tb.Template = this.ItemTemplate.Text;
-            //tb.HeaderTemplate = HeaderTemplate.Text
-            //tb.FooterTemplate = FooterTemplate.Text
+            // tb.HeaderTemplate = HeaderTemplate.Text
+            // tb.FooterTemplate = FooterTemplate.Text
             tb.TopicId = this.TopicId;
             tb.UserId = this.UserId;
             writer.Write(tb.Render());

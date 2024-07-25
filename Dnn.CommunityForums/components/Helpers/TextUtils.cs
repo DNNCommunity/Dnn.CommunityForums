@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 input = input.Replace("CMD ", "");
                 input = input.Replace(";", "");
                 input = input.Replace("--", "");
-                //input = input.Replace("""", """""")
+                // input = input.Replace("""", """""")
                 return input;
             }
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 string pattern = "<(.|\\n)*?>";
                 sText = Regex.Replace(sText, pattern, string.Empty, RegexOptions.IgnoreCase);
                 sText = HttpUtility.HtmlEncode(sText);
-                //sText = HttpUtility.UrlEncode(sText)
+                // sText = HttpUtility.UrlEncode(sText)
                 return sText;
             }
         }

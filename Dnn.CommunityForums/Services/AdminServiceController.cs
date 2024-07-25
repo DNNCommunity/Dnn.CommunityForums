@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return this.Request.CreateResponse(HttpStatusCode.OK, "enabled");
         }
 
-        //DTO for RunMaintenance
+        // DTO for RunMaintenance
         public class RunMaintenanceDTO
         {
             public int ModuleId { get; set; }
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.ActiveForums
             return this.Request.CreateResponse(HttpStatusCode.OK);
         }
 
-        //DTO for ToggleSecurity
+        // DTO for ToggleSecurity
         public class ToggleSecurityDTO
         {
             public int ModuleId { get; set; }

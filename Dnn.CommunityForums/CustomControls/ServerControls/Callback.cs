@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         private string _PostURL = "";
         private string _token = string.Empty;
-        private int _validState = 0; //-1 = don't process, 0 = initial load, 1 = process
+        private int _validState = 0; // -1 = don't process, 0 = initial load, 1 = process
 
         #endregion
 
@@ -257,11 +257,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             if (this.Content != null)
             {
-                //Try
+                // Try
                 this.Controls.Add(this.Content);
-                //Catch ex As Exception
+                // Catch ex As Exception
 
-                //End Try
+                // End Try
 
             }
         }
@@ -270,21 +270,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (this.Enabled)
             {
-                //Dim sID As String = Me.ClientID
-                //Dim args() As String = GetArgs()
-                //If Not args Is Nothing Then
+                // Dim sID As String = Me.ClientID
+                // Dim args() As String = GetArgs()
+                // If Not args Is Nothing Then
                 //    If args.Length > 0 Then
                 //        Me.handleCB(args)
                 //        Return
                 //    End If
-                //End If
-                //output = New HtmlTextWriter(output, String.Empty)
-                //AddAttributesToRender(output)
-                //output.RenderBeginTag(HtmlTextWriterTag.Div)
-                //If Not Content Is Nothing Then
+                // End If
+                // output = New HtmlTextWriter(output, String.Empty)
+                // AddAttributesToRender(output)
+                // output.RenderBeginTag(HtmlTextWriterTag.Div)
+                // If Not Content Is Nothing Then
                 //    Content.RenderControl(output)
-                //End If
-                //output.RenderEndTag()
+                // End If
+                // output.RenderEndTag()
                 string sID = this.ClientID;
                 if (!string.IsNullOrEmpty(this.ForceId))
                 {
@@ -347,12 +347,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 string URL = this.PostURL;
                 if (URL == "")
                 {
-                    //  URL = GetResponseUrl(Context)
+                    // URL = GetResponseUrl(Context)
                 }
 
-                //If URL.Contains("/404.aspx?404;") Then
+                // If URL.Contains("/404.aspx?404;") Then
                 //    URL = URL.Replace("/404.aspx?404;", String.Empty)
-                //End If
+                // End If
                 if (!string.IsNullOrEmpty(URL))
                 {
                     URL = this.XSSFilter(URL);
@@ -385,16 +385,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             if (this.Content != null)
             {
-                //Try
+                // Try
                 this.Controls.Clear();
                 this.Controls.Add(this.Content);
-                //Catch ex As Exception
+                // Catch ex As Exception
 
-                //End Try
+                // End Try
 
             }
 
-            //ChildControlsCreated = True
+            // ChildControlsCreated = True
         }
 
         private void handleCB(string[] args)
@@ -422,35 +422,35 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     }
 
                     this.Context.Response.Write("]]></CallbackData>");
-                    //Context.Response.Flush()
+                    // Context.Response.Flush()
 
                     this.Context.Response.End();
 
-                    //HttpContext.Current.ApplicationInstance.CompleteRequest()
+                    // HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
                 else if (this._validState == -1)
                 {
                     throw new Exception("Incomplete Request");
                 }
 
-                //Dim strWriter As New StringWriter()
-                //Dim oWriter As New HtmlTextWriter(strWriter, String.Empty)
-                //Dim oArgs As New CallBackEventArgs(oWriter)
-                //oArgs.Parameter = args(0)
-                //oArgs.Parameters = args
-                //Me.OnCallback(oArgs)
-                //oWriter.Close()
-                //Context.Response.Clear()
-                //Context.Response.ContentType = "text/xml"
-                //Context.Response.Write("<CallbackData><![CDATA[")
-                //Dim sTemp As String = strWriter.ToString
-                //sTemp = sTemp.Replace("//<![CDATA[", String.Empty)
-                //sTemp = sTemp.Replace("//]]>", String.Empty)
-                //Context.Response.Write(sTemp)
-                //Context.Response.Write("]]></CallbackData>")
-                //'Context.Response.Flush()
-                //Context.Response.End()
-                //'HttpContext.Current.ApplicationInstance.CompleteRequest()
+                // Dim strWriter As New StringWriter()
+                // Dim oWriter As New HtmlTextWriter(strWriter, String.Empty)
+                // Dim oArgs As New CallBackEventArgs(oWriter)
+                // oArgs.Parameter = args(0)
+                // oArgs.Parameters = args
+                // Me.OnCallback(oArgs)
+                // oWriter.Close()
+                // Context.Response.Clear()
+                // Context.Response.ContentType = "text/xml"
+                // Context.Response.Write("<CallbackData><![CDATA[")
+                // Dim sTemp As String = strWriter.ToString
+                // sTemp = sTemp.Replace("//<![CDATA[", String.Empty)
+                // sTemp = sTemp.Replace("//]]>", String.Empty)
+                // Context.Response.Write(sTemp)
+                // Context.Response.Write("]]></CallbackData>")
+                // 'Context.Response.Flush()
+                // Context.Response.End()
+                // 'HttpContext.Current.ApplicationInstance.CompleteRequest()
             }
             catch (Exception ex)
             {
@@ -460,7 +460,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     this.Context.Response.ContentType = "text/xml";
                     this.Context.Response.Write("<CallbackError><![CDATA[" + ex.ToString() + "]]></CallbackError>");
                     this.Context.Response.End();
-                    //HttpContext.Current.ApplicationInstance.CompleteRequest()
+                    // HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
             }
         }
@@ -470,7 +470,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             return oContext.Request.Url.Scheme + Uri.SchemeDelimiter + oContext.Request.Url.Host + Convert.ToString(oContext.Request.Url.IsDefaultPort ? "" : (":" + oContext.Request.Url.Port)) + oContext.Response.ApplyAppPathModifier(oContext.Request.RawUrl);
         }
 
-        //Private Function GetArgs() As String()
+        // Private Function GetArgs() As String()
         //    Dim idname As String = "amCB_" & Me.ClientID
         //    Dim args() As String = Nothing
         //    If Not Context Is Nothing Then
@@ -482,7 +482,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         //        Next
         //    End If
         //    Return args
-        //End Function
+        // End Function
         private string[] GetArgs()
         {
             string sId = this.ClientID;
@@ -514,7 +514,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         if (string.IsNullOrEmpty(tokenvalue))
                         {
                             this._validState = -1;
-                            //Throw New Exception("Error validating request.")
+                            // Throw New Exception("Error validating request.")
                         }
                         else
                         {
@@ -578,8 +578,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         }
 
                         myCookie.HttpOnly = true;
-                        //myCookie.Path = "/"
-                        //myCookie.Domain = HttpContext.Current.Request.Url.Host
+                        // myCookie.Path = "/"
+                        // myCookie.Domain = HttpContext.Current.Request.Url.Host
                         myCookie.Expires = DateTime.UtcNow.AddHours(2);
                         myCookie.Value = ticket;
                         HttpContext.Current.Response.Cookies.Add(myCookie);

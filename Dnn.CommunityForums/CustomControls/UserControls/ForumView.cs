@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                                         sGroupSectionTemp = sGroupSectionTemp.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
                                         sGroupSectionTemp = sGroupSectionTemp.Replace("[GROUPCOLLAPSE]", DotNetNuke.Modules.ActiveForums.Injector.InjectCollapsibleOpened(target: $"group{GroupId}", title: Utilities.GetSharedResource("[RESX:ToggleGroup]")));
 
-                                        //any replacements on the group
+                                        // any replacements on the group
                                         string sNewGroup = "<div id=\"group" + GroupId + "\" class=\"afgroup\">" + sGroup + "</div>";
                                         sNewGroup = sNewGroup.Replace("[FORUMGROUPID]", fi.ForumGroupId.ToString());
                                         sNewGroup = sNewGroup.Replace("[GROUPNAME]", fi.GroupName);
@@ -390,7 +390,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 if (Regex.IsMatch(Template, pattern))
                 {
                     cssmatch = Regex.Match(Template, pattern).Value;
-                    css = cssmatch.Split(':'); //0=CSS,1=TopRow, 2=mid rows, 3=lastRow
+                    css = cssmatch.Split(':'); // 0=CSS,1=TopRow, 2=mid rows, 3=lastRow
                 }
             }
 
@@ -510,7 +510,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Template = Template.Replace("[TOTALREPLIES]", fi.TotalReplies.ToString());
             Template = Template.Replace("[FORUMSUBSCRIBERCOUNT]", fi.SubscriberCount.ToString());
 
-            //Last Post Section
+            // Last Post Section
             int intLength = 0;
             if ((Template.IndexOf("[LASTPOSTSUBJECT:", 0) + 1) > 0)
             {
@@ -691,7 +691,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa " + sFolderCSS + " fa-fw\"></i>&nbsp;&nbsp;");
 
-                        //tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa fa-folder fa-fw fa-blue\"></i>&nbsp;&nbsp;");
+                        // tmpSubs = tmpSubs.Replace("[FORUMICONSM]", "<i class=\"fa fa-folder fa-fw fa-blue\"></i>&nbsp;&nbsp;");
                         tmpSubs = this.ParseForumRow(tmpSubs, fi, i, subforums.Count());
                     }
                     else

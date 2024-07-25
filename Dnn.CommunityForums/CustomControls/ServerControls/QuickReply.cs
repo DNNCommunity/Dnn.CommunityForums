@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 }
 
                 sTemp = sTemp.Replace("[AF:CONTROL:SUBSCRIBECHECK]", "<input type=\"checkbox\" id=\"chkSubscribe\" name=\"chkSubscribe\" value=\"1\" " + SubscribedChecked + "\" />");
-                //Security
+                // Security
                 sTemp = sTemp.Replace("[CREATEROLES]", "1;");
                 sTemp = sTemp.Replace("[USERROLES]", this.ForumUser.UserRoles);
                 sTemp = sTemp.Replace("[THEMEPATH]", this.ThemePath);
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo ri = new DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo();
             Data.Topics db = new Data.Topics();
-            //im rc As New ReplyController
+            // im rc As New ReplyController
             int ReplyId = -1;
             string sUsername = string.Empty;
             if (HttpContext.Current.Request.IsAuthenticated)
@@ -213,11 +213,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             string sBody = string.Empty;
-            //TODO: Check for allowhtml
+            // TODO: Check for allowhtml
             bool allowHtml = false;
-            //If forumInfo.AllowHTML Then
+            // If forumInfo.AllowHTML Then
             //    allowHtml = isHTMLPermitted(forumInfo.EditorPermittedUsers, IsTrusted, forumInfo.Security.ModEdit)
-            //End If
+            // End If
             sBody = Utilities.CleanString(this.PortalId, HttpContext.Current.Request.Form["txtBody"], allowHtml, EditorTypes.TEXTBOX, forumInfo.UseFilter, forumInfo.AllowScript, this.ModuleId, this.ThemePath, forumInfo.AllowEmoticons);
             ri.TopicId = this.TopicId;
             ri.ReplyToId = this.TopicId;
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             if (isApproved)
             {
                 DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, forumInfo.ForumGroupId, this.ForumId, this.TopicId, ReplyId, ri.Content.AuthorId);
-                //Redirect to show post
+                // Redirect to show post
                 string fullURL = Utilities.NavigateURL(this.PageId, "", new string[] { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=" + Views.Topic, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ContentJumpId + "=" + ReplyId });
                 HttpContext.Current.Response.Redirect(fullURL, false);
             }

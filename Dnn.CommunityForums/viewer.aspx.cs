@@ -33,22 +33,22 @@ namespace DotNetNuke.Modules.ActiveForums
 
         #region  Web Form Designer Generated Code
 
-        //This call is required by the Web Form Designer.
+        // This call is required by the Web Form Designer.
         [DebuggerStepThrough]
         private void InitializeComponent()
         {
         }
 
-        //NOTE: The following placeholder declaration is required by the Web Form Designer.
-        //Do not delete or move it.
+        // NOTE: The following placeholder declaration is required by the Web Form Designer.
+        // Do not delete or move it.
         private object designerPlaceholderDeclaration;
 
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            //CODEGEN: This method call is required by the Web Form Designer
-            //Do not modify it using the code editor.
+            // CODEGEN: This method call is required by the Web Form Designer
+            // Do not modify it using the code editor.
             this.InitializeComponent();
         }
 

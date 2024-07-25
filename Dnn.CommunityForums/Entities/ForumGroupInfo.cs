@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Groups")]
     [PrimaryKey("ForumGroupId", AutoIncrement = true)]
     [Scope("ModuleId")]
-    //TODO [Cacheable("activeforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
+    // TODO [Cacheable("activeforums_Groups", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
 
     public partial class ForumGroupInfo
     {

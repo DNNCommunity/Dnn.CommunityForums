@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_subscribe : ForumBase
     {
         #region Public Members
-        public int mode = 1; //0 = Forum 1 = Topic
+        public int mode = 1; // 0 = Forum 1 = Topic
         public bool IsSubscribed = false;
         #endregion
         #region Event Handlers

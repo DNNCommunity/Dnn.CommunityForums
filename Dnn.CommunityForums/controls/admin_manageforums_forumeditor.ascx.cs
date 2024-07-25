@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         public string imgOn;
         public string imgOff;
-        public string editorType = "G"; //"F"
+        public string editorType = "G"; // "F"
         public int recordId = 0;
         protected Controls.admin_securitygrid ctlSecurityGrid = new Controls.admin_securitygrid();
 
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 this.lblMaintWarn.Text = string.Format(this.GetSharedResource("[RESX:MaintenanceWarning]"), this.GetSharedResource("[RESX:MaintenanceWarning:Remove]"), this.GetSharedResource("[RESX:MaintenanceWarning:Remove:Desc]"));
             }
 
-            //drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
+            // drpEditorTypes.Attributes.Add("onchange", "toggleEditorFields();");
 
             if (this.cbEditorAction.IsCallback)
             {

@@ -20,22 +20,22 @@
         [TestCase(5, 4)]
         public void IsTrustedTest(int userTrustLevel, int userPostCount)
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             bool isTrusted = Utilities.IsTrusted(0, userTrustLevel, false, 0, userPostCount);
-            //Assert
+            // Assert
             Assert.That(isTrusted, Is.False);
         }
 
         [Test()]
         public void NullDateTest()
         {
-            //Arrange
+            // Arrange
             DateTime expectedResult = DateTime.Parse("1/1/1900", new CultureInfo("en-US", false).DateTimeFormat).ToUniversalTime();
-            //Act
+            // Act
             var actualResult = Utilities.NullDate();
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
@@ -43,10 +43,10 @@
         [TestCase("  this is a : messy string for a +url = 0 -", "this-is-a-messy-string-for-a-url-0")]
         public void CleanStringForUrlTest(string input, string expectedResult)
         {
-            //Arrange
-            //Act
+            // Arrange
+            // Act
             string actualResult = Utilities.CleanStringForUrl(input);
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
@@ -57,7 +57,7 @@
         [TestCase(200, 25, false, ExpectedResult = false)] // interval is 200, last post is 25, expect false
         public bool HasFloodIntervalPassedTest1(int floodInterval, int secondsSinceLastPost, bool isAdmin)
         {
-            //Arrange
+            // Arrange
             var mockUser = new Mock<User>();
             mockUser.Object.IsAdmin = isAdmin;
             mockUser.Object.Profile.DateLastPost = DateTime.UtcNow.AddSeconds(-1 * secondsSinceLastPost);
@@ -67,9 +67,9 @@
             mockForum.Object.ForumSettings.Add(ForumSettingKeys.DefaultTrustLevel, TrustTypes.NotTrusted);
             var mockPermissions = new Mock<DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo>();
             mockForum.Object.Security = mockPermissions.Object;
-            //Act
+            // Act
             bool actualResult = Utilities.HasFloodIntervalPassed(floodInterval, mockUser.Object, mockForum.Object);
-            //Assert
+            // Assert
             return actualResult;
         }
 
@@ -77,10 +77,10 @@
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTestEmptyTag()
         {
-            //Arrange
-            //Act
+            // Arrange
+            // Act
             string actualResult = Utilities.HtmlEncode(string.Empty);
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.Empty);
         }
 
@@ -88,12 +88,12 @@
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlEncode.")]
         public void HtmlEncodeTest()
         {
-            //Arrange
+            // Arrange
             string tag = "<p>";
             string expectedResult = "&lt;p&gt;";
-            //Act
+            // Act
             string actualResult = Utilities.HtmlEncode(tag);
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
@@ -101,10 +101,10 @@
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTestEmptyTag()
         {
-            //Arrange
-            //Act
+            // Arrange
+            // Act
             string actualResult = Utilities.HtmlDecode(string.Empty);
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.Empty);
         }
 
@@ -112,12 +112,12 @@
         [Obsolete("Deprecated in Community Forums. Removed in 09.00.00. Use HttpUtility.HtmlDecode.")]
         public void HtmlDecodeTest()
         {
-            //Arrange
+            // Arrange
             string tag = "&lt;p&gt;";
             string expectedResult = "<p>";
-            //Act
+            // Act
             string actualResult = Utilities.HtmlDecode(tag);
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
 
@@ -128,21 +128,21 @@
         [TestCase(" test ", ExpectedResult = false)]
         public bool HasHTMLTest(string value)
         {
-            //Arrange
-            //Act
+            // Arrange
+            // Act
             return Utilities.HasHTML(value);
-            //Assert
+            // Assert
         }
 
         [Test()]
         public void CheckSqlStringTest()
         {
-            //Arrange
+            // Arrange
             var input = "SELECT * FROM TABLE1 UNION SELECT * FROM TABLE2";
             var expectedResult = "SELECT * 1  SELECT * 2";
-            //Act
+            // Act
             var actualResult = DotNetNuke.Modules.ActiveForums.Utilities.Text.CheckSqlString(input);
-            //Assert
+            // Assert
             Assert.That(actualResult, Is.EqualTo(expectedResult));
         }
     }

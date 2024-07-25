@@ -25,7 +25,7 @@
         {
             get
             {
-                //TODO : clean this up to use DAL2
+                // TODO : clean this up to use DAL2
                 if (this.forumId < 1)
                 {
                     this.forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);

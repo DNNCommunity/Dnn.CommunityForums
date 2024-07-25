@@ -125,8 +125,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             try
             {
-                //if (Page.IsPostBack == false)
-                //{
+                // if (Page.IsPostBack == false)
+                // {
                 this.BindThemes();
                 this.BindTemplates();
                 this.BindPrivateMessaging();
@@ -174,9 +174,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 this.txtDateFormat.Text = this.DateFormatString;
 
                 Utilities.SelectListItemByValue(this.drpForumGroupTemplate, this.ForumGroupTemplate);
-                //}
+                // }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -321,7 +321,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 DotNetNuke.Common.Utilities.Config.Touch();
 
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -516,7 +516,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (i == 9)
                     {
-                        //sClass &= " gridsep"
+                        // sClass &= " gridsep"
                     }
 
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
@@ -555,7 +555,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (i == 9)
                     {
-                        //sClass &= " gridsep"
+                        // sClass &= " gridsep"
                     }
 
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
@@ -594,7 +594,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (i == 9)
                     {
-                        //sClass &= " gridsep"
+                        // sClass &= " gridsep"
                     }
 
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");
@@ -632,7 +632,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (i == 9)
                     {
-                        //sClass &= " gridsep"
+                        // sClass &= " gridsep"
                     }
 
                     sb.Append("<td align=\"center\" class=\"" + sClass + "\">");

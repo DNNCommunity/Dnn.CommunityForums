@@ -52,8 +52,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
 
                 this.UpdateResourceFileNode(portalResources, name, resourceText);
-                //UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyName + ".Help", resourceText)
-                //UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyCategory + ".Header", prop.PropertyCategory)
+                // UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyName + ".Help", resourceText)
+                // UpdateResourceFileNode(portalResources, "GroupProperties_" + prop.PropertyCategory + ".Header", prop.PropertyCategory)
 
                 // remove unmodified keys
                 foreach (XmlNode node in portalResources.SelectNodes("//root/data"))
@@ -92,7 +92,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 return true;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 return false;
                 // UI.Skins.Skin.AddModuleMessage(Me, Localization.GetString("Save.ErrorMessage", Me.LocalResourceFile), UI.Skins.Controls.ModuleMessage.ModuleMessageType.YellowWarning)
