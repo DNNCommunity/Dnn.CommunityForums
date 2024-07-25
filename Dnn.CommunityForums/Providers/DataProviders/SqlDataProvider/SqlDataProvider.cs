@@ -36,11 +36,11 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private const string ProviderType = "data";
 
-        private DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration(ProviderType);
-        private string _connectionString;
-        private string _providerPath;
-        private string _objectQualifier;
-        private string _databaseOwner;
+        private DotNetNuke.Framework.Providers.ProviderConfiguration providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration(ProviderType);
+        private string connectionString;
+        private string providerPath;
+        private string objectQualifier;
+        private string databaseOwner;
 
         #endregion
 
@@ -50,31 +50,31 @@ namespace DotNetNuke.Modules.ActiveForums
         {
 
             // Read the configuration specific information for this provider
-            DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this._providerConfiguration.Providers[this._providerConfiguration.DefaultProvider];
+            DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
 
             // Read the attributes for this provider
 
             // Get Connection string from web.config
-            this._connectionString = Config.GetConnectionString();
+            this.connectionString = Config.GetConnectionString();
 
-            if (this._connectionString == "")
+            if (this.connectionString == "")
             {
                 // Use connection string specified in provider
-                this._connectionString = objProvider.Attributes["connectionString"];
+                this.connectionString = objProvider.Attributes["connectionString"];
             }
 
-            this._providerPath = objProvider.Attributes["providerPath"];
+            this.providerPath = objProvider.Attributes["providerPath"];
 
-            this._objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (this._objectQualifier != "" && this._objectQualifier.EndsWith("_") == false)
+            this.objectQualifier = objProvider.Attributes["objectQualifier"];
+            if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)
             {
-                this._objectQualifier += "_";
+                this.objectQualifier += "_";
             }
 
-            this._databaseOwner = objProvider.Attributes["databaseOwner"];
-            if (this._databaseOwner != "" && this._databaseOwner.EndsWith(".") == false)
+            this.databaseOwner = objProvider.Attributes["databaseOwner"];
+            if (this.databaseOwner != "" && this.databaseOwner.EndsWith(".") == false)
             {
-                this._databaseOwner += ".";
+                this.databaseOwner += ".";
             }
 
         }
@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._connectionString;
+                return this.connectionString;
             }
         }
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._providerPath;
+                return this.providerPath;
             }
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._objectQualifier;
+                return this.objectQualifier;
             }
         }
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._databaseOwner;
+                return this.databaseOwner;
             }
         }
 

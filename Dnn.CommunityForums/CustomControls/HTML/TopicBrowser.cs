@@ -26,325 +26,325 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class TopicBrowser
     {
-        private int _portalId = -1;
+        private int portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        private int _moduleId = -1;
+        private int moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
-        private int _tabId = -1;
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
-        private string _forumIds = string.Empty;
+        private string forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._forumIds;
+                return this.forumIds;
             }
 
             set
             {
-                this._forumIds = value;
+                this.forumIds = value;
             }
         }
 
-        private int _forumId = -1;
+        private int forumId = -1;
 
         public int ForumId
         {
             get
             {
-                return this._forumId;
+                return this.forumId;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
-        private int _forumGroupId = -1;
+        private int forumGroupId = -1;
 
         public int ForumGroupId
         {
             get
             {
-                return this._forumGroupId;
+                return this.forumGroupId;
             }
 
             set
             {
-                this._forumGroupId = value;
+                this.forumGroupId = value;
             }
         }
 
-        private int _parentForumId = -1;
+        private int parentForumId = -1;
 
         public int ParentForumId
         {
             get
             {
-                return this._parentForumId;
+                return this.parentForumId;
             }
 
             set
             {
-                this._parentForumId = value;
+                this.parentForumId = value;
             }
         }
 
-        private int _topicId = -1;
+        private int topicId = -1;
 
         public int TopicId
         {
             get
             {
-                return this._topicId;
+                return this.topicId;
             }
 
             set
             {
-                this._topicId = value;
+                this.topicId = value;
             }
         }
 
-        private string _topic = string.Empty;
+        private string topic = string.Empty;
 
         public string Topic
         {
             get
             {
-                return this._topic;
+                return this.topic;
             }
 
             set
             {
-                this._topic = value;
+                this.topic = value;
             }
         }
 
-        private string _template = string.Empty;
+        private string template = string.Empty;
 
         public string Template
         {
             get
             {
-                return this._template;
+                return this.template;
             }
 
             set
             {
-                this._template = value;
+                this.template = value;
             }
         }
 
-        private string _headerTemplate = string.Empty;
+        private string headerTemplate = string.Empty;
 
         public string HeaderTemplate
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
-        private string _footerTemplate = string.Empty;
+        private string footerTemplate = string.Empty;
 
         public string FooterTemplate
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 
         public User ForumUser { get; set; }
 
-        private int _categoryId = -1;
+        private int categoryId = -1;
 
         public int CategoryId
         {
             get
             {
-                return this._categoryId;
+                return this.categoryId;
             }
 
             set
             {
-                this._categoryId = value;
+                this.categoryId = value;
             }
         }
 
-        private int _tagId = -1;
+        private int tagId = -1;
 
         public int TagId
         {
             get
             {
-                return this._tagId;
+                return this.tagId;
             }
 
             set
             {
-                this._tagId = value;
+                this.tagId = value;
             }
         }
 
-        private int _pageIndex = 1;
+        private int pageIndex = 1;
 
         public int PageIndex
         {
             get
             {
-                return this._pageIndex;
+                return this.pageIndex;
             }
 
             set
             {
-                this._pageIndex = value;
+                this.pageIndex = value;
             }
         }
 
-        private int _pageSize = 20;
+        private int pageSize = 20;
 
         public int PageSize
         {
             get
             {
-                return this._pageSize;
+                return this.pageSize;
             }
 
             set
             {
-                this._pageSize = value;
+                this.pageSize = value;
             }
         }
 
-        private string _itemCss = "aftb-topic";
+        private string itemCss = "aftb-topic";
 
         public string ItemCss
         {
             get
             {
-                return this._itemCss;
+                return this.itemCss;
             }
 
             set
             {
-                this._itemCss = value;
+                this.itemCss = value;
             }
         }
 
-        private string _altItemCSS = "aftb-topic-alt";
+        private string altItemCSS = "aftb-topic-alt";
 
         public string AltItemCSS
         {
             get
             {
-                return this._altItemCSS;
+                return this.altItemCSS;
             }
 
             set
             {
-                this._altItemCSS = value;
+                this.altItemCSS = value;
             }
         }
 
-        private bool _useAjax = false;
+        private bool useAjax = false;
 
         public bool UseAjax
         {
             get
             {
-                return this._useAjax;
+                return this.useAjax;
             }
 
             set
             {
-                this._useAjax = value;
+                this.useAjax = value;
             }
         }
 
-        private string _imagePath = string.Empty;
+        private string imagePath = string.Empty;
 
         public string ImagePath
         {
             get
             {
-                return this._imagePath;
+                return this.imagePath;
             }
 
             set
             {
-                this._imagePath = value;
+                this.imagePath = value;
             }
         }
 
-        private bool _maintainPage = false;
+        private bool maintainPage = false;
 
         public bool MaintainPage
         {
             get
             {
-                return this._maintainPage;
+                return this.maintainPage;
             }
 
             set
             {
-                this._maintainPage = value;
+                this.maintainPage = value;
             }
         }
 
-        private SettingsInfo _mainSettings = null;
-        private bool _canEdit = false;
+        private SettingsInfo mainSettings = null;
+        private bool canEdit = false;
 
         public int UserId { get; set; } = -1;
 
@@ -353,14 +353,14 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             string fs = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.GetForumsForUser(this.ForumUser.UserRoles, this.PortalId, this.ModuleId, "CanEdit");
             if (!string.IsNullOrEmpty(fs))
             {
-                this._canEdit = true;
+                this.canEdit = true;
             }
 
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             string forumPrefix = string.Empty;
             string groupPrefix = string.Empty;
-            this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
-            if (this._mainSettings.URLRewriteEnabled)
+            this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+            if (this.mainSettings.URLRewriteEnabled)
             {
                 if (this.ForumId > 0)
                 {
@@ -483,7 +483,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     tmp = tmp.Replace("[LASTAUTHOR]", UserProfiles.GetDisplayName(portalSettings, this.ModuleId, true, this.ForumUser.Profile.IsMod, this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser, int.Parse(row["LastAuthorId"].ToString()), auth.Username, auth.FirstName, auth.LastName, auth.DisplayName));
                 }
 
-                if (this._canEdit)
+                if (this.canEdit)
                 {
                     tmp = tmp.Replace("[AF:QUICKEDITLINK]", "<span class=\"af-icon16 af-icon16-gear\" onclick=\"amaf_quickEdit(" + this.ModuleId + "," + this.ForumId + row["TopicId"].ToString() + ");\"></span>");
                 }
@@ -495,7 +495,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 //
 
                 tmp = tmp.Replace("[TOPICSTATE]", cUtils.TopicState(row));
-                var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, this._mainSettings.AvatarWidth, this._mainSettings.AvatarHeight);
+                var sAvatar = UserProfiles.GetAvatar(auth.AuthorId, this.mainSettings.AvatarWidth, this.mainSettings.AvatarHeight);
 
                 tmp = tmp.Replace("[AF:AVATAR]", sAvatar);
                 return tmp;

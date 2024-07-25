@@ -26,8 +26,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     [TableName("activeforums_Topics_Tags")]
     public class TopicTagInfo
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.TagInfo _tagInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topicInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.TagInfo tagInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
 
         public int TopicId { get; set; }
 
@@ -38,16 +38,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (this._tagInfo == null)
+                if (this.tagInfo == null)
                 {
-                    this._tagInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(this.TagId);
-                    if (this._tagInfo == null)
+                    this.tagInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TagController().GetById(this.TagId);
+                    if (this.tagInfo == null)
                     {
-                        this._tagInfo = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo();
+                        this.tagInfo = new DotNetNuke.Modules.ActiveForums.Entities.TagInfo();
                     }
                 }
 
-                return this._tagInfo;
+                return this.tagInfo;
             }
         }
 
@@ -56,18 +56,18 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         {
             get
             {
-                if (this._topicInfo == null)
+                if (this.topicInfo == null)
                 {
-                    this._topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
-                    if (this._topicInfo == null)
+                    this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId);
+                    if (this.topicInfo == null)
                     {
-                        this._topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
-                        this._topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
+                        this.topicInfo = new DotNetNuke.Modules.ActiveForums.Entities.TopicInfo();
+                        this.topicInfo.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
 
                     }
                 }
 
-                return this._topicInfo;
+                return this.topicInfo;
             }
         }
     }

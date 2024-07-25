@@ -46,15 +46,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
         }
 
-        private int _hSpace;
-        private int _vSpace;
-        private string _imageAlign = "absmiddle";
-        private bool _postBack = true;
-        private string _confirmMessage = "";
-        private string _validationGroup = "";
-        private string _imageLocation = "LEFT";
-        private string _objectId = "";
-        private string _postBackScript;
+        private int hSpace;
+        private int vSpace;
+        private string imageAlign = "absmiddle";
+        private bool postBack = true;
+        private string confirmMessage = "";
+        private string validationGroup = "";
+        private string imageLocation = "LEFT";
+        private string objectId = "";
+        private string postBackScript;
 
         [Bindable(true), Category("Appearance"), DefaultValue("")]
         public string ImageUrl { get; set; }
@@ -67,12 +67,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._imageAlign;
+                return this.imageAlign;
             }
 
             set
             {
-                this._imageAlign = value;
+                this.imageAlign = value;
             }
         }
 
@@ -81,12 +81,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._hSpace.ToString();
+                return this.hSpace.ToString();
             }
 
             set
             {
-                this._hSpace = Convert.ToInt32(value);
+                this.hSpace = Convert.ToInt32(value);
             }
         }
 
@@ -95,12 +95,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._vSpace.ToString();
+                return this.vSpace.ToString();
             }
 
             set
             {
-                this._vSpace = Convert.ToInt32(value);
+                this.vSpace = Convert.ToInt32(value);
             }
         }
 
@@ -109,12 +109,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._postBack;
+                return this.postBack;
             }
 
             set
             {
-                this._postBack = value;
+                this.postBack = value;
             }
         }
 
@@ -132,12 +132,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._confirmMessage;
+                return this.confirmMessage;
             }
 
             set
             {
-                this._confirmMessage = value;
+                this.confirmMessage = value;
             }
         }
 
@@ -149,12 +149,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._validationGroup;
+                return this.validationGroup;
             }
 
             set
             {
-                this._validationGroup = value;
+                this.validationGroup = value;
             }
         }
 
@@ -163,12 +163,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._imageLocation;
+                return this.imageLocation;
             }
 
             set
             {
-                this._imageLocation = value;
+                this.imageLocation = value;
             }
         }
 
@@ -177,12 +177,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._objectId;
+                return this.objectId;
             }
 
             set
             {
-                this._objectId = value;
+                this.objectId = value;
             }
         }
 
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._postBackScript;
+                return this.postBackScript;
             }
 
         }
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             }
 
             string sPostBack = this.Page.ClientScript.GetPostBackEventReference(this, string.Empty);
-            this._postBackScript = sPostBack;
+            this.postBackScript = sPostBack;
             if (this.Enabled)
             {
                 if (this.PostBack)

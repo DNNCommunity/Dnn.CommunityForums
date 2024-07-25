@@ -32,22 +32,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TopMembers runat=server></{0}:TopMembers>")]
     public class TopMembers : WebControl
     {
-        private int _portalId = -1;
-        private int _rows = 10;
-        private DisplayTemplate _itemTemplate;
-        private DisplayTemplate _headerTemplate;
-        private DisplayTemplate _footerTemplate;
+        private int portalId = -1;
+        private int rows = 10;
+        private DisplayTemplate itemTemplate;
+        private DisplayTemplate headerTemplate;
+        private DisplayTemplate footerTemplate;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
@@ -55,12 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._rows;
+                return this.rows;
             }
 
             set
             {
-                this._rows = value;
+                this.rows = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._itemTemplate;
+                return this.itemTemplate;
             }
 
             set
             {
-                this._itemTemplate = value;
+                this.itemTemplate = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 

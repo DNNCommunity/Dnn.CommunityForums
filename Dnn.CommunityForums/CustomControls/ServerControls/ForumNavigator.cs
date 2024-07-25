@@ -32,63 +32,63 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:ForumNavigator runat=server></{0}:ForumNavigator>")]
     public class ForumNavigator : WebControl
     {
-        private DisplayTemplate _itemTemplate;
+        private DisplayTemplate itemTemplate;
 
         public DisplayTemplate ItemTemplate
         {
             get
             {
-                return this._itemTemplate;
+                return this.itemTemplate;
             }
 
             set
             {
-                this._itemTemplate = value;
+                this.itemTemplate = value;
             }
         }
 
-        private int _portalId = -1;
+        private int portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        private int _moduleId = -1;
+        private int moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
-        private int _tabId = -1;
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 

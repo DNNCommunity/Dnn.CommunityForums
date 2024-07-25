@@ -30,8 +30,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public class ActiveAdminBase : DotNetNuke.Entities.Modules.PortalModuleBase
     {
-        private string _currentView = string.Empty;
-        private DateTime _cacheUpdatedTime;
+        private string currentView = string.Empty;
+        private DateTime cacheUpdatedTime;
         public const string RequiredImage = Globals.ModulePath + "images/error.gif";
 
         #region Constants
@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 DataCache.SettingsCacheStore(this.ModuleId, string.Format(CacheKeys.CacheUpdate, this.ModuleId), value);
-                this._cacheUpdatedTime = value;
+                this.cacheUpdatedTime = value;
             }
         }
 
@@ -182,9 +182,9 @@ namespace DotNetNuke.Modules.ActiveForums
                     return this.Session[ViewKey].ToString();
                 }
 
-                if (this._currentView != string.Empty)
+                if (this.currentView != string.Empty)
                 {
-                    return this._currentView;
+                    return this.currentView;
                 }
 
                 return DefaultView;
@@ -193,7 +193,7 @@ namespace DotNetNuke.Modules.ActiveForums
             set
             {
                 this.Session[ViewKey] = value;
-                this._currentView = value;
+                this.currentView = value;
             }
         }
 

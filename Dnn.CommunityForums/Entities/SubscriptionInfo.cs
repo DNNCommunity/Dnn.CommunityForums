@@ -48,14 +48,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
             this.Subscribed = subscribed;
         }
 
-        private DateTime? _lastPostDate;
-        private string _subject;
-        private string _forumName;
-        private string _forumGroupName;
-        private string _email;
-        private DotNetNuke.Modules.ActiveForums.User _user;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topicInfo;
+        private DateTime? lastPostDate;
+        private string subject;
+        private string forumName;
+        private string forumGroupName;
+        private string email;
+        private DotNetNuke.Modules.ActiveForums.User user;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
 
         public int Id { get; set; }
 
@@ -78,16 +78,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public bool ForumSubscriber { get => this.ForumId > 0 && this.TopicId == 0; }
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.User User => this._user ?? (this._user = new DotNetNuke.Modules.ActiveForums.UserController().GetUser(this.PortalId, this.ModuleId, this.UserId));
+        public DotNetNuke.Modules.ActiveForums.User User => this.user ?? (this.user = new DotNetNuke.Modules.ActiveForums.UserController().GetUser(this.PortalId, this.ModuleId, this.UserId));
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this._forumInfo ?? (this._forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId));
+        public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum => this.forumInfo ?? (this.forumInfo = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.ForumId, this.ModuleId));
 
         [IgnoreColumn()]
-        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this._topicInfo ?? (this._topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId));
+        public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic => this.topicInfo ?? (this.topicInfo = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.TopicId));
 
         [IgnoreColumn()]
-        public string Email { get => this._email ?? (this._email = this.User?.Email); set => this._email = value; }
+        public string Email { get => this.email ?? (this.email = this.User?.Email); set => this.email = value; }
 
         [IgnoreColumn()]
         public TimeSpan TimeZoneOffSet { get => Utilities.GetTimeZoneOffsetForUser(this.PortalId, this.UserId); }
@@ -96,16 +96,16 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         public CultureInfo UserCulture { get => Utilities.GetCultureInfoForUser(this.PortalId, this.UserId); }
 
         [IgnoreColumn()]
-        public string ForumGroupName { get => this._forumGroupName ?? (this._forumGroupName = this.Forum.GroupName); set => this._forumGroupName = value; }
+        public string ForumGroupName { get => this.forumGroupName ?? (this.forumGroupName = this.Forum.GroupName); set => this.forumGroupName = value; }
 
         [IgnoreColumn()]
-        public string ForumName { get => this._forumName ?? (this._forumName = this.Forum.ForumName); set => this._forumName = value; }
+        public string ForumName { get => this.forumName ?? (this.forumName = this.Forum.ForumName); set => this.forumName = value; }
 
         [IgnoreColumn()]
-        public string Subject { get => this._subject ?? (this._subject = string.IsNullOrEmpty(this.Topic?.Content?.Subject) ? string.Empty : this.Topic?.Content?.Subject); set => this._subject = value; }
+        public string Subject { get => this.subject ?? (this.subject = string.IsNullOrEmpty(this.Topic?.Content?.Subject) ? string.Empty : this.Topic?.Content?.Subject); set => this.subject = value; }
 
         [IgnoreColumn()]
-        public DateTime LastPostDate { get => (DateTime)(this._lastPostDate ?? (this._lastPostDate = this.TopicId > 0 ? this.Topic?.Content?.DateUpdated : this.Forum?.LastPostDateTime)); set => this._lastPostDate = value; }
+        public DateTime LastPostDate { get => (DateTime)(this.lastPostDate ?? (this.lastPostDate = this.TopicId > 0 ? this.Topic?.Content?.DateUpdated : this.Forum?.LastPostDateTime)); set => this.lastPostDate = value; }
 
         [IgnoreColumn()]
         public bool Subscribed { get; set; }

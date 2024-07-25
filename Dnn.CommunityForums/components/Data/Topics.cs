@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public int Reply_Save(int TopicId, int ReplyId, int ReplyToId, int StatusId, bool IsApproved, bool IsDeleted, string Subject, string Body, DateTime DateCreated, DateTime DateUpdated, int AuthorId, string AuthorName, string IPAddress)
         {
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this._connectionString, this.dbPrefix + "Reply_Save", TopicId, ReplyId, ReplyToId, StatusId, IsApproved, IsDeleted, Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "Reply_Save", TopicId, ReplyId, ReplyToId, StatusId, IsApproved, IsDeleted, Subject, Body, DateCreated, DateUpdated, AuthorId, AuthorName, IPAddress));
         }
 
         public int TopicIdByUrl(int PortalId, int ModuleId, string URL)
@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
                 URL = URL.Substring(0, URL.Length - 1);
             }
 
-            return Convert.ToInt32(SqlHelper.ExecuteScalar(this._connectionString, this.dbPrefix + "TopicIdByURL", PortalId, ModuleId, URL));
+            return Convert.ToInt32(SqlHelper.ExecuteScalar(this.connectionString, this.dbPrefix + "TopicIdByURL", PortalId, ModuleId, URL));
         }
 
         [Obsolete("Deprecated in Community Forums. Removing in 10.00.00. Use DotNetNuke.Modules.ActiveForums.Controllers.TopicRatingController")]
@@ -58,18 +58,18 @@ namespace DotNetNuke.Modules.ActiveForums.Data
 
         public IDataReader TopicForDisplay(int PortalId, int ModuleId, int ForumId, int TopicId, int UserId, int RowIndex, int MaxRows, string Sort)
         {
-            IDataReader dr = SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "UI_TopicDisplay", PortalId, ModuleId, ForumId, TopicId, UserId, RowIndex, MaxRows, false, Sort);
+            IDataReader dr = SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "UI_TopicDisplay", PortalId, ModuleId, ForumId, TopicId, UserId, RowIndex, MaxRows, false, Sort);
             return dr;
         }
 
         public IDataReader TopicsList(int PortalId, int PageIndex, int PageSize, string ForumIds, int CategoryId, int TagId)
         {
-            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "TopicsList", PortalId, PageIndex, PageSize, ForumIds, CategoryId, TagId);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "TopicsList", PortalId, PageIndex, PageSize, ForumIds, CategoryId, TagId);
         }
 
         public IDataReader TopicWithReplies(int PortalId, int TopicId, int PageIndex, int PageSize)
         {
-            return SqlHelper.ExecuteReader(this._connectionString, this.dbPrefix + "TopicWithReplies", PortalId, TopicId, PageIndex, PageSize);
+            return SqlHelper.ExecuteReader(this.connectionString, this.dbPrefix + "TopicWithReplies", PortalId, TopicId, PageIndex, PageSize);
         }
 
         // Public Function TopicsForDisplayXML(ByVal PortalId As Integer, ByVal ModuleId As Integer, ByVal ForumId As Integer, ByVal UserId As Integer, ByVal PageIndex As Integer, ByVal PageSize As Integer, ByVal IsSuper As Boolean, ByVal SortColumn As String, ByVal ForumIds As String) As XmlDocument

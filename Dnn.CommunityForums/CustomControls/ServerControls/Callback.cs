@@ -41,23 +41,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Declarations
 
-        private CallBackContent _content;
-        private ClientTemplate _loadingtemplate;
-        private bool _debug = false;
-        private bool _loaded = false;
-        private bool _isCallback = false;
-        private CallBackContent _previouscontent;
-        private int _refreshInterval = 0;
-        private string _parameter = "";
-        private string _resourceFile = "";
+        private CallBackContent content;
+        private ClientTemplate loadingtemplate;
+        private bool debug = false;
+        private bool loaded = false;
+        private bool isCallback = false;
+        private CallBackContent previouscontent;
+        private int refreshInterval = 0;
+        private string parameter = "";
+        private string resourceFile = "";
 
         public event CallbackEventHandler CallbackEvent;
 
         public delegate void CallbackEventHandler(object sender, CallBackEventArgs e);
 
-        private string _postURL = "";
-        private string _token = string.Empty;
-        private int _validState = 0; // -1 = don't process, 0 = initial load, 1 = process
+        private string postURL = "";
+        private string token = string.Empty;
+        private int validState = 0; // -1 = don't process, 0 = initial load, 1 = process
 
         #endregion
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
 
-                return this._debug;
+                return this.debug;
             }
 
             set
             {
-                this._debug = value;
+                this.debug = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._refreshInterval;
+                return this.refreshInterval;
             }
 
             set
             {
-                this._refreshInterval = value;
+                this.refreshInterval = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._parameter;
+                return this.parameter;
             }
 
             set
             {
-                this._parameter = value;
+                this.parameter = value;
             }
         }
 
@@ -142,12 +142,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
                 this.EnsureChildControls();
-                return this._content;
+                return this.content;
             }
 
             set
             {
-                this._content = value;
+                this.content = value;
             }
         }
 
@@ -156,12 +156,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._loadingtemplate;
+                return this.loadingtemplate;
             }
 
             set
             {
-                this._loadingtemplate = value;
+                this.loadingtemplate = value;
             }
         }
 
@@ -189,15 +189,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     if (!(this.Context.Request.Params[string.Format("amCB_{0}", sId)] == null))
                     {
-                        this._isCallback = true;
+                        this.isCallback = true;
                     }
                     else
                     {
-                        this._isCallback = false;
+                        this.isCallback = false;
                     }
                 }
 
-                return this._isCallback;
+                return this.isCallback;
             }
         }
 
@@ -205,12 +205,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._resourceFile;
+                return this.resourceFile;
             }
 
             set
             {
-                this._resourceFile = value;
+                this.resourceFile = value;
             }
         }
 
@@ -218,27 +218,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._postURL;
+                return this.postURL;
             }
 
             set
             {
-                this._postURL = value;
+                this.postURL = value;
             }
         }
 
-        private string _forceId = string.Empty;
+        private string forceId = string.Empty;
 
         public string ForceId
         {
             get
             {
-                return this._forceId;
+                return this.forceId;
             }
 
             set
             {
-                this._forceId = value;
+                this.forceId = value;
             }
         }
 
@@ -401,7 +401,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             try
             {
-                if (this._validState == 1)
+                if (this.validState == 1)
                 {
                     using (StringWriter strWriter = new StringWriter())
                     {
@@ -428,7 +428,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                     // HttpContext.Current.ApplicationInstance.CompleteRequest()
                 }
-                else if (this._validState == -1)
+                else if (this.validState == -1)
                 {
                     throw new Exception("Incomplete Request");
                 }
@@ -513,7 +513,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     {
                         if (string.IsNullOrEmpty(tokenvalue))
                         {
-                            this._validState = -1;
+                            this.validState = -1;
                             // Throw New Exception("Error validating request.")
                         }
                         else
@@ -523,11 +523,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
                         if (!(token == tokenvalue))
                         {
-                            this._validState = -1;
+                            this.validState = -1;
                         }
                         else
                         {
-                            this._validState = 1;
+                            this.validState = 1;
                             for (int x = 0; x <= (args.Length - 1); x++)
                             {
                                 args[x] = args[x].Replace("!AM#", "&").Replace("#AM!", "=").Replace("#MA!", "+");

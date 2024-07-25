@@ -33,13 +33,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Member Variables
 
-        private string _forumIds = string.Empty;
-        private bool _topicsOnly = true;
-        private int _rows = 10;
-        private string _tags = string.Empty;
-        private int _filterByUserId = -1;
-        private int _tabId = -1;
-        private string _additionalParams = string.Empty;
+        private string forumIds = string.Empty;
+        private bool topicsOnly = true;
+        private int rows = 10;
+        private string tags = string.Empty;
+        private int filterByUserId = -1;
+        private int tabId = -1;
+        private string additionalParams = string.Empty;
 
         #endregion
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._additionalParams;
+                return this.additionalParams;
             }
 
             set
             {
-                this._additionalParams = value;
+                this.additionalParams = value;
             }
         }
 
@@ -60,12 +60,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
@@ -73,12 +73,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._forumIds;
+                return this.forumIds;
             }
 
             set
             {
-                this._forumIds = value;
+                this.forumIds = value;
             }
         }
 
@@ -86,12 +86,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._topicsOnly;
+                return this.topicsOnly;
             }
 
             set
             {
-                this._topicsOnly = value;
+                this.topicsOnly = value;
             }
         }
 
@@ -101,12 +101,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._rows;
+                return this.rows;
             }
 
             set
             {
-                this._rows = value;
+                this.rows = value;
             }
         }
 
@@ -114,12 +114,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._tags;
+                return this.tags;
             }
 
             set
             {
-                this._tags = value;
+                this.tags = value;
             }
         }
 
@@ -127,12 +127,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._filterByUserId;
+                return this.filterByUserId;
             }
 
             set
             {
-                this._filterByUserId = value;
+                this.filterByUserId = value;
             }
         }
 

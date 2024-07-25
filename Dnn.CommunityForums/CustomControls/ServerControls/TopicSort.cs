@@ -32,21 +32,21 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TopicSort runat=server></{0}:TopicSort>")]
     public class TopicSort : WebControl
     {
-        private string _defaultSort = "ASC";
-        private int _forumId = -1;
-        private int _topicId = -1;
+        private string defaultSort = "ASC";
+        private int forumId = -1;
+        private int topicId = -1;
         protected DropDownList drpSort;
 
         public string DefaultSort
         {
             get
             {
-                return this._defaultSort;
+                return this.defaultSort;
             }
 
             set
             {
-                this._defaultSort = value;
+                this.defaultSort = value;
             }
         }
 
@@ -54,12 +54,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._forumId;
+                return this.forumId;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
@@ -67,12 +67,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._topicId;
+                return this.topicId;
             }
 
             set
             {
-                this._topicId = value;
+                this.topicId = value;
             }
         }
 

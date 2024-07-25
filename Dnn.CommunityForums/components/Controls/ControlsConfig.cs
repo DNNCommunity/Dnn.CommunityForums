@@ -27,20 +27,20 @@ namespace DotNetNuke.Modules.ActiveForums
     public class ControlsConfig
     {
         #region Private Members
-        private int _portalId;
-        private int _pageId = -1;
-        private int _moduleId;
-        private int _forumId;
-        private int _topicId;
-        private int _contentId;
-        private string _appPath;
-        private string _themePath;
-        private User _user;
-        private string _templatePath;
-        private string _defaultViewRoles;
-        private string _profileLink;
-        private string _membersLink;
-        private string _adminRoles;
+        private int portalId;
+        private int pageId = -1;
+        private int moduleId;
+        private int forumId;
+        private int topicId;
+        private int contentId;
+        private string appPath;
+        private string themePath;
+        private User user;
+        private string templatePath;
+        private string defaultViewRoles;
+        private string profileLink;
+        private string membersLink;
+        private string adminRoles;
 
         #endregion
         #region Public Properties
@@ -48,12 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._adminRoles;
+                return this.adminRoles;
             }
 
             set
             {
-                this._adminRoles = value;
+                this.adminRoles = value;
             }
         }
 
@@ -61,12 +61,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._appPath;
+                return this.appPath;
             }
 
             set
             {
-                this._appPath = value;
+                this.appPath = value;
             }
         }
 
@@ -74,12 +74,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._contentId;
+                return this.contentId;
             }
 
             set
             {
-                this._contentId = value;
+                this.contentId = value;
             }
         }
 
@@ -87,12 +87,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._defaultViewRoles;
+                return this.defaultViewRoles;
             }
 
             set
             {
-                this._defaultViewRoles = value;
+                this.defaultViewRoles = value;
             }
         }
 
@@ -100,12 +100,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._forumId;
+                return this.forumId;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
@@ -113,12 +113,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
@@ -126,12 +126,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._membersLink;
+                return this.membersLink;
             }
 
             set
             {
-                this._membersLink = value;
+                this.membersLink = value;
             }
         }
 
@@ -139,12 +139,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._pageId;
+                return this.pageId;
             }
 
             set
             {
-                this._pageId = value;
+                this.pageId = value;
             }
         }
 
@@ -152,12 +152,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._profileLink;
+                return this.profileLink;
             }
 
             set
             {
-                this._profileLink = value;
+                this.profileLink = value;
             }
         }
 
@@ -165,12 +165,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
@@ -178,12 +178,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._templatePath;
+                return this.templatePath;
             }
 
             set
             {
-                this._templatePath = value;
+                this.templatePath = value;
             }
         }
 
@@ -191,12 +191,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._themePath;
+                return this.themePath;
             }
 
             set
             {
-                this._themePath = value;
+                this.themePath = value;
             }
         }
 
@@ -204,12 +204,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._topicId;
+                return this.topicId;
             }
 
             set
             {
-                this._topicId = value;
+                this.topicId = value;
             }
         }
 
@@ -217,12 +217,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._user;
+                return this.user;
             }
 
             set
             {
-                this._user = value;
+                this.user = value;
             }
         }
 

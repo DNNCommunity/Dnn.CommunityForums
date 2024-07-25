@@ -33,10 +33,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class RequiredFieldValidator : WebControl
     {
         #region Delcarations
-        private string _text;
-        private string _controlToValidate;
-        private string _validationGroup;
-        private string _defaultValue;
+        private string text;
+        private string controlToValidate;
+        private string validationGroup;
+        private string defaultValue;
 
         #endregion
         #region Properties
@@ -44,12 +44,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._text;
+                return this.text;
             }
 
             set
             {
-                this._text = value;
+                this.text = value;
             }
         }
 
@@ -57,12 +57,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._controlToValidate;
+                return this.controlToValidate;
             }
 
             set
             {
-                this._controlToValidate = value;
+                this.controlToValidate = value;
             }
         }
 
@@ -70,12 +70,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._validationGroup;
+                return this.validationGroup;
             }
 
             set
             {
-                this._validationGroup = value;
+                this.validationGroup = value;
             }
         }
 
@@ -83,12 +83,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._defaultValue;
+                return this.defaultValue;
             }
 
             set
             {
-                this._defaultValue = value;
+                this.defaultValue = value;
             }
         }
 

@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     {
         #region Private Members
         // Dim pt As Forums.Utils.TimeCalcItem
-        private int _forumGroupId = -1;
+        private int forumGroupId = -1;
 
         #endregion
         #region Public Properties

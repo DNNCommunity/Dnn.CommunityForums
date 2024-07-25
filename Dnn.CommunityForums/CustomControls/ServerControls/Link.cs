@@ -32,26 +32,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [DefaultProperty("Text"), ToolboxData("<{0}:Link runat=server></{0}:Link>")]
     public class Link : WebControl
     {
-        private string _text;
-        private bool _visible;
-        private string _navigateUrl;
-        private string _enabledRoles;
-        private string _userRoles;
-        private bool _authRequired;
-        private int _pageId;
-        private string _params;
-        private string _title;
+        private string text;
+        private bool visible;
+        private string navigateUrl;
+        private string enabledRoles;
+        private string userRoles;
+        private bool authRequired;
+        private int pageId;
+        private string @params;
+        private string title;
 
         public string NavigateURL
         {
             get
             {
-                return this._navigateUrl;
+                return this.navigateUrl;
             }
 
             set
             {
-                this._navigateUrl = value;
+                this.navigateUrl = value;
             }
         }
 
@@ -59,12 +59,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._enabledRoles;
+                return this.enabledRoles;
             }
 
             set
             {
-                this._enabledRoles = value;
+                this.enabledRoles = value;
             }
         }
 
@@ -72,12 +72,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._userRoles;
+                return this.userRoles;
             }
 
             set
             {
-                this._userRoles = value;
+                this.userRoles = value;
             }
         }
 
@@ -85,12 +85,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._authRequired;
+                return this.authRequired;
             }
 
             set
             {
-                this._authRequired = value;
+                this.authRequired = value;
             }
         }
 
@@ -99,12 +99,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._text;
+                return this.text;
             }
 
             set
             {
-                this._text = value;
+                this.text = value;
             }
         }
 
@@ -112,12 +112,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._pageId;
+                return this.pageId;
             }
 
             set
             {
-                this._pageId = value;
+                this.pageId = value;
             }
         }
 
@@ -125,12 +125,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._params;
+                return this.@params;
             }
 
             set
             {
-                this._params = value;
+                this.@params = value;
             }
         }
 
@@ -138,12 +138,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._title;
+                return this.title;
             }
 
             set
             {
-                this._title = value;
+                this.title = value;
             }
         }
 

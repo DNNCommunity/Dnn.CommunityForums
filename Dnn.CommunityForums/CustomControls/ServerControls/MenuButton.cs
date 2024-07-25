@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Member Variables
 
-        private MenuContent _menu;
+        private MenuContent menu;
 
         #endregion
 
@@ -48,12 +48,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
                 this.EnsureChildControls();
-                return this._menu ?? (this._menu = new MenuContent());
+                return this.menu ?? (this.menu = new MenuContent());
             }
 
             set
             {
-                this._menu = value;
+                this.menu = value;
             }
         }
 

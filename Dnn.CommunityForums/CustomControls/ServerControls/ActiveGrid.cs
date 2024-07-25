@@ -38,34 +38,34 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private Literal lit;
         private System.Web.UI.HtmlControls.HtmlGenericControl div;
         protected Callback cb;
-        private ItemTemplateContents _itemTemplate;
-        private ItemTemplateContents _headerTemplate;
-        private ItemTemplateContents _footerTemplate;
-        private IDataReader _datasource;
-        private DataView _dataView;
-        private string _rowDelimiter = "^";
-        private string _colDelimiter = "|";
-        private int _pageSize = 10;
-        private string _itemStyle = "amdatarow";
-        private string _altItemStyle = "amrowalternating";
-        private string _selectedStyle = "amrowselected";
-        private bool _showPager = true;
-        private string _pagerText = "Page {0} of {1}";
-        private string _imagePath = "";
-        private int _pagerPages = 10;
-        private string _defaultColumn;
-        private string _defaultParams = "";
-        private Sort _defaultSort = Sort.Descending;
-        private string _cssPagerInfo = "ampagerinfo";
-        private string _cssPagerItem = "amPageritem";
-        private string _cssPagerItem2 = "ampagertem2";
-        private string _cssPagerCurrentNumber = "ampagernumber_current";
-        private string _cssPagerNumber = "ampagernumber";
-        private string _spacerImage = "";
-        private string _ascImage = "";
-        private string _descImage = "";
-        private bool _loadOnRender = true;
-        private string _onComplete;
+        private ItemTemplateContents itemTemplate;
+        private ItemTemplateContents headerTemplate;
+        private ItemTemplateContents footerTemplate;
+        private IDataReader datasource;
+        private DataView dataView;
+        private string rowDelimiter = "^";
+        private string colDelimiter = "|";
+        private int pageSize = 10;
+        private string itemStyle = "amdatarow";
+        private string altItemStyle = "amrowalternating";
+        private string selectedStyle = "amrowselected";
+        private bool showPager = true;
+        private string pagerText = "Page {0} of {1}";
+        private string imagePath = "";
+        private int pagerPages = 10;
+        private string defaultColumn;
+        private string defaultParams = "";
+        private Sort defaultSort = Sort.Descending;
+        private string cssPagerInfo = "ampagerinfo";
+        private string cssPagerItem = "amPageritem";
+        private string cssPagerItem2 = "ampagertem2";
+        private string cssPagerCurrentNumber = "ampagernumber_current";
+        private string cssPagerNumber = "ampagernumber";
+        private string spacerImage = "";
+        private string ascImage = "";
+        private string descImage = "";
+        private bool loadOnRender = true;
+        private string onComplete;
 
         public enum Sort : int
         {
@@ -87,12 +87,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._itemTemplate;
+                return this.itemTemplate;
             }
 
             set
             {
-                this._itemTemplate = value;
+                this.itemTemplate = value;
             }
         }
 
@@ -105,12 +105,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 
@@ -140,12 +140,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._rowDelimiter;
+                return this.rowDelimiter;
             }
 
             set
             {
-                this._rowDelimiter = value;
+                this.rowDelimiter = value;
             }
         }
 
@@ -157,12 +157,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._colDelimiter;
+                return this.colDelimiter;
             }
 
             set
             {
-                this._colDelimiter = value;
+                this.colDelimiter = value;
             }
         }
 
@@ -174,12 +174,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._datasource;
+                return this.datasource;
             }
 
             set
             {
-                this._datasource = value;
+                this.datasource = value;
             }
         }
 
@@ -191,12 +191,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._pageSize;
+                return this.pageSize;
             }
 
             set
             {
-                this._pageSize = value;
+                this.pageSize = value;
             }
         }
 
@@ -208,12 +208,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._itemStyle;
+                return this.itemStyle;
             }
 
             set
             {
-                this._itemStyle = value;
+                this.itemStyle = value;
             }
         }
 
@@ -225,12 +225,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._altItemStyle;
+                return this.altItemStyle;
             }
 
             set
             {
-                this._altItemStyle = value;
+                this.altItemStyle = value;
             }
         }
 
@@ -242,12 +242,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._selectedStyle;
+                return this.selectedStyle;
             }
 
             set
             {
-                this._selectedStyle = value;
+                this.selectedStyle = value;
             }
         }
 
@@ -256,12 +256,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._showPager;
+                return this.showPager;
             }
 
             set
             {
-                this._showPager = value;
+                this.showPager = value;
             }
         }
 
@@ -273,12 +273,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._loadOnRender;
+                return this.loadOnRender;
             }
 
             set
             {
-                this._loadOnRender = value;
+                this.loadOnRender = value;
             }
         }
 
@@ -290,12 +290,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._pagerText;
+                return this.pagerText;
             }
 
             set
             {
-                this._pagerText = value;
+                this.pagerText = value;
             }
         }
 
@@ -307,12 +307,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._imagePath;
+                return this.imagePath;
             }
 
             set
             {
-                this._imagePath = value;
+                this.imagePath = value;
             }
         }
 
@@ -324,12 +324,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._pagerPages;
+                return this.pagerPages;
             }
 
             set
             {
-                this._pagerPages = value;
+                this.pagerPages = value;
             }
         }
 
@@ -340,12 +340,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._defaultSort;
+                return this.defaultSort;
             }
 
             set
             {
-                this._defaultSort = value;
+                this.defaultSort = value;
             }
         }
 
@@ -356,12 +356,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._defaultColumn;
+                return this.defaultColumn;
             }
 
             set
             {
-                this._defaultColumn = value;
+                this.defaultColumn = value;
             }
         }
 
@@ -372,12 +372,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._defaultParams;
+                return this.defaultParams;
             }
 
             set
             {
-                this._defaultParams = value;
+                this.defaultParams = value;
             }
         }
 
@@ -388,12 +388,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssPagerInfo;
+                return this.cssPagerInfo;
             }
 
             set
             {
-                this._cssPagerInfo = value;
+                this.cssPagerInfo = value;
             }
         }
 
@@ -404,12 +404,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssPagerItem;
+                return this.cssPagerItem;
             }
 
             set
             {
-                this._cssPagerItem = value;
+                this.cssPagerItem = value;
             }
         }
 
@@ -420,12 +420,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssPagerItem2;
+                return this.cssPagerItem2;
             }
 
             set
             {
-                this._cssPagerItem2 = value;
+                this.cssPagerItem2 = value;
             }
         }
 
@@ -436,12 +436,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssPagerCurrentNumber;
+                return this.cssPagerCurrentNumber;
             }
 
             set
             {
-                this._cssPagerCurrentNumber = value;
+                this.cssPagerCurrentNumber = value;
             }
         }
 
@@ -452,12 +452,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssPagerNumber;
+                return this.cssPagerNumber;
             }
 
             set
             {
-                this._cssPagerNumber = value;
+                this.cssPagerNumber = value;
             }
         }
 
@@ -468,12 +468,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._spacerImage;
+                return this.spacerImage;
             }
 
             set
             {
-                this._spacerImage = value;
+                this.spacerImage = value;
             }
         }
 
@@ -484,12 +484,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ascImage;
+                return this.ascImage;
             }
 
             set
             {
-                this._ascImage = value;
+                this.ascImage = value;
             }
         }
 
@@ -500,12 +500,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._descImage;
+                return this.descImage;
             }
 
             set
             {
-                this._descImage = value;
+                this.descImage = value;
             }
         }
 

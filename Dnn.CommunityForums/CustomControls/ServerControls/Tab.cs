@@ -26,22 +26,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class Tab
     {
-        private string _text;
-        private string _cSSClass;
-        private string _onClick = string.Empty;
-        private string _controlKey = string.Empty;
-        private TabContent _tabContent;
+        private string text;
+        private string cSSClass;
+        private string onClick = string.Empty;
+        private string controlKey = string.Empty;
+        private TabContent tabContent;
 
         public string Text
         {
             get
             {
-                return this._text;
+                return this.text;
             }
 
             set
             {
-                this._text = value;
+                this.text = value;
             }
         }
 
@@ -49,12 +49,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cSSClass;
+                return this.cSSClass;
             }
 
             set
             {
-                this._cSSClass = value;
+                this.cSSClass = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._onClick;
+                return this.onClick;
             }
 
             set
             {
-                this._onClick = value;
+                this.onClick = value;
             }
         }
 
@@ -75,12 +75,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._controlKey;
+                return this.controlKey;
             }
 
             set
             {
-                this._controlKey = value;
+                this.controlKey = value;
             }
         }
 
@@ -88,12 +88,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._tabContent;
+                return this.tabContent;
             }
 
             set
             {
-                this._tabContent = value;
+                this.tabContent = value;
             }
         }
 

@@ -32,22 +32,22 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Member Variables
 
-        private int? _forumId;
-        private int? _forumGroupId;
-        private int? _postId;
-        private int? _topicId; // = -1;
-        private int? _replyId;
-        private int? _quoteId;
-        private int? _authorid;
-        private bool? _jumpToLastPost;
-        private string _templatePath = string.Empty;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _foruminfo;
-        private XmlDocument _forumData;
+        private int? forumId;
+        private int? forumGroupId;
+        private int? postId;
+        private int? topicId; // = -1;
+        private int? replyId;
+        private int? quoteId;
+        private int? authorid;
+        private bool? jumpToLastPost;
+        private string templatePath = string.Empty;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo foruminfo;
+        private XmlDocument forumData;
 
-        private bool? _canRead;
-        private bool? _canView;
-        private bool? _canCreate;
-        private bool? _canReply;
+        private bool? canRead;
+        private bool? canView;
+        private bool? canCreate;
+        private bool? canReply;
 
         #endregion
 
@@ -55,8 +55,8 @@ namespace DotNetNuke.Modules.ActiveForums
 
         public XmlDocument ForumData
         {
-            get => this._forumData ?? (this._forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ModuleId));
-            set => this._forumData = value;
+            get => this.forumData ?? (this.forumData = this.ControlConfig != null ? new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.ControlConfig.PortalId, this.ControlConfig.ModuleId) : new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetForumListXML(this.PortalId, this.ModuleId));
+            set => this.forumData = value;
         }
 
         public ControlsConfig ControlConfig { get; set; }
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums
                     return false;
                 }
 
-                if (!this._jumpToLastPost.HasValue)
+                if (!this.jumpToLastPost.HasValue)
                 {
-                    this._jumpToLastPost = this.UserController.GetUser(this.PortalId, this.UserId).Profile.PrefJumpLastPost;
+                    this.jumpToLastPost = this.UserController.GetUser(this.PortalId, this.UserId).Profile.PrefJumpLastPost;
                 }
 
-                return this._jumpToLastPost.Value;
+                return this.jumpToLastPost.Value;
             }
         }
 
@@ -115,17 +115,17 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._postId.HasValue)
+                if (this.postId.HasValue)
                 {
-                    return this._postId.Value;
+                    return this.postId.Value;
                 }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryPostId = this.Request.QueryString[ParamKeys.PostId];
                 if (string.IsNullOrWhiteSpace(queryPostId))
                 {
-                    this._postId = 0;
-                    return this._postId.Value;
+                    this.postId = 0;
+                    return this.postId.Value;
                 }
 
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
@@ -137,9 +137,9 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedPostId;
-                this._postId = int.TryParse(queryPostId, out parsedPostId) ? parsedPostId : 0;
+                this.postId = int.TryParse(queryPostId, out parsedPostId) ? parsedPostId : 0;
 
-                return this._postId.Value;
+                return this.postId.Value;
             }
         }
 
@@ -148,17 +148,17 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._topicId.HasValue)
+                if (this.topicId.HasValue)
                 {
-                    return this._topicId.Value;
+                    return this.topicId.Value;
                 }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryTopicId = this.Request.QueryString[ParamKeys.TopicId];
                 if (string.IsNullOrWhiteSpace(queryTopicId))
                 {
-                    this._topicId = this.PostId > 0 ? this.PostId : -1; // If we have no topic id, but we do have a post id, use that instead.  Need to track down where this is used.
-                    return this._topicId.Value;
+                    this.topicId = this.PostId > 0 ? this.PostId : -1; // If we have no topic id, but we do have a post id, use that instead.  Need to track down where this is used.
+                    return this.topicId.Value;
                 }
 
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
@@ -170,14 +170,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedTopicId;
-                this._topicId = int.TryParse(queryTopicId, out parsedTopicId) ? parsedTopicId : -1;
+                this.topicId = int.TryParse(queryTopicId, out parsedTopicId) ? parsedTopicId : -1;
 
-                return this._topicId.Value;
+                return this.topicId.Value;
             }
 
             set
             {
-                this._topicId = value;
+                this.topicId = value;
             }
         }
 
@@ -186,17 +186,17 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._replyId.HasValue)
+                if (this.replyId.HasValue)
                 {
-                    return this._replyId.Value;
+                    return this.replyId.Value;
                 }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryReplyId = this.Request.QueryString[ParamKeys.ReplyId];
                 if (string.IsNullOrWhiteSpace(queryReplyId))
                 {
-                    this._replyId = 0;
-                    return this._replyId.Value;
+                    this.replyId = 0;
+                    return this.replyId.Value;
                 }
 
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
@@ -208,14 +208,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedReplyId;
-                this._replyId = int.TryParse(queryReplyId, out parsedReplyId) ? parsedReplyId : 0;
+                this.replyId = int.TryParse(queryReplyId, out parsedReplyId) ? parsedReplyId : 0;
 
-                return this._replyId.Value;
+                return this.replyId.Value;
             }
 
             set
             {
-                this._replyId = value;
+                this.replyId = value;
             }
         }
 
@@ -224,17 +224,17 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._quoteId.HasValue)
+                if (this.quoteId.HasValue)
                 {
-                    return this._quoteId.Value;
+                    return this.quoteId.Value;
                 }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryQuoteId = this.Request.QueryString[ParamKeys.QuoteId];
                 if (string.IsNullOrWhiteSpace(queryQuoteId))
                 {
-                    this._quoteId = 0;
-                    return this._quoteId.Value;
+                    this.quoteId = 0;
+                    return this.quoteId.Value;
                 }
 
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
@@ -246,14 +246,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedQuoteId;
-                this._quoteId = int.TryParse(queryQuoteId, out parsedQuoteId) ? parsedQuoteId : 0;
+                this.quoteId = int.TryParse(queryQuoteId, out parsedQuoteId) ? parsedQuoteId : 0;
 
-                return this._quoteId.Value;
+                return this.quoteId.Value;
             }
 
             set
             {
-                this._quoteId = value;
+                this.quoteId = value;
             }
         }
 
@@ -262,13 +262,13 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._forumId.HasValue)
+                if (this.forumId.HasValue)
                 {
-                    return this._forumId.Value;
+                    return this.forumId.Value;
                 }
 
                 // Set out default value
-                this._forumId = -1;
+                this.forumId = -1;
 
                 // If there is an id in the query string, parse it
                 var queryForumId = this.Request.QueryString[ParamKeys.ForumId];
@@ -276,33 +276,33 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     // Try to parse the id, if it doesn't work, return the default value.
                     int parsedForumId;
-                    this._forumId = int.TryParse(queryForumId, out parsedForumId) ? parsedForumId : 0;
+                    this.forumId = int.TryParse(queryForumId, out parsedForumId) ? parsedForumId : 0;
                 }
 
                 // If we don't have a forum id at this point, try and pull it from "forumid" in the query string
-                if (this._forumId < 1)
+                if (this.forumId < 1)
                 {
                     queryForumId = this.Request.QueryString[Literals.ForumId];
                     if (!string.IsNullOrWhiteSpace(queryForumId))
                     {
                         // Try to parse the id, if it doesn't work, return the default value.
                         int parsedForumId;
-                        this._forumId = int.TryParse(queryForumId, out parsedForumId) ? parsedForumId : 0;
+                        this.forumId = int.TryParse(queryForumId, out parsedForumId) ? parsedForumId : 0;
                     }
                 }
 
                 // If we still don't have a forum id, but we have a topic id, look up the forum id
-                if (this._forumId < 1 & this.TopicId > 0)
+                if (this.forumId < 1 & this.TopicId > 0)
                 {
-                    this._forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
+                    this.forumId = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forum_GetByTopicId(this.TopicId);
                 }
 
-                return this._forumId.Value;
+                return this.forumId.Value;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
@@ -311,13 +311,13 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._authorid.HasValue)
+                if (this.authorid.HasValue)
                 {
-                    return this._authorid.Value;
+                    return this.authorid.Value;
                 }
 
                 // Set out default value
-                this._authorid = -1;
+                this.authorid = -1;
 
                 // If there is an id in the query string, parse it
                 var queryAuthorId = this.Request.QueryString[ParamKeys.AuthorId];
@@ -325,27 +325,27 @@ namespace DotNetNuke.Modules.ActiveForums
                 {
                     // Try to parse the id, if it doesn't work, return the default value.
                     int parsedAuthorId;
-                    this._authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
+                    this.authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
                 }
 
                 // If we don't have a user id at this point, try and pull it from "authorid" in the query string
-                if (this._authorid < 1)
+                if (this.authorid < 1)
                 {
                     queryAuthorId = this.Request.QueryString["authorid"];
                     if (!string.IsNullOrWhiteSpace(queryAuthorId))
                     {
                         // Try to parse the id, if it doesn't work, return the default value.
                         int parsedAuthorId;
-                        this._authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
+                        this.authorid = int.TryParse(queryAuthorId, out parsedAuthorId) ? parsedAuthorId : 0;
                     }
                 }
 
-                return this._authorid.Value;
+                return this.authorid.Value;
             }
 
             set
             {
-                this._authorid = value;
+                this.authorid = value;
             }
         }
 
@@ -354,17 +354,17 @@ namespace DotNetNuke.Modules.ActiveForums
             get
             {
                 // If the id has already been set, return it.
-                if (this._forumGroupId.HasValue)
+                if (this.forumGroupId.HasValue)
                 {
-                    return this._forumGroupId.Value;
+                    return this.forumGroupId.Value;
                 }
 
                 // If there is no id in the query string, set it to the default value and return it.
                 var queryForumGroupId = this.Request.QueryString[ParamKeys.GroupId];
                 if (string.IsNullOrWhiteSpace(queryForumGroupId))
                 {
-                    this._forumGroupId = -1;
-                    return this._forumGroupId.Value;
+                    this.forumGroupId = -1;
+                    return this.forumGroupId.Value;
                 }
 
                 // If there is a hash tag in the query value, remove it and anything after it before parsing.
@@ -376,14 +376,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 // Try to parse the id, if it doesn't work, return the default value.
                 int parsedForumGroupId;
-                this._forumGroupId = int.TryParse(queryForumGroupId, out parsedForumGroupId) ? parsedForumGroupId : 0;
+                this.forumGroupId = int.TryParse(queryForumGroupId, out parsedForumGroupId) ? parsedForumGroupId : 0;
 
-                return this._forumGroupId.Value;
+                return this.forumGroupId.Value;
             }
 
             set
             {
-                this._forumGroupId = value;
+                this.forumGroupId = value;
             }
         }
 
@@ -395,57 +395,57 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._foruminfo ?? (this._foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, true, this.TopicId));
+                return this.foruminfo ?? (this.foruminfo = DotNetNuke.Modules.ActiveForums.Controllers.ForumController.Forums_Get(this.PortalId, this.ForumModuleId, this.ForumId, true, this.TopicId));
             }
 
             set
             {
-                this._foruminfo = value;
+                this.foruminfo = value;
             }
         }
 
         public int SocialGroupId { get; set; }
 
-        public bool CanRead => this._canRead ?? this.SecurityCheck("read");
+        public bool CanRead => this.canRead ?? this.SecurityCheck("read");
 
-        public bool CanView => this._canView ?? this.SecurityCheck("view");
+        public bool CanView => this.canView ?? this.SecurityCheck("view");
 
         public bool CanCreate
         {
             get
             {
-                if (!this._canCreate.HasValue)
+                if (!this.canCreate.HasValue)
                 {
                     // The basic security check trumps everything.
                     if (!this.SecurityCheck("create"))
                     {
-                        this._canCreate = false;
+                        this.canCreate = false;
                     }
 
                     // Admins and trusted users shall pass!
                     else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles))
                     {
-                        this._canCreate = true;
+                        this.canCreate = true;
                     }
 
                     // If CreatePostCount is not set, no need to go further
                     else if (this.ForumInfo.CreatePostCount <= 0)
                     {
-                        this._canCreate = true;
+                        this.canCreate = true;
                     }
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
                     else if (this.ForumUser.UserId <= 0)
                     {
-                        this._canCreate = false;
+                        this.canCreate = false;
                     }
                     else
                     {
-                        this._canCreate = this.ForumUser.PostCount >= this.ForumInfo.CreatePostCount;
+                        this.canCreate = this.ForumUser.PostCount >= this.ForumInfo.CreatePostCount;
                     }
                 }
 
-                return this._canCreate.Value;
+                return this.canCreate.Value;
             }
         }
 
@@ -453,38 +453,38 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!this._canReply.HasValue)
+                if (!this.canReply.HasValue)
                 {
                     // The basic security check trumps everything.
                     if (!this.SecurityCheck("reply"))
                     {
-                        this._canReply = false;
+                        this.canReply = false;
                     }
 
                     // Admins and trusted users shall pass!
                     else if (this.ForumUser.IsAdmin || this.ForumUser.IsSuperUser || DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.ForumInfo.Security.Trust, this.ForumUser.UserRoles))
                     {
-                        this._canReply = true;
+                        this.canReply = true;
                     }
 
                     // If ReplyPostCount is not set, no need to go further
                     else if (this.ForumInfo.ReplyPostCount <= 0)
                     {
-                        this._canReply = true;
+                        this.canReply = true;
                     }
 
                     // If we don't have a valid user, there is no way they could meed the minumum post count requirement
                     else if (this.ForumUser.UserId <= 0)
                     {
-                        this._canReply = false;
+                        this.canReply = false;
                     }
                     else
                     {
-                        this._canReply = this.ForumUser.PostCount >= this.ForumInfo.ReplyPostCount;
+                        this.canReply = this.ForumUser.PostCount >= this.ForumInfo.ReplyPostCount;
                     }
                 }
 
-                return this._canReply.Value;
+                return this.canReply.Value;
             }
         }
         #endregion

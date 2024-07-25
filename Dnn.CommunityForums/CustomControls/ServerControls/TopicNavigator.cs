@@ -33,48 +33,48 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class TopicNavigator : ForumBase
     {
 
-        private DisplayTemplate _itemTemplate;
+        private DisplayTemplate itemTemplate;
 
         public DisplayTemplate ItemTemplate
         {
             get
             {
-                return this._itemTemplate;
+                return this.itemTemplate;
             }
 
             set
             {
-                this._itemTemplate = value;
+                this.itemTemplate = value;
             }
         }
 
-        private DisplayTemplate _headerTemplate;
+        private DisplayTemplate headerTemplate;
 
         public DisplayTemplate HeaderTemplate
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
-        private DisplayTemplate _footerTemplate;
+        private DisplayTemplate footerTemplate;
 
         public DisplayTemplate FooterTemplate
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 

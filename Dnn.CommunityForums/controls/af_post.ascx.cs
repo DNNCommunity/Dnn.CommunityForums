@@ -43,25 +43,25 @@ namespace DotNetNuke.Modules.ActiveForums
     public partial class af_post : ForumBase
     {
         protected SubmitForm ctlForm = new SubmitForm();
-        private bool _isApproved;
+        private bool isApproved;
         public string PreviewText = string.Empty;
-        private bool _isEdit;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _fi;
-        private UserProfileInfo _ui = new UserProfileInfo();
-        private string _themePath = string.Empty;
-        private bool _userIsTrusted;
-        private int _contentId = -1;
-        private int _authorId = -1;
-        private bool _allowHTML;
-        private EditorTypes _editorType = EditorTypes.TEXTBOX;
-        private bool _canModEdit;
-        private bool _canModApprove;
-        private bool _canEdit;
-        private bool _canAttach;
-        private bool _canTrust;
-        private bool _canLock;
-        private bool _canPin;
-        private bool _canAnnounce;
+        private bool isEdit;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo fi;
+        private UserProfileInfo ui = new UserProfileInfo();
+        private string themePath = string.Empty;
+        private bool userIsTrusted;
+        private int contentId = -1;
+        private int authorId = -1;
+        private bool allowHTML;
+        private EditorTypes editorType = EditorTypes.TEXTBOX;
+        private bool canModEdit;
+        private bool canModApprove;
+        private bool canEdit;
+        private bool canAttach;
+        private bool canTrust;
+        private bool canLock;
+        private bool canPin;
+        private bool canAnnounce;
 
         public string Spinner { get; set; }
 
@@ -86,22 +86,22 @@ namespace DotNetNuke.Modules.ActiveForums
                 oCSS.Controls.Add(oLink);
             }
 
-            this._fi = this.ForumInfo;
-            this._authorId = this.UserId;
-            this._canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.ModEdit, this.ForumUser.UserRoles);
-            this._canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.ModApprove, this.ForumUser.UserRoles);
-            this._canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.Edit, this.ForumUser.UserRoles);
-            this._canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.Attach, this.ForumUser.UserRoles);
-            this._canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.Trust, this.ForumUser.UserRoles);
-            this._canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.Lock, this.ForumUser.UserRoles);
-            this._canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.Pin, this.ForumUser.UserRoles);
-            this._canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this._fi.Security.Announce, this.ForumUser.UserRoles);
+            this.fi = this.ForumInfo;
+            this.authorId = this.UserId;
+            this.canModEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.ModEdit, this.ForumUser.UserRoles);
+            this.canModApprove = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.ModApprove, this.ForumUser.UserRoles);
+            this.canEdit = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Edit, this.ForumUser.UserRoles);
+            this.canAttach = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Attach, this.ForumUser.UserRoles);
+            this.canTrust = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Trust, this.ForumUser.UserRoles);
+            this.canLock = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Lock, this.ForumUser.UserRoles);
+            this.canPin = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Pin, this.ForumUser.UserRoles);
+            this.canAnnounce = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasPerm(this.fi.Security.Announce, this.ForumUser.UserRoles);
 
-            if (this._fi == null)
+            if (this.fi == null)
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
             else if (this.Request.Params[ParamKeys.action] != null)
             {
-                if (!this._canEdit && (this.Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.TopicEdit || this.Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.ReplyEdit))
+                if (!this.canEdit && (this.Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.TopicEdit || this.Request.Params[ParamKeys.action].ToLowerInvariant() == PostActions.ReplyEdit))
                 {
                     this.Response.Redirect(this.NavigateUrl(this.TabId));
                 }
@@ -113,23 +113,23 @@ namespace DotNetNuke.Modules.ActiveForums
             }
 
             if (this.UserId > 0)
-                this._ui = this.ForumUser.Profile;
+                this.ui = this.ForumUser.Profile;
             else
             {
-                this._ui.TopicCount = 0;
-                this._ui.ReplyCount = 0;
-                this._ui.RewardPoints = 0;
-                this._ui.IsMod = false;
-                this._ui.TrustLevel = -1;
+                this.ui.TopicCount = 0;
+                this.ui.ReplyCount = 0;
+                this.ui.RewardPoints = 0;
+                this.ui.IsMod = false;
+                this.ui.TrustLevel = -1;
             }
 
-            this._userIsTrusted = Utilities.IsTrusted((int)this._fi.DefaultTrustValue, this._ui.TrustLevel, this._canTrust, this._fi.AutoTrustLevel, this._ui.PostCount);
-            this._themePath = this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
-            this.Spinner = this.Page.ResolveUrl(this._themePath + "/images/loading.gif");
-            this._isApproved = !this._fi.IsModerated || this._userIsTrusted || this._canModApprove;
+            this.userIsTrusted = Utilities.IsTrusted((int)this.fi.DefaultTrustValue, this.ui.TrustLevel, this.canTrust, this.fi.AutoTrustLevel, this.ui.PostCount);
+            this.themePath = this.Page.ResolveUrl(this.MainSettings.ThemeLocation);
+            this.Spinner = this.Page.ResolveUrl(this.themePath + "/images/loading.gif");
+            this.isApproved = !this.fi.IsModerated || this.userIsTrusted || this.canModApprove;
 
             this.ctlForm.ID = "ctlForm";
-            this.ctlForm.PostButton.ImageUrl = this._themePath + "/images/save32.png";
+            this.ctlForm.PostButton.ImageUrl = this.themePath + "/images/save32.png";
             this.ctlForm.PostButton.ImageLocation = "TOP";
             this.ctlForm.PostButton.Height = Unit.Pixel(50);
             this.ctlForm.PostButton.Width = Unit.Pixel(50);
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums
             // TODO: Make sure this check happens on submit
             // if (_canAttach && _fi.AllowAttach) {}
 
-            this.ctlForm.CancelButton.ImageUrl = this._themePath + "/images/cancel32.png";
+            this.ctlForm.CancelButton.ImageUrl = this.themePath + "/images/cancel32.png";
             this.ctlForm.CancelButton.ImageLocation = "TOP";
             this.ctlForm.CancelButton.PostBack = false;
             this.ctlForm.CancelButton.ClientSideScript = "javascript:history.go(-1);";
@@ -151,32 +151,32 @@ namespace DotNetNuke.Modules.ActiveForums
             this.ctlForm.CancelButton.Width = Unit.Pixel(50);
             this.ctlForm.CancelButton.ConfirmMessage = this.GetSharedResource("[RESX:ConfirmCancel]");
             this.ctlForm.ModuleConfiguration = this.ModuleConfiguration;
-            if (this._fi.AllowHTML)
+            if (this.fi.AllowHTML)
             {
-                this._allowHTML = this.IsHtmlPermitted(this._fi.EditorPermittedUsers, this._userIsTrusted, this._canModEdit);
+                this.allowHTML = this.IsHtmlPermitted(this.fi.EditorPermittedUsers, this.userIsTrusted, this.canModEdit);
             }
 
-            this.ctlForm.AllowHTML = this._allowHTML;
-            if (this._allowHTML)
+            this.ctlForm.AllowHTML = this.allowHTML;
+            if (this.allowHTML)
             {
                 if (this.Request.Browser.IsMobileDevice)
                 {
-                    this._editorType = (EditorTypes)this._fi.EditorMobile;
+                    this.editorType = (EditorTypes)this.fi.EditorMobile;
                 }
                 else
                 {
-                    this._editorType = this._fi.EditorType;
+                    this.editorType = this.fi.EditorType;
                 }
             }
             else
             {
-                this._editorType = EditorTypes.TEXTBOX;
+                this.editorType = EditorTypes.TEXTBOX;
             }
 
-            this.ctlForm.EditorType = this._editorType;
-            this.ctlForm.ForumInfo = this._fi;
+            this.ctlForm.EditorType = this.editorType;
+            this.ctlForm.ForumInfo = this.fi;
             this.ctlForm.RequireCaptcha = true;
-            switch (this._editorType)
+            switch (this.editorType)
             {
                 case EditorTypes.TEXTBOX:
                     this.Page.ClientScript.RegisterClientScriptInclude("afeditor", this.Page.ResolveUrl(Globals.ModulePath + "scripts/text_editor.js"));
@@ -210,18 +210,18 @@ namespace DotNetNuke.Modules.ActiveForums
                 switch (this.Request.Params[ParamKeys.action].ToLowerInvariant())
                 {
                     case PostActions.TopicEdit:
-                        if (this._canModEdit || (this._canEdit && this.Request.IsAuthenticated))
+                        if (this.canModEdit || (this.canEdit && this.Request.IsAuthenticated))
                         {
-                            this._isEdit = true;
+                            this.isEdit = true;
                             this.PrepareTopic();
                             this.LoadTopic();
                         }
 
                         break;
                     case PostActions.ReplyEdit:
-                        if (this._canModEdit || (this._canEdit && this.Request.IsAuthenticated))
+                        if (this.canModEdit || (this.canEdit && this.Request.IsAuthenticated))
                         {
-                            this._isEdit = true;
+                            this.isEdit = true;
                             this.PrepareReply();
                             this.LoadReply();
                         }
@@ -255,15 +255,15 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (this._isEdit && !this.Request.IsAuthenticated)
+            if (this.isEdit && !this.Request.IsAuthenticated)
             {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
             }
 
-            this.PrepareAttachments(this._contentId);
+            this.PrepareAttachments(this.contentId);
 
-            this.ctlForm.ContentId = this._contentId;
-            this.ctlForm.AuthorId = this._authorId;
+            this.ctlForm.ContentId = this.contentId;
+            this.ctlForm.AuthorId = this.authorId;
             this.plhContent.Controls.Add(this.ctlForm);
 
             this.EditorClientId = this.ctlForm.ClientID;
@@ -355,7 +355,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     var message = e.Parameters[1];
 
                     var topicTemplateID = this.ForumInfo.TopicTemplateId;
-                    message = Utilities.CleanString(this.PortalId, message, this._allowHTML, this._editorType, this.ForumInfo.UseFilter, this.ForumInfo.AllowScript, this.ForumModuleId, this.ImagePath, this.ForumInfo.AllowEmoticons);
+                    message = Utilities.CleanString(this.PortalId, message, this.allowHTML, this.editorType, this.ForumInfo.UseFilter, this.ForumInfo.AllowScript, this.ForumModuleId, this.ImagePath, this.ForumInfo.AllowEmoticons);
                     message = Utilities.ManageImagePath(message, HttpContext.Current.Request.Url);
                     var uc = new UserController();
                     var up = uc.GetUser(this.PortalId, this.ForumModuleId, this.UserId) ?? new User
@@ -385,11 +385,11 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
             }
-            else if ((ti.Content.AuthorId != this.UserId && this._canModEdit == false) | (ti.Content.AuthorId == this.UserId && this._canEdit == false) | (this._canEdit == false && this._canModEdit))
+            else if ((ti.Content.AuthorId != this.UserId && this.canModEdit == false) | (ti.Content.AuthorId == this.UserId && this.canEdit == false) | (this.canEdit == false && this.canModEdit))
             {
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
             }
-            else if (!this._canModEdit && ti.Content.AuthorId == this.UserId && this._canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ti.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ti.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
             {
                 var im = new InfoMessage
                 {
@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 // User has acccess
                 var sBody = HttpUtility.HtmlDecode(ti.Content.Body);
                 var sSubject = HttpUtility.HtmlDecode(ti.Content.Subject);
-                sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this._allowHTML, this._editorType);
+                sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorTypes.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
                 this.ctlForm.Summary = HttpUtility.HtmlDecode(ti.Content.Summary);
@@ -422,8 +422,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 // if (ti.Author.AuthorId > 0)
                 //    ctlForm.Subscribe = Subscriptions.IsSubscribed(PortalId, ForumModuleId, ForumId, TopicId, SubscriptionTypes.Instant, ti.Author.AuthorId);
 
-                this._contentId = ti.ContentId;
-                this._authorId = ti.Author.AuthorId;
+                this.contentId = ti.ContentId;
+                this.authorId = ti.Author.AuthorId;
 
                 if (!string.IsNullOrEmpty(ti.TopicData))
                 {
@@ -447,13 +447,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                 }
 
-                if (ti.Content.AuthorId != this.UserId && this._canModApprove)
+                if (ti.Content.AuthorId != this.UserId && this.canModApprove)
                 {
                     this.ctlForm.ShowModOptions = true;
                 }
             }
 
-            if (this._authorId != this.UserId)
+            if (this.authorId != this.UserId)
             {
                 this.ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + this.ctlForm.Template + "</div>";
             }
@@ -468,10 +468,10 @@ namespace DotNetNuke.Modules.ActiveForums
 
             if (ri == null)
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
-            else if ((ri.Content.AuthorId != this.UserId && this._canModEdit == false) | (ri.Content.AuthorId == this.UserId && this._canEdit == false) | (this._canEdit == false && this._canModEdit))
+            else if ((ri.Content.AuthorId != this.UserId && this.canModEdit == false) | (ri.Content.AuthorId == this.UserId && this.canEdit == false) | (this.canEdit == false && this.canModEdit))
                 this.Response.Redirect(this.NavigateUrl(this.TabId));
 
-            else if (!this._canModEdit && ri.Content.AuthorId == this.UserId && this._canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
+            else if (!this.canModEdit && ri.Content.AuthorId == this.UserId && this.canEdit && this.MainSettings.EditInterval > 0 & SimulateDateDiff.DateDiff(SimulateDateDiff.DateInterval.Minute, ri.Content.DateCreated, DateTime.UtcNow) > this.MainSettings.EditInterval)
             {
                 var im = new Controls.InfoMessage
                 {
@@ -484,20 +484,20 @@ namespace DotNetNuke.Modules.ActiveForums
             {
                 var sBody = HttpUtility.HtmlDecode(ri.Content.Body);
                 var sSubject = HttpUtility.HtmlDecode(ri.Content.Subject);
-                sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this._allowHTML, this._editorType);
+                sBody = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sBody, this.allowHTML, this.editorType);
                 sSubject = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, sSubject, false, EditorTypes.TEXTBOX);
                 this.ctlForm.Subject = sSubject;
                 this.ctlForm.Body = sBody;
                 this.ctlForm.IsApproved = ri.IsApproved;
-                this._contentId = ri.ContentId;
-                this._authorId = ri.Author.AuthorId;
-                if (ri.Content.AuthorId != this.UserId && this._canModApprove)
+                this.contentId = ri.ContentId;
+                this.authorId = ri.Author.AuthorId;
+                if (ri.Content.AuthorId != this.UserId && this.canModApprove)
                 {
                     this.ctlForm.ShowModOptions = true;
                 }
             }
 
-            if (this._authorId != this.UserId)
+            if (this.authorId != this.UserId)
             {
                 this.ctlForm.Template = "<div class=\"dcf-mod-edit-wrap\"><span>[RESX:Moderator-Editor]</span>" + this.ctlForm.Template + "</div>";
             }
@@ -506,8 +506,8 @@ namespace DotNetNuke.Modules.ActiveForums
         private void PrepareTopic()
         {
 
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicEditor", this._fi.TopicFormId);
-            if (this._isEdit)
+            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "TopicEditor", this.fi.TopicFormId);
+            if (this.isEdit)
             {
                 template = template.Replace("[RESX:CreateNewTopic]", "[RESX:EditingExistingTopic]");
             }
@@ -524,13 +524,13 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.NewTopic;
 
-            if (this._canModApprove)
+            if (this.canModApprove)
             {
                 this.ctlForm.ShowModOptions = true;
             }
 
             this.ctlForm.Template = template;
-            this.ctlForm.IsApproved = this._isApproved;
+            this.ctlForm.IsApproved = this.isApproved;
 
         }
 
@@ -541,8 +541,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             this.ctlForm.EditorMode = Modules.ActiveForums.Controls.SubmitForm.EditorModes.Reply;
 
-            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this._fi.ReplyFormId);
-            if (this._isEdit)
+            string template = TemplateCache.GetCachedTemplate(this.ForumModuleId, "ReplyEditor", this.fi.ReplyFormId);
+            if (this.isEdit)
             {
                 template = template.Replace("[RESX:ReplyToTopic]", "[RESX:EditingExistingReply]");
             }
@@ -615,7 +615,7 @@ namespace DotNetNuke.Modules.ActiveForums
                     if (postId != 0)
                     {
                         var userDisplay = this.MainSettings.UserNameDisplay;
-                        if (this._editorType == EditorTypes.TEXTBOX)
+                        if (this.editorType == EditorTypes.TEXTBOX)
                         {
                             userDisplay = "none";
                         }
@@ -639,7 +639,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         }
                     }
 
-                    if (this._allowHTML && this._editorType != EditorTypes.TEXTBOX)
+                    if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)
                     {
                         if (body.ToUpper().Contains("<CODE") | body.ToUpper().Contains("[CODE]"))
                         {
@@ -649,13 +649,13 @@ namespace DotNetNuke.Modules.ActiveForums
                     }
                     else
                     {
-                        body = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, body, this._allowHTML, this._editorType);
+                        body = Utilities.PrepareForEdit(this.PortalId, this.ForumModuleId, this.ImagePath, body, this.allowHTML, this.editorType);
                     }
 
                     if (isQuote)
                     {
                         this.ctlForm.EditorMode = SubmitForm.EditorModes.Quote;
-                        if (this._allowHTML && this._editorType != EditorTypes.TEXTBOX)
+                        if (this.allowHTML && this.editorType != EditorTypes.TEXTBOX)
                         {
                             body = "<blockquote>" + System.Environment.NewLine + sPostedBy + System.Environment.NewLine + "<br />" + System.Environment.NewLine + body + System.Environment.NewLine + "</blockquote><br /><br />";
                         }
@@ -675,7 +675,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
             }
 
-            if (this.ctlForm.EditorMode != SubmitForm.EditorModes.EditReply && this._canModApprove)
+            if (this.ctlForm.EditorMode != SubmitForm.EditorModes.EditReply && this.canModApprove)
             {
                 this.ctlForm.ShowModOptions = false;
             }
@@ -685,8 +685,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var subject = this.ctlForm.Subject;
             var body = this.ctlForm.Body;
-            subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorTypes.TEXTBOX, this.ForumInfo.UseFilter, false, this.ForumModuleId, this._themePath, false);
-            body = Utilities.CleanString(this.PortalId, body, this._allowHTML, this._editorType, this.ForumInfo.UseFilter, this.ForumInfo.AllowScript, this.ForumModuleId, this._themePath, this.ForumInfo.AllowEmoticons);
+            subject = Utilities.CleanString(this.PortalId, Utilities.XSSFilter(subject, true), false, EditorTypes.TEXTBOX, this.ForumInfo.UseFilter, false, this.ForumModuleId, this.themePath, false);
+            body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.ForumInfo.UseFilter, this.ForumInfo.AllowScript, this.ForumModuleId, this.themePath, this.ForumInfo.AllowEmoticons);
             var summary = this.ctlForm.Summary;
             int authorId;
             string authorName;
@@ -718,7 +718,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 authorId = -1;
-                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this._themePath, false);
+                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
                 if (authorName.Trim() == string.Empty)
                 {
                     return;
@@ -743,7 +743,7 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.AnnounceStart = this.ctlForm.AnnounceStart;
             ti.Priority = this.ctlForm.TopicPriority;
 
-            if (!this._isEdit)
+            if (!this.isEdit)
             {
                 ti.Content.AuthorId = authorId;
                 ti.Content.AuthorName = authorName;
@@ -765,19 +765,19 @@ namespace DotNetNuke.Modules.ActiveForums
             ti.Content.Summary = summary;
             ti.IsAnnounce = ti.AnnounceEnd != Utilities.NullDate() && ti.AnnounceStart != Utilities.NullDate();
 
-            if (this._canModApprove && this._fi.IsModerated)
+            if (this.canModApprove && this.fi.IsModerated)
             {
                 ti.IsApproved = this.ctlForm.IsApproved;
             }
             else
             {
-                ti.IsApproved = this._isApproved;
+                ti.IsApproved = this.isApproved;
             }
 
             ti.IsArchived = false;
             ti.IsDeleted = false;
-            ti.IsLocked = this._canLock && this.ctlForm.Locked;
-            ti.IsPinned = this._canPin && this.ctlForm.Pinned;
+            ti.IsLocked = this.canLock && this.ctlForm.Locked;
+            ti.IsPinned = this.canPin && this.ctlForm.Pinned;
             ti.StatusId = this.ctlForm.StatusId;
             ti.TopicIcon = this.ctlForm.TopicIcon;
             ti.TopicType = 0;
@@ -896,14 +896,14 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!ti.IsApproved)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this._fi.ForumGroupId, this.ForumId, this.TopicId, 0, ti.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueUnapprovedTopicAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this.fi.ForumGroupId, this.ForumId, this.TopicId, 0, ti.Content.AuthorId);
                     string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     this.Response.Redirect(this.NavigateUrl(this.ForumTabId, "", @params), false);
                     this.Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
-                    if (!this._isEdit)
+                    if (!this.isEdit)
                     {
                         DotNetNuke.Modules.ActiveForums.Controllers.TopicController.QueueApprovedTopicAfterAction(this.PortalId, this.TabId, this.ModuleId, this.ForumInfo.ForumGroupId, this.ForumId, this.TopicId, 0, ti.Content.AuthorId);
                     }
@@ -929,8 +929,8 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             var subject = this.ctlForm.Subject;
             var body = this.ctlForm.Body;
-            subject = Utilities.CleanString(this.PortalId, subject, false, EditorTypes.TEXTBOX, this._fi.UseFilter, false, this.ForumModuleId, this._themePath, false);
-            body = Utilities.CleanString(this.PortalId, body, this._allowHTML, this._editorType, this._fi.UseFilter, this._fi.AllowScript, this.ForumModuleId, this._themePath, this._fi.AllowEmoticons);
+            subject = Utilities.CleanString(this.PortalId, subject, false, EditorTypes.TEXTBOX, this.fi.UseFilter, false, this.ForumModuleId, this.themePath, false);
+            body = Utilities.CleanString(this.PortalId, body, this.allowHTML, this.editorType, this.fi.UseFilter, this.fi.AllowScript, this.ForumModuleId, this.themePath, this.fi.AllowEmoticons);
             // This HTML decode is used to make Quote functionality work properly even when it appears in Text Box instead of Editor
             if (this.Request.Params[ParamKeys.QuoteId] != null)
             {
@@ -967,7 +967,7 @@ namespace DotNetNuke.Modules.ActiveForums
             else
             {
                 authorId = -1;
-                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this._themePath, false);
+                authorName = Utilities.CleanString(this.PortalId, this.ctlForm.AuthorName, false, EditorTypes.TEXTBOX, true, false, this.ForumModuleId, this.themePath, false);
                 if (authorName.Trim() == string.Empty)
                 {
                     return;
@@ -989,7 +989,7 @@ namespace DotNetNuke.Modules.ActiveForums
                 ri.Content = new DotNetNuke.Modules.ActiveForums.Entities.ContentInfo();
             }
 
-            if (!this._isEdit)
+            if (!this.isEdit)
             {
                 ri.Content.AuthorId = authorId;
                 ri.Content.AuthorName = authorName;
@@ -1008,13 +1008,13 @@ namespace DotNetNuke.Modules.ActiveForums
             ri.Content.Subject = subject;
             ri.Content.Summary = string.Empty;
 
-            if (this._canModApprove && ri.Content.AuthorId != this.UserId)
+            if (this.canModApprove && ri.Content.AuthorId != this.UserId)
             {
                 ri.IsApproved = this.ctlForm.IsApproved;
             }
             else
             {
-                ri.IsApproved = this._isApproved;
+                ri.IsApproved = this.isApproved;
             }
 
             ri.IsDeleted = false;
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         new SubscriptionController().Subscription_Update(this.PortalId, this.ForumModuleId, this.ForumId, this.TopicId, 1, authorId, this.ForumUser.UserRoles);
                     }
                 }
-                else if (this._isEdit)
+                else if (this.isEdit)
                 {
                     var isSub = new DotNetNuke.Modules.ActiveForums.Controllers.SubscriptionController().Subscribed(this.PortalId, this.ForumModuleId, authorId, this.ForumId, this.TopicId);
                     if (isSub && !this.ctlForm.Subscribe)
@@ -1050,7 +1050,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 if (!ri.IsApproved)
                 {
-                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this._fi.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
+                    DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueUnapprovedReplyAfterAction(this.PortalId, this.TabId, this.ForumModuleId, this.fi.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
 
                     string[] @params = { ParamKeys.ForumId + "=" + this.ForumId, ParamKeys.TopicId + "=" + this.TopicId, ParamKeys.ViewType + "=confirmaction", ParamKeys.ConfirmActionId + "=" + ConfirmActions.MessagePending };
                     this.Response.Redirect(Utilities.NavigateURL(this.TabId, "", @params), false);
@@ -1058,9 +1058,9 @@ namespace DotNetNuke.Modules.ActiveForums
                 }
                 else
                 {
-                    if (!this._isEdit)
+                    if (!this.isEdit)
                     {
-                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, this._fi.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
+                        DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.QueueApprovedReplyAfterAction(this.PortalId, this.TabId, this.ModuleId, this.fi.ForumGroupId, this.ForumId, this.TopicId, tmpReplyId, ri.Content.AuthorId);
                     }
 
                     var fullURL = new ControlUtils().BuildUrl(this.TabId, this.ForumModuleId, this.ForumInfo.ForumGroup.PrefixURL, this.ForumInfo.PrefixURL, this.ForumInfo.ForumGroupId, this.ForumInfo.ForumID, this.TopicId, ri.Topic.TopicUrl, -1, -1, string.Empty, 1, tmpReplyId, this.SocialGroupId);

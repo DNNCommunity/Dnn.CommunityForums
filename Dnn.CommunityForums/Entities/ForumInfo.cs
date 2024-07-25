@@ -35,8 +35,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
     // TODO [Cacheable("activeforums_Forums", CacheItemPriority.Low)] /* TODO: DAL2 caching cannot be used until all CRUD methods use DAL2; must update Save method to use DAL2 rather than stored procedure */
     public partial class ForumInfo
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo _forumGroup;
-        private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> _subforums;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo forumGroup;
+        private List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> subforums;
 
         [ColumnName("ForumId")]
         public int ForumID { get; set; }
@@ -98,8 +98,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo ForumGroup
         {
-            get => this._forumGroup ?? (this._forumGroup = this.LoadForumGroup());
-            set => this._forumGroup = value;
+            get => this.forumGroup ?? (this.forumGroup = this.LoadForumGroup());
+            set => this.forumGroup = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumGroupInfo LoadForumGroup()
@@ -214,22 +214,22 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> SubForums
         {
-            get => this._subforums ?? this.LoadSubForums();
-            set => this._subforums = value;
+            get => this.subforums ?? this.LoadSubForums();
+            set => this.subforums = value;
         }
 
         internal List<DotNetNuke.Modules.ActiveForums.Entities.ForumInfo> LoadSubForums()
         {
-            return this._subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(this.ForumID, this.ModuleId).ToList();
+            return this.subforums = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetSubForums(this.ForumID, this.ModuleId).ToList();
         }
 
-        private List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> _properties;
+        private List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> properties;
 
         [IgnoreColumn()]
         public List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> Properties
         {
-            get => this._properties ?? (this._properties = this.LoadProperties());
-            set => this._properties = value;
+            get => this.properties ?? (this.properties = this.LoadProperties());
+            set => this.properties = value;
         }
 
         internal List<DotNetNuke.Modules.ActiveForums.Entities.PropertyInfo> LoadProperties()
@@ -239,14 +239,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         #region "Settings & Security"
 
-        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo _security;
-        private Hashtable _forumSettings;
+        private DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo security;
+        private Hashtable forumSettings;
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
         {
-            get => this._security ?? (this._security = this.LoadSecurity());
-            set => this._security = value;
+            get => this.security ?? (this.security = this.LoadSecurity());
+            set => this.security = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
@@ -268,8 +268,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public Hashtable ForumSettings
         {
-            get => this._forumSettings ?? (this._forumSettings = this.LoadSettings());
-            set => this._forumSettings = value;
+            get => this.forumSettings ?? (this.forumSettings = this.LoadSettings());
+            set => this.forumSettings = value;
         }
 
         internal Hashtable LoadSettings()

@@ -35,22 +35,22 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:Rating runat=server></{0}:Rating>")]
     public class Rating : WebControl
     {
-        private double _rating = 0;
-        private string _ratingCSS = "afrate";
-        private int _topicId = -1;
-        private int _userId = -1;
+        private double rating = 0;
+        private string ratingCSS = "afrate";
+        private int topicId = -1;
+        private int userId = -1;
         protected Callback cb = new Callback();
 
         public double RatingValue
         {
             get
             {
-                return this._rating;
+                return this.rating;
             }
 
             set
             {
-                this._rating = value;
+                this.rating = value;
             }
         }
 
@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._ratingCSS;
+                return this.ratingCSS;
             }
 
             set
             {
-                this._ratingCSS = value;
+                this.ratingCSS = value;
             }
         }
 
@@ -71,12 +71,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._topicId;
+                return this.topicId;
             }
 
             set
             {
-                this._topicId = value;
+                this.topicId = value;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._userId;
+                return this.userId;
             }
 
             set
             {
-                this._userId = value;
+                this.userId = value;
             }
         }
 

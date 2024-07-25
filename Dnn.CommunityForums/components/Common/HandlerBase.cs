@@ -38,43 +38,43 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             AccessDenied
         }
 
-        private User _userProfile;
-        private Hashtable _params;
-        private bool _isValid = false;
-        private int _gid = -1;
-        private int _groupid = -1;
-        private int _upid = -1;
-        private DotNetNuke.Entities.Portals.PortalSettings _ps;
-        private SettingsInfo _mainSettings;
-        private bool _adminRequired = false;
+        private User userProfile;
+        private Hashtable @params;
+        private bool isValid = false;
+        private int gid = -1;
+        private int groupid = -1;
+        private int upid = -1;
+        private DotNetNuke.Entities.Portals.PortalSettings ps;
+        private SettingsInfo mainSettings;
+        private bool adminRequired = false;
 
         public bool AdminRequired
         {
             get
             {
-                return this._adminRequired;
+                return this.adminRequired;
             }
 
             set
             {
-                this._adminRequired = value;
+                this.adminRequired = value;
             }
         }
 
-        private int _pid = -1;
-        private int _mid = -1;
-        private int _userId = -1;
+        private int pid = -1;
+        private int mid = -1;
+        private int userId = -1;
 
         public int UserId
         {
             get
             {
-                return this._userId;
+                return this.userId;
             }
 
             set
             {
-                this._userId = value;
+                this.userId = value;
             }
         }
 
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
                 else
                 {
-                    return this._pid;
+                    return this.pid;
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                 }
                 else
                 {
-                    return this._mid;
+                    return this.mid;
                 }
             }
         }
@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                return this._mainSettings;
+                return this.mainSettings;
             }
         }
 
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                return this._isValid;
+                return this.isValid;
             }
         }
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                return this._ps;
+                return this.ps;
             }
         }
 
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                return this._params;
+                return this.@params;
             }
         }
 
@@ -189,37 +189,37 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
         {
             get
             {
-                return this._upid;
+                return this.upid;
             }
         }
 
-        private bool _isAuthenticated = false;
+        private bool isAuthenticated = false;
 
         public bool IsAuthenticated
         {
             get
             {
-                return this._isAuthenticated;
+                return this.isAuthenticated;
             }
 
             set
             {
-                this._isAuthenticated = value;
+                this.isAuthenticated = value;
             }
         }
 
-        private string _username = string.Empty;
+        private string username = string.Empty;
 
         public string Username
         {
             get
             {
-                return this._username;
+                return this.username;
             }
 
             set
             {
-                this._username = value;
+                this.username = value;
             }
         }
 
@@ -246,27 +246,27 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             {
                 if (HttpContext.Current.Items["PortalSettings"] != null)
                 {
-                    this._ps = (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
-                    this._pid = this._ps.PortalId;
+                    this.ps = (DotNetNuke.Entities.Portals.PortalSettings)HttpContext.Current.Items["PortalSettings"];
+                    this.pid = this.ps.PortalId;
                 }
                 else
                 {
                     DotNetNuke.Entities.Portals.PortalAliasInfo objPortalAliasInfo = null;
                     string sUrl = HttpContext.Current.Request.RawUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
                     objPortalAliasInfo = DotNetNuke.Entities.Portals.PortalAliasController.Instance.GetPortalAlias(HttpContext.Current.Request.Url.Host);
-                    this._pid = objPortalAliasInfo.PortalID;
-                    this._ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
+                    this.pid = objPortalAliasInfo.PortalID;
+                    this.ps = DotNetNuke.Entities.Portals.PortalController.Instance.GetCurrentPortalSettings();
 
                 }
 
                 // Dim sc As New Social.SocialSettings
                 // _mainSettings = sc.LoadSettings[_ps.PortalId]
-                this._mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
+                this.mainSettings = SettingsBase.GetModuleSettings(this.ModuleId);
                 // If context.Request.IsAuthenticated Then
-                this._isValid = true;
+                this.isValid = true;
                 if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
-                    this._isValid = false;
+                    this.isValid = false;
                     return;
                 }
 
@@ -276,18 +276,18 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                     DotNetNuke.Entities.Modules.ModuleController objMC = new DotNetNuke.Entities.Modules.ModuleController();
                     DotNetNuke.Entities.Modules.ModuleInfo objM = objMC.GetModule(this.ModuleId, this.TabId);
                     string roleIds = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.GetRoleIds(this.PortalId, objM.ModulePermissions.ToString("EDIT").Split(';'));
-                    this._isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds, this.ForumUser.UserRoles);
+                    this.isValid = DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.HasAccess(roleIds, this.ForumUser.UserRoles);
                 }
                 else if (this.AdminRequired & !context.Request.IsAuthenticated)
                 {
-                    this._isValid = false;
+                    this.isValid = false;
                     return;
                 }
 
                 string p = HttpContext.Current.Request.Params["p"];
                 if (!string.IsNullOrEmpty(p))
                 {
-                    this._params = Utilities.JSON.ConvertFromJSONAssoicativeArrayToHashTable(p);
+                    this.@params = Utilities.JSON.ConvertFromJSONAssoicativeArrayToHashTable(p);
                 }
 
                 if (context.Request.Files.Count == 0)
@@ -450,7 +450,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
                         sr.Close();
                     }
 
-                    this._params = ht;
+                    this.@params = ht;
                     // End If
                 }
                 else
@@ -465,7 +465,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
 
                     }
 
-                    this._params = ht;
+                    this.@params = ht;
                 }
 
                 if (HttpContext.Current.Request.IsAuthenticated)
@@ -480,7 +480,7 @@ namespace DotNetNuke.Modules.ActiveForums.Handlers
             }
             catch (Exception ex)
             {
-                this._isValid = false;
+                this.isValid = false;
                 Exceptions.LogException(ex);
 
             }

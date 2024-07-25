@@ -36,20 +36,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class UserStats : WebControl
     {
 
-        private DisplayTemplate _template;
-        private int _userId = -1;
-        private int _moduleId = -1;
+        private DisplayTemplate template;
+        private int userId = -1;
+        private int moduleId = -1;
 
         public DisplayTemplate Template
         {
             get
             {
-                return this._template;
+                return this.template;
             }
 
             set
             {
-                this._template = value;
+                this.template = value;
             }
         }
 
@@ -57,18 +57,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._userId;
+                return this.userId;
             }
 
             set
             {
                 try
                 {
-                    this._userId = value;
+                    this.userId = value;
                 }
                 catch (Exception ex)
                 {
-                    this._userId = -1;
+                    this.userId = -1;
                 }
 
             }
@@ -78,12 +78,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 

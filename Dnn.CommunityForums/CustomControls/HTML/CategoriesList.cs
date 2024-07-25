@@ -27,168 +27,168 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class CategoriesList
     {
-        private int _portalId = -1;
+        private int portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        private int _moduleId = -1;
+        private int moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
-        private int _tabId = -1;
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
-        private int _forumId = -1;
+        private int forumId = -1;
 
         public int ForumId
         {
             get
             {
-                return this._forumId;
+                return this.forumId;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
-        private int _forumGroupId = -1;
+        private int forumGroupId = -1;
 
         public int ForumGroupId
         {
             get
             {
-                return this._forumGroupId;
+                return this.forumGroupId;
             }
 
             set
             {
-                this._forumGroupId = value;
+                this.forumGroupId = value;
             }
         }
 
-        private string _selectedValues = string.Empty;
+        private string selectedValues = string.Empty;
 
         public string SelectedValues
         {
             get
             {
-                return this._selectedValues;
+                return this.selectedValues;
             }
 
             set
             {
-                this._selectedValues = value;
+                this.selectedValues = value;
             }
         }
 
-        private string _template = string.Empty;
+        private string template = string.Empty;
 
         public string Template
         {
             get
             {
-                return this._template;
+                return this.template;
             }
 
             set
             {
-                this._template = value;
+                this.template = value;
             }
         }
 
-        private string _headerTemplate = string.Empty;
+        private string headerTemplate = string.Empty;
 
         public string HeaderTemplate
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
-        private string _footerTemplate = string.Empty;
+        private string footerTemplate = string.Empty;
 
         public string FooterTemplate
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 
-        private int _selectedCategory = -1;
+        private int selectedCategory = -1;
 
         public int SelectedCategory
         {
             get
             {
-                return this._selectedCategory;
+                return this.selectedCategory;
             }
 
             set
             {
-                this._selectedCategory = value;
+                this.selectedCategory = value;
             }
         }
 
-        private string _cSSClass = "afn-category";
+        private string cSSClass = "afn-category";
 
         public string CSSClass
         {
             get
             {
-                return this._cSSClass;
+                return this.cSSClass;
             }
 
             set
             {
-                this._cSSClass = value;
+                this.cSSClass = value;
             }
         }
 

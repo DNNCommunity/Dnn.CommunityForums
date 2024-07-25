@@ -27,12 +27,12 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public static class ConfigUtils
     {
-        private const string _web_config_system_webserver_modules_node_XPath = "//system.webServer/modules";
-        private const string _ForumsRewriterTypeNameFull = "DotNetNuke.Modules.ActiveForums.ForumsReWriter, DotNetNuke.Modules.ActiveForums";
-        private const string _ForumsRewriterTypeNameShort = "ForumsReWriter";
-        private const string _attribute_name = "name";
-        private const string _attribute_type = "type";
-        private const string _attribute_precondition = "preCondition";
+        private const string web_config_system_webserver_modules_node_XPath = "//system.webServer/modules";
+        private const string ForumsRewriterTypeNameFull = "DotNetNuke.Modules.ActiveForums.ForumsReWriter, DotNetNuke.Modules.ActiveForums";
+        private const string ForumsRewriterTypeNameShort = "ForumsReWriter";
+        private const string attribute_name = "name";
+        private const string attribute_type = "type";
+        private const string attribute_precondition = "preCondition";
 
         public static bool IsRewriterInstalled(string configPath)
         {
@@ -55,12 +55,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (xDoc != null)
                 {
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
+                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(web_config_system_webserver_modules_node_XPath);
                     if (xNode != null)
                     {
                         foreach (XmlNode n in xNode.ChildNodes)
                         {
-                            if ((n.Attributes[_attribute_name].Value == _ForumsRewriterTypeNameShort) && (n.Attributes[_attribute_type].Value == _ForumsRewriterTypeNameFull))
+                            if ((n.Attributes[attribute_name].Value == ForumsRewriterTypeNameShort) && (n.Attributes[attribute_type].Value == ForumsRewriterTypeNameFull))
                             {
                                 isInstalled = true;
                                 break;
@@ -92,17 +92,17 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (xDoc != null)
                 {
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
+                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(web_config_system_webserver_modules_node_XPath);
                     if (xNode != null)
                     {
                         XmlElement xNewNode = xDoc.CreateElement("add");
-                        XmlAttribute xAttrib = xDoc.CreateAttribute(_attribute_name);
-                        xAttrib.Value = _ForumsRewriterTypeNameShort;
+                        XmlAttribute xAttrib = xDoc.CreateAttribute(attribute_name);
+                        xAttrib.Value = ForumsRewriterTypeNameShort;
                         xNewNode.Attributes.Append(xAttrib);
-                        xAttrib = xDoc.CreateAttribute(_attribute_type);
-                        xAttrib.Value = _ForumsRewriterTypeNameFull;
+                        xAttrib = xDoc.CreateAttribute(attribute_type);
+                        xAttrib.Value = ForumsRewriterTypeNameFull;
                         xNewNode.Attributes.Append(xAttrib);
-                        xAttrib = xDoc.CreateAttribute(_attribute_precondition);
+                        xAttrib = xDoc.CreateAttribute(attribute_precondition);
                         xAttrib.Value = "managedHandler";
                         xNewNode.Attributes.Append(xAttrib);
                         xNode.PrependChild(xNewNode);
@@ -133,12 +133,12 @@ namespace DotNetNuke.Modules.ActiveForums
                 if (xDoc != null)
                 {
                     System.Xml.XmlNode xRoot = xDoc.DocumentElement;
-                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(_web_config_system_webserver_modules_node_XPath);
+                    System.Xml.XmlNode xNode = xRoot.SelectSingleNode(web_config_system_webserver_modules_node_XPath);
                     if (xNode != null)
                     {
                         foreach (XmlNode n in xNode.ChildNodes)
                         {
-                            if (n.Attributes[_attribute_name].Value == _ForumsRewriterTypeNameShort)
+                            if (n.Attributes[attribute_name].Value == ForumsRewriterTypeNameShort)
                             {
                                 xNode.RemoveChild(n);
                                 break;

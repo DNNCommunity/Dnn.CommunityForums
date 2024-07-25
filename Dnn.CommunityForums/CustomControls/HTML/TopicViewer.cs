@@ -26,230 +26,230 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class TopicViewer
     {
-        private int _portalId = -1;
+        private int portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        private int _moduleId = -1;
+        private int moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
-        private int _tabId = -1;
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
-        private string _forumIds = string.Empty;
+        private string forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._forumIds;
+                return this.forumIds;
             }
 
             set
             {
-                this._forumIds = value;
+                this.forumIds = value;
             }
         }
 
-        private int _forumGroupId = -1;
+        private int forumGroupId = -1;
 
         public int ForumGroupId
         {
             get
             {
-                return this._forumGroupId;
+                return this.forumGroupId;
             }
 
             set
             {
-                this._forumGroupId = value;
+                this.forumGroupId = value;
             }
         }
 
-        private int _parentForumId = -1;
+        private int parentForumId = -1;
 
         public int ParentForumId
         {
             get
             {
-                return this._parentForumId;
+                return this.parentForumId;
             }
 
             set
             {
-                this._parentForumId = value;
+                this.parentForumId = value;
             }
         }
 
-        private int _topicId = -1;
+        private int topicId = -1;
 
         public int TopicId
         {
             get
             {
-                return this._topicId;
+                return this.topicId;
             }
 
             set
             {
-                this._topicId = value;
+                this.topicId = value;
             }
         }
 
-        private string _topic = string.Empty;
+        private string topic = string.Empty;
 
         public string Topic
         {
             get
             {
-                return this._topic;
+                return this.topic;
             }
 
             set
             {
-                this._topic = value;
+                this.topic = value;
             }
         }
 
-        private string _template = string.Empty;
+        private string template = string.Empty;
 
         public string Template
         {
             get
             {
-                return this._template;
+                return this.template;
             }
 
             set
             {
-                this._template = value;
+                this.template = value;
             }
         }
 
-        private string _headerTemplate = string.Empty;
+        private string headerTemplate = string.Empty;
 
         public string HeaderTemplate
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
-        private string _footerTemplate = string.Empty;
+        private string footerTemplate = string.Empty;
 
         public string FooterTemplate
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 
         public User ForumUser { get; set; }
 
-        private int _pageIndex = 1;
+        private int pageIndex = 1;
 
         public int PageIndex
         {
             get
             {
-                return this._pageIndex;
+                return this.pageIndex;
             }
 
             set
             {
-                this._pageIndex = value;
+                this.pageIndex = value;
             }
         }
 
-        private int _pageSize = 20;
+        private int pageSize = 20;
 
         public int PageSize
         {
             get
             {
-                return this._pageSize;
+                return this.pageSize;
             }
 
             set
             {
-                this._pageSize = value;
+                this.pageSize = value;
             }
         }
 
-        private string _itemCss = "aftb-topic";
+        private string itemCss = "aftb-topic";
 
         public string ItemCss
         {
             get
             {
-                return this._itemCss;
+                return this.itemCss;
             }
 
             set
             {
-                this._itemCss = value;
+                this.itemCss = value;
             }
         }
 
-        private string _altItemCSS = "aftb-topic-alt";
+        private string altItemCSS = "aftb-topic-alt";
 
         public string AltItemCSS
         {
             get
             {
-                return this._altItemCSS;
+                return this.altItemCSS;
             }
 
             set
             {
-                this._altItemCSS = value;
+                this.altItemCSS = value;
             }
         }
 

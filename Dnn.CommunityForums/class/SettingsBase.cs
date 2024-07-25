@@ -33,13 +33,13 @@ namespace DotNetNuke.Modules.ActiveForums
     public class SettingsBase : PortalModuleBase
     {
         #region Private Members
-        private int _forumModuleId = -1;
-        private string _loadView = string.Empty;
-        private int _loadGroupForumID = 0;
-        private int _loadPostID = 0;
-        private string _imagePath = string.Empty;
-        private string _params = string.Empty;
-        private int _forumTabId = -1;
+        private int forumModuleId = -1;
+        private string loadView = string.Empty;
+        private int loadGroupForumID = 0;
+        private int loadPostID = 0;
+        private string imagePath = string.Empty;
+        private string @params = string.Empty;
+        private int forumTabId = -1;
         #endregion
 
         #region Public Properties
@@ -75,9 +75,9 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._forumModuleId > 0)
+                if (this.forumModuleId > 0)
                 {
-                    return this._forumModuleId;
+                    return this.forumModuleId;
                 }
 
                 return DotNetNuke.Modules.ActiveForums.Utilities.GetForumModuleId(this.ModuleId, this.TabId);
@@ -85,7 +85,7 @@ namespace DotNetNuke.Modules.ActiveForums
 
             set
             {
-                this._forumModuleId = value;
+                this.forumModuleId = value;
             }
         }
 
@@ -93,12 +93,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._forumTabId;
+                return this.forumTabId;
             }
 
             set
             {
-                this._forumTabId = value;
+                this.forumTabId = value;
             }
         }
 
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._params;
+                return this.@params;
             }
 
             set
             {
-                this._params = value;
+                this.@params = value;
             }
         }
 
@@ -370,7 +370,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                this.ForumModuleId = this._forumModuleId <= 0 ? this.ForumModuleId : this._forumModuleId;
+                this.ForumModuleId = this.forumModuleId <= 0 ? this.ForumModuleId : this.forumModuleId;
                 return GetModuleSettings(this.ForumModuleId);
             }
         }

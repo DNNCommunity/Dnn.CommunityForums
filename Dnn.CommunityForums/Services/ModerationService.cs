@@ -31,11 +31,11 @@ namespace DotNetNuke.Modules.ActiveForums
     [ValidateAntiForgeryToken]
     public class ModerationServiceController : DnnApiController
     {
-        private int _tabId = -1;
-        private int _moduleId = -1;
-        private int _forumId = -1;
-        private int _topicId = -1;
-        private int _replyId = -1;
+        private int tabId = -1;
+        private int moduleId = -1;
+        private int forumId = -1;
+        private int topicId = -1;
+        private int replyId = -1;
 
         // For the Notification API, return an object with "Result" property set to "success" if the operation succeeded.
         // In there is an error, return the error message in the "Message" property.
@@ -49,20 +49,20 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this._forumId, this._moduleId);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.moduleId);
             if (fi == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!this.IsMod(this._forumId))
+            if (!this.IsMod(this.forumId))
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
 
-            if (this._replyId > 0)
+            if (this.replyId > 0)
             {
-                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(this.PortalSettings.PortalId, this._tabId, this._moduleId, this._forumId, this._topicId, this._replyId);
+                var reply = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController().ApproveReply(this.PortalSettings.PortalId, this.tabId, this.moduleId, this.forumId, this.topicId, this.replyId);
                 if (reply == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Reply Not Found" });
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(this._topicId);
+                DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topic = DotNetNuke.Modules.ActiveForums.Controllers.TopicController.Approve(this.topicId);
                 if (topic == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -90,25 +90,25 @@ namespace DotNetNuke.Modules.ActiveForums
 
             this.ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this._forumId, this._moduleId);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.moduleId);
             if (fi == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!this.IsMod(this._forumId))
+            if (!this.IsMod(this.forumId))
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
 
             var mc = new ModController();
-            mc.Mod_Reject(this.PortalSettings.PortalId, this._moduleId, this.UserInfo.UserID, this._forumId, this._topicId, this._replyId);
+            mc.Mod_Reject(this.PortalSettings.PortalId, this.moduleId, this.UserInfo.UserID, this.forumId, this.topicId, this.replyId);
 
             int authorId;
 
-            if (this._replyId > 0)
+            if (this.replyId > 0)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this._replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.replyId);
 
                 if (reply == null)
                 {
@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this._topicId);
+                var topic = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.topicId);
                 if (topic == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         LastName = ui.LastName,
                         Username = ui.Username
                     };
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this._moduleId, this._tabId, this._forumId, this._topicId, this._replyId, string.Empty, au);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmail(fi.ModRejectTemplateId, this.PortalSettings.PortalId, this.moduleId, this.tabId, this.forumId, this.topicId, this.replyId, string.Empty, au);
                 }
 
             }
@@ -159,22 +159,22 @@ namespace DotNetNuke.Modules.ActiveForums
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             this.ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this._forumId, this._moduleId);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.moduleId);
             if (fi == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!this.IsMod(this._forumId))
+            if (!this.IsMod(this.forumId))
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
 
             int authorId;
-            var ms = SettingsBase.GetModuleSettings(this._moduleId);
-            if (this._replyId > 0 & this._replyId != this._topicId)
+            var ms = SettingsBase.GetModuleSettings(this.moduleId);
+            if (this.replyId > 0 & this.replyId != this.topicId)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this._replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.replyId);
 
                 if (reply == null)
                 {
@@ -183,18 +183,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
                 authorId = reply.Content.AuthorId;
                 var rc = new DotNetNuke.Modules.ActiveForums.Controllers.ReplyController();
-                rc.Reply_Delete(this.PortalSettings.PortalId, this._forumId, this._topicId, this._replyId, ms.DeleteBehavior);
+                rc.Reply_Delete(this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, ms.DeleteBehavior);
             }
             else
             {
-                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this._topicId);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.topicId);
                 if (ti == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
                 }
 
                 authorId = ti.Content.AuthorId;
-                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this._topicId);
+                new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().DeleteById(this.topicId);
 
             }
 
@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.ActiveForums
                         LastName = ui.LastName,
                         Username = ui.Username
                     };
-                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, this.PortalSettings.PortalId, this._forumId, this._topicId, this._replyId, this._moduleId, this._tabId, string.Empty);
+                    DotNetNuke.Modules.ActiveForums.Controllers.EmailController.SendEmailToModerators(fi.ModDeleteTemplateId, this.PortalSettings.PortalId, this.forumId, this.topicId, this.replyId, this.moduleId, this.tabId, string.Empty);
                 }
             }
 
@@ -228,21 +228,21 @@ namespace DotNetNuke.Modules.ActiveForums
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             this.ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this._forumId, this._moduleId);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.moduleId);
             if (fi == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!this.IsMod(this._forumId))
+            if (!this.IsMod(this.forumId))
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
 
             int authorId;
-            if (this._replyId > 0 & this._replyId != this._topicId)
+            if (this.replyId > 0 & this.replyId != this.topicId)
             {
-                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this._replyId);
+                DotNetNuke.Modules.ActiveForums.Entities.ReplyInfo reply = DotNetNuke.Modules.ActiveForums.Controllers.ReplyController.GetReply(this.replyId);
 
                 if (reply == null)
                 {
@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.ActiveForums
             }
             else
             {
-                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this._topicId);
+                var ti = new DotNetNuke.Modules.ActiveForums.Controllers.TopicController().GetById(this.topicId);
                 if (ti == null)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Topic Not Found" });
@@ -262,8 +262,8 @@ namespace DotNetNuke.Modules.ActiveForums
                 authorId = ti.Content.AuthorId;
             }
 
-            string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this._moduleId, this._tabId, true).ModuleTitle;
-            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: this.ActiveModule.PortalID, ModuleId: this._moduleId, ModuleTitle: moduleTitle, TabId: this._tabId, ForumId: this._forumId, TopicId: this._topicId, ReplyId: this._replyId, BannedBy: this.UserInfo, AuthorId: authorId);
+            string moduleTitle = DotNetNuke.Entities.Modules.ModuleController.Instance.GetModule(this.moduleId, this.tabId, true).ModuleTitle;
+            DotNetNuke.Modules.ActiveForums.Controllers.UserController.BanUser(PortalId: this.ActiveModule.PortalID, ModuleId: this.moduleId, ModuleTitle: moduleTitle, TabId: this.tabId, ForumId: this.forumId, TopicId: this.topicId, ReplyId: this.replyId, BannedBy: this.UserInfo, AuthorId: authorId);
 
             NotificationsController.Instance.DeleteNotification(dto.NotificationId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
@@ -276,13 +276,13 @@ namespace DotNetNuke.Modules.ActiveForums
             var notify = NotificationsController.Instance.GetNotification(dto.NotificationId);
             this.ParseNotificationContext(notify.Context);
 
-            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this._forumId, this._moduleId);
+            var fi = new DotNetNuke.Modules.ActiveForums.Controllers.ForumController().GetById(this.forumId, this.moduleId);
             if (fi == null)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Message = "Forum Not Found" });
             }
 
-            if (!this.IsMod(this._forumId))
+            if (!this.IsMod(this.forumId))
             {
                 return this.Request.CreateResponse(HttpStatusCode.Forbidden, new { Message = "User is not a moderator for this forum" });
             }
@@ -295,17 +295,17 @@ namespace DotNetNuke.Modules.ActiveForums
 
         private bool IsMod(int forumId)
         {
-            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(this.ActiveModule.PortalID, this._moduleId, forumId).Any(i => i.UserID == this.UserInfo.UserID);
+            return DotNetNuke.Modules.ActiveForums.Controllers.ModerationController.GetListOfModerators(this.ActiveModule.PortalID, this.moduleId, forumId).Any(i => i.UserID == this.UserInfo.UserID);
         }
 
         private void ParseNotificationContext(string context)
         {
             var keys = context.Split(':');
-            this._tabId = int.Parse(keys[0]);
-            this._moduleId = int.Parse(keys[1]);
-            this._forumId = int.Parse(keys[2]);
-            this._topicId = int.Parse(keys[3]);
-            this._replyId = int.Parse(keys[4]);
+            this.tabId = int.Parse(keys[0]);
+            this.moduleId = int.Parse(keys[1]);
+            this.forumId = int.Parse(keys[2]);
+            this.topicId = int.Parse(keys[3]);
+            this.replyId = int.Parse(keys[4]);
         }
 
         #endregion

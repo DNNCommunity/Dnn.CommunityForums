@@ -38,23 +38,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             Horizontal
         }
 
-        private RepeatDirections _repeatDirection;
-        private int _repeatColumns = 1;
-        private string _headerTemplate;
-        private string _footerTemplate;
-        private string _noResults;
-        private int _toggleBehavior = 0;
+        private RepeatDirections repeatDirection;
+        private int repeatColumns = 1;
+        private string headerTemplate;
+        private string footerTemplate;
+        private string noResults;
+        private int toggleBehavior = 0;
 
         public RepeatDirections RepeatDirection
         {
             get
             {
-                return this._repeatDirection;
+                return this.repeatDirection;
             }
 
             set
             {
-                this._repeatDirection = value;
+                this.repeatDirection = value;
             }
         }
 
@@ -62,12 +62,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._repeatColumns;
+                return this.repeatColumns;
             }
 
             set
             {
-                this._repeatColumns = value;
+                this.repeatColumns = value;
             }
         }
 
@@ -76,12 +76,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
@@ -90,12 +90,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 
@@ -104,12 +104,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._noResults;
+                return this.noResults;
             }
 
             set
             {
-                this._noResults = value;
+                this.noResults = value;
             }
         }
 
@@ -124,12 +124,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._toggleBehavior;
+                return this.toggleBehavior;
             }
 
             set
             {
-                this._toggleBehavior = value;
+                this.toggleBehavior = value;
             }
         }
 

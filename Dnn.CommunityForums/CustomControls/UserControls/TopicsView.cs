@@ -44,10 +44,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Environment));
 
         #region Private Members
-        private string _metaTemplate = "[META][TITLE][PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
-        private string _metaTitle = string.Empty;
-        private string _metaDescription = string.Empty;
-        private string _metaKeywords = string.Empty;
+        private string metaTemplate = "[META][TITLE][PORTALNAME] - [PAGENAME] - [GROUPNAME] - [FORUMNAME][/TITLE][DESCRIPTION][BODY][/DESCRIPTION][KEYWORDS][VALUE][/KEYWORDS][/META]";
+        private string metaTitle = string.Empty;
+        private string metaDescription = string.Empty;
+        private string metaKeywords = string.Empty;
         private string forumName;
         private string groupName;
         // Private ForumGroupId As Integer = 0
@@ -92,12 +92,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._metaTemplate;
+                return this.metaTemplate;
             }
 
             set
             {
-                this._metaTemplate = value;
+                this.metaTemplate = value;
             }
         }
 
@@ -105,12 +105,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._metaTitle;
+                return this.metaTitle;
             }
 
             set
             {
-                this._metaTitle = value;
+                this.metaTitle = value;
             }
         }
 
@@ -118,12 +118,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._metaDescription;
+                return this.metaDescription;
             }
 
             set
             {
-                this._metaDescription = value;
+                this.metaDescription = value;
             }
         }
 
@@ -131,27 +131,27 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._metaKeywords;
+                return this.metaKeywords;
             }
 
             set
             {
-                this._metaKeywords = value;
+                this.metaKeywords = value;
             }
         }
 
-        private string _forumUrl = string.Empty;
+        private string forumUrl = string.Empty;
 
         public string ForumUrl
         {
             get
             {
-                return this._forumUrl;
+                return this.forumUrl;
             }
 
             set
             {
-                this._forumUrl = value;
+                this.forumUrl = value;
             }
         }
         #endregion

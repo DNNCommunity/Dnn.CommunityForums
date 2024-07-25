@@ -32,18 +32,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_topicsorter : ForumBase
     {
-        private string _defaultSort = "ASC";
+        private string defaultSort = "ASC";
 
         public string DefaultSort
         {
             get
             {
-                return this._defaultSort;
+                return this.defaultSort;
             }
 
             set
             {
-                this._defaultSort = value;
+                this.defaultSort = value;
             }
         }
         #region Controls

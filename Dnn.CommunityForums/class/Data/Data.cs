@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class Connection
     {
         #region Private Members
-        private Framework.Providers.ProviderConfiguration _providerConfiguration = Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
+        private Framework.Providers.ProviderConfiguration providerConfiguration = Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
         internal string connectionString;
         internal string objectQualifier;
         internal string databaseOwner;
@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         public Connection()
         {
             this.connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
-            var objProvider = (Framework.Providers.Provider)this._providerConfiguration.Providers[this._providerConfiguration.DefaultProvider];
+            var objProvider = (Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
 
             this.objectQualifier = objProvider.Attributes["objectQualifier"];
             if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)

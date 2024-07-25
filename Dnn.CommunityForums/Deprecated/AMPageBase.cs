@@ -27,19 +27,19 @@ namespace DotNetNuke.Modules.ActiveForums
     public class AMPageBase : Framework.PageBase
     {
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
-        public static int _AFModId;
+        public static int AFModId;
 
         [Obsolete("Deprecated in Community Forums. Scheduled removal in 09.00.00.")]
         public static int AFModID
         {
             get
             {
-                return _AFModId;
+                return AFModId;
             }
 
             set
             {
-                _AFModId = value;
+                AFModId = value;
             }
         }
 

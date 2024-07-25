@@ -32,9 +32,9 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Variables
 
-        private User _currentUser;
-        private string _authorizedForums;
-        private WhatsNewModuleSettings _settings;
+        private User currentUser;
+        private string authorizedForums;
+        private WhatsNewModuleSettings settings;
 
         #endregion
 
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._settings == null)
+                if (this.settings == null)
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, this.ModuleId);
 
@@ -55,24 +55,24 @@ namespace DotNetNuke.Modules.ActiveForums
                         DataCache.SettingsCacheStore(this.ModuleId, settingsCacheKey, moduleSettings);
                     }
 
-                    this._settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
+                    this.settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
                 }
 
-                return this._settings;
+                return this.settings;
             }
         }
 
         private User CurrentUser
         {
-            get { return this._currentUser ?? (this._currentUser = new UserController().GetUser(this.PortalId, -1)); }
+            get { return this.currentUser ?? (this.currentUser = new UserController().GetUser(this.PortalId, -1)); }
         }
 
         private string AuthorizedForums
         {
             get
             {
-                return this._authorizedForums ??
-                       (this._authorizedForums =
+                return this.authorizedForums ??
+                       (this.authorizedForums =
                        DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoles));
             }
         }

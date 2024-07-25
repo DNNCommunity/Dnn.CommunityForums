@@ -32,23 +32,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ToolboxData("<{0}:TagCloud runat=server></{0}:TagCloud>")]
     public class TagCloud : WebControl
     {
-        private int _portalId = -1;
-        private int _moduleId = -1;
-        private string _cssOne = "tagcssone";
-        private string _cssTwo = "tagcsstwo";
-        private string _cssThree = "tagcssthree";
-        private int _tabId = -1;
+        private int portalId = -1;
+        private int moduleId = -1;
+        private string cssOne = "tagcssone";
+        private string cssTwo = "tagcsstwo";
+        private string cssThree = "tagcssthree";
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssOne;
+                return this.cssOne;
             }
 
             set
             {
-                this._cssOne = value;
+                this.cssOne = value;
             }
         }
 
@@ -95,12 +95,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssTwo;
+                return this.cssTwo;
             }
 
             set
             {
-                this._cssTwo = value;
+                this.cssTwo = value;
             }
         }
 
@@ -108,42 +108,42 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssThree;
+                return this.cssThree;
             }
 
             set
             {
-                this._cssThree = value;
+                this.cssThree = value;
             }
         }
 
-        private string _forumIds = string.Empty;
+        private string forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._forumIds;
+                return this.forumIds;
             }
 
             set
             {
-                this._forumIds = value;
+                this.forumIds = value;
             }
         }
 
-        private int _tagCount = 15;
+        private int tagCount = 15;
 
         public int TagCount
         {
             get
             {
-                return this._tagCount;
+                return this.tagCount;
             }
 
             set
             {
-                this._tagCount = value;
+                this.tagCount = value;
             }
         }
 

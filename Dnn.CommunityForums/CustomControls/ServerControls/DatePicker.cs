@@ -36,26 +36,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private Image calImage;
         private System.Web.UI.HtmlControls.HtmlGenericControl div;
         private HiddenField labelHidden = new HiddenField();
-        private string _dateFormat;
-        private string _timeFormat;
-        private string _selectedDate = "";
-        private string _weekendstyle = "amothermonthday";
-        private string _weekdaystyle = "amothermonthday";
-        private string _monthstyle = "amcaltitle";
-        private string _calendarstyle = "amcalendar";
-        private string _selecteddaystyle = "amselectedday";
-        private string _currentdaystyle = "amcurrentday";
-        private string _dayheaderstyle = "amdayheader";
-        private string _currentmonthdaystyle = "amcurrentmonthday";
-        private string _othermonthdaystyle = "amothermonthday";
-        private string _calwidth = "150";
-        private string _calheight = "150";
-        private string _imageUrl = "";
-        private string _nullDate = "01/01/1900";
-        private string _defaultTime = "08:00 AM";
-        private string _selectedTime = "";
-        private bool _showDateBox = true;
-        private string _callbackFlag = string.Empty;
+        private string dateFormat;
+        private string timeFormat;
+        private string selectedDate = "";
+        private string weekendstyle = "amothermonthday";
+        private string weekdaystyle = "amothermonthday";
+        private string monthstyle = "amcaltitle";
+        private string calendarstyle = "amcalendar";
+        private string selecteddaystyle = "amselectedday";
+        private string currentdaystyle = "amcurrentday";
+        private string dayheaderstyle = "amdayheader";
+        private string currentmonthdaystyle = "amcurrentmonthday";
+        private string othermonthdaystyle = "amothermonthday";
+        private string calwidth = "150";
+        private string calheight = "150";
+        private string imageUrl = "";
+        private string nullDate = "01/01/1900";
+        private string defaultTime = "08:00 AM";
+        private string selectedTime = "";
+        private bool showDateBox = true;
+        private string callbackFlag = string.Empty;
         private System.Globalization.Calendar cal;
         private System.Globalization.DateTimeFormatInfo dtFI;
 
@@ -71,16 +71,16 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this._selectedDate != "")
+                if (this.selectedDate != "")
                 {
                     try
                     {
-                        if (Convert.ToDateTime(this._selectedDate) <= Convert.ToDateTime(this.NullDate))
+                        if (Convert.ToDateTime(this.selectedDate) <= Convert.ToDateTime(this.NullDate))
                         {
                             return "";
                         }
 
-                        return this._selectedDate;
+                        return this.selectedDate;
                     }
                     catch (Exception ex)
                     {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
             set
             {
-                this._selectedDate = value;
+                this.selectedDate = value;
             }
         }
 
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._nullDate;
+                return this.nullDate;
             }
 
             set
             {
-                this._nullDate = value;
+                this.nullDate = value;
             }
         }
 
@@ -120,12 +120,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._calwidth;
+                return this.calwidth;
             }
 
             set
             {
-                this._calwidth = value;
+                this.calwidth = value;
             }
         }
 
@@ -134,12 +134,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._calheight;
+                return this.calheight;
             }
 
             set
             {
-                this._calheight = value;
+                this.calheight = value;
             }
         }
 
@@ -151,12 +151,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._dayheaderstyle;
+                return this.dayheaderstyle;
             }
 
             set
             {
-                this._dayheaderstyle = value;
+                this.dayheaderstyle = value;
             }
         }
 
@@ -168,12 +168,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._weekendstyle;
+                return this.weekendstyle;
             }
 
             set
             {
-                this._weekendstyle = value;
+                this.weekendstyle = value;
             }
         }
 
@@ -185,12 +185,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._weekdaystyle;
+                return this.weekdaystyle;
             }
 
             set
             {
-                this._weekdaystyle = value;
+                this.weekdaystyle = value;
             }
         }
 
@@ -202,12 +202,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._monthstyle;
+                return this.monthstyle;
             }
 
             set
             {
-                this._monthstyle = value;
+                this.monthstyle = value;
             }
         }
 
@@ -219,12 +219,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._calendarstyle;
+                return this.calendarstyle;
             }
 
             set
             {
-                this._calendarstyle = value;
+                this.calendarstyle = value;
             }
         }
 
@@ -236,12 +236,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._selecteddaystyle;
+                return this.selecteddaystyle;
             }
 
             set
             {
-                this._selecteddaystyle = value;
+                this.selecteddaystyle = value;
             }
         }
 
@@ -253,12 +253,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._currentdaystyle;
+                return this.currentdaystyle;
             }
 
             set
             {
-                this._currentdaystyle = value;
+                this.currentdaystyle = value;
             }
         }
 
@@ -270,12 +270,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._currentmonthdaystyle;
+                return this.currentmonthdaystyle;
             }
 
             set
             {
-                this._currentmonthdaystyle = value;
+                this.currentmonthdaystyle = value;
             }
         }
 
@@ -287,12 +287,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._othermonthdaystyle;
+                return this.othermonthdaystyle;
             }
 
             set
             {
-                this._othermonthdaystyle = value;
+                this.othermonthdaystyle = value;
             }
         }
 
@@ -304,17 +304,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this._dateFormat == "")
+                if (this.dateFormat == "")
                 {
                     return "MM/dd/yyyy";
                 }
 
-                return this._dateFormat;
+                return this.dateFormat;
             }
 
             set
             {
-                this._dateFormat = value;
+                this.dateFormat = value;
             }
         }
 
@@ -326,17 +326,17 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this._dateFormat == "")
+                if (this.dateFormat == "")
                 {
                     return "h:nn tt";
                 }
 
-                return this._timeFormat;
+                return this.timeFormat;
             }
 
             set
             {
-                this._timeFormat = value;
+                this.timeFormat = value;
             }
         }
 
@@ -348,12 +348,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._imageUrl;
+                return this.imageUrl;
             }
 
             set
             {
-                this._imageUrl = value;
+                this.imageUrl = value;
             }
         }
 
@@ -383,12 +383,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._defaultTime;
+                return this.defaultTime;
             }
 
             set
             {
-                this._defaultTime = value;
+                this.defaultTime = value;
             }
         }
 
@@ -397,11 +397,11 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this._selectedTime == "")
+                if (this.selectedTime == "")
                 {
                     if (this.SelectedDate == "")
                     {
-                        return this._defaultTime;
+                        return this.defaultTime;
                     }
 
                     if (Convert.ToDateTime(this.SelectedDate).Year == 1900)
@@ -412,12 +412,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                     return Convert.ToDateTime(this.SelectedDate).ToString(this.TimeFormat);
                 }
 
-                return this._selectedTime;
+                return this.selectedTime;
             }
 
             set
             {
-                this._selectedTime = value;
+                this.selectedTime = value;
             }
         }
 
@@ -429,12 +429,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._showDateBox;
+                return this.showDateBox;
             }
 
             set
             {
-                this._showDateBox = value;
+                this.showDateBox = value;
             }
         }
 
@@ -446,12 +446,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._callbackFlag;
+                return this.callbackFlag;
             }
 
             set
             {
-                this._callbackFlag = value;
+                this.callbackFlag = value;
             }
         }
 

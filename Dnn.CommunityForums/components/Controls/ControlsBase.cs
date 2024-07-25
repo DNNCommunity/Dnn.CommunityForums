@@ -29,37 +29,37 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ControlsBase : ForumBase
     {
-        private string _template;
-        private string _templateFile;
-        private string _currentView = "forumview";
-        private bool _parseTemplate = false;
+        private string template;
+        private string templateFile;
+        private string currentView = "forumview";
+        private bool parseTemplate = false;
 
         [Description("Template for display"), PersistenceMode(PersistenceMode.InnerProperty)]
         public string DisplayTemplate
         {
             get
             {
-                if (string.IsNullOrEmpty(this._template) && !string.IsNullOrEmpty(this.TemplateFile))
+                if (string.IsNullOrEmpty(this.template) && !string.IsNullOrEmpty(this.TemplateFile))
                 {
                     if (!string.IsNullOrEmpty(this.ControlConfig.TemplatePath))
                     {
-                        this._template = this.ControlConfig.TemplatePath + this.TemplateFile;
+                        this.template = this.ControlConfig.TemplatePath + this.TemplateFile;
                     }
                     else
                     {
-                        this._template = this.TemplateFile;
+                        this.template = this.TemplateFile;
                     }
 
-                    this._template = Utilities.GetTemplate(this.Page.ResolveUrl(this._template));
-                    this._template = Utilities.ParseTokenConfig(this.ForumModuleId, this._template, "default", this.ControlConfig);
+                    this.template = Utilities.GetTemplate(this.Page.ResolveUrl(this.template));
+                    this.template = Utilities.ParseTokenConfig(this.ForumModuleId, this.template, "default", this.ControlConfig);
                 }
 
-                return this._template;
+                return this.template;
             }
 
             set
             {
-                this._template = value;
+                this.template = value;
             }
         }
 
@@ -67,12 +67,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._currentView;
+                return this.currentView;
             }
 
             set
             {
-                this._currentView = value;
+                this.currentView = value;
             }
         }
 
@@ -80,12 +80,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._parseTemplate;
+                return this.parseTemplate;
             }
 
             set
             {
-                this._parseTemplate = value;
+                this.parseTemplate = value;
             }
         }
 

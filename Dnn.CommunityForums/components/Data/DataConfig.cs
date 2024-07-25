@@ -32,31 +32,31 @@ namespace DotNetNuke.Modules.ActiveForums.Data
     public class DataConfig
     {
         #region Private Members
-        internal string _connectionString;
-        internal string _objectQualifier;
-        internal string _databaseOwner;
+        internal string connectionString;
+        internal string objectQualifier;
+        internal string databaseOwner;
         internal string dbPrefix;
-        private DotNetNuke.Framework.Providers.ProviderConfiguration _providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
+        private DotNetNuke.Framework.Providers.ProviderConfiguration providerConfiguration = DotNetNuke.Framework.Providers.ProviderConfiguration.GetProviderConfiguration("data");
 
         #endregion
         #region Constructors
         public DataConfig()
         {
-            this._connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
+            this.connectionString = ConfigurationManager.ConnectionStrings["SiteSqlServer"].ConnectionString;
 
-            this._objectQualifier = this.ObjectQualifier;
-            if (this._objectQualifier != "" && this._objectQualifier.EndsWith("_") == false)
+            this.objectQualifier = this.ObjectQualifier;
+            if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)
             {
-                this._objectQualifier += "_";
+                this.objectQualifier += "_";
             }
 
-            this._databaseOwner = this.DataBaseOwner;
-            if (this._databaseOwner != "" && this._databaseOwner.EndsWith(".") == false)
+            this.databaseOwner = this.DataBaseOwner;
+            if (this.databaseOwner != "" && this.databaseOwner.EndsWith(".") == false)
             {
-                this._databaseOwner += ".";
+                this.databaseOwner += ".";
             }
 
-            this.dbPrefix = this._databaseOwner + this._objectQualifier + "activeforums_";
+            this.dbPrefix = this.databaseOwner + this.objectQualifier + "activeforums_";
         }
 
         #endregion
@@ -69,14 +69,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             get
             {
-                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this._providerConfiguration.Providers[this._providerConfiguration.DefaultProvider];
-                this._objectQualifier = objProvider.Attributes["objectQualifier"];
-                if (this._objectQualifier != "" && this._objectQualifier.EndsWith("_") == false)
+                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
+                this.objectQualifier = objProvider.Attributes["objectQualifier"];
+                if (this.objectQualifier != "" && this.objectQualifier.EndsWith("_") == false)
                 {
-                    this._objectQualifier += "_";
+                    this.objectQualifier += "_";
                 }
 
-                return this._objectQualifier;
+                return this.objectQualifier;
             }
 
             set
@@ -89,14 +89,14 @@ namespace DotNetNuke.Modules.ActiveForums.Data
         {
             get
             {
-                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this._providerConfiguration.Providers[this._providerConfiguration.DefaultProvider];
-                this._databaseOwner = objProvider.Attributes["databaseOwner"];
-                if (this._databaseOwner != "" && this._databaseOwner.EndsWith(".") == false)
+                DotNetNuke.Framework.Providers.Provider objProvider = (DotNetNuke.Framework.Providers.Provider)this.providerConfiguration.Providers[this.providerConfiguration.DefaultProvider];
+                this.databaseOwner = objProvider.Attributes["databaseOwner"];
+                if (this.databaseOwner != "" && this.databaseOwner.EndsWith(".") == false)
                 {
-                    this._databaseOwner += ".";
+                    this.databaseOwner += ".";
                 }
 
-                return this._databaseOwner;
+                return this.databaseOwner;
             }
 
             set

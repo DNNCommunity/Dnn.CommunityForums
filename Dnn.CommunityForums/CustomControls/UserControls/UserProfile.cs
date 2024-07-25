@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #endregion
         #region Private Members
-        private ProfileModes _profileMode = ProfileModes.View;
+        private ProfileModes profileMode = ProfileModes.View;
 
         #endregion
         #region Public Properties
@@ -51,12 +51,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._profileMode;
+                return this.profileMode;
             }
 
             set
             {
-                this._profileMode = value;
+                this.profileMode = value;
             }
         }
 

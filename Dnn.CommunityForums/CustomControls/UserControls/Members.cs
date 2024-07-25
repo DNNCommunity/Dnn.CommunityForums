@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class Members : SettingsBase
     {
         #region Private Members
-        private int _memberCount = 0;
+        private int memberCount = 0;
 
         private int pageSize = 20;
         private int rowIndex = 0;
@@ -169,7 +169,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         private void BuildPager()
         {
             int intPages = 0;
-            intPages = Convert.ToInt32(System.Math.Ceiling(this._memberCount / (double)this.pageSize));
+            intPages = Convert.ToInt32(System.Math.Ceiling(this.memberCount / (double)this.pageSize));
             this.pager1.PageCount = intPages;
             this.pager1.CurrentPage = this.PageId;
             this.pager1.TabID = this.TabId;
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             try
             {
                 dr.Read();
-                this._memberCount = Convert.ToInt32(dr[0]);
+                this.memberCount = Convert.ToInt32(dr[0]);
                 dr.NextResult();
                 while (dr.Read())
                 {

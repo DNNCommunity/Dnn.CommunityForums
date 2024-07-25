@@ -27,18 +27,18 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_polls : ForumBase
     {
-        private int _pollId = -1;
+        private int pollId = -1;
 
         public int PollId
         {
             get
             {
-                return this._pollId;
+                return this.pollId;
             }
 
             set
             {
-                this._pollId = value;
+                this.pollId = value;
             }
         }
 

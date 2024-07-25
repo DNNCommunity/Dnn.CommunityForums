@@ -29,80 +29,80 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class ForumDirectory
     {
-        private int _portalId = -1;
+        private int portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        private int _moduleId = -1;
+        private int moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
-        private int _tabId = -1;
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
         public User ForumUser { get; set; }
 
-        private string _forumIds = string.Empty;
+        private string forumIds = string.Empty;
 
         public string ForumIds
         {
             get
             {
-                return this._forumIds;
+                return this.forumIds;
             }
 
             set
             {
-                this._forumIds = value;
+                this.forumIds = value;
             }
         }
 
-        private string _template = string.Empty;
+        private string template = string.Empty;
 
         public string Template
         {
             get
             {
-                return this._template;
+                return this.template;
             }
 
             set
             {
-                this._template = value;
+                this.template = value;
             }
         }
 

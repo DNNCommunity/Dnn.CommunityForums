@@ -27,19 +27,19 @@ namespace DotNetNuke.Modules.ActiveForums
 
     public partial class af_topicstatus : ForumBase
     {
-        private int _status = -1;
-        private bool _autoPostBack = true;
+        private int status = -1;
+        private bool autoPostBack = true;
 
         public int Status
         {
             get
             {
-                return this._status;
+                return this.status;
             }
 
             set
             {
-                this._status = value;
+                this.status = value;
             }
         }
 
@@ -47,12 +47,12 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                return this._autoPostBack;
+                return this.autoPostBack;
             }
 
             set
             {
-                this._autoPostBack = value;
+                this.autoPostBack = value;
             }
         }
 

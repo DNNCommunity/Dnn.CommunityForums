@@ -32,23 +32,23 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ParseChildren(true, ""), ToolboxData("<{0}:toggle runat=server></{0}:toggle>")]
     public class Toggle : WebControl
     {
-        private string _key;
-        private string _imagePath;
-        private string _cssClassOn;
-        private string _cssClassOff;
-        private int _toggleBehavior;
-        private bool _isVisible = true;
+        private string key;
+        private string imagePath;
+        private string cssClassOn;
+        private string cssClassOff;
+        private int toggleBehavior;
+        private bool isVisible = true;
 
         public int ToggleBehavior
         {
             get
             {
-                return this._toggleBehavior;
+                return this.toggleBehavior;
             }
 
             set
             {
-                this._toggleBehavior = value;
+                this.toggleBehavior = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._key;
+                return this.key;
             }
 
             set
             {
-                this._key = value;
+                this.key = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._imagePath;
+                return this.imagePath;
             }
 
             set
             {
-                this._imagePath = value;
+                this.imagePath = value;
             }
         }
 
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssClassOn;
+                return this.cssClassOn;
             }
 
             set
             {
-                this._cssClassOn = value;
+                this.cssClassOn = value;
             }
         }
 
@@ -95,12 +95,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cssClassOff;
+                return this.cssClassOff;
             }
 
             set
             {
-                this._cssClassOff = value;
+                this.cssClassOff = value;
             }
         }
 
@@ -108,12 +108,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._isVisible;
+                return this.isVisible;
             }
 
             set
             {
-                this._isVisible = value;
+                this.isVisible = value;
             }
         }
 
@@ -140,20 +140,20 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     [ParseChildren(true, ""), ToolboxData("<{0}:toggledisplay runat=server></{0}:toggledisplay>")]
     public class ToggleDisplay : CompositeControl
     {
-        private ToggleContent _content;
-        private string _key;
-        private bool _isVisible = true;
+        private ToggleContent content;
+        private string key;
+        private bool isVisible = true;
 
         public bool IsVisible
         {
             get
             {
-                return this._isVisible;
+                return this.isVisible;
             }
 
             set
             {
-                this._isVisible = value;
+                this.isVisible = value;
             }
         }
 
@@ -161,12 +161,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._key;
+                return this.key;
             }
 
             set
             {
-                this._key = value;
+                this.key = value;
             }
         }
 
@@ -194,12 +194,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
                 this.EnsureChildControls();
-                return this._content;
+                return this.content;
             }
 
             set
             {
-                this._content = value;
+                this.content = value;
             }
         }
 

@@ -33,9 +33,9 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class InfoMessage : CompositeControl
     {
         #region Private Members
-        private string _message;
-        private string _header;
-        private string _returnUrl;
+        private string message;
+        private string header;
+        private string returnUrl;
 
         #endregion
         #region Public Properties
@@ -43,12 +43,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._message;
+                return this.message;
             }
 
             set
             {
-                this._message = value;
+                this.message = value;
             }
         }
 
@@ -56,12 +56,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._header;
+                return this.header;
             }
 
             set
             {
-                this._header = value;
+                this.header = value;
             }
         }
 
@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._returnUrl;
+                return this.returnUrl;
             }
 
             set
             {
-                this._returnUrl = value;
+                this.returnUrl = value;
             }
         }
 

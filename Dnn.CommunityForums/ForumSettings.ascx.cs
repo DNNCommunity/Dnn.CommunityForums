@@ -35,18 +35,18 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public partial class ForumSettings : ForumSettingsBase
     {
-        private int? _fullTextStatus;
+        private int? fullTextStatus;
 
         private int FullTextStatus
         {
             get
             {
-                if (!this._fullTextStatus.HasValue)
+                if (!this.fullTextStatus.HasValue)
                 {
-                    this._fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
+                    this.fullTextStatus = DataProvider.Instance().Search_GetFullTextStatus();
                 }
 
-                return this._fullTextStatus.HasValue ? this._fullTextStatus.Value : -5;
+                return this.fullTextStatus.HasValue ? this.fullTextStatus.Value : -5;
             }
         }
 

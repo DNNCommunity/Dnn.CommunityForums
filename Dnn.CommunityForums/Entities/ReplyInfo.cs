@@ -14,10 +14,10 @@
     [Cacheable("activeforums_Replies", CacheItemPriority.Low)]
     public partial class ReplyInfo
     {
-        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo _topicInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo _contentInfo;
-        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo _forumInfo;
-        private DotNetNuke.Modules.ActiveForums.Author _author;
+        private DotNetNuke.Modules.ActiveForums.Entities.TopicInfo topicInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ContentInfo contentInfo;
+        private DotNetNuke.Modules.ActiveForums.Entities.ForumInfo forumInfo;
+        private DotNetNuke.Modules.ActiveForums.Author author;
         private int forumId;
 
         [IgnoreColumn()]
@@ -61,8 +61,8 @@
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.TopicInfo Topic
         {
-            get => this._topicInfo ?? (this._topicInfo = this.GetTopic());
-            set => this._topicInfo = value;
+            get => this.topicInfo ?? (this.topicInfo = this.GetTopic());
+            set => this.topicInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.TopicInfo GetTopic()
@@ -73,8 +73,8 @@
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ContentInfo Content
         {
-            get => this._contentInfo ?? (this._contentInfo = this.GetContent());
-            set => this._contentInfo = value;
+            get => this.contentInfo ?? (this.contentInfo = this.GetContent());
+            set => this.contentInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ContentInfo GetContent()
@@ -85,8 +85,8 @@
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.ForumInfo Forum
         {
-            get => this._forumInfo ?? (this._forumInfo = this.GetForum());
-            set => this._forumInfo = value;
+            get => this.forumInfo ?? (this.forumInfo = this.GetForum());
+            set => this.forumInfo = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.ForumInfo GetForum()
@@ -97,29 +97,29 @@
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Author Author
         {
-            get => this._author ?? (this.GetAuthor());
-            set => this._author = value;
+            get => this.author ?? (this.GetAuthor());
+            set => this.author = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Author GetAuthor()
         {
-            this._author = new DotNetNuke.Modules.ActiveForums.Author();
-            this._author.AuthorId = this.Content.AuthorId;
+            this.author = new DotNetNuke.Modules.ActiveForums.Author();
+            this.author.AuthorId = this.Content.AuthorId;
             var userInfo = DotNetNuke.Entities.Users.UserController.Instance.GetUser(this.PortalId, this.Content.AuthorId);
             if (userInfo != null)
             {
-                this._author.Email = userInfo?.Email;
-                this._author.FirstName = userInfo?.FirstName;
-                this._author.LastName = userInfo?.LastName;
-                this._author.DisplayName = userInfo?.DisplayName;
-                this._author.Username = userInfo?.Username;
+                this.author.Email = userInfo?.Email;
+                this.author.FirstName = userInfo?.FirstName;
+                this.author.LastName = userInfo?.LastName;
+                this.author.DisplayName = userInfo?.DisplayName;
+                this.author.Username = userInfo?.Username;
             }
             else
             {
-                this._author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
+                this.author.DisplayName = this.Content.AuthorId > 0 ? Utilities.GetSharedResource("[RESX:DeletedUser]") : Utilities.GetSharedResource("[RESX:Anonymous]");
             }
 
-            return this._author;
+            return this.author;
         }
     }
 }

@@ -33,153 +33,153 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
     public class ForumContentTree : WebControl
     {
 
-        private DisplayTemplate _itemTemplate;
+        private DisplayTemplate itemTemplate;
 
         public DisplayTemplate ItemTemplate
         {
             get
             {
-                return this._itemTemplate;
+                return this.itemTemplate;
             }
 
             set
             {
-                this._itemTemplate = value;
+                this.itemTemplate = value;
             }
         }
 
-        private DisplayTemplate _headerTemplate;
+        private DisplayTemplate headerTemplate;
 
         public DisplayTemplate HeaderTemplate
         {
             get
             {
-                return this._headerTemplate;
+                return this.headerTemplate;
             }
 
             set
             {
-                this._headerTemplate = value;
+                this.headerTemplate = value;
             }
         }
 
-        private DisplayTemplate _footerTemplate;
+        private DisplayTemplate footerTemplate;
 
         public DisplayTemplate FooterTemplate
         {
             get
             {
-                return this._footerTemplate;
+                return this.footerTemplate;
             }
 
             set
             {
-                this._footerTemplate = value;
+                this.footerTemplate = value;
             }
         }
 
-        private int _portalId = -1;
+        private int portalId = -1;
 
         public int PortalId
         {
             get
             {
-                return this._portalId;
+                return this.portalId;
             }
 
             set
             {
-                this._portalId = value;
+                this.portalId = value;
             }
         }
 
-        private int _moduleId = -1;
+        private int moduleId = -1;
 
         public int ModuleId
         {
             get
             {
-                return this._moduleId;
+                return this.moduleId;
             }
 
             set
             {
-                this._moduleId = value;
+                this.moduleId = value;
             }
         }
 
-        private int _tabId = -1;
+        private int tabId = -1;
 
         public int TabId
         {
             get
             {
-                return this._tabId;
+                return this.tabId;
             }
 
             set
             {
-                this._tabId = value;
+                this.tabId = value;
             }
         }
 
-        private int _forumId = -1;
+        private int forumId = -1;
 
         public int ForumId
         {
             get
             {
-                return this._forumId;
+                return this.forumId;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
-        private int _forumGroupId = -1;
+        private int forumGroupId = -1;
 
         public int ForumGroupId
         {
             get
             {
-                return this._forumGroupId;
+                return this.forumGroupId;
             }
 
             set
             {
-                this._forumGroupId = value;
+                this.forumGroupId = value;
             }
         }
 
-        private int _parentForumId = -1;
+        private int parentForumId = -1;
 
         public int ParentForumId
         {
             get
             {
-                return this._parentForumId;
+                return this.parentForumId;
             }
 
             set
             {
-                this._parentForumId = value;
+                this.parentForumId = value;
             }
         }
 
-        private bool _includeClasses = true;
+        private bool includeClasses = true;
 
         public bool IncludeClasses
         {
             get
             {
-                return this._includeClasses;
+                return this.includeClasses;
             }
 
             set
             {
-                this._includeClasses = value;
+                this.includeClasses = value;
             }
         }
 

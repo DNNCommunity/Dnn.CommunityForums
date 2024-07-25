@@ -52,13 +52,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         #region Private Variables
 
-        private int? _tabId;
-        private int? _moduleId;
-        private int? _portalId;
-        private WhatsNewModuleSettings _settings;
-        private string _authorizedForums;
-        private User _currentUser;
-        private string _cacheKey;
+        private int? tabId;
+        private int? moduleId;
+        private int? portalId;
+        private WhatsNewModuleSettings settings;
+        private string authorizedForums;
+        private User currentUser;
+        private string cacheKey;
 
         #endregion
 
@@ -68,13 +68,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!this._tabId.HasValue)
+                if (!this.tabId.HasValue)
                 {
                     int parsedTabId;
-                    this._tabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
+                    this.tabId = int.TryParse(HttpContext.Current.Request.QueryString[TabIDRequestKey], out parsedTabId) ? parsedTabId : DefaultTabID;
                 }
 
-                return this._tabId.Value;
+                return this.tabId.Value;
             }
         }
 
@@ -82,13 +82,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!this._moduleId.HasValue)
+                if (!this.moduleId.HasValue)
                 {
                     int parsedModuleID;
-                    this._moduleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
+                    this.moduleId = int.TryParse(HttpContext.Current.Request.QueryString[ModuleIDRequestKey], out parsedModuleID) ? parsedModuleID : DefaultModuleID;
                 }
 
-                return this._moduleId.Value;
+                return this.moduleId.Value;
             }
         }
 
@@ -96,13 +96,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (!this._portalId.HasValue)
+                if (!this.portalId.HasValue)
                 {
                     int parsedPortalID;
-                    this._portalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
+                    this.portalId = int.TryParse(HttpContext.Current.Request.QueryString[PortalIDRequestKey], out parsedPortalID) ? parsedPortalID : DefaultPortalID;
                 }
 
-                return this._portalId.Value;
+                return this.portalId.Value;
             }
         }
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                if (this._settings == null)
+                if (this.settings == null)
                 {
                     var settingsCacheKey = string.Format(CacheKeys.WhatsNew, this.ModuleId);
 
@@ -121,24 +121,24 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                         DataCache.SettingsCacheStore(this.ModuleId, settingsCacheKey, moduleSettings);
                     }
 
-                    this._settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
+                    this.settings = WhatsNewModuleSettings.CreateFromModuleSettings(moduleSettings);
                 }
 
-                return this._settings;
+                return this.settings;
             }
         }
 
         private User CurrentUser
         {
-            get { return this._currentUser ?? (this._currentUser = new UserController().GetUser(this.PortalId, -1)); }
+            get { return this.currentUser ?? (this.currentUser = new UserController().GetUser(this.PortalId, -1)); }
         }
 
         private string AuthorizedForums
         {
             get
             {
-                return this._authorizedForums ??
-                       (this._authorizedForums =
+                return this.authorizedForums ??
+                       (this.authorizedForums =
                         DotNetNuke.Modules.ActiveForums.Controllers.PermissionController.CheckForumIdsForViewForRSS(-1, this.Settings.Forums, this.CurrentUser.UserRoles));
             }
         }
@@ -147,8 +147,8 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._cacheKey ??
-                       (this._cacheKey =
+                return this.cacheKey ??
+                       (this.cacheKey =
                         string.Format(CacheKeys.RssTemplate, this.ModuleId,
                                       this.Settings.RSSIgnoreSecurity ? this.Settings.Forums : this.AuthorizedForums));
             }

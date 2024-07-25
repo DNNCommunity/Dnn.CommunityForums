@@ -53,14 +53,14 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
 
         #region Settings & Security
 
-        private PermissionInfo _security;
-        private Hashtable _groupSettings;
+        private PermissionInfo security;
+        private Hashtable groupSettings;
 
         [IgnoreColumn()]
         public DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo Security
         {
-            get => this._security ?? (this._security = this.LoadSecurity());
-            set => this._security = value;
+            get => this.security ?? (this.security = this.LoadSecurity());
+            set => this.security = value;
         }
 
         internal DotNetNuke.Modules.ActiveForums.Entities.PermissionInfo LoadSecurity()
@@ -82,8 +82,8 @@ namespace DotNetNuke.Modules.ActiveForums.Entities
         [IgnoreColumn()]
         public Hashtable GroupSettings
         {
-            get => this._groupSettings ?? (this._groupSettings = this.LoadSettings());
-            set => this._groupSettings = value;
+            get => this.groupSettings ?? (this.groupSettings = this.LoadSettings());
+            set => this.groupSettings = value;
         }
 
         internal Hashtable LoadSettings()

@@ -33,16 +33,16 @@ namespace DotNetNuke.Modules.ActiveForums
     {
         #region Private Members
 
-        private string _searchText;
-        private string _tags;
-        private int? _searchType;
-        private int? _authorUserId;
-        private string _authorUsername;
-        private int? _searchColumns;
-        private string _forums;
-        private int? _searchDays;
-        private int? _resultType;
-        private int? _sort;
+        private string searchText;
+        private string tags;
+        private int? searchType;
+        private int? authorUserId;
+        private string authorUsername;
+        private int? searchColumns;
+        private string forums;
+        private int? searchDays;
+        private int? resultType;
+        private int? sort;
 
         #endregion
 
@@ -52,16 +52,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._searchText == null)
+                if (this.searchText == null)
                 {
-                    this._searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
-                    this._searchText = Utilities.XSSFilter(this._searchText);
-                    this._searchText = Utilities.StripHTMLTag(this._searchText);
-                    this._searchText = Utilities.CheckSqlString(this._searchText);
-                    this._searchText = this._searchText.Trim();
+                    this.searchText = this.Request.Params[SearchParamKeys.Query] + string.Empty;
+                    this.searchText = Utilities.XSSFilter(this.searchText);
+                    this.searchText = Utilities.StripHTMLTag(this.searchText);
+                    this.searchText = Utilities.CheckSqlString(this.searchText);
+                    this.searchText = this.searchText.Trim();
                 }
 
-                return this._searchText;
+                return this.searchText;
             }
         }
 
@@ -69,16 +69,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._tags == null)
+                if (this.tags == null)
                 {
-                    this._tags = this.Request.Params[SearchParamKeys.Tag] + string.Empty;
-                    this._tags = Utilities.XSSFilter(this._tags);
-                    this._tags = Utilities.StripHTMLTag(this._tags);
-                    this._tags = Utilities.CheckSqlString(this._tags);
-                    this._tags = this._tags.Trim();
+                    this.tags = this.Request.Params[SearchParamKeys.Tag] + string.Empty;
+                    this.tags = Utilities.XSSFilter(this.tags);
+                    this.tags = Utilities.StripHTMLTag(this.tags);
+                    this.tags = Utilities.CheckSqlString(this.tags);
+                    this.tags = this.tags.Trim();
                 }
 
-                return this._tags;
+                return this.tags;
             }
         }
 
@@ -86,13 +86,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!this._searchType.HasValue)
+                if (!this.searchType.HasValue)
                 {
                     int parsedSearchType;
-                    this._searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
+                    this.searchType = int.TryParse(this.Request.Params[SearchParamKeys.SearchType], out parsedSearchType) ? parsedSearchType : 0;
                 }
 
-                return this._searchType.Value;
+                return this.searchType.Value;
             }
         }
 
@@ -100,16 +100,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._authorUsername == null)
+                if (this.authorUsername == null)
                 {
-                    this._authorUsername = this.Request.Params[SearchParamKeys.Author] + string.Empty;
-                    this._authorUsername = Utilities.XSSFilter(this._authorUsername);
-                    this._authorUsername = Utilities.StripHTMLTag(this._authorUsername);
-                    this._authorUsername = Utilities.CheckSqlString(this._authorUsername);
-                    this._authorUsername = this._authorUsername.Trim();
+                    this.authorUsername = this.Request.Params[SearchParamKeys.Author] + string.Empty;
+                    this.authorUsername = Utilities.XSSFilter(this.authorUsername);
+                    this.authorUsername = Utilities.StripHTMLTag(this.authorUsername);
+                    this.authorUsername = Utilities.CheckSqlString(this.authorUsername);
+                    this.authorUsername = this.authorUsername.Trim();
                 }
 
-                return this._authorUsername;
+                return this.authorUsername;
             }
         }
 
@@ -117,13 +117,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!this._searchColumns.HasValue)
+                if (!this.searchColumns.HasValue)
                 {
                     int parsedSearchColumns;
-                    this._searchColumns = int.TryParse(this.Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
+                    this.searchColumns = int.TryParse(this.Request.Params[SearchParamKeys.Columns], out parsedSearchColumns) ? parsedSearchColumns : 0;
                 }
 
-                return this._searchColumns.Value;
+                return this.searchColumns.Value;
             }
         }
 
@@ -131,16 +131,16 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (this._forums == null)
+                if (this.forums == null)
                 {
-                    this._forums = this.Request.Params[SearchParamKeys.Forums] + string.Empty;
-                    this._forums = Utilities.XSSFilter(this._forums);
-                    this._forums = Utilities.StripHTMLTag(this._forums);
-                    this._forums = Utilities.CheckSqlString(this._forums);
-                    this._forums = this._forums.Trim();
+                    this.forums = this.Request.Params[SearchParamKeys.Forums] + string.Empty;
+                    this.forums = Utilities.XSSFilter(this.forums);
+                    this.forums = Utilities.StripHTMLTag(this.forums);
+                    this.forums = Utilities.CheckSqlString(this.forums);
+                    this.forums = this.forums.Trim();
                 }
 
-                return this._forums;
+                return this.forums;
             }
         }
 
@@ -148,13 +148,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!this._searchDays.HasValue)
+                if (!this.searchDays.HasValue)
                 {
                     int parsedValue;
-                    this._searchDays = int.TryParse(this.Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
+                    this.searchDays = int.TryParse(this.Request.Params[SearchParamKeys.TimeSpan], out parsedValue) ? parsedValue : 0;
                 }
 
-                return this._searchDays.Value;
+                return this.searchDays.Value;
             }
         }
 
@@ -162,13 +162,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!this._resultType.HasValue)
+                if (!this.resultType.HasValue)
                 {
                     int parsedValue;
-                    this._resultType = int.TryParse(this.Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
+                    this.resultType = int.TryParse(this.Request.Params[SearchParamKeys.ResultType], out parsedValue) ? parsedValue : 0;
                 }
 
-                return this._resultType.Value;
+                return this.resultType.Value;
             }
         }
 
@@ -176,13 +176,13 @@ namespace DotNetNuke.Modules.ActiveForums
         {
             get
             {
-                if (!this._sort.HasValue)
+                if (!this.sort.HasValue)
                 {
                     int parsedValue;
-                    this._sort = int.TryParse(this.Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
+                    this.sort = int.TryParse(this.Request.Params[SearchParamKeys.Sort], out parsedValue) ? parsedValue : 0;
                 }
 
-                return this._sort.Value;
+                return this.sort.Value;
             }
         }
 

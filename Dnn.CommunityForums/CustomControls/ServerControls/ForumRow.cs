@@ -35,13 +35,13 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         protected Controls.Link hypForumName = new Controls.Link();
         protected PlaceHolder plhLastPost = new PlaceHolder();
         protected Controls.Link hypLastPostSubject = new Controls.Link();
-        private int _forumId;
-        private string _forumIcon;
-        private ForumRowControl _rowTemplate;
-        private string _viewRoles;
-        private string _readRoles;
-        private string _userRoles;
-        private bool _hidden;
+        private int forumId;
+        private string forumIcon;
+        private ForumRowControl rowTemplate;
+        private string viewRoles;
+        private string readRoles;
+        private string userRoles;
+        private bool hidden;
 
         public override System.Web.UI.ControlCollection Controls
         {
@@ -58,12 +58,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             get
             {
                 this.EnsureChildControls();
-                return this._rowTemplate;
+                return this.rowTemplate;
             }
 
             set
             {
-                this._rowTemplate = value;
+                this.rowTemplate = value;
             }
         }
 
@@ -71,12 +71,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._forumId;
+                return this.forumId;
             }
 
             set
             {
-                this._forumId = value;
+                this.forumId = value;
             }
         }
 
@@ -84,12 +84,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._forumIcon;
+                return this.forumIcon;
             }
 
             set
             {
-                this._forumIcon = value;
+                this.forumIcon = value;
             }
         }
 
@@ -97,12 +97,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._readRoles;
+                return this.readRoles;
             }
 
             set
             {
-                this._readRoles = value;
+                this.readRoles = value;
             }
         }
 
@@ -110,12 +110,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._viewRoles;
+                return this.viewRoles;
             }
 
             set
             {
-                this._viewRoles = value;
+                this.viewRoles = value;
             }
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._userRoles;
+                return this.userRoles;
             }
 
             set
             {
-                this._userRoles = value;
+                this.userRoles = value;
             }
         }
 
@@ -136,12 +136,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._hidden;
+                return this.hidden;
             }
 
             set
             {
-                this._hidden = value;
+                this.hidden = value;
             }
         }
 

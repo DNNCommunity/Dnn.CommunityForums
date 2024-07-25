@@ -27,40 +27,40 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
     public class TabCollection : IList<Tab>, IEnumerable<Tab>, ICollection<Tab>
     {
-        private List<Tab> _contents = new List<Tab>();
-        private int _count;
-        private Tab _tab;
+        private List<Tab> contents = new List<Tab>();
+        private int count;
+        private Tab tab;
 
         public Tab Tab
         {
             get
             {
-                return this._tab;
+                return this.tab;
             }
 
             set
             {
-                this._tab = value;
+                this.tab = value;
             }
         }
 
         public TabCollection()
         {
-            this._count = 0;
+            this.count = 0;
             // _contents = New ArrayList
 
         }
 
         public void Add(Tab item)
         {
-            this._contents.Add(item);
-            this._count = this._count + 1;
+            this.contents.Add(item);
+            this.count = this.count + 1;
         }
 
         public void Clear()
         {
-            this._contents = null;
-            this._count = 0;
+            this.contents = null;
+            this.count = 0;
 
         }
 
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             for (i = 0; i <= this.Count; i++)
             {
 
-                if (((Tab)this._contents[i]).Text.ToLower() == item.Text.ToLower())
+                if (((Tab)this.contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
                     inList = true;
                     break;
@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             int i = 0;
             for (i = 0; i <= this.Count; i++)
             {
-                array.SetValue(this._contents[i], j);
+                array.SetValue(this.contents[i], j);
                 j = j + 1;
             }
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._count;
+                return this.count;
             }
         }
 
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         IEnumerator<Tab> IEnumerable<Tab>.GetEnumerator()
         {
-            return new TabEnum(this._contents);
+            return new TabEnum(this.contents);
         }
 
         public int IndexOf(Tab item)
@@ -129,7 +129,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             for (i = 0; i <= this.Count; i++)
             {
 
-                if (((Tab)this._contents[i]).Text.ToLower() == item.Text.ToLower())
+                if (((Tab)this.contents[i]).Text.ToLower() == item.Text.ToLower())
                 {
 
                     itemIndex = i;
@@ -145,15 +145,15 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         public void Insert(int index, Tab item)
         {
-            this._count = this._count + 1;
+            this.count = this.count + 1;
 
             int i = 0;
             for (i = this.Count - 1; i <= index; i++)
             {
-                this._contents[i] = this._contents[i - 1];
+                this.contents[i] = this.contents[i - 1];
             }
 
-            this._contents[index] = item;
+            this.contents[index] = item;
 
         }
 
@@ -161,12 +161,12 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return (Tab)this._contents[index];
+                return (Tab)this.contents[index];
             }
 
             set
             {
-                this._contents[index] = value;
+                this.contents[index] = value;
             }
         }
 
@@ -179,10 +179,10 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
                 for (i = index; i < this.Count; i++)
                 {
 
-                    this._contents[i] = this._contents[i + 1];
+                    this.contents[i] = this.contents[i + 1];
                 }
 
-                this._count = this._count - 1;
+                this.count = this.count - 1;
 
             }
 
@@ -190,26 +190,26 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this._contents.GetEnumerator();
+            return this.contents.GetEnumerator();
         }
     }
 
     public class TabEnum : IEnumerator<Tab>
     {
 
-        public List<Tab> _tabs;
+        public List<Tab> tabs;
 
         private int position = -1;
 
         public TabEnum(List<Tab> list)
         {
-            this._tabs = list;
+            this.tabs = list;
         }
 
         public bool MoveNext()
         {
             this.position = this.position + 1;
-            return this.position < this._tabs.Count;
+            return this.position < this.tabs.Count;
         }
 
         public void Reset()
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
             {
                 try
                 {
-                    return this._tabs[this.position];
+                    return this.tabs[this.position];
                 }
                 catch (IndexOutOfRangeException ex)
                 {
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.ActiveForums.Controls
         {
             get
             {
-                return this._tabs[this.position];
+                return this.tabs[this.position];
             }
         }
 
